@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RSC-Bench Run Record",
+  "type": "object",
+  "required": [
+    "run_id",
+    "experiment_date_utc",
+    "experiment_id",
+    "case_id",
+    "condition",
+    "replicate",
+    "model",
+    "generation",
+    "prompt_hashes",
+    "input_hashes",
+    "output",
+    "match"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "experiment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "condition": {
+      "enum": [
+        "standard",
+        "ccdg"
+      ]
+    },
+    "replicate": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "model": {
+      "type": "object",
+      "required": [
+        "provider",
+        "model_id"
+      ],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "api_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "generation": {
+      "type": "object"
+    },
+    "prompt_hashes": {
+      "type": "object",
+      "required": [
+        "system_sha256",
+        "user_sha256"
+      ],
+      "properties": {
+        "system_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "user_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": true
+    },
+    "input_hashes": {
+      "type": "object",
+      "required": [
+        "I_base_sha256",
+        "rendered_user_sha256"
+      ],
+      "properties": {
+        "I_base_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "rendered_user_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "CCDG_base_input_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "CCDG_canonical_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": true
+    },
+    "output": {
+      "type": "object"
+    },
+    "match": {
+      "type": "object",
+      "required": [
+        "component_match",
+        "root_cause_match",
+        "entity_match",
+        "primary_accuracy"
+      ],
+      "properties": {
+        "component_match": {
+          "type": "boolean"
+        },
+        "root_cause_match": {
+          "type": "boolean"
+        },
+        "entity_match": {
+          "type": "boolean"
+        },
+        "primary_accuracy": {
+          "enum": [
+            0,
+            1
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "experiment_date_utc": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

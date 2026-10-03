@@ -1,0 +1,11 @@
+# Exact fixed model ID must be selected and recorded before real pilot execution.
+# Do not use dynamic aliases such as *-latest for the scientific experiment.
+provider: "openai"
+model_id: "REPLACE_ME_EXACT_MODEL_ID"
+api_version: null
+
+generation:
+  temperature: 0.0
+  top_p: 1.0
+  max_output_tokens: 500
+  seed: null

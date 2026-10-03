@@ -1,0 +1,18 @@
+protocol_version: "1.0"
+experiment_id: "PILOT-001"
+
+conditions:
+  - standard
+  - ccdg
+
+replicates: 5
+
+primary_outcome:
+  name: "ground_truth_matched_root_cause_diagnosis_accuracy"
+  type: "binary"
+  values: [0, 1]
+
+pilot:
+  excluded_from_main_dataset: true
+
+main_n_cases: null

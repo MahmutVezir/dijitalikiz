@@ -1,0 +1,12 @@
+Diagnose the root cause of the software error.
+
+CASE:
+{I_base}
+
+Return:
+{
+  "diagnosed_component": "...",
+  "root_cause_class": "...",
+  "affected_entity": "...",
+  "explanation": "..."
+}

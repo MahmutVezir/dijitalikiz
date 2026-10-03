@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RSC-Bench Ground Truth",
+  "type": "object",
+  "required": [
+    "case_id",
+    "component",
+    "entity",
+    "operation",
+    "root_cause",
+    "required_relation"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "component": {
+      "type": "string"
+    },
+    "entity": {
+      "type": "string"
+    },
+    "operation": {
+      "type": "string"
+    },
+    "root_cause": {
+      "type": "string"
+    },
+    "required_relation": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  },
+  "additionalProperties": false
+}

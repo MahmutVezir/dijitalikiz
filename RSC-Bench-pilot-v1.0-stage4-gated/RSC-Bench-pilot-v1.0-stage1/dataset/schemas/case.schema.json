@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RSC-Bench Case",
+  "type": "object",
+  "required": [
+    "case_id",
+    "source",
+    "technology",
+    "error_description",
+    "I_base",
+    "contamination"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "type",
+        "url",
+        "publication_date"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "publication_date": {
+          "type": "string"
+        },
+        "retrieved_at": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "technology": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "error_description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "I_base": {
+      "type": "object"
+    },
+    "ground_truth": {
+      "type": "object"
+    },
+    "ground_truth_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "CCDG": {
+      "type": "object"
+    },
+    "contamination": {
+      "type": "object",
+      "required": [
+        "is_pilot",
+        "excluded_from_main_dataset",
+        "reason"
+      ],
+      "properties": {
+        "is_pilot": {
+          "type": "boolean"
+        },
+        "excluded_from_main_dataset": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

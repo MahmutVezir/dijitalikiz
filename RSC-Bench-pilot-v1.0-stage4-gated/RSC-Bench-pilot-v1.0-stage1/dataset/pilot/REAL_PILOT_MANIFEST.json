@@ -1,0 +1,11 @@
+{
+  "dataset_status": "PILOT_ONLY",
+  "main_dataset_eligible": false,
+  "case_count": 4,
+  "cases": [
+    {"case_id":"RSC-PILOT-REAL-001","source":"https://github.com/supabase/supabase/issues/35459","root_cause_evidence":"confirmed_in_source"},
+    {"case_id":"RSC-PILOT-REAL-002","source":"https://github.com/supabase/supabase/issues/47835","root_cause_evidence":"confirmed_in_source"},
+    {"case_id":"RSC-PILOT-REAL-003","source":"https://github.com/orgs/supabase/discussions/40671","root_cause_evidence":"confirmed_in_follow_up"},
+    {"case_id":"RSC-PILOT-REAL-004","source":"https://github.com/supabase/storage/issues/1109","root_cause_evidence":"traced_in_source"}
+  ]
+}

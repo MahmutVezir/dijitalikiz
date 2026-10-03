@@ -1,0 +1,15 @@
+Diagnose the root cause of the software error.
+
+BASE CASE:
+{I_base}
+
+STRUCTURED CROSS-COMPONENT DEPENDENCY GRAPH:
+{CCDG}
+
+Return:
+{
+  "diagnosed_component": "...",
+  "root_cause_class": "...",
+  "affected_entity": "...",
+  "explanation": "..."
+}

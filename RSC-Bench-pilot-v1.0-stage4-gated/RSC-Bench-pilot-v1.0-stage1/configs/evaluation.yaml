@@ -1,0 +1,7 @@
+matching:
+  component: "exact_controlled"
+  root_cause_class: "exact_controlled"
+  affected_entity: "exact_controlled"
+
+primary_rule: "all_primary_fields_match"
+judge_model: null

@@ -1,0 +1,9 @@
+{
+  "status": "UNFROZEN",
+  "protocol_version": "1.0",
+  "standard_system_sha256": null,
+  "standard_user_sha256": null,
+  "ccdg_system_sha256": null,
+  "ccdg_user_sha256": null,
+  "frozen_at": null
+}
