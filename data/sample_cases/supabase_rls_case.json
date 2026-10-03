@@ -1,0 +1,52 @@
+{
+  "case_id": "RSC-001",
+  "source": "GitHub Issue",
+  "source_url": "https://github.com/example/repo/issues/123",
+  "publication_date": "2024-06-18",
+  "technology": "React + Supabase",
+  "error_description": "The profile list shows rows from other users because the row-level policy compares the wrong identity field.",
+  "i_base": [
+    "React ProfileList component loads user profile rows from a Supabase client query.",
+    "The query targets the public.profiles table with a SELECT operation.",
+    "The application expects rows where the authenticated user owns the row.",
+    "The database policy is supposed to restrict access to rows matching the current user identity.",
+    "A mismatch between the policy condition and the actual user identifier causes cross-user reads."
+  ],
+  "ccdg": [
+    {
+      "source": "React ProfileList",
+      "target": "supabase profiles query",
+      "relation": "calls",
+      "details": "reads profile list for the current user"
+    },
+    {
+      "source": "supabase profiles query",
+      "target": "profiles",
+      "relation": "reads",
+      "details": "SELECT * FROM profiles"
+    },
+    {
+      "source": "profiles",
+      "target": "RLS policy",
+      "relation": "protected_by",
+      "details": "row-level security controls access to a user row"
+    },
+    {
+      "source": "RLS policy",
+      "target": "auth.uid",
+      "relation": "authenticated_by",
+      "details": "policies should use the authenticated user identity"
+    }
+  ],
+  "ground_truth": {
+    "component": "RLS",
+    "entity": "profiles",
+    "operation": "SELECT",
+    "root_cause": "policy_condition_mismatch",
+    "required_relation": [
+      "authenticated_user",
+      "auth.uid",
+      "profiles.id"
+    ]
+  }
+}
