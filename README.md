@@ -41,6 +41,8 @@ Model:
 Exact checkpoint revision:
 `68c4276063d1496cdf13d0b8e8221f899bfa77f7`
 
+Frozen system prompt: `data/pilot/SYSTEM_PROMPT.txt` (SHA-256 pinned in manifest)
+
 Generation:
 - temperature = 0.2
 - top_p = 1.0
@@ -58,6 +60,12 @@ python scripts/analyze_case_level.py \
   --evaluation data/pilot/pilot_evaluation.json \
   --case-ids commons-math-defects4j-MATH-927 commons-math-defects4j-MATH-950 commons-math-defects4j-MATH-988 \
   --output data/pilot/case_level_analysis.json
+```
+
+Yerel ortamı kaydetmek için:
+
+```bash
+python scripts/capture_environment.py
 ```
 
 İnference başlamadan veya kayıtlar taşınmadan önce bütünlük kontrolü:
