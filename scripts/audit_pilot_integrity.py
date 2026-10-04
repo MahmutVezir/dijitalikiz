@@ -21,13 +21,17 @@ def main() -> None:
     parser.add_argument("--runs-dir", default="data/pilot/runs")
     parser.add_argument("--manifest", default="data/pilot/pilot_manifest.json")
     parser.add_argument("--prompt", default="data/pilot/PROMPT_TEMPLATE.txt")
+    parser.add_argument("--system-prompt", default="data/pilot/SYSTEM_PROMPT.txt")
     args = parser.parse_args()
 
     root = Path(".")
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     prompt_template = Path(args.prompt).read_text(encoding="utf-8")
+    system_prompt = Path(args.system_prompt).read_text(encoding="utf-8")
     assert manifest["prompt"]["path"] == args.prompt
     assert manifest["prompt"]["sha256"] == sha256_text(prompt_template)
+    assert manifest["system_prompt"]["path"] == args.system_prompt
+    assert manifest["system_prompt"]["sha256"] == sha256_text(system_prompt)
     model = manifest["model"]
     generation = manifest["generation"]
     cases = manifest["cases"]
@@ -68,6 +72,7 @@ def main() -> None:
                 assert record["top_p"] == generation["top_p"]
                 assert record["max_new_tokens"] == generation["max_new_tokens"]
                 assert record["prompt_sha256"] == expected_prompt_hash
+                assert record["system_prompt_sha256"] == manifest["system_prompt"]["sha256"]
                 assert record["context_sha256"] == expected_context_hash
                 if record.get("parsed_output") is not None:
                     DiagnosticOutput.from_dict(record["parsed_output"])
