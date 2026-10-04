@@ -8,13 +8,7 @@ from pathlib import Path
 from dijitalikiz.evaluation import evaluate_output
 from dijitalikiz.models import DiagnosticOutput, ResearchCase
 
-CASES = (
-    "commons-math-defects4j-MATH-927",
-    "commons-math-defects4j-MATH-950",
-    "commons-math-defects4j-MATH-988",
-)
-CONDITIONS = ("standard", "ccdg")
-SEEDS = (42, 43, 44, 45, 46)
+MANIFEST = Path("data/pilot/pilot_manifest.json")
 MAJORITY_REQUIRED = 3
 
 
@@ -33,6 +27,17 @@ def main() -> None:
     parser.add_argument("--runs-dir", default="data/pilot/runs")
     parser.add_argument("--output", default="data/pilot/pilot_evaluation.json")
     args = parser.parse_args()
+
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    if manifest.get("status") != "model_frozen":
+        raise RuntimeError("Pilot manifest is not frozen.")
+    cases = tuple(manifest["cases"])
+    conditions = tuple(manifest["conditions"])
+    seeds = tuple(manifest["generation"]["seeds"])
+    if conditions != ("standard", "ccdg"):
+        raise ValueError("Frozen evaluator requires Standard/CCDG conditions.")
+    if manifest["replications"] != len(seeds):
+        raise ValueError("Manifest replication count does not match seed count.")
 
     runs_dir = Path(args.runs_dir)
     records = []
@@ -58,8 +63,6 @@ def main() -> None:
                     "score": None,
                 }
 
-                # Parse/schema failures are failed runs for the binary
-                # complete-pass endpoint, preserving the frozen 3/5 rule.
                 if parse_ok:
                     output = DiagnosticOutput.from_dict(record["parsed_output"])
                     result["score"] = evaluate_output(output, case.ground_truth)
@@ -76,26 +79,28 @@ def main() -> None:
                 records.append(result)
 
     by_condition = {}
-    for condition in CONDITIONS:
+    for condition in conditions:
         subset = [r for r in records if r["condition"] == condition]
         parse_ok = sum(r["parse_ok"] for r in subset)
-        passed = sum(r["score"]["passed"] for r in subset if r["score"] is not None)
+        passed = sum(r["score"]["passed"] for r in subset)
         by_condition[condition] = {
             "n_expected": len(cases) * len(seeds),
             "n_found": len(subset),
             "n_parse_ok": parse_ok,
             "parse_failure_rate": 1 - (parse_ok / len(subset)) if subset else None,
-            "n_scored": sum(r["score"] is not None for r in subset),
+            "n_scored": len(subset),
             "n_passed": passed,
             "pass_rate": passed / len(subset) if subset else None,
         }
 
     duplicate_groups = []
-    for case_id in CASES:
-        for condition in CONDITIONS:
+    for case_id in cases:
+        for condition in conditions:
             subset = [
                 r for r in records
-                if r["case_id"] == case_id and r["condition"] == condition and r["parse_ok"]
+                if r["case_id"] == case_id
+                and r["condition"] == condition
+                and r["parse_ok"]
             ]
             groups = {}
             for r in subset:
@@ -103,24 +108,27 @@ def main() -> None:
                 parsed_output = json.loads(run_path.read_text(encoding="utf-8"))["parsed_output"]
                 key = sha256_json(parsed_output)
                 groups.setdefault(key, []).append(r["seed"])
-            for output_hash, seeds in groups.items():
-                if len(seeds) > 1:
+            for output_hash, duplicate_seeds in groups.items():
+                if len(duplicate_seeds) > 1:
                     duplicate_groups.append({
                         "case_id": case_id,
                         "condition": condition,
                         "output_sha256": output_hash,
-                        "seeds": seeds,
+                        "seeds": duplicate_seeds,
                     })
 
     case_level = {}
-    for condition in CONDITIONS:
+    for condition in conditions:
         condition_cases = {}
-        for case_id in CASES:
-            subset = [r for r in records if r["case_id"] == case_id and r["condition"] == condition]
+        for case_id in cases:
+            subset = [
+                r for r in records
+                if r["case_id"] == case_id and r["condition"] == condition
+            ]
             if len(subset) != len(seeds):
                 condition_cases[case_id] = {
                     "n_runs_found": len(subset),
-                    "n_runs_expected": len(SEEDS),
+                    "n_runs_expected": len(seeds),
                     "majority_pass": None,
                     "status": "missing_replication",
                 }
