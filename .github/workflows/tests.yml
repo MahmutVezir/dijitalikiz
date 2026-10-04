@@ -20,3 +20,5 @@ jobs:
           python -m pip install pytest
       - name: Run test suite
         run: pytest -q
+      - name: Audit frozen pilot configuration
+        run: python scripts/audit_pilot_integrity.py
