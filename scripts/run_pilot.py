@@ -12,6 +12,7 @@ from dijitalikiz.models import DiagnosticOutput, ResearchCase
 
 MANIFEST = Path("data/pilot/pilot_manifest.json")
 PROMPT_TEMPLATE = Path("data/pilot/PROMPT_TEMPLATE.txt")
+SYSTEM_PROMPT = Path("data/pilot/SYSTEM_PROMPT.txt")
 
 
 def _sha256(text: str) -> str:
@@ -58,7 +59,7 @@ def generate(
     messages = [
         {
             "role": "system",
-            "content": "You are a controlled research benchmark model. Follow the requested JSON schema exactly.",
+            "content": system_prompt,
         },
         {"role": "user", "content": prompt},
     ]
@@ -105,9 +106,13 @@ def main() -> None:
         raise ValueError("Frozen pilot requires do_sample=true.")
 
     prompt_template = PROMPT_TEMPLATE.read_text(encoding="utf-8")
+    system_prompt = SYSTEM_PROMPT.read_text(encoding="utf-8")
     expected_prompt_hash = manifest["prompt"]["sha256"]
+    expected_system_prompt_hash = manifest["system_prompt"]["sha256"]
     if _sha256(prompt_template) != expected_prompt_hash:
         raise RuntimeError("Frozen prompt hash does not match pilot manifest.")
+    if _sha256(system_prompt) != expected_system_prompt_hash:
+        raise RuntimeError("Frozen system prompt hash does not match pilot manifest.")
     tokenizer, model = load_model(model_id, revision)
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -156,6 +161,7 @@ def main() -> None:
                     "top_p": top_p,
                     "max_new_tokens": max_new_tokens,
                     "prompt_sha256": prompt_sha256,
+                    "system_prompt_sha256": expected_system_prompt_hash,
                     "context_sha256": context_sha256,
                     "parse_error": parse_error,
                     "raw_output": raw,
