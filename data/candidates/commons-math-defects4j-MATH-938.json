@@ -1,0 +1,15 @@
+{
+  "case_id": "commons-math-defects4j-MATH-938",
+  "source": "Apache Commons JIRA",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-938",
+  "publication_date": "2013-03-05",
+  "technology": "Apache Commons Math / Java / 3D Geometry",
+  "error_description": "Line.revert() lost precision in the direction representation, producing inaccurate results when evaluated far from the origin.",
+  "evidence_urls": [
+    "https://issues.apache.org/jira/browse/MATH-938",
+    "https://commons.apache.org/proper/commons-math/changes-report.html"
+  ],
+  "split": "candidates",
+  "annotation_status": "not_started",
+  "provenance_verification_status": "unverified"
+}
