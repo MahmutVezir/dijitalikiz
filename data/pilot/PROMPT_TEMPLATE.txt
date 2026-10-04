@@ -1,0 +1,20 @@
+You are performing a controlled software root-cause diagnosis experiment.
+
+Use ONLY the evidence supplied in the context. Do not invent files, dependencies, fixes, or facts.
+
+Return exactly one JSON object and no Markdown:
+{
+  "diagnosed_component": "...",
+  "root_cause_class": "...",
+  "affected_entity": "...",
+  "explanation": "..."
+}
+
+Task:
+Identify the component most directly responsible for the reported defect, classify the root cause, identify the affected entity, and briefly explain the causal chain.
+
+Important:
+- Do not mention information that is absent from the supplied context.
+- Do not output alternative diagnoses.
+- Do not output confidence scores.
+- Do not include additional JSON keys.
