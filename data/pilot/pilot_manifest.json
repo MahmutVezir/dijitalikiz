@@ -1,21 +1,26 @@
 {
-  "version": "0.1",
-  "status": "ready_for_model_freeze",
+  "version": "0.2",
+  "status": "model_frozen",
   "cases": [
     "commons-math-defects4j-MATH-927",
     "commons-math-defects4j-MATH-950",
     "commons-math-defects4j-MATH-988"
   ],
-  "conditions": [
-    "standard",
-    "ccdg"
-  ],
+  "conditions": ["standard", "ccdg"],
   "replications": 5,
-  "controls": {
-    "temperature": null,
-    "max_new_tokens": null,
-    "model_id": null,
-    "random_seed": null
+  "model": {
+    "model_id": "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4",
+    "revision": "main",
+    "quantization": "GPTQ-Int4",
+    "parameter_count": "3.09B",
+    "context_length": 32768
+  },
+  "generation": {
+    "temperature": 0.2,
+    "top_p": 1.0,
+    "do_sample": true,
+    "max_new_tokens": 256,
+    "seeds": [42, 43, 44, 45, 46]
   },
   "fix_revisions": {
     "commons-math-defects4j-MATH-927": "185e3033ef43527a729c9dda5d57ed0537921a27",
@@ -25,6 +30,7 @@
   "rules": [
     "Ground truth is excluded from both model contexts.",
     "Standard and CCDG receive the same base evidence budget.",
+    "The same frozen model and generation configuration are used for both conditions.",
     "No main benchmark is run before pilot configuration is frozen.",
     "No fine-tuning is part of this pilot."
   ]
