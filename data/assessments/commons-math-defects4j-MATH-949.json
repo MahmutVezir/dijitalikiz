@@ -1,15 +1,12 @@
 {
   "case_id":"commons-math-defects4j-MATH-949",
-  "provenance_quality":"pass",
-  "root_cause_quality":"pass",
-  "fix_quality":"unknown",
+  "provenance_quality":"pass","root_cause_quality":"pass","fix_quality":"pass",
   "dependency_strength":"weak",
   "dependency_evidence":"Current evidence describes optimizer bookkeeping; a strong cross-component dependency is not established.",
-  "ccdg_suitability":"weak",
-  "contamination_risk":"unknown",
+  "ccdg_suitability":"weak","contamination_risk":"unknown",
   "contamination_risk_reason":"No independent model-training exposure audit was performed.",
-  "IC1":"pass","IC2":"pass","IC3":"pass","IC4":"unknown","IC5":"fail","IC6":"fail","IC7":"pass",
+  "IC1":"pass","IC2":"pass","IC3":"pass","IC4":"pass","IC5":"fail","IC6":"fail","IC7":"pass",
   "eligible_for_pilot":false,
-  "exclusion_reason":"IC4 remains unknown and cross-component criteria fail.",
-  "notes":["Assessment uses recorded public-source evidence only."]
+  "exclusion_reason":"Cross-component eligibility criteria are not met.",
+  "notes":["Fix commit independently verified in apache/commons-math: f83bbc1d68bd457dfccd370afb248126ce031eb6."]
 }
