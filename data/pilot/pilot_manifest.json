@@ -1,0 +1,31 @@
+{
+  "version": "0.1",
+  "status": "ready_for_model_freeze",
+  "cases": [
+    "commons-math-defects4j-MATH-927",
+    "commons-math-defects4j-MATH-950",
+    "commons-math-defects4j-MATH-988"
+  ],
+  "conditions": [
+    "standard",
+    "ccdg"
+  ],
+  "replications": 5,
+  "controls": {
+    "temperature": null,
+    "max_new_tokens": null,
+    "model_id": null,
+    "random_seed": null
+  },
+  "fix_revisions": {
+    "commons-math-defects4j-MATH-927": "185e3033ef43527a729c9dda5d57ed0537921a27",
+    "commons-math-defects4j-MATH-950": "424cbd201ca5969181d68cff99d8b9b77a41cefe",
+    "commons-math-defects4j-MATH-988": "d270055e874148a2742604be36ab977eec030fba"
+  },
+  "rules": [
+    "Ground truth is excluded from both model contexts.",
+    "Standard and CCDG receive the same base evidence budget.",
+    "No main benchmark is run before pilot configuration is frozen.",
+    "No fine-tuning is part of this pilot."
+  ]
+}
