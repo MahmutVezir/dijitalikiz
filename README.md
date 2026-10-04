@@ -73,7 +73,7 @@ Beklenen inference kayıt sayısı 30'dur. Eksik inference dosyaları veya incom
 - Pilot doğruluk sonucu henüz depoda bulunmamaktadır.
 - Pilot 3 vakadan oluştuğu için effect-size/power varsayımını tek başına güvenilir biçimde belirlemez.
 - Main benchmark için vaka sayısı, önceden belirlenmiş power varsayımı ve bağımsız vaka seçimiyle belirlenmelidir.
-- Model contamination riski ayrıca denetlenir; `unknown` düşük risk olarak yorumlanmaz.
+- Pilot contamination audit tamamlandı: MATH-927 ve MATH-988 yüksek, MATH-950 orta risk olarak sınıflandırıldı; bu etiketler eğitimde gerçekten görülmüş olunduğunu kanıtlamaz.
 - Gerçek kaynak/fix/provenance bilgileri doğrulanmadan sentetik veya yeniden oluşturulmuş vaka gerçek vaka olarak etiketlenmez.
 - Fine-tuning ana pilot deneyinin parçası değildir.
 
