@@ -1,9 +1,13 @@
 {
-  "version": "0.3",
+  "version": "0.4",
   "status": "model_frozen",
   "cases": ["commons-math-defects4j-MATH-927","commons-math-defects4j-MATH-950","commons-math-defects4j-MATH-988"],
   "conditions": ["standard","ccdg"],
   "replications": 5,
+  "prompt": {
+    "path": "data/pilot/PROMPT_TEMPLATE.txt",
+    "sha256": "f6903b2389fde9df02ca46978bc47237a4476363a619ed54cfbaf56d11689395"
+  },
   "model": {
     "model_id": "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4",
     "revision": "68c4276063d1496cdf13d0b8e8221f899bfa77f7",
@@ -28,6 +32,7 @@
     "Standard and CCDG receive the same base evidence budget.",
     "The same frozen model and generation configuration are used for both conditions.",
     "No main benchmark is run before pilot configuration is frozen.",
-    "No fine-tuning is part of this pilot."
+    "No fine-tuning is part of this pilot.",
+    "Parse/schema failures count as failed runs for the binary complete-pass endpoint."
   ]
 }
