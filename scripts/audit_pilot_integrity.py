@@ -26,6 +26,8 @@ def main() -> None:
     root = Path(".")
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     prompt_template = Path(args.prompt).read_text(encoding="utf-8")
+    assert manifest["prompt"]["path"] == args.prompt
+    assert manifest["prompt"]["sha256"] == sha256_text(prompt_template)
     model = manifest["model"]
     generation = manifest["generation"]
     cases = manifest["cases"]
