@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-from collections import Counter
 from pathlib import Path
 
 from dijitalikiz.evaluation import evaluate_output
@@ -86,10 +85,9 @@ def main() -> None:
             ]
             groups = {}
             for r in subset:
-                key = sha256_json(next(
-                    json.loads((runs_dir / f"{case_id}__{condition}__seed{r['seed']}.json").read_text(encoding="utf-8"))["parsed_output"]
-                    for _ in [0]
-                ))
+                run_path = runs_dir / f"{case_id}__{condition}__seed{r['seed']}.json"
+                parsed_output = json.loads(run_path.read_text(encoding="utf-8"))["parsed_output"]
+                key = sha256_json(parsed_output)
                 groups.setdefault(key, []).append(r["seed"])
             for output_hash, seeds in groups.items():
                 if len(seeds) > 1:
