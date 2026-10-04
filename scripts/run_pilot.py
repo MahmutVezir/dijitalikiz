@@ -10,18 +10,8 @@ from pathlib import Path
 from dijitalikiz.context import render_ccdg_context, render_standard_context
 from dijitalikiz.models import DiagnosticOutput, ResearchCase
 
-MODEL_ID = "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4"
-MODEL_REVISION = "68c4276063d1496cdf13d0b8e8221f899bfa77f7"
-SEEDS = (42, 43, 44, 45, 46)
-TEMPERATURE = 0.2
-TOP_P = 1.0
-MAX_NEW_TOKENS = 256
+MANIFEST = Path("data/pilot/pilot_manifest.json")
 PROMPT_TEMPLATE = Path("data/pilot/PROMPT_TEMPLATE.txt")
-CASES = (
-    "commons-math-defects4j-MATH-927",
-    "commons-math-defects4j-MATH-950",
-    "commons-math-defects4j-MATH-988",
-)
 
 
 def _sha256(text: str) -> str:
@@ -35,20 +25,29 @@ def _extract_json(text: str) -> dict:
     return json.loads(match.group(0))
 
 
-def load_model():
+def load_model(model_id: str, revision: str):
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, revision=MODEL_REVISION)
+    tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision)
     model = AutoModelForCausalLM.from_pretrained(
-        MODEL_ID,
-        revision=MODEL_REVISION,
+        model_id,
+        revision=revision,
         torch_dtype="auto",
         device_map="auto",
     )
     return tokenizer, model
 
 
-def generate(tokenizer, model, prompt: str, seed: int) -> str:
+def generate(
+    tokenizer,
+    model,
+    prompt: str,
+    seed: int,
+    *,
+    temperature: float,
+    top_p: float,
+    max_new_tokens: int,
+) -> str:
     import torch
 
     random.seed(seed)
@@ -71,9 +70,9 @@ def generate(tokenizer, model, prompt: str, seed: int) -> str:
     inputs = tokenizer([text], return_tensors="pt").to(model.device)
     output_ids = model.generate(
         **inputs,
-        max_new_tokens=MAX_NEW_TOKENS,
-        temperature=TEMPERATURE,
-        top_p=TOP_P,
+        max_new_tokens=max_new_tokens,
+        temperature=temperature,
+        top_p=top_p,
         do_sample=True,
     )
     generated = output_ids[0][inputs.input_ids.shape[-1]:]
@@ -85,18 +84,38 @@ def main() -> None:
     parser.add_argument("--output-dir", default="data/pilot/runs")
     args = parser.parse_args()
 
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    if manifest.get("status") != "model_frozen":
+        raise RuntimeError("Pilot manifest is not frozen.")
+
+    model_id = manifest["model"]["model_id"]
+    revision = manifest["model"]["revision"]
+    seeds = tuple(manifest["generation"]["seeds"])
+    temperature = manifest["generation"]["temperature"]
+    top_p = manifest["generation"]["top_p"]
+    max_new_tokens = manifest["generation"]["max_new_tokens"]
+    cases = tuple(manifest["cases"])
+    conditions = tuple(manifest["conditions"])
+
+    if conditions != ("standard", "ccdg"):
+        raise ValueError("Pilot runner only supports the frozen Standard/CCDG conditions.")
+    if manifest["replications"] != len(seeds):
+        raise ValueError("Manifest replication count does not match seed count.")
+    if manifest["generation"]["do_sample"] is not True:
+        raise ValueError("Frozen pilot requires do_sample=true.")
+
     prompt_template = PROMPT_TEMPLATE.read_text(encoding="utf-8")
-    tokenizer, model = load_model()
+    tokenizer, model = load_model(model_id, revision)
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    for case_name in CASES:
+    for case_name in cases:
         payload = json.loads(
             Path("data/pilot", case_name + ".json").read_text(encoding="utf-8")
         )
         case = ResearchCase.from_dict(payload)
 
-        for condition in ("standard", "ccdg"):
+        for condition in conditions:
             context = (
                 render_standard_context(case)
                 if condition == "standard"
@@ -106,8 +125,16 @@ def main() -> None:
             prompt_sha256 = _sha256(prompt)
             context_sha256 = _sha256(context)
 
-            for seed in SEEDS:
-                raw = generate(tokenizer, model, prompt, seed)
+            for seed in seeds:
+                raw = generate(
+                    tokenizer,
+                    model,
+                    prompt,
+                    seed,
+                    temperature=temperature,
+                    top_p=top_p,
+                    max_new_tokens=max_new_tokens,
+                )
                 parsed = None
                 parse_error = None
                 try:
@@ -120,11 +147,11 @@ def main() -> None:
                     "case_id": case.case_id,
                     "condition": condition,
                     "seed": seed,
-                    "model_id": MODEL_ID,
-                    "model_revision": MODEL_REVISION,
-                    "temperature": TEMPERATURE,
-                    "top_p": TOP_P,
-                    "max_new_tokens": MAX_NEW_TOKENS,
+                    "model_id": model_id,
+                    "model_revision": revision,
+                    "temperature": temperature,
+                    "top_p": top_p,
+                    "max_new_tokens": max_new_tokens,
                     "prompt_sha256": prompt_sha256,
                     "context_sha256": context_sha256,
                     "parse_error": parse_error,
