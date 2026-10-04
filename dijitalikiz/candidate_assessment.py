@@ -77,6 +77,10 @@ class CandidateAssessment:
     def from_dict(cls, p: dict[str, Any]) -> "CandidateAssessment":
         def e(t, k):
             return t(p.get(k, "unknown"))
+        eligible = p.get("eligible_for_pilot", False)
+        if not isinstance(eligible, bool):
+            raise TypeError("eligible_for_pilot must be a boolean")
+
         obj = cls(
             case_id=str(p["case_id"]),
             provenance_quality=e(CriterionState, "provenance_quality"),
@@ -90,7 +94,7 @@ class CandidateAssessment:
             IC1=e(CriterionState,"IC1"), IC2=e(CriterionState,"IC2"), IC3=e(CriterionState,"IC3"),
             IC4=e(CriterionState,"IC4"), IC5=e(CriterionState,"IC5"), IC6=e(CriterionState,"IC6"),
             IC7=e(CriterionState,"IC7"),
-            eligible_for_pilot=bool(p.get("eligible_for_pilot", False)),
+            eligible_for_pilot=eligible,
             exclusion_reason=str(p.get("exclusion_reason", "")),
             notes=list(p.get("notes", [])),
         )
