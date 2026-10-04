@@ -36,7 +36,7 @@ No main benchmark case is promoted or executed from these pilot records automati
 - No LLM inference result is currently stored in the repository.
 - No pilot accuracy claim is made.
 - No fine-tuning is part of the pilot.
-- Model, revision, prompt, generation parameters, seeds, evaluator, and pilot cases must not be changed after the first inference.
+- Model, revision, system prompt, user prompt, generation parameters, seeds, evaluator, and pilot cases must not be changed after the first inference.
 - Contamination risk remains unknown until the documented model-exposure audit is completed.
 
 ## Remaining execution gate
