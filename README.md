@@ -95,7 +95,7 @@ Kod ve protokol tarafı tamamlandıktan sonra kalan deneysel işlemler:
 
 1. Yerel makinede 30 pilot inference'ı gerçekten çalıştırmak.
 2. `pilot_evaluation.json` üretmek ve parse/schema/duplicate sonuçlarını incelemek.
-3. Dondurulmuş model için contamination audit'ini tamamlamak.
+3. Pilot contamination audit sonuçlarını ana benchmark vaka seçiminde dikkate almak.
 4. Power varsayımını ve main benchmark vaka sayısını dondurmak.
 5. Bağımsız ana benchmark vakalarını provenance + ground truth + CCDG ile tamamlamak.
 6. Ana inference'ı çalıştırmak.
