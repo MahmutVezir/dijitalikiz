@@ -30,7 +30,7 @@ class GroundTruth:
             entity=str(payload.get("entity", "")),
             operation=str(payload.get("operation", "")),
             root_cause=str(payload.get("root_cause", "")),
-            required_relations=list(payload.get("required_relation", [])),
+            required_relations=list(payload.get("required_relations", payload.get("required_relation", []))),
         )
 
 
@@ -43,11 +43,16 @@ class DiagnosticOutput:
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "DiagnosticOutput":
+        expected = {"diagnosed_component", "root_cause_class", "affected_entity", "explanation"}
+        if set(payload) != expected:
+            raise ValueError("DiagnosticOutput must contain exactly the four frozen output fields")
+        if not all(isinstance(payload[key], str) for key in expected):
+            raise TypeError("DiagnosticOutput fields must all be strings")
         return cls(
-            diagnosed_component=str(payload.get("diagnosed_component", "")),
-            root_cause_class=str(payload.get("root_cause_class", "")),
-            affected_entity=str(payload.get("affected_entity", "")),
-            explanation=str(payload.get("explanation", "")),
+            diagnosed_component=payload["diagnosed_component"],
+            root_cause_class=payload["root_cause_class"],
+            affected_entity=payload["affected_entity"],
+            explanation=payload["explanation"],
         )
 
 
