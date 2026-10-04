@@ -1,15 +1,25 @@
 import json
+import sys
 from pathlib import Path
 
 import scripts.evaluate_pilot as evaluate_pilot
 
 
 def test_parse_failure_is_counted_as_failed_run(monkeypatch, tmp_path):
-    case_id = evaluate_pilot.CASES[0]
+    case_id = "commons-math-defects4j-MATH-927"
     case_dir = tmp_path / "data" / "pilot"
     runs_dir = tmp_path / "runs"
     case_dir.mkdir(parents=True)
     runs_dir.mkdir()
+
+    manifest = {
+        "status": "model_frozen",
+        "cases": [case_id],
+        "conditions": ["standard", "ccdg"],
+        "replications": 5,
+        "generation": {"seeds": [42, 43, 44, 45, 46]},
+    }
+    (case_dir / "pilot_manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
 
     case_payload = {
         "case_id": case_id,
@@ -30,8 +40,8 @@ def test_parse_failure_is_counted_as_failed_run(monkeypatch, tmp_path):
     }
     (case_dir / f"{case_id}.json").write_text(json.dumps(case_payload), encoding="utf-8")
 
-    for condition in evaluate_pilot.CONDITIONS:
-        for seed in evaluate_pilot.SEEDS:
+    for condition in evaluate_pilot.CONDITIONS if hasattr(evaluate_pilot, "CONDITIONS") else ("standard", "ccdg"):
+        for seed in (42, 43, 44, 45, 46):
             (runs_dir / f"{case_id}__{condition}__seed{seed}.json").write_text(
                 json.dumps({
                     "case_id": case_id,
@@ -49,7 +59,8 @@ def test_parse_failure_is_counted_as_failed_run(monkeypatch, tmp_path):
             )
 
     monkeypatch.chdir(tmp_path)
-    monkeypatch.setattr(evaluate_pilot, "CASES", (case_id,))
+    monkeypatch.setattr(evaluate_pilot, "MANIFEST", Path("data/pilot/pilot_manifest.json"))
+    monkeypatch.setattr(sys, "argv", ["evaluate_pilot"])
     evaluate_pilot.main()
 
     result = json.loads((tmp_path / "data" / "pilot" / "pilot_evaluation.json").read_text())
