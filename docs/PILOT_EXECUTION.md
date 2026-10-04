@@ -41,3 +41,24 @@ Expected inference records:
     3 cases x 2 conditions x 5 seeds = 30 records.
 
 No accuracy claim should be made from the pilot alone. Pilot results must first be inspected for parse failures, repeated identical generations, condition contamination, and obvious schema violations before proceeding to the main benchmark.
+
+## Automated pilot evaluation
+
+After inference completes, run:
+
+    python scripts/evaluate_pilot.py
+
+This reads the stored inference records without calling the model again and writes:
+
+    data/pilot/pilot_evaluation.json
+
+The evaluator reports, separately for Standard and CCDG:
+
+- number of expected/found records
+- parse success and parse-failure rate
+- deterministic diagnostic pass count and pass rate
+- repeated identical parsed outputs across different seeds
+
+It also records per-run scoring details. Missing inference records make the evaluation status `incomplete`.
+
+The evaluation uses the frozen deterministic matcher in `dijitalikiz/evaluation.py`. Do not change that matcher after pilot inference has started; otherwise the pilot would no longer be scored under a frozen analysis rule.
