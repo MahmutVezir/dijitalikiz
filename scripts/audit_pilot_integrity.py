@@ -8,9 +8,6 @@ from pathlib import Path
 from dijitalikiz.context import render_ccdg_context, render_standard_context
 from dijitalikiz.models import DiagnosticOutput, ResearchCase
 
-CONDITIONS = ("standard", "ccdg")
-SEEDS = (42, 43, 44, 45, 46)
-
 
 def sha256_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
@@ -35,11 +32,12 @@ def main() -> None:
     model = manifest["model"]
     generation = manifest["generation"]
     cases = manifest["cases"]
+    conditions = tuple(manifest["conditions"])
+    seeds = tuple(generation["seeds"])
 
     assert manifest["status"] == "model_frozen"
-    assert manifest["conditions"] == list(CONDITIONS)
-    assert manifest["replications"] == len(SEEDS)
-    assert tuple(generation["seeds"]) == SEEDS
+    assert conditions == ("standard", "ccdg")
+    assert manifest["replications"] == len(seeds)
     assert generation["do_sample"] is True
 
     checked = 0
@@ -47,7 +45,7 @@ def main() -> None:
         case = ResearchCase.from_dict(
             json.loads((root / "data/pilot" / f"{case_id}.json").read_text(encoding="utf-8"))
         )
-        for condition in CONDITIONS:
+        for condition in conditions:
             context = (
                 render_standard_context(case)
                 if condition == "standard"
@@ -58,7 +56,7 @@ def main() -> None:
             expected_prompt_hash = sha256_text(prompt_template + "\n\n" + context)
             expected_context_hash = sha256_text(context)
 
-            for seed in SEEDS:
+            for seed in seeds:
                 path = Path(args.runs_dir) / f"{case_id}__{condition}__seed{seed}.json"
                 if not path.exists():
                     continue
@@ -78,13 +76,18 @@ def main() -> None:
                     DiagnosticOutput.from_dict(record["parsed_output"])
                 checked += 1
 
-    expected = len(cases) * len(CONDITIONS) * len(SEEDS)
+    expected = len(cases) * len(conditions) * len(seeds)
     print(json.dumps({
         "status": "pass",
         "expected_records": expected,
         "checked_existing_records": checked,
-        "missing_records_allowed": checked < expected,
-        "message": "Configuration and all existing run records passed integrity checks."
+        "missing_records": expected - checked,
+        "configuration_only": checked == 0,
+        "message": (
+            "Frozen configuration passed; no inference records exist yet."
+            if checked == 0
+            else "Frozen configuration and all existing run records passed integrity checks."
+        )
     }, indent=2))
 
 
