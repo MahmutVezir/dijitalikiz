@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import random
 import re
@@ -21,6 +22,10 @@ CASES = (
     "commons-math-defects4j-MATH-950",
     "commons-math-defects4j-MATH-988",
 )
+
+
+def _sha256(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def _extract_json(text: str) -> dict:
@@ -98,11 +103,18 @@ def main() -> None:
                 else render_ccdg_context(case)
             )
             prompt = prompt_template + "\n\n" + context
+            prompt_sha256 = _sha256(prompt)
+            context_sha256 = _sha256(context)
 
             for seed in SEEDS:
                 raw = generate(tokenizer, model, prompt, seed)
-                parsed = _extract_json(raw)
-                DiagnosticOutput.from_dict(parsed)
+                parsed = None
+                parse_error = None
+                try:
+                    parsed = _extract_json(raw)
+                    DiagnosticOutput.from_dict(parsed)
+                except (ValueError, json.JSONDecodeError, TypeError, KeyError) as exc:
+                    parse_error = f"{type(exc).__name__}: {exc}"
 
                 record = {
                     "case_id": case.case_id,
@@ -113,6 +125,9 @@ def main() -> None:
                     "temperature": TEMPERATURE,
                     "top_p": TOP_P,
                     "max_new_tokens": MAX_NEW_TOKENS,
+                    "prompt_sha256": prompt_sha256,
+                    "context_sha256": context_sha256,
+                    "parse_error": parse_error,
                     "raw_output": raw,
                     "parsed_output": parsed,
                 }
