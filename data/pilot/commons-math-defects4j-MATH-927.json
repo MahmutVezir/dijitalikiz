@@ -1,0 +1,60 @@
+{
+  "case_id": "commons-math-defects4j-MATH-927",
+  "source": "Apache Commons JIRA",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-927",
+  "publication_date": "2013-01-04",
+  "technology": "Apache Commons Math 3.1 / Java",
+  "error_description": "GammaDistribution cloning failed because a non-serializable dependency occurred in its random-generator inheritance chain.",
+  "i_base": [
+    "GammaDistribution inherits from AbstractRealDistribution.",
+    "AbstractRealDistribution contains a random generator.",
+    "The generator is a Well19937c instance inheriting through AbstractWell from BitsStreamGenerator.",
+    "AbstractWell is Serializable while BitsStreamGenerator was not in the affected revision.",
+    "The missing serialization capability breaks GammaDistribution cloning."
+  ],
+  "ccdg": [
+    {
+      "source": "GammaDistribution",
+      "target": "AbstractRealDistribution",
+      "relation": "inherits_from",
+      "details": "distribution base class"
+    },
+    {
+      "source": "AbstractRealDistribution",
+      "target": "Well19937c",
+      "relation": "contains_random_generator",
+      "details": "random generator field"
+    },
+    {
+      "source": "Well19937c",
+      "target": "AbstractWell",
+      "relation": "inherits_from",
+      "details": "WELL generator hierarchy"
+    },
+    {
+      "source": "AbstractWell",
+      "target": "BitsStreamGenerator",
+      "relation": "inherits_from",
+      "details": "generator base hierarchy"
+    },
+    {
+      "source": "BitsStreamGenerator",
+      "target": "GammaDistribution",
+      "relation": "controls_serializability",
+      "details": "missing Serializable support breaks cloning"
+    }
+  ],
+  "ground_truth": {
+    "component": "BitsStreamGenerator",
+    "entity": "GammaDistribution",
+    "operation": "serialization/cloning",
+    "root_cause": "non_serializable_dependency_in_inheritance_chain",
+    "required_relation": [
+      "GammaDistribution",
+      "AbstractRealDistribution",
+      "Well19937c",
+      "AbstractWell",
+      "BitsStreamGenerator"
+    ]
+  }
+}
