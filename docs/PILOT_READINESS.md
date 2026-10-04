@@ -37,7 +37,7 @@ No main benchmark case is promoted or executed from these pilot records automati
 - No pilot accuracy claim is made.
 - No fine-tuning is part of the pilot.
 - Model, revision, system prompt, user prompt, generation parameters, seeds, evaluator, and pilot cases must not be changed after the first inference.
-- Contamination risk remains unknown until the documented model-exposure audit is completed.
+- Contamination audit completed: MATH-927 and MATH-988 are high-risk public-overlap cases; MATH-950 is medium risk. This is an exposure-risk assessment, not proof of training inclusion.
 
 ## Remaining execution gate
 
@@ -46,5 +46,5 @@ Before confirmatory/main benchmarking:
 1. Execute the 30 frozen pilot inference runs.
 2. Evaluate all 30 records with the frozen evaluator.
 3. Inspect parse failures, seed duplication, and condition integrity.
-4. Complete the contamination audit.
+4. Preserve the completed contamination audit and account for its risk labels when selecting/interpreting the main benchmark.
 5. Freeze the main benchmark power assumption and independent case set.
