@@ -15,6 +15,7 @@ CASES = (
 )
 CONDITIONS = ("standard", "ccdg")
 SEEDS = (42, 43, 44, 45, 46)
+MAJORITY_REQUIRED = 3
 
 
 def sha256_json(value: object) -> str:
@@ -76,6 +77,24 @@ def main() -> None:
         }
 
     # Detect identical parsed outputs across different seeds within each case/condition.
+    case_level = {}
+    for condition in CONDITIONS:
+        condition_cases = {}
+        for case_id in CASES:
+            scores = [
+                r["score"]["passed"]
+                for r in records
+                if r["case_id"] == case_id
+                and r["condition"] == condition
+                and r["score"] is not None
+            ]
+            condition_cases[case_id] = {
+                "n_scored": len(scores),
+                "pass_count": sum(scores),
+                "majority_pass": len(scores) == len(SEEDS) and sum(scores) >= MAJORITY_REQUIRED,
+            }
+        case_level[condition] = condition_cases
+
     duplicate_groups = []
     for case_id in CASES:
         for condition in CONDITIONS:
@@ -104,6 +123,8 @@ def main() -> None:
         "found_records": len(records),
         "missing_files": missing,
         "by_condition": by_condition,
+        "case_level_majority_rule": "at least 3 of 5 seeds must pass",
+        "case_level": case_level,
         "duplicate_output_groups": duplicate_groups,
         "records": records,
     }
@@ -117,6 +138,7 @@ def main() -> None:
         "found_records": summary["found_records"],
         "missing_files": len(missing),
         "by_condition": by_condition,
+        "case_level": case_level,
         "duplicate_output_groups": len(duplicate_groups),
         "output": str(output),
     }, indent=2, ensure_ascii=False))
