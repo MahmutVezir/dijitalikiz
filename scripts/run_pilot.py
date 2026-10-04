@@ -10,6 +10,7 @@ from dijitalikiz.context import render_ccdg_context, render_standard_context
 from dijitalikiz.models import DiagnosticOutput, ResearchCase
 
 MODEL_ID = "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4"
+MODEL_REVISION = "68c4276063d1496cdf13d0b8e8221f899bfa77f7"
 SEEDS = (42, 43, 44, 45, 46)
 TEMPERATURE = 0.2
 TOP_P = 1.0
@@ -32,9 +33,10 @@ def _extract_json(text: str) -> dict:
 def load_model():
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, revision=MODEL_REVISION)
     model = AutoModelForCausalLM.from_pretrained(
         MODEL_ID,
+        revision=MODEL_REVISION,
         torch_dtype="auto",
         device_map="auto",
     )
@@ -107,6 +109,7 @@ def main() -> None:
                     "condition": condition,
                     "seed": seed,
                     "model_id": MODEL_ID,
+                    "model_revision": MODEL_REVISION,
                     "temperature": TEMPERATURE,
                     "top_p": TOP_P,
                     "max_new_tokens": MAX_NEW_TOKENS,
@@ -114,7 +117,10 @@ def main() -> None:
                     "parsed_output": parsed,
                 }
                 path = output_dir / f"{case.case_id}__{condition}__seed{seed}.json"
-                path.write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+                path.write_text(
+                    json.dumps(record, indent=2, ensure_ascii=False) + "\n",
+                    encoding="utf-8",
+                )
 
 
 if __name__ == "__main__":
