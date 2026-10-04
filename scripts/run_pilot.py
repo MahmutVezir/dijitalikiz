@@ -105,6 +105,9 @@ def main() -> None:
         raise ValueError("Frozen pilot requires do_sample=true.")
 
     prompt_template = PROMPT_TEMPLATE.read_text(encoding="utf-8")
+    expected_prompt_hash = manifest["prompt"]["sha256"]
+    if _sha256(prompt_template) != expected_prompt_hash:
+        raise RuntimeError("Frozen prompt hash does not match pilot manifest.")
     tokenizer, model = load_model(model_id, revision)
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
