@@ -19,14 +19,32 @@ Verified fixes:
 - MATH-938: not eligible — cross-component criteria fail
 - MATH-949: not eligible — cross-component criteria fail
 
-## Execution gate
+## Pilot promotion gate
 
-No case is promoted to data/pilot/.
+Three eligible cases have now been promoted into data/pilot/ as complete ResearchCase records:
 
-The current candidate records are provenance/intake records and do not yet contain the complete experimental ResearchCase payload (i_base, explicit CCDG edges, and independently annotated ground truth). Therefore, an assessment-level eligible_for_pilot=true is not treated as permission to run an LLM pilot.
+- MATH-927
+- MATH-950
+- MATH-988
 
-Before the first LLM call, the three eligible candidates must receive complete, independently sourced experiment records and pass schema validation. Ground truth must remain outside both Standard and CCDG model contexts.
+The records contain i_base, explicit CCDG edges, and independently annotated ground truth. The pilot manifest is frozen. Ground truth remains outside both Standard and CCDG model contexts.
+
+No main benchmark case is promoted or executed from these pilot records automatically.
 
 ## Scientific controls
 
-No LLM inference, fine-tuning, main benchmark, or accuracy claim is made at this stage.
+- No LLM inference result is currently stored in the repository.
+- No pilot accuracy claim is made.
+- No fine-tuning is part of the pilot.
+- Model, revision, prompt, generation parameters, seeds, evaluator, and pilot cases must not be changed after the first inference.
+- Contamination risk remains unknown until the documented model-exposure audit is completed.
+
+## Remaining execution gate
+
+Before confirmatory/main benchmarking:
+
+1. Execute the 30 frozen pilot inference runs.
+2. Evaluate all 30 records with the frozen evaluator.
+3. Inspect parse failures, seed duplication, and condition integrity.
+4. Complete the contamination audit.
+5. Freeze the main benchmark power assumption and independent case set.
