@@ -5,11 +5,16 @@ import hashlib
 import json
 from pathlib import Path
 
+from dijitalikiz.context import render_ccdg_context, render_standard_context
 from dijitalikiz.evaluation import evaluate_output
 from dijitalikiz.models import DiagnosticOutput, ResearchCase
 
 MANIFEST = Path("data/pilot/pilot_manifest.json")
 MAJORITY_REQUIRED = 3
+
+
+def sha256_text(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
 def sha256_json(value: object) -> str:
@@ -53,6 +58,37 @@ def main() -> None:
                     continue
 
                 record = json.loads(path.read_text(encoding="utf-8"))
+                context = (
+                    render_standard_context(case)
+                    if condition == "standard"
+                    else render_ccdg_context(case)
+                )
+                prompt_template = Path(manifest["prompt"]["path"]).read_text(encoding="utf-8")
+                expected_prompt_hash = sha256_text(prompt_template + "\n\n" + context)
+                expected_context_hash = sha256_text(context)
+                expected_system_prompt_hash = manifest["system_prompt"]["sha256"]
+                expected_model = manifest["model"]
+                expected_generation = manifest["generation"]
+
+                frozen_fields = {
+                    "case_id": case_id,
+                    "condition": condition,
+                    "seed": seed,
+                    "model_id": expected_model["model_id"],
+                    "model_revision": expected_model["revision"],
+                    "temperature": expected_generation["temperature"],
+                    "top_p": expected_generation["top_p"],
+                    "max_new_tokens": expected_generation["max_new_tokens"],
+                    "prompt_sha256": expected_prompt_hash,
+                    "context_sha256": expected_context_hash,
+                    "system_prompt_sha256": expected_system_prompt_hash,
+                }
+                for field, expected in frozen_fields.items():
+                    if record.get(field) != expected:
+                        raise ValueError(
+                            f"Frozen field mismatch in {path}: {field}={record.get(field)!r}, expected {expected!r}"
+                        )
+
                 parse_ok = record.get("parse_error") is None and record.get("parsed_output") is not None
                 result = {
                     "case_id": case_id,
