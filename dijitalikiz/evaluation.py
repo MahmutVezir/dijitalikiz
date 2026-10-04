@@ -31,15 +31,16 @@ def _has_required_relations(output: DiagnosticOutput, ground_truth: GroundTruth)
 
 
 def evaluate_output(output: DiagnosticOutput, ground_truth: GroundTruth) -> dict[str, Any]:
+    explanation = _normalize(output.explanation)
+    operation = _normalize(ground_truth.operation)
     checks = {
         "component": _normalize(output.diagnosed_component) == _normalize(ground_truth.component),
         "entity": _normalize(output.affected_entity) == _normalize(ground_truth.entity),
-        "operation": _normalize(output.explanation) and _normalize(ground_truth.operation) in _normalize(output.explanation),
+        "operation": bool(operation) and operation in explanation,
         "root_cause": _normalize(output.root_cause_class) == _normalize(ground_truth.root_cause),
         "required_relations": _has_required_relations(output, ground_truth),
     }
-    passed = all(checks.values())
     return {
-        "passed": passed,
+        "passed": all(checks.values()),
         "checks": checks,
     }
