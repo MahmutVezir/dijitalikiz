@@ -1,8 +1,15 @@
 {
-  "version": "0.4",
+  "version": "0.5",
   "status": "model_frozen",
-  "cases": ["commons-math-defects4j-MATH-927","commons-math-defects4j-MATH-950","commons-math-defects4j-MATH-988"],
-  "conditions": ["standard","ccdg"],
+  "cases": [
+    "commons-math-defects4j-MATH-927",
+    "commons-math-defects4j-MATH-950",
+    "commons-math-defects4j-MATH-988"
+  ],
+  "conditions": [
+    "standard",
+    "ccdg"
+  ],
   "replications": 5,
   "prompt": {
     "path": "data/pilot/PROMPT_TEMPLATE.txt",
@@ -17,10 +24,16 @@
   },
   "generation": {
     "temperature": 0.2,
-    "top_p": 1.0,
+    "top_p": 1,
     "do_sample": true,
     "max_new_tokens": 256,
-    "seeds": [42,43,44,45,46]
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ]
   },
   "fix_revisions": {
     "commons-math-defects4j-MATH-927": "185e3033ef43527a729c9dda5d57ed0537921a27",
@@ -34,5 +47,9 @@
     "No main benchmark is run before pilot configuration is frozen.",
     "No fine-tuning is part of this pilot.",
     "Parse/schema failures count as failed runs for the binary complete-pass endpoint."
-  ]
+  ],
+  "system_prompt": {
+    "path": "data/pilot/SYSTEM_PROMPT.txt",
+    "sha256": "650df9feb18a6a783f2f9b6c5cf2c28b3c639c95a1044e73b007f79bb15dfa8b"
+  }
 }
