@@ -1,0 +1,59 @@
+{
+  "case_id": "commons-math-defects4j-MATH-950",
+  "source": "Apache Commons JIRA",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-950",
+  "publication_date": "2013-03-19",
+  "technology": "Apache Commons Math 3.1 / Java / ODE",
+  "error_description": "When an ODE event triggered RESET_STATE, event states for events not triggered in the same step were not updated correctly.",
+  "i_base": [
+    "An ODE integrator maintains multiple EventState objects.",
+    "AbstractIntegrator locates event times using the step interpolator.",
+    "At an event time the integrator must advance all event states.",
+    "RESET_STATE can invalidate derivatives and requires the integration state to be recomputed.",
+    "The defect updated only the current event before the reset path."
+  ],
+  "ccdg": [
+    {
+      "source": "FirstOrderIntegrator",
+      "target": "AbstractIntegrator",
+      "relation": "uses_event_scheduling",
+      "details": "integration flow"
+    },
+    {
+      "source": "AbstractIntegrator",
+      "target": "EventState",
+      "relation": "updates",
+      "details": "advances registered event states"
+    },
+    {
+      "source": "EventState",
+      "target": "EventHandler",
+      "relation": "wraps",
+      "details": "tracks handler state"
+    },
+    {
+      "source": "EventHandler",
+      "target": "AbstractIntegrator",
+      "relation": "requests_reset",
+      "details": "RESET_STATE causes state recomputation"
+    },
+    {
+      "source": "AbstractIntegrator",
+      "target": "all EventState objects",
+      "relation": "synchronizes",
+      "details": "all event states must advance at the event time"
+    }
+  ],
+  "ground_truth": {
+    "component": "AbstractIntegrator",
+    "entity": "EventState",
+    "operation": "RESET_STATE event processing",
+    "root_cause": "only_current_event_state_updated_before_reset",
+    "required_relation": [
+      "AbstractIntegrator",
+      "EventState",
+      "EventHandler",
+      "RESET_STATE"
+    ]
+  }
+}
