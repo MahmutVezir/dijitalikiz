@@ -1,0 +1,53 @@
+{
+  "case_id": "commons-math-defects4j-MATH-988",
+  "source": "Apache Commons JIRA",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-988",
+  "publication_date": "2013-06-02",
+  "technology": "Apache Commons Math 3.1 / Java / 2D and 3D Geometry",
+  "error_description": "Sub-line intersection code could throw a NullPointerException when the underlying infinite lines did not intersect.",
+  "i_base": [
+    "SubLine.intersection computes an intersection on the underlying infinite lines.",
+    "Line.intersection can return null when the lines do not intersect.",
+    "The sub-line code then evaluates the returned point against its remaining region.",
+    "Passing a null point into coordinate conversion caused the NullPointerException.",
+    "For non-intersecting lines the correct result is null."
+  ],
+  "ccdg": [
+    {
+      "source": "SubLine.intersection",
+      "target": "Line.intersection",
+      "relation": "calls",
+      "details": "computes the underlying line intersection"
+    },
+    {
+      "source": "Line.intersection",
+      "target": "intersection point",
+      "relation": "may_return_null",
+      "details": "parallel or non-intersecting lines"
+    },
+    {
+      "source": "SubLine.intersection",
+      "target": "remainingRegion.checkPoint",
+      "relation": "passes_intersection_to",
+      "details": "checks the bounded sub-line region"
+    },
+    {
+      "source": "Line.intersection",
+      "target": "SubLine.intersection",
+      "relation": "provides_nullable_dependency",
+      "details": "caller must handle null before coordinate conversion"
+    }
+  ],
+  "ground_truth": {
+    "component": "SubLine.intersection",
+    "entity": "2D/3D SubLine",
+    "operation": "intersection",
+    "root_cause": "null_underlying_line_intersection_not_handled",
+    "required_relation": [
+      "SubLine.intersection",
+      "Line.intersection",
+      "nullable_intersection",
+      "remainingRegion.checkPoint"
+    ]
+  }
+}
