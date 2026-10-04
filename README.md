@@ -61,3 +61,16 @@ Bu proje, ana deney için gerekli protokolün temelini kurar; pilot aşamasında
 - Her vaka için ayrıntılı `ccdg` bağımlılık listesi ve `ground_truth` alanları eklenmelidir.
 - Ana deneyde promtlar, model metadata ve hash bilgisi loglanmalıdır.
 - Deneyler için GLMM benzeri istatistik modeli ve power analysis eklenebilir.
+
+
+## Güncel araştırma durumu
+
+- Pilot tasarımı donduruldu: 3 vaka × 2 koşul × 5 seed = 30 inference kaydı.
+- Model/checkpoint ve generation ayarları `data/pilot/pilot_manifest.json` içinde sabittir.
+- Pilot değerlendirmesi çalıştırılmadan ana benchmark başlatılmamalıdır.
+- Birincil analiz birimi yazılım vakasıdır; seed'ler bağımsız vaka değildir.
+- Bir vaka, 5 seed'in en az 3'ünde tam tanı doğruluğu sağlanırsa koşul altında başarılı kabul edilir.
+- Ana karşılaştırma için exact iki taraflı McNemar testi ve önceden belirlenmiş power varsayımı kullanılacaktır.
+- Model contamination riski ayrıca denetlenmelidir; `unknown` riski `low` kabul edilmez.
+- `docs/ANALYSIS_PLAN.md` doğrulama analiz planını, `docs/CONTAMINATION_AUDIT.md` contamination denetim protokolünü tanımlar.
+- Gerçek inference sonuçları bu depoda henüz bulunmamaktadır; bu nedenle henüz doğruluk sonucu iddia edilmemektedir.
