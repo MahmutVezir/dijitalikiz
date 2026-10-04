@@ -1,76 +1,105 @@
 # dijitalikiz
 
-Bu proje, araştırma metninde tanımlanan metodolojiyi uygulayan ilk çalışan bir çerçevedir.
+**LLM Tabanlı Çapraz-Bileşen Hata Teşhisinde Yapılandırılmış Bağımlılık Temsilinin Etkisinin Deneysel İncelenmesi**
 
-Amaç:
-- aynı temel hata bilgisini farklı temsillerle sunma,
-- standart bağlam ile CCDG bağlamını ayırt etme,
-- yapılandırılmış çıkışların otomatik değerlendirmesini sağlama,
-- pilot deneyler için tekrarlanabilir RSC-Bench benzeri bir örnek tasarlama.
+Bu depo, Standard Context ile açık ve yapılandırılmış Cross-Component Dependency Graph (CCDG) temsilinin LLM tabanlı kök neden teşhisine etkisini kontrollü deneyle ölçmek için kullanılan araştırma altyapısıdır.
 
-## Proje yapısı
+## Araştırma tasarımı
 
-- `dijitalikiz/models.py`: vaka, bağımlılık grafı ve ground-truth veri yapıları
-- `dijitalikiz/context.py`: standard ve CCDG bağlam üretimi
-- `dijitalikiz/evaluation.py`: yapılandırılmış LLM çıktısının otomatik eşleştirilmesi
-- `dijitalikiz/cli.py`: örnek vakayı render etme ve değerlendirme yapma arayüzü
-- `data/sample_cases/supabase_rls_case.json`: örnek gerçekçi RLS vaka örneği
-- `tests/test_rsc_bench.py`: temel doğrulama testleri
+- Aynı vaka için Standard ve CCDG koşulları karşılaştırılır.
+- Ground truth hiçbir model bağlamına verilmez.
+- Model, checkpoint/revision ve generation ayarları dondurulmuştur.
+- Her vaka/koşul için 5 seed kullanılır.
+- Seed'ler bağımsız vaka değildir; birincil analiz birimi yazılım vakasıdır.
+- Vaka düzeyinde başarı, 5 seed'in en az 3'ünde tam tanı doğruluğudur.
+- Birincil karşılaştırma exact iki taraflı McNemar testiyle yapılır.
+- Pilot sonuçları görülmeden ana benchmark vaka seçimi veya sonuç lehine değişiklik yapılmamalıdır.
 
-## Çalıştırma
+## Ana bileşenler
 
-Kurulum:
+- `dijitalikiz/models.py`: vaka, CCDG, ground truth ve tanı çıktısı veri modelleri
+- `dijitalikiz/context.py`: Standard/CCDG bağlam üretimi ve leakage kontrolünün temeli
+- `dijitalikiz/evaluation.py`: dondurulmuş deterministik skorlayıcı
+- `scripts/run_pilot.py`: 30 inference kaydını üretir
+- `scripts/evaluate_pilot.py`: inference kayıtlarını skorlar; modeli yeniden çalıştırmaz
+- `scripts/analyze_case_level.py`: pilot evaluation çıktısından vaka düzeyi analiz ve McNemar testi üretir
+- `scripts/audit_pilot_integrity.py`: model/prompt/context/hash/schema bütünlüğünü fail-closed denetler
+- `scripts/power_mcnemar.py`: eşleştirilmiş binary sonuçlar için power analizi
+- `docs/ANALYSIS_PLAN.md`: önceden belirlenmiş analiz planı
+- `docs/CONTAMINATION_AUDIT.md`: model contamination denetim protokolü
+- `data/pilot/pilot_manifest.json`: dondurulmuş pilot konfigürasyonu
+
+## Pilot
+
+Dondurulmuş pilot tasarımı:
+
+**3 vaka × 2 koşul × 5 seed = 30 inference kaydı**
+
+Model:
+`Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4`
+
+Exact checkpoint revision:
+`68c4276063d1496cdf13d0b8e8221f899bfa77f7`
+
+Generation:
+- temperature = 0.2
+- top_p = 1.0
+- do_sample = true
+- max_new_tokens = 256
+- seeds = 42, 43, 44, 45, 46
+
+Çalıştırma:
 
 ```bash
-python -m pip install -e .
+python -m pip install -r requirements-pilot.txt
+python scripts/run_pilot.py
+python scripts/evaluate_pilot.py
+python scripts/analyze_case_level.py \
+  --evaluation data/pilot/pilot_evaluation.json \
+  --case-ids commons-math-defects4j-MATH-927 commons-math-defects4j-MATH-950 commons-math-defects4j-MATH-988 \
+  --output data/pilot/case_level_analysis.json
 ```
 
-Örnek vakayı render etme:
+İnference başlamadan veya kayıtlar taşınmadan önce bütünlük kontrolü:
 
 ```bash
-python -m dijitalikiz --case data/sample_cases/supabase_rls_case.json --mode render
+python scripts/audit_pilot_integrity.py
 ```
 
-Örnek değerlendirme:
+Beklenen inference kayıt sayısı 30'dur. Eksik inference dosyaları veya incomplete evaluation nihai vaka düzeyi analizi tarafından reddedilir.
 
-```bash
-python -m dijitalikiz --case data/sample_cases/supabase_rls_case.json --mode evaluate
-```
+## Bilimsel sınırlar
 
-Test çalıştırma:
+- Pilot doğruluk sonucu henüz depoda bulunmamaktadır.
+- Pilot 3 vakadan oluştuğu için effect-size/power varsayımını tek başına güvenilir biçimde belirlemez.
+- Main benchmark için vaka sayısı, önceden belirlenmiş power varsayımı ve bağımsız vaka seçimiyle belirlenmelidir.
+- Model contamination riski ayrıca denetlenir; `unknown` düşük risk olarak yorumlanmaz.
+- Gerçek kaynak/fix/provenance bilgileri doğrulanmadan sentetik veya yeniden oluşturulmuş vaka gerçek vaka olarak etiketlenmez.
+- Fine-tuning ana pilot deneyinin parçası değildir.
+
+## Test ve CI
+
+Aktif `tests/` test paketi GitHub Actions üzerinde çalıştırılır. CI ayrıca dondurulmuş pilot konfigürasyonunun bütünlük audit'ini yürütür.
+
+Yerel test:
 
 ```bash
 pytest -q
 ```
 
-## Araştırma metodolojisi
+Legacy RSC-Bench içeriği mevcut araştırma paketinin aktif test kapsamı değildir; mevcut CI yalnızca bu projenin `tests/` paketini çalıştırır.
 
-Bu proje, aşağıdaki ana fikri somutlaştırır:
+## Sonraki zorunlu adımlar
 
-- `I_base`: aynı temel bilgi, ortak semantik yapı olarak korunur.
-- `Standard Context`: bilgi sıradan metin olarak verilir.
-- `CCDG Context`: aynı bilgi bağımlılık graflarıyla daha açıklayıcı şekilde sunulur.
-- `ground_truth`: vaka için otomatik karşılaştırma için yapılandırılmış hedef alanlar tanımlar.
-- `evaluation.py`: LLM çıktısını deterministik kurallarla değerlendirir.
+Kod ve protokol tarafı tamamlandıktan sonra kalan deneysel işlemler:
 
-Bu proje, ana deney için gerekli protokolün temelini kurar; pilot aşamasında prompt dondurma, vaka ayrımı ve tekrar kontrolü için genişletilebilir.
+1. Yerel makinede 30 pilot inference'ı gerçekten çalıştırmak.
+2. `pilot_evaluation.json` üretmek ve parse/schema/duplicate sonuçlarını incelemek.
+3. Dondurulmuş model için contamination audit'ini tamamlamak.
+4. Power varsayımını ve main benchmark vaka sayısını dondurmak.
+5. Bağımsız ana benchmark vakalarını provenance + ground truth + CCDG ile tamamlamak.
+6. Ana inference'ı çalıştırmak.
+7. Önceden tanımlı exact McNemar analizini uygulamak.
+8. Gerçek sonuçlarla TÜBİTAK raporunu doldurmak.
 
-## Geliştirme notları
-
-- Bu çerçeve, gerçek GitHub issue/PR kaynaklarından toplanan vaka verileriyle beslenebilir.
-- Her vaka için ayrıntılı `ccdg` bağımlılık listesi ve `ground_truth` alanları eklenmelidir.
-- Ana deneyde promtlar, model metadata ve hash bilgisi loglanmalıdır.
-- Deneyler için GLMM benzeri istatistik modeli ve power analysis eklenebilir.
-
-
-## Güncel araştırma durumu
-
-- Pilot tasarımı donduruldu: 3 vaka × 2 koşul × 5 seed = 30 inference kaydı.
-- Model/checkpoint ve generation ayarları `data/pilot/pilot_manifest.json` içinde sabittir.
-- Pilot değerlendirmesi çalıştırılmadan ana benchmark başlatılmamalıdır.
-- Birincil analiz birimi yazılım vakasıdır; seed'ler bağımsız vaka değildir.
-- Bir vaka, 5 seed'in en az 3'ünde tam tanı doğruluğu sağlanırsa koşul altında başarılı kabul edilir.
-- Ana karşılaştırma için exact iki taraflı McNemar testi ve önceden belirlenmiş power varsayımı kullanılacaktır.
-- Model contamination riski ayrıca denetlenmelidir; `unknown` riski `low` kabul edilmez.
-- `docs/ANALYSIS_PLAN.md` doğrulama analiz planını, `docs/CONTAMINATION_AUDIT.md` contamination denetim protokolünü tanımlar.
-- Gerçek inference sonuçları bu depoda henüz bulunmamaktadır; bu nedenle henüz doğruluk sonucu iddia edilmemektedir.
+Bu adımların hiçbiri inference veya bağımsız kanıt olmadan varsayımsal sonuçlarla doldurulmamalıdır.
