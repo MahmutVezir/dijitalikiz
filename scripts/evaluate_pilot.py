@@ -105,11 +105,13 @@ def main() -> None:
                 else:
                     result["score"] = {
                         "passed": False,
-                        "component_match": False,
-                        "entity_match": False,
-                        "operation_match": False,
-                        "root_cause_match": False,
-                        "required_relations_match": False,
+                        "checks": {
+                            "component": False,
+                            "entity": False,
+                            "operation": False,
+                            "root_cause": False,
+                            "required_relations": False,
+                        },
                     }
 
                 records.append(result)
