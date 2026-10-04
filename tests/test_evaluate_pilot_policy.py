@@ -8,7 +8,7 @@ import scripts.evaluate_pilot as evaluate_pilot
 def test_parse_failure_is_counted_as_failed_run(monkeypatch, tmp_path):
     case_id = "commons-math-defects4j-MATH-927"
     case_dir = tmp_path / "data" / "pilot"
-    runs_dir = tmp_path / "runs"
+    runs_dir = tmp_path / "data" / "pilot" / "runs"
     case_dir.mkdir(parents=True)
     runs_dir.mkdir()
 
