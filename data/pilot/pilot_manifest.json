@@ -6,7 +6,7 @@
   "replications": 5,
   "prompt": {
     "path": "data/pilot/PROMPT_TEMPLATE.txt",
-    "sha256": "f6903b2389fde9df02ca46978bc47237a4476363a619ed54cfbaf56d11689395"
+    "sha256": "c328289e8fc4cc8e5fe085c9524a3edf3f8627c3054478dd32003b66aa0d941d"
   },
   "model": {
     "model_id": "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4",
