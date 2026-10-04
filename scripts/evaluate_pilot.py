@@ -38,10 +38,10 @@ def main() -> None:
     records = []
     missing = []
 
-    for case_id in CASES:
+    for case_id in cases:
         case = load_case(case_id)
-        for condition in CONDITIONS:
-            for seed in SEEDS:
+        for condition in conditions:
+            for seed in seeds:
                 path = runs_dir / f"{case_id}__{condition}__seed{seed}.json"
                 if not path.exists():
                     missing.append(str(path))
@@ -81,7 +81,7 @@ def main() -> None:
         parse_ok = sum(r["parse_ok"] for r in subset)
         passed = sum(r["score"]["passed"] for r in subset if r["score"] is not None)
         by_condition[condition] = {
-            "n_expected": len(CASES) * len(SEEDS),
+            "n_expected": len(cases) * len(seeds),
             "n_found": len(subset),
             "n_parse_ok": parse_ok,
             "parse_failure_rate": 1 - (parse_ok / len(subset)) if subset else None,
@@ -117,7 +117,7 @@ def main() -> None:
         condition_cases = {}
         for case_id in CASES:
             subset = [r for r in records if r["case_id"] == case_id and r["condition"] == condition]
-            if len(subset) != len(SEEDS):
+            if len(subset) != len(seeds):
                 condition_cases[case_id] = {
                     "n_runs_found": len(subset),
                     "n_runs_expected": len(SEEDS),
@@ -136,7 +136,7 @@ def main() -> None:
 
     summary = {
         "status": "complete" if not missing else "incomplete",
-        "expected_records": len(CASES) * len(CONDITIONS) * len(SEEDS),
+        "expected_records": len(cases) * len(conditions) * len(seeds),
         "found_records": len(records),
         "missing_files": missing,
         "by_condition": by_condition,
