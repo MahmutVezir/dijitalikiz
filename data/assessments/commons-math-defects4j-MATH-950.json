@@ -1,23 +1,11 @@
 {
-  "case_id": "commons-math-defects4j-MATH-950",
-  "provenance_quality": "pass",
-  "root_cause_quality": "pass",
-  "fix_quality": "unknown",
-  "dependency_strength": "strong",
-  "dependency_evidence": "The documented defect concerns ODE event-handler state propagation after RESET_STATE.",
-  "ccdg_suitability": "strong",
-  "contamination_risk": "unknown",
-  "contamination_risk_reason": "No independent model-training exposure audit was performed.",
-  "IC1": "pass",
-  "IC2": "pass",
-  "IC3": "pass",
-  "IC4": "unknown",
-  "IC5": "pass",
-  "IC6": "pass",
-  "IC7": "pass",
-  "eligible_for_pilot": false,
-  "exclusion_reason": "IC4 remains unknown; pilot eligibility is therefore false.",
-  "notes": [
-    "Assessment uses recorded public-source evidence only."
-  ]
+  "case_id":"commons-math-defects4j-MATH-950",
+  "provenance_quality":"pass","root_cause_quality":"pass","fix_quality":"pass",
+  "dependency_strength":"strong",
+  "dependency_evidence":"The documented defect concerns ODE event-handler state propagation after RESET_STATE.",
+  "ccdg_suitability":"strong","contamination_risk":"unknown",
+  "contamination_risk_reason":"No independent model-training exposure audit was performed.",
+  "IC1":"pass","IC2":"pass","IC3":"pass","IC4":"pass","IC5":"pass","IC6":"pass","IC7":"pass",
+  "eligible_for_pilot":true,"exclusion_reason":"",
+  "notes":["Fix commit independently verified in apache/commons-math: 424cbd201ca5969181d68cff99d8b9b77a41cefe."]
 }
