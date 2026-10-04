@@ -1,0 +1,6 @@
+# Local pilot dependencies
+torch
+transformers>=4.43.1,<5
+accelerate
+optimum
+auto-gptq
