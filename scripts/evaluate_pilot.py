@@ -46,54 +46,49 @@ def main() -> None:
                 if not path.exists():
                     missing.append(str(path))
                     continue
+
                 record = json.loads(path.read_text(encoding="utf-8"))
+                parse_ok = record.get("parse_error") is None and record.get("parsed_output") is not None
                 result = {
                     "case_id": case_id,
                     "condition": condition,
                     "seed": seed,
-                    "parse_ok": record.get("parse_error") is None and record.get("parsed_output") is not None,
+                    "parse_ok": parse_ok,
                     "parse_error": record.get("parse_error"),
                     "score": None,
                 }
-                if result["parse_ok"]:
+
+                # Parse/schema failures are failed runs for the binary
+                # complete-pass endpoint, preserving the frozen 3/5 rule.
+                if parse_ok:
                     output = DiagnosticOutput.from_dict(record["parsed_output"])
                     result["score"] = evaluate_output(output, case.ground_truth)
+                else:
+                    result["score"] = {
+                        "passed": False,
+                        "component_match": False,
+                        "entity_match": False,
+                        "operation_match": False,
+                        "root_cause_match": False,
+                        "required_relations_match": False,
+                    }
+
                 records.append(result)
 
     by_condition = {}
     for condition in CONDITIONS:
         subset = [r for r in records if r["condition"] == condition]
         parse_ok = sum(r["parse_ok"] for r in subset)
-        scored = [r for r in subset if r["score"] is not None]
-        passed = sum(r["score"]["passed"] for r in scored)
+        passed = sum(r["score"]["passed"] for r in subset if r["score"] is not None)
         by_condition[condition] = {
             "n_expected": len(CASES) * len(SEEDS),
             "n_found": len(subset),
             "n_parse_ok": parse_ok,
             "parse_failure_rate": 1 - (parse_ok / len(subset)) if subset else None,
-            "n_scored": len(scored),
+            "n_scored": sum(r["score"] is not None for r in subset),
             "n_passed": passed,
-            "pass_rate": passed / len(scored) if scored else None,
+            "pass_rate": passed / len(subset) if subset else None,
         }
-
-    # Detect identical parsed outputs across different seeds within each case/condition.
-    case_level = {}
-    for condition in CONDITIONS:
-        condition_cases = {}
-        for case_id in CASES:
-            scores = [
-                r["score"]["passed"]
-                for r in records
-                if r["case_id"] == case_id
-                and r["condition"] == condition
-                and r["score"] is not None
-            ]
-            condition_cases[case_id] = {
-                "n_scored": len(scores),
-                "pass_count": sum(scores),
-                "majority_pass": len(scores) == len(SEEDS) and sum(scores) >= MAJORITY_REQUIRED,
-            }
-        case_level[condition] = condition_cases
 
     duplicate_groups = []
     for case_id in CASES:
@@ -117,13 +112,35 @@ def main() -> None:
                         "seeds": seeds,
                     })
 
+    case_level = {}
+    for condition in CONDITIONS:
+        condition_cases = {}
+        for case_id in CASES:
+            subset = [r for r in records if r["case_id"] == case_id and r["condition"] == condition]
+            if len(subset) != len(SEEDS):
+                condition_cases[case_id] = {
+                    "n_runs_found": len(subset),
+                    "n_runs_expected": len(SEEDS),
+                    "majority_pass": None,
+                    "status": "missing_replication",
+                }
+            else:
+                scores = [r["score"]["passed"] for r in subset]
+                condition_cases[case_id] = {
+                    "n_runs_found": len(scores),
+                    "pass_count": sum(scores),
+                    "majority_pass": sum(scores) >= MAJORITY_REQUIRED,
+                    "status": "complete",
+                }
+        case_level[condition] = condition_cases
+
     summary = {
         "status": "complete" if not missing else "incomplete",
         "expected_records": len(CASES) * len(CONDITIONS) * len(SEEDS),
         "found_records": len(records),
         "missing_files": missing,
         "by_condition": by_condition,
-        "case_level_majority_rule": "at least 3 of 5 seeds must pass",
+        "case_level_majority_rule": "at least 3 of 5 seeds must pass; parse/schema failures count as failed runs",
         "case_level": case_level,
         "duplicate_output_groups": duplicate_groups,
         "records": records,
