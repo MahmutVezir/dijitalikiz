@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 import scripts.evaluate_pilot as evaluate_pilot
-from dijitalikiz.context import render_standard_context
+from dijitalikiz.context import render_ccdg_context, render_standard_context
 from dijitalikiz.models import ResearchCase
 
 
@@ -51,11 +51,14 @@ def test_parse_failure_is_counted_as_failed_run(monkeypatch, tmp_path):
     }
     (case_dir / f"{case_id}.json").write_text(json.dumps(case_payload), encoding="utf-8")
     case = ResearchCase.from_dict(case_payload)
-    context = render_standard_context(case)
-    prompt_hash = hashlib.sha256((prompt + "\n\n" + context).encode()).hexdigest()
-    context_hash = hashlib.sha256(context.encode()).hexdigest()
-
     for condition in evaluate_pilot.CONDITIONS if hasattr(evaluate_pilot, "CONDITIONS") else ("standard", "ccdg"):
+        condition_context = (
+            render_standard_context(case)
+            if condition == "standard"
+            else render_ccdg_context(case)
+        )
+        prompt_hash = hashlib.sha256((prompt + "\n\n" + condition_context).encode()).hexdigest()
+        context_hash = hashlib.sha256(condition_context.encode()).hexdigest()
         for seed in (42, 43, 44, 45, 46):
             (runs_dir / f"{case_id}__{condition}__seed{seed}.json").write_text(
                 json.dumps({
