@@ -26,6 +26,8 @@ No scientific result is marked complete without actual inference data. No result
 ### Phase 1 — Pilot preflight
 - [x] Three pilot cases identified
 - [x] 30-run design is mechanically specified
+- [x] Fail-closed local preflight script added (`scripts/pilot_preflight.py`)
+- [x] Pilot preflight execution procedure documented (`docs/PILOT_PREFLIGHT.md`)
 - [x] Frozen generation parameters are recorded
 - [x] Ground truth is excluded from model context by protocol
 - [x] Parse/schema failures are defined as failed runs
