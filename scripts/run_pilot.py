@@ -58,10 +58,7 @@ def generate(
         torch.cuda.manual_seed_all(seed)
 
     messages = [
-        {
-            "role": "system",
-            "content": system_prompt,
-        },
+        {"role": "system", "content": system_prompt},
         {"role": "user", "content": prompt},
     ]
     text = tokenizer.apply_chat_template(
@@ -114,9 +111,24 @@ def main() -> None:
         raise RuntimeError("Frozen prompt hash does not match pilot manifest.")
     if _sha256(system_prompt) != expected_system_prompt_hash:
         raise RuntimeError("Frozen system prompt hash does not match pilot manifest.")
-    tokenizer, model = load_model(model_id, revision)
+
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
+    expected_paths = [
+        output_dir / f"{case_id}__{condition}__seed{seed}.json"
+        for case_id in cases
+        for condition in conditions
+        for seed in seeds
+    ]
+    existing = [p for p in expected_paths if p.exists()]
+    if existing:
+        sample = ", ".join(str(p) for p in existing[:3])
+        raise RuntimeError(
+            f"Refusing to overwrite {len(existing)} existing pilot record(s). "
+            f"Preserve them and use a new output directory. Examples: {sample}"
+        )
+
+    tokenizer, model = load_model(model_id, revision)
 
     for case_name in cases:
         payload = json.loads(
