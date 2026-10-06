@@ -1,0 +1,85 @@
+name: Kaggle Pilot
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_pilot:
+        description: "Run the Kaggle GPU pilot"
+        required: true
+        default: true
+        type: boolean
+  push:
+    branches:
+      - main
+    paths:
+      - "kaggle/**"
+      - "scripts/**"
+      - "dijitalikiz/**"
+      - "requirements-pilot.txt"
+      - ".github/workflows/kaggle-pilot.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  push-to-kaggle:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || inputs.run_pilot == true
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+      KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+      KERNEL_SLUG: dijitalikiz-pilot
+
+    steps:
+      - name: Checkout exact Git commit
+        uses: actions/checkout@v4
+
+      - name: Verify Kaggle secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${KAGGLE_API_TOKEN}" || { echo "Missing GitHub secret: KAGGLE_API_TOKEN"; exit 1; }
+          test -n "${KAGGLE_USERNAME}" || { echo "Missing GitHub secret: KAGGLE_USERNAME"; exit 1; }
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Kaggle CLI
+        run: python -m pip install --upgrade pip kaggle
+
+      - name: Verify Kaggle authentication
+        run: |
+          kaggle --version
+          kaggle kernels list --mine --page-size 5
+
+      - name: Prepare Kaggle kernel metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .kaggle-kernel
+          cp kaggle/kernel.py .kaggle-kernel/kernel.py
+          cat > .kaggle-kernel/kernel-metadata.json <<EOF
+          {
+            "id": "${KAGGLE_USERNAME}/${KERNEL_SLUG}",
+            "title": "Dijital Ikiz Pilot",
+            "code_file": "kernel.py",
+            "language": "python",
+            "kernel_type": "script",
+            "is_private": true,
+            "enable_gpu": true,
+            "enable_tpu": false,
+            "enable_internet": true,
+            "keywords": ["llm", "bug-diagnosis", "ccdg", "tubitak"]
+          }
+          EOF
+          cat .kaggle-kernel/kernel-metadata.json
+
+      - name: Push and run on Kaggle GPU
+        run: |
+          kaggle kernels push -p .kaggle-kernel --timeout 10800 --accelerator NvidiaTeslaT4
+
+      - name: Show Kaggle kernel status
+        run: |
+          kaggle kernels status "${KAGGLE_USERNAME}/${KERNEL_SLUG}"
