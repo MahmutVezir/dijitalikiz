@@ -2,7 +2,7 @@
 
 **LLM Tabanlı Çapraz-Bileşen Hata Teşhisinde Yapılandırılmış Bağımlılık Temsilinin Etkisinin Deneysel İncelenmesi**
 
-Bu depo, Standard Context ile açık ve yapılandırılmış Cross-Component Dependency Graph (CCDG) temsilinin LLM tabanlı kök neden teşhisine etkisini kontrollü deneyle ölçmek için kullanılan araştırma altyapısıdır.
+Bu depo, Standard Context ile açık ve yapılandırılmış Cross-Component Dependency Graph (CCDG) temsilinin LLM tabanlı kök neden teşhisine etkisini kontrollü deneyle ölçmek için kullanılan araştırma altyapısıdır. Projenin aktif çalışma mimarisi yalnızca GitHub + Python + Kaggle + Hugging Face + sabit LLM checkpoint'inden oluşur. Supabase ve Vercel bu araştırmanın çalışma zamanı altyapısı değildir; veri setindeki gerçek yazılım vakalarında geçmeleri deneysel içerik olarak korunabilir.
 
 ## Araştırma tasarımı
 
@@ -85,6 +85,26 @@ Beklenen inference kayıt sayısı 30'dur. Eksik inference dosyaları veya incom
 - Gerçek kaynak/fix/provenance bilgileri doğrulanmadan sentetik veya yeniden oluşturulmuş vaka gerçek vaka olarak etiketlenmez.
 - Fine-tuning ana pilot deneyinin parçası değildir.
 
+## Aktif çalışma mimarisi
+
+```text
+GitHub -> GitHub Actions -> Kaggle GPU -> Hugging Face checkpoint -> LLM inference
+                                              |
+                                              v
+                              Standard Context vs CCDG Context
+                                              |
+                                              v
+                                  deterministic evaluation
+                                              |
+                                              v
+                                   case-level analysis
+                                              |
+                                              v
+                                  exact McNemar analysis
+```
+
+Bu repo bir web uygulaması/backend projesi değildir. Supabase, Vercel, Next.js, PostgreSQL veya authentication katmanı deney için gerekli değildir. `data/` altında Supabase/Vercel gibi ürün adları geçen hata vakaları varsa bunlar araştırılan yazılım sisteminin parçaları olarak korunur; altyapı bağımlılığı anlamına gelmez.
+
 ## Test ve CI
 
 Aktif `tests/` test paketi GitHub Actions üzerinde çalıştırılır. CI ayrıca dondurulmuş pilot konfigürasyonunun bütünlük audit'ini yürütür.
@@ -96,6 +116,14 @@ pytest -q
 ```
 
 Legacy RSC-Bench içeriği mevcut araştırma paketinin aktif test kapsamı değildir; mevcut CI yalnızca bu projenin `tests/` paketini çalıştırır.
+
+## Mimari sınır
+
+Aşağıdaki kural araştırma tamamlanana kadar korunur:
+
+> Deneysel metodolojiye, tekrarlanabilirliğe veya ölçülebilirliğe doğrudan katkısı olmayan yeni bir servis projeye eklenmez.
+
+Bu nedenle frontend, hosted database, authentication ve deployment katmanları kapsam dışıdır. Ayrıntılı karar kaydı `docs/ARCHITECTURE.md` dosyasındadır.
 
 ## Sonraki zorunlu adımlar
 
