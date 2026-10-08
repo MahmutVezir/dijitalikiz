@@ -72,3 +72,11 @@ Ground truth is never rendered into either experimental condition.
 ## Anti-leakage rule
 
 Case selection, CCDG construction, and ground-truth annotation must be completed before the first confirmatory inference. Any change afterward is a protocol deviation and must be documented rather than silently applied.
+
+
+## Current state — 2026-10-08
+
+The repository currently contains a screening pool of 17 candidate records. The confirmatory manifest remains `draft` with zero selected case IDs. Twelve additional candidates have provisional CCDG/ground-truth annotations, but their contamination risk remains `unknown`; they are therefore not eligible for confirmatory promotion yet.
+
+This is intentional. A large candidate pool is preferable to prematurely freezing a small or contaminated benchmark. The final sample size must be determined from predeclared McNemar discordant-pair assumptions, not from observed model outcomes.
+
