@@ -51,5 +51,14 @@
   "system_prompt": {
     "path": "data/pilot/SYSTEM_PROMPT.txt",
     "sha256": "650df9feb18a6a783f2f9b6c5cf2c28b3c639c95a1044e73b007f79bb15dfa8b"
+  },
+  "runtime": {
+    "python": "3.11",
+    "torch": "2.2.1",
+    "transformers": "4.43.2",
+    "accelerate": "0.33.0",
+    "optimum": "1.17.1",
+    "auto_gptq": "0.7.1",
+    "runtime_policy": "exact-version match required before first inference"
   }
 }
