@@ -51,30 +51,41 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Resolve the real notebook slug from the authenticated account.
-          # Never use a benchmark_task_slug as the kernel identifier.
           KERNEL_REF="$(kaggle kernels list --mine --page-size 50 2>/dev/null | awk '$1=="mahmutvezir/dijitalikiz-frozen-pilot" {print $1; exit}')"
           if [ -z "$KERNEL_REF" ]; then
             echo "Expected Kaggle kernel mahmutvezir/dijitalikiz-frozen-pilot was not found."
-            echo "Available kernels:"
             kaggle kernels list --mine --page-size 50 || true
             exit 1
           fi
           echo "Resolved existing Kaggle kernel: $KERNEL_REF"
           echo "KAGGLE_KERNEL_REF=$KERNEL_REF" >> "$GITHUB_ENV"
-          echo "KAGGLE_KERNEL_SLUG=${KERNEL_REF#*/}" >> "$GITHUB_ENV"
           kaggle kernels status "$KERNEL_REF" || true
 
-      - name: Prepare exact-source Kaggle bundle
+      - name: Prepare self-contained Kaggle launcher
         shell: bash
         run: |
           set -euo pipefail
           rm -rf .kaggle-kernel
           mkdir -p .kaggle-kernel
-          cp kaggle/kernel.py .kaggle-kernel/kernel.py
-          sed -i "s/^SOURCE_COMMIT = .*/SOURCE_COMMIT = \"$GITHUB_SHA\"/" .kaggle-kernel/kernel.py
-          git archive --format=tar.gz --output=.kaggle-kernel/project.tar.gz HEAD
-          printf '%s\n' "$GITHUB_SHA" > .kaggle-kernel/source_commit.txt
+          git archive --format=tar.gz --output=/tmp/dijitalikiz-source.tar.gz HEAD
+          python - <<'PY'
+          from pathlib import Path
+          import base64
+
+          template = Path("kaggle/kernel.py").read_text(encoding="utf-8")
+          archive_b64 = base64.b64encode(
+              Path("/tmp/dijitalikiz-source.tar.gz").read_bytes()
+          ).decode("ascii")
+          launcher = template.replace(
+              "SOURCE_COMMIT_PLACEHOLDER", "${{ github.sha }}"
+          ).replace(
+              "PROJECT_B64_PLACEHOLDER", archive_b64
+          )
+          Path(".kaggle-kernel/kernel.py").write_text(launcher, encoding="utf-8")
+          PY
+          python -m py_compile .kaggle-kernel/kernel.py
+          grep -q "$GITHUB_SHA" .kaggle-kernel/kernel.py
+          test "$(grep -o 'PROJECT_B64_PLACEHOLDER' kaggle/kernel.py | wc -l)" -eq 1
           cat > .kaggle-kernel/kernel-metadata.json <<EOF
           {
             "id": "$KAGGLE_KERNEL_REF",
@@ -85,13 +96,11 @@ jobs:
             "is_private": true,
             "enable_gpu": true,
             "enable_tpu": false,
-            "enable_internet": true,
-            "keywords": ["llm", "bug-diagnosis", "ccdg", "tubitak"]
+            "enable_internet": true
           }
           EOF
           python -m json.tool .kaggle-kernel/kernel-metadata.json >/dev/null
-          tar -tzf .kaggle-kernel/project.tar.gz >/dev/null
-          sha256sum .kaggle-kernel/project.tar.gz
+          sha256sum /tmp/dijitalikiz-source.tar.gz .kaggle-kernel/kernel.py
 
       - name: Push frozen pilot to Kaggle
         run: kaggle kernels push -p .kaggle-kernel
