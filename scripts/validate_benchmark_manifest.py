@@ -50,8 +50,8 @@ def validate_manifest(manifest: dict, root: Path | None = None) -> list[str]:
             else:
                 try:
                     assessment = json.loads(assessment_path.read_text(encoding="utf-8"))
-                    if assessment.get("eligible_for_pilot") is not True:
-                        errors.append(f"{case_id} assessment is not marked eligible")
+                    if assessment.get("eligible_for_main") is not True:
+                        errors.append(f"{case_id} assessment is not marked eligible_for_main")
                     if assessment.get("contamination_risk") in {None, "unknown"}:
                         errors.append(f"{case_id} contamination risk is not resolved")
                 except (OSError, json.JSONDecodeError) as exc:
