@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import base64
+import hashlib
 import json
 import os
 import shutil
@@ -115,26 +117,37 @@ if dataset_dir is None:
     dataset_dir = Path(kagglehub.dataset_download(SOURCE_DATASET))
 
 bundle_b64 = dataset_dir / "project.tar.gz.b64"
+bundle_sha = dataset_dir / "source_bundle_sha256.txt"
 commit_source = dataset_dir / "source_commit.txt"
 
-if not bundle_b64.is_file():
-    raise RuntimeError(f"Frozen source payload missing from Kaggle Dataset: {bundle_b64}")
-if not commit_source.is_file():
-    raise RuntimeError(f"Frozen source commit marker missing from Kaggle Dataset: {commit_source}")
+for required in (bundle_b64, bundle_sha, commit_source):
+    if not required.is_file():
+        raise RuntimeError(f"Frozen source dataset file is missing: {required}")
 
-import base64
 payload_b64 = bundle_b64.read_text(encoding="ascii").strip()
 try:
-    BUNDLE.write_bytes(base64.b64decode(payload_b64, validate=True))
+    decoded_bundle = base64.b64decode(payload_b64, validate=True)
 except Exception as exc:
     raise RuntimeError("Frozen source base64 payload is invalid.") from exc
+
+BUNDLE.write_bytes(decoded_bundle)
+expected_bundle_sha = bundle_sha.read_text(encoding="ascii").strip()
+actual_bundle_sha = hashlib.sha256(decoded_bundle).hexdigest()
+if expected_bundle_sha != actual_bundle_sha:
+    raise RuntimeError(
+        "Frozen source bundle checksum mismatch: "
+        f"expected {expected_bundle_sha}, got {actual_bundle_sha}"
+    )
 
 source_commit = commit_source.read_text(encoding="utf-8").strip()
 if len(source_commit) != 40 or any(ch not in "0123456789abcdef" for ch in source_commit.lower()):
     raise RuntimeError(f"Invalid frozen source commit marker: {source_commit!r}")
 
-shutil.copy2(bundle_source, BUNDLE)
-print(f"Using versioned Kaggle source bundle for commit {source_commit}", flush=True)
+print(
+    f"Using versioned Kaggle source bundle for commit {source_commit} "
+    f"(sha256={actual_bundle_sha})",
+    flush=True,
+)
 
 if WORKDIR.exists():
     shutil.rmtree(WORKDIR)
