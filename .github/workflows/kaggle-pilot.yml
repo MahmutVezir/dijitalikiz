@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       execute_inference:
-        description: "Run the frozen 30-inference pilot on Kaggle GPU"
+        description: "Run the frozen 40-inference pilot on Kaggle GPU"
         required: true
         default: false
         type: boolean
