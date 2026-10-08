@@ -99,10 +99,18 @@ def ensure_python311() -> Path:
     return TARGET_PYTHON
 
 
-ensure_kagglehub()
-import kagglehub
+attached_candidates = [
+    Path("/kaggle/input/dijitalikiz-frozen-source"),
+    Path("/kaggle/input/dijitalikiz-frozen-source/Dijitalikiz Frozen Source"),
+]
+dataset_dir = next((p for p in attached_candidates if (p / "project.tar.gz").is_file()), None)
 
-dataset_dir = Path(kagglehub.dataset_download(SOURCE_DATASET))
+if dataset_dir is None:
+    print("Attached frozen-source dataset not found; trying KaggleHub resolver.", flush=True)
+    ensure_kagglehub()
+    import kagglehub
+    dataset_dir = Path(kagglehub.dataset_download(SOURCE_DATASET))
+
 bundle_source = dataset_dir / "project.tar.gz"
 commit_source = dataset_dir / "source_commit.txt"
 
