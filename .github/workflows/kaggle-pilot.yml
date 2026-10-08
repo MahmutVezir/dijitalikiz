@@ -6,39 +6,117 @@ on:
     paths:
       - ".github/kaggle-pilot-trigger"
 
+permissions:
+  contents: read
+
+concurrency:
+  group: kaggle-frozen-pilot
+  cancel-in-progress: false
+
 jobs:
   run-frozen-pilot:
     runs-on: ubuntu-latest
     timeout-minutes: 180
     env:
       KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+      KERNEL_SLUG: dijitalikiz-pilot
 
     steps:
       - name: Checkout exact Git commit
         uses: actions/checkout@v4
 
-      - name: Install Kaggle CLI
-        run: python -m pip install --upgrade pip kaggle
-
-      - name: Verify token
+      - name: Verify Kaggle token
         shell: bash
         run: |
           set -euo pipefail
-          test -n "$KAGGLE_API_TOKEN"
-          kaggle --version
+          test -n "$KAGGLE_API_TOKEN" || { echo "Missing GitHub secret: KAGGLE_API_TOKEN"; exit 1; }
 
-      - name: Resolve Kaggle identity
-        run: |
-          python -m pip install --upgrade kagglehub
-          python - <<'PY'
-          import kagglehub
-          username = kagglehub.whoami(verbose=False)["username"]
-          print("Kaggle account:", username)
-          with open("/tmp/kaggle_username", "w", encoding="utf-8") as f:
-              f.write(username)
-          PY
+      - name: Install Kaggle CLI and identity helper
+        run: python -m pip install --upgrade pip kaggle kagglehub
 
-      - name: Verify Kaggle API access
+      - name: Resolve Kaggle username from token
+        shell: bash
         run: |
           set -euo pipefail
+          KAGGLE_USER="$(python -c 'import kagglehub; print(kagglehub.whoami(verbose=False)["username"])')"
+          test -n "$KAGGLE_USER" || { echo "Could not resolve Kaggle username from token"; exit 1; }
+          echo "KAGGLE_USERNAME=$KAGGLE_USER" >> "$GITHUB_ENV"
+          echo "Kaggle account resolved."
+
+      - name: Verify Kaggle authentication
+        run: |
+          set -euo pipefail
+          kaggle --version
           kaggle kernels list --mine --page-size 3
+
+      - name: Prepare exact-source Kaggle bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .kaggle-kernel
+          cp kaggle/kernel.py .kaggle-kernel/kernel.py
+          git archive --format=tar.gz --output=.kaggle-kernel/project.tar.gz HEAD
+          printf '%s
+' "$GITHUB_SHA" > .kaggle-kernel/source_commit.txt
+          cat > .kaggle-kernel/kernel-metadata.json <<EOF
+          {
+            "id": "$KAGGLE_USERNAME/$KERNEL_SLUG",
+            "title": "dijitalikiz-pilot",
+            "code_file": "kernel.py",
+            "language": "python",
+            "kernel_type": "script",
+            "is_private": true,
+            "enable_gpu": true,
+            "enable_tpu": false,
+            "enable_internet": true,
+            "keywords": ["llm", "bug-diagnosis", "ccdg", "tubitak"]
+          }
+          EOF
+          python -m json.tool .kaggle-kernel/kernel-metadata.json >/dev/null
+          tar -tzf .kaggle-kernel/project.tar.gz | head -20
+
+      - name: Push and run frozen pilot on Kaggle GPU
+        shell: bash
+        run: |
+          set -euo pipefail
+          kaggle kernels push -p .kaggle-kernel --timeout 10800 --accelerator NvidiaTeslaT4
+
+      - name: Wait for Kaggle completion
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 180); do
+            status="$(kaggle kernels status "$KAGGLE_USERNAME/$KERNEL_SLUG" 2>&1 || true)"
+            echo "$status"
+            if echo "$status" | grep -q "KernelWorkerStatus.COMPLETE"; then
+              exit 0
+            fi
+            if echo "$status" | grep -Eq "KernelWorkerStatus.(ERROR|CANCEL_REQUESTED|CANCEL_ACKNOWLEDGED)"; then
+              kaggle kernels logs "$KAGGLE_USERNAME/$KERNEL_SLUG" || true
+              exit 1
+            fi
+            sleep 60
+          done
+          kaggle kernels logs "$KAGGLE_USERNAME/$KERNEL_SLUG" || true
+          exit 1
+
+      - name: Download and validate Kaggle outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf kaggle-output
+          mkdir -p kaggle-output
+          kaggle kernels output "$KAGGLE_USERNAME/$KERNEL_SLUG" -p kaggle-output --force
+          find kaggle-output -type f -print | sort
+          test -n "$(find kaggle-output -name pilot_records.jsonl -print -quit)"
+          test -n "$(find kaggle-output -name pilot_evaluation.json -print -quit)"
+          test -n "$(find kaggle-output -name case_level_analysis.json -print -quit)"
+          test -n "$(find kaggle-output -name pilot_artifact_manifest.json -print -quit)"
+
+      - name: Upload frozen pilot artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dijitalikiz-pilot-${{ github.sha }}
+          path: kaggle-output/
+          if-no-files-found: error
+          retention-days: 30
