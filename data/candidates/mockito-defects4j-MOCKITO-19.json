@@ -1,5 +1,4 @@
 {
-  "id": "mockito-defects4j-MOCKITO-19",
   "source": "Mockito issue tracker + Defects4J",
   "source_url": "https://github.com/mockito/mockito/issues/205",
   "publication_date": "2015-04-30",
@@ -49,5 +48,6 @@
   },
   "split": "candidates",
   "annotation_status": "annotated_provisional",
-  "provenance_verification_status": "verified"
+  "provenance_verification_status": "verified",
+  "case_id": "mockito-defects4j-MOCKITO-19"
 }
