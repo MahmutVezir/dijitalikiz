@@ -1,0 +1,53 @@
+{
+  "case_id": "closure-compiler-defects4j-CLOSURE-6",
+  "source": "Google Closure Compiler + Defects4J",
+  "source_url": "https://storage.googleapis.com/google-code-archive/v2/code.google.com/closure-compiler/issues/issue-635.json",
+  "publication_date": "2012-11-07",
+  "technology": "Google Closure Compiler / Java / type checking",
+  "error_description": "Function constructor type checking used obsolete special cases that suppressed or mis-handled type mismatches between constructors.",
+  "i_base": [
+    "TypeValidator checks assignment compatibility between found and required types.",
+    "FunctionType supplies constructor-specific subtyping behavior.",
+    "Constructor types participate in interface and function override checks.",
+    "The fix removes obsolete constructor hacks from both validation and function subtyping."
+  ],
+  "ccdg": [
+    {
+      "source": "TypeValidator",
+      "target": "FunctionType",
+      "relation": "queries_function_subtyping",
+      "details": "assignment diagnostics depend on function subtype semantics"
+    },
+    {
+      "source": "FunctionType",
+      "target": "constructor_types",
+      "relation": "defines_subtyping",
+      "details": "constructor status changes compatibility decisions"
+    },
+    {
+      "source": "TypeValidator",
+      "target": "LooseTypeCheckTest",
+      "relation": "exposes_contract",
+      "details": "regression tests capture the intended diagnostic contract"
+    }
+  ],
+  "ground_truth": {
+    "component": "FunctionType",
+    "entity": "constructor function subtyping",
+    "operation": "isSubtype",
+    "root_cause": "obsolete_constructor_special_case_in_function_subtyping",
+    "required_relations": [
+      "TypeValidator",
+      "FunctionType",
+      "constructor types",
+      "assignment checking"
+    ]
+  },
+  "split": "confirmatory",
+  "provenance": {
+    "source_system": "Defects4J",
+    "fixed_revision": "9f7a353385bf0b93cdaeaa56cc5b1450db790127",
+    "fixed_revision_date": "2012-11-07",
+    "date_basis": "fixed_revision_date used as recorded date because issue-creation date is not consistently exposed in the source record"
+  }
+}
