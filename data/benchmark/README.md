@@ -45,3 +45,7 @@ No benchmark case may be added solely because its model output is favorable.
 The primary inferential comparison is paired Standard versus CCDG accuracy. The planned confirmatory test is exact McNemar's test on case-level binary correctness, with alpha=0.05.
 
 Required sample size must be determined from an explicitly documented expected discordant-pair pattern before the main benchmark is run. The pilot is used to estimate feasibility and inform that assumption, not to retroactively choose a favorable sample size.
+
+## Freeze gate
+
+`data/benchmark/benchmark_manifest.json` must remain `draft` until independent main cases, their case records, assessments with `eligible_for_main=true`, resolved contamination-risk labels, and the power assumption are all documented. A frozen manifest must not overlap the pilot case IDs.
