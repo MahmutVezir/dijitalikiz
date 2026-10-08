@@ -36,6 +36,8 @@ def test_kaggle_pilot_builds_exact_source_dataset_and_safe_launcher():
     assert "base64 -w 0 /tmp/dijitalikiz-source.tar.gz" in workflow
     assert "mahmutvezir/dijitalikiz-frozen-source-v2" in workflow
     assert "source_bundle_sha256.txt" in workflow
+    assert 'kaggle datasets download -d "$DATASET_ID"' in workflow
+    assert 'KERNEL_SLUG="dijitalikiz-frozen-pilot-${GITHUB_SHA:0:12}"' in workflow
     assert 'sed -i "s/__EXPECTED_SOURCE_COMMIT__/$GITHUB_SHA/g"' in workflow
     assert "python -m py_compile .kaggle-kernel/kernel.py" in workflow
     assert "PROJECT_B64_PLACEHOLDER" not in workflow
