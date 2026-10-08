@@ -68,7 +68,7 @@ required = (
     output_dir / "pilot_records.jsonl",
     output_dir / "pilot_evaluation.json",
     output_dir / "case_level_analysis.json",
-    output_dir / "pilot_artifact_manifest.json",
+    output_dir / "artifact_manifest.json",
 )
 missing = [str(path) for path in required if not path.is_file()]
 if missing:
