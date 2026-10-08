@@ -59,6 +59,8 @@
     "accelerate": "0.33.0",
     "optimum": "1.17.1",
     "auto_gptq": "0.7.1",
-    "runtime_policy": "exact-version match required before first inference"
+    "runtime_policy": "exact-version match required before first inference",
+    "requirements_path": "requirements-pilot.txt",
+    "requirements_sha256": "9c80513ff727cd9e8382018064af15643fd60ca1a91741a1b2099523fec5e508"
   }
 }
