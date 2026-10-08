@@ -6,6 +6,7 @@ import platform
 import subprocess
 import sys
 from datetime import datetime, timezone
+from importlib.metadata import PackageNotFoundError, version as distribution_version
 from pathlib import Path
 
 
@@ -74,16 +75,19 @@ def main() -> None:
         "transformers",
         "accelerate",
         "optimum",
-        "auto_gptq",
+        "auto-gptq",
         "jsonschema",
     ):
+        key = package.replace("-", "_")
         try:
-            module = __import__(package.replace("-", "_"))
-            payload[f"{package.replace('-', '_')}_version"] = getattr(
-                module, "__version__", "unknown"
-            )
+            payload[f"{key}_version"] = distribution_version(package)
+        except PackageNotFoundError:
+            payload[f"{key}_version"] = "UNAVAILABLE: PackageNotFoundError"
+        try:
+            module = __import__(key)
+            payload[f"{key}_runtime_version"] = getattr(module, "__version__", "unknown")
         except Exception as exc:
-            payload[f"{package.replace('-', '_')}_version"] = (
+            payload[f"{key}_runtime_version"] = (
                 f"UNAVAILABLE: {type(exc).__name__}: {exc}"
             )
 
