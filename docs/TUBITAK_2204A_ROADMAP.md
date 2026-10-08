@@ -96,6 +96,8 @@ No scientific result is marked complete without actual inference data. No result
 - [ ] Build paired case-level 2x2 table
 - [ ] Run exact two-sided McNemar test
 - [ ] Report discordant pairs
+- [x] Predeclare paired risk-difference effect size
+- [x] Predeclare 95% Newcombe-style confidence interval method
 - [ ] Report paired effect size
 - [ ] Report confidence interval
 - [ ] Report secondary descriptive metrics
