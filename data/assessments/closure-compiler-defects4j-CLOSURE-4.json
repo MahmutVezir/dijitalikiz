@@ -1,0 +1,24 @@
+{
+  "case_id": "closure-compiler-defects4j-CLOSURE-4",
+  "provenance_quality": "pass",
+  "root_cause_quality": "pass",
+  "fix_quality": "pass",
+  "dependency_strength": "strong",
+  "dependency_evidence": "Defects4J fixed revision and the corresponding source-level dependency chain were verified.",
+  "ccdg_suitability": "strong",
+  "contamination_risk": "unknown",
+  "contamination_risk_reason": "Case-specific contamination audit has not been completed for the frozen Qwen checkpoint.",
+  "IC1": "pass",
+  "IC2": "pass",
+  "IC3": "pass",
+  "IC4": "pass",
+  "IC5": "pass",
+  "IC6": "pass",
+  "IC7": "pass",
+  "eligible_for_pilot": true,
+  "eligible_for_main": false,
+  "exclusion_reason": "Main eligibility withheld until contamination and final independent ground-truth/CCDG audit are complete.",
+  "notes": [
+    "Provisional candidate only."
+  ]
+}
