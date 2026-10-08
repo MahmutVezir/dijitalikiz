@@ -224,7 +224,9 @@ def main() -> None:
                     "raw_output": raw,
                     "parsed_output": parsed,
                 }
-                validate_schema(record, RUN_RECORD_SCHEMA, "pilot_run_record_schema")\n                temporary = path.with_suffix(path.suffix + ".tmp")\n                temporary.write_text(
+                validate_schema(record, RUN_RECORD_SCHEMA, "pilot_run_record_schema")
+                temporary = path.with_suffix(path.suffix + ".tmp")
+                temporary.write_text(
                     json.dumps(record, indent=2, ensure_ascii=False) + "\n",
                     encoding="utf-8",
                 )
