@@ -61,32 +61,52 @@ jobs:
           echo "KAGGLE_KERNEL_REF=$KERNEL_REF" >> "$GITHUB_ENV"
           kaggle kernels status "$KERNEL_REF" || true
 
-      - name: Prepare self-contained Kaggle launcher
+      - name: Publish exact-source Kaggle Dataset
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .kaggle-source
+          mkdir -p .kaggle-source
+          git archive --format=tar.gz --output=.kaggle-source/project.tar.gz HEAD
+          printf '%s\n' "$GITHUB_SHA" > .kaggle-source/source_commit.txt
+          cat > .kaggle-source/dataset-metadata.json <<EOF
+          {
+            "title": "Dijitalikiz Frozen Source",
+            "subtitle": "Exact source bundle for the frozen TÜBİTAK pilot",
+            "description": "Versioned private source bundle for reproducible Kaggle pilot execution. Commit: $GITHUB_SHA",
+            "id": "mahmutvezir/dijitalikiz-frozen-source",
+            "licenses": [{"name": "MIT"}]
+          }
+          EOF
+          python -m json.tool .kaggle-source/dataset-metadata.json >/dev/null
+          if kaggle datasets list --mine --page-size 100 2>/dev/null | awk '$1=="mahmutvezir/dijitalikiz-frozen-source" {found=1} END{exit found ? 0 : 1}'; then
+            kaggle datasets version -p .kaggle-source -m "Frozen source $GITHUB_SHA" -q -t -r skip
+          else
+            kaggle datasets create -p .kaggle-source -q -t -r skip
+          fi
+          for attempt in $(seq 1 30); do
+            status="$(kaggle datasets status mahmutvezir/dijitalikiz-frozen-source --format json 2>/dev/null || true)"
+            echo "$status"
+            if echo "$status" | grep -q '"status":"COMPLETE"\|"status": "COMPLETE"'; then
+              break
+            fi
+            if echo "$status" | grep -q '"status":"ERROR"\|"status": "ERROR"'; then
+              echo "Kaggle source Dataset publication failed."
+              exit 1
+            fi
+            sleep 10
+          done
+
+      - name: Prepare Kaggle launcher
         shell: bash
         run: |
           set -euo pipefail
           rm -rf .kaggle-kernel
           mkdir -p .kaggle-kernel
-          git archive --format=tar.gz --output=/tmp/dijitalikiz-source.tar.gz HEAD
-          python - <<'PY'
-          from pathlib import Path
-          import base64
-
-          template = Path("kaggle/kernel.py").read_text(encoding="utf-8")
-          archive_b64 = base64.b64encode(
-              Path("/tmp/dijitalikiz-source.tar.gz").read_bytes()
-          ).decode("ascii")
-          launcher = template.replace(
-              "SOURCE_COMMIT_PLACEHOLDER", "${{ github.sha }}"
-          ).replace(
-              "PROJECT_B64_PLACEHOLDER", archive_b64
-          )
-          Path(".kaggle-kernel/kernel.py").write_text(launcher, encoding="utf-8")
-          PY
+          cp kaggle/kernel.py .kaggle-kernel/kernel.py
           python -m py_compile .kaggle-kernel/kernel.py
-          grep -q "$GITHUB_SHA" .kaggle-kernel/kernel.py
-          test "$(grep -o 'SOURCE_COMMIT_PLACEHOLDER' .kaggle-kernel/kernel.py | wc -l)" -eq 0
-          test "$(grep -o 'PROJECT_B64_PLACEHOLDER' .kaggle-kernel/kernel.py | wc -l)" -eq 0
+          test "$(grep -c 'SOURCE_DATASET = "mahmutvezir/dijitalikiz-frozen-source"' .kaggle-kernel/kernel.py)" -eq 1
+          test "$(grep -c 'source_commit_verified_from_kaggle_dataset' .kaggle-kernel/kernel.py)" -eq 1
           cat > .kaggle-kernel/kernel-metadata.json <<EOF
           {
             "id": "$KAGGLE_KERNEL_REF",
@@ -101,7 +121,7 @@ jobs:
           }
           EOF
           python -m json.tool .kaggle-kernel/kernel-metadata.json >/dev/null
-          sha256sum /tmp/dijitalikiz-source.tar.gz .kaggle-kernel/kernel.py
+          sha256sum .kaggle-source/project.tar.gz .kaggle-source/source_commit.txt .kaggle-kernel/kernel.py
 
       - name: Push frozen pilot to Kaggle
         run: kaggle kernels push -p .kaggle-kernel
