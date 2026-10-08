@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       execute_inference:
-        description: "Run the frozen 30-inference pilot on Kaggle GPU"
+        description: "Run the frozen pilot on Kaggle GPU"
         required: true
         default: false
         type: boolean
@@ -85,7 +85,8 @@ jobs:
           PY
           python -m py_compile .kaggle-kernel/kernel.py
           grep -q "$GITHUB_SHA" .kaggle-kernel/kernel.py
-          test "$(grep -o 'PROJECT_B64_PLACEHOLDER' kaggle/kernel.py | wc -l)" -eq 1
+          test "$(grep -o 'SOURCE_COMMIT_PLACEHOLDER' .kaggle-kernel/kernel.py | wc -l)" -eq 0
+          test "$(grep -o 'PROJECT_B64_PLACEHOLDER' .kaggle-kernel/kernel.py | wc -l)" -eq 0
           cat > .kaggle-kernel/kernel-metadata.json <<EOF
           {
             "id": "$KAGGLE_KERNEL_REF",
