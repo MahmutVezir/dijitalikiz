@@ -1,0 +1,59 @@
+{
+  "case_id": "commons-math-defects4j-MATH-631",
+  "source": "Apache Commons JIRA + Defects4J",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-631",
+  "publication_date": "2011-07-23",
+  "technology": "Apache Commons Math / Java / root finding",
+  "error_description": "Regula Falsi could remain stuck at the same approximation under finite double precision until the maximum evaluation count was exhausted.",
+  "evidence_urls": [
+    "https://issues.apache.org/jira/browse/MATH-631",
+    "https://github.com/rjust/defects4j"
+  ],
+  "split": "candidates",
+  "annotation_status": "annotated_provisional",
+  "provenance_verification_status": "verified",
+  "i_base": [
+    "BaseSecantSolver implements shared control flow for several secant-based root finders.",
+    "RegulaFalsiSolver uses the shared solver loop.",
+    "IllinoisSolver and PegasusSolver are alternative methods derived from the same base.",
+    "Finite-precision arithmetic can make consecutive approximations identical."
+  ],
+  "ccdg": [
+    {
+      "source": "RegulaFalsiSolver",
+      "target": "BaseSecantSolver",
+      "relation": "inherits_solver_loop",
+      "details": "Regula Falsi uses shared iteration logic"
+    },
+    {
+      "source": "BaseSecantSolver",
+      "target": "double approximation",
+      "relation": "compares_progress",
+      "details": "progress can disappear at finite precision"
+    },
+    {
+      "source": "IllinoisSolver",
+      "target": "BaseSecantSolver",
+      "relation": "inherits_solver_loop",
+      "details": "modified Regula Falsi shares the base control path"
+    },
+    {
+      "source": "PegasusSolver",
+      "target": "BaseSecantSolver",
+      "relation": "inherits_solver_loop",
+      "details": "modified Regula Falsi shares the base control path"
+    }
+  ],
+  "ground_truth": {
+    "component": "BaseSecantSolver",
+    "entity": "RegulaFalsiSolver",
+    "operation": "iteration progress detection",
+    "root_cause": "stalled_approximation_not_detected_early",
+    "required_relations": [
+      "RegulaFalsiSolver",
+      "BaseSecantSolver",
+      "double approximation",
+      "iteration progress"
+    ]
+  }
+}
