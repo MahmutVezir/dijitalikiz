@@ -6,6 +6,15 @@ import json
 from pathlib import Path
 
 
+EXPECTED_RUN_COUNT = 30
+REQUIRED_FINAL_FILES = (
+    Path("data/pilot/environment.json"),
+    Path("data/pilot/pilot_evaluation.json"),
+    Path("data/pilot/case_level_analysis.json"),
+    Path("data/pilot/pilot_qa_report.json"),
+)
+
+
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -21,19 +30,28 @@ def main() -> int:
     args = parser.parse_args()
 
     runs_dir = Path(args.runs_dir)
-    required = sorted(runs_dir.glob("*.json"))
-    fixed = [
-        Path("data/pilot/environment.json"),
-        Path("data/pilot/pilot_evaluation.json"),
-        Path("data/pilot/case_level_analysis.json"),
-    ]
-    files = required + [path for path in fixed if path.is_file()]
+    if not runs_dir.is_dir():
+        raise RuntimeError(f"Pilot runs directory is missing: {runs_dir}")
 
-    if not fixed[-1].is_file():
-        raise RuntimeError("Case-level analysis is missing; artifact manifest cannot be finalized.")
+    required = sorted(runs_dir.glob("*.json"))
+    if len(required) != EXPECTED_RUN_COUNT:
+        raise RuntimeError(
+            f"Pilot artifact manifest requires exactly {EXPECTED_RUN_COUNT} run records; found {len(required)}."
+        )
+
+    missing = [str(path) for path in REQUIRED_FINAL_FILES if not path.is_file()]
+    if missing:
+        raise RuntimeError(f"Required finalized pilot artifact(s) missing: {missing}")
+
+    files = required + list(REQUIRED_FINAL_FILES)
 
     payload = {
-        "version": "1.0",
+        "version": "1.1",
+        "finalization_gate": {
+            "expected_run_record_count": EXPECTED_RUN_COUNT,
+            "required_final_files": [str(path) for path in REQUIRED_FINAL_FILES],
+            "status": "complete",
+        },
         "files": [
             {
                 "path": str(path),
