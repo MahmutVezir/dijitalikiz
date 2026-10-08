@@ -14,7 +14,7 @@ def test_kaggle_pilot_is_manual_only_and_opt_in():
     workflow = workflow_text()
     assert "workflow_dispatch:" in workflow
     assert "\n  push:" not in workflow
-    assert 'description: "Run the frozen 30-inference pilot on Kaggle GPU"' in workflow
+    assert 'description: "Run the frozen 40-inference pilot on Kaggle GPU"' in workflow
     assert "default: false" in workflow
     assert "if: inputs.execute_inference == true" in workflow
 
