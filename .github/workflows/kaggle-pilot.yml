@@ -4,19 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       run_pilot:
-        description: "Run the Kaggle GPU pilot"
+        description: "Run the frozen 30-run Kaggle GPU pilot"
         required: true
         default: true
         type: boolean
-  push:
-    branches:
-      - main
-    paths:
-      - "kaggle/**"
-      - "scripts/**"
-      - "dijitalikiz/**"
-      - "requirements-pilot.txt"
-      - ".github/workflows/kaggle-pilot.yml"
 
 permissions:
   contents: read
@@ -24,7 +15,7 @@ permissions:
 jobs:
   push-to-kaggle:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || inputs.run_pilot == true
+    if: inputs.run_pilot == true
     env:
       KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
       KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
@@ -33,6 +24,8 @@ jobs:
     steps:
       - name: Checkout exact Git commit
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Verify Kaggle secrets
         shell: bash
@@ -54,12 +47,14 @@ jobs:
           kaggle --version
           kaggle kernels list --mine --page-size 5
 
-      - name: Prepare Kaggle kernel metadata
+      - name: Prepare exact-source Kaggle bundle
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p .kaggle-kernel
           cp kaggle/kernel.py .kaggle-kernel/kernel.py
+          git archive --format=tar.gz --output=.kaggle-kernel/project.tar.gz HEAD
+          printf '%s\n' "${GITHUB_SHA}" > .kaggle-kernel/source_commit.txt
           cat > .kaggle-kernel/kernel-metadata.json <<EOF
           {
             "id": "${KAGGLE_USERNAME}/${KERNEL_SLUG}",
@@ -74,12 +69,43 @@ jobs:
             "keywords": ["llm", "bug-diagnosis", "ccdg", "tubitak"]
           }
           EOF
+          tar -tzf .kaggle-kernel/project.tar.gz | head -20
+          cat .kaggle-kernel/source_commit.txt
           cat .kaggle-kernel/kernel-metadata.json
 
       - name: Push and run on Kaggle GPU
         run: |
           kaggle kernels push -p .kaggle-kernel --timeout 10800 --accelerator NvidiaTeslaT4
 
-      - name: Show Kaggle kernel status
+      - name: Wait for Kaggle completion
+        shell: bash
         run: |
-          kaggle kernels status "${KAGGLE_USERNAME}/${KERNEL_SLUG}"
+          set -euo pipefail
+          for attempt in $(seq 1 180); do
+            status="$(kaggle kernels status "${KAGGLE_USERNAME}/${KERNEL_SLUG}" 2>&1 || true)"
+            echo "${status}"
+            if echo "${status}" | grep -Eiq 'complete|error|cancel'; then
+              if echo "${status}" | grep -Eiq 'error|cancel'; then
+                exit 1
+              fi
+              exit 0
+            fi
+            sleep 60
+          done
+          echo "Timed out waiting for Kaggle kernel."
+          exit 1
+
+      - name: Download immutable Kaggle outputs
+        run: |
+          set -euo pipefail
+          mkdir -p kaggle-output
+          kaggle kernels output "${KAGGLE_USERNAME}/${KERNEL_SLUG}" -p kaggle-output --force
+          find kaggle-output -maxdepth 4 -type f -print | sort
+
+      - name: Upload pilot artifacts to GitHub Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: dijitalikiz-pilot-${{ github.sha }}
+          path: kaggle-output/
+          if-no-files-found: error
+          retention-days: 30
