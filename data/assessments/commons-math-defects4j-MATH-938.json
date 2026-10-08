@@ -6,8 +6,8 @@
   "dependency_strength": "weak",
   "dependency_evidence": "Current evidence describes a localized Line.revert precision problem; a strong cross-component dependency is not established.",
   "ccdg_suitability": "weak",
-  "contamination_risk": "unknown",
-  "contamination_risk_reason": "No independent model-training exposure audit was performed.",
+  "contamination_risk": "high",
+  "contamination_risk_reason": "The exact MATH-938 issue/fix is publicly exposed in Apache Commons JIRA, Defects4J, and an indexed research reproduction; this is a conservative public-exposure risk label, not evidence of training-set membership.",
   "IC1": "pass",
   "IC2": "pass",
   "IC3": "pass",
@@ -19,6 +19,7 @@
   "eligible_for_main": false,
   "exclusion_reason": "Cross-component eligibility criteria are not met.",
   "notes": [
-    "Fix commit independently verified in apache/commons-math: 73605560b9f0205ac641ec602145756305a41f79."
+    "Fix commit independently verified in apache/commons-math: 73605560b9f0205ac641ec602145756305a41f79.",
+    "Final 2026-10-08 contamination re-check resolved the prior unknown label to high public-exposure risk."
   ]
 }
