@@ -10,13 +10,16 @@ def workflow_text() -> str:
     )
 
 
-def test_kaggle_pilot_is_manual_only_and_opt_in():
+def test_kaggle_pilot_is_manual_or_scoped_trigger_and_opt_in():
     workflow = workflow_text()
     assert "workflow_dispatch:" in workflow
-    assert "\n  push:" not in workflow
-    assert 'description: "Run the frozen 40-inference pilot on Kaggle GPU"' in workflow
+    assert 'paths:\n      - ".github/kaggle-pilot-trigger"' in workflow
+    assert 'description: "Run the frozen 30-inference pilot on Kaggle GPU"' in workflow
     assert "default: false" in workflow
-    assert "if: github.event_name == 'workflow_dispatch' && inputs.execute_inference == true" in workflow
+    assert (
+        "if: github.event_name == 'push' || "
+        "(github.event_name == 'workflow_dispatch' && inputs.execute_inference == true)"
+    ) in workflow
 
 
 def test_kaggle_pilot_is_read_only_against_github_repository():
