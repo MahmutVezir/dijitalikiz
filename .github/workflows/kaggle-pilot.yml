@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: dijitalikiz-frozen-pilot
+  group: dijitalikiz-frozen-pilot-v2
   cancel-in-progress: false
 
 jobs:
@@ -67,19 +67,21 @@ jobs:
           set -euo pipefail
           rm -rf .kaggle-source
           mkdir -p .kaggle-source
-          git archive             --format=tar.gz             --output=.kaggle-source/project.tar.gz             --exclude=RSC-Bench-pilot-v1.0-stage4-gated             --exclude=RSC-Bench-pilot-v1.0-stage4-gated.zip             HEAD
+          git archive             --format=tar.gz             --output=/tmp/dijitalikiz-source.tar.gz             --exclude=RSC-Bench-pilot-v1.0-stage4-gated             --exclude=RSC-Bench-pilot-v1.0-stage4-gated.zip             HEAD
+          base64 -w 0 /tmp/dijitalikiz-source.tar.gz > .kaggle-source/project.tar.gz.b64
+          printf '\n' >> .kaggle-source/project.tar.gz.b64
           printf '%s\n' "$GITHUB_SHA" > .kaggle-source/source_commit.txt
           cat > .kaggle-source/dataset-metadata.json <<EOF
           {
-            "title": "Dijitalikiz Frozen Source",
+            "title": "Dijitalikiz Frozen Source v2",
             "subtitle": "Exact source bundle for the frozen TÜBİTAK pilot",
             "description": "Versioned private source bundle for reproducible Kaggle pilot execution. Commit: $GITHUB_SHA",
-            "id": "mahmutvezir/dijitalikiz-frozen-source",
+            "id": "mahmutvezir/dijitalikiz-frozen-source-v2",
             "licenses": [{"name": "MIT"}]
           }
           EOF
           python -m json.tool .kaggle-source/dataset-metadata.json >/dev/null
-          DATASET_ID="mahmutvezir/dijitalikiz-frozen-source"
+          DATASET_ID="mahmutvezir/dijitalikiz-frozen-source-v2"
           exists=0
           for attempt in $(seq 1 12); do
             if kaggle datasets list --mine --page-size 100 2>/dev/null | awk -v id="$DATASET_ID" '$1==id {found=1} END{exit found ? 0 : 1}'; then
@@ -122,7 +124,7 @@ jobs:
           mkdir -p .kaggle-kernel
           cp kaggle/kernel.py .kaggle-kernel/kernel.py
           python -m py_compile .kaggle-kernel/kernel.py
-          test "$(grep -c 'SOURCE_DATASET = "mahmutvezir/dijitalikiz-frozen-source"' .kaggle-kernel/kernel.py)" -eq 1
+          test "$(grep -c 'SOURCE_DATASET = "mahmutvezir/dijitalikiz-frozen-source-v2"' .kaggle-kernel/kernel.py)" -eq 1
           test "$(grep -c 'source_commit_verified_from_kaggle_dataset' .kaggle-kernel/kernel.py)" -eq 1
           cat > .kaggle-kernel/kernel-metadata.json <<EOF
           {
@@ -136,14 +138,14 @@ jobs:
             "enable_tpu": false,
             "enable_internet": true,
             "machine_shape": "NvidiaTeslaT4",
-            "dataset_sources": ["mahmutvezir/dijitalikiz-frozen-source"],
+            "dataset_sources": ["mahmutvezir/dijitalikiz-frozen-source-v2"],
             "competition_sources": [],
             "kernel_sources": [],
             "model_sources": []
           }
           EOF
           python -m json.tool .kaggle-kernel/kernel-metadata.json >/dev/null
-          sha256sum .kaggle-source/project.tar.gz .kaggle-source/source_commit.txt .kaggle-kernel/kernel.py
+          sha256sum /tmp/dijitalikiz-source.tar.gz .kaggle-source/project.tar.gz.b64 .kaggle-source/source_commit.txt .kaggle-kernel/kernel.py
 
       - name: Push frozen pilot to Kaggle
         run: kaggle kernels push -p .kaggle-kernel
@@ -175,11 +177,20 @@ jobs:
           mkdir -p kaggle-output
           kaggle kernels output "$KAGGLE_KERNEL_REF" -p kaggle-output --force
           find kaggle-output -maxdepth 4 -type f -print | sort
-          test -n "$(find kaggle-output -name pilot_records.jsonl -print -quit)"
-          test -n "$(find kaggle-output -name pilot_evaluation.json -print -quit)"
-          test -n "$(find kaggle-output -name case_level_analysis.json -print -quit)"
-          test -n "$(find kaggle-output -name pilot_qa_report.json -print -quit)"
-          test -n "$(find kaggle-output -name artifact_manifest.json -print -quit)"
+          for required in             pilot_records.jsonl             pilot_evaluation.json             case_level_analysis.json             pilot_qa_report.json             artifact_manifest.json
+          do
+            test -n "$(find kaggle-output -name "$required" -type f -print -quit)" || {
+              echo "Missing finalized Kaggle artifact: $required"
+              echo "Downloaded files:"
+              find kaggle-output -maxdepth 5 -type f -print | sort
+              exit 1
+            }
+          done
+          MANIFEST_PATH="$(find kaggle-output -name artifact_manifest.json -type f -print -quit)"
+          test -n "$MANIFEST_PATH" || {
+            echo "artifact_manifest.json was not produced."
+            exit 1
+          }
 
       - name: Verify downloaded artifact manifest
         shell: bash
