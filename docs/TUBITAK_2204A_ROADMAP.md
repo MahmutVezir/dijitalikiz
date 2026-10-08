@@ -36,10 +36,11 @@ No scientific result is marked complete without actual inference data. No result
 - [x] Pilot runner is fail-closed against accidental overwrite and supports safe resume
 - [x] Environment capture records source commit and GPU details
 - [x] Per-run source commit and raw-output SHA-256 provenance fields added
+- [x] Pilot runtime versions pinned in requirements and manifest
 - [x] Completed pilot audit can require exactly 30 records and reject unexpected files
 - [x] Pilot artifact checksum manifest added
 - [ ] Execute environment capture on the actual inference machine
-- [ ] Verify the exact local model revision is available
+- [x] Define exact runtime compatibility lane; actual model-revision verification remains a preflight execution gate
 - [ ] Verify GPU/VRAM/RAM and inference backend
 - [ ] Run 30 real inferences
 - [ ] Preserve immutable raw outputs
