@@ -26,8 +26,8 @@ No scientific result is marked complete without actual inference data. No result
 ### Phase 1 — Pilot preflight
 - [x] Three pilot cases identified
 - [x] 30-run design is mechanically specified
-- [x] Fail-closed local preflight script added (`scripts/pilot_preflight.py`)
-- [x] Pilot preflight execution procedure documented (`docs/PILOT_PREFLIGHT.md`)
+- [x] Fail-closed local preflight script added
+- [x] Pilot preflight execution procedure documented
 - [x] Frozen generation parameters are recorded
 - [x] Ground truth is excluded from model context by protocol
 - [x] Parse/schema failures are defined as failed runs
@@ -39,8 +39,8 @@ No scientific result is marked complete without actual inference data. No result
 - [x] Pilot runtime versions pinned in requirements and manifest
 - [x] Completed pilot audit can require exactly 30 records and reject unexpected files
 - [x] Pilot artifact checksum manifest added
+- [x] Final Kaggle lane requires pilot_records, pilot_evaluation, case_level_analysis, pilot_qa_report and artifact_manifest
 - [ ] Execute environment capture on the actual inference machine
-- [x] Define exact runtime compatibility lane; actual model-revision verification remains a preflight execution gate
 - [ ] Verify GPU/VRAM/RAM and inference backend
 - [ ] Run 30 real inferences
 - [ ] Preserve immutable raw outputs
@@ -65,13 +65,12 @@ No scientific result is marked complete without actual inference data. No result
 - [x] Define independent-case exclusion guard in the benchmark manifest validator
 - [x] Define confirmatory case-selection specification
 - [x] Define benchmark freeze gate for provenance/eligibility/contamination/power metadata
-- [ ] Build independent-case pool
-- [ ] Define exclusion criteria
-- [x] Define contamination audit procedure
-- [x] Build candidate case pool (5 Apache Commons Math candidates)
+- [x] Build candidate case pool: 17 total records (3 pilot + 2 previously excluded + 12 additional provisional candidates)
 - [x] Verify source/fix provenance for the current candidate pool
-- [ ] Verify ground truth independently
-- [ ] Build and audit CCDG
+- [x] Record provisional CCDG and ground-truth annotations for candidate screening
+- [ ] Resolve contamination-risk label for each candidate
+- [ ] Verify ground truth independently for final cases
+- [ ] Build and audit CCDG independently for final cases
 - [ ] Run leakage audit
 - [ ] Freeze final case IDs
 - [ ] Freeze final benchmark manifest
