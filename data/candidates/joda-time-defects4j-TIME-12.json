@@ -1,0 +1,53 @@
+{
+  "id": "joda-time-defects4j-TIME-12",
+  "source": "Joda-Time issue tracker + Defects4J",
+  "source_url": "https://github.com/JodaOrg/joda-time/issues/8",
+  "publication_date": "2012-11-20",
+  "technology": "Joda-Time / Java / date conversion",
+  "error_description": "Calendar ERA was ignored when converting GregorianCalendar values to ISO LocalDate and LocalDateTime, producing incorrect years for BC dates.",
+  "evidence_urls": [
+    "https://github.com/JodaOrg/joda-time/issues/8",
+    "https://github.com/rjust/defects4j"
+  ],
+  "i_base": [
+    "LocalDate and LocalDateTime both expose Calendar field conversion factories.",
+    "GregorianCalendar distinguishes AD and BC through Calendar.ERA.",
+    "The conversion previously copied Calendar.YEAR without applying the era.",
+    "The fix applies ISO proleptic-year conversion for both date and date-time types."
+  ],
+  "ccdg": [
+    {
+      "source": "LocalDate",
+      "target": "GregorianCalendar",
+      "relation": "extracts_calendar_fields",
+      "details": "LocalDate reads ERA and YEAR during conversion"
+    },
+    {
+      "source": "LocalDateTime",
+      "target": "GregorianCalendar",
+      "relation": "extracts_calendar_fields",
+      "details": "LocalDateTime reads ERA and YEAR during conversion"
+    },
+    {
+      "source": "GregorianCalendar",
+      "target": "Calendar.ERA",
+      "relation": "encodes_era",
+      "details": "ERA changes the interpretation of YEAR"
+    }
+  ],
+  "ground_truth": {
+    "component": "LocalDate/LocalDateTime",
+    "entity": "Calendar ERA handling",
+    "operation": "fromCalendarFields/fromDateFields",
+    "root_cause": "era_ignored_during_gregorian_conversion",
+    "required_relations": [
+      "LocalDate",
+      "LocalDateTime",
+      "GregorianCalendar",
+      "Calendar.ERA"
+    ]
+  },
+  "split": "candidates",
+  "annotation_status": "annotated_provisional",
+  "provenance_verification_status": "verified"
+}
