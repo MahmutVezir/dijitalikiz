@@ -40,6 +40,7 @@ environment["source_commit"] = source_commit
 environment["source_commit_verified_from_bundle"] = True
 environment_path.write_text(__import__("json").dumps(environment, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 run(sys.executable, "scripts/pilot_preflight.py", "--require-cuda", cwd=WORKDIR)
+run(sys.executable, "scripts/model_load_preflight.py", cwd=WORKDIR)
 run(sys.executable, "scripts/audit_pilot_integrity.py", cwd=WORKDIR)
 run(sys.executable, "scripts/run_pilot.py", cwd=WORKDIR)
 run(sys.executable, "scripts/audit_pilot_integrity.py", "--require-complete", cwd=WORKDIR)
