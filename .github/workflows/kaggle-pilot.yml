@@ -2,19 +2,19 @@ name: Kaggle Frozen Pilot
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - ".github/kaggle-pilot-trigger"
+    inputs:
+      execute_inference:
+        description: "Actually execute the frozen 30-run pilot on Kaggle GPU"
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: read
 
-concurrency:
-  group: kaggle-frozen-pilot
-  cancel-in-progress: false
-
 jobs:
   run-frozen-pilot:
+    if: inputs.execute_inference == true
     runs-on: ubuntu-latest
     timeout-minutes: 180
     env:
@@ -24,28 +24,15 @@ jobs:
     steps:
       - name: Checkout exact Git commit
         uses: actions/checkout@v4
-
-      - name: Verify Kaggle token
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -n "$KAGGLE_API_TOKEN" || { echo "Missing GitHub secret: KAGGLE_API_TOKEN"; exit 1; }
-
-      - name: Install Kaggle CLI and identity helper
-        run: python -m pip install --upgrade pip kaggle kagglehub
-
-      - name: Resolve Kaggle username from token
-        shell: bash
-        run: |
-          set -euo pipefail
-          KAGGLE_USER="$(python -c 'import kagglehub; print(kagglehub.whoami(verbose=False)["username"])')"
-          test -n "$KAGGLE_USER" || { echo "Could not resolve Kaggle username from token"; exit 1; }
-          echo "KAGGLE_USERNAME=$KAGGLE_USER" >> "$GITHUB_ENV"
-          echo "Kaggle account resolved."
+        with:
+          fetch-depth: 1
 
       - name: Verify Kaggle authentication
+        shell: bash
         run: |
           set -euo pipefail
+          test -n "${KAGGLE_API_TOKEN}" || { echo "Missing GitHub secret: KAGGLE_API_TOKEN"; exit 1; }
+          python -m pip install --upgrade pip kaggle
           kaggle --version
           kaggle kernels list --mine --page-size 3
 
@@ -53,15 +40,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          rm -rf .kaggle-kernel
           mkdir -p .kaggle-kernel
           cp kaggle/kernel.py .kaggle-kernel/kernel.py
           git archive --format=tar.gz --output=.kaggle-kernel/project.tar.gz HEAD
-          printf '%s
-' "$GITHUB_SHA" > .kaggle-kernel/source_commit.txt
+          printf '%s\n' "${GITHUB_SHA}" > .kaggle-kernel/source_commit.txt
           cat > .kaggle-kernel/kernel-metadata.json <<EOF
           {
-            "id": "$KAGGLE_USERNAME/$KERNEL_SLUG",
-            "title": "dijitalikiz-pilot",
+            "id": "${KAGGLE_USERNAME}/${KERNEL_SLUG}",
+            "title": "dijitalikiz-frozen-pilot",
             "code_file": "kernel.py",
             "language": "python",
             "kernel_type": "script",
@@ -72,48 +59,65 @@ jobs:
             "keywords": ["llm", "bug-diagnosis", "ccdg", "tubitak"]
           }
           EOF
-          python -m json.tool .kaggle-kernel/kernel-metadata.json >/dev/null
           tar -tzf .kaggle-kernel/project.tar.gz | head -20
+          sha256sum .kaggle-kernel/project.tar.gz
+          cat .kaggle-kernel/source_commit.txt
 
-      - name: Push and run frozen pilot on Kaggle GPU
+      - name: Resolve Kaggle username
         shell: bash
         run: |
           set -euo pipefail
-          kaggle kernels push -p .kaggle-kernel --timeout 10800 --accelerator NvidiaTeslaT4
+          python -m pip install --upgrade kagglehub
+          python - <<'PY'
+          import kagglehub
+          username = kagglehub.whoami(verbose=False)["username"]
+          print(username)
+          with open("/tmp/kaggle_username", "w", encoding="utf-8") as handle:
+              handle.write(username)
+          PY
+          {
+            echo "KAGGLE_USERNAME=$(cat /tmp/kaggle_username)"
+            echo "KERNEL_SLUG=${KERNEL_SLUG}"
+          } >> "${GITHUB_ENV}"
+
+      - name: Push frozen pilot kernel to Kaggle
+        run: |
+          set -euo pipefail
+          kaggle kernels push -p .kaggle-kernel
 
       - name: Wait for Kaggle completion
         shell: bash
         run: |
           set -euo pipefail
-          for attempt in $(seq 1 180); do
-            status="$(kaggle kernels status "$KAGGLE_USERNAME/$KERNEL_SLUG" 2>&1 || true)"
-            echo "$status"
-            if echo "$status" | grep -q "KernelWorkerStatus.COMPLETE"; then
+          for attempt in $(seq 1 170); do
+            status="$(kaggle kernels status "${KAGGLE_USERNAME}/${KERNEL_SLUG}" 2>&1 || true)"
+            echo "${status}"
+            if echo "${status}" | grep -Eiq 'complete|error|cancel'; then
+              if echo "${status}" | grep -Eiq 'error|cancel'; then
+                exit 1
+              fi
               exit 0
-            fi
-            if echo "$status" | grep -Eq "KernelWorkerStatus.(ERROR|CANCEL_REQUESTED|CANCEL_ACKNOWLEDGED)"; then
-              kaggle kernels logs "$KAGGLE_USERNAME/$KERNEL_SLUG" || true
-              exit 1
             fi
             sleep 60
           done
-          kaggle kernels logs "$KAGGLE_USERNAME/$KERNEL_SLUG" || true
+          echo "Timed out waiting for Kaggle kernel."
           exit 1
 
-      - name: Download and validate Kaggle outputs
+      - name: Download finalized pilot artifacts
         shell: bash
         run: |
           set -euo pipefail
           rm -rf kaggle-output
           mkdir -p kaggle-output
-          kaggle kernels output "$KAGGLE_USERNAME/$KERNEL_SLUG" -p kaggle-output --force
-          find kaggle-output -type f -print | sort
+          kaggle kernels output "${KAGGLE_USERNAME}/${KERNEL_SLUG}" -p kaggle-output --force
+          find kaggle-output -maxdepth 5 -type f -print | sort
           test -n "$(find kaggle-output -name pilot_records.jsonl -print -quit)"
           test -n "$(find kaggle-output -name pilot_evaluation.json -print -quit)"
           test -n "$(find kaggle-output -name case_level_analysis.json -print -quit)"
+          test -n "$(find kaggle-output -name pilot_qa_report.json -print -quit)"
           test -n "$(find kaggle-output -name pilot_artifact_manifest.json -print -quit)"
 
-      - name: Upload frozen pilot artifacts
+      - name: Upload immutable pilot artifact
         uses: actions/upload-artifact@v4
         with:
           name: dijitalikiz-pilot-${{ github.sha }}
