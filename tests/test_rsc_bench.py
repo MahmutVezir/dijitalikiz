@@ -41,7 +41,8 @@ def test_evaluation_accepts_matching_output():
         affected_entity="GammaDistribution",
         explanation=(
             "The serialization/cloning operation fails because the "
-            "GammaDistribution dependency chain reaches BitsStreamGenerator."
+            "GammaDistribution dependency chain reaches AbstractRealDistribution, "
+            "Well19937c, AbstractWell, and BitsStreamGenerator."
         ),
     )
     result = evaluate_output(output, case.ground_truth)
