@@ -35,6 +35,9 @@ No scientific result is marked complete without actual inference data. No result
 - [x] Kaggle pilot workflow is manual-only; ordinary pushes cannot launch scientific inference
 - [x] Pilot runner is fail-closed against accidental overwrite and supports safe resume
 - [x] Environment capture records source commit and GPU details
+- [x] Per-run source commit and raw-output SHA-256 provenance fields added
+- [x] Completed pilot audit can require exactly 30 records and reject unexpected files
+- [x] Pilot artifact checksum manifest added
 - [ ] Execute environment capture on the actual inference machine
 - [ ] Verify the exact local model revision is available
 - [ ] Verify GPU/VRAM/RAM and inference backend
@@ -59,7 +62,9 @@ No scientific result is marked complete without actual inference data. No result
 
 ### Phase 3 — Confirmatory benchmark construction
 - [x] Define independent-case exclusion guard in the benchmark manifest validator
-- [ ] Define independent-case inclusion criteria
+- [x] Define confirmatory case-selection specification
+- [x] Define benchmark freeze gate for provenance/eligibility/contamination/power metadata
+- [ ] Build independent-case pool
 - [ ] Define exclusion criteria
 - [x] Define contamination audit procedure
 - [ ] Build candidate case pool
