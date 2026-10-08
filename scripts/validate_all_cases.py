@@ -9,12 +9,30 @@ from scripts.validate_benchmark_case import validate
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# These JSON files live in data/pilot for execution bookkeeping and are not ResearchCase records.
+PILOT_CONTROL_FILES = {
+    "pilot_manifest.json",
+    "environment.json",
+    "pilot_evaluation.json",
+    "case_level_analysis.json",
+    "pilot_qa_report.json",
+    "artifact_manifest.json",
+}
 
-def validate_directory(directory: Path) -> list[str]:
+
+def validate_directory(directory: Path, expected_split: str | None = None) -> list[str]:
     errors: list[str] = []
     for path in sorted(directory.glob("*.json")):
+        if directory.name == "pilot" and path.name in PILOT_CONTROL_FILES:
+            continue
         try:
             case_errors = validate(path)
+            if expected_split is not None:
+                payload = json.loads(path.read_text(encoding="utf-8"))
+                if payload.get("split") != expected_split:
+                    case_errors.append(
+                        f"split must be {expected_split!r}, got {payload.get('split')!r}"
+                    )
         except (OSError, json.JSONDecodeError, TypeError, ValueError) as exc:
             errors.append(f"{path}: {type(exc).__name__}: {exc}")
             continue
@@ -28,16 +46,21 @@ def main() -> int:
     parser.add_argument("--benchmark-dir", default=str(ROOT / "data" / "benchmark" / "cases"))
     args = parser.parse_args()
 
-    errors = validate_directory(Path(args.pilot_dir))
-    errors.extend(validate_directory(Path(args.benchmark_dir)))
+    pilot_dir = Path(args.pilot_dir)
+    benchmark_dir = Path(args.benchmark_dir)
+
+    errors = validate_directory(pilot_dir, expected_split="pilot")
+    errors.extend(validate_directory(benchmark_dir, expected_split="confirmatory"))
 
     if errors:
         for error in errors:
             print(f"ERROR: {error}")
         return 1
 
-    pilot_count = len(list(Path(args.pilot_dir).glob("*.json")))
-    benchmark_count = len(list(Path(args.benchmark_dir).glob("*.json")))
+    pilot_count = sum(
+        1 for path in pilot_dir.glob("*.json") if path.name not in PILOT_CONTROL_FILES
+    )
+    benchmark_count = len(list(benchmark_dir.glob("*.json")))
     print(f"VALID RESEARCH CASE DATA: pilot={pilot_count}, benchmark={benchmark_count}")
     return 0
 
