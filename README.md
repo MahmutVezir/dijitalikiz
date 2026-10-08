@@ -21,8 +21,10 @@ Bu depo, Standard Context ile açık ve yapılandırılmış Cross-Component Dep
 - `dijitalikiz/context.py`: Standard/CCDG bağlam üretimi ve leakage kontrolünün temeli
 - `dijitalikiz/evaluation.py`: dondurulmuş deterministik skorlayıcı
 - `scripts/run_pilot.py`: 30 frozen inference kaydını fail-closed biçimde üretir
+- `scripts/finalize_pilot.py`: tamamlanmış pilotu yeniden inference çağırmadan audit → evaluation → analysis → QA → checksum zincirinden geçirir
 - `scripts/model_load_preflight.py`: deneysel üretim yapmadan frozen model/GPTQ yükleme smoke testini çalıştırır
 - `scripts/build_pilot_artifact_manifest.py`: tamamlanan pilot çıktılarının SHA-256 bütünlük manifestini üretir
+- `scripts/validate_all_candidates.py`: candidate + assessment havuzunu topluca doğrular
 - `scripts/evaluate_pilot.py`: inference kayıtlarını skorlar; modeli yeniden çalıştırmaz
 - `scripts/analyze_case_level.py`: pilot evaluation çıktısından vaka düzeyi analiz ve McNemar testi üretir
 - `scripts/audit_pilot_integrity.py`: model/prompt/context/hash/schema bütünlüğünü fail-closed denetler
@@ -46,6 +48,14 @@ Exact checkpoint revision:
 `68c4276063d1496cdf13d0b8e8221f899bfa77f7`
 
 Frozen system prompt: `data/pilot/SYSTEM_PROMPT.txt` (SHA-256 pinned in manifest)
+
+Frozen runtime:
+- Python = 3.11
+- torch = 2.2.1
+- transformers = 4.43.2
+- accelerate = 0.33.0
+- optimum = 1.17.1
+- auto-gptq = 0.7.1
 
 Generation:
 - temperature = 0.2
@@ -85,6 +95,12 @@ python scripts/audit_pilot_integrity.py --require-complete
 ```
 
 Beklenen inference kayıt sayısı 30'dur. Eksik inference dosyaları veya incomplete evaluation nihai vaka düzeyi analizi tarafından reddedilir.
+
+Tamamlanan bir pilotu tek komutla finalize etmek için:
+
+```bash
+python scripts/finalize_pilot.py
+```
 
 ## Bilimsel sınırlar
 
