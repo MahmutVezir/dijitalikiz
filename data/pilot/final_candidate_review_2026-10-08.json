@@ -1,0 +1,199 @@
+{
+  "schema_version": "1.0",
+  "review_date": "2026-10-08",
+  "status": "frozen",
+  "purpose": "Final pre-inference review of the five Apache Commons Math pilot candidates.",
+  "selection_rule": {
+    "pilot_requires": "IC1-IC7 all pass; dependency_strength strong/moderate; ccdg_suitability strong/moderate.",
+    "model_outputs_consulted": false,
+    "contamination_definition": "Public-exposure risk only; not proof of training-set membership.",
+    "pilot_seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "conditions": [
+      "standard",
+      "ccdg"
+    ],
+    "replications_per_case": 5
+  },
+  "decisions": [
+    {
+      "case_id": "commons-math-defects4j-MATH-927",
+      "decision": "include",
+      "root_cause": "Non-serializable BitsStreamGenerator breaks cloning of RealDistribution subclasses such as GammaDistribution.",
+      "buggy_revision": "42673df5b72ca93fa4dbac6fdb0dec19e0ed6992",
+      "fixed_revision": "185e3033ef43527a729c9dda5d57ed0537921a27",
+      "failing_tests": [
+        "RealDistributionAbstractTest.testDistributionClone"
+      ],
+      "component_boundaries": [
+        "GammaDistribution",
+        "AbstractRealDistribution",
+        "Well19937c",
+        "AbstractWell",
+        "BitsStreamGenerator"
+      ],
+      "ccdg_suitability": "strong",
+      "dependency_strength": "strong",
+      "contamination_risk": "high",
+      "eligibility": {
+        "IC1": "pass",
+        "IC2": "pass",
+        "IC3": "pass",
+        "IC4": "pass",
+        "IC5": "pass",
+        "IC6": "pass",
+        "IC7": "pass"
+      },
+      "reason": "Meets all deterministic pilot criteria; exact fix and regression test are verified."
+    },
+    {
+      "case_id": "commons-math-defects4j-MATH-950",
+      "decision": "include",
+      "root_cause": "When RESET_STATE occurs, only the current event state was advanced/reset; other EventState instances could remain stale.",
+      "buggy_revision": "d18a6b851035818e38637a7b2f60e6f5c6367480",
+      "fixed_revision": "424cbd201ca5969181d68cff99d8b9b77a41cefe",
+      "failing_tests": [
+        "DormandPrince853IntegratorTest.testEventsScheduling"
+      ],
+      "component_boundaries": [
+        "FirstOrderIntegrator",
+        "AbstractIntegrator",
+        "EventState",
+        "EventHandler",
+        "RESET_STATE"
+      ],
+      "ccdg_suitability": "strong",
+      "dependency_strength": "strong",
+      "contamination_risk": "medium",
+      "eligibility": {
+        "IC1": "pass",
+        "IC2": "pass",
+        "IC3": "pass",
+        "IC4": "pass",
+        "IC5": "pass",
+        "IC6": "pass",
+        "IC7": "pass"
+      },
+      "reason": "Fix spans shared integrator scheduling and event-state components; regression coverage is explicit."
+    },
+    {
+      "case_id": "commons-math-defects4j-MATH-938",
+      "decision": "exclude",
+      "root_cause": "3D Line.revert() lost directional precision by reconstructing a line from endpoints instead of preserving the existing normalized direction.",
+      "buggy_revision": "43a6f15a1af977d6bf950dca17ab248e72ad8e95",
+      "fixed_revision": "73605560b9f0205ac641ec602145756305a41f79",
+      "failing_tests": [
+        "LineTest.testRevert"
+      ],
+      "component_boundaries": [
+        "org.apache.commons.math3.geometry.euclidean.threed.Line"
+      ],
+      "ccdg_suitability": "weak",
+      "dependency_strength": "weak",
+      "contamination_risk": "high",
+      "eligibility": {
+        "IC1": "pass",
+        "IC2": "pass",
+        "IC3": "pass",
+        "IC4": "pass",
+        "IC5": "fail",
+        "IC6": "fail",
+        "IC7": "pass"
+      },
+      "reason": "Root cause and fix are valid, but the defect is localized to a single Line implementation and does not establish a meaningful cross-component dependency suitable for CCDG."
+    },
+    {
+      "case_id": "commons-math-defects4j-MATH-949",
+      "decision": "include",
+      "root_cause": "Concrete optimizer loops did not increment the shared BaseOptimizer iteration counter, so getIterations() remained incorrect despite real optimization work.",
+      "buggy_revision": "4e4e8fad43b1b105395d56d9bae98297d3fefdb1",
+      "fixed_revision": "f83bbc1d68bd457dfccd370afb248126ce031eb6",
+      "failing_tests": [
+        "NonLinearConjugateGradientOptimizerTest.testTrivial",
+        "CMAESOptimizerTest iteration assertions",
+        "PowellOptimizerTest iteration assertions",
+        "SimplexOptimizerMultiDirectionalTest iteration assertions",
+        "SimplexOptimizerNelderMeadTest iteration assertions",
+        "AbstractLeastSquaresOptimizerAbstractTest.testGetIterations"
+      ],
+      "component_boundaries": [
+        "BaseOptimizer",
+        "NonLinearConjugateGradientOptimizer",
+        "PowellOptimizer",
+        "SimplexOptimizer",
+        "CMAESOptimizer",
+        "GaussNewtonOptimizer",
+        "LevenbergMarquardtOptimizer"
+      ],
+      "ccdg_suitability": "strong",
+      "dependency_strength": "strong",
+      "contamination_risk": "high",
+      "eligibility": {
+        "IC1": "pass",
+        "IC2": "pass",
+        "IC3": "pass",
+        "IC4": "pass",
+        "IC5": "pass",
+        "IC6": "pass",
+        "IC7": "pass"
+      },
+      "reason": "Final review overturns the earlier exclusion: the fixing change and regression coverage establish a strong cross-component dependency path across a shared abstraction and multiple concrete optimizers."
+    },
+    {
+      "case_id": "commons-math-defects4j-MATH-988",
+      "decision": "include",
+      "root_cause": "SubLine.intersection failed to handle a null result from the underlying Line.intersection before coordinate conversion.",
+      "buggy_revision": "0ee817712b9e8330fdfd6985752aa8f1b25ba9d9",
+      "fixed_revision": "d270055e874148a2742604be36ab977eec030fba",
+      "failing_tests": [
+        "SubLineTest.testIntersectionNotIntersecting",
+        "SubLineTest.testIntersectionParallel"
+      ],
+      "component_boundaries": [
+        "SubLine.intersection",
+        "Line.intersection",
+        "remainingRegion.checkPoint"
+      ],
+      "ccdg_suitability": "strong",
+      "dependency_strength": "strong",
+      "contamination_risk": "high",
+      "eligibility": {
+        "IC1": "pass",
+        "IC2": "pass",
+        "IC3": "pass",
+        "IC4": "pass",
+        "IC5": "pass",
+        "IC6": "pass",
+        "IC7": "pass"
+      },
+      "reason": "Nullability dependency between Line.intersection and SubLine.intersection is explicit and directly representable in CCDG."
+    }
+  ],
+  "final_pilot_cases": [
+    "commons-math-defects4j-MATH-927",
+    "commons-math-defects4j-MATH-950",
+    "commons-math-defects4j-MATH-949",
+    "commons-math-defects4j-MATH-988"
+  ],
+  "exclusions": [
+    "commons-math-defects4j-MATH-938"
+  ],
+  "expected_inference_records": 40,
+  "reproducibility": {
+    "source_repositories": [
+      "MahmutVezir/dijitalikiz",
+      "apache/commons-math",
+      "rjust/defects4j"
+    ],
+    "external_fix_mapping": "rjust/defects4j framework/projects/Math/commit-db",
+    "deterministic_eligibility_formula": "all(IC1..IC7=pass) AND dependency_strength in {strong,moderate} AND ccdg_suitability in {strong,moderate}",
+    "pilot_manifest_path": "data/pilot/pilot_manifest.json",
+    "review_record_path": "data/pilot/final_candidate_review_2026-10-08.json",
+    "exclusion_report_path": "docs/PILOT_EXCLUSION_REPORT_2026-10-08.md"
+  }
+}
