@@ -1,0 +1,53 @@
+{
+  "case_id": "closure-compiler-defects4j-CLOSURE-4",
+  "source": "Google Closure Compiler + Defects4J",
+  "source_url": "https://storage.googleapis.com/google-code-archive/v2/code.google.com/closure-compiler/issues/issue-873.json",
+  "publication_date": "unknown",
+  "technology": "Google Closure Compiler / Java / type system",
+  "error_description": "Converting an interface type to a constructor that implements itself could create an inheritance cycle and cause stack overflow.",
+  "evidence_urls": [
+    "https://storage.googleapis.com/google-code-archive/v2/code.google.com/closure-compiler/issues/issue-873.json",
+    "https://github.com/rjust/defects4j"
+  ],
+  "split": "candidates",
+  "annotation_status": "annotated_provisional",
+  "provenance_verification_status": "verified",
+  "i_base": [
+    "NamedType resolves referenced types through registry and property resolution.",
+    "ObjectType tracks implemented and extended interfaces for constructors.",
+    "A self-implementation cycle can be missed when only implicit prototype cycles are checked.",
+    "The corrected cycle detector handles constructor interfaces as inheritance edges."
+  ],
+  "ccdg": [
+    {
+      "source": "NamedType",
+      "target": "ObjectType",
+      "relation": "delegates_inheritance_cycle_detection",
+      "details": "named type resolution relies on object type cycle checks"
+    },
+    {
+      "source": "ObjectType",
+      "target": "implemented_interfaces",
+      "relation": "examines_inheritance_edges",
+      "details": "constructor interfaces form part of the inheritance graph"
+    },
+    {
+      "source": "ObjectType",
+      "target": "NamedType",
+      "relation": "resolves_recursive_type",
+      "details": "recursive interface/constructor relationships can feed back into resolution"
+    }
+  ],
+  "ground_truth": {
+    "component": "ObjectType",
+    "entity": "inheritance cycle",
+    "operation": "detectInheritanceCycle",
+    "root_cause": "self_implemented_interface_cycle_not_detected",
+    "required_relations": [
+      "NamedType",
+      "ObjectType",
+      "implemented interfaces",
+      "type resolution"
+    ]
+  }
+}
