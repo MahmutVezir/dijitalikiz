@@ -53,6 +53,7 @@ class CandidateAssessment:
     IC6: CriterionState = CriterionState.UNKNOWN
     IC7: CriterionState = CriterionState.UNKNOWN
     eligible_for_pilot: bool = False
+    eligible_for_main: bool = False
     exclusion_reason: str = ""
     notes: list[str] = field(default_factory=list)
 
@@ -63,6 +64,10 @@ class CandidateAssessment:
             and self.dependency_strength in {DependencyStrength.STRONG, DependencyStrength.MODERATE}
             and self.ccdg_suitability in {CCDGSuitability.STRONG, CCDGSuitability.MODERATE}
         )
+        self.eligible_for_main = (
+            self.eligible_for_pilot
+            and self.contamination_risk is not ContaminationRisk.UNKNOWN
+        )
         return self.eligible_for_pilot
 
     def to_dict(self) -> dict[str, Any]:
@@ -70,6 +75,7 @@ class CandidateAssessment:
         p = asdict(self)
         for k in ("provenance_quality","root_cause_quality","fix_quality","dependency_strength",
                   "ccdg_suitability","contamination_risk","IC1","IC2","IC3","IC4","IC5","IC6","IC7"):
+            
             p[k] = p[k].value
         return p
 
@@ -95,9 +101,13 @@ class CandidateAssessment:
             IC4=e(CriterionState,"IC4"), IC5=e(CriterionState,"IC5"), IC6=e(CriterionState,"IC6"),
             IC7=e(CriterionState,"IC7"),
             eligible_for_pilot=eligible,
+            eligible_for_main=bool(p.get("eligible_for_main", False)),
             exclusion_reason=str(p.get("exclusion_reason", "")),
             notes=list(p.get("notes", [])),
         )
-        if obj.eligible_for_pilot != obj.recompute_eligibility():
+        recomputed_pilot = obj.recompute_eligibility()
+        if obj.eligible_for_pilot != recomputed_pilot:
             raise ValueError("eligible_for_pilot does not match deterministic eligibility")
+        if obj.eligible_for_main != (recomputed_pilot and obj.contamination_risk is not ContaminationRisk.UNKNOWN):
+            raise ValueError("eligible_for_main does not match deterministic eligibility")
         return obj
