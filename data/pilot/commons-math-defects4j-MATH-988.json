@@ -13,41 +13,17 @@
     "For non-intersecting lines the correct result is null."
   ],
   "ccdg": [
-    {
-      "source": "SubLine.intersection",
-      "target": "Line.intersection",
-      "relation": "calls",
-      "details": "computes the underlying line intersection"
-    },
-    {
-      "source": "Line.intersection",
-      "target": "intersection point",
-      "relation": "may_return_null",
-      "details": "parallel or non-intersecting lines"
-    },
-    {
-      "source": "SubLine.intersection",
-      "target": "remainingRegion.checkPoint",
-      "relation": "passes_intersection_to",
-      "details": "checks the bounded sub-line region"
-    },
-    {
-      "source": "Line.intersection",
-      "target": "SubLine.intersection",
-      "relation": "provides_nullable_dependency",
-      "details": "caller must handle null before coordinate conversion"
-    }
+    {"source":"SubLine.intersection","target":"Line.intersection","relation":"calls","details":"computes the underlying line intersection"},
+    {"source":"Line.intersection","target":"intersection point","relation":"may_return_null","details":"parallel or non-intersecting lines"},
+    {"source":"SubLine.intersection","target":"remainingRegion.checkPoint","relation":"passes_intersection_to","details":"checks the bounded sub-line region"},
+    {"source":"Line.intersection","target":"SubLine.intersection","relation":"provides_nullable_dependency","details":"caller must handle null before coordinate conversion"}
   ],
   "ground_truth": {
     "component": "SubLine.intersection",
     "entity": "2D/3D SubLine",
     "operation": "intersection",
     "root_cause": "null_underlying_line_intersection_not_handled",
-    "required_relation": [
-      "SubLine.intersection",
-      "Line.intersection",
-      "nullable_intersection",
-      "remainingRegion.checkPoint"
-    ]
-  }
+    "required_relation": ["SubLine.intersection","Line.intersection","nullable_intersection","remainingRegion.checkPoint"]
+  },
+  "split": "pilot"
 }
