@@ -1,16 +1,42 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "title":"ConfirmatoryBenchmarkManifest",
-  "type":"object",
-  "required":["version","status","pilot_case_ids","case_ids","contamination_audit_completed","analysis"],
-  "properties":{
-    "version":{"type":"string"},
-    "status":{"type":"string","enum":["draft","frozen"]},
-    "pilot_case_ids":{"type":"array","items":{"type":"string"}},
-    "case_ids":{"type":"array","items":{"type":"string"}},
-    "contamination_audit_completed":{"type":"boolean"},
-    "power_assumption":{"type":["object","null"]},
-    "analysis":{"type":"object"}
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ConfirmatoryBenchmarkManifest",
+  "type": "object",
+  "required": [
+    "version",
+    "status",
+    "pilot_case_ids",
+    "case_ids",
+    "contamination_audit_completed",
+    "analysis"
+  ],
+  "properties": {
+    "version": {"type": "string"},
+    "status": {"type": "string", "enum": ["draft", "frozen"]},
+    "pilot_case_ids": {"type": "array", "items": {"type": "string"}},
+    "case_ids": {"type": "array", "items": {"type": "string"}},
+    "contamination_audit_completed": {"type": "boolean"},
+    "power_assumption": {
+      "type": ["object", "null"],
+      "required": [
+        "p_standard_only",
+        "p_ccdg_only",
+        "target_power",
+        "alpha",
+        "required_case_count",
+        "achieved_power"
+      ],
+      "properties": {
+        "p_standard_only": {"type": "number", "minimum": 0},
+        "p_ccdg_only": {"type": "number", "minimum": 0},
+        "target_power": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "alpha": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+        "required_case_count": {"type": "integer", "minimum": 2},
+        "achieved_power": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}
+      },
+      "additionalProperties": true
+    },
+    "analysis": {"type": "object"}
   },
-  "additionalProperties":true
+  "additionalProperties": true
 }
