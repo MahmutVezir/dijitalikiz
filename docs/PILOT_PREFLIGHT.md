@@ -1,6 +1,6 @@
 # Pilot Preflight
 
-This document is the execution gate for the frozen 30-run pilot.
+This document is the execution gate for the frozen 40-run pilot.
 
 ## 1. Install the frozen pilot environment
 
@@ -22,11 +22,11 @@ The preflight checks:
 - frozen manifest status;
 - prompt and system-prompt SHA-256 hashes;
 - replication/seed consistency;
-- all three pilot case files;
+- all four pilot case files;
 - required Python packages;
 - CUDA availability;
 - exact Hugging Face checkpoint revision resolution;
-- expected pilot size (30 records).
+- expected pilot size (40 records).
 
 ## 3. Capture the actual inference environment
 
@@ -42,7 +42,7 @@ Preserve `data/pilot/environment.json` with the pilot artifacts. It records Pyth
 python scripts/run_pilot.py
 ```
 
-Expected output: exactly 30 JSON records under `data/pilot/runs/`.
+Expected output: exactly 40 JSON records under `data/pilot/runs/`.
 
 The runner must not be modified after the pilot starts. If it fails part-way through, keep the generated records and document the interruption; do not silently rerun or overwrite an existing seed record without preserving provenance.
 
@@ -57,7 +57,7 @@ Then:
 ```bash
 python scripts/analyze_case_level.py \
   --evaluation data/pilot/pilot_evaluation.json \
-  --case-ids commons-math-defects4j-MATH-927 commons-math-defects4j-MATH-950 commons-math-defects4j-MATH-988 \
+  --case-ids commons-math-defects4j-MATH-927 commons-math-defects4j-MATH-950 commons-math-defects4j-MATH-949 commons-math-defects4j-MATH-988 \
   --output data/pilot/case_level_analysis.json
 ```
 
@@ -85,4 +85,4 @@ Do not change the frozen model, prompts, seeds, evaluation rule, or pilot cases 
 
 ## Current boundary
 
-Repository-side Phase 1 preparation is complete. Actual environment capture, checkpoint availability verification on the inference machine, and the 30 real model calls must be executed on the machine that will perform the experiment. Those results cannot be fabricated or simulated in the repository.
+Repository-side Phase 1 preparation is complete. Actual environment capture, checkpoint availability verification on the inference machine, and the 40 real model calls must be executed on the machine that will perform the experiment. Those results cannot be fabricated or simulated in the repository.
