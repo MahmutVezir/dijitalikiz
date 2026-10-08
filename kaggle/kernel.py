@@ -58,5 +58,10 @@ run(
     "data/pilot/case_level_analysis.json",
     cwd=WORKDIR,
 )
+run(
+    sys.executable,
+    "scripts/build_pilot_artifact_manifest.py",
+    cwd=WORKDIR,
+)
 
 print(f"Kaggle pilot completed for source commit {source_commit}.", flush=True)
