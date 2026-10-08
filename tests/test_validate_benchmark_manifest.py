@@ -28,6 +28,7 @@ def test_frozen_manifest_requires_power_metadata():
         case_ids=["dummy"],
         contamination_audit_completed=True,
     )
+    manifest.pop("power_assumption", None)
     errors = validate_manifest(manifest, ROOT)
     assert any("power_assumption" in error for error in errors)
 
