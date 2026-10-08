@@ -89,3 +89,7 @@ This audit is intentionally conservative: public availability raises exposure ri
 ## Date-basis note
 
 For several historical Apache/Google cases, the issue-creation date was not consistently exposed in the current source record used by the repository. The confirmatory case files therefore record the exact fixing-commit date in the publication_date field and additionally mark the basis as fixed_revision_date. This is a metadata convention, not an assertion that the fix date equals the original issue publication date.
+
+## Selection replacement note — 2026-10-08
+
+MATH-844 was removed from the preselected confirmatory manifest and replaced by MATH-392. The replacement has a clearer cross-component fixing change spanning `AbstractMultipleLinearRegression`, `OLSMultipleLinearRegression`, and `GLSMultipleLinearRegression`. MATH-844 remains in the repository only as a screened candidate and is not part of the 16-case confirmatory set.
