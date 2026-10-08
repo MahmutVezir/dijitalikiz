@@ -1,0 +1,53 @@
+{
+  "case_id": "commons-math-defects4j-MATH-377",
+  "source": "Apache Commons JIRA + Defects4J",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-377",
+  "publication_date": "unknown",
+  "technology": "Apache Commons Math / Java / least-squares optimization",
+  "error_description": "Chi-square and RMS calculations in the least-squares optimization stack used inconsistent weighting.",
+  "evidence_urls": [
+    "https://commons.apache.org/proper/commons-math/changes-report.html",
+    "https://github.com/rjust/defects4j"
+  ],
+  "split": "candidates",
+  "annotation_status": "annotated_provisional",
+  "provenance_verification_status": "verified",
+  "i_base": [
+    "The least-squares optimizer stores residual values and observation weights.",
+    "RMS is derived from chi-square and the number of residual rows.",
+    "Optimization clients consume the reported goodness-of-fit values.",
+    "The linear-algebra package supplies decomposition utilities used elsewhere in the same optimization stack."
+  ],
+  "ccdg": [
+    {
+      "source": "AbstractLeastSquaresOptimizer",
+      "target": "residualsWeights",
+      "relation": "uses_for_statistic",
+      "details": "weights affect chi-square"
+    },
+    {
+      "source": "AbstractLeastSquaresOptimizer",
+      "target": "getRMS",
+      "relation": "derives_from",
+      "details": "RMS is computed from chi-square"
+    },
+    {
+      "source": "EigenDecompositionImpl",
+      "target": "optimization stack",
+      "relation": "supports_linear_algebra",
+      "details": "shared numeric infrastructure"
+    }
+  ],
+  "ground_truth": {
+    "component": "AbstractLeastSquaresOptimizer",
+    "entity": "chi-square statistic",
+    "operation": "getChiSquare/getRMS",
+    "root_cause": "incorrect_weight_application_in_least_squares_statistic",
+    "required_relations": [
+      "AbstractLeastSquaresOptimizer",
+      "residualsWeights",
+      "getChiSquare",
+      "getRMS"
+    ]
+  }
+}
