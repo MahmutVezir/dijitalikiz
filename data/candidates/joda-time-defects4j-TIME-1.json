@@ -1,0 +1,53 @@
+{
+  "id": "joda-time-defects4j-TIME-1",
+  "source": "Joda-Time issue tracker + Defects4J",
+  "source_url": "https://github.com/JodaOrg/joda-time/issues/93",
+  "publication_date": "2013-12-01",
+  "technology": "Joda-Time / Java / partial dates",
+  "error_description": "Partial.with could raise a NullPointerException when a supplied field had an unsupported or null range-duration relationship.",
+  "evidence_urls": [
+    "https://github.com/JodaOrg/joda-time/issues/93",
+    "https://github.com/rjust/defects4j"
+  ],
+  "i_base": [
+    "Partial validates ordered DateTimeFieldType values.",
+    "DateTimeFieldType delegates duration metadata to the active chronology.",
+    "UnsupportedDurationField provides duration behavior for unsupported fields.",
+    "Partial.with relies on the resulting duration comparison."
+  ],
+  "ccdg": [
+    {
+      "source": "Partial",
+      "target": "DateTimeFieldType",
+      "relation": "reads_field_metadata",
+      "details": "field type determines duration and range information"
+    },
+    {
+      "source": "DateTimeFieldType",
+      "target": "UnsupportedDurationField",
+      "relation": "may_resolve_to",
+      "details": "unsupported duration metadata can be represented by the placeholder field"
+    },
+    {
+      "source": "Partial",
+      "target": "UnsupportedDurationField",
+      "relation": "compares_duration_fields",
+      "details": "validation must handle unsupported fields before comparison"
+    }
+  ],
+  "ground_truth": {
+    "component": "Partial",
+    "entity": "field ordering validation",
+    "operation": "Partial.with",
+    "root_cause": "unsupported_duration_field_not_handled_before_comparison",
+    "required_relations": [
+      "Partial",
+      "DateTimeFieldType",
+      "UnsupportedDurationField",
+      "duration comparison"
+    ]
+  },
+  "split": "candidates",
+  "annotation_status": "annotated_provisional",
+  "provenance_verification_status": "verified"
+}
