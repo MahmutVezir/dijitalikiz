@@ -14,7 +14,7 @@ def main():
             print(f"{p.stem}: assessment=missing")
             continue
         d=json.loads(a.read_text(encoding="utf-8"))
-        print(f"{p.stem}: eligible={d.get('eligible_for_pilot',False)} IC4={d.get('IC4','unknown')} dependency={d.get('dependency_strength','unknown')} ccdg={d.get('ccdg_suitability','unknown')}")
+        print(f"{p.stem}: pilot={d.get('eligible_for_pilot',False)} main={d.get('eligible_for_main',False)} IC4={d.get('IC4','unknown')} dependency={d.get('dependency_strength','unknown')} ccdg={d.get('ccdg_suitability','unknown')}")
     return 0
 
 if __name__=="__main__":
