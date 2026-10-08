@@ -49,11 +49,12 @@ jobs:
           python scripts/validate_all_cases.py
           python scripts/validate_all_candidates.py
 
-      - name: Install Kaggle CLI and identity helper
+      - name: Install Kaggle CLI
         shell: bash
         run: |
           set -euo pipefail
-          python -m pip install --upgrade kaggle kagglehub
+          python -m pip install --upgrade kaggle
+          kaggle --version
 
       - name: Verify Kaggle credentials
         shell: bash
@@ -63,146 +64,318 @@ jobs:
             echo "Missing GitHub Actions secret KAGGLE_API_TOKEN."
             exit 1
           }
-          KAGGLE_USER="$(python -c 'import kagglehub; print(kagglehub.whoami(verbose=False)["username"])')"
-          test -n "$KAGGLE_USER" || {
-            echo "Kaggle account lookup returned an empty username."
-            exit 1
-          }
-          echo "KAGGLE_USERNAME=$KAGGLE_USER" >> "$GITHUB_ENV"
-          echo "Authenticated Kaggle account: $KAGGLE_USER"
-          kaggle --version
+          kaggle whoami
 
       - name: Allocate immutable Kaggle kernel ref
         shell: bash
         run: |
           set -euo pipefail
           KERNEL_SLUG="dijitalikiz-frozen-pilot-${GITHUB_SHA:0:12}"
-          KERNEL_REF="$KAGGLE_USERNAME/$KERNEL_SLUG"
+          KERNEL_REF="mahmutvezir/$KERNEL_SLUG"
+
           if kaggle kernels list --mine --page-size 100 2>/dev/null | awk -v id="$KERNEL_REF" '$1==id {found=1} END{exit found ? 0 : 1}'; then
-            echo "Immutable Kaggle kernel ref already exists for this commit: $KERNEL_REF"
+            echo "Immutable Kaggle kernel already exists for this commit: $KERNEL_REF"
             exit 1
           fi
-          echo "Allocated immutable Kaggle kernel: $KERNEL_REF"
+
           echo "KAGGLE_KERNEL_REF=$KERNEL_REF" >> "$GITHUB_ENV"
           echo "KAGGLE_KERNEL_SLUG=$KERNEL_SLUG" >> "$GITHUB_ENV"
+          echo "Allocated immutable Kaggle kernel: $KERNEL_REF"
 
-      - name: Build exact-source frozen dataset payload
+      - name: Build exact-source self-contained Kaggle launcher
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf .kaggle-source
-          mkdir -p .kaggle-source
 
-          git archive --format=tar.gz --output=/tmp/dijitalikiz-source.tar.gz HEAD \
-            data/pilot \
-            dijitalikiz \
-            scripts \
-            schemas \
-            requirements-pilot.txt \
-            pyproject.toml \
-            README.md
+          rm -rf .kaggle-kernel
+          mkdir -p .kaggle-kernel
+
+          git archive             --format=tar.gz             --output=/tmp/dijitalikiz-source.tar.gz             HEAD             data/pilot             dijitalikiz             scripts             schemas             requirements-pilot.txt             pyproject.toml             README.md
 
           test -s /tmp/dijitalikiz-source.tar.gz
           tar -tzf /tmp/dijitalikiz-source.tar.gz >/dev/null
+
           if tar -tzf /tmp/dijitalikiz-source.tar.gz | grep -q '^RSC-Bench-pilot-v1.0-stage4-gated/'; then
-            echo "Legacy RSC-Bench tree leaked into the frozen source bundle."
+            echo "Legacy RSC-Bench tree leaked into frozen source bundle."
             exit 1
           fi
 
-          base64 -w 0 /tmp/dijitalikiz-source.tar.gz > .kaggle-source/project.tar.gz.b64
-          printf '\n' >> .kaggle-source/project.tar.gz.b64
-          sha256sum /tmp/dijitalikiz-source.tar.gz | awk '{print $1}' > .kaggle-source/source_bundle_sha256.txt
-          printf '%s\n' "$GITHUB_SHA" > .kaggle-source/source_commit.txt
+          BUNDLE_B64="$(base64 -w 0 /tmp/dijitalikiz-source.tar.gz)"
+          BUNDLE_SHA256="$(sha256sum /tmp/dijitalikiz-source.tar.gz | awk '{print $1}')"
 
-          cat > .kaggle-source/dataset-metadata.json <<EOF
-          {
-            "title": "Dijitalikiz Frozen Source v2",
-            "subtitle": "Exact source bundle for the frozen TÜBİTAK pilot",
-            "description": "Versioned private source bundle for reproducible Kaggle pilot execution. Commit: $GITHUB_SHA",
-            "id": "mahmutvezir/dijitalikiz-frozen-source-v2",
-            "licenses": [{"name": "MIT"}]
-          }
-          EOF
+          export BUNDLE_B64 BUNDLE_SHA256
+          python - <<'PY'
+          import os
+          from pathlib import Path
 
-          python -m json.tool .kaggle-source/dataset-metadata.json >/dev/null
-          test -s .kaggle-source/project.tar.gz.b64
-          test -s .kaggle-source/source_bundle_sha256.txt
-          test -s .kaggle-source/source_commit.txt
+          commit = os.environ["GITHUB_SHA"]
+          bundle_b64 = os.environ["BUNDLE_B64"]
+          bundle_sha256 = os.environ["BUNDLE_SHA256"]
 
-      - name: Publish exact-source Kaggle Dataset
-        shell: bash
-        run: |
-          set -euo pipefail
-          DATASET_ID="mahmutvezir/dijitalikiz-frozen-source-v2"
-          exists=0
-          for attempt in $(seq 1 12); do
-            if kaggle datasets list --mine --page-size 100 2>/dev/null | awk -v id="$DATASET_ID" '$1==id {found=1} END{exit found ? 0 : 1}'; then
-              exists=1
-              break
-            fi
-            echo "Frozen source Dataset not visible yet (attempt $attempt/12)."
-            sleep 10
-          done
+          launcher = r'''from __future__ import annotations
 
-          if [ "$exists" -eq 1 ]; then
-            kaggle datasets version -p .kaggle-source -m "Frozen source $GITHUB_SHA" -q -t -r skip
-          else
-            kaggle datasets create -p .kaggle-source -q -t -r skip
-          fi
+          import base64
+          import hashlib
+          import json
+          import os
+          import shutil
+          import subprocess
+          import sys
+          import tarfile
+          from pathlib import Path
 
-          verified=0
-          rm -rf /tmp/kaggle-source-verify /tmp/kaggle-source-unpack
-          mkdir -p /tmp/kaggle-source-verify
+          KERNEL_ROOT = Path("/kaggle/working")
+          FROZEN_SOURCE_COMMIT = "__COMMIT__"
+          EXPECTED_BUNDLE_SHA256 = "__BUNDLE_SHA256__"
+          PROJECT_BUNDLE_B64 = "__BUNDLE_B64__"
+          BUNDLE = KERNEL_ROOT / "project.tar.gz"
+          WORKDIR = KERNEL_ROOT / "dijitalikiz"
+          PYTHON_ENV = KERNEL_ROOT / "dijitalikiz-py311"
+          TARGET_PYTHON = PYTHON_ENV / "bin" / "python"
 
-          for attempt in $(seq 1 60); do
-            rm -rf /tmp/kaggle-source-verify/* /tmp/kaggle-source-unpack
-            mkdir -p /tmp/kaggle-source-unpack
-            if kaggle datasets download -d "$DATASET_ID" -p /tmp/kaggle-source-verify --force >/tmp/kaggle-source-download.log 2>&1; then
-              ZIP_PATH="$(find /tmp/kaggle-source-verify -maxdepth 1 -type f -name '*.zip' -print -quit)"
-              if [ -n "$ZIP_PATH" ] && unzip -oq "$ZIP_PATH" -d /tmp/kaggle-source-unpack; then
-                ACTUAL_COMMIT="$(tr -d '\r\n' < /tmp/kaggle-source-unpack/source_commit.txt 2>/dev/null || true)"
-                EXPECTED_BUNDLE_SHA="$(tr -d '\r\n' < /tmp/kaggle-source-unpack/source_bundle_sha256.txt 2>/dev/null || true)"
-                DECODED_BUNDLE="/tmp/kaggle-source-unpack/project.tar.gz"
-                if [ -f /tmp/kaggle-source-unpack/project.tar.gz.b64 ]; then
-                  if base64 -d /tmp/kaggle-source-unpack/project.tar.gz.b64 > "$DECODED_BUNDLE" 2>/dev/null; then
-                    ACTUAL_BUNDLE_SHA="$(sha256sum "$DECODED_BUNDLE" | awk '{print $1}')"
-                    if [ "$ACTUAL_COMMIT" = "$GITHUB_SHA" ] && [ "$EXPECTED_BUNDLE_SHA" = "$ACTUAL_BUNDLE_SHA" ]; then
-                      verified=1
-                      break
-                    fi
-                  fi
-                fi
-              fi
-            fi
-            echo "Waiting for Kaggle Dataset version to expose commit $GITHUB_SHA (attempt $attempt/60)."
-            cat /tmp/kaggle-source-download.log || true
-            sleep 10
-          done
+          def run(*args: str, cwd: Path | None = None, env: dict[str, str] | None = None) -> None:
+              print("$", " ".join(args), flush=True)
+              subprocess.run(args, cwd=str(cwd) if cwd else None, env=env, check=True)
 
-          test "$verified" -eq 1 || {
-            echo "Kaggle Dataset did not expose the exact expected source commit after publication."
-            exit 1
-          }
-          echo "Kaggle source Dataset verified for commit $GITHUB_SHA"
+          def output(*args: str) -> str:
+              return subprocess.check_output(args, text=True).strip()
 
-      - name: Prepare Kaggle kernel launcher
-        shell: bash
-        run: |
-          set -euo pipefail
-          rm -rf .kaggle-kernel
-          mkdir -p .kaggle-kernel
-          cp kaggle/kernel.py .kaggle-kernel/kernel.py
-          sed -i "s/__EXPECTED_SOURCE_COMMIT__/$GITHUB_SHA/g" .kaggle-kernel/kernel.py
+          def ensure_python311() -> Path:
+              current = f"{sys.version_info.major}.{sys.version_info.minor}"
+              if current == "3.11":
+                  return Path(sys.executable)
+
+              if TARGET_PYTHON.is_file():
+                  detected = output(
+                      str(TARGET_PYTHON),
+                      "-c",
+                      "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')",
+                  )
+                  if detected == "3.11":
+                      return TARGET_PYTHON
+                  shutil.rmtree(PYTHON_ENV, ignore_errors=True)
+
+              for manager in (
+                  "/opt/conda/bin/mamba",
+                  "/opt/conda/bin/conda",
+                  "mamba",
+                  "conda",
+              ):
+                  executable = shutil.which(manager) if not Path(manager).is_absolute() else manager
+                  if executable and Path(executable).is_file():
+                      try:
+                          run(
+                              executable,
+                              "create",
+                              "-y",
+                              "--prefix",
+                              str(PYTHON_ENV),
+                              "python=3.11",
+                              "pip",
+                          )
+                          return TARGET_PYTHON
+                      except (OSError, subprocess.CalledProcessError):
+                          shutil.rmtree(PYTHON_ENV, ignore_errors=True)
+
+              run(sys.executable, "-m", "pip", "install", "--quiet", "uv")
+              uv = shutil.which("uv")
+              if not uv:
+                  candidate = Path(sys.executable).resolve().parent / "uv"
+                  if candidate.is_file():
+                      uv = str(candidate)
+              if not uv:
+                  user_bin = Path.home() / ".local" / "bin" / "uv"
+                  if user_bin.is_file():
+                      uv = str(user_bin)
+              if not uv:
+                  raise RuntimeError("Could not provision Python 3.11.")
+
+              run(uv, "venv", "--python", "3.11", "--seed", str(PYTHON_ENV))
+              if not TARGET_PYTHON.is_file():
+                  raise RuntimeError(f"Python 3.11 interpreter is missing: {TARGET_PYTHON}")
+              return TARGET_PYTHON
+
+          def main() -> None:
+              if "__COMMIT__" in FROZEN_SOURCE_COMMIT:
+                  raise RuntimeError("Launcher source commit was not embedded.")
+              if "__BUNDLE_SHA256__" in EXPECTED_BUNDLE_SHA256:
+                  raise RuntimeError("Launcher bundle checksum was not embedded.")
+              if "__BUNDLE_B64__" in PROJECT_BUNDLE_B64:
+                  raise RuntimeError("Launcher source payload was not embedded.")
+
+              decoded = base64.b64decode(PROJECT_BUNDLE_B64, validate=True)
+              actual_sha256 = hashlib.sha256(decoded).hexdigest()
+              if actual_sha256 != EXPECTED_BUNDLE_SHA256:
+                  raise RuntimeError(
+                      "Embedded source bundle checksum mismatch: "
+                      f"expected {EXPECTED_BUNDLE_SHA256}, got {actual_sha256}"
+                  )
+
+              BUNDLE.write_bytes(decoded)
+
+              if WORKDIR.exists():
+                  shutil.rmtree(WORKDIR)
+              WORKDIR.mkdir(parents=True, exist_ok=True)
+
+              with tarfile.open(BUNDLE, "r:gz") as archive:
+                  archive.extractall(WORKDIR)
+
+              pilot_dir = WORKDIR / "data" / "pilot"
+              pilot_dir.mkdir(parents=True, exist_ok=True)
+              (pilot_dir / "kaggle_source_commit.txt").write_text(
+                  FROZEN_SOURCE_COMMIT + "\n",
+                  encoding="utf-8",
+              )
+
+              target_python = ensure_python311()
+              target_version = output(
+                  str(target_python),
+                  "-c",
+                  "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')",
+              )
+              if target_version != "3.11":
+                  raise RuntimeError(
+                      f"Frozen pilot requires Python 3.11, got {target_version}"
+                  )
+
+              run(
+                  str(target_python),
+                  "-m",
+                  "pip",
+                  "install",
+                  "--upgrade",
+                  "pip",
+                  cwd=WORKDIR,
+              )
+              run(
+                  str(target_python),
+                  "-m",
+                  "pip",
+                  "install",
+                  "-r",
+                  "requirements-pilot.txt",
+                  cwd=WORKDIR,
+              )
+
+              env = dict(os.environ)
+              env["PYTHONPATH"] = str(WORKDIR)
+
+              run(
+                  str(target_python),
+                  "scripts/capture_environment.py",
+                  cwd=WORKDIR,
+                  env=env,
+              )
+
+              environment_path = pilot_dir / "environment.json"
+              environment = json.loads(
+                  environment_path.read_text(encoding="utf-8")
+              )
+              environment["source_commit"] = FROZEN_SOURCE_COMMIT
+              environment["source_commit_verified_from_embedded_bundle"] = True
+              environment["source_bundle_sha256"] = EXPECTED_BUNDLE_SHA256
+              environment_path.write_text(
+                  json.dumps(environment, indent=2, ensure_ascii=False) + "\n",
+                  encoding="utf-8",
+              )
+
+              run(
+                  str(target_python),
+                  "scripts/pilot_preflight.py",
+                  "--require-cuda",
+                  cwd=WORKDIR,
+                  env=env,
+              )
+              run(
+                  str(target_python),
+                  "scripts/model_load_preflight.py",
+                  cwd=WORKDIR,
+                  env=env,
+              )
+              run(
+                  str(target_python),
+                  "scripts/audit_pilot_integrity.py",
+                  cwd=WORKDIR,
+                  env=env,
+              )
+              run(
+                  str(target_python),
+                  "scripts/run_pilot.py",
+                  cwd=WORKDIR,
+                  env=env,
+              )
+              run(
+                  str(target_python),
+                  "scripts/finalize_pilot.py",
+                  cwd=WORKDIR,
+                  env=env,
+              )
+
+              output_dir = KERNEL_ROOT / "pilot-output"
+              if output_dir.exists():
+                  shutil.rmtree(output_dir)
+              output_dir.mkdir(parents=True, exist_ok=True)
+
+              for item in pilot_dir.iterdir():
+                  destination = output_dir / item.name
+                  if item.is_dir():
+                      shutil.copytree(item, destination)
+                  else:
+                      shutil.copy2(item, destination)
+
+              required = (
+                  "pilot_records.jsonl",
+                  "pilot_evaluation.json",
+                  "case_level_analysis.json",
+                  "pilot_qa_report.json",
+                  "artifact_manifest.json",
+              )
+              missing = [
+                  name for name in required
+                  if not (output_dir / name).is_file()
+              ]
+              if missing:
+                  raise RuntimeError(
+                      "Pilot finalized but required artifacts are missing: "
+                      + ", ".join(missing)
+                  )
+
+              print(
+                  f"Kaggle frozen pilot completed for commit {FROZEN_SOURCE_COMMIT}.",
+                  flush=True,
+              )
+              print(f"Pilot artifacts staged at {output_dir}.", flush=True)
+
+          if __name__ == "__main__":
+              main()
+          '''
+
+          launcher = (
+              launcher
+              .replace("__COMMIT__", commit)
+              .replace("__BUNDLE_SHA256__", bundle_sha256)
+              .replace("__BUNDLE_B64__", bundle_b64)
+          )
+
+          if "__COMMIT__" in launcher or "__BUNDLE_SHA256__" in launcher or "__BUNDLE_B64__" in launcher:
+              raise SystemExit("Launcher placeholders remain after generation.")
+
+          Path(".kaggle-kernel/kernel.py").write_text(launcher, encoding="utf-8")
+          print(
+              f"Generated self-contained launcher: {len(launcher):,} bytes",
+              flush=True,
+          )
+          PY
 
           python -m py_compile .kaggle-kernel/kernel.py
-          test "$(grep -c 'SOURCE_DATASET = "mahmutvezir/dijitalikiz-frozen-source-v2"' .kaggle-kernel/kernel.py)" -eq 1
-          test "$(grep -c 'source_bundle_sha256.txt' .kaggle-kernel/kernel.py)" -eq 1
+
+          test "$(grep -c 'FROZEN_SOURCE_COMMIT = "' .kaggle-kernel/kernel.py)" -eq 1
+          test "$(grep -c 'EXPECTED_BUNDLE_SHA256 = "' .kaggle-kernel/kernel.py)" -eq 1
+          test "$(grep -c 'PROJECT_BUNDLE_B64 = "' .kaggle-kernel/kernel.py)" -eq 1
           test "$(grep -c "$GITHUB_SHA" .kaggle-kernel/kernel.py)" -ge 1
-          test "$(grep -c '__EXPECTED_SOURCE_COMMIT__' .kaggle-kernel/kernel.py)" -eq 0
-          if grep -q 'bundle_source' .kaggle-kernel/kernel.py; then
-            echo "Undefined legacy bundle_source reference remains in Kaggle launcher."
-            exit 1
-          fi
+          test "$(grep -c '__COMMIT__' .kaggle-kernel/kernel.py)" -eq 0
+          test "$(grep -c '__BUNDLE_SHA256__' .kaggle-kernel/kernel.py)" -eq 0
+          test "$(grep -c '__BUNDLE_B64__' .kaggle-kernel/kernel.py)" -eq 0
 
           cat > .kaggle-kernel/kernel-metadata.json <<EOF
           {
@@ -216,7 +389,7 @@ jobs:
             "enable_tpu": false,
             "enable_internet": true,
             "machine_shape": "NvidiaTeslaT4",
-            "dataset_sources": ["mahmutvezir/dijitalikiz-frozen-source-v2"],
+            "dataset_sources": [],
             "competition_sources": [],
             "kernel_sources": [],
             "model_sources": []
@@ -224,11 +397,11 @@ jobs:
           EOF
 
           python -m json.tool .kaggle-kernel/kernel-metadata.json >/dev/null
-          sha256sum /tmp/dijitalikiz-source.tar.gz .kaggle-source/project.tar.gz.b64 \
-            .kaggle-source/source_bundle_sha256.txt .kaggle-source/source_commit.txt \
-            .kaggle-kernel/kernel.py
 
-      - name: Push frozen pilot to Kaggle
+          sha256sum .kaggle-kernel/kernel.py .kaggle-kernel/kernel-metadata.json
+          echo "Embedded source commit: $GITHUB_SHA"
+
+      - name: Push immutable Kaggle frozen pilot
         shell: bash
         run: |
           set -euo pipefail
@@ -238,6 +411,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
           for attempt in $(seq 1 220); do
             status="$(kaggle kernels status "$KAGGLE_KERNEL_REF" 2>&1 || true)"
             echo "$status"
@@ -265,18 +439,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
           rm -rf kaggle-output
           mkdir -p kaggle-output
 
           kaggle kernels output "$KAGGLE_KERNEL_REF" -p kaggle-output --force
           find kaggle-output -maxdepth 5 -type f -print | sort
 
-          for required in \
-            pilot_records.jsonl \
-            pilot_evaluation.json \
-            case_level_analysis.json \
-            pilot_qa_report.json \
-            artifact_manifest.json
+          for required in             pilot_records.jsonl             pilot_evaluation.json             case_level_analysis.json             pilot_qa_report.json             artifact_manifest.json
           do
             test -n "$(find kaggle-output -name "$required" -type f -print -quit)" || {
               echo "Missing finalized Kaggle artifact: $required"
@@ -289,11 +459,13 @@ jobs:
         run: |
           set -euo pipefail
           MANIFEST_PATH="$(find kaggle-output -name artifact_manifest.json -type f -print -quit)"
-          test -n "$MANIFEST_PATH" || exit 1
+          test -n "$MANIFEST_PATH" || {
+            echo "artifact_manifest.json not found."
+            exit 1
+          }
+
           ROOT="$(dirname "$MANIFEST_PATH")"
-          python scripts/validate_pilot_artifact_manifest.py \
-            --artifact-root "$ROOT" \
-            --manifest "$MANIFEST_PATH"
+          python scripts/validate_pilot_artifact_manifest.py             --artifact-root "$ROOT"             --manifest "$MANIFEST_PATH"
 
       - name: Upload immutable pilot artifact
         uses: actions/upload-artifact@v4
