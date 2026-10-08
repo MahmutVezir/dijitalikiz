@@ -1,1 +1,1 @@
-Trigger 3: launch the complete frozen 30-run pilot on Kaggle GPU.
+Trigger 4: execute the frozen 30-run pilot on Kaggle GPU using the token-only auth path.
