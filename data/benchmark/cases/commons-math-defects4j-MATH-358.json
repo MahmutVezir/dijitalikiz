@@ -1,0 +1,59 @@
+{
+  "case_id": "commons-math-defects4j-MATH-358",
+  "source": "Apache Commons JIRA + Defects4J",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-358",
+  "publication_date": "2010-03-24",
+  "technology": "Apache Commons Math / Java / ODE integration",
+  "error_description": "ODE integrators could overshoot the specified integration end when event detection produced a step interval at the limit of floating-point resolution.",
+  "i_base": [
+    "Adaptive ODE integrators evaluate event handlers before accepting a step.",
+    "The event manager computes the next event time relative to the current step.",
+    "Several nonstiff Runge-Kutta-family integrators share the same event-boundary logic.",
+    "The integration API must return the exact specified end time."
+  ],
+  "ccdg": [
+    {
+      "source": "AdamsBashforthIntegrator",
+      "target": "event manager",
+      "relation": "queries_next_event",
+      "details": "event location constrains the step"
+    },
+    {
+      "source": "AdamsMoultonIntegrator",
+      "target": "event manager",
+      "relation": "queries_next_event",
+      "details": "event location constrains the step"
+    },
+    {
+      "source": "EmbeddedRungeKuttaIntegrator",
+      "target": "event manager",
+      "relation": "queries_next_event",
+      "details": "event location constrains the step"
+    },
+    {
+      "source": "RungeKuttaIntegrator",
+      "target": "event manager",
+      "relation": "queries_next_event",
+      "details": "event location constrains the step"
+    }
+  ],
+  "ground_truth": {
+    "component": "event manager",
+    "entity": "ODE integrator",
+    "operation": "event-boundary step handling",
+    "root_cause": "zero_length_event_step_not_handled_as_exact_boundary",
+    "required_relations": [
+      "event manager",
+      "AdamsBashforthIntegrator",
+      "EmbeddedRungeKuttaIntegrator",
+      "RungeKuttaIntegrator"
+    ]
+  },
+  "split": "confirmatory",
+  "provenance": {
+    "source_system": "Defects4J",
+    "fixed_revision": "061f50175cf7047856a934f9a827dbe6fd818334",
+    "fixed_revision_date": "2010-03-24",
+    "date_basis": "fixed_revision_date_used_as_recorded_date_when_issue_creation_date_is not consistently exposed in the source record"
+  }
+}
