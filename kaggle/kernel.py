@@ -60,6 +60,11 @@ run(
 )
 run(
     sys.executable,
+    "scripts/pilot_qa_report.py",
+    cwd=WORKDIR,
+)
+run(
+    sys.executable,
     "scripts/build_pilot_artifact_manifest.py",
     cwd=WORKDIR,
 )
