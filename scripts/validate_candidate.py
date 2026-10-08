@@ -12,7 +12,6 @@ REQUIRED_FIELDS = {
     "publication_date",
     "technology",
     "error_description",
-    "i_base",
     "evidence_urls",
 }
 
@@ -29,8 +28,6 @@ def validate_candidate(payload: dict) -> list[str]:
         errors.append("source_url must be a non-empty string")
     if not isinstance(payload.get("evidence_urls"), list) or not payload.get("evidence_urls"):
         errors.append("evidence_urls must be a non-empty list")
-    if not isinstance(payload.get("i_base"), list) or not payload.get("i_base"):
-        errors.append("i_base must be a non-empty list")
 
     split = payload.get("split")
     if split not in {"candidates", "pilot", "confirmatory"}:
