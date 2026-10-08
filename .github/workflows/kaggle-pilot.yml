@@ -67,7 +67,7 @@ jobs:
           set -euo pipefail
           rm -rf .kaggle-source
           mkdir -p .kaggle-source
-          git archive --format=tar.gz --output=.kaggle-source/project.tar.gz HEAD
+          git archive             --format=tar.gz             --output=.kaggle-source/project.tar.gz             --exclude=RSC-Bench-pilot-v1.0-stage4-gated             --exclude=RSC-Bench-pilot-v1.0-stage4-gated.zip             HEAD
           printf '%s\n' "$GITHUB_SHA" > .kaggle-source/source_commit.txt
           cat > .kaggle-source/dataset-metadata.json <<EOF
           {
