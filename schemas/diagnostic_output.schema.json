@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DiagnosticOutput",
+  "type": "object",
+  "required": ["diagnosed_component","root_cause_class","affected_entity","explanation"],
+  "properties": {
+    "diagnosed_component":{"type":"string"},
+    "root_cause_class":{"type":"string"},
+    "affected_entity":{"type":"string"},
+    "explanation":{"type":"string"}
+  },
+  "additionalProperties":false
+}
