@@ -14,7 +14,6 @@
     "commons-math-defects4j-MATH-393",
     "commons-math-defects4j-MATH-405",
     "commons-math-defects4j-MATH-631",
-    "commons-math-defects4j-MATH-844",
     "commons-math-defects4j-MATH-859",
     "commons-math-defects4j-MATH-924",
     "closure-compiler-defects4j-CLOSURE-4",
@@ -22,7 +21,8 @@
     "closure-compiler-defects4j-CLOSURE-14",
     "joda-time-defects4j-TIME-1",
     "joda-time-defects4j-TIME-12",
-    "mockito-defects4j-MOCKITO-19"
+    "mockito-defects4j-MOCKITO-19",
+    "commons-math-defects4j-MATH-392"
   ],
   "contamination_audit_completed": true,
   "power_assumption": {
@@ -51,6 +51,15 @@
     "excluded_weak_cases": [
       "commons-math-defects4j-MATH-938",
       "commons-math-defects4j-MATH-949"
-    ]
+    ],
+    "replacements": {
+      "removed": [
+        "commons-math-defects4j-MATH-844"
+      ],
+      "added": [
+        "commons-math-defects4j-MATH-392"
+      ],
+      "reason": "MATH-392 has a clearer cross-component fix spanning the shared regression abstraction plus OLS and GLS implementations."
+    }
   }
 }
