@@ -50,7 +50,7 @@ def test_kaggle_pilot_binds_launcher_to_current_commit():
     assert 'KERNEL_SLUG="dijitalikiz-frozen-pilot-${GITHUB_SHA:0:12}"' in workflow
     assert 'launcher = (' in workflow
     assert '.replace("__COMMIT__", commit)' in workflow
-    assert 'print("Embedded source commit: $GITHUB_SHA")' in workflow
+    assert 'echo "Embedded source commit: $GITHUB_SHA"' in workflow
 
 
 def test_kaggle_pilot_has_no_dataset_transfer_dependency():
