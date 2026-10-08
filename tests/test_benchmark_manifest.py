@@ -42,6 +42,8 @@ def test_frozen_manifest_rejects_missing_case_and_assessment():
             "p_ccdg_only": 0.30,
             "target_power": 0.80,
             "alpha": 0.05,
+            "required_case_count": 2,
+            "achieved_power": 0.8030,
         },
     }, root=Path("/nonexistent"))
     assert any("missing benchmark case file" in error for error in errors)
@@ -92,6 +94,8 @@ def test_frozen_manifest_accepts_complete_case(tmp_path):
             "p_ccdg_only": 0.30,
             "target_power": 0.80,
             "alpha": 0.05,
+            "required_case_count": 1,
+            "achieved_power": 0.8030,
         },
     }, root=tmp_path)
     assert errors == []
