@@ -27,3 +27,5 @@ jobs:
         run: python scripts/validate_all_candidates.py
       - name: Validate benchmark manifest scaffold
         run: python scripts/validate_benchmark_manifest.py
+      - name: Validate all preselected confirmatory cases
+        run: python scripts/validate_all_benchmark_cases.py
