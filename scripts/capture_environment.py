@@ -15,21 +15,54 @@ def command_output(command: list[str]) -> str:
         return f"UNAVAILABLE: {exc}"
 
 
+def gpu_snapshot() -> dict:
+    try:
+        import torch
+
+        available = bool(torch.cuda.is_available())
+        if not available:
+            return {
+                "cuda_available": False,
+                "device_count": 0,
+                "devices": [],
+            }
+
+        devices = []
+        for index in range(torch.cuda.device_count()):
+            props = torch.cuda.get_device_properties(index)
+            devices.append({
+                "index": index,
+                "name": props.name,
+                "total_memory_gib": round(props.total_memory / (1024**3), 3),
+                "capability": f"{props.major}.{props.minor}",
+            })
+        return {
+            "cuda_available": True,
+            "device_count": len(devices),
+            "devices": devices,
+        }
+    except Exception as exc:
+        return {
+            "cuda_available": False,
+            "device_count": 0,
+            "devices": [],
+            "error": f"{type(exc).__name__}: {exc}",
+        }
+
+
 def main() -> None:
-    parser_path = Path("data/pilot/environment.json")
-    parser_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path = Path("data/pilot/environment.json")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     payload = {
         "captured_at_utc": datetime.now(timezone.utc).isoformat(),
+        "source_commit": command_output(["git", "rev-parse", "HEAD"]),
         "python": sys.version,
         "platform": platform.platform(),
         "machine": platform.machine(),
+        "gpu": gpu_snapshot(),
+        "nvidia_smi": command_output(["nvidia-smi"]),
         "pip_freeze": command_output([sys.executable, "-m", "pip", "freeze"]),
-        "torch_version": None,
-        "transformers_version": None,
-        "accelerate_version": None,
-        "optimum_version": None,
-        "auto_gptq_version": None,
     }
 
     for package in (
@@ -41,15 +74,19 @@ def main() -> None:
     ):
         try:
             module = __import__(package.replace("-", "_"))
-            payload[f"{package.replace('-', '_')}_version"] = getattr(module, "__version__", "unknown")
+            payload[f"{package.replace('-', '_')}_version"] = getattr(
+                module, "__version__", "unknown"
+            )
         except Exception as exc:
-            payload[f"{package.replace('-', '_')}_version"] = f"UNAVAILABLE: {type(exc).__name__}: {exc}"
+            payload[f"{package.replace('-', '_')}_version"] = (
+                f"UNAVAILABLE: {type(exc).__name__}: {exc}"
+            )
 
-    parser_path.write_text(
+    output_path.write_text(
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
-    print(f"Wrote {parser_path}")
+    print(f"Wrote {output_path}")
 
 
 if __name__ == "__main__":
