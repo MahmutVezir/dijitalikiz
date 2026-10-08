@@ -4,7 +4,10 @@ import argparse
 import json
 from pathlib import Path
 
-from validate_benchmark_case import validate as validate_case
+try:
+    from scripts.validate_benchmark_case import validate as validate_case
+except ModuleNotFoundError:
+    from validate_benchmark_case import validate as validate_case
 
 
 def _number(value: object) -> bool:
