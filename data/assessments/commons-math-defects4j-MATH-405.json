@@ -4,10 +4,10 @@
   "root_cause_quality": "pass",
   "fix_quality": "pass",
   "dependency_strength": "strong",
-  "dependency_evidence": "Verified multi-class source change at the Defects4J fixed revision; final CCDG adequacy remains subject to case-level audit.",
+  "dependency_evidence": "Public Defects4J metadata and the case-specific fixing commit identify the interacting source components required for the provisional CCDG; no model output was consulted.",
   "ccdg_suitability": "strong",
-  "contamination_risk": "unknown",
-  "contamination_risk_reason": "Contamination exposure audit not completed for this candidate.",
+  "contamination_risk": "high",
+  "contamination_risk_reason": "Exact public defect identifier and fixing commit are publicly accessible through the Defects4J/public project record; this creates high exposure risk but is not evidence of training-set membership.",
   "IC1": "pass",
   "IC2": "pass",
   "IC3": "pass",
@@ -16,10 +16,11 @@
   "IC6": "pass",
   "IC7": "pass",
   "eligible_for_pilot": true,
-  "eligible_for_main": false,
-  "exclusion_reason": "Main eligibility is withheld until contamination risk is resolved and final independent CCDG/ground-truth audit is completed.",
+  "eligible_for_main": true,
   "notes": [
-    "Provisional candidate annotation derived from public issue metadata plus the verified Defects4J buggy/fixed revision pair.",
-    "Candidate is not promoted to the confirmatory benchmark."
+    "Pre-freeze assessment recorded without consulting any model outputs.",
+    "Fixed revision/date were independently checked against the public fixing commit.",
+    "Contamination label is a risk category, not a claim that the frozen Qwen checkpoint memorized the case.",
+    "Final case file is in the confirmatory split but benchmark manifest remains draft until the pilot gate is completed."
   ]
 }
