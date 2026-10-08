@@ -102,3 +102,11 @@ Kod/protokol tarafı frozen pilot için hazırdır. Ancak bilimsel çalışma he
 6. Gerçek sonuçlarla TÜBİTAK raporunun doldurulması.
 
 Bu kapılar tamamlanmadan proje bilimsel olarak bitmiş ilan edilmez.
+
+## Confirmatory benchmark status — 2026-10-08
+
+The repository now contains a preselected **16-case confirmatory benchmark** with provenance, fixing-commit anchors, CCDG/ground-truth records, contamination-risk assessments, and a predeclared McNemar power design. Pilot cases are excluded and no model outputs were used for case selection.
+
+The confirmatory execution lane is manual-only and fail-closed. It requires a successful 30-record pilot for the exact same Git commit, then freezes the already-preselected manifest in the execution workspace and runs **16 × 2 × 5 = 160** confirmatory inference records on a private Kaggle GPU kernel.
+
+The benchmark manifest remains `draft` in `main` until the pilot artifact is complete. This is deliberate: scientific conclusions are not inferred from software readiness.
