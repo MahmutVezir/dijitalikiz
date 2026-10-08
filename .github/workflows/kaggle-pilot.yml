@@ -197,13 +197,6 @@ jobs:
               return TARGET_PYTHON
 
           def main() -> None:
-              if "__COMMIT__" in FROZEN_SOURCE_COMMIT:
-                  raise RuntimeError("Launcher source commit was not embedded.")
-              if "__BUNDLE_SHA256__" in EXPECTED_BUNDLE_SHA256:
-                  raise RuntimeError("Launcher bundle checksum was not embedded.")
-              if "__BUNDLE_B64__" in PROJECT_BUNDLE_B64:
-                  raise RuntimeError("Launcher source payload was not embedded.")
-
               decoded = base64.b64decode(PROJECT_BUNDLE_B64, validate=True)
               actual_sha256 = hashlib.sha256(decoded).hexdigest()
               if actual_sha256 != EXPECTED_BUNDLE_SHA256:
