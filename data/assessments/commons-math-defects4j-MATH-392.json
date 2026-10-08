@@ -1,0 +1,25 @@
+{
+  "case_id": "commons-math-defects4j-MATH-392",
+  "provenance_quality": "pass",
+  "root_cause_quality": "pass",
+  "fix_quality": "pass",
+  "dependency_strength": "strong",
+  "dependency_evidence": "The public MATH-392 fixing commit changes the shared regression base plus both OLS and GLS implementations, establishing a concrete cross-component dependency path. No model output was consulted.",
+  "ccdg_suitability": "strong",
+  "contamination_risk": "high",
+  "contamination_risk_reason": "The exact defect identifier and fixing commit are publicly accessible in the Defects4J/project ecosystem, so public exposure is plausible; this is not evidence of training-set membership.",
+  "IC1": "pass",
+  "IC2": "pass",
+  "IC3": "pass",
+  "IC4": "pass",
+  "IC5": "pass",
+  "IC6": "pass",
+  "IC7": "pass",
+  "eligible_for_pilot": true,
+  "eligible_for_main": true,
+  "notes": [
+    "Selected in place of MATH-844 because its fix directly spans shared regression abstractions and both major regression implementations.",
+    "Selection occurred without consulting model outputs.",
+    "Risk is exposure risk only, not contamination proof."
+  ]
+}
