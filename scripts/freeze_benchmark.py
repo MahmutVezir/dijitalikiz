@@ -5,7 +5,7 @@ from pathlib import Path
 from scripts.validate_benchmark_manifest import validate_manifest
 
 ROOT=Path(".")
-REQUIRED_PILOT_FILES=("pilot_evaluation.json","case_level_analysis.json","pilot_qa_report.json","artifact_manifest.json")
+REQUIRED_PILOT_FILES=("pilot_records.jsonl","pilot_evaluation.json","case_level_analysis.json","pilot_qa_report.json","artifact_manifest.json")
 
 def main()->int:
     p=argparse.ArgumentParser(description="Freeze the preselected confirmatory benchmark after pilot completion.")
@@ -16,7 +16,7 @@ def main()->int:
     missing=[str(pilot_root/x) for x in REQUIRED_PILOT_FILES if not (pilot_root/x).is_file()]
     if missing: raise SystemExit("Pilot finalization artifacts missing: "+", ".join(missing))
     pilot_eval=json.loads((pilot_root/"pilot_evaluation.json").read_text(encoding="utf-8"))
-    if pilot_eval.get("status")!="complete" or pilot_eval.get("found_records")!=pilot_eval.get("expected_records"):
+    if pilot_eval.get("status")!="complete" or pilot_eval.get("found_records")!=pilot_eval.get("expected_records") or pilot_eval.get("expected_records")!=30:
         raise SystemExit("Pilot artifact is not complete; confirmatory benchmark cannot freeze.")
     path=Path(a.manifest); manifest=json.loads(path.read_text(encoding="utf-8"))
     if manifest.get("status")!="draft": raise SystemExit("Benchmark manifest is already frozen or invalid.")
