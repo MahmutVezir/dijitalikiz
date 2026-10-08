@@ -75,6 +75,7 @@ def main() -> None:
         "accelerate",
         "optimum",
         "auto_gptq",
+        "jsonschema",
     ):
         try:
             module = __import__(package.replace("-", "_"))
