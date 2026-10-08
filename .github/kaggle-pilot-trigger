@@ -1,1 +1,1 @@
-Trigger 5: execute the complete frozen 30-run pilot and persist artifacts.
+Diagnostic 6: verify GitHub Actions job-stage execution before GPU launch.
