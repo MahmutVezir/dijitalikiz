@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.metadata
 import importlib.util
 import json
 import platform
@@ -18,10 +19,10 @@ def sha256_file(path: Path) -> str:
 
 
 def package_version(package: str) -> str | None:
+    distribution = package.replace("_", "-")
     try:
-        module = __import__(package.replace("-", "_"))
-        return getattr(module, "__version__", None)
-    except Exception:
+        return importlib.metadata.version(distribution)
+    except importlib.metadata.PackageNotFoundError:
         return None
 
 
