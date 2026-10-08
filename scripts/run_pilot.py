@@ -42,7 +42,15 @@ def _extract_json(text: str) -> dict:
     return json.loads(match.group(0))
 
 
-def validate_schema(instance: object, schema_path: Path, label: str) -> None:\n    schema = json.loads(schema_path.read_text(encoding="utf-8"))\n    errors = sorted(Draft202012Validator(schema).iter_errors(instance), key=lambda e: list(e.path))\n    if errors:\n        detail = "; ".join(f"{label}: {e.message}" for e in errors[:5])\n        raise ValueError(detail)\n\n\ndef load_model(model_id: str, revision: str):
+def validate_schema(instance: object, schema_path: Path, label: str) -> None:
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    errors = sorted(Draft202012Validator(schema).iter_errors(instance), key=lambda e: list(e.path))
+    if errors:
+        detail = "; ".join(f"{label}: {e.message}" for e in errors[:5])
+        raise ValueError(detail)
+
+
+def load_model(model_id: str, revision: str):
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
     tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision)
@@ -188,7 +196,13 @@ def main() -> None:
                 )
                 parsed = None
                 parse_error = None
-                try:\n                    parsed = _extract_json(raw)\n                    validate_schema(parsed, DIAGNOSTIC_OUTPUT_SCHEMA, "diagnostic_output_schema")\n                    DiagnosticOutput.from_dict(parsed)\n                except (ValueError, json.JSONDecodeError, TypeError, KeyError) as exc:\n                    parse_error = f"{type(exc).__name__}: {exc}"\n
+                try:
+                    parsed = _extract_json(raw)
+                    validate_schema(parsed, DIAGNOSTIC_OUTPUT_SCHEMA, "diagnostic_output_schema")
+                    DiagnosticOutput.from_dict(parsed)
+                except (ValueError, json.JSONDecodeError, TypeError, KeyError) as exc:
+                    parse_error = f"{type(exc).__name__}: {exc}"
+
                 completed_at = datetime.now(timezone.utc)
                 record = {
                     "source_commit": source_commit,
