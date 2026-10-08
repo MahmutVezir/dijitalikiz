@@ -7,36 +7,42 @@ from dijitalikiz.models import DiagnosticOutput, ResearchCase
 
 
 def _load_case() -> ResearchCase:
-    sample = Path(__file__).resolve().parents[1] / "data" / "sample_cases" / "supabase_rls_case.json"
-    with sample.open("r", encoding="utf-8") as handle:
-        payload = json.load(handle)
-    return ResearchCase.from_dict(payload)
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "data"
+        / "pilot"
+        / "commons-math-defects4j-MATH-927.json"
+    )
+    with path.open("r", encoding="utf-8") as handle:
+        return ResearchCase.from_dict(json.load(handle))
 
 
 def test_standard_context_includes_error_details():
     case = _load_case()
     rendered = render_standard_context(case)
     assert "Error description:" in rendered
-    assert "The profile list shows rows from other users" in rendered
+    assert "GammaDistribution cloning failed" in rendered
     assert "I_base:" in rendered
 
 
 def test_ccdg_context_includes_dependencies():
     case = _load_case()
     rendered = render_ccdg_context(case)
-    assert "React ProfileList" in rendered
-    assert "calls" in rendered
-    assert "protected_by" in rendered
-    assert "auth.uid" in rendered
+    assert "GammaDistribution" in rendered
+    assert "inherits_from" in rendered
+    assert "BitsStreamGenerator" in rendered
 
 
 def test_evaluation_accepts_matching_output():
     case = _load_case()
     output = DiagnosticOutput(
-        diagnosed_component="RLS",
-        root_cause_class="policy_condition_mismatch",
-        affected_entity="profiles",
-        explanation="The SELECT bug happens because authenticated_user must match profiles.id and auth.uid semantics are incorrect.",
+        diagnosed_component="BitsStreamGenerator",
+        root_cause_class="non_serializable_dependency_in_inheritance_chain",
+        affected_entity="GammaDistribution",
+        explanation=(
+            "The serialization/cloning operation fails because the "
+            "GammaDistribution dependency chain reaches BitsStreamGenerator."
+        ),
     )
     result = evaluate_output(output, case.ground_truth)
     assert result["passed"] is True
