@@ -12,6 +12,7 @@ REQUIRED_FINAL_FILES = (
     Path("data/pilot/pilot_evaluation.json"),
     Path("data/pilot/case_level_analysis.json"),
     Path("data/pilot/pilot_qa_report.json"),
+    Path("data/pilot/pilot_records.jsonl"),
 )
 
 
