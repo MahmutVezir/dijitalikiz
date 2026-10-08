@@ -16,107 +16,65 @@ Status: model configuration frozen; local/Kaggle inference execution pending.
 - Conditions: Standard and CCDG
 - Cases: MATH-927, MATH-950, MATH-988
 
-The selected Hugging Face model is the official Qwen2.5 3B Instruct GPTQ-Int4 checkpoint. The model card documents direct Transformers loading with `device_map="auto"`; the exact revision is pinned in the pilot manifest.
-
 ## Execution rule
 
-Do not change model, revision, temperature, seeds, prompt template, case records, or context renderer after the first pilot inference.
+İlk inference başlamadan önce model, revision, temperature, seeds, prompt, case records ve context renderer frozen durumdadır. İlk inference sonrasında bunlardan hiçbiri değiştirilemez.
 
-The runner is fail-closed: if frozen run files already exist, a normal invocation stops rather than overwriting them. Use `--resume` only to preserve existing records and generate missing records after an interrupted execution.
+Runner fail-closed'dur: mevcut run kayıtlarını ezmez. Interrupted execution için `--resume` yalnızca eksik kayıtları tamamlamak amacıyla kullanılır.
 
-## Kaggle execution
+## Kaggle Frozen Pilot
 
-The supported automated route is the GitHub Actions workflow:
+Desteklenen workflow adı: **Kaggle Frozen Pilot**.
 
-1. Open **Actions → Kaggle Pilot**.
-2. Select **Run workflow**.
-3. Set `execute_inference=true` only when you intentionally want to launch the frozen 30-run experiment.
-4. The workflow checks out the exact Git commit and packages that source tree into the private Kaggle kernel.
-5. Kaggle runs the CUDA preflight, environment capture, frozen integrity audit, 30 inferences, evaluator, case-level analysis, QA, JSONL export, and artifact checksum generation.
-6. The workflow independently verifies the downloaded artifact manifest and then stores the result only as a GitHub Actions artifact named with the source commit.
+- Workflow manual-only ve opt-in'dir.
+- `execute_inference=true` olmadan job çalışmaz.
+- GitHub Actions exact Git commit'i `git archive` ile private Kaggle kernel paketine koyar.
+- Kaggle kernel; environment capture, CUDA preflight, model-load preflight, frozen audit, 30 inference ve finalization zincirini çalıştırır.
+- Finalization sırası: integrity audit → evaluation → case-level analysis → QA → JSONL → artifact manifest.
+- İndirilen artifact manifest workflow tarafından ayrıca SHA-256 doğrulanır.
+- Deney çıktısı `main` branch'e otomatik commit edilmez.
 
-The workflow is intentionally **manual-only and opt-in**. A normal push to `main` must never launch a 30-run scientific inference automatically.
-
-This packaging design is required because the research repository is private; the Kaggle kernel must not attempt an unauthenticated `git clone` of the repository.
+Kaggle tarafında doğrudan private GitHub clone yapılmaz; gerekli kaynak exact bundle olarak taşınır.
 
 ## Local execution
 
-Install:
+```bash
+pip install -r requirements-pilot.txt
+python scripts/pilot_preflight.py --require-cuda
+python scripts/model_load_preflight.py
+python scripts/capture_environment.py
+python scripts/run_pilot.py
+```
 
-    pip install -r requirements-pilot.txt
+Expected:
+`3 cases × 2 conditions × 5 seeds = 30 records`
 
-Before inference, verify the environment:
+Sonrasında:
 
-    python scripts/pilot_preflight.py --require-cuda
+```bash
+python scripts/finalize_pilot.py
+```
 
-The preflight now checks the exact runtime versions declared in `data/pilot/pilot_manifest.json`.
+Final artifacts:
 
-Then perform the load-only model smoke test (no experimental generation is performed):
+```
+data/pilot/pilot_records.jsonl
+data/pilot/pilot_evaluation.json
+data/pilot/case_level_analysis.json
+data/pilot/pilot_qa_report.json
+data/pilot/artifact_manifest.json
+```
 
-    python scripts/model_load_preflight.py
+## Artifact integrity
 
-Capture the environment:
+`artifact_manifest.json` canonical pilot output listesini ve SHA-256 bütünlük bilgisini taşır.
 
-    python scripts/capture_environment.py
+Bağımsız doğrulama:
 
-Then run:
+```bash
+python scripts/validate_pilot_artifact_manifest.py
+```
 
-    python scripts/run_pilot.py
+## Scientific gate
 
-For an interrupted run, preserve existing records:
-
-    python scripts/run_pilot.py --resume
-
-Outputs are written to:
-
-    data/pilot/runs/
-
-Expected inference records:
-
-    3 cases x 2 conditions x 5 seeds = 30 records.
-
-No accuracy claim should be made from the pilot alone. Pilot results must first be inspected for parse failures, repeated identical generations, condition contamination, and obvious schema violations before proceeding to the main benchmark.
-
-## Automated pilot evaluation
-
-After inference completes, run:
-
-    python scripts/evaluate_pilot.py
-
-This reads the stored inference records without calling the model again and writes:
-
-    data/pilot/pilot_evaluation.json
-
-Then run:
-
-    python scripts/analyze_case_level.py \
-      --evaluation data/pilot/pilot_evaluation.json \
-      --case-ids commons-math-defects4j-MATH-927 commons-math-defects4j-MATH-950 commons-math-defects4j-MATH-988 \
-      --output data/pilot/case_level_analysis.json
-
-The evaluator reports, separately for Standard and CCDG:
-
-- number of expected/found records
-- parse success and parse-failure rate
-- deterministic diagnostic pass count and pass rate
-- repeated identical parsed outputs across different seeds
-
-It also records per-run scoring details. Missing inference records make the evaluation status `incomplete`.
-
-The evaluation uses the frozen deterministic matcher in `dijitalikiz/evaluation.py`. Do not change that matcher after pilot inference has started; otherwise the pilot would no longer be scored under a frozen analysis rule.
-
-## Final artifact verification
-
-The finalized pilot contains:
-
-    data/pilot/pilot_records.jsonl
-    data/pilot/pilot_evaluation.json
-    data/pilot/case_level_analysis.json
-    data/pilot/pilot_qa_report.json
-    data/pilot/artifact_manifest.json
-
-The checksum manifest is independently verified with:
-
-    python scripts/validate_pilot_artifact_manifest.py
-
-The Kaggle workflow does not write experiment output back to `main`; results remain an immutable Actions artifact until they are explicitly incorporated into the research archive.
+Pilot tamamlanmadan main benchmark freeze edilmez. Pilot çıktıları sadece execution integrity ve predeclared pilot analysis için kullanılır; confirmatory benchmark case selection sonuçlara göre geriye dönük yapılmaz.
