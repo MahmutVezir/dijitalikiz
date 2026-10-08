@@ -44,11 +44,7 @@ def test_confirmatory_scripts_compile():
         py_compile.compile(str(path), doraise=True)
 
 
-def test_confirmatory_workflow_is_manual_and_opt_in():
-    text = (
-        ROOT / ".github" / "workflows" / "kaggle-confirmatory.yml"
-    ).read_text(encoding="utf-8")
-    assert "workflow_dispatch:" in text
-    assert "default: false" in text
-    assert "if: inputs.execute_inference == true" in text
-    assert "on:\n  push" not in text
+def test_kaggle_automation_is_single_canonical_workflow():
+    workflow_dir = ROOT / ".github" / "workflows"
+    workflow_names = sorted(path.name for path in workflow_dir.glob("*.yml"))
+    assert workflow_names == ["kaggle-pilot.yml"]
