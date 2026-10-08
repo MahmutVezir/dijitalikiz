@@ -1,0 +1,53 @@
+{
+  "case_id": "commons-math-defects4j-MATH-305",
+  "source": "Apache Commons JIRA + Defects4J",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-305",
+  "publication_date": "2009-11-27",
+  "technology": "Apache Commons Math / Java / clustering",
+  "error_description": "Integer overflow in MathUtils.distance could make KMeansPlusPlusClusterer fail when point-coordinate differences produced sums beyond the integer range.",
+  "i_base": [
+    "KMeansPlusPlusClusterer computes distances between input points.",
+    "The clustering path delegates array-distance computation to MathUtils.distance.",
+    "The int-array overload accumulated squared differences in an int before the fix.",
+    "Large coordinate differences can overflow the integer accumulator and corrupt the distance used by clustering."
+  ],
+  "ccdg": [
+    {
+      "source": "KMeansPlusPlusClusterer",
+      "target": "MathUtils.distance",
+      "relation": "delegates_point_distance",
+      "details": "cluster-center selection depends on point distance"
+    },
+    {
+      "source": "MathUtils.distance",
+      "target": "integer_accumulator",
+      "relation": "computes_squared_distance",
+      "details": "int overload accumulated squared differences before the fix"
+    },
+    {
+      "source": "integer_accumulator",
+      "target": "KMeansPlusPlusClusterer",
+      "relation": "propagates_distance_error",
+      "details": "overflow corrupts the distance used during cluster analysis"
+    }
+  ],
+  "ground_truth": {
+    "component": "MathUtils",
+    "entity": "Euclidean distance for int arrays",
+    "operation": "distance(int[], int[])",
+    "root_cause": "integer_overflow_in_squared_distance_accumulator",
+    "required_relations": [
+      "KMeansPlusPlusClusterer",
+      "MathUtils.distance",
+      "integer_accumulator",
+      "point_distance"
+    ]
+  },
+  "split": "confirmatory",
+  "provenance": {
+    "source_system": "Defects4J",
+    "fixed_revision": "ef9b639afc3dd8d1c35eab23cc9cb6b3a6a2c858",
+    "fixed_revision_date": "2009-11-27",
+    "date_basis": "fixed_revision_date_used_as_recorded_date_when_issue_creation_date_is not consistently exposed in the source record"
+  }
+}
