@@ -4,6 +4,7 @@ import argparse
 import json
 import platform
 import sys
+from importlib.metadata import PackageNotFoundError, version as distribution_version
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -12,8 +13,10 @@ MODEL_REVISION = "68c4276063d1496cdf13d0b8e8221f899bfa77f7"
 
 
 def package_version(name: str) -> str:
-    module = __import__(name.replace("-", "_"))
-    return str(getattr(module, "__version__", "unknown"))
+    try:
+        return str(distribution_version(name.replace("_", "-")))
+    except PackageNotFoundError:
+        return "unknown"
 
 
 def main() -> int:
