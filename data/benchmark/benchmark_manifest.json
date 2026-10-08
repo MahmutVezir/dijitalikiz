@@ -1,0 +1,20 @@
+{
+  "version": "0.1",
+  "status": "draft",
+  "pilot_case_ids": [
+    "commons-math-defects4j-MATH-927",
+    "commons-math-defects4j-MATH-950",
+    "commons-math-defects4j-MATH-988"
+  ],
+  "case_ids": [],
+  "contamination_audit_completed": false,
+  "power_assumption": null,
+  "analysis": {
+    "primary_endpoint": "case_level_complete_diagnostic_correctness",
+    "replication_rule": "at least 3 of 5 seeds",
+    "test": "exact two-sided McNemar",
+    "alpha": 0.05,
+    "unit": "independent software case"
+  },
+  "freeze_rule": "This manifest may become frozen only after independent cases, case records, assessments, contamination audit metadata, and power assumptions are explicitly documented."
+}
