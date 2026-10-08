@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 
-def validate_manifest(manifest: dict) -> list[str]:
+def validate_manifest(manifest: dict, root: Path | None = None) -> list[str]:
     errors: list[str] = []
     status = manifest.get("status")
     if status not in {"draft", "frozen"}:
@@ -23,6 +23,42 @@ def validate_manifest(manifest: dict) -> list[str]:
     overlap = sorted(set(case_ids) & pilot_case_ids)
     if overlap:
         errors.append(f"confirmatory cases overlap pilot cases: {overlap}")
+
+    if root is None:
+        root = Path(".")
+
+    if status == "frozen":
+        for case_id in case_ids:
+            case_path = root / "data" / "benchmark" / "cases" / f"{case_id}.json"
+            if not case_path.is_file():
+                errors.append(f"missing benchmark case file: {case_path}")
+            else:
+                try:
+                    case = json.loads(case_path.read_text(encoding="utf-8"))
+                    required_case_fields = {"case_id", "source", "source_url", "publication_date", "technology", "error_description", "i_base", "ccdg", "ground_truth"}
+                    missing_case_fields = sorted(required_case_fields - set(case))
+                    if missing_case_fields:
+                        errors.append(f"{case_id} missing case fields: {missing_case_fields}")
+                    if case.get("case_id") != case_id:
+                        errors.append(f"{case_id} file contains mismatched case_id")
+                except (OSError, json.JSONDecodeError) as exc:
+                    errors.append(f"cannot read {case_path}: {type(exc).__name__}: {exc}")
+
+            assessment_path = root / "data" / "assessments" / f"{case_id}.json"
+            if not assessment_path.is_file():
+                errors.append(f"missing assessment file: {assessment_path}")
+            else:
+                try:
+                    assessment = json.loads(assessment_path.read_text(encoding="utf-8"))
+                    if assessment.get("eligible_for_pilot") is not True:
+                        errors.append(f"{case_id} assessment is not marked eligible")
+                    if assessment.get("contamination_risk") in {None, "unknown"}:
+                        errors.append(f"{case_id} contamination risk is not resolved")
+                except (OSError, json.JSONDecodeError) as exc:
+                    errors.append(f"cannot read {assessment_path}: {type(exc).__name__}: {exc}")
+
+        if manifest.get("contamination_audit_completed") is not True:
+            errors.append("a frozen benchmark requires contamination_audit_completed=true")
 
     power = manifest.get("power_assumption")
     if status == "frozen":
@@ -59,7 +95,7 @@ def main() -> int:
     args = parser.parse_args()
 
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
-    errors = validate_manifest(manifest)
+    errors = validate_manifest(manifest, Path(args.manifest).resolve().parents[2] if Path(args.manifest).parts[-2:] == ("benchmark", "benchmark_manifest.json") else Path("."))
     if errors:
         print(json.dumps({"status": "fail", "errors": errors}, indent=2, ensure_ascii=False))
         return 1
