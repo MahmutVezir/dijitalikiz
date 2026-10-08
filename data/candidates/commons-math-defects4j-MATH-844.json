@@ -1,5 +1,4 @@
 {
-  "id": "commons-math-defects4j-MATH-844",
   "source": "Apache Commons JIRA + Defects4J",
   "source_url": "https://issues.apache.org/jira/browse/MATH-844",
   "publication_date": "2012-08-12",
@@ -49,5 +48,6 @@
   },
   "split": "candidates",
   "annotation_status": "annotated_provisional",
-  "provenance_verification_status": "verified"
+  "provenance_verification_status": "verified",
+  "case_id": "commons-math-defects4j-MATH-844"
 }
