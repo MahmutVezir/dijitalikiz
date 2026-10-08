@@ -79,6 +79,16 @@ def main() -> int:
         results.append(check(installed, f"python_package_{package}", "installed" if installed else "missing"))
 
     expected_runtime = manifest.get("runtime", {})
+    requirements_path = expected_runtime.get("requirements_path")
+    requirements_sha = expected_runtime.get("requirements_sha256")
+    if requirements_path and requirements_sha:
+        requirements_file = ROOT / requirements_path
+        actual_requirements_sha = sha256_file(requirements_file) if requirements_file.is_file() else None
+        results.append(check(
+            actual_requirements_sha == requirements_sha,
+            "requirements_frozen",
+            f"expected={requirements_sha}, actual={actual_requirements_sha}",
+        ))
     expected_python = expected_runtime.get("python")
     if expected_python:
         actual_python = f"{sys.version_info.major}.{sys.version_info.minor}"
