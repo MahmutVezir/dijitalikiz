@@ -74,6 +74,8 @@ jobs:
           test -n "$(find pilot-artifact -name pilot_evaluation.json -print -quit)"
           test -n "$(find pilot-artifact -name pilot_qa_report.json -print -quit)"
           test -n "$(find pilot-artifact -name artifact_manifest.json -print -quit)"
+          PILOT_ROOT="$(dirname "$(find pilot-artifact -name artifact_manifest.json -print -quit)")"
+          python scripts/validate_pilot_artifact_manifest.py --artifact-root "$PILOT_ROOT" --manifest "$PILOT_ROOT/artifact_manifest.json"
           PILOT_ROOT="$(dirname "$(find pilot-artifact -name pilot_evaluation.json -print -quit)")"
           test -f "$PILOT_ROOT/pilot_evaluation.json"
           echo "PILOT_ARTIFACT_ROOT=$PILOT_ROOT" >> "$GITHUB_ENV"
