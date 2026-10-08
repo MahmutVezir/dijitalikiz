@@ -44,3 +44,16 @@ def test_runner_defaults_to_fail_closed_when_records_exist(tmp_path, monkeypatch
     monkeypatch.setattr("sys.argv", ["run_pilot.py", "--output-dir", str(output_dir)])
     with pytest.raises(RuntimeError, match="already exist"):
         run_pilot.main()
+
+
+def test_frozen_runtime_versions_are_declared_in_manifest():
+    import json
+
+    manifest = json.loads(run_pilot.MANIFEST.read_text(encoding="utf-8"))
+    runtime = manifest["runtime"]
+    assert runtime["python"] == "3.11"
+    assert runtime["torch"] == "2.2.1"
+    assert runtime["transformers"] == "4.43.2"
+    assert runtime["accelerate"] == "0.33.0"
+    assert runtime["optimum"] == "1.17.1"
+    assert runtime["auto_gptq"] == "0.7.1"
