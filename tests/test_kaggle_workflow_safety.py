@@ -38,7 +38,13 @@ def test_kaggle_pilot_builds_exact_source_dataset_and_safe_launcher():
     assert "source_bundle_sha256.txt" in workflow
     assert "python -m py_compile .kaggle-kernel/kernel.py" in workflow
     assert "PROJECT_B64_PLACEHOLDER" not in workflow
-    assert "bundle_source" in workflow
+    
+
+def test_kaggle_launcher_contains_no_stale_bundle_reference():
+    kernel = (ROOT / "kaggle" / "kernel.py").read_text(encoding="utf-8")
+    assert "bundle_source" not in kernel
+    assert 'SOURCE_DATASET = "mahmutvezir/dijitalikiz-frozen-source-v2"' in kernel
+    assert "source_bundle_sha256.txt" in kernel
 
 
 def test_kaggle_pilot_checks_canonical_final_artifacts():
