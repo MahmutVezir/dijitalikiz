@@ -1,24 +1,42 @@
-import os
+from __future__ import annotations
+
+import shutil
 import subprocess
 import sys
+import tarfile
+from pathlib import Path
 
-REPO = "https://github.com/MahmutVezir/dijitalikiz.git"
-REF = os.environ.get("GITHUB_SHA", "main")
-WORKDIR = "/kaggle/working/dijitalikiz"
+KERNEL_ROOT = Path("/kaggle/working")
+BUNDLE = KERNEL_ROOT / "project.tar.gz"
+SOURCE_COMMIT_FILE = KERNEL_ROOT / "source_commit.txt"
+WORKDIR = KERNEL_ROOT / "dijitalikiz"
 
-def run(*args, cwd=None):
+
+def run(*args: str, cwd: Path | None = None) -> None:
     print("$", " ".join(args), flush=True)
-    subprocess.run(args, cwd=cwd, check=True)
+    subprocess.run(args, cwd=str(cwd) if cwd else None, check=True)
 
-run("git", "clone", "--depth", "1", REPO, WORKDIR)
-# The workflow's pushed kernel is generated from a GitHub commit. The clone
-# intentionally follows the repository default branch so the Kaggle runner
-# remains usable independently of GitHub Actions environment variables.
+
+if not BUNDLE.is_file():
+    raise RuntimeError("Exact-source project bundle is missing from the Kaggle kernel package.")
+
+if WORKDIR.exists():
+    shutil.rmtree(WORKDIR)
+WORKDIR.mkdir(parents=True, exist_ok=True)
+
+with tarfile.open(BUNDLE, "r:gz") as archive:
+    archive.extractall(WORKDIR)
+
+source_commit = SOURCE_COMMIT_FILE.read_text(encoding="utf-8").strip() if SOURCE_COMMIT_FILE.exists() else "unknown"
+(WORKDIR / "data/pilot").mkdir(parents=True, exist_ok=True)
+(WORKDIR / "data/pilot/kaggle_source_commit.txt").write_text(source_commit + "\n", encoding="utf-8")
+
 run(sys.executable, "-m", "pip", "install", "-r", "requirements-pilot.txt", cwd=WORKDIR)
-
 run(sys.executable, "scripts/capture_environment.py", cwd=WORKDIR)
+run(sys.executable, "scripts/pilot_preflight.py", "--require-cuda", cwd=WORKDIR)
 run(sys.executable, "scripts/audit_pilot_integrity.py", cwd=WORKDIR)
 run(sys.executable, "scripts/run_pilot.py", cwd=WORKDIR)
+run(sys.executable, "scripts/audit_pilot_integrity.py", cwd=WORKDIR)
 run(sys.executable, "scripts/evaluate_pilot.py", cwd=WORKDIR)
 run(
     sys.executable,
@@ -34,4 +52,4 @@ run(
     cwd=WORKDIR,
 )
 
-print("Kaggle pilot completed.", flush=True)
+print(f"Kaggle pilot completed for source commit {source_commit}.", flush=True)
