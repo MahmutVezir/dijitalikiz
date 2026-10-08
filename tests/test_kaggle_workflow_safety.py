@@ -49,6 +49,8 @@ def test_kaggle_launcher_contains_no_stale_bundle_reference():
     assert 'SOURCE_DATASET = "mahmutvezir/dijitalikiz-frozen-source-v2"' in kernel
     assert "source_bundle_sha256.txt" in kernel
     assert "__EXPECTED_SOURCE_COMMIT__" in kernel
+    assert "rglob(\"project.tar.gz.b64\")" in kernel
+    assert "Multiple complete frozen source dataset payloads" in kernel
 
 
 def test_kaggle_pilot_checks_canonical_final_artifacts():
