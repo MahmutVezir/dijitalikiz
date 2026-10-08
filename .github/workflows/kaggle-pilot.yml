@@ -72,6 +72,7 @@ jobs:
           rm -rf .kaggle-kernel
           mkdir -p .kaggle-kernel
           cp kaggle/kernel.py .kaggle-kernel/kernel.py
+          sed -i "s/^SOURCE_COMMIT = .*/SOURCE_COMMIT = \"$GITHUB_SHA\"/" .kaggle-kernel/kernel.py
           git archive --format=tar.gz --output=.kaggle-kernel/project.tar.gz HEAD
           printf '%s\n' "$GITHUB_SHA" > .kaggle-kernel/source_commit.txt
           cat > .kaggle-kernel/kernel-metadata.json <<EOF
