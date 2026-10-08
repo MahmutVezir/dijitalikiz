@@ -4,6 +4,7 @@
   "pilot_case_ids": [
     "commons-math-defects4j-MATH-927",
     "commons-math-defects4j-MATH-950",
+    "commons-math-defects4j-MATH-949",
     "commons-math-defects4j-MATH-988"
   ],
   "case_ids": [
@@ -49,8 +50,7 @@
     "contamination_policy": "conservative high public-exposure risk; not evidence of training-set membership",
     "pilot_cases_excluded": true,
     "excluded_weak_cases": [
-      "commons-math-defects4j-MATH-938",
-      "commons-math-defects4j-MATH-949"
+      "commons-math-defects4j-MATH-938"
     ],
     "replacements": {
       "removed": [
