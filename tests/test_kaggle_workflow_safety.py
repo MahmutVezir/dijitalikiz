@@ -16,7 +16,7 @@ def test_kaggle_pilot_is_manual_only_and_opt_in():
     assert "\n  push:" not in workflow
     assert 'description: "Run the frozen 40-inference pilot on Kaggle GPU"' in workflow
     assert "default: false" in workflow
-    assert "if: inputs.execute_inference == true" in workflow
+    assert "if: github.event_name == 'workflow_dispatch' && inputs.execute_inference == true" in workflow
 
 
 def test_kaggle_pilot_is_read_only_against_github_repository():
