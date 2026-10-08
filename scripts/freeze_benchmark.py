@@ -31,7 +31,7 @@ def main()->int:
         raise SystemExit("Frozen benchmark validation failed: "+" | ".join(frozen_errors))
     manifest["status"]="frozen"
     manifest["freeze_metadata"]={
-        "frozen_at_utc":"generated-during-execution",
+        "frozen_at_utc": datetime.now(timezone.utc).isoformat(),
         "pilot_completion_verified":True,
         "case_selection_model_outputs_consulted":False,
         "freeze_is_non_post_hoc":"true"
