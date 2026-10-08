@@ -162,3 +162,32 @@ No scientific result is marked complete without actual inference data. No result
 The project must NOT be marked scientifically complete while Phase 1 real inference and Phase 3 confirmatory benchmark construction remain incomplete.
 
 The current repository is therefore **protocol-ready / experiment-pending**, not result-complete.
+
+
+### Phase 3 — Confirmatory benchmark construction
+- [x] Define independent-case exclusion guard in the benchmark manifest validator
+- [x] Define confirmatory case-selection specification
+- [x] Define benchmark freeze gate for provenance/eligibility/contamination/power metadata
+- [x] Build and screen an independent candidate pool
+- [x] Verify source/fix provenance for the preselected confirmatory pool
+- [x] Record provisional CCDG and ground-truth annotations for screening
+- [x] Resolve contamination-risk labels for the preselected 16-case pool
+- [x] Perform pre-freeze independent structural review of the selected case records
+- [x] Prepare the 16 final case IDs without consulting model outputs
+- [x] Predeclare McNemar power assumptions and target sample size
+- [ ] Freeze final benchmark manifest after pilot completion
+
+### Phase 4 — Confirmatory experiment
+- [x] Implement frozen confirmatory runner
+- [x] Implement confirmatory integrity audit
+- [x] Implement confirmatory evaluator
+- [x] Implement case-level and primary statistical analysis
+- [x] Implement confirmatory QA and immutable artifact manifest
+- [x] Implement manual-only Kaggle GPU execution lane
+- [ ] Capture environment on the actual confirmatory inference machine
+- [ ] Run 160 real confirmatory inferences
+- [ ] Preserve raw outputs and metadata
+- [ ] Complete confirmatory integrity audit
+
+### Current status update — 2026-10-08
+The confirmatory dataset and execution pipeline are now mechanically prepared. The repository remains scientifically experiment-pending because the 30-run pilot has not yet produced actual inference records and the confirmatory manifest therefore remains draft. No effectiveness result or hypothesis decision has been inferred.
