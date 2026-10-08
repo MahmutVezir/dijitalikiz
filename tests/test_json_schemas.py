@@ -43,6 +43,15 @@ def test_benchmark_manifest_schema_accepts_draft_manifest():
     )
 
 
+def test_candidate_and_assessment_schemas_accept_current_pool():
+    candidate_schema = ROOT / "schemas" / "candidate.schema.json"
+    assessment_schema = ROOT / "schemas" / "candidate_assessment.schema.json"
+    for candidate_path in (ROOT / "data" / "candidates").glob("*.json"):
+        validate(candidate_schema, json.loads(candidate_path.read_text(encoding="utf-8")))
+        assessment_path = ROOT / "data" / "assessments" / candidate_path.name
+        validate(assessment_schema, json.loads(assessment_path.read_text(encoding="utf-8")))
+
+
 def test_all_schema_files_are_valid_json():
     for schema_path in (ROOT / "schemas").glob("*.schema.json"):
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
