@@ -86,7 +86,7 @@ The repository now has a 16-case preselected confirmatory set prepared before co
 
 ### Preselected confirmatory set — 2026-10-08
 
-The current draft manifest contains 16 independent cases: CLOSURE-4, CLOSURE-6, CLOSURE-14, MATH-305, MATH-326, MATH-358, MATH-377, MATH-393, MATH-405, MATH-631, MATH-844, MATH-859, MATH-924, TIME-1, TIME-12 and MOCKITO-19.
+The current draft manifest contains 16 independent cases: CLOSURE-4, CLOSURE-6, CLOSURE-14, MATH-305, MATH-326, MATH-358, MATH-377, MATH-392, MATH-393, MATH-405, MATH-631, MATH-859, MATH-924, TIME-1, TIME-12 and MOCKITO-19.
 
 Pilot cases MATH-927, MATH-950 and MATH-988 are excluded. MATH-938 and MATH-949 remain excluded because their cross-component dependency/CCDG suitability was assessed as weak.
 
@@ -99,3 +99,5 @@ The predeclared McNemar design alternative is P(Standard fails, CCDG passes)=0.6
 `data/benchmark/benchmark_manifest.json` is intentionally still `draft`. It will be changed to `frozen` only by `scripts/freeze_benchmark.py` after a complete 30-record pilot artifact has been verified. Confirmatory inference is blocked while the manifest is not frozen.
 
 Historical cases whose issue-creation date was not consistently exposed are recorded with the fixing-commit date in the legacy `publication_date` field and an explicit `date_basis` provenance note. This is not an assertion that fix date equals issue publication date.
+
+MATH-844 is intentionally retained only in the screened candidate pool and is not selected for confirmatory inference.
