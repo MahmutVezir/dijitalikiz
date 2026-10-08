@@ -58,10 +58,7 @@ def generate(
         torch.cuda.manual_seed_all(seed)
 
     messages = [
-        {
-            "role": "system",
-            "content": system_prompt,
-        },
+        {"role": "system", "content": system_prompt},
         {"role": "user", "content": prompt},
     ]
     text = tokenizer.apply_chat_template(
@@ -84,6 +81,11 @@ def generate(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-dir", default="data/pilot/runs")
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Preserve existing frozen records and generate only missing records.",
+    )
     args = parser.parse_args()
 
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
@@ -114,9 +116,24 @@ def main() -> None:
         raise RuntimeError("Frozen prompt hash does not match pilot manifest.")
     if _sha256(system_prompt) != expected_system_prompt_hash:
         raise RuntimeError("Frozen system prompt hash does not match pilot manifest.")
-    tokenizer, model = load_model(model_id, revision)
+
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    expected_paths = [
+        output_dir / f"{case_id}__{condition}__seed{seed}.json"
+        for case_id in cases
+        for condition in conditions
+        for seed in seeds
+    ]
+    existing = [path for path in expected_paths if path.exists()]
+    if existing and not args.resume:
+        raise RuntimeError(
+            f"{len(existing)} frozen run record(s) already exist. "
+            "Use --resume to preserve them and generate only missing records."
+        )
+
+    tokenizer, model = load_model(model_id, revision)
 
     for case_name in cases:
         payload = json.loads(
@@ -135,6 +152,12 @@ def main() -> None:
             context_sha256 = _sha256(context)
 
             for seed in seeds:
+                path = output_dir / f"{case.case_id}__{condition}__seed{seed}.json"
+                if path.exists():
+                    if args.resume:
+                        print(f"SKIP existing frozen record: {path}", flush=True)
+                        continue
+
                 raw = generate(
                     tokenizer,
                     model,
@@ -169,11 +192,13 @@ def main() -> None:
                     "raw_output": raw,
                     "parsed_output": parsed,
                 }
-                path = output_dir / f"{case.case_id}__{condition}__seed{seed}.json"
-                path.write_text(
+                temporary = path.with_suffix(path.suffix + ".tmp")
+                temporary.write_text(
                     json.dumps(record, indent=2, ensure_ascii=False) + "\n",
                     encoding="utf-8",
                 )
+                temporary.replace(path)
+                print(f"WROTE {path}", flush=True)
 
 
 if __name__ == "__main__":
