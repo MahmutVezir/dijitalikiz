@@ -6,12 +6,12 @@ import shutil
 import subprocess
 import sys
 import tarfile
-import urllib.request
 from pathlib import Path
 
 KERNEL_ROOT = Path("/kaggle/working")
 SOURCE_COMMIT = "SOURCE_COMMIT_PLACEHOLDER"
 BUNDLE = KERNEL_ROOT / "project.tar.gz"
+PACKAGE_COMMIT = KERNEL_ROOT / "source_commit.txt"
 WORKDIR = KERNEL_ROOT / "dijitalikiz"
 
 
@@ -20,16 +20,27 @@ def run(*args: str, cwd: Path | None = None, env: dict[str, str] | None = None) 
     subprocess.run(args, cwd=str(cwd) if cwd else None, env=env, check=True)
 
 
-source_url = (
-    "https://github.com/MahmutVezir/dijitalikiz/archive/"
-    + SOURCE_COMMIT
-    + ".tar.gz"
-)
-print(f"Downloading exact project source: {SOURCE_COMMIT}", flush=True)
-urllib.request.urlretrieve(source_url, BUNDLE)
-
+# The GitHub Action packages the exact repository HEAD into project.tar.gz
+# before pushing this kernel. Do not fetch the private repository from inside
+# Kaggle; Kaggle cannot authenticate to the private GitHub repo.
 if not BUNDLE.is_file():
-    raise RuntimeError("Exact-source project bundle could not be downloaded from GitHub.")
+    raise RuntimeError(
+        "Exact-source project bundle is missing from the Kaggle kernel package."
+    )
+
+if not PACKAGE_COMMIT.is_file():
+    raise RuntimeError(
+        "Exact-source commit marker is missing from the Kaggle kernel package."
+    )
+
+packaged_commit = PACKAGE_COMMIT.read_text(encoding="utf-8").strip()
+if packaged_commit != SOURCE_COMMIT:
+    raise RuntimeError(
+        "Kaggle package source commit mismatch: "
+        f"launcher={SOURCE_COMMIT}, package={packaged_commit}"
+    )
+
+print(f"Using exact packaged project source: {SOURCE_COMMIT}", flush=True)
 
 if WORKDIR.exists():
     shutil.rmtree(WORKDIR)
