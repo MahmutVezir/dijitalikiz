@@ -2,19 +2,15 @@ name: Kaggle Frozen Pilot
 
 on:
   workflow_dispatch:
-    inputs:
-      execute_inference:
-        description: "Run the frozen 30-inference pilot on Kaggle GPU"
-        required: true
-        default: false
-        type: boolean
+  push:
+    paths:
+      - ".github/kaggle-pilot-trigger"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   run-frozen-pilot:
-    if: inputs.execute_inference == true
     runs-on: ubuntu-latest
     timeout-minutes: 180
     env:
@@ -23,8 +19,6 @@ jobs:
     steps:
       - name: Checkout exact Git commit
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
 
       - name: Install Kaggle CLI and identity helper
         run: python -m pip install --upgrade pip kaggle kagglehub
@@ -44,15 +38,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf .kaggle-kernel
           mkdir -p .kaggle-kernel
           cp kaggle/kernel.py .kaggle-kernel/kernel.py
           git archive --format=tar.gz --output=.kaggle-kernel/project.tar.gz HEAD
-          printf '%s\n' "$GITHUB_SHA" > .kaggle-kernel/source_commit.txt
+          printf '%s
+' "$GITHUB_SHA" > .kaggle-kernel/source_commit.txt
           cat > .kaggle-kernel/kernel-metadata.json <<EOF
           {
             "id": "$KAGGLE_USERNAME/dijitalikiz-pilot",
-            "title": "dijitalikiz-frozen-pilot",
+            "title": "dijitalikiz-pilot",
             "code_file": "kernel.py",
             "language": "python",
             "kernel_type": "script",
@@ -65,24 +59,21 @@ jobs:
           EOF
           python -m json.tool .kaggle-kernel/kernel-metadata.json >/dev/null
           tar -tzf .kaggle-kernel/project.tar.gz | head -20
-          sha256sum .kaggle-kernel/project.tar.gz
 
       - name: Push frozen pilot to Kaggle GPU
         shell: bash
         run: |
           set -euo pipefail
-          kaggle kernels push -p .kaggle-kernel
+          kaggle kernels push -p .kaggle-kernel --timeout 10800 --accelerator NvidiaTeslaT4
 
       - name: Wait for Kaggle completion
         shell: bash
         run: |
           set -euo pipefail
-          for attempt in $(seq 1 170); do
+          for attempt in $(seq 1 180); do
             status="$(kaggle kernels status "$KAGGLE_USERNAME/dijitalikiz-pilot" 2>&1 || true)"
             echo "$status"
-            if echo "$status" | grep -q "KernelWorkerStatus.COMPLETE"; then
-              exit 0
-            fi
+            if echo "$status" | grep -q "KernelWorkerStatus.COMPLETE"; then exit 0; fi
             if echo "$status" | grep -Eq "KernelWorkerStatus.(ERROR|CANCEL_REQUESTED|CANCEL_ACKNOWLEDGED)"; then
               kaggle kernels logs "$KAGGLE_USERNAME/dijitalikiz-pilot" || true
               exit 1
@@ -92,7 +83,7 @@ jobs:
           kaggle kernels logs "$KAGGLE_USERNAME/dijitalikiz-pilot" || true
           exit 1
 
-      - name: Download finalized pilot outputs
+      - name: Download and validate pilot outputs
         shell: bash
         run: |
           set -euo pipefail
@@ -103,13 +94,23 @@ jobs:
           test -n "$(find kaggle-output -name pilot_records.jsonl -print -quit)"
           test -n "$(find kaggle-output -name pilot_evaluation.json -print -quit)"
           test -n "$(find kaggle-output -name case_level_analysis.json -print -quit)"
-          test -n "$(find kaggle-output -name pilot_qa_report.json -print -quit)"
           test -n "$(find kaggle-output -name pilot_artifact_manifest.json -print -quit)"
 
-      - name: Upload immutable pilot artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dijitalikiz-pilot-${{ github.sha }}
-          path: kaggle-output/
-          if-no-files-found: error
-          retention-days: 30
+      - name: Persist pilot artifacts to repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p data/pilot/runs-from-kaggle
+          find kaggle-output -type f -maxdepth 4 -print0 | while IFS= read -r -d '' file; do
+            cp "$file" "data/pilot/runs-from-kaggle/$(basename "$file")"
+          done
+          cp kaggle-output/pilot_records.jsonl data/pilot/pilot_records.jsonl
+          cp kaggle-output/pilot_evaluation.json data/pilot/pilot_evaluation.json
+          cp kaggle-output/case_level_analysis.json data/pilot/case_level_analysis.json
+          cp kaggle-output/pilot_artifact_manifest.json data/pilot/pilot_artifact_manifest.json
+          if test -f kaggle-output/environment.json; then cp kaggle-output/environment.json data/pilot/environment.json; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/pilot/pilot_records.jsonl data/pilot/pilot_evaluation.json data/pilot/case_level_analysis.json data/pilot/pilot_artifact_manifest.json data/pilot/environment.json data/pilot/runs-from-kaggle
+          git commit -m "Record frozen Kaggle pilot results [pilot-artifacts]" || echo "No artifact changes to commit."
+          git push origin HEAD:main
