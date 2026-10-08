@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       execute_inference:
-        description: "Run the frozen pilot on Kaggle GPU"
+        description: "Run the frozen 40-inference pilot on Kaggle GPU"
         required: true
         default: false
         type: boolean
@@ -16,14 +16,14 @@ permissions:
   contents: read
 
 concurrency:
-  group: dijitalikiz-frozen-pilot-v2
+  group: dijitalikiz-frozen-pilot
   cancel-in-progress: false
 
 jobs:
   run-frozen-pilot:
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.execute_inference == true)
     runs-on: ubuntu-24.04
-    timeout-minutes: 180
+    timeout-minutes: 240
     env:
       KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
 
@@ -33,44 +33,86 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run repository integrity gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test]"
+          pytest -q
+          python scripts/audit_pilot_integrity.py
+          python scripts/validate_all_cases.py
+          python scripts/validate_all_candidates.py
+
       - name: Install Kaggle CLI and identity helper
-        run: python -m pip install --upgrade pip kaggle kagglehub
-
-      - name: Verify token and resolve Kaggle account
         shell: bash
         run: |
           set -euo pipefail
-          test -n "$KAGGLE_API_TOKEN" || { echo "Missing GitHub secret: KAGGLE_API_TOKEN"; exit 1; }
+          python -m pip install --upgrade kaggle kagglehub
+
+      - name: Verify Kaggle credentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$KAGGLE_API_TOKEN" || {
+            echo "Missing GitHub Actions secret KAGGLE_API_TOKEN."
+            exit 1
+          }
           KAGGLE_USER="$(python -c 'import kagglehub; print(kagglehub.whoami(verbose=False)["username"])')"
-          test -n "$KAGGLE_USER" || { echo "Could not resolve Kaggle username from token"; exit 1; }
+          test -n "$KAGGLE_USER" || {
+            echo "Kaggle account lookup returned an empty username."
+            exit 1
+          }
           echo "KAGGLE_USERNAME=$KAGGLE_USER" >> "$GITHUB_ENV"
+          echo "Authenticated Kaggle account: $KAGGLE_USER"
           kaggle --version
-          kaggle kernels list --mine --page-size 20
 
-      - name: Resolve existing Kaggle pilot kernel slug
+      - name: Resolve existing Kaggle pilot kernel
         shell: bash
         run: |
           set -euo pipefail
-          KERNEL_REF="$(kaggle kernels list --mine --page-size 50 2>/dev/null | awk '$1=="mahmutvezir/dijitalikiz-frozen-pilot" {print $1; exit}')"
-          if [ -z "$KERNEL_REF" ]; then
-            echo "Expected Kaggle kernel mahmutvezir/dijitalikiz-frozen-pilot was not found."
-            kaggle kernels list --mine --page-size 50 || true
+          KERNEL_REF="$KAGGLE_USERNAME/dijitalikiz-frozen-pilot"
+          if ! kaggle kernels list --mine --page-size 100 2>/dev/null | awk -v id="$KERNEL_REF" '$1==id {found=1} END{exit found ? 0 : 1}'; then
+            echo "Expected Kaggle kernel $KERNEL_REF was not found."
+            kaggle kernels list --mine --page-size 100 || true
             exit 1
           fi
-          echo "Resolved existing Kaggle kernel: $KERNEL_REF"
+          echo "Resolved Kaggle kernel: $KERNEL_REF"
           echo "KAGGLE_KERNEL_REF=$KERNEL_REF" >> "$GITHUB_ENV"
-          kaggle kernels status "$KERNEL_REF" || true
 
-      - name: Publish exact-source Kaggle Dataset
+      - name: Build exact-source frozen dataset payload
         shell: bash
         run: |
           set -euo pipefail
           rm -rf .kaggle-source
           mkdir -p .kaggle-source
-          git archive             --format=tar.gz             --output=/tmp/dijitalikiz-source.tar.gz             HEAD             data/pilot             dijitalikiz             scripts             schemas             requirements-pilot.txt             pyproject.toml             README.md
+
+          git archive --format=tar.gz --output=/tmp/dijitalikiz-source.tar.gz HEAD \
+            data/pilot \
+            dijitalikiz \
+            scripts \
+            schemas \
+            requirements-pilot.txt \
+            pyproject.toml \
+            README.md
+
+          test -s /tmp/dijitalikiz-source.tar.gz
+          tar -tzf /tmp/dijitalikiz-source.tar.gz >/dev/null
+          if tar -tzf /tmp/dijitalikiz-source.tar.gz | grep -q '^RSC-Bench-pilot-v1.0-stage4-gated/'; then
+            echo "Legacy RSC-Bench tree leaked into the frozen source bundle."
+            exit 1
+          fi
+
           base64 -w 0 /tmp/dijitalikiz-source.tar.gz > .kaggle-source/project.tar.gz.b64
           printf '\n' >> .kaggle-source/project.tar.gz.b64
+          sha256sum /tmp/dijitalikiz-source.tar.gz | awk '{print $1}' > .kaggle-source/source_bundle_sha256.txt
           printf '%s\n' "$GITHUB_SHA" > .kaggle-source/source_commit.txt
+
           cat > .kaggle-source/dataset-metadata.json <<EOF
           {
             "title": "Dijitalikiz Frozen Source v2",
@@ -80,13 +122,21 @@ jobs:
             "licenses": [{"name": "MIT"}]
           }
           EOF
+
           python -m json.tool .kaggle-source/dataset-metadata.json >/dev/null
+          test -s .kaggle-source/project.tar.gz.b64
+          test -s .kaggle-source/source_bundle_sha256.txt
+          test -s .kaggle-source/source_commit.txt
+
+      - name: Publish exact-source Kaggle Dataset
+        shell: bash
+        run: |
+          set -euo pipefail
           DATASET_ID="mahmutvezir/dijitalikiz-frozen-source-v2"
           exists=0
           for attempt in $(seq 1 12); do
             if kaggle datasets list --mine --page-size 100 2>/dev/null | awk -v id="$DATASET_ID" '$1==id {found=1} END{exit found ? 0 : 1}'; then
               exists=1
-              echo "Kaggle source Dataset is visible to the authenticated account."
               break
             fi
             echo "Frozen source Dataset not visible yet (attempt $attempt/12)."
@@ -94,10 +144,8 @@ jobs:
           done
 
           if [ "$exists" -eq 1 ]; then
-            echo "Publishing a new version of the existing frozen source Dataset."
             kaggle datasets version -p .kaggle-source -m "Frozen source $GITHUB_SHA" -q -t -r skip
           else
-            echo "Frozen source Dataset is not present; creating it once."
             kaggle datasets create -p .kaggle-source -q -t -r skip
           fi
 
@@ -105,27 +153,35 @@ jobs:
           for attempt in $(seq 1 60); do
             if kaggle datasets list --mine --page-size 100 2>/dev/null | awk -v id="$DATASET_ID" '$1==id {found=1} END{exit found ? 0 : 1}'; then
               visible=1
-              echo "Frozen source Dataset is now visible."
               break
             fi
             echo "Waiting for Kaggle Dataset publication (attempt $attempt/60)."
             sleep 10
           done
+
           test "$visible" -eq 1 || {
             echo "Kaggle source Dataset did not become visible after publication."
+            kaggle datasets list --mine --page-size 100 || true
             exit 1
           }
+          echo "Published/verified Kaggle source Dataset: $DATASET_ID"
 
-      - name: Prepare Kaggle launcher
+      - name: Prepare Kaggle kernel launcher
         shell: bash
         run: |
           set -euo pipefail
           rm -rf .kaggle-kernel
           mkdir -p .kaggle-kernel
           cp kaggle/kernel.py .kaggle-kernel/kernel.py
+
           python -m py_compile .kaggle-kernel/kernel.py
           test "$(grep -c 'SOURCE_DATASET = "mahmutvezir/dijitalikiz-frozen-source-v2"' .kaggle-kernel/kernel.py)" -eq 1
-          test "$(grep -c 'source_commit_verified_from_kaggle_dataset' .kaggle-kernel/kernel.py)" -eq 1
+          test "$(grep -c 'source_bundle_sha256.txt' .kaggle-kernel/kernel.py)" -eq 1
+          if grep -q 'bundle_source' .kaggle-kernel/kernel.py; then
+            echo "Undefined legacy bundle_source reference remains in Kaggle launcher."
+            exit 1
+          fi
+
           cat > .kaggle-kernel/kernel-metadata.json <<EOF
           {
             "id": "$KAGGLE_KERNEL_REF",
@@ -144,28 +200,42 @@ jobs:
             "model_sources": []
           }
           EOF
+
           python -m json.tool .kaggle-kernel/kernel-metadata.json >/dev/null
-          sha256sum /tmp/dijitalikiz-source.tar.gz .kaggle-source/project.tar.gz.b64 .kaggle-source/source_commit.txt .kaggle-kernel/kernel.py
+          sha256sum /tmp/dijitalikiz-source.tar.gz .kaggle-source/project.tar.gz.b64 \
+            .kaggle-source/source_bundle_sha256.txt .kaggle-source/source_commit.txt \
+            .kaggle-kernel/kernel.py
 
       - name: Push frozen pilot to Kaggle
-        run: kaggle kernels push -p .kaggle-kernel
-
-      - name: Wait for Kaggle completion
         shell: bash
         run: |
           set -euo pipefail
-          for attempt in $(seq 1 170); do
+          kaggle kernels push -p .kaggle-kernel
+
+      - name: Wait for Kaggle frozen pilot
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 220); do
             status="$(kaggle kernels status "$KAGGLE_KERNEL_REF" 2>&1 || true)"
             echo "$status"
+
             if echo "$status" | grep -q "KernelWorkerStatus.COMPLETE"; then
+              echo "Kaggle frozen pilot completed."
               exit 0
             fi
+
             if echo "$status" | grep -Eq "KernelWorkerStatus.(ERROR|CANCEL_REQUESTED|CANCEL_ACKNOWLEDGED)"; then
+              echo "Kaggle frozen pilot failed."
               kaggle kernels logs "$KAGGLE_KERNEL_REF" || true
               exit 1
             fi
+
             sleep 60
           done
+
+          echo "Kaggle frozen pilot exceeded the polling deadline."
+          kaggle kernels status "$KAGGLE_KERNEL_REF" || true
           kaggle kernels logs "$KAGGLE_KERNEL_REF" || true
           exit 1
 
@@ -175,28 +245,33 @@ jobs:
           set -euo pipefail
           rm -rf kaggle-output
           mkdir -p kaggle-output
+
           kaggle kernels output "$KAGGLE_KERNEL_REF" -p kaggle-output --force
-          find kaggle-output -maxdepth 4 -type f -print | sort
-          for required in             pilot_records.jsonl             pilot_evaluation.json             case_level_analysis.json             pilot_qa_report.json             artifact_manifest.json
+          find kaggle-output -maxdepth 5 -type f -print | sort
+
+          for required in \
+            pilot_records.jsonl \
+            pilot_evaluation.json \
+            case_level_analysis.json \
+            pilot_qa_report.json \
+            artifact_manifest.json
           do
             test -n "$(find kaggle-output -name "$required" -type f -print -quit)" || {
               echo "Missing finalized Kaggle artifact: $required"
-              echo "Downloaded files:"
-              find kaggle-output -maxdepth 5 -type f -print | sort
               exit 1
             }
           done
-          MANIFEST_PATH="$(find kaggle-output -name artifact_manifest.json -type f -print -quit)"
-          test -n "$MANIFEST_PATH" || {
-            echo "artifact_manifest.json was not produced."
-            exit 1
-          }
 
-      - name: Verify downloaded artifact manifest
+      - name: Validate finalized pilot artifact
         shell: bash
         run: |
           set -euo pipefail
-          python scripts/validate_pilot_artifact_manifest.py             --artifact-root kaggle-output             --manifest "$(find kaggle-output -name artifact_manifest.json -print -quit)"
+          MANIFEST_PATH="$(find kaggle-output -name artifact_manifest.json -type f -print -quit)"
+          test -n "$MANIFEST_PATH" || exit 1
+          ROOT="$(dirname "$MANIFEST_PATH")"
+          python scripts/validate_pilot_artifact_manifest.py \
+            --artifact-root "$ROOT" \
+            --manifest "$MANIFEST_PATH"
 
       - name: Upload immutable pilot artifact
         uses: actions/upload-artifact@v4
