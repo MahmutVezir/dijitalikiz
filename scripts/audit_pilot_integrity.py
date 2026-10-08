@@ -42,6 +42,7 @@ def main() -> None:
     assert generation["do_sample"] is True
 
     checked = 0
+    observed_source_commits: set[str] = set()
     expected_paths = {
         Path(args.runs_dir) / f"{case_id}__{condition}__seed{seed}.json"
         for case_id in cases
@@ -69,6 +70,7 @@ def main() -> None:
                     continue
                 record = json.loads(path.read_text(encoding="utf-8"))
                 assert record["source_commit"]
+                observed_source_commits.add(record["source_commit"])
                 assert record["started_at_utc"]
                 assert record["completed_at_utc"]
                 assert record["raw_output_sha256"] == sha256_text(record["raw_output"])
@@ -90,6 +92,8 @@ def main() -> None:
     expected = len(cases) * len(conditions) * len(seeds)
     existing_paths = set(Path(args.runs_dir).glob("*.json")) if Path(args.runs_dir).exists() else set()
     unexpected = sorted(str(path) for path in existing_paths - expected_paths)
+    if len(observed_source_commits) > 1:
+        raise RuntimeError(f"Pilot records were produced from multiple source commits: {sorted(observed_source_commits)}")
     if args.require_complete and checked != expected:
         raise RuntimeError(f"Frozen pilot is incomplete: {checked}/{expected} expected records present.")
     if args.require_complete and unexpected:
@@ -101,6 +105,8 @@ def main() -> None:
         "checked_existing_records": checked,
         "missing_records": expected - checked,
         "unexpected_records": unexpected,
+        "source_commits": sorted(observed_source_commits),
+        "complete": checked == expected and not unexpected,
         "configuration_only": checked == 0,
         "message": (
             "Frozen configuration passed; no inference records exist yet."
