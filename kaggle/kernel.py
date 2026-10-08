@@ -6,10 +6,11 @@ import shutil
 import subprocess
 import sys
 import tarfile
+import urllib.request
 from pathlib import Path
 
 KERNEL_ROOT = Path("/kaggle/working")
-SOURCE_COMMIT = os.environ.get("PILOT_SOURCE_COMMIT", "3e588aa0c120aefc4e3971df5fa72091f442f8ab")
+SOURCE_COMMIT = "SOURCE_COMMIT_PLACEHOLDER"
 BUNDLE = KERNEL_ROOT / "project.tar.gz"
 WORKDIR = KERNEL_ROOT / "dijitalikiz"
 
@@ -19,7 +20,13 @@ def run(*args: str, cwd: Path | None = None, env: dict[str, str] | None = None) 
     subprocess.run(args, cwd=str(cwd) if cwd else None, env=env, check=True)
 
 
-subprocess.run([sys.executable, "-c", "import urllib.request, os; urllib.request.urlretrieve('https://github.com/MahmutVezir/dijitalikiz/archive/' + os.environ['PILOT_SOURCE_COMMIT'] + '.tar.gz', '/kaggle/working/project.tar.gz')"], check=True)
+source_url = (
+    "https://github.com/MahmutVezir/dijitalikiz/archive/"
+    + SOURCE_COMMIT
+    + ".tar.gz"
+)
+print(f"Downloading exact project source: {SOURCE_COMMIT}", flush=True)
+urllib.request.urlretrieve(source_url, BUNDLE)
 
 if not BUNDLE.is_file():
     raise RuntimeError("Exact-source project bundle could not be downloaded from GitHub.")
