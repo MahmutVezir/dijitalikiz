@@ -3,11 +3,13 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-
-from scripts.validate_benchmark_case import validate
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.validate_benchmark_case import validate
 
 # These JSON files live in data/pilot for execution bookkeeping and are not ResearchCase records.
 PILOT_CONTROL_FILES = {
