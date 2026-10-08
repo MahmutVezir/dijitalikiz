@@ -86,6 +86,9 @@ class CandidateAssessment:
         eligible = p.get("eligible_for_pilot", False)
         if not isinstance(eligible, bool):
             raise TypeError("eligible_for_pilot must be a boolean")
+        eligible_main = p.get("eligible_for_main", False)
+        if not isinstance(eligible_main, bool):
+            raise TypeError("eligible_for_main must be a boolean")
 
         obj = cls(
             case_id=str(p["case_id"]),
@@ -101,13 +104,16 @@ class CandidateAssessment:
             IC4=e(CriterionState,"IC4"), IC5=e(CriterionState,"IC5"), IC6=e(CriterionState,"IC6"),
             IC7=e(CriterionState,"IC7"),
             eligible_for_pilot=eligible,
-            eligible_for_main=bool(p.get("eligible_for_main", False)),
+            eligible_for_main=eligible_main,
             exclusion_reason=str(p.get("exclusion_reason", "")),
             notes=list(p.get("notes", [])),
         )
+        supplied_pilot = eligible
+        supplied_main = eligible_main
         recomputed_pilot = obj.recompute_eligibility()
-        if obj.eligible_for_pilot != recomputed_pilot:
+        expected_main = recomputed_pilot and obj.contamination_risk is not ContaminationRisk.UNKNOWN
+        if supplied_pilot != recomputed_pilot:
             raise ValueError("eligible_for_pilot does not match deterministic eligibility")
-        if obj.eligible_for_main != (recomputed_pilot and obj.contamination_risk is not ContaminationRisk.UNKNOWN):
+        if supplied_main != expected_main:
             raise ValueError("eligible_for_main does not match deterministic eligibility")
         return obj
