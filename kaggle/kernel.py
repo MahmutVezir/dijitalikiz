@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import json
 import os
 import shutil
@@ -10,8 +11,8 @@ from pathlib import Path
 
 KERNEL_ROOT = Path("/kaggle/working")
 SOURCE_COMMIT = "SOURCE_COMMIT_PLACEHOLDER"
+EMBEDDED_PROJECT_B64 = "PROJECT_B64_PLACEHOLDER"
 BUNDLE = KERNEL_ROOT / "project.tar.gz"
-PACKAGE_COMMIT = KERNEL_ROOT / "source_commit.txt"
 WORKDIR = KERNEL_ROOT / "dijitalikiz"
 
 
@@ -20,27 +21,22 @@ def run(*args: str, cwd: Path | None = None, env: dict[str, str] | None = None) 
     subprocess.run(args, cwd=str(cwd) if cwd else None, env=env, check=True)
 
 
-# The GitHub Action packages the exact repository HEAD into project.tar.gz
-# before pushing this kernel. Do not fetch the private repository from inside
-# Kaggle; Kaggle cannot authenticate to the private GitHub repo.
-if not BUNDLE.is_file():
-    raise RuntimeError(
-        "Exact-source project bundle is missing from the Kaggle kernel package."
-    )
+# Kaggle's kernel package does not reliably expose arbitrary sidecar files.
+# The GitHub Action therefore embeds the exact source archive into this
+# launcher. Kaggle never needs credentials for the private GitHub repository.
+if SOURCE_COMMIT == "SOURCE_COMMIT_PLACEHOLDER":
+    raise RuntimeError("Frozen source commit was not embedded into the Kaggle launcher.")
+if EMBEDDED_PROJECT_B64 == "PROJECT_B64_PLACEHOLDER":
+    raise RuntimeError("Exact project source was not embedded into the Kaggle launcher.")
 
-if not PACKAGE_COMMIT.is_file():
-    raise RuntimeError(
-        "Exact-source commit marker is missing from the Kaggle kernel package."
+try:
+    BUNDLE.write_bytes(
+        base64.b64decode(EMBEDDED_PROJECT_B64.encode("ascii"), validate=True)
     )
+except Exception as exc:
+    raise RuntimeError("Embedded exact-source project archive is invalid.") from exc
 
-packaged_commit = PACKAGE_COMMIT.read_text(encoding="utf-8").strip()
-if packaged_commit != SOURCE_COMMIT:
-    raise RuntimeError(
-        "Kaggle package source commit mismatch: "
-        f"launcher={SOURCE_COMMIT}, package={packaged_commit}"
-    )
-
-print(f"Using exact packaged project source: {SOURCE_COMMIT}", flush=True)
+print(f"Using embedded exact project source: {SOURCE_COMMIT}", flush=True)
 
 if WORKDIR.exists():
     shutil.rmtree(WORKDIR)
@@ -65,7 +61,7 @@ run(sys.executable, "scripts/capture_environment.py", cwd=WORKDIR, env=env)
 environment_path = pilot_dir / "environment.json"
 environment = json.loads(environment_path.read_text(encoding="utf-8"))
 environment["source_commit"] = source_commit
-environment["source_commit_verified_from_bundle"] = True
+environment["source_commit_verified_from_embedded_bundle"] = True
 environment_path.write_text(
     json.dumps(environment, indent=2, ensure_ascii=False) + "\n",
     encoding="utf-8",
