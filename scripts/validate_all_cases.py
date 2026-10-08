@@ -19,6 +19,7 @@ PILOT_CONTROL_FILES = {
     "case_level_analysis.json",
     "pilot_qa_report.json",
     "artifact_manifest.json",
+    "final_candidate_review_2026-10-08.json",
 }
 
 
