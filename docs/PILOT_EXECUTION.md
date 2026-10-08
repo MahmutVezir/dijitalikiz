@@ -49,6 +49,10 @@ Before inference, verify the environment:
 
     python scripts/pilot_preflight.py --require-cuda
 
+Then perform the load-only model smoke test (no experimental generation is performed):
+
+    python scripts/model_load_preflight.py
+
 Capture the environment:
 
     python scripts/capture_environment.py
