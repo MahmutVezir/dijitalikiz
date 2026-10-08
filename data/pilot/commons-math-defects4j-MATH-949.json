@@ -1,0 +1,71 @@
+{
+  "case_id": "commons-math-defects4j-MATH-949",
+  "source": "Apache Commons JIRA + Defects4J",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-949",
+  "publication_date": "2013-03-15",
+  "technology": "Apache Commons Math 3.2 / Java / Optimization",
+  "error_description": "Optimizer iteration reporting remained at zero because the shared BaseOptimizer iteration counter was not incremented by the concrete optimization loops.",
+  "i_base": [
+    "BaseOptimizer owns the public iteration counter returned by getIterations().",
+    "In the affected revision, concrete optimizer implementations used local iteration variables or loop counters without updating the shared BaseOptimizer counter.",
+    "The defect therefore crosses the shared optimizer abstraction and multiple concrete scalar and vector optimizer implementations.",
+    "The fixing revision routes optimizer loops through incrementIterationCount() and uses getIterations() for convergence logic."
+  ],
+  "ccdg": [
+    {
+      "source": "BaseOptimizer",
+      "target": "NonLinearConjugateGradientOptimizer",
+      "relation": "provides_iteration_counter",
+      "details": "Shared getIterations()/incrementIterationCount contract."
+    },
+    {
+      "source": "BaseOptimizer",
+      "target": "PowellOptimizer",
+      "relation": "provides_iteration_counter",
+      "details": "Shared public iteration state."
+    },
+    {
+      "source": "BaseOptimizer",
+      "target": "SimplexOptimizer",
+      "relation": "provides_iteration_counter",
+      "details": "Shared public iteration state."
+    },
+    {
+      "source": "BaseOptimizer",
+      "target": "CMAESOptimizer",
+      "relation": "provides_iteration_counter",
+      "details": "Shared public iteration state."
+    },
+    {
+      "source": "BaseOptimizer",
+      "target": "GaussNewtonOptimizer",
+      "relation": "provides_iteration_counter",
+      "details": "Shared public iteration state."
+    },
+    {
+      "source": "BaseOptimizer",
+      "target": "LevenbergMarquardtOptimizer",
+      "relation": "provides_iteration_counter",
+      "details": "Shared public iteration state."
+    },
+    {
+      "source": "LevenbergMarquardtOptimizer",
+      "target": "getIterations()",
+      "relation": "reports_optimizer_progress",
+      "details": "Public iteration count must reflect actual optimization iterations."
+    }
+  ],
+  "ground_truth": {
+    "component": "BaseOptimizer + concrete optimizer implementations",
+    "entity": "getIterations()",
+    "operation": "iteration counting/reporting",
+    "root_cause": "shared_iteration_counter_not_incremented_by_optimizer_loops",
+    "required_relation": [
+      "BaseOptimizer",
+      "concrete optimizer implementations",
+      "incrementIterationCount",
+      "getIterations"
+    ]
+  },
+  "split": "pilot"
+}
