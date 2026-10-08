@@ -1,0 +1,53 @@
+{
+  "case_id": "commons-math-defects4j-MATH-393",
+  "source": "Apache Commons JIRA + Defects4J",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-393",
+  "publication_date": "2010-07-25",
+  "technology": "Apache Commons Math / Java / optimization",
+  "error_description": "The multi-start univariate optimizer returned state from its wrapped optimizer instead of its recorded best optimum.",
+  "i_base": [
+    "MultiStartUnivariateRealOptimizer executes multiple optimization starts.",
+    "Each successful start is stored in an optima collection.",
+    "The optimizer exposes result and function-value accessors.",
+    "The public optimizer contract is declared by UnivariateRealOptimizer."
+  ],
+  "ccdg": [
+    {
+      "source": "MultiStartUnivariateRealOptimizer",
+      "target": "UnivariateRealOptimizer",
+      "relation": "implements",
+      "details": "wrapper exposes the common optimizer contract"
+    },
+    {
+      "source": "MultiStartUnivariateRealOptimizer",
+      "target": "optima",
+      "relation": "records_best_results",
+      "details": "multiple starts are retained and ranked"
+    },
+    {
+      "source": "MultiStartUnivariateRealOptimizer",
+      "target": "wrapped optimizer",
+      "relation": "delegates_execution",
+      "details": "the wrapped instance performs each individual optimization"
+    }
+  ],
+  "ground_truth": {
+    "component": "MultiStartUnivariateRealOptimizer",
+    "entity": "best recorded optimum",
+    "operation": "getResult/getFunctionValue",
+    "root_cause": "returning_wrapped_optimizer_state_instead_of_best_recorded_optimum",
+    "required_relations": [
+      "MultiStartUnivariateRealOptimizer",
+      "UnivariateRealOptimizer",
+      "optima",
+      "wrapped optimizer"
+    ]
+  },
+  "split": "confirmatory",
+  "provenance": {
+    "source_system": "Defects4J",
+    "fixed_revision": "d4b02f6a3a90cb468731d6156d571d284bd070b1",
+    "fixed_revision_date": "2010-07-25",
+    "date_basis": "fixed_revision_date_used_as_recorded_date_when_issue_creation_date_is not consistently exposed in the source record"
+  }
+}
