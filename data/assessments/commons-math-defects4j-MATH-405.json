@@ -1,0 +1,25 @@
+{
+  "case_id": "commons-math-defects4j-MATH-405",
+  "provenance_quality": "pass",
+  "root_cause_quality": "pass",
+  "fix_quality": "pass",
+  "dependency_strength": "strong",
+  "dependency_evidence": "Verified multi-class source change at the Defects4J fixed revision; final CCDG adequacy remains subject to case-level audit.",
+  "ccdg_suitability": "strong",
+  "contamination_risk": "unknown",
+  "contamination_risk_reason": "Contamination exposure audit not completed for this candidate.",
+  "IC1": "pass",
+  "IC2": "pass",
+  "IC3": "pass",
+  "IC4": "pass",
+  "IC5": "pass",
+  "IC6": "pass",
+  "IC7": "pass",
+  "eligible_for_pilot": true,
+  "eligible_for_main": false,
+  "exclusion_reason": "Main eligibility is withheld until contamination risk is resolved and final independent CCDG/ground-truth audit is completed.",
+  "notes": [
+    "Provisional candidate annotation derived from public issue metadata plus the verified Defects4J buggy/fixed revision pair.",
+    "Candidate is not promoted to the confirmatory benchmark."
+  ]
+}
