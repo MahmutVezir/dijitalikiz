@@ -57,8 +57,8 @@ No scientific result is marked complete without actual inference data. No result
 - [ ] Report duplicate outputs
 - [ ] Report seed agreement
 - [ ] Report complete-pass rates
-- [ ] Document contamination risk
-- [ ] Decide whether any pilot case is eligible for the confirmatory benchmark using a predeclared rule
+- [x] Document contamination risk in the authoritative contamination-audit record
+- [x] Decide pilot/main separation using the predeclared rule: pilot cases are excluded from confirmatory promotion
 - [ ] Do not modify protocol based on observed outcome
 
 ### Phase 3 — Confirmatory benchmark construction
@@ -68,8 +68,8 @@ No scientific result is marked complete without actual inference data. No result
 - [ ] Build independent-case pool
 - [ ] Define exclusion criteria
 - [x] Define contamination audit procedure
-- [ ] Build candidate case pool
-- [ ] Verify source/fix provenance
+- [x] Build candidate case pool (5 Apache Commons Math candidates)
+- [x] Verify source/fix provenance for the current candidate pool
 - [ ] Verify ground truth independently
 - [ ] Build and audit CCDG
 - [ ] Run leakage audit
