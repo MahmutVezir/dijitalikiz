@@ -7,10 +7,10 @@ from pathlib import Path
 from scripts.validate_benchmark_case import validate as validate_case
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate every case named by the confirmatory benchmark manifest.")
     parser.add_argument("--manifest", default="data/benchmark/benchmark_manifest.json")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     manifest_path = Path(args.manifest)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
