@@ -39,12 +39,6 @@ Do not modify the benchmark based on whether the model happens to answer correct
 - **high**: exact case/solution appears in a plausible training source;
 - **unknown**: audit could not establish a defensible classification.
 
-The current repository assessments use **unknown** until this audit is actually performed.
-
-## Reporting
-
-The final report must state the audit limitation explicitly. Absence of evidence is not evidence of absence.
-
 ## Completed web-index audit — 2026-10-04
 
 The audit was performed against the frozen Qwen2.5-3B-Instruct-GPTQ-Int4 checkpoint family and the three pilot cases. The search is evidence of public exposure, not proof of model training inclusion.
@@ -55,6 +49,8 @@ The audit was performed against the frozen Qwen2.5-3B-Instruct-GPTQ-Int4 checkpo
 | MATH-950 | Exact issue ID/title, RESET_STATE, EventState, AbstractIntegrator, fix revision | No additional indexed training-like copy was found in the executed web search. The original Apache issue remains publicly accessible from the case provenance. | **medium** |
 | MATH-988 | Exact issue ID/title, SubLine.intersection, NullPointerException, fix revision | A publicly indexed research paper reproduces the Defects4J case metadata, affected method, fix description, and exact fix revision. | **high** |
 
+These risk labels are now the authoritative assessment-level contamination fields for the three pilot cases.
+
 Interpretation:
 - **MATH-927 and MATH-988 are high-risk contamination cases** and should not be used as the sole basis for a strong causal claim about CCDG effectiveness.
 - **MATH-950 remains medium risk**, not low risk, because public provenance exists even though the search did not locate an additional indexed reproduction.
@@ -62,3 +58,5 @@ Interpretation:
 - Therefore the audit does **not** claim that the model memorized any case. It only establishes varying degrees of public exposure risk.
 
 Sources consulted during this audit included the official Apache JIRA page for MATH-927, the public research literature reproducing the MATH-927 and MATH-988 fix metadata, and the official Hugging Face model card for the frozen model family.
+
+No claim in this document should be interpreted as proof of training-set membership.
