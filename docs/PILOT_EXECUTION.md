@@ -14,7 +14,7 @@ Status: model configuration frozen; local/Kaggle inference execution pending.
 - Sampling: enabled
 - Maximum new tokens: 256
 - Conditions: Standard and CCDG
-- Cases: MATH-927, MATH-950, MATH-988
+- Cases: MATH-927, MATH-950, MATH-949, MATH-988
 
 ## Execution rule
 
@@ -29,7 +29,7 @@ Desteklenen workflow adı: **Kaggle Frozen Pilot**.
 - Workflow manual-only ve opt-in'dir.
 - `execute_inference=true` olmadan job çalışmaz.
 - GitHub Actions exact Git commit'i `git archive` ile private Kaggle kernel paketine koyar.
-- Kaggle kernel; environment capture, CUDA preflight, model-load preflight, frozen audit, 30 inference ve finalization zincirini çalıştırır.
+- Kaggle kernel; environment capture, CUDA preflight, model-load preflight, frozen audit, 40 inference ve finalization zincirini çalıştırır.
 - Finalization sırası: integrity audit → evaluation → case-level analysis → QA → JSONL → artifact manifest.
 - İndirilen artifact manifest workflow tarafından ayrıca SHA-256 doğrulanır.
 - Deney çıktısı `main` branch'e otomatik commit edilmez.
@@ -47,7 +47,7 @@ python scripts/run_pilot.py
 ```
 
 Expected:
-`3 cases × 2 conditions × 5 seeds = 30 records`
+`4 cases × 2 conditions × 5 seeds = 40 records`
 
 Sonrasında:
 
