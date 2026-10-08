@@ -5,6 +5,8 @@ import hashlib
 import json
 import random
 import re
+import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 
 from dijitalikiz.context import render_ccdg_context, render_standard_context
@@ -17,6 +19,16 @@ SYSTEM_PROMPT = Path("data/pilot/SYSTEM_PROMPT.txt")
 
 def _sha256(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _source_commit() -> str:
+    bundle_path = Path("data/pilot/kaggle_source_commit.txt")
+    if bundle_path.is_file():
+        return bundle_path.read_text(encoding="utf-8").strip()
+    try:
+        return subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
 
 
 def _extract_json(text: str) -> dict:
@@ -134,6 +146,7 @@ def main() -> None:
         )
 
     tokenizer, model = load_model(model_id, revision)
+    source_commit = _source_commit()
 
     for case_name in cases:
         payload = json.loads(
@@ -158,6 +171,7 @@ def main() -> None:
                         print(f"SKIP existing frozen record: {path}", flush=True)
                         continue
 
+                started_at = datetime.now(timezone.utc)
                 raw = generate(
                     tokenizer,
                     model,
@@ -176,7 +190,12 @@ def main() -> None:
                 except (ValueError, json.JSONDecodeError, TypeError, KeyError) as exc:
                     parse_error = f"{type(exc).__name__}: {exc}"
 
+                completed_at = datetime.now(timezone.utc)
                 record = {
+                    "source_commit": source_commit,
+                    "started_at_utc": started_at.isoformat(),
+                    "completed_at_utc": completed_at.isoformat(),
+                    "raw_output_sha256": _sha256(raw),
                     "case_id": case.case_id,
                     "condition": condition,
                     "seed": seed,
