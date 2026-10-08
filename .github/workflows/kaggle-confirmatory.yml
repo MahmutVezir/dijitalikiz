@@ -74,10 +74,13 @@ jobs:
           test -n "$(find pilot-artifact -name pilot_evaluation.json -print -quit)"
           test -n "$(find pilot-artifact -name pilot_qa_report.json -print -quit)"
           test -n "$(find pilot-artifact -name artifact_manifest.json -print -quit)"
+          PILOT_ROOT="$(dirname "$(find pilot-artifact -name pilot_evaluation.json -print -quit)")"
+          test -f "$PILOT_ROOT/pilot_evaluation.json"
+          echo "PILOT_ARTIFACT_ROOT=$PILOT_ROOT" >> "$GITHUB_ENV"
 
       - name: Freeze preselected benchmark after pilot integrity gate
         run: |
-          python scripts/freeze_benchmark.py --pilot-artifact-root pilot-artifact
+          python scripts/freeze_benchmark.py --pilot-artifact-root "$PILOT_ARTIFACT_ROOT"
           python scripts/validate_benchmark_manifest.py
 
       - name: Prepare exact-source frozen confirmatory bundle
