@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from scripts.validate_benchmark_case import validate as validate_case
+from validate_benchmark_case import validate as validate_case
 
 
 def _number(value: object) -> bool:
