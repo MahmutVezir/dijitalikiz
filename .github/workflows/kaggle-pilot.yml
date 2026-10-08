@@ -72,18 +72,19 @@ jobs:
           echo "Authenticated Kaggle account: $KAGGLE_USER"
           kaggle --version
 
-      - name: Resolve existing Kaggle pilot kernel
+      - name: Allocate immutable Kaggle kernel ref
         shell: bash
         run: |
           set -euo pipefail
-          KERNEL_REF="$KAGGLE_USERNAME/dijitalikiz-frozen-pilot"
-          if ! kaggle kernels list --mine --page-size 100 2>/dev/null | awk -v id="$KERNEL_REF" '$1==id {found=1} END{exit found ? 0 : 1}'; then
-            echo "Expected Kaggle kernel $KERNEL_REF was not found."
-            kaggle kernels list --mine --page-size 100 || true
+          KERNEL_SLUG="dijitalikiz-frozen-pilot-${GITHUB_SHA:0:12}"
+          KERNEL_REF="$KAGGLE_USERNAME/$KERNEL_SLUG"
+          if kaggle kernels list --mine --page-size 100 2>/dev/null | awk -v id="$KERNEL_REF" '$1==id {found=1} END{exit found ? 0 : 1}'; then
+            echo "Immutable Kaggle kernel ref already exists for this commit: $KERNEL_REF"
             exit 1
           fi
-          echo "Resolved Kaggle kernel: $KERNEL_REF"
+          echo "Allocated immutable Kaggle kernel: $KERNEL_REF"
           echo "KAGGLE_KERNEL_REF=$KERNEL_REF" >> "$GITHUB_ENV"
+          echo "KAGGLE_KERNEL_SLUG=$KERNEL_SLUG" >> "$GITHUB_ENV"
 
       - name: Build exact-source frozen dataset payload
         shell: bash
@@ -149,22 +150,40 @@ jobs:
             kaggle datasets create -p .kaggle-source -q -t -r skip
           fi
 
-          visible=0
+          verified=0
+          rm -rf /tmp/kaggle-source-verify /tmp/kaggle-source-unpack
+          mkdir -p /tmp/kaggle-source-verify
+
           for attempt in $(seq 1 60); do
-            if kaggle datasets list --mine --page-size 100 2>/dev/null | awk -v id="$DATASET_ID" '$1==id {found=1} END{exit found ? 0 : 1}'; then
-              visible=1
-              break
+            rm -rf /tmp/kaggle-source-verify/* /tmp/kaggle-source-unpack
+            mkdir -p /tmp/kaggle-source-unpack
+            if kaggle datasets download -d "$DATASET_ID" -p /tmp/kaggle-source-verify --force >/tmp/kaggle-source-download.log 2>&1; then
+              ZIP_PATH="$(find /tmp/kaggle-source-verify -maxdepth 1 -type f -name '*.zip' -print -quit)"
+              if [ -n "$ZIP_PATH" ] && unzip -oq "$ZIP_PATH" -d /tmp/kaggle-source-unpack; then
+                ACTUAL_COMMIT="$(tr -d '\r\n' < /tmp/kaggle-source-unpack/source_commit.txt 2>/dev/null || true)"
+                EXPECTED_BUNDLE_SHA="$(tr -d '\r\n' < /tmp/kaggle-source-unpack/source_bundle_sha256.txt 2>/dev/null || true)"
+                DECODED_BUNDLE="/tmp/kaggle-source-unpack/project.tar.gz"
+                if [ -f /tmp/kaggle-source-unpack/project.tar.gz.b64 ]; then
+                  if base64 -d /tmp/kaggle-source-unpack/project.tar.gz.b64 > "$DECODED_BUNDLE" 2>/dev/null; then
+                    ACTUAL_BUNDLE_SHA="$(sha256sum "$DECODED_BUNDLE" | awk '{print $1}')"
+                    if [ "$ACTUAL_COMMIT" = "$GITHUB_SHA" ] && [ "$EXPECTED_BUNDLE_SHA" = "$ACTUAL_BUNDLE_SHA" ]; then
+                      verified=1
+                      break
+                    fi
+                  fi
+                fi
+              fi
             fi
-            echo "Waiting for Kaggle Dataset publication (attempt $attempt/60)."
+            echo "Waiting for Kaggle Dataset version to expose commit $GITHUB_SHA (attempt $attempt/60)."
+            cat /tmp/kaggle-source-download.log || true
             sleep 10
           done
 
-          test "$visible" -eq 1 || {
-            echo "Kaggle source Dataset did not become visible after publication."
-            kaggle datasets list --mine --page-size 100 || true
+          test "$verified" -eq 1 || {
+            echo "Kaggle Dataset did not expose the exact expected source commit after publication."
             exit 1
           }
-          echo "Published/verified Kaggle source Dataset: $DATASET_ID"
+          echo "Kaggle source Dataset verified for commit $GITHUB_SHA"
 
       - name: Prepare Kaggle kernel launcher
         shell: bash
@@ -188,7 +207,7 @@ jobs:
           cat > .kaggle-kernel/kernel-metadata.json <<EOF
           {
             "id": "$KAGGLE_KERNEL_REF",
-            "title": "dijitalikiz-frozen-pilot",
+            "title": "$KAGGLE_KERNEL_SLUG",
             "code_file": "kernel.py",
             "language": "python",
             "kernel_type": "script",
