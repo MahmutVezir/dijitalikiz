@@ -1,0 +1,16 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"ConfirmatoryBenchmarkManifest",
+  "type":"object",
+  "required":["version","status","pilot_case_ids","case_ids","contamination_audit_completed","analysis"],
+  "properties":{
+    "version":{"type":"string"},
+    "status":{"type":"string","enum":["draft","frozen"]},
+    "pilot_case_ids":{"type":"array","items":{"type":"string"}},
+    "case_ids":{"type":"array","items":{"type":"string"}},
+    "contamination_audit_completed":{"type":"boolean"},
+    "power_assumption":{"type":["object","null"]},
+    "analysis":{"type":"object"}
+  },
+  "additionalProperties":true
+}
