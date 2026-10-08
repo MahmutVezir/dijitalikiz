@@ -20,7 +20,7 @@ Bu depo, Standard Context ile açık ve yapılandırılmış Cross-Component Dep
 - `dijitalikiz/models.py`: vaka, CCDG, ground truth ve tanı veri modelleri
 - `dijitalikiz/context.py`: Standard/CCDG bağlam oluşturma
 - `dijitalikiz/evaluation.py`: frozen deterministik skorlayıcı
-- `scripts/run_pilot.py`: 30 frozen inference kaydını fail-closed üretir
+- `scripts/run_pilot.py`: 40 frozen inference kaydını fail-closed üretir
 - `scripts/finalize_pilot.py`: audit → evaluation → case-level analysis → QA → checksum zinciri
 - `scripts/pilot_preflight.py`, `scripts/model_load_preflight.py`: execution gate'leri
 - `scripts/audit_pilot_integrity.py`: model/prompt/context/hash/schema bütünlüğü
@@ -35,7 +35,7 @@ Bu depo, Standard Context ile açık ve yapılandırılmış Cross-Component Dep
 
 ## Frozen pilot
 
-**3 vaka × 2 koşul × 5 seed = 30 inference kaydı**
+**4 vaka × 2 koşul × 5 seed = 40 inference kaydı**
 
 Model: `Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4`
 
@@ -65,7 +65,7 @@ Workflow:
 1. `execute_inference=true` verilmeden bilimsel inference başlamaz.
 2. Exact Git commit private Kaggle kernel içine paketlenir.
 3. CUDA preflight, environment capture, frozen audit ve model load gate çalışır.
-4. 30 inference kaydı oluşturulur.
+4. 40 inference kaydı oluşturulur.
 5. evaluator, case-level analysis, QA, JSONL ve SHA-256 artifact manifest üretilir.
 6. GitHub workflow indirilen artifact manifestini bağımsız doğrular.
 7. Sonuçlar GitHub Actions artifact'ı olarak saklanır; `main` branch'e deney çıktısı yazılmaz.
@@ -75,7 +75,7 @@ Normal `main` push'ları bilimsel inference başlatmaz.
 ## Bilimsel sınırlar
 
 - Pilot gerçek inference verisi oluşmadan doğruluk veya hipotez sonucu açıklanmaz.
-- Pilot 3 vaka olduğu için main benchmark power hesabı pilot sonucuna göre geriye dönük ayarlanamaz.
+- Pilot 4 vaka olduğu için main benchmark power hesabı pilot sonucuna göre geriye dönük ayarlanamaz.
 - Pilot vakaları confirmatory benchmark'a dahil edilemez.
 - Gerçek provenance, ground truth ve CCDG kanıtı olmadan vaka confirmatory olarak işaretlenemez.
 - Sentetik/yeniden oluşturulmuş kayıtlar gerçek Defects4J vakası gibi etiketlenmez.
@@ -94,7 +94,7 @@ GitHub Actions ayrıca frozen pilot audit'i, tüm vaka/candidate doğrulaması v
 
 Kod/protokol tarafı frozen pilot için hazırdır. Ancak bilimsel çalışma henüz sonuç-complete değildir. Zorunlu deneysel kapılar:
 
-1. Gerçek 30 pilot inference'ının tamamlanması.
+1. Gerçek 40 pilot inference'ının tamamlanması.
 2. Pilot artifact'inin integrity/QA kontrolünden geçmesi.
 3. Bağımsız confirmatory vaka havuzunun provenance + ground truth + CCDG + contamination denetimleriyle oluşturulması.
 4. Power varsayımının önceden dondurulması ve final case sayısının buna uyması.
