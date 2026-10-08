@@ -20,11 +20,15 @@ Bu depo, Standard Context ile açık ve yapılandırılmış Cross-Component Dep
 - `dijitalikiz/models.py`: vaka, CCDG, ground truth ve tanı çıktısı veri modelleri
 - `dijitalikiz/context.py`: Standard/CCDG bağlam üretimi ve leakage kontrolünün temeli
 - `dijitalikiz/evaluation.py`: dondurulmuş deterministik skorlayıcı
-- `scripts/run_pilot.py`: 30 inference kaydını üretir
+- `scripts/run_pilot.py`: 30 frozen inference kaydını fail-closed biçimde üretir
+- `scripts/model_load_preflight.py`: deneysel üretim yapmadan frozen model/GPTQ yükleme smoke testini çalıştırır
+- `scripts/build_pilot_artifact_manifest.py`: tamamlanan pilot çıktılarının SHA-256 bütünlük manifestini üretir
 - `scripts/evaluate_pilot.py`: inference kayıtlarını skorlar; modeli yeniden çalıştırmaz
 - `scripts/analyze_case_level.py`: pilot evaluation çıktısından vaka düzeyi analiz ve McNemar testi üretir
 - `scripts/audit_pilot_integrity.py`: model/prompt/context/hash/schema bütünlüğünü fail-closed denetler
 - `scripts/power_mcnemar.py`: eşleştirilmiş binary sonuçlar için power analizi
+- `scripts/validate_benchmark_manifest.py`: confirmatory benchmark freeze koşullarını doğrular
+- `docs/MAIN_BENCHMARK_SELECTION.md`: ana benchmark vaka seçimini model çıktılarından bağımsız olarak dondurur
 - `docs/ANALYSIS_PLAN.md`: önceden belirlenmiş analiz planı
 - `docs/CONTAMINATION_AUDIT.md`: model contamination denetim protokolü
 - `data/pilot/pilot_manifest.json`: dondurulmuş pilot konfigürasyonu
@@ -72,6 +76,12 @@ python scripts/capture_environment.py
 
 ```bash
 python scripts/audit_pilot_integrity.py
+```
+
+Tamamlanan pilot için bütün 30 kaydı zorunlu kılan audit:
+
+```bash
+python scripts/audit_pilot_integrity.py --require-complete
 ```
 
 Beklenen inference kayıt sayısı 30'dur. Eksik inference dosyaları veya incomplete evaluation nihai vaka düzeyi analizi tarafından reddedilir.
@@ -125,9 +135,9 @@ Aşağıdaki kural araştırma tamamlanana kadar korunur:
 
 Bu nedenle frontend, hosted database, authentication ve deployment katmanları kapsam dışıdır. Ayrıntılı karar kaydı `docs/ARCHITECTURE.md` dosyasındadır.
 
-## Sonraki zorunlu adımlar
+## Mevcut durum ve sonraki zorunlu adımlar
 
-Kod ve protokol tarafı tamamlandıktan sonra kalan deneysel işlemler:
+Kod ve protokol tarafının frozen pilot için gerekli güvenlik kontrolleri tamamlanmıştır. Gerçek deney verisi hâlâ üretilmemiştir; kalan deneysel işlemler:
 
 1. Yerel makinede 30 pilot inference'ı gerçekten çalıştırmak.
 2. `pilot_evaluation.json` üretmek ve parse/schema/duplicate sonuçlarını incelemek.
