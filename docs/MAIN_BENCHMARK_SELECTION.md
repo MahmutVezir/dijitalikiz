@@ -76,7 +76,7 @@ Case selection, CCDG construction, and ground-truth annotation must be completed
 
 ## Current state — 2026-10-08
 
-The repository currently contains a screening pool of 18 candidate records. The confirmatory manifest remains `draft` with zero selected case IDs. Thirteen additional candidates have provisional CCDG/ground-truth annotations, but their contamination risk remains `unknown`; they are therefore not eligible for confirmatory promotion yet.
+The repository currently contains a screening pool of 21 candidate records. The confirmatory manifest remains `draft` with zero selected case IDs. Sixteen additional candidates have provisional CCDG/ground-truth annotations, but their contamination risk remains `unknown`; they are therefore not eligible for confirmatory promotion yet.
 
 This is intentional. A large candidate pool is preferable to prematurely freezing a small or contaminated benchmark. The final sample size must be determined from predeclared McNemar discordant-pair assumptions, not from observed model outcomes.
 
