@@ -16,15 +16,16 @@ Verified fixes:
 - MATH-927: eligible
 - MATH-950: eligible
 - MATH-988: eligible
+- MATH-949: eligible — final review overturned the prior exclusion
 - MATH-938: not eligible — cross-component criteria fail
-- MATH-949: not eligible — cross-component criteria fail
 
 ## Pilot promotion gate
 
-Three eligible cases have now been promoted into data/pilot/ as complete ResearchCase records:
+Four eligible cases have now been promoted into data/pilot/ as complete ResearchCase records:
 
 - MATH-927
 - MATH-950
+- MATH-949
 - MATH-988
 
 The records contain i_base, explicit CCDG edges, and independently annotated ground truth. The pilot manifest is frozen. Ground truth remains outside both Standard and CCDG model contexts.
@@ -37,14 +38,14 @@ No main benchmark case is promoted or executed from these pilot records automati
 - No pilot accuracy claim is made.
 - No fine-tuning is part of the pilot.
 - Model, revision, system prompt, user prompt, generation parameters, seeds, evaluator, and pilot cases must not be changed after the first inference.
-- Contamination audit completed: MATH-927 and MATH-988 are high-risk public-overlap cases; MATH-950 is medium risk. This is an exposure-risk assessment, not proof of training inclusion.
+- Contamination audit completed: MATH-927, MATH-949 and MATH-988 are high-risk public-overlap cases; MATH-950 is medium risk. This is an exposure-risk assessment, not proof of training inclusion.
 
 ## Remaining execution gate
 
 Before confirmatory/main benchmarking:
 
-1. Execute the 30 frozen pilot inference runs.
-2. Evaluate all 30 records with the frozen evaluator.
+1. Execute the 40 frozen pilot inference runs.
+2. Evaluate all 40 records with the frozen evaluator.
 3. Inspect parse failures, seed duplication, and condition integrity.
 4. Preserve the completed contamination audit and account for its risk labels when selecting/interpreting the main benchmark.
 5. Freeze the main benchmark power assumption and independent case set.
