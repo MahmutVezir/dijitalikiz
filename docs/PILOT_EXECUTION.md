@@ -30,12 +30,12 @@ The supported automated route is the GitHub Actions workflow:
 
 1. Open **Actions → Kaggle Pilot**.
 2. Select **Run workflow**.
-3. Keep `run_pilot=true`.
+3. Set `execute_inference=true` only when you intentionally want to launch the frozen 30-run experiment.
 4. The workflow checks out the exact Git commit and packages that source tree into the private Kaggle kernel.
-5. Kaggle runs the CUDA preflight, environment capture, frozen integrity audit, 30 inferences, second integrity audit, evaluator, and case-level analysis.
-6. The workflow waits for completion and downloads the Kaggle output as a GitHub Actions artifact named with the source commit.
+5. Kaggle runs the CUDA preflight, environment capture, frozen integrity audit, 30 inferences, evaluator, case-level analysis, QA, JSONL export, and artifact checksum generation.
+6. The workflow independently verifies the downloaded artifact manifest and then stores the result only as a GitHub Actions artifact named with the source commit.
 
-The workflow is intentionally **manual-only**. A normal push to `main` must never launch a 30-run scientific inference automatically.
+The workflow is intentionally **manual-only and opt-in**. A normal push to `main` must never launch a 30-run scientific inference automatically.
 
 This packaging design is required because the research repository is private; the Kaggle kernel must not attempt an unauthenticated `git clone` of the repository.
 
@@ -104,3 +104,19 @@ The evaluator reports, separately for Standard and CCDG:
 It also records per-run scoring details. Missing inference records make the evaluation status `incomplete`.
 
 The evaluation uses the frozen deterministic matcher in `dijitalikiz/evaluation.py`. Do not change that matcher after pilot inference has started; otherwise the pilot would no longer be scored under a frozen analysis rule.
+
+## Final artifact verification
+
+The finalized pilot contains:
+
+    data/pilot/pilot_records.jsonl
+    data/pilot/pilot_evaluation.json
+    data/pilot/case_level_analysis.json
+    data/pilot/pilot_qa_report.json
+    data/pilot/artifact_manifest.json
+
+The checksum manifest is independently verified with:
+
+    python scripts/validate_pilot_artifact_manifest.py
+
+The Kaggle workflow does not write experiment output back to `main`; results remain an immutable Actions artifact until they are explicitly incorporated into the research archive.
