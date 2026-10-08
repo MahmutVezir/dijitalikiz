@@ -9,7 +9,7 @@ import tarfile
 from pathlib import Path
 
 KERNEL_ROOT = Path("/kaggle/working")
-SOURCE_DATASET = "mahmutvezir/dijitalikiz-frozen-source"
+SOURCE_DATASET = "mahmutvezir/dijitalikiz-frozen-source-v2"
 BUNDLE = KERNEL_ROOT / "project.tar.gz"
 WORKDIR = KERNEL_ROOT / "dijitalikiz"
 PYTHON_ENV = KERNEL_ROOT / "dijitalikiz-py311"
@@ -100,10 +100,13 @@ def ensure_python311() -> Path:
 
 
 attached_candidates = [
-    Path("/kaggle/input/dijitalikiz-frozen-source"),
-    Path("/kaggle/input/dijitalikiz-frozen-source/Dijitalikiz Frozen Source"),
+    Path("/kaggle/input/dijitalikiz-frozen-source-v2"),
+    Path("/kaggle/input/dijitalikiz-frozen-source-v2/Dijitalikiz Frozen Source v2"),
 ]
-dataset_dir = next((p for p in attached_candidates if (p / "project.tar.gz").is_file()), None)
+dataset_dir = next(
+    (p for p in attached_candidates if (p / "project.tar.gz.b64").is_file()),
+    None,
+)
 
 if dataset_dir is None:
     print("Attached frozen-source dataset not found; trying KaggleHub resolver.", flush=True)
@@ -111,13 +114,20 @@ if dataset_dir is None:
     import kagglehub
     dataset_dir = Path(kagglehub.dataset_download(SOURCE_DATASET))
 
-bundle_source = dataset_dir / "project.tar.gz"
+bundle_b64 = dataset_dir / "project.tar.gz.b64"
 commit_source = dataset_dir / "source_commit.txt"
 
-if not bundle_source.is_file():
-    raise RuntimeError(f"Frozen source bundle missing from Kaggle Dataset: {bundle_source}")
+if not bundle_b64.is_file():
+    raise RuntimeError(f"Frozen source payload missing from Kaggle Dataset: {bundle_b64}")
 if not commit_source.is_file():
     raise RuntimeError(f"Frozen source commit marker missing from Kaggle Dataset: {commit_source}")
+
+import base64
+payload_b64 = bundle_b64.read_text(encoding="ascii").strip()
+try:
+    BUNDLE.write_bytes(base64.b64decode(payload_b64, validate=True))
+except Exception as exc:
+    raise RuntimeError("Frozen source base64 payload is invalid.") from exc
 
 source_commit = commit_source.read_text(encoding="utf-8").strip()
 if len(source_commit) != 40 or any(ch not in "0123456789abcdef" for ch in source_commit.lower()):
