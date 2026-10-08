@@ -1,5 +1,4 @@
 {
-  "id": "commons-math-defects4j-MATH-859",
   "source": "Apache Commons JIRA + Defects4J",
   "source_url": "https://issues.apache.org/jira/browse/MATH-859",
   "publication_date": "unknown",
@@ -55,5 +54,6 @@
   },
   "split": "candidates",
   "annotation_status": "annotated_provisional",
-  "provenance_verification_status": "verified"
+  "provenance_verification_status": "verified",
+  "case_id": "commons-math-defects4j-MATH-859"
 }
