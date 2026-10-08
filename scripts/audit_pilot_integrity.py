@@ -19,6 +19,7 @@ def main() -> None:
     parser.add_argument("--manifest", default="data/pilot/pilot_manifest.json")
     parser.add_argument("--prompt", default="data/pilot/PROMPT_TEMPLATE.txt")
     parser.add_argument("--system-prompt", default="data/pilot/SYSTEM_PROMPT.txt")
+    parser.add_argument("--require-complete", action="store_true", help="Require exactly all frozen inference records and reject unexpected files.")
     args = parser.parse_args()
 
     root = Path(".")
@@ -41,6 +42,12 @@ def main() -> None:
     assert generation["do_sample"] is True
 
     checked = 0
+    expected_paths = {
+        Path(args.runs_dir) / f"{case_id}__{condition}__seed{seed}.json"
+        for case_id in cases
+        for condition in conditions
+        for seed in seeds
+    }
     for case_id in cases:
         case = ResearchCase.from_dict(
             json.loads((root / "data/pilot" / f"{case_id}.json").read_text(encoding="utf-8"))
@@ -77,11 +84,19 @@ def main() -> None:
                 checked += 1
 
     expected = len(cases) * len(conditions) * len(seeds)
+    existing_paths = set(Path(args.runs_dir).glob("*.json")) if Path(args.runs_dir).exists() else set()
+    unexpected = sorted(str(path) for path in existing_paths - expected_paths)
+    if args.require_complete and checked != expected:
+        raise RuntimeError(f"Frozen pilot is incomplete: {checked}/{expected} expected records present.")
+    if args.require_complete and unexpected:
+        raise RuntimeError(f"Unexpected JSON run record(s): {unexpected}")
+
     print(json.dumps({
         "status": "pass",
         "expected_records": expected,
         "checked_existing_records": checked,
         "missing_records": expected - checked,
+        "unexpected_records": unexpected,
         "configuration_only": checked == 0,
         "message": (
             "Frozen configuration passed; no inference records exist yet."
