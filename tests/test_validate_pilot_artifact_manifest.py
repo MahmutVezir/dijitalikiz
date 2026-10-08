@@ -55,4 +55,4 @@ def test_artifact_manifest_detects_tampering(tmp_path):
     _write(artifact / "runs" / "case.json", b"tampered")
 
     errors = validate(artifact, manifest_path)
-    assert any("byte-size mismatch" in error for error in errors)
+    assert any("sha256 mismatch" in error for error in errors)
