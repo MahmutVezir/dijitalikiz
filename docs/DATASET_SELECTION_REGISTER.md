@@ -8,7 +8,7 @@ This register records the research-case pool before confirmatory benchmark freez
 
 ## Pool snapshot
 
-Total candidate records: **18**
+Total candidate records: **21**
 
 | Group | Cases | Status |
 |---|---|---|
@@ -17,6 +17,7 @@ Total candidate records: **18**
 | Provisional Apache Commons Math candidates | MATH-924, MATH-405, MATH-326, MATH-377, MATH-393, MATH-631, MATH-358, MATH-859, MATH-844, MATH-305 | Screening pool |
 | Provisional Joda-Time candidates | TIME-1, TIME-12 | Screening pool |
 | Provisional Mockito candidate | MOCKITO-19 | Screening pool |
+| Provisional Closure Compiler candidates | CLOSURE-4, CLOSURE-6, CLOSURE-14 | Screening pool |
 
 ## Candidate provenance rule
 
