@@ -17,6 +17,14 @@ def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def package_version(package: str) -> str | None:
+    try:
+        module = __import__(package.replace("-", "_"))
+        return getattr(module, "__version__", None)
+    except Exception:
+        return None
+
+
 def check(ok: bool, name: str, detail: str) -> dict:
     return {"ok": ok, "name": name, "detail": detail}
 
@@ -66,9 +74,29 @@ def main() -> int:
         shutil.which("git") or "not found",
     ))
 
-    for package in ("torch", "transformers", "accelerate", "optimum"):
+    for package in ("torch", "transformers", "accelerate", "optimum", "auto_gptq"):
         installed = importlib.util.find_spec(package) is not None
         results.append(check(installed, f"python_package_{package}", "installed" if installed else "missing"))
+
+    expected_runtime = manifest.get("runtime", {})
+    expected_python = expected_runtime.get("python")
+    if expected_python:
+        actual_python = f"{sys.version_info.major}.{sys.version_info.minor}"
+        results.append(check(
+            actual_python == expected_python,
+            "python_version_frozen",
+            f"expected={expected_python}, actual={actual_python}",
+        ))
+
+    for package_key in ("torch", "transformers", "accelerate", "optimum", "auto_gptq"):
+        expected = expected_runtime.get(package_key)
+        if expected:
+            actual = package_version(package_key)
+            results.append(check(
+                actual == expected,
+                f"{package_key}_version_frozen",
+                f"expected={expected}, actual={actual}",
+            ))
 
     cuda_available = False
     cuda_detail = "torch unavailable"
