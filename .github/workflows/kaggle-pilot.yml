@@ -8,6 +8,9 @@ on:
         required: true
         default: true
         type: boolean
+  push:
+    paths:
+      - ".github/workflows/kaggle-pilot.yml"
 
 permissions:
   contents: read
@@ -15,10 +18,9 @@ permissions:
 jobs:
   push-to-kaggle:
     runs-on: ubuntu-latest
-    if: inputs.run_pilot == true
+    if: github.event_name == 'push' || inputs.run_pilot == true
     env:
       KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
-      KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
       KERNEL_SLUG: dijitalikiz-pilot
 
     steps:
@@ -27,22 +29,31 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Verify Kaggle secrets
+      - name: Verify Kaggle token and resolve account
         shell: bash
         run: |
           set -euo pipefail
           test -n "${KAGGLE_API_TOKEN}" || { echo "Missing GitHub secret: KAGGLE_API_TOKEN"; exit 1; }
-          test -n "${KAGGLE_USERNAME}" || { echo "Missing GitHub secret: KAGGLE_USERNAME"; exit 1; }
+
+      - name: Install Kaggle CLI and identity helper
+        run: python -m pip install --upgrade pip kaggle kagglehub
+
+      - name: Resolve Kaggle username from token
+        shell: bash
+        run: |
+          set -euo pipefail
+          KAGGLE_USER="$(python -c 'import kagglehub; print(kagglehub.whoami(verbose=False)["username"])')"
+          test -n "$KAGGLE_USER" || { echo "Could not resolve Kaggle username from token"; exit 1; }
+          echo "KAGGLE_USERNAME=$KAGGLE_USER" >> "$GITHUB_ENV"
+          echo "Kaggle account resolved successfully."
+
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install Kaggle CLI
-        run: python -m pip install --upgrade pip kaggle
-
-      - name: Verify Kaggle authentication
+            - name: Verify Kaggle authentication
         run: |
           kaggle --version
           kaggle kernels list --mine --page-size 5
