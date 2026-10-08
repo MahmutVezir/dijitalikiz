@@ -30,10 +30,12 @@ def test_kaggle_pilot_is_read_only_against_github_repository():
     assert "git commit" not in workflow
 
 
-def test_kaggle_pilot_packages_exact_source_commit():
+def test_kaggle_pilot_builds_self_contained_launcher():
     workflow = workflow_text()
-    assert "git archive --format=tar.gz --output=.kaggle-kernel/project.tar.gz HEAD" in workflow
-    assert 'printf \'%s\\n\' "$GITHUB_SHA" > .kaggle-kernel/source_commit.txt' in workflow
+    assert "git archive --format=tar.gz --output=/tmp/dijitalikiz-source.tar.gz HEAD" in workflow
+    assert "base64.b64encode" in workflow
+    assert "PROJECT_B64_PLACEHOLDER" in workflow
+    assert "python -m py_compile .kaggle-kernel/kernel.py" in workflow
 
 
 def test_kaggle_pilot_checks_canonical_final_artifacts():
