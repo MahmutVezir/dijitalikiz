@@ -1,0 +1,60 @@
+{
+  "case_id": "commons-math-defects4j-MATH-392",
+  "source": "Apache Commons JIRA + Defects4J",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-392",
+  "publication_date": "2010-08-22",
+  "technology": "Apache Commons Math / Java / multiple linear regression",
+  "error_description": "Multiple regression variance APIs returned the variance of the model error where callers expected the variance of the response variable, while error variance needed a separate calculation.",
+  "i_base": [
+    "AbstractMultipleLinearRegression defines common variance and regression-statistic behavior.",
+    "OLSMultipleLinearRegression specializes ordinary least squares.",
+    "GLSMultipleLinearRegression specializes generalized least squares.",
+    "Both subclasses expose the common regression API to callers."
+  ],
+  "ccdg": [
+    {
+      "source": "AbstractMultipleLinearRegression",
+      "target": "OLSMultipleLinearRegression",
+      "relation": "defines_shared_regression_contract",
+      "details": "The ordinary-least-squares implementation inherits the shared variance API."
+    },
+    {
+      "source": "AbstractMultipleLinearRegression",
+      "target": "GLSMultipleLinearRegression",
+      "relation": "defines_shared_regression_contract",
+      "details": "The generalized-least-squares implementation overrides error-variance behavior under the shared API."
+    },
+    {
+      "source": "AbstractMultipleLinearRegression",
+      "target": "calculateYVariance",
+      "relation": "computes_response_variance",
+      "details": "The corrected base implementation computes variance from Y values."
+    },
+    {
+      "source": "AbstractMultipleLinearRegression",
+      "target": "calculateErrorVariance",
+      "relation": "computes_error_variance",
+      "details": "The fix separates residual/error variance from response variance."
+    }
+  ],
+  "ground_truth": {
+    "component": "AbstractMultipleLinearRegression",
+    "entity": "variance API",
+    "operation": "calculateYVariance / calculateErrorVariance",
+    "root_cause": "response_variance_and_error_variance_were_conflated",
+    "required_relations": [
+      "AbstractMultipleLinearRegression",
+      "OLSMultipleLinearRegression",
+      "GLSMultipleLinearRegression",
+      "calculateYVariance",
+      "calculateErrorVariance"
+    ]
+  },
+  "split": "confirmatory",
+  "provenance": {
+    "source_system": "Defects4J",
+    "fixed_revision": "30c9e8c111f0e49acb8e9e7f6119230844fe1ee3",
+    "fixed_revision_date": "2010-08-22",
+    "date_basis": "fixed_revision_date"
+  }
+}
