@@ -173,10 +173,13 @@ jobs:
           rm -rf .kaggle-kernel
           mkdir -p .kaggle-kernel
           cp kaggle/kernel.py .kaggle-kernel/kernel.py
+          sed -i "s/__EXPECTED_SOURCE_COMMIT__/$GITHUB_SHA/g" .kaggle-kernel/kernel.py
 
           python -m py_compile .kaggle-kernel/kernel.py
           test "$(grep -c 'SOURCE_DATASET = "mahmutvezir/dijitalikiz-frozen-source-v2"' .kaggle-kernel/kernel.py)" -eq 1
           test "$(grep -c 'source_bundle_sha256.txt' .kaggle-kernel/kernel.py)" -eq 1
+          test "$(grep -c "$GITHUB_SHA" .kaggle-kernel/kernel.py)" -ge 1
+          test "$(grep -c '__EXPECTED_SOURCE_COMMIT__' .kaggle-kernel/kernel.py)" -eq 0
           if grep -q 'bundle_source' .kaggle-kernel/kernel.py; then
             echo "Undefined legacy bundle_source reference remains in Kaggle launcher."
             exit 1
