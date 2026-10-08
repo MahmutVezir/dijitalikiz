@@ -9,12 +9,16 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
+from jsonschema import Draft202012Validator
+
 from dijitalikiz.context import render_ccdg_context, render_standard_context
 from dijitalikiz.models import DiagnosticOutput, ResearchCase
 
 MANIFEST = Path("data/pilot/pilot_manifest.json")
 PROMPT_TEMPLATE = Path("data/pilot/PROMPT_TEMPLATE.txt")
 SYSTEM_PROMPT = Path("data/pilot/SYSTEM_PROMPT.txt")
+RUN_RECORD_SCHEMA = Path("schemas/pilot_run_record.schema.json")
+DIAGNOSTIC_OUTPUT_SCHEMA = Path("schemas/diagnostic_output.schema.json")
 
 
 def _sha256(text: str) -> str:
@@ -38,7 +42,7 @@ def _extract_json(text: str) -> dict:
     return json.loads(match.group(0))
 
 
-def load_model(model_id: str, revision: str):
+def validate_schema(instance: object, schema_path: Path, label: str) -> None:\n    schema = json.loads(schema_path.read_text(encoding="utf-8"))\n    errors = sorted(Draft202012Validator(schema).iter_errors(instance), key=lambda e: list(e.path))\n    if errors:\n        detail = "; ".join(f"{label}: {e.message}" for e in errors[:5])\n        raise ValueError(detail)\n\n\ndef load_model(model_id: str, revision: str):
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
     tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision)
@@ -184,12 +188,7 @@ def main() -> None:
                 )
                 parsed = None
                 parse_error = None
-                try:
-                    parsed = _extract_json(raw)
-                    DiagnosticOutput.from_dict(parsed)
-                except (ValueError, json.JSONDecodeError, TypeError, KeyError) as exc:
-                    parse_error = f"{type(exc).__name__}: {exc}"
-
+                try:\n                    parsed = _extract_json(raw)\n                    validate_schema(parsed, DIAGNOSTIC_OUTPUT_SCHEMA, "diagnostic_output_schema")\n                    DiagnosticOutput.from_dict(parsed)\n                except (ValueError, json.JSONDecodeError, TypeError, KeyError) as exc:\n                    parse_error = f"{type(exc).__name__}: {exc}"\n
                 completed_at = datetime.now(timezone.utc)
                 record = {
                     "source_commit": source_commit,
@@ -211,8 +210,7 @@ def main() -> None:
                     "raw_output": raw,
                     "parsed_output": parsed,
                 }
-                temporary = path.with_suffix(path.suffix + ".tmp")
-                temporary.write_text(
+                validate_schema(record, RUN_RECORD_SCHEMA, "pilot_run_record_schema")\n                temporary = path.with_suffix(path.suffix + ".tmp")\n                temporary.write_text(
                     json.dumps(record, indent=2, ensure_ascii=False) + "\n",
                     encoding="utf-8",
                 )
