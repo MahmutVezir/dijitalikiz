@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import json
 import platform
 import subprocess
@@ -51,7 +52,10 @@ def gpu_snapshot() -> dict:
 
 
 def main() -> None:
-    output_path = Path("data/pilot/environment.json")
+    parser = argparse.ArgumentParser(description="Capture the execution environment.")
+    parser.add_argument("--output", default="data/pilot/environment.json")
+    args = parser.parse_args()
+    output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     payload = {
