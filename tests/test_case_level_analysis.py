@@ -2,7 +2,12 @@ from pathlib import Path
 import json
 import pytest
 
-from scripts.analyze_case_level import build_result, load_evaluation
+from scripts.analyze_case_level import (
+    build_result,
+    exact_mcnemar_pvalue,
+    load_evaluation,
+    paired_risk_difference_ci,
+)
 
 
 def _evaluation_payload(tmp_path: Path) -> Path:
@@ -30,6 +35,19 @@ def test_case_level_analysis_reads_evaluation_output(tmp_path):
     result = build_result(outcomes, ["case-a", "case-b"])
     assert result["n_cases"] == 2
     assert result["contingency_table"]["standard_fail_ccdg_pass"] == 2
+    assert result["paired_effect_size"]["estimate"] == 1.0
+    assert len(result["paired_effect_size"]["95_ci"]) == 2
+
+
+def test_exact_mcnemar_is_two_sided():
+    assert exact_mcnemar_pvalue(0, 0) == 1.0
+    assert exact_mcnemar_pvalue(0, 2) == 0.5
+    assert exact_mcnemar_pvalue(2, 0) == 0.5
+
+
+def test_paired_ci_is_bounded():
+    low, high = paired_risk_difference_ci(1, 3, 10)
+    assert -1.0 <= low <= high <= 1.0
 
 
 def test_incomplete_evaluation_is_blocked(tmp_path):
