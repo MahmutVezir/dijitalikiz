@@ -49,6 +49,8 @@ Before inference, verify the environment:
 
     python scripts/pilot_preflight.py --require-cuda
 
+The preflight now checks the exact runtime versions declared in `data/pilot/pilot_manifest.json`.
+
 Then perform the load-only model smoke test (no experimental generation is performed):
 
     python scripts/model_load_preflight.py
