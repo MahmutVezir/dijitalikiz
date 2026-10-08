@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       execute_inference:
-        description: "Run the frozen 40-inference pilot on Kaggle GPU"
+        description: "Run the frozen 30-inference pilot on Kaggle GPU"
         required: true
         default: false
         type: boolean
@@ -19,14 +19,14 @@ concurrency:
 jobs:
   run-frozen-pilot:
     if: github.event_name == 'workflow_dispatch' && inputs.execute_inference == true
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 180
     env:
       KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
 
     steps:
       - name: Checkout exact Git commit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1
 
@@ -50,13 +50,14 @@ jobs:
           set -euo pipefail
           # Resolve the real notebook slug from the authenticated account.
           # Never use a benchmark_task_slug as the kernel identifier.
-          KERNEL_REF="$(kaggle kernels list --mine --search dijitalikiz --page-size 50 --csv 2>/dev/null | awk -F, 'NR>1 {gsub(/"/, "", $1); if ($1 ~ /(^|\\/)dijitalikiz/) {print $1; exit}}')"
+          KERNEL_REF="$(kaggle kernels list --mine --page-size 50 2>/dev/null | awk '$1=="mahmutvezir/dijitalikiz-frozen-pilot" {print $1; exit}')"
           if [ -z "$KERNEL_REF" ]; then
-            KERNEL_REF="mahmutvezir/dijitalikiz-pilot"
-            echo "No existing dijitalikiz kernel found; using fallback $KERNEL_REF"
-          else
-            echo "Resolved existing Kaggle kernel: $KERNEL_REF"
+            echo "Expected Kaggle kernel mahmutvezir/dijitalikiz-frozen-pilot was not found."
+            echo "Available kernels:"
+            kaggle kernels list --mine --page-size 50 || true
+            exit 1
           fi
+          echo "Resolved existing Kaggle kernel: $KERNEL_REF"
           echo "KAGGLE_KERNEL_REF=$KERNEL_REF" >> "$GITHUB_ENV"
           echo "KAGGLE_KERNEL_SLUG=${KERNEL_REF#*/}" >> "$GITHUB_ENV"
           kaggle kernels status "$KERNEL_REF" || true
@@ -107,7 +108,7 @@ jobs:
             fi
             sleep 60
           done
-          kaggle kernels logs "$KAGGLE_USERNAME/dijitalikiz-pilot" || true
+          kaggle kernels logs "$KAGGLE_KERNEL_REF" || true
           exit 1
 
       - name: Download finalized pilot output
