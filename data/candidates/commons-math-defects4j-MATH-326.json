@@ -1,0 +1,53 @@
+{
+  "case_id": "commons-math-defects4j-MATH-326",
+  "source": "Apache Commons JIRA + Defects4J",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-326",
+  "publication_date": "unknown",
+  "technology": "Apache Commons Math / Java / linear algebra",
+  "error_description": "The L-infinity norm implementation in concrete vector classes returned incorrect values for inputs with multiple entries.",
+  "evidence_urls": [
+    "https://commons.apache.org/proper/commons-math/changes-report.html",
+    "https://github.com/rjust/defects4j"
+  ],
+  "split": "candidates",
+  "annotation_status": "annotated_provisional",
+  "provenance_verification_status": "verified",
+  "i_base": [
+    "RealVector defines vector norm operations.",
+    "AbstractRealVector supplies common norm behavior for vector implementations.",
+    "ArrayRealVector stores dense vector data.",
+    "OpenMapRealVector stores sparse vector entries."
+  ],
+  "ccdg": [
+    {
+      "source": "RealVector",
+      "target": "AbstractRealVector",
+      "relation": "defines_default_behavior",
+      "details": "norm API is shared by implementations"
+    },
+    {
+      "source": "ArrayRealVector",
+      "target": "AbstractRealVector",
+      "relation": "inherits_norm_contract",
+      "details": "dense implementation specializes norm methods"
+    },
+    {
+      "source": "OpenMapRealVector",
+      "target": "AbstractRealVector",
+      "relation": "inherits_norm_contract",
+      "details": "sparse implementation relies on shared defaults"
+    }
+  ],
+  "ground_truth": {
+    "component": "ArrayRealVector",
+    "entity": "L-infinity norm",
+    "operation": "getLInfNorm",
+    "root_cause": "accumulating_maximum_instead_of_tracking_maximum",
+    "required_relations": [
+      "RealVector",
+      "AbstractRealVector",
+      "ArrayRealVector",
+      "OpenMapRealVector"
+    ]
+  }
+}
