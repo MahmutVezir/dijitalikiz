@@ -28,94 +28,52 @@ def output(*args: str) -> str:
     return subprocess.check_output(args, text=True).strip()
 
 
-def ensure_kagglehub() -> None:
-    try:
-        import kagglehub  # noqa: F401
-        return
-    except Exception:
-        run(sys.executable, "-m", "pip", "install", "--quiet", "kagglehub")
-
-
-def ensure_python311() -> Path:
-    current = f"{sys.version_info.major}.{sys.version_info.minor}"
-    if current == "3.11":
-        return Path(sys.executable)
-
-    if TARGET_PYTHON.is_file():
-        detected = output(
-            str(TARGET_PYTHON),
-            "-c",
-            "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')",
-        )
-        if detected == "3.11":
-            return TARGET_PYTHON
-        shutil.rmtree(PYTHON_ENV, ignore_errors=True)
-
-    candidates = (
-        "python3.11",
-        "/usr/bin/python3.11",
-        "/opt/conda/bin/python3.11",
-        "/opt/conda/envs/py311/bin/python",
+def locate_frozen_dataset() -> Path:
+    roots = (
+        Path("/kaggle/input"),
+        Path("/kaggle/working"),
     )
-    for candidate in candidates:
-        executable = shutil.which(candidate) if not Path(candidate).is_absolute() else candidate
-        if executable and Path(executable).is_file():
-            try:
-                version = output(
-                    executable,
-                    "-c",
-                    "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')",
+    matches: list[Path] = []
+
+    for root in roots:
+        if not root.exists():
+            continue
+        for bundle_marker in root.rglob("project.tar.gz.b64"):
+            candidate = bundle_marker.parent
+            if all(
+                (candidate / filename).is_file()
+                for filename in (
+                    "project.tar.gz.b64",
+                    "source_bundle_sha256.txt",
+                    "source_commit.txt",
                 )
-                if version == "3.11":
-                    run(executable, "-m", "venv", str(PYTHON_ENV))
-                    return TARGET_PYTHON
-            except (OSError, subprocess.CalledProcessError):
-                shutil.rmtree(PYTHON_ENV, ignore_errors=True)
+            ):
+                matches.append(candidate)
 
-    for manager in (
-        "/opt/conda/bin/mamba",
-        "/opt/conda/bin/conda",
-        "mamba",
-        "conda",
-    ):
-        executable = shutil.which(manager) if not Path(manager).is_absolute() else manager
-        if executable and Path(executable).is_file():
-            try:
-                run(executable, "create", "-y", "--prefix", str(PYTHON_ENV), "python=3.11", "pip")
-                return TARGET_PYTHON
-            except (OSError, subprocess.CalledProcessError):
-                shutil.rmtree(PYTHON_ENV, ignore_errors=True)
+    unique_matches = []
+    seen = set()
+    for candidate in matches:
+        resolved = candidate.resolve()
+        if resolved not in seen:
+            unique_matches.append(resolved)
+            seen.add(resolved)
 
-    run(sys.executable, "-m", "pip", "install", "--quiet", "uv")
-    uv = shutil.which("uv")
-    if not uv:
-        candidate = Path(sys.executable).resolve().parent / "uv"
-        uv = str(candidate) if candidate.is_file() else None
-    if not uv:
-        user_bin = Path.home() / ".local" / "bin" / "uv"
-        uv = str(user_bin) if user_bin.is_file() else None
-    if not uv:
-        raise RuntimeError("Could not provision Python 3.11.")
-    run(uv, "venv", "--python", "3.11", "--seed", str(PYTHON_ENV))
-    if not TARGET_PYTHON.is_file():
-        raise RuntimeError(f"Python 3.11 interpreter is missing: {TARGET_PYTHON}")
-    return TARGET_PYTHON
+    if len(unique_matches) == 1:
+        return unique_matches[0]
+
+    if not unique_matches:
+        raise RuntimeError(
+            "Frozen source dataset is not mounted with the complete "
+            "project.tar.gz.b64 + source_bundle_sha256.txt + source_commit.txt set."
+        )
+
+    raise RuntimeError(
+        "Multiple complete frozen source dataset payloads were found: "
+        + ", ".join(str(path) for path in unique_matches)
+    )
 
 
-attached_candidates = [
-    Path("/kaggle/input/dijitalikiz-frozen-source-v2"),
-    Path("/kaggle/input/dijitalikiz-frozen-source-v2/Dijitalikiz Frozen Source v2"),
-]
-dataset_dir = next(
-    (p for p in attached_candidates if (p / "project.tar.gz.b64").is_file()),
-    None,
-)
-
-if dataset_dir is None:
-    print("Attached frozen-source dataset not found; trying KaggleHub resolver.", flush=True)
-    ensure_kagglehub()
-    import kagglehub
-    dataset_dir = Path(kagglehub.dataset_download(SOURCE_DATASET))
+dataset_dir = locate_frozen_dataset()
 
 bundle_b64 = dataset_dir / "project.tar.gz.b64"
 bundle_sha = dataset_dir / "source_bundle_sha256.txt"
