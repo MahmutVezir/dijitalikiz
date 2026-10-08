@@ -1,0 +1,19 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"CandidateCaseIntake",
+  "type":"object",
+  "required":["case_id","source","source_url","publication_date","technology","error_description","evidence_urls","split"],
+  "properties":{
+    "case_id":{"type":"string","minLength":1},
+    "source":{"type":"string","minLength":1},
+    "source_url":{"type":"string","format":"uri"},
+    "publication_date":{"type":"string","minLength":1},
+    "technology":{"type":"string","minLength":1},
+    "error_description":{"type":"string","minLength":1},
+    "evidence_urls":{"type":"array","minItems":1,"items":{"type":"string","format":"uri"}},
+    "split":{"type":"string","enum":["candidates","pilot","confirmatory"]},
+    "annotation_status":{"type":"string"},
+    "provenance_verification_status":{"type":"string"}
+  },
+  "additionalProperties":true
+}
