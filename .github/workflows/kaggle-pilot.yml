@@ -50,10 +50,10 @@ jobs:
           set -euo pipefail
           # Resolve the real notebook slug from the authenticated account.
           # Never use a benchmark_task_slug as the kernel identifier.
-          KERNEL_REF="$(kaggle kernels list --mine --search dijitalikiz --page-size 50 --csv 2>/dev/null | awk -F, 'NR>1 {gsub(/"/, "", $1); if ($1 ~ /\\/dijitalikiz/) {print $1; exit}}')"
+          KERNEL_REF="$(kaggle kernels list --mine --search dijitalikiz --page-size 50 --csv 2>/dev/null | awk -F, 'NR>1 {gsub(/"/, "", $1); if ($1 ~ /(^|\\/)dijitalikiz/) {print $1; exit}}')"
           if [ -z "$KERNEL_REF" ]; then
-            KERNEL_REF="$KAGGLE_KERNEL_REF"
-            echo "No existing dijitalikiz kernel found; using $KERNEL_REF"
+            KERNEL_REF="mahmutvezir/dijitalikiz-pilot"
+            echo "No existing dijitalikiz kernel found; using fallback $KERNEL_REF"
           else
             echo "Resolved existing Kaggle kernel: $KERNEL_REF"
           fi
@@ -96,13 +96,13 @@ jobs:
         run: |
           set -euo pipefail
           for attempt in $(seq 1 170); do
-            status="$(kaggle kernels status "$KAGGLE_USERNAME/dijitalikiz-pilot" 2>&1 || true)"
+            status="$(kaggle kernels status "$KAGGLE_KERNEL_REF" 2>&1 || true)"
             echo "$status"
             if echo "$status" | grep -q "KernelWorkerStatus.COMPLETE"; then
               exit 0
             fi
             if echo "$status" | grep -Eq "KernelWorkerStatus.(ERROR|CANCEL_REQUESTED|CANCEL_ACKNOWLEDGED)"; then
-              kaggle kernels logs "$KAGGLE_USERNAME/dijitalikiz-pilot" || true
+              kaggle kernels logs "$KAGGLE_KERNEL_REF" || true
               exit 1
             fi
             sleep 60
@@ -116,7 +116,7 @@ jobs:
           set -euo pipefail
           rm -rf kaggle-output
           mkdir -p kaggle-output
-          kaggle kernels output "$KAGGLE_USERNAME/dijitalikiz-pilot" -p kaggle-output --force
+          kaggle kernels output "$KAGGLE_KERNEL_REF" -p kaggle-output --force
           find kaggle-output -maxdepth 4 -type f -print | sort
           test -n "$(find kaggle-output -name pilot_records.jsonl -print -quit)"
           test -n "$(find kaggle-output -name pilot_evaluation.json -print -quit)"
