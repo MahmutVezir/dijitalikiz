@@ -78,6 +78,7 @@
     ],
     "overridden_prior_exclusion_case_ids": [
       "commons-math-defects4j-MATH-949"
-    ]
+    ],
+    "contamination_audit_path": "docs/CONTAMINATION_AUDIT_2026-10-08_FINAL.md"
   }
 }
