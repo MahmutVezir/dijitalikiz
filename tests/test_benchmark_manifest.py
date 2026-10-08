@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 from scripts.validate_benchmark_manifest import validate_manifest
@@ -47,7 +48,39 @@ def test_frozen_manifest_rejects_missing_case_and_assessment():
     assert any("missing assessment file" in error for error in errors)
 
 
-def test_frozen_manifest_accepts_complete_power_assumption():
+def test_frozen_manifest_accepts_complete_case(tmp_path):
+    (tmp_path / "data" / "benchmark" / "cases").mkdir(parents=True)
+    (tmp_path / "data" / "assessments").mkdir(parents=True)
+
+    case = {
+        "case_id": "main-a",
+        "source": "source",
+        "source_url": "https://example.invalid/case",
+        "publication_date": "2026-01-01",
+        "technology": "Java",
+        "error_description": "desc",
+        "i_base": ["evidence"],
+        "ccdg": [{"source": "A", "target": "B", "relation": "calls"}],
+        "ground_truth": {
+            "component": "A",
+            "entity": "B",
+            "operation": "call",
+            "root_cause": "root",
+            "required_relations": ["A", "B"],
+        },
+    }
+    assessment = {
+        "case_id": "main-a",
+        "eligible_for_main": True,
+        "contamination_risk": "medium",
+    }
+    (tmp_path / "data" / "benchmark" / "cases" / "main-a.json").write_text(
+        json.dumps(case), encoding="utf-8"
+    )
+    (tmp_path / "data" / "assessments" / "main-a.json").write_text(
+        json.dumps(assessment), encoding="utf-8"
+    )
+
     errors = validate_manifest({
         "status": "frozen",
         "case_ids": ["main-a"],
@@ -59,5 +92,5 @@ def test_frozen_manifest_accepts_complete_power_assumption():
             "target_power": 0.80,
             "alpha": 0.05,
         },
-    }, root=Path("/nonexistent"))
-    assert any("missing benchmark case file" in error for error in errors)
+    }, root=tmp_path)
+    assert errors == []
