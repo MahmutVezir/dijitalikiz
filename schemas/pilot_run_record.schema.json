@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PilotRunRecord",
+  "type":"object",
+  "required":["source_commit","started_at_utc","completed_at_utc","raw_output_sha256","case_id","condition","seed","model_id","model_revision","temperature","top_p","max_new_tokens","prompt_sha256","system_prompt_sha256","context_sha256","raw_output"],
+  "properties":{
+    "source_commit":{"type":"string","minLength":1},
+    "started_at_utc":{"type":"string","format":"date-time"},
+    "completed_at_utc":{"type":"string","format":"date-time"},
+    "raw_output_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "case_id":{"type":"string","minLength":1},
+    "condition":{"type":"string","enum":["standard","ccdg"]},
+    "seed":{"type":"integer"},
+    "model_id":{"type":"string","minLength":1},
+    "model_revision":{"type":"string","minLength":1},
+    "temperature":{"type":"number"},
+    "top_p":{"type":"number"},
+    "max_new_tokens":{"type":"integer","minimum":1},
+    "prompt_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "system_prompt_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "context_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "parse_error":{"type":["string","null"]},
+    "raw_output":{"type":"string"},
+    "parsed_output":{"type":["object","null"]}
+  },
+  "additionalProperties":true
+}
