@@ -43,31 +43,8 @@ run(sys.executable, "scripts/pilot_preflight.py", "--require-cuda", cwd=WORKDIR)
 run(sys.executable, "scripts/model_load_preflight.py", cwd=WORKDIR)
 run(sys.executable, "scripts/audit_pilot_integrity.py", cwd=WORKDIR)
 run(sys.executable, "scripts/run_pilot.py", cwd=WORKDIR)
-run(sys.executable, "scripts/audit_pilot_integrity.py", "--require-complete", cwd=WORKDIR)
-run(sys.executable, "scripts/evaluate_pilot.py", cwd=WORKDIR)
-run(
-    sys.executable,
-    "scripts/analyze_case_level.py",
-    "--evaluation",
-    "data/pilot/pilot_evaluation.json",
-    "--case-ids",
-    "commons-math-defects4j-MATH-927",
-    "commons-math-defects4j-MATH-950",
-    "commons-math-defects4j-MATH-988",
-    "--output",
-    "data/pilot/case_level_analysis.json",
-    cwd=WORKDIR,
-)
-run(
-    sys.executable,
-    "scripts/pilot_qa_report.py",
-    cwd=WORKDIR,
-)
-run(
-    sys.executable,
-    "scripts/build_pilot_artifact_manifest.py",
-    cwd=WORKDIR,
-)
+run(sys.executable, "scripts/run_pilot.py", cwd=WORKDIR)
+run(sys.executable, "scripts/finalize_pilot.py", cwd=WORKDIR)
 
 output_dir = KERNEL_ROOT / "pilot-output"
 if output_dir.exists():
