@@ -88,7 +88,7 @@ The repository now has a 16-case preselected confirmatory set prepared before co
 
 The current draft manifest contains 16 independent cases: CLOSURE-4, CLOSURE-6, CLOSURE-14, MATH-305, MATH-326, MATH-358, MATH-377, MATH-392, MATH-393, MATH-405, MATH-631, MATH-859, MATH-924, TIME-1, TIME-12 and MOCKITO-19.
 
-Pilot cases MATH-927, MATH-950 and MATH-988 are excluded. MATH-938 and MATH-949 remain excluded because their cross-component dependency/CCDG suitability was assessed as weak.
+Pilot cases MATH-927, MATH-950, MATH-949 and MATH-988 are excluded. MATH-938 remains excluded because their cross-component dependency/CCDG suitability was assessed as weak.
 
 All 16 prepared cases have provenance, fixing-commit anchors, provisional CCDG and ground-truth records, and a resolved conservative high public-exposure contamination label. No model outputs were consulted for selection.
 
