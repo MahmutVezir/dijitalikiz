@@ -24,6 +24,11 @@ def main()->int:
     if errors: raise SystemExit("Benchmark draft validation failed: "+" | ".join(errors))
     if len(manifest.get("case_ids",[]))!=manifest["power_assumption"]["required_case_count"]:
         raise SystemExit("Confirmatory case count does not match predeclared power requirement.")
+    frozen_candidate=dict(manifest)
+    frozen_candidate["status"]="frozen"
+    frozen_errors=validate_manifest(frozen_candidate,ROOT)
+    if frozen_errors:
+        raise SystemExit("Frozen benchmark validation failed: "+" | ".join(frozen_errors))
     manifest["status"]="frozen"
     manifest["freeze_metadata"]={
         "frozen_at_utc":"generated-during-execution",
