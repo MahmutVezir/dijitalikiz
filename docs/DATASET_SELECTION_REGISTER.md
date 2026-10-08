@@ -12,8 +12,8 @@ Total candidate records: **21**
 
 | Group | Cases | Status |
 |---|---|---|
-| Frozen pilot / permanently excluded from main | MATH-927, MATH-950, MATH-988 | Pilot |
-| Previously screened out | MATH-938, MATH-949 | CCDG/dependency unsuitable |
+| Frozen pilot / permanently excluded from main | MATH-927, MATH-950, MATH-949, MATH-988 | Pilot |
+| Previously screened out | MATH-938 | CCDG/dependency unsuitable |
 | Provisional Apache Commons Math candidates | MATH-924, MATH-405, MATH-326, MATH-377, MATH-393, MATH-631, MATH-358, MATH-859, MATH-844, MATH-305 | Screening pool |
 | Provisional Joda-Time candidates | TIME-1, TIME-12 | Screening pool |
 | Provisional Mockito candidate | MOCKITO-19 | Screening pool |
@@ -41,8 +41,8 @@ This prevents the benchmark from being selected or altered after model outputs a
 
 ## Important exclusions
 
-- MATH-927, MATH-950 and MATH-988 are pilot cases and cannot be promoted.
-- MATH-938 and MATH-949 were screened out because the current dependency/CCDG assessment did not establish sufficiently strong cross-component structure.
+- MATH-927, MATH-950, MATH-949 and MATH-988 are pilot cases and cannot be promoted.
+- MATH-938 remains screened out because the final dependency/CCDG assessment did not establish sufficiently strong cross-component structure. MATH-949 was re-reviewed and promoted to the pilot.
 - Duplicate or issue/fix-mismatched Mockito mappings were rejected during mining rather than added as artificial candidates.
 
 ## Mining observations
