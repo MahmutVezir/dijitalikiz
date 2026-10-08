@@ -194,6 +194,7 @@
     "deterministic_eligibility_formula": "all(IC1..IC7=pass) AND dependency_strength in {strong,moderate} AND ccdg_suitability in {strong,moderate}",
     "pilot_manifest_path": "data/pilot/pilot_manifest.json",
     "review_record_path": "data/pilot/final_candidate_review_2026-10-08.json",
-    "exclusion_report_path": "docs/PILOT_EXCLUSION_REPORT_2026-10-08.md"
+    "exclusion_report_path": "docs/PILOT_EXCLUSION_REPORT_2026-10-08.md",
+    "contamination_audit_path": "docs/CONTAMINATION_AUDIT_2026-10-08_FINAL.md"
   }
 }
