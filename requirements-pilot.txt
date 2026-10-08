@@ -1,10 +1,9 @@
 # Frozen pilot runtime compatibility lane
-# Rationale:
-# - Qwen2.5-3B-Instruct-GPTQ-Int4 is a legacy GPTQ checkpoint.
-# - AutoGPTQ 0.7.1 is the documented legacy runtime lane for this checkpoint family.
-# - Exact versions are pinned before the first inference for reproducibility.
+# Legacy GPTQ checkpoint lane intentionally pinned for reproducibility.
+# Qwen's published checkpoint is GPTQ-Int4 and its 2024 Transformers guidance used AutoGPTQ.
 torch==2.2.1
 transformers==4.43.2
 accelerate==0.33.0
 optimum==1.17.1
 auto-gptq==0.7.1
+jsonschema==4.23.0
