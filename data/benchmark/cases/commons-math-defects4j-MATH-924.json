@@ -1,0 +1,53 @@
+{
+  "case_id": "commons-math-defects4j-MATH-924",
+  "source": "Apache Commons JIRA + Defects4J",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-924",
+  "publication_date": "2012-12-29",
+  "technology": "Apache Commons Math / Java / optimization",
+  "error_description": "A large vector of weights caused Weight to materialize an n×n dense matrix, exhausting memory in multivariate vector optimization and curve fitting.",
+  "i_base": [
+    "Weight accepts a vector of observation weights.",
+    "Least-squares optimization consumes a weight matrix to scale residuals.",
+    "Curve-fitting workloads can contain tens of thousands of observations.",
+    "The fix introduces a diagonal matrix representation for vector weights."
+  ],
+  "ccdg": [
+    {
+      "source": "CurveFitter",
+      "target": "AbstractLeastSquaresOptimizer",
+      "relation": "uses_optimizer",
+      "details": "curve fitting delegates residual optimization"
+    },
+    {
+      "source": "AbstractLeastSquaresOptimizer",
+      "target": "Weight",
+      "relation": "consumes_weight_matrix",
+      "details": "weights affect residual scaling"
+    },
+    {
+      "source": "Weight",
+      "target": "DiagonalMatrix",
+      "relation": "represents_diagonal_weights",
+      "details": "vector weights remain diagonal without dense expansion"
+    }
+  ],
+  "ground_truth": {
+    "component": "Weight",
+    "entity": "multivariate vector optimizer",
+    "operation": "weight matrix construction",
+    "root_cause": "dense_weight_matrix_materialization",
+    "required_relations": [
+      "CurveFitter",
+      "AbstractLeastSquaresOptimizer",
+      "Weight",
+      "DiagonalMatrix"
+    ]
+  },
+  "split": "confirmatory",
+  "provenance": {
+    "source_system": "Defects4J",
+    "fixed_revision": "2836a6f9efcd30effe2f1125d47c38f62f96ed09",
+    "fixed_revision_date": "2012-12-29",
+    "date_basis": "fixed_revision_date used as recorded date because issue-creation date is not consistently exposed in the source record"
+  }
+}
