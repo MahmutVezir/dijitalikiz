@@ -6,9 +6,34 @@
     "commons-math-defects4j-MATH-950",
     "commons-math-defects4j-MATH-988"
   ],
-  "case_ids": [],
-  "contamination_audit_completed": false,
-  "power_assumption": null,
+  "case_ids": [
+    "commons-math-defects4j-MATH-305",
+    "commons-math-defects4j-MATH-326",
+    "commons-math-defects4j-MATH-358",
+    "commons-math-defects4j-MATH-377",
+    "commons-math-defects4j-MATH-393",
+    "commons-math-defects4j-MATH-405",
+    "commons-math-defects4j-MATH-631",
+    "commons-math-defects4j-MATH-844",
+    "commons-math-defects4j-MATH-859",
+    "commons-math-defects4j-MATH-924",
+    "closure-compiler-defects4j-CLOSURE-4",
+    "closure-compiler-defects4j-CLOSURE-6",
+    "closure-compiler-defects4j-CLOSURE-14",
+    "joda-time-defects4j-TIME-1",
+    "joda-time-defects4j-TIME-12",
+    "mockito-defects4j-MOCKITO-19"
+  ],
+  "contamination_audit_completed": true,
+  "power_assumption": {
+    "p_standard_only": 0.6,
+    "p_ccdg_only": 0.05,
+    "target_power": 0.8,
+    "alpha": 0.05,
+    "required_case_count": 16,
+    "achieved_power": 0.807,
+    "rationale": "Predeclared directional design alternative selected before confirmatory inference from the available independent eligible-case pool; probabilities are design assumptions, not pilot/model-derived estimates."
+  },
   "analysis": {
     "primary_endpoint": "case_level_complete_diagnostic_correctness",
     "replication_rule": "at least 3 of 5 seeds",
@@ -16,5 +41,16 @@
     "alpha": 0.05,
     "unit": "independent software case"
   },
-  "freeze_rule": "This manifest may become frozen only after independent cases, case records, assessments, contamination audit metadata, and power assumptions are explicitly documented."
+  "freeze_rule": "This manifest may become frozen only after independent cases, case records, assessments, contamination audit metadata, and power assumptions are explicitly documented.",
+  "selection_metadata": {
+    "selection_date": "2026-10-08",
+    "model_outputs_consulted": false,
+    "confirmatory_case_count": 16,
+    "contamination_policy": "conservative high public-exposure risk; not evidence of training-set membership",
+    "pilot_cases_excluded": true,
+    "excluded_weak_cases": [
+      "commons-math-defects4j-MATH-938",
+      "commons-math-defects4j-MATH-949"
+    ]
+  }
 }
