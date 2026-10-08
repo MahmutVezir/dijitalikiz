@@ -190,4 +190,4 @@ The current repository is therefore **protocol-ready / experiment-pending**, not
 - [ ] Complete confirmatory integrity audit
 
 ### Current status update — 2026-10-08
-The confirmatory dataset and execution pipeline are now mechanically prepared. The repository remains scientifically experiment-pending because the 30-run pilot has not yet produced actual inference records and the confirmatory manifest therefore remains draft. No effectiveness result or hypothesis decision has been inferred.
+The confirmatory dataset and execution pipeline are now mechanically prepared. The repository remains scientifically experiment-pending because the 40-run pilot has not yet produced actual inference records and the confirmatory manifest therefore remains draft. No effectiveness result or hypothesis decision has been inferred.
