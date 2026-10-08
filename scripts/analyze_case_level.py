@@ -22,27 +22,49 @@ def load_evaluation(evaluation_path: Path, case_ids: list[str]) -> dict:
     payload = json.loads(evaluation_path.read_text(encoding="utf-8"))
     if payload.get("status") != "complete":
         raise ValueError("Pilot evaluation is incomplete; final case-level analysis is blocked.")
+    if not case_ids:
+        raise ValueError("At least one case is required for case-level analysis.")
+    if len(case_ids) != len(set(case_ids)):
+        raise ValueError("case_ids must be unique; duplicate case IDs would overweight a case.")
+
     records = payload.get("records", [])
     outcomes = {}
+    expected_seeds = set(SEEDS)
     for case_id in case_ids:
         outcomes[case_id] = {}
         for condition in CONDITIONS:
-            scores = [
-                r["score"]["passed"]
-                for r in records
-                if r.get("case_id") == case_id
-                and r.get("condition") == condition
-                and r.get("score") is not None
+            subset = [
+                r for r in records
+                if r.get("case_id") == case_id and r.get("condition") == condition
             ]
-            if len(scores) != len(SEEDS):
+            observed_seeds = [r.get("seed") for r in subset]
+            if len(subset) != len(SEEDS) or set(observed_seeds) != expected_seeds:
                 raise ValueError(
-                    f"Expected {len(SEEDS)} scored runs for {case_id}/{condition}, found {len(scores)}."
+                    f"Expected exactly one scored run for each seed {SEEDS} for "
+                    f"{case_id}/{condition}; observed seeds={observed_seeds}."
                 )
+
+            scores = []
+            for record in subset:
+                if record.get("score") is None:
+                    raise ValueError(f"Missing score for {case_id}/{condition}/seed{record.get('seed')}.")
+                passed = record["score"].get("passed")
+                if not isinstance(passed, bool):
+                    raise ValueError(
+                        f"score.passed must be boolean for {case_id}/{condition}/seed{record.get('seed')}."
+                    )
+                scores.append(passed)
+
             outcomes[case_id][condition] = sum(scores) >= MAJORITY_REQUIRED
     return outcomes
 
 
 def build_result(outcomes: dict, case_ids: list[str]) -> dict:
+    if not case_ids:
+        raise ValueError("At least one case is required for case-level analysis.")
+    if len(case_ids) != len(set(case_ids)):
+        raise ValueError("case_ids must be unique; duplicate case IDs would overweight a case.")
+
     standard_only = sum(
         outcomes[c]["standard"] and not outcomes[c]["ccdg"] for c in case_ids
     )
