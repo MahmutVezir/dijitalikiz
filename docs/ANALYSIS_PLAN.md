@@ -67,6 +67,14 @@ Pilot cases are used to validate the protocol and estimate execution feasibility
 
 If pilot cases are retained in the final dataset, their inclusion/exclusion rule must be declared before inspecting the final benchmark outcome.
 
+## Paired effect size and confidence interval
+
+The primary paired effect size is the risk difference:
+
+`P(CCDG correct, Standard incorrect) - P(Standard correct, CCDG incorrect)`.
+
+The primary inferential test remains the exact two-sided McNemar test. The 95% confidence interval is a predeclared Newcombe-style interval formed from Wilson score intervals for the two mutually exclusive discordant proportions. The interval is descriptive alongside the exact McNemar p-value and is not used to alter the benchmark sample size after results are observed.
+
 ## Power analysis
 
 The main sample size is selected before the confirmatory benchmark using an explicit assumption about:
