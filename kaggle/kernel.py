@@ -29,10 +29,16 @@ WORKDIR.mkdir(parents=True, exist_ok=True)
 with tarfile.open(BUNDLE, "r:gz") as archive:
     archive.extractall(WORKDIR)
 
-source_commit = SOURCE_COMMIT_FILE.read_text(encoding="utf-8").strip() if SOURCE_COMMIT_FILE.exists() else "unknown"
+source_commit = (
+    SOURCE_COMMIT_FILE.read_text(encoding="utf-8").strip()
+    if SOURCE_COMMIT_FILE.exists()
+    else "unknown"
+)
 pilot_dir = WORKDIR / "data" / "pilot"
 pilot_dir.mkdir(parents=True, exist_ok=True)
-(pilot_dir / "kaggle_source_commit.txt").write_text(source_commit + "\n", encoding="utf-8")
+(pilot_dir / "kaggle_source_commit.txt").write_text(
+    source_commit + "\n", encoding="utf-8"
+)
 
 run(sys.executable, "-m", "pip", "install", "-r", "requirements-pilot.txt", cwd=WORKDIR)
 
@@ -44,7 +50,10 @@ environment_path = pilot_dir / "environment.json"
 environment = json.loads(environment_path.read_text(encoding="utf-8"))
 environment["source_commit"] = source_commit
 environment["source_commit_verified_from_bundle"] = True
-environment_path.write_text(json.dumps(environment, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+environment_path.write_text(
+    json.dumps(environment, indent=2, ensure_ascii=False) + "\n",
+    encoding="utf-8",
+)
 
 run(sys.executable, "scripts/pilot_preflight.py", "--require-cuda", cwd=WORKDIR, env=env)
 run(sys.executable, "scripts/model_load_preflight.py", cwd=WORKDIR, env=env)
@@ -68,11 +77,14 @@ required = (
     output_dir / "pilot_records.jsonl",
     output_dir / "pilot_evaluation.json",
     output_dir / "case_level_analysis.json",
+    output_dir / "pilot_qa_report.json",
     output_dir / "artifact_manifest.json",
 )
 missing = [str(path) for path in required if not path.is_file()]
 if missing:
-    raise RuntimeError("Pilot finalized but required artifacts are missing: " + ", ".join(missing))
+    raise RuntimeError(
+        "Pilot finalized but required artifacts are missing: " + ", ".join(missing)
+    )
 
 print(f"Kaggle pilot completed for source commit {source_commit}.", flush=True)
 print(f"Pilot artifacts staged at {output_dir}.", flush=True)
