@@ -23,7 +23,9 @@ Bu depo, Standard Context ile açık ve yapılandırılmış Cross-Component Dep
 - `scripts/run_pilot.py`: 30 frozen inference kaydını fail-closed biçimde üretir
 - `scripts/finalize_pilot.py`: tamamlanmış pilotu yeniden inference çağırmadan audit → evaluation → analysis → QA → checksum zincirinden geçirir
 - `scripts/model_load_preflight.py`: deneysel üretim yapmadan frozen model/GPTQ yükleme smoke testini çalıştırır
+- `scripts/build_pilot_records_jsonl.py`: 30 frozen run kaydını deterministik JSONL artifact'ine dönüştürür
 - `scripts/build_pilot_artifact_manifest.py`: tamamlanan pilot çıktılarının SHA-256 bütünlük manifestini üretir
+- `scripts/validate_pilot_artifact_manifest.py`: indirilen pilot artifact'inin bağımsız SHA-256 doğrulamasını yapar
 - `scripts/validate_all_candidates.py`: candidate + assessment havuzunu topluca doğrular
 - `scripts/evaluate_pilot.py`: inference kayıtlarını skorlar; modeli yeniden çalıştırmaz
 - `scripts/analyze_case_level.py`: pilot evaluation çıktısından vaka düzeyi analiz ve McNemar testi üretir
