@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import base64
 import json
 import os
 import shutil
@@ -10,8 +9,7 @@ import tarfile
 from pathlib import Path
 
 KERNEL_ROOT = Path("/kaggle/working")
-SOURCE_COMMIT = "SOURCE_COMMIT_PLACEHOLDER"
-EMBEDDED_PROJECT_B64 = "PROJECT_B64_PLACEHOLDER"
+SOURCE_DATASET = "mahmutvezir/dijitalikiz-frozen-source"
 BUNDLE = KERNEL_ROOT / "project.tar.gz"
 WORKDIR = KERNEL_ROOT / "dijitalikiz"
 PYTHON_ENV = KERNEL_ROOT / "dijitalikiz-py311"
@@ -27,10 +25,17 @@ def output(*args: str) -> str:
     return subprocess.check_output(args, text=True).strip()
 
 
+def ensure_kagglehub() -> None:
+    try:
+        import kagglehub  # noqa: F401
+        return
+    except Exception:
+        run(sys.executable, "-m", "pip", "install", "--quiet", "kagglehub")
+
+
 def ensure_python311() -> Path:
     current = f"{sys.version_info.major}.{sys.version_info.minor}"
     if current == "3.11":
-        print(f"Using Kaggle launcher Python {sys.executable}", flush=True)
         return Path(sys.executable)
 
     if TARGET_PYTHON.is_file():
@@ -40,33 +45,30 @@ def ensure_python311() -> Path:
             "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')",
         )
         if detected == "3.11":
-            print(f"Using existing Python 3.11 environment: {TARGET_PYTHON}", flush=True)
             return TARGET_PYTHON
         shutil.rmtree(PYTHON_ENV, ignore_errors=True)
 
-    # Prefer an already-installed 3.11 interpreter when Kaggle exposes one.
-    candidates = [
+    candidates = (
         "python3.11",
         "/usr/bin/python3.11",
         "/opt/conda/bin/python3.11",
         "/opt/conda/envs/py311/bin/python",
-    ]
+    )
     for candidate in candidates:
         executable = shutil.which(candidate) if not Path(candidate).is_absolute() else candidate
         if executable and Path(executable).is_file():
             try:
-                if output(
+                version = output(
                     executable,
                     "-c",
                     "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')",
-                ) == "3.11":
-                    print(f"Creating isolated Python 3.11 venv from {executable}", flush=True)
+                )
+                if version == "3.11":
                     run(executable, "-m", "venv", str(PYTHON_ENV))
                     return TARGET_PYTHON
             except (OSError, subprocess.CalledProcessError):
                 shutil.rmtree(PYTHON_ENV, ignore_errors=True)
 
-    # Kaggle images historically include conda/mamba; use it when available.
     for manager in (
         "/opt/conda/bin/mamba",
         "/opt/conda/bin/conda",
@@ -76,15 +78,11 @@ def ensure_python311() -> Path:
         executable = shutil.which(manager) if not Path(manager).is_absolute() else manager
         if executable and Path(executable).is_file():
             try:
-                print(f"Creating isolated Python 3.11 conda environment with {executable}", flush=True)
                 run(executable, "create", "-y", "--prefix", str(PYTHON_ENV), "python=3.11", "pip")
                 return TARGET_PYTHON
             except (OSError, subprocess.CalledProcessError):
                 shutil.rmtree(PYTHON_ENV, ignore_errors=True)
 
-    # Final portable fallback: install uv in the bootstrap interpreter and let
-    # uv provision CPython 3.11 without changing the Kaggle base environment.
-    print("Provisioning Python 3.11 with uv", flush=True)
     run(sys.executable, "-m", "pip", "install", "--quiet", "uv")
     uv = shutil.which("uv")
     if not uv:
@@ -94,29 +92,44 @@ def ensure_python311() -> Path:
         user_bin = Path.home() / ".local" / "bin" / "uv"
         uv = str(user_bin) if user_bin.is_file() else None
     if not uv:
-        raise RuntimeError("Could not provision Python 3.11: neither conda/mamba nor uv is available.")
+        raise RuntimeError("Could not provision Python 3.11.")
     run(uv, "venv", "--python", "3.11", "--seed", str(PYTHON_ENV))
     if not TARGET_PYTHON.is_file():
-        raise RuntimeError(f"Python 3.11 venv was created but interpreter is missing: {TARGET_PYTHON}")
+        raise RuntimeError(f"Python 3.11 interpreter is missing: {TARGET_PYTHON}")
     return TARGET_PYTHON
 
 
-# Kaggle's kernel package does not reliably expose arbitrary sidecar files.
-# The GitHub Action therefore embeds the exact source archive into this
-# launcher. Kaggle never needs credentials for the private GitHub repository.
-if SOURCE_COMMIT == "SOURCE_COMMIT_PLACEHOLDER":
-    raise RuntimeError("Frozen source commit was not embedded into the Kaggle launcher.")
-if EMBEDDED_PROJECT_B64 == "PROJECT_B64_PLACEHOLDER":
-    raise RuntimeError("Exact project source was not embedded into the Kaggle launcher.")
+ensure_kagglehub()
+import kagglehub
 
-try:
-    BUNDLE.write_bytes(
-        base64.b64decode(EMBEDDED_PROJECT_B64.encode("ascii"), validate=True)
-    )
-except Exception as exc:
-    raise RuntimeError("Embedded exact-source project archive is invalid.") from exc
+dataset_dir = Path(kagglehub.dataset_download(SOURCE_DATASET))
+bundle_source = dataset_dir / "project.tar.gz"
+commit_source = dataset_dir / "source_commit.txt"
 
-print(f"Using embedded exact project source: {SOURCE_COMMIT}", flush=True)
+if not bundle_source.is_file():
+    raise RuntimeError(f"Frozen source bundle missing from Kaggle Dataset: {bundle_source}")
+if not commit_source.is_file():
+    raise RuntimeError(f"Frozen source commit marker missing from Kaggle Dataset: {commit_source}")
+
+source_commit = commit_source.read_text(encoding="utf-8").strip()
+if len(source_commit) != 40 or any(ch not in "0123456789abcdef" for ch in source_commit.lower()):
+    raise RuntimeError(f"Invalid frozen source commit marker: {source_commit!r}")
+
+shutil.copy2(bundle_source, BUNDLE)
+print(f"Using versioned Kaggle source bundle for commit {source_commit}", flush=True)
+
+if WORKDIR.exists():
+    shutil.rmtree(WORKDIR)
+WORKDIR.mkdir(parents=True, exist_ok=True)
+
+with tarfile.open(BUNDLE, "r:gz") as archive:
+    archive.extractall(WORKDIR)
+
+pilot_dir = WORKDIR / "data" / "pilot"
+pilot_dir.mkdir(parents=True, exist_ok=True)
+(pilot_dir / "kaggle_source_commit.txt").write_text(
+    source_commit + "\n", encoding="utf-8"
+)
 
 target_python = ensure_python311()
 target_version = output(
@@ -126,20 +139,6 @@ target_version = output(
 )
 if target_version != "3.11":
     raise RuntimeError(f"Frozen pilot requires Python 3.11, got {target_version}")
-
-if WORKDIR.exists():
-    shutil.rmtree(WORKDIR)
-WORKDIR.mkdir(parents=True, exist_ok=True)
-
-with tarfile.open(BUNDLE, "r:gz") as archive:
-    archive.extractall(WORKDIR)
-
-source_commit = SOURCE_COMMIT
-pilot_dir = WORKDIR / "data" / "pilot"
-pilot_dir.mkdir(parents=True, exist_ok=True)
-(pilot_dir / "kaggle_source_commit.txt").write_text(
-    source_commit + "\n", encoding="utf-8"
-)
 
 run(
     str(target_python),
@@ -158,7 +157,7 @@ run(str(target_python), "scripts/capture_environment.py", cwd=WORKDIR, env=env)
 environment_path = pilot_dir / "environment.json"
 environment = json.loads(environment_path.read_text(encoding="utf-8"))
 environment["source_commit"] = source_commit
-environment["source_commit_verified_from_embedded_bundle"] = True
+environment["source_commit_verified_from_kaggle_dataset"] = True
 environment_path.write_text(
     json.dumps(environment, indent=2, ensure_ascii=False) + "\n",
     encoding="utf-8",
