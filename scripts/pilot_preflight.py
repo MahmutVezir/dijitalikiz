@@ -153,7 +153,7 @@ def main() -> int:
         print(f"\nPREFLIGHT FAILED: {len(failed)} check(s). Do not start inference.")
         return 1
 
-    print("\nPREFLIGHT PASSED: local environment is eligible to start the frozen 30-run pilot.")
+    print(f"\nPREFLIGHT PASSED: local environment is eligible to start the frozen {expected_cases}-record pilot.")
     return 0
 
 
