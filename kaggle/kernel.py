@@ -5,12 +5,11 @@ import os
 import shutil
 import subprocess
 import sys
-import tarfile
 from pathlib import Path
 
 KERNEL_ROOT = Path("/kaggle/working")
+SOURCE_COMMIT = os.environ.get("PILOT_SOURCE_COMMIT", "3e588aa0c120aefc4e3971df5fa72091f442f8ab")
 BUNDLE = KERNEL_ROOT / "project.tar.gz"
-SOURCE_COMMIT_FILE = KERNEL_ROOT / "source_commit.txt"
 WORKDIR = KERNEL_ROOT / "dijitalikiz"
 
 
@@ -19,8 +18,10 @@ def run(*args: str, cwd: Path | None = None, env: dict[str, str] | None = None) 
     subprocess.run(args, cwd=str(cwd) if cwd else None, env=env, check=True)
 
 
+subprocess.run([sys.executable, "-c", "import urllib.request, os; urllib.request.urlretrieve('https://github.com/MahmutVezir/dijitalikiz/archive/' + os.environ['PILOT_SOURCE_COMMIT'] + '.tar.gz', '/kaggle/working/project.tar.gz')"], check=True)
+
 if not BUNDLE.is_file():
-    raise RuntimeError("Exact-source project bundle is missing from the Kaggle kernel package.")
+    raise RuntimeError("Exact-source project bundle could not be downloaded from GitHub.")
 
 if WORKDIR.exists():
     shutil.rmtree(WORKDIR)
@@ -29,11 +30,7 @@ WORKDIR.mkdir(parents=True, exist_ok=True)
 with tarfile.open(BUNDLE, "r:gz") as archive:
     archive.extractall(WORKDIR)
 
-source_commit = (
-    SOURCE_COMMIT_FILE.read_text(encoding="utf-8").strip()
-    if SOURCE_COMMIT_FILE.exists()
-    else "unknown"
-)
+source_commit = SOURCE_COMMIT
 pilot_dir = WORKDIR / "data" / "pilot"
 pilot_dir.mkdir(parents=True, exist_ok=True)
 (pilot_dir / "kaggle_source_commit.txt").write_text(
