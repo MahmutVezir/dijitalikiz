@@ -41,6 +41,8 @@ def validate_manifest(manifest: dict, root: Path | None = None) -> list[str]:
                         errors.append(f"{case_id} missing case fields: {missing_case_fields}")
                     if case.get("case_id") != case_id:
                         errors.append(f"{case_id} file contains mismatched case_id")
+                    if case.get("split") != "confirmatory":
+                        errors.append(f"{case_id} must have split=confirmatory")
                 except (OSError, json.JSONDecodeError) as exc:
                     errors.append(f"cannot read {case_path}: {type(exc).__name__}: {exc}")
 
