@@ -1,0 +1,53 @@
+{
+  "case_id": "commons-math-defects4j-MATH-924",
+  "source": "Apache Commons JIRA + Defects4J",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-924",
+  "publication_date": "unknown",
+  "technology": "Apache Commons Math / Java / optimization",
+  "error_description": "A large vector of weights caused Weight to materialize an n×n dense matrix, exhausting memory in multivariate vector optimization and curve fitting.",
+  "evidence_urls": [
+    "https://issues.apache.org/jira/browse/MATH-924",
+    "https://github.com/rjust/defects4j"
+  ],
+  "split": "candidates",
+  "annotation_status": "annotated_provisional",
+  "provenance_verification_status": "verified",
+  "i_base": [
+    "Weight accepts a vector of observation weights.",
+    "Least-squares optimization consumes a weight matrix to scale residuals.",
+    "Curve-fitting workloads can contain tens of thousands of observations.",
+    "The fix introduces a diagonal matrix representation for vector weights."
+  ],
+  "ccdg": [
+    {
+      "source": "CurveFitter",
+      "target": "AbstractLeastSquaresOptimizer",
+      "relation": "uses_optimizer",
+      "details": "curve fitting delegates residual optimization"
+    },
+    {
+      "source": "AbstractLeastSquaresOptimizer",
+      "target": "Weight",
+      "relation": "consumes_weight_matrix",
+      "details": "weights affect residual scaling"
+    },
+    {
+      "source": "Weight",
+      "target": "DiagonalMatrix",
+      "relation": "represents_diagonal_weights",
+      "details": "vector weights remain diagonal without dense expansion"
+    }
+  ],
+  "ground_truth": {
+    "component": "Weight",
+    "entity": "multivariate vector optimizer",
+    "operation": "weight matrix construction",
+    "root_cause": "dense_weight_matrix_materialization",
+    "required_relations": [
+      "CurveFitter",
+      "AbstractLeastSquaresOptimizer",
+      "Weight",
+      "DiagonalMatrix"
+    ]
+  }
+}
