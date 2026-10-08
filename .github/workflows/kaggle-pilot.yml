@@ -1,6 +1,8 @@
 name: Kaggle Frozen Pilot
 
 on:
+  push:
+    branches: ["main"]
   workflow_dispatch:
     inputs:
       execute_inference:
@@ -18,7 +20,7 @@ concurrency:
 
 jobs:
   run-frozen-pilot:
-    if: inputs.execute_inference == true
+    if: (github.event_name == 'workflow_dispatch' && inputs.execute_inference == true) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[run-frozen-pilot]'))
     runs-on: ubuntu-latest
     timeout-minutes: 180
     env:
