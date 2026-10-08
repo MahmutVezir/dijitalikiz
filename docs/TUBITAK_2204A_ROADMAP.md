@@ -6,7 +6,7 @@ Project: LLM Tabanlı Çapraz-Bileşen Hata Teşhisinde Yapılandırılmış Ba�
 
 No scientific result is marked complete without actual inference data. No result, p-value, effect size, benchmark conclusion, or hypothesis decision may be fabricated or inferred from code readiness.
 
-## Status at 2026-10-05
+## Status at 2026-10-08
 
 ### Phase 0 — Protocol and repository integrity
 - [x] Research question frozen
@@ -31,6 +31,10 @@ No scientific result is marked complete without actual inference data. No result
 - [x] Frozen generation parameters are recorded
 - [x] Ground truth is excluded from model context by protocol
 - [x] Parse/schema failures are defined as failed runs
+- [x] Kaggle execution packages the exact private Git commit instead of cloning the private repository
+- [x] Kaggle pilot workflow is manual-only; ordinary pushes cannot launch scientific inference
+- [x] Pilot runner is fail-closed against accidental overwrite and supports safe resume
+- [x] Environment capture records source commit and GPU details
 - [ ] Execute environment capture on the actual inference machine
 - [ ] Verify the exact local model revision is available
 - [ ] Verify GPU/VRAM/RAM and inference backend
@@ -54,9 +58,10 @@ No scientific result is marked complete without actual inference data. No result
 - [ ] Do not modify protocol based on observed outcome
 
 ### Phase 3 — Confirmatory benchmark construction
+- [x] Define independent-case exclusion guard in the benchmark manifest validator
 - [ ] Define independent-case inclusion criteria
 - [ ] Define exclusion criteria
-- [ ] Define contamination audit procedure
+- [x] Define contamination audit procedure
 - [ ] Build candidate case pool
 - [ ] Verify source/fix provenance
 - [ ] Verify ground truth independently
