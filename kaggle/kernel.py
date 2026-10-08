@@ -64,4 +64,17 @@ run(
     cwd=WORKDIR,
 )
 
+output_dir = KERNEL_ROOT / "pilot-output"
+if output_dir.exists():
+    shutil.rmtree(output_dir)
+output_dir.mkdir(parents=True, exist_ok=True)
+source_pilot_dir = WORKDIR / "data" / "pilot"
+for item in source_pilot_dir.iterdir():
+    destination = output_dir / item.name
+    if item.is_dir():
+        shutil.copytree(item, destination)
+    else:
+        shutil.copy2(item, destination)
+
 print(f"Kaggle pilot completed for source commit {source_commit}.", flush=True)
+print(f"Pilot artifacts staged at {output_dir}.", flush=True)
