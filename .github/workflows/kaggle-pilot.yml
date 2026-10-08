@@ -64,8 +64,7 @@ jobs:
             echo "Missing GitHub Actions secret KAGGLE_API_TOKEN."
             exit 1
           }
-          kaggle whoami
-
+          kaggle kernels list --mine --page-size 5
       - name: Allocate immutable Kaggle kernel ref
         shell: bash
         run: |
@@ -100,16 +99,18 @@ jobs:
             exit 1
           fi
 
-          BUNDLE_B64="$(base64 -w 0 /tmp/dijitalikiz-source.tar.gz)"
+          base64 -w 0 /tmp/dijitalikiz-source.tar.gz > /tmp/dijitalikiz-source.tar.gz.b64
           BUNDLE_SHA256="$(sha256sum /tmp/dijitalikiz-source.tar.gz | awk '{print $1}')"
 
-          export BUNDLE_B64 BUNDLE_SHA256
+          export BUNDLE_SHA256
           python - <<'PY'
           import os
           from pathlib import Path
 
           commit = os.environ["GITHUB_SHA"]
-          bundle_b64 = os.environ["BUNDLE_B64"]
+          bundle_b64 = Path("/tmp/dijitalikiz-source.tar.gz.b64").read_text(
+              encoding="ascii"
+          ).strip()
           bundle_sha256 = os.environ["BUNDLE_SHA256"]
 
           launcher = r'''from __future__ import annotations
