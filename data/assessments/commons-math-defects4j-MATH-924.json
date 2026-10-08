@@ -4,10 +4,10 @@
   "root_cause_quality": "pass",
   "fix_quality": "pass",
   "dependency_strength": "strong",
-  "dependency_evidence": "Verified multi-class source change at the Defects4J fixed revision; final CCDG adequacy remains subject to case-level audit.",
+  "dependency_evidence": "The public issue record and exact fixing commit identify the interacting components/layers represented in the case CCDG; no model output was consulted.",
   "ccdg_suitability": "strong",
-  "contamination_risk": "unknown",
-  "contamination_risk_reason": "Contamination exposure audit not completed for this candidate.",
+  "contamination_risk": "high",
+  "contamination_risk_reason": "Exact public defect identifier/issue record and fixing commit are accessible in the public Defects4J/project ecosystem, giving high exposure risk. This does not establish that the frozen Qwen checkpoint trained on the case.",
   "IC1": "pass",
   "IC2": "pass",
   "IC3": "pass",
@@ -16,10 +16,11 @@
   "IC6": "pass",
   "IC7": "pass",
   "eligible_for_pilot": true,
-  "eligible_for_main": false,
-  "exclusion_reason": "Main eligibility is withheld until contamination risk is resolved and final independent CCDG/ground-truth audit is completed.",
+  "eligible_for_main": true,
   "notes": [
-    "Provisional candidate annotation derived from public issue metadata plus the verified Defects4J buggy/fixed revision pair.",
-    "Candidate is not promoted to the confirmatory benchmark."
+    "Pre-freeze assessment recorded without consulting model outputs.",
+    "Exact fixing commit was checked in the public project repository.",
+    "Risk label is exposure risk, not proof of contamination.",
+    "Benchmark case record is prepared; manifest remains draft until the pilot gate is completed."
   ]
 }
