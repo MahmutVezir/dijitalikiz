@@ -58,7 +58,7 @@ jobs:
           cat > .kaggle-kernel/kernel-metadata.json <<EOF
           {
             "id": "${KAGGLE_USERNAME}/${KERNEL_SLUG}",
-            "title": "Dijital Ikiz Pilot",
+            "title": "dijitalikiz-pilot",
             "code_file": "kernel.py",
             "language": "python",
             "kernel_type": "script",
@@ -101,6 +101,10 @@ jobs:
           mkdir -p kaggle-output
           kaggle kernels output "${KAGGLE_USERNAME}/${KERNEL_SLUG}" -p kaggle-output --force
           find kaggle-output -maxdepth 4 -type f -print | sort
+          test -n "$(find kaggle-output -name pilot_records.jsonl -print -quit)"
+          test -n "$(find kaggle-output -name pilot_evaluation.json -print -quit)"
+          test -n "$(find kaggle-output -name case_level_analysis.json -print -quit)"
+          test -n "$(find kaggle-output -name pilot_artifact_manifest.json -print -quit)"
 
       - name: Upload pilot artifacts to GitHub Actions
         uses: actions/upload-artifact@v4
