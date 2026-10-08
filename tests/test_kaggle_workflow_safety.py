@@ -30,27 +30,35 @@ def test_kaggle_pilot_is_read_only_against_github_repository():
     assert "git commit" not in workflow
 
 
-def test_kaggle_pilot_builds_exact_source_dataset_and_safe_launcher():
+def test_kaggle_pilot_builds_self_contained_launcher():
     workflow = workflow_text()
-    assert "git archive --format=tar.gz --output=/tmp/dijitalikiz-source.tar.gz HEAD" in workflow
-    assert "base64 -w 0 /tmp/dijitalikiz-source.tar.gz" in workflow
-    assert "mahmutvezir/dijitalikiz-frozen-source-v2" in workflow
-    assert "source_bundle_sha256.txt" in workflow
-    assert 'kaggle datasets download -d "$DATASET_ID"' in workflow
-    assert 'KERNEL_SLUG="dijitalikiz-frozen-pilot-${GITHUB_SHA:0:12}"' in workflow
-    assert 'sed -i "s/__EXPECTED_SOURCE_COMMIT__/$GITHUB_SHA/g"' in workflow
+    assert "git archive" in workflow
+    assert "--output=/tmp/dijitalikiz-source.tar.gz" in workflow
+    assert "base64 -w 0" in workflow
+    assert "FROZEN_SOURCE_COMMIT" in workflow
+    assert "EXPECTED_BUNDLE_SHA256" in workflow
+    assert "PROJECT_BUNDLE_B64" in workflow
+    assert 'dataset_sources": []' in workflow
     assert "python -m py_compile .kaggle-kernel/kernel.py" in workflow
-    assert "PROJECT_B64_PLACEHOLDER" not in workflow
-    
+    assert "__COMMIT__" in workflow
+    assert "__BUNDLE_SHA256__" in workflow
+    assert "__BUNDLE_B64__" in workflow
 
-def test_kaggle_launcher_contains_no_stale_bundle_reference():
-    kernel = (ROOT / "kaggle" / "kernel.py").read_text(encoding="utf-8")
-    assert "bundle_source" not in kernel
-    assert 'SOURCE_DATASET = "mahmutvezir/dijitalikiz-frozen-source-v2"' in kernel
-    assert "source_bundle_sha256.txt" in kernel
-    assert "__EXPECTED_SOURCE_COMMIT__" in kernel
-    assert "rglob(\"project.tar.gz.b64\")" in kernel
-    assert "Multiple complete frozen source dataset payloads" in kernel
+
+def test_kaggle_pilot_binds_launcher_to_current_commit():
+    workflow = workflow_text()
+    assert 'KERNEL_SLUG="dijitalikiz-frozen-pilot-${GITHUB_SHA:0:12}"' in workflow
+    assert 'launcher = (' in workflow
+    assert '.replace("__COMMIT__", commit)' in workflow
+    assert 'print("Embedded source commit: $GITHUB_SHA")' in workflow
+
+
+def test_kaggle_pilot_has_no_dataset_transfer_dependency():
+    workflow = workflow_text()
+    assert "kaggle datasets create" not in workflow
+    assert "kaggle datasets version" not in workflow
+    assert "kaggle datasets download" not in workflow
+    assert "kagglehub" not in workflow
 
 
 def test_kaggle_pilot_checks_canonical_final_artifacts():
