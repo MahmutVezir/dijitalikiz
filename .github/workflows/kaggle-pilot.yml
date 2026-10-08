@@ -79,23 +79,37 @@ jobs:
           }
           EOF
           python -m json.tool .kaggle-source/dataset-metadata.json >/dev/null
-          if kaggle datasets list --mine --page-size 100 2>/dev/null | awk '$1=="mahmutvezir/dijitalikiz-frozen-source" {found=1} END{exit found ? 0 : 1}'; then
+          DATASET_ID="mahmutvezir/dijitalikiz-frozen-source"
+          status_output="$(mktemp)"
+          if kaggle datasets status "$DATASET_ID" >"$status_output" 2>&1; then
+            echo "Existing Kaggle Dataset detected:"
+            cat "$status_output"
             kaggle datasets version -p .kaggle-source -m "Frozen source $GITHUB_SHA" -q -t -r skip
           else
+            echo "Kaggle Dataset does not exist yet; creating it."
+            cat "$status_output" || true
             kaggle datasets create -p .kaggle-source -q -t -r skip
           fi
-          for attempt in $(seq 1 30); do
-            status="$(kaggle datasets status mahmutvezir/dijitalikiz-frozen-source --format json 2>/dev/null || true)"
+          rm -f "$status_output"
+
+          published=0
+          for attempt in $(seq 1 60); do
+            status="$(kaggle datasets status "$DATASET_ID" 2>&1 || true)"
             echo "$status"
-            if echo "$status" | grep -q '"status":"COMPLETE"\|"status": "COMPLETE"'; then
+            if echo "$status" | grep -Eq 'READY|COMPLETE|Dataset Status.*ready|Dataset Status.*complete'; then
+              published=1
               break
             fi
-            if echo "$status" | grep -q '"status":"ERROR"\|"status": "ERROR"'; then
-              echo "Kaggle source Dataset publication failed."
+            if echo "$status" | grep -Eiq 'ERROR|FAILED|NOT_FOUND|not found|does not exist'; then
+              echo "Kaggle source Dataset publication failed on attempt $attempt."
               exit 1
             fi
             sleep 10
           done
+          test "$published" -eq 1 || {
+            echo "Kaggle source Dataset did not become ready within the polling window."
+            exit 1
+          }
 
       - name: Prepare Kaggle launcher
         shell: bash
