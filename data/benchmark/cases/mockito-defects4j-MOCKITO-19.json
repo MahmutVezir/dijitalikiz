@@ -1,0 +1,53 @@
+{
+  "case_id": "mockito-defects4j-MOCKITO-19",
+  "source": "Mockito issue tracker + Defects4J",
+  "source_url": "https://github.com/mockito/mockito/issues/205",
+  "publication_date": "2015-06-02",
+  "technology": "Mockito / Java / dependency injection",
+  "error_description": "@InjectMocks could inject a mock into the wrong same-typed field when multiple candidate fields existed and only one candidate name matched.",
+  "i_base": [
+    "PropertyAndSetterInjection iterates fields awaiting injection.",
+    "TypeBasedCandidateFilter narrows mocks by assignable type.",
+    "NameBasedCandidateFilter resolves ambiguity using mock and field names.",
+    "FinalMockCandidateFilter performs the final injection decision."
+  ],
+  "ccdg": [
+    {
+      "source": "PropertyAndSetterInjection",
+      "target": "MockCandidateFilter",
+      "relation": "delegates_candidate_resolution",
+      "details": "field injection depends on the filter chain"
+    },
+    {
+      "source": "TypeBasedCandidateFilter",
+      "target": "NameBasedCandidateFilter",
+      "relation": "narrows_then_disambiguates",
+      "details": "same-typed candidates require name-based disambiguation"
+    },
+    {
+      "source": "NameBasedCandidateFilter",
+      "target": "FinalMockCandidateFilter",
+      "relation": "passes_resolved_candidates",
+      "details": "final injection occurs after name-based conflict checks"
+    }
+  ],
+  "ground_truth": {
+    "component": "NameBasedCandidateFilter",
+    "entity": "@InjectMocks field selection",
+    "operation": "filterCandidate",
+    "root_cause": "same_type_candidate_ambiguity_not_resolved_by_other_field_name",
+    "required_relations": [
+      "PropertyAndSetterInjection",
+      "TypeBasedCandidateFilter",
+      "NameBasedCandidateFilter",
+      "FinalMockCandidateFilter"
+    ]
+  },
+  "split": "confirmatory",
+  "provenance": {
+    "source_system": "Defects4J",
+    "fixed_revision": "110ffa80070bf54ab8efabdaaa27b193a93d6128",
+    "fixed_revision_date": "2015-06-02",
+    "date_basis": "fixed_revision_date used as recorded date because issue-creation date is not consistently exposed in the source record"
+  }
+}
