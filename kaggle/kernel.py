@@ -12,6 +12,7 @@ from pathlib import Path
 
 KERNEL_ROOT = Path("/kaggle/working")
 SOURCE_DATASET = "mahmutvezir/dijitalikiz-frozen-source-v2"
+EXPECTED_SOURCE_COMMIT = "__EXPECTED_SOURCE_COMMIT__"
 BUNDLE = KERNEL_ROOT / "project.tar.gz"
 WORKDIR = KERNEL_ROOT / "dijitalikiz"
 PYTHON_ENV = KERNEL_ROOT / "dijitalikiz-py311"
@@ -142,6 +143,14 @@ if expected_bundle_sha != actual_bundle_sha:
 source_commit = commit_source.read_text(encoding="utf-8").strip()
 if len(source_commit) != 40 or any(ch not in "0123456789abcdef" for ch in source_commit.lower()):
     raise RuntimeError(f"Invalid frozen source commit marker: {source_commit!r}")
+
+if EXPECTED_SOURCE_COMMIT == "__EXPECTED_SOURCE_COMMIT__":
+    raise RuntimeError("Kaggle launcher was not bound to a concrete Git source commit.")
+if source_commit != EXPECTED_SOURCE_COMMIT:
+    raise RuntimeError(
+        "Frozen source commit mismatch: "
+        f"launcher expects {EXPECTED_SOURCE_COMMIT}, dataset provides {source_commit}"
+    )
 
 print(
     f"Using versioned Kaggle source bundle for commit {source_commit} "
