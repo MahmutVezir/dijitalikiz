@@ -1,0 +1,122 @@
+name: Kaggle Frozen Pilot
+
+on:
+  workflow_dispatch:
+    inputs:
+      execute_inference:
+        description: "Run the frozen 30-inference pilot on Kaggle GPU"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dijitalikiz-frozen-pilot
+  cancel-in-progress: false
+
+jobs:
+  run-frozen-pilot:
+    if: inputs.execute_inference == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+
+    steps:
+      - name: Checkout exact Git commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install Kaggle CLI and identity helper
+        run: python -m pip install --upgrade pip kaggle kagglehub
+
+      - name: Verify token and resolve Kaggle account
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$KAGGLE_API_TOKEN" || { echo "Missing GitHub secret: KAGGLE_API_TOKEN"; exit 1; }
+          KAGGLE_USER="$(python -c 'import kagglehub; print(kagglehub.whoami(verbose=False)["username"])')"
+          test -n "$KAGGLE_USER" || { echo "Could not resolve Kaggle username from token"; exit 1; }
+          echo "KAGGLE_USERNAME=$KAGGLE_USER" >> "$GITHUB_ENV"
+          kaggle --version
+          kaggle kernels list --mine --page-size 3
+
+      - name: Prepare exact-source Kaggle bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .kaggle-kernel
+          mkdir -p .kaggle-kernel
+          cp kaggle/kernel.py .kaggle-kernel/kernel.py
+          git archive --format=tar.gz --output=.kaggle-kernel/project.tar.gz HEAD
+          printf '%s\n' "$GITHUB_SHA" > .kaggle-kernel/source_commit.txt
+          cat > .kaggle-kernel/kernel-metadata.json <<EOF
+          {
+            "id": "$KAGGLE_USERNAME/dijitalikiz-pilot",
+            "title": "dijitalikiz-frozen-pilot",
+            "code_file": "kernel.py",
+            "language": "python",
+            "kernel_type": "script",
+            "is_private": true,
+            "enable_gpu": true,
+            "enable_tpu": false,
+            "enable_internet": true,
+            "keywords": ["llm", "bug-diagnosis", "ccdg", "tubitak"]
+          }
+          EOF
+          python -m json.tool .kaggle-kernel/kernel-metadata.json >/dev/null
+          tar -tzf .kaggle-kernel/project.tar.gz >/dev/null
+          sha256sum .kaggle-kernel/project.tar.gz
+
+      - name: Push frozen pilot to Kaggle
+        run: kaggle kernels push -p .kaggle-kernel
+
+      - name: Wait for Kaggle completion
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 170); do
+            status="$(kaggle kernels status "$KAGGLE_USERNAME/dijitalikiz-pilot" 2>&1 || true)"
+            echo "$status"
+            if echo "$status" | grep -q "KernelWorkerStatus.COMPLETE"; then
+              exit 0
+            fi
+            if echo "$status" | grep -Eq "KernelWorkerStatus.(ERROR|CANCEL_REQUESTED|CANCEL_ACKNOWLEDGED)"; then
+              kaggle kernels logs "$KAGGLE_USERNAME/dijitalikiz-pilot" || true
+              exit 1
+            fi
+            sleep 60
+          done
+          kaggle kernels logs "$KAGGLE_USERNAME/dijitalikiz-pilot" || true
+          exit 1
+
+      - name: Download finalized pilot output
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf kaggle-output
+          mkdir -p kaggle-output
+          kaggle kernels output "$KAGGLE_USERNAME/dijitalikiz-pilot" -p kaggle-output --force
+          find kaggle-output -maxdepth 4 -type f -print | sort
+          test -n "$(find kaggle-output -name pilot_records.jsonl -print -quit)"
+          test -n "$(find kaggle-output -name pilot_evaluation.json -print -quit)"
+          test -n "$(find kaggle-output -name case_level_analysis.json -print -quit)"
+          test -n "$(find kaggle-output -name pilot_qa_report.json -print -quit)"
+          test -n "$(find kaggle-output -name artifact_manifest.json -print -quit)"
+
+      - name: Verify downloaded artifact manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/validate_pilot_artifact_manifest.py             --artifact-root kaggle-output             --manifest "$(find kaggle-output -name artifact_manifest.json -print -quit)"
+
+      - name: Upload immutable pilot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dijitalikiz-pilot-${{ github.sha }}
+          path: kaggle-output/
+          if-no-files-found: error
+          retention-days: 30
