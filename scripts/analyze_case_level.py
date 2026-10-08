@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from math import comb
 from pathlib import Path
 
 CONDITIONS = ("standard", "ccdg")
 SEEDS = (42, 43, 44, 45, 46)
 MAJORITY_REQUIRED = 3
+CI_Z = 1.959963984540054
 
 
 def exact_mcnemar_pvalue(standard_only: int, ccdg_only: int) -> float:
@@ -16,6 +18,43 @@ def exact_mcnemar_pvalue(standard_only: int, ccdg_only: int) -> float:
         return 1.0
     lower = sum(comb(d, k) for k in range(0, min(standard_only, ccdg_only) + 1))
     return min(1.0, 2.0 * lower / (2**d))
+
+
+def wilson_interval(successes: int, n: int, z: float = CI_Z) -> tuple[float, float]:
+    if n <= 0:
+        raise ValueError("Wilson interval requires n > 0.")
+    if not 0 <= successes <= n:
+        raise ValueError("successes must be in [0, n].")
+    phat = successes / n
+    z2 = z * z
+    denominator = 1.0 + z2 / n
+    center = (phat + z2 / (2.0 * n)) / denominator
+    margin = (
+        z
+        * math.sqrt((phat * (1.0 - phat) / n) + (z2 / (4.0 * n * n)))
+        / denominator
+    )
+    return max(0.0, center - margin), min(1.0, center + margin)
+
+
+def paired_risk_difference_ci(
+    standard_only: int,
+    ccdg_only: int,
+    n: int,
+) -> tuple[float, float]:
+    """Newcombe-style paired risk-difference interval from discordant cells.
+
+    The paired effect is p(CCDG pass, Standard fail) -
+    p(Standard pass, CCDG fail). A conservative interval is formed by
+    subtracting the Wilson lower/upper bounds of the two mutually
+    exclusive discordant proportions.
+    """
+    ccdg_only_interval = wilson_interval(ccdg_only, n)
+    standard_only_interval = wilson_interval(standard_only, n)
+    return (
+        ccdg_only_interval[0] - standard_only_interval[1],
+        ccdg_only_interval[1] - standard_only_interval[0],
+    )
 
 
 def load_evaluation(evaluation_path: Path, case_ids: list[str]) -> dict:
@@ -80,6 +119,9 @@ def build_result(outcomes: dict, case_ids: list[str]) -> dict:
     n = len(case_ids)
     standard_pass = sum(outcomes[c]["standard"] for c in case_ids)
     ccdg_pass = sum(outcomes[c]["ccdg"] for c in case_ids)
+    paired_effect = (ccdg_only - standard_only) / n
+    ci_low, ci_high = paired_risk_difference_ci(standard_only, ccdg_only, n)
+
     return {
         "n_cases": n,
         "majority_rule": "at least 3 of 5 seeds",
@@ -92,6 +134,13 @@ def build_result(outcomes: dict, case_ids: list[str]) -> dict:
         "standard_accuracy": standard_pass / n,
         "ccdg_accuracy": ccdg_pass / n,
         "accuracy_difference_ccdg_minus_standard": (ccdg_pass - standard_pass) / n,
+        "paired_effect_size": {
+            "name": "paired_risk_difference",
+            "definition": "P(CCDG correct, Standard incorrect) - P(Standard correct, CCDG incorrect)",
+            "estimate": paired_effect,
+            "95_ci": [ci_low, ci_high],
+            "ci_method": "Newcombe-style interval using Wilson score intervals for the two discordant proportions",
+        },
         "exact_two_sided_mcnemar_p": exact_mcnemar_pvalue(standard_only, ccdg_only),
         "case_outcomes": outcomes,
     }
