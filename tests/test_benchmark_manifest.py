@@ -50,43 +50,46 @@ def test_frozen_manifest_rejects_missing_case_and_assessment():
     assert any("missing assessment file" in error for error in errors)
 
 
-def test_frozen_manifest_accepts_complete_case(tmp_path):
-    (tmp_path / "data" / "benchmark" / "cases").mkdir(parents=True)
-    (tmp_path / "data" / "assessments").mkdir(parents=True)
+def test_frozen_manifest_accepts_complete_cases(tmp_path):
+    case_dir = tmp_path / "data" / "benchmark" / "cases"
+    assessment_dir = tmp_path / "data" / "assessments"
+    case_dir.mkdir(parents=True)
+    assessment_dir.mkdir(parents=True)
 
-    case = {
-        "case_id": "main-a",
-        "source": "source",
-        "source_url": "https://example.invalid/case",
-        "publication_date": "2026-01-01",
-        "technology": "Java",
-        "error_description": "desc",
-        "i_base": ["evidence"],
-        "ccdg": [{"source": "A", "target": "B", "relation": "calls"}],
-        "ground_truth": {
-            "component": "A",
-            "entity": "B",
-            "operation": "call",
-            "root_cause": "root",
-            "required_relations": ["A", "B"],
-        },
-        "split": "confirmatory",
-    }
-    assessment = {
-        "case_id": "main-a",
-        "eligible_for_main": True,
-        "contamination_risk": "medium",
-    }
-    (tmp_path / "data" / "benchmark" / "cases" / "main-a.json").write_text(
-        json.dumps(case), encoding="utf-8"
-    )
-    (tmp_path / "data" / "assessments" / "main-a.json").write_text(
-        json.dumps(assessment), encoding="utf-8"
-    )
+    for case_id in ("main-a", "main-b"):
+        case = {
+            "case_id": case_id,
+            "source": "source",
+            "source_url": "https://example.invalid/case",
+            "publication_date": "2026-01-01",
+            "technology": "Java",
+            "error_description": "desc",
+            "i_base": ["evidence"],
+            "ccdg": [{"source": "A", "target": "B", "relation": "calls"}],
+            "ground_truth": {
+                "component": "A",
+                "entity": "B",
+                "operation": "call",
+                "root_cause": "root",
+                "required_relations": ["A", "B"],
+            },
+            "split": "confirmatory",
+        }
+        assessment = {
+            "case_id": case_id,
+            "eligible_for_main": True,
+            "contamination_risk": "medium",
+        }
+        (case_dir / f"{case_id}.json").write_text(
+            json.dumps(case), encoding="utf-8"
+        )
+        (assessment_dir / f"{case_id}.json").write_text(
+            json.dumps(assessment), encoding="utf-8"
+        )
 
     errors = validate_manifest({
         "status": "frozen",
-        "case_ids": ["main-a"],
+        "case_ids": ["main-a", "main-b"],
         "pilot_case_ids": ["pilot-a"],
         "contamination_audit_completed": True,
         "power_assumption": {
@@ -94,7 +97,7 @@ def test_frozen_manifest_accepts_complete_case(tmp_path):
             "p_ccdg_only": 0.30,
             "target_power": 0.80,
             "alpha": 0.05,
-            "required_case_count": 1,
+            "required_case_count": 2,
             "achieved_power": 0.8030,
         },
     }, root=tmp_path)
