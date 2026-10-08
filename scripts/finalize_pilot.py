@@ -36,6 +36,8 @@ def main() -> int:
         "--output", "data/pilot/case_level_analysis.json",
     ])
     run([sys.executable, "scripts/pilot_qa_report.py"])
+    run([sys.executable, "scripts/build_pilot_records_jsonl.py",
+         "--runs-dir", args.runs_dir])
     run([sys.executable, "scripts/build_pilot_artifact_manifest.py",
          "--runs-dir", args.runs_dir])
 
