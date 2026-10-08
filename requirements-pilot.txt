@@ -1,6 +1,10 @@
-# Local pilot dependencies
-torch
-transformers>=4.43.1,<5
-accelerate
-optimum
-auto-gptq
+# Frozen pilot runtime compatibility lane
+# Rationale:
+# - Qwen2.5-3B-Instruct-GPTQ-Int4 is a legacy GPTQ checkpoint.
+# - AutoGPTQ 0.7.1 is the documented legacy runtime lane for this checkpoint family.
+# - Exact versions are pinned before the first inference for reproducibility.
+torch==2.2.1
+transformers==4.43.2
+accelerate==0.33.0
+optimum==1.17.1
+auto-gptq==0.7.1
