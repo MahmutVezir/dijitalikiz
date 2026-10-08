@@ -1,5 +1,4 @@
 {
-  "id": "joda-time-defects4j-TIME-12",
   "source": "Joda-Time issue tracker + Defects4J",
   "source_url": "https://github.com/JodaOrg/joda-time/issues/8",
   "publication_date": "2012-11-20",
@@ -49,5 +48,6 @@
   },
   "split": "candidates",
   "annotation_status": "annotated_provisional",
-  "provenance_verification_status": "verified"
+  "provenance_verification_status": "verified",
+  "case_id": "joda-time-defects4j-TIME-12"
 }
