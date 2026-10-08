@@ -77,7 +77,7 @@ All 16 proposed confirmatory cases have high public-exposure risk because their 
 | MATH-393 | Apache JIRA MATH-393; fix d4b02f6a3a90cb468731d6156d571d284bd070b1 | high |
 | MATH-405 | Apache JIRA MATH-405; fix 784e4f69ec67d511a0620a2b030688f186ebb959 | high |
 | MATH-631 | Apache JIRA MATH-631; fix c0b4954297ce01b64487c09a1dcfcc0124f7053b | high |
-| MATH-844 | Apache JIRA MATH-844; fix 7994d3ee9d49098dcffb0c5470714076305e38cf | high |
+| MATH-392 | Apache JIRA MATH-392; fix 30c9e8c111f0e49acb8e9e7f6119230844fe1ee3 | high |
 | MATH-859 | Apache JIRA MATH-859; fix 66dece126a7a3130cc79b44e0527b8b5eea41bcc | high |
 | MATH-924 | Apache JIRA MATH-924; fix 2836a6f9efcd30effe2f1125d47c38f62f96ed09 | high |
 | TIME-1 | Joda-Time issue 93; fix 9a62b06be5d0df8e833ff8583398cca386608cac | high |
