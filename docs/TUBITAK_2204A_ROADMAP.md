@@ -65,7 +65,7 @@ No scientific result is marked complete without actual inference data. No result
 - [x] Define independent-case exclusion guard in the benchmark manifest validator
 - [x] Define confirmatory case-selection specification
 - [x] Define benchmark freeze gate for provenance/eligibility/contamination/power metadata
-- [x] Build candidate case pool: 17 total records (3 pilot + 2 previously excluded + 12 additional provisional candidates)
+- [x] Build candidate case pool: 18 total records (3 pilot + 2 previously excluded + 13 additional provisional candidates)
 - [x] Verify source/fix provenance for the current candidate pool
 - [x] Record provisional CCDG and ground-truth annotations for candidate screening
 - [ ] Resolve contamination-risk label for each candidate
