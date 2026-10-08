@@ -80,3 +80,22 @@ The repository currently contains a screening pool of 21 candidate records. The 
 
 This is intentional. A large candidate pool is preferable to prematurely freezing a small or contaminated benchmark. The final sample size must be determined from predeclared McNemar discordant-pair assumptions, not from observed model outcomes.
 
+
+
+The repository now has a 16-case preselected confirmatory set prepared before confirmatory inference.
+
+### Preselected confirmatory set — 2026-10-08
+
+The current draft manifest contains 16 independent cases: CLOSURE-4, CLOSURE-6, CLOSURE-14, MATH-305, MATH-326, MATH-358, MATH-377, MATH-393, MATH-405, MATH-631, MATH-844, MATH-859, MATH-924, TIME-1, TIME-12 and MOCKITO-19.
+
+Pilot cases MATH-927, MATH-950 and MATH-988 are excluded. MATH-938 and MATH-949 remain excluded because their cross-component dependency/CCDG suitability was assessed as weak.
+
+All 16 prepared cases have provenance, fixing-commit anchors, provisional CCDG and ground-truth records, and a resolved conservative high public-exposure contamination label. No model outputs were consulted for selection.
+
+The predeclared McNemar design alternative is P(Standard fails, CCDG passes)=0.60 and P(Standard passes, CCDG fails)=0.05, alpha=0.05, target power=0.80, requiring 16 independent cases with achieved exact-design power approximately 0.8070. These are design assumptions, not estimates from pilot/model results.
+
+### Freeze status
+
+`data/benchmark/benchmark_manifest.json` is intentionally still `draft`. It will be changed to `frozen` only by `scripts/freeze_benchmark.py` after a complete 30-record pilot artifact has been verified. Confirmatory inference is blocked while the manifest is not frozen.
+
+Historical cases whose issue-creation date was not consistently exposed are recorded with the fixing-commit date in the legacy `publication_date` field and an explicit `date_basis` provenance note. This is not an assertion that fix date equals issue publication date.
