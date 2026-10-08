@@ -1,15 +1,13 @@
 from __future__ import annotations
 
 import argparse
+import json
 import subprocess
 import sys
+from pathlib import Path
 
 
-DEFAULT_CASES = (
-    "commons-math-defects4j-MATH-927",
-    "commons-math-defects4j-MATH-950",
-    "commons-math-defects4j-MATH-988",
-)
+MANIFEST = Path("data/pilot/pilot_manifest.json")
 
 
 def run(command: list[str]) -> None:
@@ -22,8 +20,19 @@ def main() -> int:
         description="Finalize a completed frozen pilot without invoking the model."
     )
     parser.add_argument("--runs-dir", default="data/pilot/runs")
-    parser.add_argument("--case-ids", nargs="+", default=list(DEFAULT_CASES))
+    parser.add_argument(
+        "--case-ids",
+        nargs="+",
+        default=None,
+        help="Override case IDs; defaults to the frozen pilot manifest.",
+    )
     args = parser.parse_args()
+
+    if args.case_ids is None:
+        manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+        case_ids = list(manifest["cases"])
+    else:
+        case_ids = list(args.case_ids)
 
     run([sys.executable, "scripts/audit_pilot_integrity.py",
          "--runs-dir", args.runs_dir, "--require-complete"])
@@ -32,7 +41,7 @@ def main() -> int:
     run([
         sys.executable, "scripts/analyze_case_level.py",
         "--evaluation", "data/pilot/pilot_evaluation.json",
-        "--case-ids", *args.case_ids,
+        "--case-ids", *case_ids,
         "--output", "data/pilot/case_level_analysis.json",
     ])
     run([sys.executable, "scripts/pilot_qa_report.py"])
