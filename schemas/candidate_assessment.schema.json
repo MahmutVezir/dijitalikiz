@@ -1,0 +1,29 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"CandidateAssessment",
+  "type":"object",
+  "required":["case_id","provenance_quality","root_cause_quality","fix_quality","dependency_strength","ccdg_suitability","contamination_risk","eligible_for_pilot","eligible_for_main"],
+  "properties":{
+    "case_id":{"type":"string","minLength":1},
+    "provenance_quality":{"type":"string","enum":["pass","fail","unknown"]},
+    "root_cause_quality":{"type":"string","enum":["pass","fail","unknown"]},
+    "fix_quality":{"type":"string","enum":["pass","fail","unknown"]},
+    "dependency_strength":{"type":"string","enum":["strong","moderate","weak","none","unknown"]},
+    "dependency_evidence":{"type":"string"},
+    "ccdg_suitability":{"type":"string","enum":["strong","moderate","weak","unsuitable","unknown"]},
+    "contamination_risk":{"type":"string","enum":["low","medium","high","unknown"]},
+    "contamination_risk_reason":{"type":"string"},
+    "IC1":{"type":"string","enum":["pass","fail","unknown"]},
+    "IC2":{"type":"string","enum":["pass","fail","unknown"]},
+    "IC3":{"type":"string","enum":["pass","fail","unknown"]},
+    "IC4":{"type":"string","enum":["pass","fail","unknown"]},
+    "IC5":{"type":"string","enum":["pass","fail","unknown"]},
+    "IC6":{"type":"string","enum":["pass","fail","unknown"]},
+    "IC7":{"type":"string","enum":["pass","fail","unknown"]},
+    "eligible_for_pilot":{"type":"boolean"},
+    "eligible_for_main":{"type":"boolean"},
+    "exclusion_reason":{"type":"string"},
+    "notes":{"type":"array","items":{"type":"string"}}
+  },
+  "additionalProperties":true
+}
