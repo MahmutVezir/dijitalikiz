@@ -32,6 +32,8 @@ def main() -> None:
     assert manifest["system_prompt"]["sha256"] == sha256_text(system_prompt)
     model = manifest["model"]
     generation = manifest["generation"]
+    source_commit_file = Path("data/pilot/kaggle_source_commit.txt")
+    expected_source_commit = source_commit_file.read_text(encoding="utf-8").strip() if source_commit_file.is_file() else None
     cases = manifest["cases"]
     conditions = tuple(manifest["conditions"])
     seeds = tuple(generation["seeds"])
@@ -71,6 +73,8 @@ def main() -> None:
                 record = json.loads(path.read_text(encoding="utf-8"))
                 assert record["source_commit"]
                 observed_source_commits.add(record["source_commit"])
+                if expected_source_commit:
+                    assert record["source_commit"] == expected_source_commit
                 assert record["started_at_utc"]
                 assert record["completed_at_utc"]
                 assert record["raw_output_sha256"] == sha256_text(record["raw_output"])
