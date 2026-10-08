@@ -68,6 +68,10 @@ def main() -> None:
                 if not path.exists():
                     continue
                 record = json.loads(path.read_text(encoding="utf-8"))
+                assert record["source_commit"]
+                assert record["started_at_utc"]
+                assert record["completed_at_utc"]
+                assert record["raw_output_sha256"] == sha256_text(record["raw_output"])
                 assert record["case_id"] == case_id
                 assert record["condition"] == condition
                 assert record["seed"] == seed
