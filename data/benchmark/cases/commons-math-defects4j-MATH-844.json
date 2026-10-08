@@ -1,0 +1,53 @@
+{
+  "case_id": "commons-math-defects4j-MATH-844",
+  "source": "Apache Commons JIRA + Defects4J",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-844",
+  "publication_date": "2012-08-16",
+  "technology": "Apache Commons Math / Java / curve fitting",
+  "error_description": "HarmonicFitter.ParameterGuesser could divide by an exactly zero intermediate c2 value and fail to compute a usable amplitude guess.",
+  "i_base": [
+    "HarmonicFitter uses ParameterGuesser to derive initial parameters.",
+    "The guesser computes an intermediate c2 value.",
+    "For a triangular periodic input sampled at integer abscissas c2 can be exactly zero.",
+    "The failure propagates into the curve-fitting initialization path."
+  ],
+  "ccdg": [
+    {
+      "source": "HarmonicFitter",
+      "target": "ParameterGuesser",
+      "relation": "uses",
+      "details": "curve fitting initialization delegates parameter estimation"
+    },
+    {
+      "source": "ParameterGuesser",
+      "target": "c2",
+      "relation": "computes",
+      "details": "c2 is an intermediate quantity used for amplitude estimation"
+    },
+    {
+      "source": "ParameterGuesser",
+      "target": "HarmonicFitter",
+      "relation": "returns_initial_parameters",
+      "details": "guessed parameters seed the optimizer"
+    }
+  ],
+  "ground_truth": {
+    "component": "ParameterGuesser",
+    "entity": "HarmonicFitter",
+    "operation": "amplitude parameter estimation",
+    "root_cause": "division_by_zero_intermediate_c2",
+    "required_relations": [
+      "HarmonicFitter",
+      "ParameterGuesser",
+      "c2",
+      "optimizer initialization"
+    ]
+  },
+  "split": "confirmatory",
+  "provenance": {
+    "source_system": "Defects4J",
+    "fixed_revision": "7994d3ee9d49098dcffb0c5470714076305e38cf",
+    "fixed_revision_date": "2012-08-16",
+    "date_basis": "fixed_revision_date used as recorded date because issue-creation date is not consistently exposed in the source record"
+  }
+}
