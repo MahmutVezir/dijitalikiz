@@ -1,0 +1,53 @@
+{
+  "case_id": "closure-compiler-defects4j-CLOSURE-14",
+  "source": "Google Closure Compiler + Defects4J",
+  "source_url": "https://storage.googleapis.com/google-code-archive/v2/code.google.com/closure-compiler/issues/issue-779.json",
+  "publication_date": "unknown",
+  "technology": "Google Closure Compiler / Java / control-flow analysis",
+  "error_description": "Control-flow edges leaving a finally block were mislabeled as unconditional, conflating normal fall-through and exception-handling paths.",
+  "evidence_urls": [
+    "https://storage.googleapis.com/google-code-archive/v2/code.google.com/closure-compiler/issues/issue-779.json",
+    "https://github.com/rjust/defects4j"
+  ],
+  "split": "candidates",
+  "annotation_status": "annotated_provisional",
+  "provenance_verification_status": "verified",
+  "i_base": [
+    "ControlFlowAnalysis computes follow nodes around finally blocks.",
+    "ControlFlowGraph defines edge labels consumed by later analyses.",
+    "An exception path through finally is semantically distinct from normal fall-through.",
+    "The fix changes the generated branch from UNCOND to ON_EX and updates graph expectations."
+  ],
+  "ccdg": [
+    {
+      "source": "ControlFlowAnalysis",
+      "target": "ControlFlowGraph",
+      "relation": "creates_labeled_edges",
+      "details": "analysis builds graph edges using branch labels"
+    },
+    {
+      "source": "ControlFlowGraph",
+      "target": "ON_EX",
+      "relation": "defines_exception_branch",
+      "details": "branch type encodes exception-related control flow"
+    },
+    {
+      "source": "ControlFlowAnalysis",
+      "target": "finally_block",
+      "relation": "computes_follow_path",
+      "details": "finally semantics determine the correct edge label"
+    }
+  ],
+  "ground_truth": {
+    "component": "ControlFlowAnalysis",
+    "entity": "finally-block exception edge",
+    "operation": "computeFollowNode",
+    "root_cause": "exception_path_mislabeled_as_unconditional_edge",
+    "required_relations": [
+      "ControlFlowAnalysis",
+      "ControlFlowGraph",
+      "ON_EX",
+      "finally block"
+    ]
+  }
+}
