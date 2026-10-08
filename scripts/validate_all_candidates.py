@@ -5,6 +5,8 @@ import json
 import sys
 from pathlib import Path
 
+from jsonschema import Draft202012Validator, FormatChecker
+
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -12,8 +14,21 @@ if str(ROOT) not in sys.path:
 from dijitalikiz.candidate_assessment import CandidateAssessment
 from scripts.validate_candidate import validate_candidate
 
+CANDIDATE_SCHEMA = json.loads(
+    (ROOT / "schemas" / "candidate.schema.json").read_text(encoding="utf-8")
+)
+ASSESSMENT_SCHEMA = json.loads(
+    (ROOT / "schemas" / "candidate_assessment.schema.json").read_text(encoding="utf-8")
+)
+CANDIDATE_VALIDATOR = Draft202012Validator(CANDIDATE_SCHEMA, format_checker=FormatChecker())
+ASSESSMENT_VALIDATOR = Draft202012Validator(ASSESSMENT_SCHEMA, format_checker=FormatChecker())
 
-ROOT = Path(__file__).resolve().parents[1]
+
+def schema_errors(validator: Draft202012Validator, payload: dict) -> list[str]:
+    return [
+        f"schema: {error.message}"
+        for error in sorted(validator.iter_errors(payload), key=lambda item: list(item.path))
+    ]
 
 
 def validate_all(candidates_dir: Path, assessments_dir: Path) -> list[str]:
@@ -27,6 +42,8 @@ def validate_all(candidates_dir: Path, assessments_dir: Path) -> list[str]:
             errors.append(f"{candidate_path}: unreadable candidate ({type(exc).__name__}: {exc})")
             continue
 
+        for error in schema_errors(CANDIDATE_VALIDATOR, candidate):
+            errors.append(f"{candidate_path}: {error}")
         for error in validate_candidate(candidate):
             errors.append(f"{candidate_path}: {error}")
 
@@ -37,11 +54,23 @@ def validate_all(candidates_dir: Path, assessments_dir: Path) -> list[str]:
             continue
 
         try:
-            CandidateAssessment.from_dict(
-                json.loads(assessment_path.read_text(encoding="utf-8"))
+            assessment_payload = json.loads(
+                assessment_path.read_text(encoding="utf-8")
             )
-        except (OSError, json.JSONDecodeError, ValueError, TypeError) as exc:
-            errors.append(f"{assessment_path}: invalid assessment ({type(exc).__name__}: {exc})")
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(
+                f"{assessment_path}: invalid assessment ({type(exc).__name__}: {exc})"
+            )
+            continue
+
+        for error in schema_errors(ASSESSMENT_VALIDATOR, assessment_payload):
+            errors.append(f"{assessment_path}: {error}")
+        if assessment_payload.get("case_id") != case_id:
+            errors.append(f"{assessment_path}: case_id does not match candidate {case_id}")
+        try:
+            CandidateAssessment.from_dict(assessment_payload)
+        except (ValueError, TypeError) as exc:
+            errors.append(f"{assessment_path}: invalid deterministic assessment ({type(exc).__name__}: {exc})")
 
     return errors
 
