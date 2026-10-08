@@ -16,7 +16,7 @@ Status: model configuration frozen; local/Kaggle inference execution pending.
 - Conditions: Standard and CCDG
 - Cases: MATH-927, MATH-950, MATH-988
 
-The selected Hugging Face model is the official Qwen2.5 3B Instruct GPTQ-Int4 checkpoint. The model card documents direct Transformers loading with `device_map="auto"`; the exact revision is pinned in the pilot manifest. citeturn0search0
+The selected Hugging Face model is the official Qwen2.5 3B Instruct GPTQ-Int4 checkpoint. The model card documents direct Transformers loading with `device_map="auto"`; the exact revision is pinned in the pilot manifest.
 
 ## Execution rule
 
