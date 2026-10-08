@@ -17,6 +17,6 @@ Assessment must not use model output as ground truth. Candidate records must not
 
 Contamination risk is recorded separately as low/medium/high/unknown. Unknown is permitted when no exposure audit exists.
 
-Assessment does not move candidates into pilot/main/validation. Pilot assignment is a later controlled step.
+Assessment does not automatically move candidates into pilot/main/validation. `eligible_for_pilot` is a deterministic structural eligibility decision. `eligible_for_main` additionally requires a resolved contamination-risk label; it does not by itself add a case to the frozen confirmatory benchmark. Main-benchmark inclusion is controlled by the frozen benchmark manifest.
 
 Do not invent URLs, revisions, root causes, fixes, dependencies, or model-exposure claims.
