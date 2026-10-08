@@ -8,13 +8,13 @@ This register records the research-case pool before confirmatory benchmark freez
 
 ## Pool snapshot
 
-Total candidate records: **17**
+Total candidate records: **18**
 
 | Group | Cases | Status |
 |---|---|---|
 | Frozen pilot / permanently excluded from main | MATH-927, MATH-950, MATH-988 | Pilot |
 | Previously screened out | MATH-938, MATH-949 | CCDG/dependency unsuitable |
-| Provisional Apache Commons Math candidates | MATH-924, MATH-405, MATH-326, MATH-377, MATH-393, MATH-631, MATH-358, MATH-859, MATH-844 | Screening pool |
+| Provisional Apache Commons Math candidates | MATH-924, MATH-405, MATH-326, MATH-377, MATH-393, MATH-631, MATH-358, MATH-859, MATH-844, MATH-305 | Screening pool |
 | Provisional Joda-Time candidates | TIME-1, TIME-12 | Screening pool |
 | Provisional Mockito candidate | MOCKITO-19 | Screening pool |
 
