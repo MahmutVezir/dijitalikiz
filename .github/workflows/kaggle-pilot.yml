@@ -8,6 +8,9 @@ on:
         required: true
         default: false
         type: boolean
+  push:
+    paths:
+      - ".github/kaggle-pilot-trigger"
 
 permissions:
   contents: read
@@ -18,7 +21,7 @@ concurrency:
 
 jobs:
   run-frozen-pilot:
-    if: github.event_name == 'workflow_dispatch' && inputs.execute_inference == true
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.execute_inference == true)
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     env:
