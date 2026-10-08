@@ -22,3 +22,5 @@ jobs:
         run: pytest -q
       - name: Audit frozen pilot configuration
         run: python scripts/audit_pilot_integrity.py
+      - name: Validate benchmark manifest scaffold
+        run: python scripts/validate_benchmark_manifest.py
