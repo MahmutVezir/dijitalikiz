@@ -24,8 +24,8 @@ No scientific result is marked complete without actual inference data. No result
 - [x] CI/test infrastructure exists
 
 ### Phase 1 — Pilot preflight
-- [x] Three pilot cases identified
-- [x] 30-run design is mechanically specified
+- [x] Four pilot cases identified
+- [x] 40-run design is mechanically specified
 - [x] Fail-closed local preflight script added
 - [x] Pilot preflight execution procedure documented
 - [x] Frozen generation parameters are recorded
@@ -37,12 +37,12 @@ No scientific result is marked complete without actual inference data. No result
 - [x] Environment capture records source commit and GPU details
 - [x] Per-run source commit and raw-output SHA-256 provenance fields added
 - [x] Pilot runtime versions pinned in requirements and manifest
-- [x] Completed pilot audit can require exactly 30 records and reject unexpected files
+- [x] Completed pilot audit can require exactly 40 records and reject unexpected files
 - [x] Pilot artifact checksum manifest added
 - [x] Final Kaggle lane requires pilot_records, pilot_evaluation, case_level_analysis, pilot_qa_report and artifact_manifest
 - [ ] Execute environment capture on the actual inference machine
 - [ ] Verify GPU/VRAM/RAM and inference backend
-- [ ] Run 30 real inferences
+- [ ] Run 40 real inferences
 - [ ] Preserve immutable raw outputs
 - [ ] Run evaluator
 - [ ] Run case-level analysis
@@ -50,7 +50,7 @@ No scientific result is marked complete without actual inference data. No result
 - [ ] Produce pilot QA report
 
 ### Phase 2 — Pilot decision gate
-- [ ] Confirm 30/30 records exist
+- [ ] Confirm 40/40 records exist
 - [ ] Confirm all frozen hashes/configurations match
 - [ ] Report parse failures
 - [ ] Report schema failures
@@ -65,7 +65,7 @@ No scientific result is marked complete without actual inference data. No result
 - [x] Define independent-case exclusion guard in the benchmark manifest validator
 - [x] Define confirmatory case-selection specification
 - [x] Define benchmark freeze gate for provenance/eligibility/contamination/power metadata
-- [x] Build candidate case pool: 21 total records (3 pilot + 2 previously excluded + 16 additional provisional candidates)
+- [x] Build candidate case pool: 21 total records (4 pilot + 1 previously excluded + 16 additional provisional candidates)
 - [x] Verify source/fix provenance for the current candidate pool
 - [x] Record provisional CCDG and ground-truth annotations for candidate screening
 - [ ] Resolve contamination-risk label for each candidate
