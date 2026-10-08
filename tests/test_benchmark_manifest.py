@@ -68,6 +68,7 @@ def test_frozen_manifest_accepts_complete_case(tmp_path):
             "root_cause": "root",
             "required_relations": ["A", "B"],
         },
+        "split": "confirmatory",
     }
     assessment = {
         "case_id": "main-a",
