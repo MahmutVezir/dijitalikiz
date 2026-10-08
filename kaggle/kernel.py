@@ -28,15 +28,21 @@ with tarfile.open(BUNDLE, "r:gz") as archive:
     archive.extractall(WORKDIR)
 
 source_commit = SOURCE_COMMIT_FILE.read_text(encoding="utf-8").strip() if SOURCE_COMMIT_FILE.exists() else "unknown"
-(WORKDIR / "data/pilot").mkdir(parents=True, exist_ok=True)
 (WORKDIR / "data/pilot/kaggle_source_commit.txt").write_text(source_commit + "\n", encoding="utf-8")
+(WORKDIR / "data/pilot").mkdir(parents=True, exist_ok=True)
 
 run(sys.executable, "-m", "pip", "install", "-r", "requirements-pilot.txt", cwd=WORKDIR)
 run(sys.executable, "scripts/capture_environment.py", cwd=WORKDIR)
+# The bundle is not a Git checkout, so restore the exact source commit into environment metadata.
+environment_path = WORKDIR / "data/pilot/environment.json"
+environment = __import__("json").loads(environment_path.read_text(encoding="utf-8"))
+environment["source_commit"] = source_commit
+environment["source_commit_verified_from_bundle"] = True
+environment_path.write_text(__import__("json").dumps(environment, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 run(sys.executable, "scripts/pilot_preflight.py", "--require-cuda", cwd=WORKDIR)
 run(sys.executable, "scripts/audit_pilot_integrity.py", cwd=WORKDIR)
 run(sys.executable, "scripts/run_pilot.py", cwd=WORKDIR)
-run(sys.executable, "scripts/audit_pilot_integrity.py", cwd=WORKDIR)
+run(sys.executable, "scripts/audit_pilot_integrity.py", "--require-complete", cwd=WORKDIR)
 run(sys.executable, "scripts/evaluate_pilot.py", cwd=WORKDIR)
 run(
     sys.executable,
