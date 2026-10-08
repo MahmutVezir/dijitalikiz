@@ -1,0 +1,59 @@
+{
+  "case_id": "commons-math-defects4j-MATH-859",
+  "source": "Apache Commons JIRA + Defects4J",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-859",
+  "publication_date": "2012-09-08",
+  "technology": "Apache Commons Math / Java / probability distributions",
+  "error_description": "RealDistribution support-bound inclusivity semantics were inconsistent with implementations of FDistribution and UniformRealDistribution.",
+  "i_base": [
+    "RealDistribution defines support-bound semantics.",
+    "FDistribution implements RealDistribution.",
+    "UniformRealDistribution implements RealDistribution.",
+    "The fix aligns interface semantics and concrete implementation behavior."
+  ],
+  "ccdg": [
+    {
+      "source": "RealDistribution",
+      "target": "FDistribution",
+      "relation": "defines_contract",
+      "details": "distribution implementation follows interface bound semantics"
+    },
+    {
+      "source": "RealDistribution",
+      "target": "UniformRealDistribution",
+      "relation": "defines_contract",
+      "details": "distribution implementation follows interface bound semantics"
+    },
+    {
+      "source": "FDistribution",
+      "target": "support_bound_methods",
+      "relation": "implements",
+      "details": "concrete support endpoint inclusivity is exposed to callers"
+    },
+    {
+      "source": "UniformRealDistribution",
+      "target": "support_bound_methods",
+      "relation": "implements",
+      "details": "concrete support endpoint inclusivity is exposed to callers"
+    }
+  ],
+  "ground_truth": {
+    "component": "RealDistribution",
+    "entity": "support-bound inclusivity",
+    "operation": "isSupportXxxBoundInclusive",
+    "root_cause": "inconsistent_support_bound_semantics",
+    "required_relations": [
+      "RealDistribution",
+      "FDistribution",
+      "UniformRealDistribution",
+      "support-bound methods"
+    ]
+  },
+  "split": "confirmatory",
+  "provenance": {
+    "source_system": "Defects4J",
+    "fixed_revision": "66dece126a7a3130cc79b44e0527b8b5eea41bcc",
+    "fixed_revision_date": "2012-09-08",
+    "date_basis": "fixed_revision_date used as recorded date because issue-creation date is not consistently exposed in the source record"
+  }
+}
