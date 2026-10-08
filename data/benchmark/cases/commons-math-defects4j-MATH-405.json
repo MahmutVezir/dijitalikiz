@@ -1,0 +1,53 @@
+{
+  "case_id": "commons-math-defects4j-MATH-405",
+  "source": "Apache Commons JIRA + Defects4J",
+  "source_url": "https://issues.apache.org/jira/browse/MATH-405",
+  "publication_date": "2010-08-11",
+  "technology": "Apache Commons Math / Java / least-squares optimization",
+  "error_description": "Levenberg-Marquardt iteration state became inconsistent when residual/objective state was reused across trial steps and convergence checks.",
+  "i_base": [
+    "Levenberg-Marquardt performs repeated trial steps.",
+    "AbstractLeastSquaresOptimizer stores residuals, objective values and convergence state.",
+    "A convergence checker compares the previous and current optimization results.",
+    "Trial failures require restoration of the previous optimization state."
+  ],
+  "ccdg": [
+    {
+      "source": "LevenbergMarquardtOptimizer",
+      "target": "AbstractLeastSquaresOptimizer",
+      "relation": "inherits_from",
+      "details": "shared residual/cost state is implemented by the base optimizer"
+    },
+    {
+      "source": "LevenbergMarquardtOptimizer",
+      "target": "residuals",
+      "relation": "updates_during_trial",
+      "details": "trial steps replace the working residual vector"
+    },
+    {
+      "source": "LevenbergMarquardtOptimizer",
+      "target": "convergence_checker",
+      "relation": "evaluates_current_result",
+      "details": "current result must reflect the accepted trial state"
+    }
+  ],
+  "ground_truth": {
+    "component": "LevenbergMarquardtOptimizer",
+    "entity": "AbstractLeastSquaresOptimizer",
+    "operation": "iteration state/convergence update",
+    "root_cause": "inconsistent_trial_state_management",
+    "required_relations": [
+      "LevenbergMarquardtOptimizer",
+      "AbstractLeastSquaresOptimizer",
+      "residuals",
+      "convergence_checker"
+    ]
+  },
+  "split": "confirmatory",
+  "provenance": {
+    "source_system": "Defects4J",
+    "fixed_revision": "784e4f69ec67d511a0620a2b030688f186ebb959",
+    "fixed_revision_date": "2010-08-11",
+    "date_basis": "fixed_revision_date_used_as_recorded_date_when_issue_creation_date_is not consistently exposed in the source record"
+  }
+}
