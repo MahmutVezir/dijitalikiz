@@ -34,7 +34,7 @@ jobs:
           fetch-depth: 1
 
       - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -250,6 +250,8 @@ jobs:
                   "requirements-pilot.txt",
                   cwd=WORKDIR,
               )
+              # Fail before preflight/model loading if pinned dependencies conflict.
+              run(str(target_python), "-m", "pip", "check", cwd=WORKDIR)
 
               env = dict(os.environ)
               env["PYTHONPATH"] = str(WORKDIR)
