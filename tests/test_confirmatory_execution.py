@@ -70,6 +70,21 @@ def test_kaggle_automation_is_single_canonical_workflow():
     workflow_names = sorted(path.name for path in workflow_dir.glob("*.yml"))
     assert workflow_names == ["kaggle-pilot.yml"]
 
+def test_confirmatory_kaggle_kernel_isolated_from_exported_artifacts():
+    kernel_path = ROOT / "kaggle" / "confirmatory_kernel.py"
+    source = kernel_path.read_text(encoding="utf-8")
+    py_compile.compile(str(kernel_path), doraise=True)
+    assert 'RUNTIME_ROOT = Path("/tmp/dijitalikiz-confirmatory-runtime")' in source
+    assert 'WORKDIR = RUNTIME_ROOT / "dijitalikiz"' in source
+    assert 'PYTHON_ENV = RUNTIME_ROOT / "dijitalikiz-py311"' in source
+    assert 'OUTPUT_DIR = KERNEL_ROOT / "confirmatory-output"' in source
+    assert 'BUNDLE_SOURCE.unlink()' in source
+    assert 'SOURCE_COMMIT_FILE.unlink()' in source
+    assert 'run(str(python), "-m", "pip", "check", cwd=WORKDIR)' in source
+    assert source.index('"scripts/validate_confirmatory_artifact_manifest.py"') < source.index('for item in benchmark.iterdir()')
+    assert 'run(str(python), "scripts/run_confirmatory.py"' in source
+    assert '"/kaggle/working/dijitalikiz"' not in source
+
 
 def test_frozen_manifest_passes_full_gate_without_mutating_repository_file():
     manifest_path = ROOT / "data" / "benchmark" / "benchmark_manifest.json"
