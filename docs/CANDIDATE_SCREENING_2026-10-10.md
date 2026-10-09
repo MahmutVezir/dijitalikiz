@@ -53,6 +53,14 @@ Assessment record: data/assessments/commons-lang-github-pr-1807-typeutils-wildca
 - Before moving any candidate forward, extract the pre-fix and fixed revisions, verify the regression test is red on the pre-fix revision and green on the fixed revision, build a source-grounded ground-truth record, draw and review the CCDG, and render all context-v2 arms while checking for ground-truth leakage.
 - Do not change data/benchmark/benchmark_manifest.json or append these candidates to the frozen historical results. They may only enter a separately versioned future study after the measurement rubric and study protocol have been frozen.
 
+## Structured case draft added
+
+The Commons Compress #770 case has also been drafted separately in `data/candidate_case_drafts/commons-compress-github-pr-770-tar-pax-header-memory-bound.json`. The draft contains candidate-safe base facts, a provisional ground-truth record, four dependency edges, and provenance metadata. The three v2 context renderers use the same shared base facts; only the two dependency-enriched arms add edges, in prose or directed-triple form.
+
+The draft is deliberately stored outside both `data/candidates/` and `data/benchmark/cases/`: it does not pollute the candidate-intake schema or the frozen confirmatory manifest. A regression test checks its ResearchCase schema, ensures it remains outside the frozen manifest, checks information parity and verifies that the fix commit and canonical ground-truth root-cause label are not included in the rendered model contexts.
+
+This is a structured draft, not a qualified experiment case yet. We have inspected the public diff/source and located the regression test, but a clean-checkout pre-fix failure/post-fix pass has not been run in this environment due to unavailable local network access. Independent reproduction, ground-truth adjudication, and IC6/IC7 eligibility review remain open.
+
 ## Status
 
-This screening raises the candidate pool by three entries. It does not raise the number of eligible confirmatory cases yet, does not change the frozen 16-case / 160-output results, and does not support any claim that CCDG has been effective or ineffective.
+This screening raises the candidate pool by three entries and creates one structured case draft with regression tests. It does not raise the number of eligible confirmatory cases yet, does not change the frozen 16-case / 160-output results, and does not support any claim that CCDG has been effective or ineffective.
