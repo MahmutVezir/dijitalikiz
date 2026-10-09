@@ -1,0 +1,122 @@
+{
+  "protocol_version": "1.0",
+  "fixture_set_id": "synthetic-root-cause-matcher-characterization-v1",
+  "purpose": "Characterize known behavior and limitations of the deterministic contiguous-alias matcher before new confirmatory inference.",
+  "status": "synthetic_software_test_fixtures_only",
+  "not_for_scientific_performance_claims": true,
+  "not_model_generated": true,
+  "not_independent_adjudication": true,
+  "case_id_for_alias_reference": "commons-math-defects4j-MATH-305",
+  "aliases_copied_from_frozen_rubric_without_modification": [
+    "integer overflow in squared distance accumulator",
+    "integer overflow while accumulating squared coordinate differences",
+    "squared distance sum overflows an integer accumulator",
+    "integer overflow in distance calculation for int arrays"
+  ],
+  "examples": [
+    {
+      "example_id": "synthetic_exact_alias",
+      "kind": "canonical_correct_statement",
+      "output": {
+        "diagnosed_component": "MathUtils",
+        "root_cause_class": "integer_overflow_in_squared_distance_accumulator",
+        "affected_entity": "Euclidean distance for int arrays",
+        "explanation": "The int distance calculation has integer overflow in squared distance accumulator."
+      },
+      "expected_matcher_result": true,
+      "expected_semantic_label_for_synthetic_test": "correct",
+      "rationale": "An explicit positive statement contains the frozen alias after normalization."
+    },
+    {
+      "example_id": "synthetic_case_punctuation",
+      "kind": "canonical_alias_with_punctuation_variation",
+      "output": {
+        "diagnosed_component": "MathUtils",
+        "root_cause_class": "",
+        "affected_entity": "Euclidean distance for int arrays",
+        "explanation": "INTEGER_OVERFLOW in squared-distance accumulator corrupts distance."
+      },
+      "expected_matcher_result": true,
+      "expected_semantic_label_for_synthetic_test": "correct",
+      "rationale": "Normalization treats underscores, hyphens, punctuation, and case as separators."
+    },
+    {
+      "example_id": "synthetic_correct_paraphrase",
+      "kind": "correct_paraphrase_without_contiguous_alias",
+      "output": {
+        "diagnosed_component": "MathUtils",
+        "root_cause_class": "integer arithmetic overflow",
+        "affected_entity": "Euclidean distance for int arrays",
+        "explanation": "The int accumulator wraps while summing squared coordinate differences, corrupting the computed distance."
+      },
+      "expected_matcher_result": false,
+      "expected_semantic_label_for_synthetic_test": "correct",
+      "rationale": "This constructed paraphrase describes the same integer-accumulation failure but does not contain a complete frozen alias phrase. The fixture demonstrates a possible false rejection; it is not a human study label."
+    },
+    {
+      "example_id": "synthetic_negated_alias",
+      "kind": "negated_alias_with_wrong_alternative",
+      "output": {
+        "diagnosed_component": "MathUtils",
+        "root_cause_class": "floating_point_precision",
+        "affected_entity": "Euclidean distance for int arrays",
+        "explanation": "The cause is not integer overflow in squared distance accumulator; the real issue is floating-point precision."
+      },
+      "expected_matcher_result": true,
+      "expected_semantic_label_for_synthetic_test": "incorrect",
+      "rationale": "The substring matcher sees an alias even though the sentence denies it. This is a constructed false-acceptance example."
+    },
+    {
+      "example_id": "synthetic_multiple_guesses",
+      "kind": "unresolved_multiple_hypotheses",
+      "output": {
+        "diagnosed_component": "MathUtils",
+        "root_cause_class": "uncertain",
+        "affected_entity": "Euclidean distance for int arrays",
+        "explanation": "Possible causes include integer overflow in squared distance accumulator or an off-by-one loop; the output does not decide between them."
+      },
+      "expected_matcher_result": true,
+      "expected_semantic_label_for_synthetic_test": "partially_correct",
+      "rationale": "Mentioning a correct phrase among unresolved guesses is not equivalent to selecting and explaining the cause."
+    },
+    {
+      "example_id": "synthetic_wrong_mechanism",
+      "kind": "incorrect_mechanism_without_alias",
+      "output": {
+        "diagnosed_component": "KMeansPlusPlusClusterer",
+        "root_cause_class": "off_by_one_error",
+        "affected_entity": "cluster center selection",
+        "explanation": "A loop bound error skips the last candidate cluster center."
+      },
+      "expected_matcher_result": false,
+      "expected_semantic_label_for_synthetic_test": "incorrect",
+      "rationale": "The response does not contain a frozen root-cause alias and describes a different mechanism."
+    },
+    {
+      "example_id": "synthetic_root_cause_field_only",
+      "kind": "alias_in_root_cause_field",
+      "output": {
+        "diagnosed_component": "MathUtils",
+        "root_cause_class": "integer overflow in squared distance accumulator",
+        "affected_entity": "Euclidean distance for int arrays",
+        "explanation": "The accumulator type is too narrow."
+      },
+      "expected_matcher_result": true,
+      "expected_semantic_label_for_synthetic_test": "correct",
+      "rationale": "The frozen matcher searches the concatenation of root_cause_class and explanation, not explanation alone."
+    },
+    {
+      "example_id": "synthetic_alias_as_unselected_quote",
+      "kind": "quoted_alias_without_endorsement",
+      "output": {
+        "diagnosed_component": "MathUtils",
+        "root_cause_class": "unknown",
+        "affected_entity": "Euclidean distance for int arrays",
+        "explanation": "The phrase 'integer overflow in squared distance accumulator' is one proposed label, but the evidence presented here does not establish it."
+      },
+      "expected_matcher_result": true,
+      "expected_semantic_label_for_synthetic_test": "partially_correct",
+      "rationale": "Phrase occurrence alone does not prove the response adopted the diagnosis."
+    }
+  ]
+}
