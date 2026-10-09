@@ -28,6 +28,10 @@ def test_all_v2_conditions_preserve_source_technology_error_and_base_facts():
         assert case.source in rendered
         assert case.technology in rendered
         assert case.error_description in rendered
+        assert "=== Software Debugging Context ===" in rendered
+        assert "Standard Context v2" not in rendered
+        assert "CCDG Context v2" not in rendered
+        assert "Dependency-Enriched Prose Context v2" not in rendered
         for fact in case.i_base:
             assert fact in rendered
 
@@ -50,10 +54,10 @@ def test_standard_v2_is_baseline_while_augmented_arms_explicitly_include_edges()
     standard = render_standard_context_v2(case)
     prose = render_dependency_prose_context_v2(case)
     graph = render_ccdg_context_v2(case)
-    assert "Dependency facts (prose):" not in standard
-    assert "Dependencies (CCDG triples):" not in standard
-    assert "Dependency facts (prose):" in prose
-    assert "Dependencies (CCDG triples):" in graph
+    assert "Dependency relations in sentences:" not in standard
+    assert "Dependency relations as directed triples:" not in standard
+    assert "Dependency relations in sentences:" in prose
+    assert "Dependency relations as directed triples:" in graph
 
 
 def test_v2_contexts_do_not_expose_ground_truth_labels():
