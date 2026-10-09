@@ -76,6 +76,7 @@ def main() -> None:
         "accelerate",
         "optimum",
         "auto-gptq",
+        "peft",
         "jsonschema",
         "numpy",
         "datasets",
