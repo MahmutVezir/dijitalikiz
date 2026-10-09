@@ -1,0 +1,27 @@
+{
+  "case_id": "commons-compress-github-pr-803-empty-framed-stream-recursion",
+  "provenance_quality": "pass",
+  "root_cause_quality": "pass",
+  "fix_quality": "unknown",
+  "dependency_strength": "strong",
+  "dependency_evidence": "The merged change addresses the same unbounded-recursion pattern in two distinct framed stream parsers: FramedLZ4CompressorInputStream.nextBlock() and FramedSnappyCompressorInputStream.readNextBlock(). Each parser's handling of legal zero-output frames/chunks interacts with iteration over the outer framed stream; both source files and both regression-test classes are changed.",
+  "ccdg_suitability": "strong",
+  "contamination_risk": "medium",
+  "contamination_risk_reason": "The exact PR and fixing revision are publicly accessible from August 2026, after the Qwen2.5 model-family release; however, the exact training-data collection cutoff is not established here, so exposure cannot be ruled out.",
+  "IC1": "pass",
+  "IC2": "pass",
+  "IC3": "pass",
+  "IC4": "pass",
+  "IC5": "pass",
+  "IC6": "unknown",
+  "IC7": "unknown",
+  "eligible_for_pilot": false,
+  "eligible_for_main": false,
+  "exclusion_reason": "SCREENING-PENDING, not a permanent exclusion: build the structured case/CCDG, independently verify the pre-fix and post-fix regression behavior, then complete IC6/IC7 review before any pilot/main inclusion.",
+  "notes": [
+    "GitHub PR #803 is closed/merged; reported merge commit: 7e688ebdba45ab16aa5b7f870474dac285a494af.",
+    "Two regression tests exercise 200,000 concatenated empty LZ4 frames and 200,000 Snappy padding chunks, expecting normal EOF rather than StackOverflowError.",
+    "The public PR description reports a successful default Maven build; the project's own clean-checkout reproduction has not yet been performed.",
+    "Keep separate from the existing frozen 16-case confirmatory manifest."
+  ]
+}
