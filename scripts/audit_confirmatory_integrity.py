@@ -75,6 +75,8 @@ def main() -> int:
                 assert record["seed"] == seed
                 assert record["model_id"] == pilot_manifest["model"]["model_id"]
                 assert record["model_revision"] == pilot_manifest["model"]["revision"]
+                assert record["model_dtype"] == "float16"
+                assert record["quantization"] == "none"
                 assert record["temperature"] == pilot_manifest["generation"]["temperature"]
                 assert record["top_p"] == pilot_manifest["generation"]["top_p"]
                 assert record["max_new_tokens"] == pilot_manifest["generation"]["max_new_tokens"]
