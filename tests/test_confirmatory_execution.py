@@ -2,6 +2,7 @@ from pathlib import Path
 import hashlib
 import json
 import py_compile
+import sys
 
 from scripts.power_mcnemar import exact_mcnemar_power
 from scripts.validate_benchmark_manifest import validate_manifest
