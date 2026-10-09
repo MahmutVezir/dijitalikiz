@@ -86,6 +86,94 @@ jobs:
             --output "$DEST/independent-audit.json"
           cat "$DEST/independent-audit.json"
 
+      - name: Independently audit the completed pilot artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ARTIFACT_ID="11634641753"
+          EXPECTED_SHA256="b12594415894d5cac18442d3bd6c505e843b1a14027272c1afa398a59101aca0"
+          PILOT_SOURCE_COMMIT="d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5"
+          ARCHIVE="/tmp/dijitalikiz-pilot-artifact.zip"
+          DEST="/tmp/dijitalikiz-pilot-artifact"
+          mkdir -p "$DEST"
+
+          curl --fail --silent --show-error --location \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" \
+            --output "$ARCHIVE"
+
+          ACTUAL_SHA256="$(sha256sum "$ARCHIVE" | awk '{print $1}')"
+          test "$ACTUAL_SHA256" = "$EXPECTED_SHA256" || {
+            echo "Pilot archive SHA-256 mismatch: $ACTUAL_SHA256"
+            exit 1
+          }
+
+          unzip -q "$ARCHIVE" -d "$DEST"
+          python - "$DEST/pilot-output" <<'PY'
+          import hashlib
+          import json
+          import sys
+          from pathlib import Path
+
+          root = Path(sys.argv[1])
+          manifest = json.loads((root / "artifact_manifest.json").read_text(encoding="utf-8"))
+          entries = manifest.get("files", [])
+          assert manifest.get("finalization_gate", {}).get("status") == "complete"
+          assert manifest.get("file_count") == len(entries) == 55
+          assert manifest.get("run_record_count") == 40
+
+          expected_paths = set()
+          for entry in entries:
+              relative = entry["path"]
+              assert relative not in expected_paths, f"Duplicate manifest path: {relative}"
+              expected_paths.add(relative)
+              path = root / relative
+              assert path.is_file(), f"Missing artifact file: {relative}"
+              raw = path.read_bytes()
+              assert len(raw) == entry["bytes"], f"Size mismatch: {relative}"
+              assert hashlib.sha256(raw).hexdigest() == entry["sha256"], f"Hash mismatch: {relative}"
+
+          observed_paths = {
+              p.relative_to(root).as_posix()
+              for p in root.rglob("*")
+              if p.is_file() and p.name != "artifact_manifest.json"
+          }
+          assert observed_paths == expected_paths, {
+              "missing": sorted(expected_paths - observed_paths),
+              "unexpected": sorted(observed_paths - expected_paths),
+          }
+          run_files = list((root / "runs").glob("*.json"))
+          records = [
+              json.loads(line)
+              for line in (root / "pilot_records.jsonl").read_text(encoding="utf-8").splitlines()
+              if line.strip()
+          ]
+          assert len(run_files) == 40
+          assert len(records) == 40
+          print(json.dumps({
+              "status": "pilot_artifact_manifest_pass",
+              "archive_sha256": "$EXPECTED_SHA256",
+              "manifest_file_count": len(entries),
+              "run_file_count": len(run_files),
+              "jsonl_record_count": len(records),
+          }, indent=2))
+          PY
+
+          git fetch --depth=1 origin "$PILOT_SOURCE_COMMIT"
+          git worktree add --detach /tmp/dijitalikiz-pilot-source "$PILOT_SOURCE_COMMIT"
+          printf '%s\n' "$PILOT_SOURCE_COMMIT" > /tmp/dijitalikiz-pilot-source/data/pilot/kaggle_source_commit.txt
+          cd /tmp/dijitalikiz-pilot-source
+          PYTHONPATH="/tmp/dijitalikiz-pilot-source" python scripts/audit_pilot_integrity.py \
+            --runs-dir "$DEST/pilot-output/runs" \
+            --manifest "$DEST/pilot-output/pilot_manifest.json" \
+            --prompt "$DEST/pilot-output/PROMPT_TEMPLATE.txt" \
+            --system-prompt "$DEST/pilot-output/SYSTEM_PROMPT.txt" \
+            --require-complete
+
       - name: Build confirmatory source bundle and launcher without inference
         shell: bash
         run: |
