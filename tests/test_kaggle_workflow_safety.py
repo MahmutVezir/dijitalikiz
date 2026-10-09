@@ -47,7 +47,11 @@ def test_kaggle_pilot_builds_self_contained_launcher():
 
 def test_kaggle_pilot_binds_launcher_to_current_commit():
     workflow = workflow_text()
-    assert 'KERNEL_SLUG="dijitalikiz-frozen-pilot-${GITHUB_SHA:0:12}"' in workflow
+    assert 'KERNEL_SLUG="dijitalikiz-frozen-pilot-' in workflow
+    assert "GITHUB_SHA:0:8" in workflow
+    assert "GITHUB_RUN_ID" in workflow
+    assert "GITHUB_RUN_ATTEMPT" in workflow
+    assert "GITHUB_SHA:0:12" not in workflow
     assert 'launcher = (' in workflow
     assert '.replace("__COMMIT__", commit)' in workflow
     assert 'echo "Embedded source commit: $GITHUB_SHA"' in workflow
