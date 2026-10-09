@@ -40,14 +40,14 @@ jobs:
               assert "word/document.xml" in names, "Downloaded file is not a valid DOCX package"
           digest = hashlib.sha256(path.read_bytes()).hexdigest()
           manifest = {
-              "source_url": "$URL",
+              "source_url": "https://tubitak.gov.tr/sites/default/files/2026-09/proje_yazma_sablonu_2026-2027.docx",
               "file_name": path.name,
               "size_bytes": path.stat().st_size,
               "sha256": digest,
               "zip_test": "passed",
               "document_xml_present": True,
           }
-          Path("/tmp/tubitak-template/template_manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+          Path("/tmp/tubitak-template/template_manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
           print(json.dumps(manifest, indent=2, ensure_ascii=False))
           PY
 
