@@ -71,7 +71,7 @@ def main() -> int:
           model.__class__.__name__)
 
     # A tiny, non-study smoke generation validates the actual GPTQ/Transformers
-    # inference kernel before the 30 frozen study runs. It is not part of n=30.
+    # inference kernel before the 40 frozen study runs. It is not part of n=40.
     smoke = "Reply with exactly OK."
     inputs = tokenizer([smoke], return_tensors="pt").to(model.device)
     with torch.inference_mode():
