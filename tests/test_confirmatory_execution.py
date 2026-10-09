@@ -82,6 +82,7 @@ def test_confirmatory_kaggle_kernel_isolated_from_exported_artifacts():
     assert 'OUTPUT_DIR = KERNEL_ROOT / "confirmatory-output"' in source
     assert 'BUNDLE_SOURCE.unlink()' in source
     assert 'SOURCE_COMMIT_FILE.unlink()' in source
+    assert "source_bundle_sha256" in source
     assert 'run(str(python), "-m", "pip", "check", cwd=WORKDIR)' in source
     assert source.index('"scripts/validate_confirmatory_artifact_manifest.py"') < source.index('for item in benchmark.iterdir()')
     assert 'run(str(python), "scripts/run_confirmatory.py"' in source
