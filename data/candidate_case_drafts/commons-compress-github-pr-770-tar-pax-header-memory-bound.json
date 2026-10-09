@@ -59,7 +59,12 @@
     "fixed_revision_date": "2026-07-18",
     "date_basis": "pull_request_creation_date_recorded_separately_from_fix_merge_date",
     "regression_test": "src/test/java/org/apache/commons/compress/archivers/tar/PaxHeaderOomTest.java",
-    "regression_test_status": "identified_in_public_fix_patch_independent_execution_pending",
-    "case_status": "candidate_case_draft_not_eligible_for_experiment"
+    "regression_test_status": "independently_reproduced_pre_fix_failure_and_fixed_revision_pass",
+    "case_status": "candidate_case_draft_not_eligible_for_experiment",
+    "reproduction_workflow": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772",
+    "pre_fix_revision": "829b5dd6ffe976c0a03231e65790a65af9f3a6ee",
+    "fixed_revision": "bab5629f6b3cea44cf0622cdd92c8cefcfbf360a",
+    "pre_fix_expected_observation": "The 20 MiB PAX header was not rejected; the regression test failed with 'Should have thrown MemoryLimitException'.",
+    "fixed_expected_observation": "The same regression test passed; MemoryLimitException was thrown for the oversized header."
   }
 }
