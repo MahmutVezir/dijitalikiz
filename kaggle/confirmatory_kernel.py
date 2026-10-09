@@ -126,6 +126,7 @@ def main() -> None:
         shutil.rmtree(RUNTIME_ROOT)
     RUNTIME_ROOT.mkdir(parents=True, exist_ok=True)
     shutil.copy2(BUNDLE_SOURCE, BUNDLE)
+    source_bundle_sha256 = hashlib.sha256(BUNDLE.read_bytes()).hexdigest()
     BUNDLE_SOURCE.unlink()
     SOURCE_COMMIT_FILE.unlink()
 
@@ -177,6 +178,7 @@ def main() -> None:
     environment = json.loads(env_path.read_text(encoding="utf-8"))
     environment["source_commit"] = source_commit
     environment["source_commit_verified_from_bundle"] = True
+    environment["source_bundle_sha256"] = source_bundle_sha256
     environment["runtime_root"] = str(RUNTIME_ROOT)
     environment_path = benchmark / "environment.json"
     environment_path.write_text(
