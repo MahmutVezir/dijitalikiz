@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -99,5 +100,21 @@ def test_frozen_manifest_accepts_complete_power_metadata(tmp_path):
             "eligible_for_main": True,
             "contamination_risk": "low",
         }), encoding="utf-8")
+
+    rubric_path = tmp_path / "data" / "benchmark" / "evaluation_rubric.json"
+    rubric_path.parent.mkdir(parents=True, exist_ok=True)
+    rubric_bytes = json.dumps({
+        "primary_endpoint": "root_cause_correctness_with_predeclared_aliases",
+        "cases": [
+            {"case_id": "case-a", "root_cause_aliases": ["root cause A"]},
+            {"case_id": "case-b", "root_cause_aliases": ["root cause B"]},
+        ],
+    }).encode("utf-8")
+    rubric_path.write_bytes(rubric_bytes)
+    manifest["scoring_rubric"] = {
+        "path": "data/benchmark/evaluation_rubric.json",
+        "sha256": hashlib.sha256(rubric_bytes).hexdigest(),
+        "primary_endpoint": "root_cause_correctness_with_predeclared_aliases",
+    }
 
     assert validate_manifest(manifest, tmp_path) == []
