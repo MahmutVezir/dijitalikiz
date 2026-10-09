@@ -27,8 +27,9 @@
   ],
   "contamination_audit_completed": true,
   "power_assumption": {
-    "p_standard_only": 0.6,
-    "p_ccdg_only": 0.05,
+    "alternative": "ccdg_better_than_standard",
+    "p_standard_only": 0.05,
+    "p_ccdg_only": 0.6,
     "target_power": 0.8,
     "alpha": 0.05,
     "required_case_count": 16,
