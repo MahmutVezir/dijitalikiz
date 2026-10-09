@@ -93,7 +93,6 @@ def main() -> int:
         "frozen_at_utc": datetime.now(timezone.utc).isoformat(),
         "pilot_completion_verified": True,
         "case_selection_model_outputs_consulted": False,
-        "freeze_is_non_post_hoc": "true",
     }
     path.write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
