@@ -16,9 +16,13 @@ def test_kaggle_pilot_is_manual_or_scoped_trigger_and_opt_in():
     assert 'paths:\n      - ".github/kaggle-pilot-trigger"' in workflow
     assert 'description: "Run the frozen 40-inference pilot on Kaggle GPU"' in workflow
     assert "default: false" in workflow
+    assert "execute_confirmatory:" in workflow
+    assert 'description: "Run the frozen 160-inference confirmatory benchmark on Kaggle GPU"' in workflow
     assert (
-        "if: (github.event_name == 'push' && !contains(github.event.head_commit.message, '[validate-only]')) "
-        "|| (github.event_name == 'workflow_dispatch' && inputs.execute_inference == true)"
+        "if: (github.event_name == 'push' && !contains(github.event.head_commit.message, '[validate-only]') "
+        "&& !contains(github.event.head_commit.message, '[confirmatory]')) "
+        "|| (github.event_name == 'workflow_dispatch' && inputs.execute_inference == true "
+        "&& inputs.execute_confirmatory == false)"
     ) in workflow
     assert "validate-only:" in workflow
     assert "pytest -q" in workflow
@@ -112,3 +116,32 @@ def test_validate_only_path_never_runs_inference():
     validate_job = workflow.split("  validate-only:", 1)[1].split("  run-frozen-pilot:", 1)[0]
     assert "kaggle kernels push" not in validate_job
     assert "run_confirmatory.py" not in validate_job
+
+
+def test_confirmatory_run_is_separately_opt_in_and_fails_closed():
+    workflow = workflow_text()
+    assert "run-confirmatory:" in workflow
+    assert "reject-ambiguous-selection:" in workflow
+    assert "inputs.execute_confirmatory == true && inputs.execute_inference == false" in workflow
+    assert "contains(github.event.head_commit.message, '[confirmatory]')" in workflow
+    confirmatory_job = workflow.split("  run-confirmatory:", 1)[1]
+    for required in (
+        "data/benchmark",
+        "data/pilot",
+        "data/assessments",
+        "scripts/build_confirmatory_launcher.py",
+        "scripts/audit_confirmatory_integrity.py",
+        "scripts/validate_benchmark_manifest.py",
+        "scripts/validate_confirmatory_artifact_manifest.py",
+        "confirmatory_evaluation.json",
+        "primary_analysis.json",
+        "dijitalikiz-confirmatory-",
+    ):
+        assert required in confirmatory_job
+    assert "execute_inference == true && inputs.execute_confirmatory == true" in workflow
+
+
+def test_confirmatory_push_does_not_also_launch_the_pilot():
+    workflow = workflow_text()
+    pilot_job = workflow.split("  run-frozen-pilot:", 1)[1].split("  reject-ambiguous-selection:", 1)[0]
+    assert "!contains(github.event.head_commit.message, '[confirmatory]')" in pilot_job
