@@ -16,7 +16,19 @@ Büyük dil modelleri (LLM), yazılım hatalarını açıklama ve kök nedenleri
 
 ## Anahtar kelimeler
 
-Büyük dil modeli, yazılım hata teşhisi, kök neden analizi, bağımlılık grafiği, CCDG, Defects4J, tekrarlanabilir deney.
+Büyük dil modelleri; yazılım hata teşhisi; kök neden analizi; CCDG; Defects4J.
+
+## İçindekiler
+
+1. [Giriş](#1-giriş)
+2. [Amaç ve hipotezler](#2-amaç-ve-hipotezler)
+3. [Yöntem](#3-yöntem)
+4. [Bulgular](#4-bulgular)
+5. [Tartışma](#5-tartışma)
+6. [Sınırlılıklar](#6-sınırlılıklar)
+7. [Sonuç ve öneriler](#7-sonuç-ve-öneriler)
+8. [Yeniden üretilebilirlik ve kanıt kayıtları](#8-yeniden-üretilebilirlik-ve-kanıt-kayıtları)
+9. [Kaynakça](#kaynakça)
 
 ## 1. Giriş
 
