@@ -14,7 +14,10 @@ def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def build_packet(artifact_root: Path, artifact_sha256: str = EXPECTED_ARCHIVE_SHA256) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def build_packet(
+    artifact_root: Path,
+    artifact_sha256: str = EXPECTED_ARCHIVE_SHA256,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     artifact_root = artifact_root.resolve()
     manifest_path = artifact_root / "benchmark_manifest.json"
     case_dir = artifact_root / "cases"
@@ -33,43 +36,50 @@ def build_packet(artifact_root: Path, artifact_sha256: str = EXPECTED_ARCHIVE_SH
     run_files = sorted(runs_dir.glob("*.json"))
     expected_count = len(case_ids) * 2 * 5
     if len(run_files) != expected_count:
-        raise ValueError(f"Expected {expected_count} run records for 2 conditions × 5 seeds; found {len(run_files)}.")
+        raise ValueError(
+            f"Expected {expected_count} run records for 2 conditions × 5 seeds; found {len(run_files)}."
+        )
 
     run_records = [_read_json(path) for path in run_files]
     observed_keys = set()
     allowed_conditions = {"standard", "ccdg"}
     allowed_seeds = {42, 43, 44, 45, 46}
     for record in run_records:
-        key = (record.get("case_id"), record.get("condition"), record.get("seed"))
-        if key in observed_keys:
-            raise ValueError(f"Duplicate run identity in source artifact: {key}")
-        observed_keys.add(key)
+        source_key = (record.get("case_id"), record.get("condition"), record.get("seed"))
+        if source_key in observed_keys:
+            raise ValueError(f"Duplicate run identity in source artifact: {source_key}")
+        observed_keys.add(source_key)
         if record.get("case_id") not in source_cases:
-            raise ValueError(f"Run references unknown case: {key}")
+            raise ValueError(f"Run references unknown case: {source_key}")
         if record.get("condition") not in allowed_conditions or record.get("seed") not in allowed_seeds:
-            raise ValueError(f"Unexpected condition or seed in frozen artifact: {key}")
+            raise ValueError(f"Unexpected condition or seed in frozen artifact: {source_key}")
         if record.get("parsed_output") is None:
-            raise ValueError(f"Output cannot be reviewed as a parsed diagnosis: {key}")
+            raise ValueError(f"Output cannot be reviewed as a parsed diagnosis: {source_key}")
     if len(observed_keys) != expected_count:
         raise ValueError("Source artifact is missing one or more case-condition-seed combinations.")
 
-    # This seeded permutation is reproducible from the archive digest while removing
-    # case IDs, condition names, and seeds from the reviewer-facing rows.
+    # Reproducible shuffling is seeded by the frozen archive digest. Conditions,
+    # seeds, case identifiers and context hashes are retained only in the separate key.
     seed_int = int(hashlib.sha256(artifact_sha256.encode("ascii")).hexdigest()[:16], 16)
     rng = random.Random(seed_int)
     shuffled_case_ids = list(case_ids)
     rng.shuffle(shuffled_case_ids)
-    case_refs = {case_id: f"CASE-{index + 1:02d}" for index, case_id in enumerate(shuffled_case_ids)}
+    case_refs = {
+        case_id: f"CASE-{index + 1:02d}"
+        for index, case_id in enumerate(shuffled_case_ids)
+    }
 
     rows: list[dict[str, Any]] = []
-    key_rows: list[dict[str, Any]] = []
+    key_by_hidden_key: dict[str, dict[str, Any]] = {}
     for record in run_records:
         case_id = record["case_id"]
         case = source_cases[case_id]
         output = record["parsed_output"]
-        review_id = ""  # assigned after a deterministic shuffle
+        hidden_key = f"{case_id}|{record['condition']}|{record['seed']}"
+
         rows.append({
-            "review_id": review_id,
+            "_hidden_key": hidden_key,
+            "review_id": "",
             "case_ref": case_refs[case_id],
             "source_evidence": {
                 "source": case.get("source", ""),
@@ -102,31 +112,8 @@ def build_packet(artifact_root: Path, artifact_sha256: str = EXPECTED_ARCHIVE_SH
                 "reviewer_notes": "",
             },
         })
-        key_rows.append({
-            "review_id": review_id,
-            "case_ref": case_refs[case_id],
-            "source_case_id": case_id,
-            "condition": record["condition"],
-            "seed": record["seed"],
-            "source_commit": record.get("source_commit"),
-            "prompt_sha256": record.get("prompt_sha256"),
-            "context_sha256": record.get("context_sha256"),
-        })
-
-    rng.shuffle(rows)
-    key_by_signature = {
-        (item["case_ref"], item["response"]["raw_output"]): item
-        for item in rows
-    }
-    # The exact raw response is unique within this frozen artifact; detect otherwise.
-    if len(key_by_signature) != len(rows):
-        raise ValueError("Non-unique case/response pair prevents deterministic review-key mapping.")
-    # Map the shuffled packet back to frozen metadata without writing conditions to packet rows.
-    metadata_by_pair = {}
-    for record in run_records:
-        case_id = record["case_id"]
-        pair = (case_refs[case_id], record.get("raw_output", ""))
-        metadata_by_pair[pair] = {
+        key_by_hidden_key[hidden_key] = {
+            "review_id": "",
             "case_ref": case_refs[case_id],
             "source_case_id": case_id,
             "condition": record["condition"],
@@ -136,12 +123,15 @@ def build_packet(artifact_root: Path, artifact_sha256: str = EXPECTED_ARCHIVE_SH
             "context_sha256": record.get("context_sha256"),
         }
 
+    rng.shuffle(rows)
     for index, row in enumerate(rows, start=1):
         row["review_id"] = f"REVIEW-{index:03d}"
-        row.pop("condition", None)
-        row.pop("seed", None)
-        metadata_by_pair[(row["case_ref"], row["response"]["raw_output"])]["review_id"] = row["review_id"]
-    key_rows = sorted(metadata_by_pair.values(), key=lambda item: item["review_id"])
+        hidden_key = row.pop("_hidden_key")
+        key_by_hidden_key[hidden_key]["review_id"] = row["review_id"]
+
+    key_rows = sorted(key_by_hidden_key.values(), key=lambda item: item["review_id"])
+    if len(key_rows) != len(rows) or len({item["review_id"] for item in key_rows}) != len(rows):
+        raise ValueError("Blinding key mapping failed integrity checks.")
 
     packet_metadata = {
         "record_type": "metadata",
@@ -154,16 +144,26 @@ def build_packet(artifact_root: Path, artifact_sha256: str = EXPECTED_ARCHIVE_SH
         "frozen_primary_results_modified": False,
         "new_inference_performed": False,
         "review_status": "unreviewed_packet",
-        "warning": "This packet supports exploratory post-hoc review only. It cannot replace or amend the frozen confirmatory endpoint."
+        "warning": (
+            "This packet supports exploratory post-hoc review only. It cannot replace "
+            "or amend the frozen confirmatory endpoint."
+        ),
     }
     return [packet_metadata, *rows], key_rows
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Build a condition- and seed-masked exploratory review packet from the frozen artifact.")
+    parser = argparse.ArgumentParser(
+        description="Build a condition- and seed-masked exploratory review packet from the frozen artifact."
+    )
     parser.add_argument("--artifact-root", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--key-output", required=True, type=Path, help="Keep this key separate; do not share it with reviewers.")
+    parser.add_argument(
+        "--key-output",
+        required=True,
+        type=Path,
+        help="Keep this key separate; do not share it with reviewers.",
+    )
     parser.add_argument("--artifact-sha256", default=EXPECTED_ARCHIVE_SHA256)
     args = parser.parse_args()
 
@@ -175,7 +175,11 @@ def main() -> int:
         encoding="utf-8",
     )
     args.key_output.write_text(
-        json.dumps({"warning": "KEEP PRIVATE FROM REVIEWERS", "records": key_rows}, indent=2, ensure_ascii=False) + "\n",
+        json.dumps(
+            {"warning": "KEEP PRIVATE FROM REVIEWERS", "records": key_rows},
+            indent=2,
+            ensure_ascii=False,
+        ) + "\n",
         encoding="utf-8",
     )
     print(json.dumps({
