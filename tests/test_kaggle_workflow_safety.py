@@ -89,3 +89,14 @@ def test_kaggle_artifact_validation_loop_has_single_do():
     assert "\n          do\n          do\n" not in workflow
     assert "for required in" in workflow
     assert 'test -n "$(find kaggle-output -name "$required" -type f -print -quit)"' in workflow
+
+
+def test_kaggle_runtime_and_installed_packages_are_not_exported_as_artifacts():
+    workflow = workflow_text()
+    assert 'RUNTIME_ROOT = Path("/tmp/dijitalikiz-frozen-pilot-runtime")' in workflow
+    assert 'BUNDLE = RUNTIME_ROOT / "project.tar.gz"' in workflow
+    assert 'WORKDIR = RUNTIME_ROOT / "dijitalikiz"' in workflow
+    assert 'PYTHON_ENV = RUNTIME_ROOT / "dijitalikiz-py311"' in workflow
+    assert "RUNTIME_ROOT.mkdir(parents=True, exist_ok=True)" in workflow
+    assert 'output_dir = KERNEL_ROOT / "pilot-output"' in workflow
+    assert "group: dijitalikiz-frozen-pilot-output-v2" in workflow
