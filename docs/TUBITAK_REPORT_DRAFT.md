@@ -87,6 +87,8 @@ Her kayıt model kimliği ve revizyonu, tohum, koşul, istem/bağlam hash'leri, 
 
 Birincil karşılaştırma, aynı yazılım vakası için Standard ve CCDG koşullarından elde edilen ikili vaka düzeyi sonuçların eşleştirilmiş karşılaştırmasıdır. İki taraflı exact McNemar testi, α = 0,05 ile kullanılmıştır. Etki, CCDG başarısı eksi Standard başarısı olarak tanımlanan eşleştirilmiş risk farkıyla raporlanmıştır. %95 güven aralığı, iki uyumsuz sonuç oranı için Wilson skor aralıklarını kullanan önceden kayıtlı Newcombe-tipi yaklaşımla hesaplanmıştır.
 
+Örneklem planlaması, doğrulayıcı sonuçlar görülmeden önce kaydedilen McNemar tasarım varsayımlarına dayanmıştır: P(Standard doğru, CCDG yanlış)=0,05 ve P(Standard yanlış, CCDG doğru)=0,60; hedef güç 0,80, α=0,05 ve 16 bağımsız vaka için hesaplanan güç yaklaşık 0,807'dir. Bu değerler tasarım varsayımlarıdır; gözlenen pilot veya doğrulayıcı sonuçlardan türetilmemiştir.
+
 ## 4. Bulgular
 
 ### 4.1 Çalıştırma ve bütünlük sonuçları
