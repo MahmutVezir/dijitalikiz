@@ -1,42 +1,40 @@
-# Final Execution Runbook
+# Final Execution Runbook — Experiments Complete
 
-## 1. Frozen pilot — 40 inference records
+## 1. Frozen pilot
 
-GitHub Actions -> Kaggle Frozen Pilot -> Run workflow -> set execute_inference=true.
+The 40-run pilot is complete.
 
-The workflow:
-- checks KAGGLE_API_TOKEN;
-- resolves the Kaggle account automatically;
-- packages the exact Git commit;
-- runs preflight + model-load preflight on a private GPU kernel;
-- executes 4 cases × 2 conditions × 5 seeds = 40 records;
-- evaluates, aggregates 3/5 seed majority, builds QA and SHA-256 artifact manifest;
-- returns the immutable pilot artifact to GitHub Actions.
+- Run: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37968099402
+- Source commit: `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`
+- Artifact ID: `11634641753`
+- Artifact SHA-256: `b12594415894d5cac18442d3bd6c505e843b1a14027272c1afa398a59101aca0`
+- Records: 40/40; parse errors: 0; independent file/hash inventory: 55/55.
 
-Do not change model, revision, temperature, seeds, prompts, case IDs, or renderer after the pilot starts.
+## 2. Confirmatory benchmark
 
-## 2. Confirmatory benchmark — 160 inference records
+The 16-case, 160-run benchmark is complete.
 
-After a successful pilot artifact exists for the exact same commit, run:
+- Run: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37976682761
+- Exact source commit: `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`
+- Artifact ID: `11640450681`
+- Artifact SHA-256: `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`
+- Records: 160/160; parse errors: 0; independent file/hash inventory: 212/212.
+- Evaluation: Standard 0/80, CCDG 0/80 primary alias matches; 0/16 case-level majority passes in each condition.
+- Exact two-sided McNemar p=1.00; paired risk difference 0.00; 95% CI [-0.1936, 0.1936].
 
-GitHub Actions -> Kaggle Frozen Confirmatory -> Run workflow -> set execute_inference=true.
+## 3. What the result does and does not mean
 
-This workflow first verifies the pilot artifact checksum, then freezes the already-preselected 16-case manifest in the execution workspace. It then runs 16 cases × 2 conditions × 5 seeds = 160 records and produces:
-- actual inference-machine environment metadata;
-- raw run records and deterministic JSONL;
-- confirmatory evaluation;
-- case-level 3/5 aggregation;
-- exact two-sided McNemar primary analysis;
-- paired CCDG-minus-Standard effect and CI from the existing analysis pipeline;
-- non-inferential QA;
-- immutable SHA-256 artifact manifest.
-
-## 3. What remains outside the repository
-
-The repository cannot impersonate a user's GitHub Actions workflow_dispatch click. No secret is written to the repository and no automatic trigger is enabled.
-
-Everything after the two manual starts is fail-closed and automated. The benchmark is intentionally not called scientifically complete until both inference stages finish successfully.
+The frozen literal-alias endpoint has a floor effect and the study did not detect a difference on that endpoint. It neither proves equivalence nor proves that CCDG has no semantic effect. Do not change the alias rubric or re-label the existing 160-run analysis as confirmatory. A review or re-score of existing outputs must be labeled exploratory. A new semantic confirmatory study needs its scoring instrument validated before output inspection and a new independently selected case sample.
 
 ## 4. Final report gate
 
-Only after the confirmatory artifact is complete should the Turkish TÜBİTAK report be populated with observed results. No numerical result, hypothesis decision, or effect estimate is stored in advance.
+The current results have been written into `docs/TUBITAK_REPORT_DRAFT.md`. The report must disclose that the primary scoring endpoint was amended after pilot-output diagnostics and before confirmatory outputs were seen. Do not claim full preregistration before any model output was inspected.
+
+Before portal submission:
+1. Copy the text into the official 2026–2027 TÜBİTAK Word template.
+2. Check the required title, 150–250-word abstract, page range, and all template fields against the current official guide.
+3. Verify student/school/supervisor and any permission information from authoritative records; do not guess missing data.
+4. Render the template to PDF and inspect every page.
+5. Submit through TYBS, ensuring ARBİS records and any required forms are accurate.
+
+The code/inference stage is complete. Portal submission, individual/school fields, and final official-template/PDF checks require the student's authoritative data and action in the submission system.
