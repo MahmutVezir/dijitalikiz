@@ -36,8 +36,15 @@
     "achieved_power": 0.807,
     "rationale": "Predeclared directional design alternative selected before confirmatory inference from the available independent eligible-case pool; probabilities are design assumptions, not pilot/model-derived estimates."
   },
+  "scoring_rubric": {
+    "path": "data/benchmark/evaluation_rubric.json",
+    "sha256": "8fbb88eac71a567b5d72e26fd4060cd7853500e2117b7bf0315e76726b64a83c",
+    "version": "1.0",
+    "primary_endpoint": "root_cause_correctness_with_predeclared_aliases"
+  },
   "analysis": {
-    "primary_endpoint": "case_level_complete_diagnostic_correctness",
+    "primary_endpoint": "case_level_root_cause_correctness_with_predeclared_aliases",
+    "secondary_endpoint": "case_level_complete_diagnostic_correctness_using_legacy_exact_checks",
     "replication_rule": "at least 3 of 5 seeds",
     "test": "exact two-sided McNemar",
     "alpha": 0.05,
@@ -46,6 +53,9 @@
   "freeze_rule": "This manifest may become frozen only after independent cases, case records, assessments, contamination audit metadata, and power assumptions are explicitly documented.",
   "selection_metadata": {
     "selection_date": "2026-10-08",
+    "scoring_protocol_amendment_date": "2026-10-09",
+    "pilot_outputs_consulted_for_scoring_protocol_diagnostics": true,
+    "confirmatory_outputs_consulted": false,
     "model_outputs_consulted": false,
     "confirmatory_case_count": 16,
     "contamination_policy": "conservative high public-exposure risk; not evidence of training-set membership",
