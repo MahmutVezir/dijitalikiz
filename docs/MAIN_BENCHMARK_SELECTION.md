@@ -74,30 +74,28 @@ Ground truth is never rendered into either experimental condition.
 Case selection, CCDG construction, and ground-truth annotation must be completed before the first confirmatory inference. Any change afterward is a protocol deviation and must be documented rather than silently applied.
 
 
-## Current state — 2026-10-08
+## State as of 2026-10-09 — frozen manifest and execution provenance
 
-The repository currently contains a screening pool of 21 candidate records. The confirmatory manifest remains `draft` with zero selected case IDs. Sixteen additional candidates have provisional CCDG/ground-truth annotations, but their contamination risk remains `unknown`; they are therefore not eligible for confirmatory promotion yet.
+The 16-case confirmatory benchmark has been frozen after validation of the completed 40-record pilot artifact. The frozen manifest records the pilot run ID, artifact ID, artifact SHA-256, and pilot source commit. The confirmatory launch commit is recorded separately.
 
-This is intentional. A large candidate pool is preferable to prematurely freezing a small or contaminated benchmark. The final sample size must be determined from predeclared McNemar discordant-pair assumptions, not from observed model outcomes.
+### Verified pilot gate
 
+- Run ID: `37968099402`; artifact ID: `11634641753`.
+- Pilot source commit: `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`.
+- Artifact SHA-256: `b12594415894d5cac18442d3bd6c505e843b1a14027272c1afa398a59101aca0`.
+- The exported artifact contains 40/40 records, 40 JSONL entries, no parse failures, and a complete internal SHA-256/file-inventory check.
+- The old strict complete-diagnostic endpoint yielded zero case-level majority passes in both conditions. This pilot outcome is not the confirmatory result and must not be used to change the case set.
 
+### Frozen case set and scoring amendment
 
-The repository now has a 16-case preselected confirmatory set prepared before confirmatory inference.
+The confirmatory cases remain CLOSURE-4, CLOSURE-6, CLOSURE-14, MATH-305, MATH-326, MATH-358, MATH-377, MATH-392, MATH-393, MATH-405, MATH-631, MATH-859, MATH-924, TIME-1, TIME-12, and MOCKITO-19. The 16 cases were selected independently of model outputs; all pilot cases are excluded. The primary design uses 16 independent cases, two conditions, and seeds 42–46 for 160 records.
 
-### Preselected confirmatory set — 2026-10-08
+The primary endpoint is root-cause correctness with the rubric's predeclared aliases. A scoring-protocol amendment dated 2026-10-09 followed pilot-output diagnostics and is disclosed in manifest metadata. This is not represented as a fully pre-registered decision made before any model output. The final report must describe this procedural limitation, retain the frozen scoring rubric, and avoid post-hoc changes based on confirmatory results.
 
-The current draft manifest contains 16 independent cases: CLOSURE-4, CLOSURE-6, CLOSURE-14, MATH-305, MATH-326, MATH-358, MATH-377, MATH-392, MATH-393, MATH-405, MATH-631, MATH-859, MATH-924, TIME-1, TIME-12 and MOCKITO-19.
+### Source-commit rule
 
-Pilot cases MATH-927, MATH-950, MATH-949 and MATH-988 are excluded. MATH-938 remains excluded because its cross-component dependency/CCDG suitability was assessed as weak.
+The pilot source commit is `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`; the confirmatory launch commit is `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`. They are not identical because the manifest and confirmatory runner were frozen after pilot completion. The shared experimental core files—context renderer, models, legacy evaluator, prompt template, system prompt, pilot manifest, and pinned requirements—were checked and have identical blob SHAs across these two commits. Each phase must retain its own source commit and the confirmatory source-bundle checksum.
 
-All 16 prepared cases have provenance, fixing-commit anchors, provisional CCDG and ground-truth records, and a resolved conservative high public-exposure contamination label. No model outputs were consulted for selection.
+### Remaining acceptance gate
 
-The predeclared McNemar design alternative is P(Standard fails, CCDG passes)=0.60 and P(Standard passes, CCDG fails)=0.05, alpha=0.05, target power=0.80, requiring 16 independent cases with achieved exact-design power approximately 0.8070. These are design assumptions, not estimates from pilot/model results.
-
-### Freeze status
-
-`data/benchmark/benchmark_manifest.json` is intentionally still `draft`. It will be changed to `frozen` only by `scripts/freeze_benchmark.py` after a complete 40-record pilot artifact has been verified. Confirmatory inference is blocked while the manifest is not frozen.
-
-Historical cases whose issue-creation date was not consistently exposed are recorded with the fixing-commit date in the legacy `publication_date` field and an explicit `date_basis` provenance note. This is not an assertion that fix date equals issue publication date.
-
-MATH-844 is intentionally retained only in the screened candidate pool and is not selected for confirmatory inference.
+The confirmatory phase is not result-complete until the exact launch run is verified, all 160 expected records are present and internally consistent, the primary analysis and QA report are generated, and the full artifact manifest passes checksum and inventory validation. No effectiveness claim may be made before that gate passes.
