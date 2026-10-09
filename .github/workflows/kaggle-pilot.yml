@@ -454,7 +454,6 @@ jobs:
             pilot_qa_report.json \
             artifact_manifest.json
           do
-          do
             test -n "$(find kaggle-output -name "$required" -type f -print -quit)" || {
               echo "Missing finalized Kaggle artifact: $required"
               exit 1
