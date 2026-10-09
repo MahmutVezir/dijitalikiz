@@ -10,11 +10,11 @@ from scripts.validate_benchmark_manifest import validate_manifest
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_preselected_confirmatory_manifest_is_complete_draft():
+def test_preselected_confirmatory_manifest_is_frozen_and_complete():
     manifest = json.loads(
         (ROOT / "data" / "benchmark" / "benchmark_manifest.json").read_text(encoding="utf-8")
     )
-    assert manifest["status"] == "draft"
+    assert manifest["status"] == "frozen"
     assert len(manifest["case_ids"]) == 16
     assert len(set(manifest["case_ids"])) == 16
     assert manifest["contamination_audit_completed"] is True
@@ -27,6 +27,14 @@ def test_preselected_confirmatory_manifest_is_complete_draft():
     rubric = json.loads(rubric_bytes.decode("utf-8"))
     assert [item["case_id"] for item in rubric["cases"]] == manifest["case_ids"]
     assert all(item["root_cause_aliases"] for item in rubric["cases"])
+    metadata = manifest["freeze_metadata"]
+    assert metadata["pilot_completion_verified"] is True
+    assert metadata["case_selection_preselected_before_inference"] is True
+    assert metadata["scoring_protocol_amendment_recorded"] is True
+    assert metadata["pilot_outputs_consulted_for_scoring_protocol_diagnostics"] is True
+    assert metadata["confirmatory_outputs_consulted"] is False
+    assert metadata["verified_pilot_record_count"] == 40
+    assert len(metadata["pilot_artifact_sha256"]) == 64
 
 
 def test_predeclared_power_matches_exact_utility():
@@ -63,10 +71,10 @@ def test_kaggle_automation_is_single_canonical_workflow():
     assert workflow_names == ["kaggle-pilot.yml"]
 
 
-def test_preselected_manifest_passes_full_frozen_gate_without_changing_repo_status():
-    draft = json.loads(
-        (ROOT / "data" / "benchmark" / "benchmark_manifest.json").read_text(encoding="utf-8")
-    )
-    frozen_candidate = {**draft, "status": "frozen"}
-    assert draft["status"] == "draft"
-    assert not validate_manifest(frozen_candidate, ROOT)
+def test_frozen_manifest_passes_full_gate_without_mutating_repository_file():
+    manifest_path = ROOT / "data" / "benchmark" / "benchmark_manifest.json"
+    original_bytes = manifest_path.read_bytes()
+    manifest = json.loads(original_bytes.decode("utf-8"))
+    assert manifest["status"] == "frozen"
+    assert not validate_manifest(manifest, ROOT)
+    assert manifest_path.read_bytes() == original_bytes
