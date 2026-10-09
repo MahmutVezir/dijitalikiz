@@ -1,91 +1,57 @@
-# Confirmatory Analysis Plan
+# Confirmatory Analysis Plan — Frozen Endpoint and Observed Result
+
+## Version and chronology
+
+The initial plan specified case-level complete-diagnostic correctness. The completed four-case pilot exposed a construct-validity concern in the exact canonical matching rules: explanations that were substantively close could fail the literal label checks. On 2026-10-09, before confirmatory outputs were examined, the primary confirmatory endpoint was amended to case-level root-cause correctness using a fixed, case-specific string-alias rubric. Pilot outputs were consulted to diagnose this scoring issue; this chronology is a disclosed protocol amendment, not a claim of complete preregistration before any model output existed.
+
+The alias rubric was derived from case ground truth and source evidence, not model outputs, and its SHA-256 is bound to the frozen benchmark manifest. It cannot be altered after confirmatory outputs are seen. The original exact complete-diagnostic score is retained as a secondary endpoint without rewriting pilot or confirmatory run records.
 
 ## Primary question
 
-Does explicit Cross-Component Dependency Graph (CCDG) representation improve root-cause diagnosis accuracy compared with Standard context when all other experimental inputs are held constant?
+Does explicit Cross-Component Dependency Graph (CCDG) representation improve root-cause diagnosis accuracy compared with Standard Context when all other experimental inputs are held constant?
 
-## Primary endpoint
+## Frozen primary endpoint
 
-The primary endpoint is **case-level complete diagnostic correctness**.
+At run level, concatenate `root_cause_class` and `explanation`, normalize to lowercase alphanumeric tokens, and search for any fixed case-specific alias as a contiguous phrase. A match is a pass. Non-matches, parse failures, and schema failures are failures. This is a deterministic phrase matcher, not a semantic judge.
 
-A run is correct only when all frozen evaluation checks pass:
+A condition passes at case level if at least 3 of 5 fixed seeds pass the primary endpoint. The independent statistical unit is the software case, not the seed.
 
-- diagnosed component
-- affected entity
-- operation evidence
-- root-cause class
-- required dependency relations
+## Paired statistical analysis
 
-Each software case is tested under both Standard and CCDG.
+Use an exact two-sided McNemar test on the paired case-level outcomes.
 
-### Replication aggregation
-
-Five seeds are repeated measurements of the same case-condition pair; they are **not five independent software cases**.
-
-For the primary binary endpoint, a condition is classified as case-level correct when at least **3 of 5** seeds pass the frozen evaluator. This majority rule is fixed before the main benchmark.
-
-A case therefore contributes exactly one paired binary observation:
-
-- Standard: correct / incorrect
-- CCDG: correct / incorrect
-
-## Primary statistical test
-
-Use an exact two-sided McNemar test on paired case-level outcomes.
-
-- Null hypothesis: Standard and CCDG have equal marginal correctness.
-- Alternative hypothesis: their marginal correctness differs.
+- Null hypothesis: Standard and CCDG have equal marginal case-level primary-endpoint success probabilities.
+- Research direction: CCDG may improve root-cause correctness.
 - Alpha: 0.05.
 - Unit of inference: independent software case.
-
-The direction of interest is CCDG improvement, but the primary test remains two-sided.
+- Effect: P(CCDG correct, Standard incorrect) - P(Standard correct, CCDG incorrect).
+- Confidence interval: predeclared Newcombe-style paired risk-difference interval using Wilson score bounds for the discordant proportions.
+- Seeds: 42, 43, 44, 45, 46.
+- Conditions: `standard`, `ccdg`.
 
 ## Secondary endpoints
 
-Report, separately by condition:
+Report the original strict complete-diagnostic score unchanged, including component, affected entity, operation evidence, canonical root cause, and required-dependency relations. Also report parse failure rate, per-component metric, and within-case repeated-output diagnostics. Unless otherwise frozen, secondary descriptive metrics must not be presented as independently confirmatory inferential tests.
 
-1. mean run-level complete-pass rate across the five seeds;
-2. component accuracy;
-3. affected-entity accuracy;
-4. operation evidence accuracy;
-5. root-cause accuracy;
-6. required-relation accuracy;
-7. parse failure rate;
-8. within-case seed agreement / output duplication.
+## Missing data and integrity
 
-Secondary analyses are descriptive unless an inferential procedure is explicitly specified before the main benchmark.
+A missing seed file blocks a complete primary case outcome. Do not silently impute a missing replication. Parse/schema failures are failed observations, and are reported separately. Each run record must have frozen model/revision, condition, seed, generation settings, context/prompt/system hashes, raw output/hash, and source commit. The artifact's entire file inventory and SHA-256 checksums are independently validated.
 
-## Missing data
+## Pilot and benchmark split
 
-A parse failure is not silently converted into a correct answer. It is recorded as a failed evaluable run for the complete-pass endpoint and reported separately.
+Pilot cases are excluded from the confirmatory benchmark. Confirmatory case membership was selected independently of model outputs. All 16 confirmatory cases carry a conservative high public-exposure contamination-risk label; this does not prove membership in training data.
 
-If a seed file is missing, the case-condition pair is not silently assigned a majority outcome. The primary analysis must either complete the missing replication or mark that pair missing and document the deviation.
+## Power assumption
 
-## Pilot handling
+The 16-case plan was selected using the predeclared directional McNemar design assumptions stored in `data/benchmark/benchmark_manifest.json`, target power 0.80 and alpha 0.05. These are design assumptions, not estimates inferred from the pilot or confirmatory outcomes; no sample-size retuning is permitted after result inspection.
 
-Pilot cases are used to validate the protocol and estimate execution feasibility. They are not automatically included in the confirmatory benchmark.
+## Observed confirmatory result (not a protocol change)
 
-If pilot cases are retained in the final dataset, their inclusion/exclusion rule must be declared before inspecting the final benchmark outcome.
+The completed 16-case experiment yielded zero primary alias matches in both conditions: Standard 0/80, CCDG 0/80, and 0/16 case-level majority passes in each condition. Exact two-sided McNemar p=1.00, risk difference 0.00, 95% interval [-0.1936, 0.1936], zero discordant cases. This is a floor-effect outcome. It does not prove equivalence or absence of a CCDG effect; the semantic hypothesis remains unresolved by the literal matcher. The frozen score and rubric must not be retrospectively changed.
 
-## Paired effect size and confidence interval
+## Authoritative artifacts
 
-The primary paired effect size is the risk difference:
-
-`P(CCDG correct, Standard incorrect) - P(Standard correct, CCDG incorrect)`.
-
-The primary inferential test remains the exact two-sided McNemar test. The 95% confidence interval is a predeclared Newcombe-style interval formed from Wilson score intervals for the two mutually exclusive discordant proportions. The interval is descriptive alongside the exact McNemar p-value and is not used to alter the benchmark sample size after results are observed.
-
-## Power analysis
-
-The main sample size is selected before the confirmatory benchmark using an explicit assumption about:
-
-- P(Standard fails, CCDG passes)
-- P(Standard passes, CCDG fails)
-
-The repository's exact McNemar power utility is used for this calculation. No probability is selected retrospectively to obtain a desired sample size.
-
-## Contamination
-
-The selected model/checkpoint, prompt, and benchmark cases require an explicit contamination-risk audit before the main benchmark. Unknown contamination status is not equivalent to low risk.
-
-The audit must document the search method, date, scope, and decision for each case/model combination.
+- Frozen pilot: GitHub Actions run `37968099402`, source commit `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`.
+- Frozen confirmatory run: GitHub Actions run `37976682761`, source commit `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`.
+- Result document: `docs/CONFIRMATORY_RESULTS_2026-10-09.md`.
+- Machine-readable metrics: `data/benchmark/confirmatory_result_summary.json`.
