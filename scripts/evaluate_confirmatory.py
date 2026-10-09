@@ -136,6 +136,9 @@ def main()->int:
 
     summary={
         "status":"complete" if not missing else "incomplete",
+        "primary_endpoint":"root_cause_correctness_with_predeclared_aliases",
+        "secondary_endpoint":"complete_diagnostic_correctness_using_legacy_exact_checks",
+        "scoring_rubric_sha256":rubric_sha256,
         "expected_records":len(cases)*len(conditions)*len(seeds),"found_records":len(records),
         "missing_files":missing,"by_condition":by_condition,
         "case_level_majority_rule":"at least 3 of 5 seeds; parse/schema failures count as failed runs",
