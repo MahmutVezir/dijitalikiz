@@ -47,6 +47,17 @@ def main()->int:
     if manifest.get("status")!="frozen":
         raise RuntimeError("Confirmatory benchmark manifest is not frozen.")
     cases=tuple(manifest["case_ids"]); conditions=tuple(pilot["conditions"]); seeds=tuple(pilot["generation"]["seeds"])
+    scoring=manifest.get("scoring_rubric",{})
+    rubric_bytes=RUBRIC_PATH.read_bytes()
+    rubric_sha256=hashlib.sha256(rubric_bytes).hexdigest()
+    if rubric_sha256 != scoring.get("sha256"):
+        raise RuntimeError("Scoring rubric SHA-256 mismatch.")
+    rubric=json.loads(rubric_bytes.decode("utf-8"))
+    if scoring.get("primary_endpoint") != rubric.get("primary_endpoint"):
+        raise RuntimeError("Scoring endpoint mismatch.")
+    if [item.get("case_id") for item in rubric.get("cases",[])] != list(cases):
+        raise RuntimeError("Scoring rubric case IDs/order mismatch.")
+    aliases_by_case={item["case_id"]:item["root_cause_aliases"] for item in rubric["cases"]}
     if conditions!=("standard","ccdg") or seeds!=(42,43,44,45,46):
         raise RuntimeError("Frozen confirmatory configuration mismatch.")
 
