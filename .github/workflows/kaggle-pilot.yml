@@ -16,7 +16,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: dijitalikiz-frozen-pilot
+  # Isolate repaired downloads from a stale run using the former output layout.
+  group: dijitalikiz-frozen-pilot-output-v2
   cancel-in-progress: false
 
 jobs:
@@ -126,12 +127,15 @@ jobs:
           from pathlib import Path
 
           KERNEL_ROOT = Path("/kaggle/working")
+          # Only finalized research artifacts may live under /kaggle/working;
+          # Kaggle exports every file there, so keep source and runtime in /tmp.
+          RUNTIME_ROOT = Path("/tmp/dijitalikiz-frozen-pilot-runtime")
           FROZEN_SOURCE_COMMIT = "__COMMIT__"
           EXPECTED_BUNDLE_SHA256 = "__BUNDLE_SHA256__"
           PROJECT_BUNDLE_B64 = "__BUNDLE_B64__"
-          BUNDLE = KERNEL_ROOT / "project.tar.gz"
-          WORKDIR = KERNEL_ROOT / "dijitalikiz"
-          PYTHON_ENV = KERNEL_ROOT / "dijitalikiz-py311"
+          BUNDLE = RUNTIME_ROOT / "project.tar.gz"
+          WORKDIR = RUNTIME_ROOT / "dijitalikiz"
+          PYTHON_ENV = RUNTIME_ROOT / "dijitalikiz-py311"
           TARGET_PYTHON = PYTHON_ENV / "bin" / "python"
 
           def run(*args: str, cwd: Path | None = None, env: dict[str, str] | None = None) -> None:
@@ -205,6 +209,9 @@ jobs:
                       f"expected {EXPECTED_BUNDLE_SHA256}, got {actual_sha256}"
                   )
 
+              if RUNTIME_ROOT.exists():
+                  shutil.rmtree(RUNTIME_ROOT)
+              RUNTIME_ROOT.mkdir(parents=True, exist_ok=True)
               BUNDLE.write_bytes(decoded)
 
               if WORKDIR.exists():
