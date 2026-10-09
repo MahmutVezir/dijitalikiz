@@ -93,18 +93,17 @@ pytest -q
 
 GitHub Actions ayrıca frozen pilot audit'i, tüm vaka/candidate doğrulaması ve benchmark manifest freeze gate'ini çalıştırır.
 
-## Mevcut bilimsel durum
+## Mevcut bilimsel durum — 2026-10-09
 
-Kod/protokol tarafı frozen pilot için hazırdır. Ancak bilimsel çalışma henüz sonuç-complete değildir. Zorunlu deneysel kapılar:
+Pilot ve doğrulayıcı inference çalıştırmaları tamamlandı; iki artifact de bütünlük denetiminden geçti. **Ancak araştırma hipotezi, dondurulmuş birincil ölçütteki taban etkisi nedeniyle kesin olarak çözümlenmiş değildir.**
 
-1. Gerçek 40 pilot inference'ının tamamlanması.
-2. Pilot artifact'inin integrity/QA kontrolünden geçmesi.
-3. Bağımsız confirmatory vaka havuzunun provenance + ground truth + CCDG + contamination denetimleriyle oluşturulması.
-4. Power varsayımının önceden dondurulması ve final case sayısının buna uyması.
-5. Confirmatory inference ve exact McNemar analizi.
-6. Gerçek sonuçlarla TÜBİTAK raporunun doldurulması.
+- Pilot: 40/40 kayıt, 0 parse hatası.
+- Doğrulayıcı deney: 160/160 kayıt, 0 parse hatası, 212 dosyalı artifact manifesti tamamen doğrulandı.
+- Dondurulmuş birincil ölçüt: Standard 0/80, CCDG 0/80 seed düzeyi geçiş; 0/16 vaka her iki koşulda da çoğunluk başarısına ulaştı.
+- Exact two-sided McNemar: p = 1.00, sıfır discordant vaka.
+- Yorum: literal alias ölçütünde fark gözlenmedi; tüm sonuçların başarısız olması semantic endpoint taban etkisine işaret ediyor. Bu, CCDG'nin etkisiz olduğunun veya iki koşulun eşdeğer olduğunun kanıtı değildir.
 
-Bu kapılar tamamlanmadan proje bilimsel olarak bitmiş ilan edilmez.
+Sonraki işler: TÜBİTAK raporunu gerçek sonuçlar ve açık sınırlılıklarla tamamlamak; birincil puanlama protokolündeki pilot sonrası değişikliği açıklamak; yeni bir confirmatory deney düşünülüyorsa ölçüm aracını model çıktıları görülmeden doğrulamak ve yeni bağımsız vaka örneklemi/power planını önceden kaydetmek. Mevcut doğrulayıcı sonuçların skoru geriye dönük değiştirilmemelidir.
 
 ## Confirmatory benchmark status — 2026-10-09
 
