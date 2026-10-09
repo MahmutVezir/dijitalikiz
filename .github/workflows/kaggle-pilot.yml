@@ -156,7 +156,7 @@ jobs:
           assert len(records) == 40
           print(json.dumps({
               "status": "pilot_artifact_manifest_pass",
-              "archive_sha256": "$EXPECTED_SHA256",
+              "archive_sha256": "b12594415894d5cac18442d3bd6c505e843b1a14027272c1afa398a59101aca0",
               "manifest_file_count": len(entries),
               "run_file_count": len(run_files),
               "jsonl_record_count": len(records),
@@ -165,14 +165,9 @@ jobs:
 
           git fetch --depth=1 origin "$PILOT_SOURCE_COMMIT"
           git worktree add --detach /tmp/dijitalikiz-pilot-source "$PILOT_SOURCE_COMMIT"
-          printf '%s\n' "$PILOT_SOURCE_COMMIT" > /tmp/dijitalikiz-pilot-source/data/pilot/kaggle_source_commit.txt
+          cp -a "$DEST/pilot-output/." /tmp/dijitalikiz-pilot-source/data/pilot/
           cd /tmp/dijitalikiz-pilot-source
-          PYTHONPATH="/tmp/dijitalikiz-pilot-source" python scripts/audit_pilot_integrity.py \
-            --runs-dir "$DEST/pilot-output/runs" \
-            --manifest "$DEST/pilot-output/pilot_manifest.json" \
-            --prompt "$DEST/pilot-output/PROMPT_TEMPLATE.txt" \
-            --system-prompt "$DEST/pilot-output/SYSTEM_PROMPT.txt" \
-            --require-complete
+          PYTHONPATH="/tmp/dijitalikiz-pilot-source" python scripts/audit_pilot_integrity.py --require-complete
 
       - name: Build confirmatory source bundle and launcher without inference
         shell: bash
