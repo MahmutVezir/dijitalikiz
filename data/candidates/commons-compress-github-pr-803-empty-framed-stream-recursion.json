@@ -1,0 +1,19 @@
+{
+  "case_id": "commons-compress-github-pr-803-empty-framed-stream-recursion",
+  "source": "Apache Commons Compress GitHub Pull Request",
+  "source_url": "https://github.com/apache/commons-compress/pull/803",
+  "publication_date": "2026-08-16",
+  "technology": "Apache Commons Compress / Java / framed LZ4 and Snappy streams",
+  "error_description": "Reading framed LZ4 or Snappy streams containing very large numbers of legal empty frames or padding chunks can terminate with StackOverflowError instead of reaching end-of-file normally.",
+  "evidence_urls": [
+    "https://github.com/apache/commons-compress/pull/803",
+    "https://github.com/apache/commons-compress/commit/7e688ebdba45ab16aa5b7f870474dac285a494af",
+    "https://github.com/apache/commons-compress/blob/7587d774a70baf0bdb5705e0afddd39e693f5bef/src/main/java/org/apache/commons/compress/compressors/lz4/FramedLZ4CompressorInputStream.java",
+    "https://github.com/apache/commons-compress/blob/7587d774a70baf0bdb5705e0afddd39e693f5bef/src/main/java/org/apache/commons/compress/compressors/snappy/FramedSnappyCompressorInputStream.java",
+    "https://github.com/apache/commons-compress/blob/7587d774a70baf0bdb5705e0afddd39e693f5bef/src/test/java/org/apache/commons/compress/compressors/lz4/FramedLZ4CompressorInputStreamTest.java",
+    "https://github.com/apache/commons-compress/blob/7587d774a70baf0bdb5705e0afddd39e693f5bef/src/test/java/org/apache/commons/compress/compressors/snappy/FramedSnappyCompressorInputStreamTest.java"
+  ],
+  "split": "candidates",
+  "annotation_status": "source_reviewed_independent_reproduction_pending",
+  "provenance_verification_status": "public_pr_and_merge_revision_verified"
+}
