@@ -41,15 +41,22 @@ def extract_json(text: str) -> dict:
 
 
 def load_model(model_id: str, revision: str):
+    import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
     tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision)
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
         revision=revision,
-        torch_dtype="auto",
+        torch_dtype=torch.float16,
         device_map="auto",
+        low_cpu_mem_usage=True,
     )
+    quantization = getattr(model.config, "quantization_config", None)
+    if quantization:
+        raise RuntimeError("Frozen confirmatory lane requires the native unquantized checkpoint.")
+    if any(parameter.dtype != torch.float16 for parameter in model.parameters()):
+        raise RuntimeError("Frozen confirmatory model parameters are not all FP16.")
     return tokenizer, model
 
 
@@ -199,6 +206,8 @@ def main() -> int:
                     "seed": seed,
                     "model_id": model["model_id"],
                     "model_revision": model["revision"],
+                    "model_dtype": "float16",
+                    "quantization": "none",
                     "temperature": generation["temperature"],
                     "top_p": generation["top_p"],
                     "max_new_tokens": generation["max_new_tokens"],
