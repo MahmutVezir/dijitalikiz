@@ -11,7 +11,7 @@ Bu depo, Standard Context ile açık ve yapılandırılmış Cross-Component Dep
 - Model checkpoint/revision ve frozen generation ayarları korunur.
 - Her vaka/koşul için 5 seed kullanılır.
 - Birincil analiz birimi yazılım vakasıdır; seed bağımsız vaka değildir.
-- Vaka düzeyinde başarı, 5 seed'in en az 3'ünde tam tanı doğruluğudur.
+- Confirmatory birincil vaka başarısı, 5 seed'in en az 3'ünde önceden dondurulmuş kök-neden alias ölçütünün eşleşmesidir; tam teşhis ölçütü ikincil sonuçtur.
 - Birincil karşılaştırma exact iki taraflı McNemar testiyle yapılır.
 - Confirmatory vaka seçimi model çıktılarından bağımsız yapılır. Pilot sonrasında scoring protokolünde gerekli görülen değişiklikler tarih ve gerekçeleriyle kaydedilir; önceden kayıtlı kararlar gibi sunulmaz.
 
@@ -124,6 +124,10 @@ The pilot source commit and confirmatory launch commit are different: `d50adaf9b
 
 **Scoring-protocol amendment:** the primary confirmatory endpoint is root-cause correctness against predeclared aliases. The repository records that pilot outputs were consulted for scoring-protocol diagnostics and that this amendment was made on 2026-10-09 before confirmatory outputs were examined. This is a documented post-pilot amendment; the TÜBİTAK report must not describe the endpoint as fully preregistered before any model outputs were seen. Case selection itself remains independent of model outputs.
 
-### Execution status and next gate
+### Execution status — verified complete
 
-The launch trigger commit is `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`. Its completed workflow state and the 160-record confirmatory artifact have not yet been independently verified in this review. No confirmatory result is claimed until all 160 records, the primary analysis, QA report, and SHA-256 artifact manifest pass validation.
+The launch trigger commit is `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`. GitHub Actions run [37976682761](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37976682761) completed successfully. The confirmatory artifact (ID `11640450681`, archive SHA-256 `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`) was downloaded and independently checked: 212/212 listed files verified, 160/160 run records, zero parse failures, zero raw-output hash mismatches, and no unlisted files.
+
+The frozen primary endpoint resulted in Standard 0/80 and CCDG 0/80 seed-level alias matches; neither condition passed at case level for any of the 16 cases. Exact two-sided McNemar p = 1.00, paired risk difference = 0.00, 95% interval = [-0.1936, 0.1936], with zero discordant cases. This is a floor effect under the literal alias matcher—not proof of equivalence or of no CCDG effect. The intended semantic root-cause hypothesis remains unresolved by this operationalization.
+
+The full transparent results and limitations are documented in [`docs/CONFIRMATORY_RESULTS_2026-10-09.md`](CONFIRMATORY_RESULTS_2026-10-09.md); a reproducible result summary is in `data/benchmark/confirmatory_result_summary.json`. The next work is report preparation, literature/reference verification, and submission-quality scientific review. The frozen confirmatory artifact and score must not be changed post hoc.
