@@ -69,7 +69,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          KERNEL_SLUG="dijitalikiz-frozen-pilot-${GITHUB_SHA:0:12}"
+          KERNEL_SLUG="dijitalikiz-frozen-pilot-${GITHUB_SHA:0:8}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           KERNEL_REF="mahmutvezir/$KERNEL_SLUG"
 
           if kaggle kernels list --mine --page-size 100 2>/dev/null | awk -v id="$KERNEL_REF" '$1==id {found=1} END{exit found ? 0 : 1}'; then
@@ -440,7 +440,18 @@ jobs:
           kaggle kernels output "$KAGGLE_KERNEL_REF" -p kaggle-output --force
           find kaggle-output -maxdepth 5 -type f -print | sort
 
-          for required in             pilot_records.jsonl             pilot_evaluation.json             case_level_analysis.json             pilot_qa_report.json             artifact_manifest.json
+          for required in \
+            pilot_manifest.json \
+            PROMPT_TEMPLATE.txt \
+            SYSTEM_PROMPT.txt \
+            environment.json \
+            model_load_preflight.json \
+            pilot_records.jsonl \
+            pilot_evaluation.json \
+            case_level_analysis.json \
+            pilot_qa_report.json \
+            artifact_manifest.json
+          do
           do
             test -n "$(find kaggle-output -name "$required" -type f -print -quit)" || {
               echo "Missing finalized Kaggle artifact: $required"
