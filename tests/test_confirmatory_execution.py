@@ -61,6 +61,7 @@ def test_confirmatory_scripts_compile():
         ROOT / "scripts" / "build_confirmatory_artifact_manifest.py",
         ROOT / "scripts" / "validate_confirmatory_artifact_manifest.py",
         ROOT / "scripts" / "freeze_benchmark.py",
+        ROOT / "scripts" / "build_confirmatory_launcher.py",
     ):
         py_compile.compile(str(path), doraise=True)
 
@@ -93,3 +94,40 @@ def test_frozen_manifest_passes_full_gate_without_mutating_repository_file():
     assert manifest["status"] == "frozen"
     assert not validate_manifest(manifest, ROOT)
     assert manifest_path.read_bytes() == original_bytes
+
+
+
+def test_confirmatory_launcher_builder_emits_checksum_bound_kernel(tmp_path):
+    import subprocess
+    import tarfile
+
+    source_file = tmp_path / "README.txt"
+    source_file.write_text("frozen source fixture", encoding="utf-8")
+    bundle = tmp_path / "source.tar.gz"
+    with tarfile.open(bundle, "w:gz") as archive:
+        archive.add(source_file, arcname="data/README.txt")
+
+    output_dir = tmp_path / "kernel"
+    subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "build_confirmatory_launcher.py"),
+            "--bundle",
+            str(bundle),
+            "--source-commit",
+            "a" * 40,
+            "--output-dir",
+            str(output_dir),
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    generated = output_dir / "kernel.py"
+    py_compile.compile(str(generated), doraise=True)
+    source = generated.read_text(encoding="utf-8")
+    assert "EXPECTED_BUNDLE_SHA256" in source
+    assert "RUNNER_SOURCE_B64" in source
+    assert "FROZEN_SOURCE_COMMIT = " in source
+    assert "a" * 40 in source
