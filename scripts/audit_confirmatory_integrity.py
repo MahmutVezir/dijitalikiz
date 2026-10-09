@@ -28,6 +28,15 @@ def main() -> int:
 
     assert manifest["status"] == "frozen"
     assert manifest["contamination_audit_completed"] is True
+    scoring = manifest["scoring_rubric"]
+    rubric_path = root / scoring["path"]
+    rubric_bytes = rubric_path.read_bytes()
+    rubric_sha256 = hashlib.sha256(rubric_bytes).hexdigest()
+    assert rubric_sha256 == scoring["sha256"], "Scoring rubric SHA-256 mismatch"
+    rubric = json.loads(rubric_bytes.decode("utf-8"))
+    assert scoring["primary_endpoint"] == rubric["primary_endpoint"]
+    assert [item["case_id"] for item in rubric["cases"]] == manifest["case_ids"]
+    assert all(item["root_cause_aliases"] for item in rubric["cases"])
     assert manifest["case_ids"]
     cases = tuple(manifest["case_ids"])
     conditions = tuple(pilot_manifest["conditions"])
