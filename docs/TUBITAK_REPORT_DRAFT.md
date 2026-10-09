@@ -52,8 +52,10 @@ Bir bağımsız gerçek yazılım hatası birincil deneysel birimdir. Beş seed,
 
 ### Model ve Dondurulmuş Ayarlar
 
-- Model: Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4
-- Revision: 68c4276063d1496cdf13d0b8e8221f899bfa77f7
+- Model: Qwen/Qwen2.5-3B-Instruct
+- Revision: aa8e72537993ba99e69dfaafa59ed015b17504d1
+- Quantization: none; loading precision: FP16 (pinned source checkpoint stores BF16 weights)
+- Pre-inference change note: the GPTQ variant failed the sampling smoke test and reported newly initialized layer parameters before any study records were written. It was replaced with the official checkpoint at an exact revision. Experimental cases, prompts, seeds, context conditions and analysis plan were unchanged.
 - Temperature: 0.2
 - Top-p: 1.0
 - Sampling: true
