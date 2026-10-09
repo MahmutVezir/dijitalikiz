@@ -37,10 +37,14 @@ Bu depo, Standard Context ile açık ve yapılandırılmış Cross-Component Dep
 
 **4 vaka × 2 koşul × 5 seed = 40 inference kaydı**
 
-Model: `Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4`
+Model: `Qwen/Qwen2.5-3B-Instruct`
 
 Exact revision:
-`68c4276063d1496cdf13d0b8e8221f899bfa77f7`
+`aa8e72537993ba99e69dfaafa59ed015b17504d1`
+
+Precision: FP16 at load time (the pinned source checkpoint stores BF16 weights); quantization: none.
+
+Before any pilot inference, the former GPTQ checkpoint was rejected after the loader reported newly initialized layer parameters and stochastic generation failed with invalid sampling probabilities. The official Qwen2.5-3B-Instruct checkpoint was therefore frozen instead. Cases, prompts, context renderer, seeds, generation settings, evaluator, and statistics plan are unchanged; no study records existed at the time of this change.
 
 Generation:
 - temperature = 0.2
@@ -54,8 +58,7 @@ Runtime:
 - torch 2.2.1
 - transformers 4.43.2
 - accelerate 0.33.0
-- optimum 1.17.1
-- auto-gptq 0.7.1
+- Native PyTorch FP16 inference (AutoGPTQ/Optimum are not used)
 
 ### Kaggle execution
 
