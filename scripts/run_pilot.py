@@ -50,16 +50,27 @@ def validate_schema(instance: object, schema_path: Path, label: str) -> None:
         raise ValueError(detail)
 
 
-def load_model(model_id: str, revision: str):
+def load_model(model_id: str, revision: str, precision: str = "float16"):
+    import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    dtype_by_name = {"float16": torch.float16}
+    if precision not in dtype_by_name:
+        raise ValueError(f"Unsupported frozen model precision: {precision!r}")
 
     tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision)
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
         revision=revision,
-        torch_dtype="auto",
+        torch_dtype=dtype_by_name[precision],
         device_map="auto",
+        output_loading_info=False,
     )
+    if next(model.parameters()).dtype != dtype_by_name[precision]:
+        raise RuntimeError(
+            f"Loaded model dtype {next(model.parameters()).dtype} does not match "
+            f"the frozen precision {precision!r}."
+        )
     return tokenizer, model
 
 
@@ -157,7 +168,13 @@ def main() -> None:
             "Use --resume to preserve them and generate only missing records."
         )
 
-    tokenizer, model = load_model(model_id, revision)
+    if manifest["model"].get("quantization") != "none":
+        raise RuntimeError("Pilot runner requires the frozen non-quantized checkpoint.")
+    precision = manifest["model"].get("precision")
+    if precision != "float16":
+        raise RuntimeError(f"Unsupported frozen model precision: {precision!r}")
+
+    tokenizer, model = load_model(model_id, revision, precision=precision)
     source_commit = _source_commit()
 
     for case_name in cases:
