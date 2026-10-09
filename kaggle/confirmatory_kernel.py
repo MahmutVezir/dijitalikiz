@@ -76,6 +76,7 @@ def ensure_python311() -> Path:
             except (OSError, subprocess.CalledProcessError):
                 shutil.rmtree(PYTHON_ENV, ignore_errors=True)
 
+    shutil.rmtree(PYTHON_ENV, ignore_errors=True)
     run(sys.executable, "-m", "pip", "install", "--quiet", "uv")
     uv = shutil.which("uv")
     if not uv:
@@ -214,6 +215,18 @@ def main() -> None:
         env=env,
     )
 
+    # Validate checksums before staging anything in Kaggle's exported directory.
+    run(
+        str(python),
+        "scripts/validate_confirmatory_artifact_manifest.py",
+        "--artifact-root",
+        "data/benchmark",
+        "--manifest",
+        "data/benchmark/artifact_manifest.json",
+        cwd=WORKDIR,
+        env=env,
+    )
+
     if OUTPUT_DIR.exists():
         shutil.rmtree(OUTPUT_DIR)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -241,18 +254,6 @@ def main() -> None:
             + ", ".join(missing)
         )
 
-    # The validator checks every recorded checksum/size before the result
-    # directory becomes the sole Kaggle-exported output.
-    run(
-        str(python),
-        "scripts/validate_confirmatory_artifact_manifest.py",
-        "--artifact-root",
-        "data/benchmark",
-        "--manifest",
-        "data/benchmark/artifact_manifest.json",
-        cwd=WORKDIR,
-        env=env,
-    )
     print(f"Confirmatory experiment completed for source commit {source_commit}.", flush=True)
     print(f"Only final research artifacts are staged at {OUTPUT_DIR}.", flush=True)
 
