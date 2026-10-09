@@ -2,7 +2,7 @@
   "case_id": "commons-compress-github-pr-770-tar-pax-header-memory-bound",
   "provenance_quality": "pass",
   "root_cause_quality": "pass",
-  "fix_quality": "unknown",
+  "fix_quality": "pass",
   "dependency_strength": "strong",
   "dependency_evidence": "The fix threads a configurable PAX header memory bound from AbstractTarBuilder into both TarArchiveInputStream and TarFile, then through shared TarUtils parsing into the existing MemoryLimitException check. The defect/mitigation crosses builder configuration, two archive-reading APIs and shared parsing.",
   "ccdg_suitability": "strong",
@@ -17,11 +17,12 @@
   "IC7": "unknown",
   "eligible_for_pilot": false,
   "eligible_for_main": false,
-  "exclusion_reason": "SCREENING-PENDING, not a permanent exclusion: build the structured case/CCDG, independently reproduce the large-PAX-header behavior and verify the fix, then complete IC6/IC7 review before any pilot/main inclusion.",
+  "exclusion_reason": "SCREENING-PENDING, not a permanent exclusion: independent pre-fix failure/post-fix pass now verifies the regression behavior, but complete IC6/IC7 review and final ground-truth/CCDG adjudication are still required before any pilot/main inclusion.",
   "notes": [
-    "GitHub PR #770 is closed/merged; reported merge commit: bab5629f6b3cea44cf0622cdd92c8cefcfbf360a.",
-    "Changed code includes AbstractTarBuilder, TarArchiveInputStream, TarFile, TarConstants and TarUtils; a new PaxHeaderOomTest regression test was added.",
-    "The fixing commit adds a default PAX-header size cap and a builder configuration option; the project has not independently reproduced pre-fix/post-fix behavior yet.",
+    "GitHub PR #770 is closed/merged; fixing commit bab5629f6b3cea44cf0622cdd92c8cefcfbf360a.",
+    "Changed code includes AbstractTarBuilder, TarArchiveInputStream, TarFile, TarConstants and TarUtils; upstream also adds PaxHeaderOomTest.",
+    "Independent reproduction workflow passed: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772. The same custom oversized-PAX regression test failed as expected on pre-fix commit 829b5dd6ffe976c0a03231e65790a65af9f3a6ee (missing MemoryLimitException) and passed on fixed commit bab5629f6b3cea44cf0622cdd92c8cefcfbf360a.",
+    "Regression reproduction establishes fix behavior for this scenario; it does not by itself complete dataset eligibility, independent ground-truth adjudication, or IC6/IC7.",
     "Keep separate from the existing frozen 16-case confirmatory manifest."
   ]
 }
