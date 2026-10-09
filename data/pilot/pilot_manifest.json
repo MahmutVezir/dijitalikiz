@@ -1,5 +1,5 @@
 {
-  "version": "0.7",
+  "version": "0.8",
   "status": "model_frozen",
   "cases": [
     "commons-math-defects4j-MATH-927",
@@ -17,9 +17,11 @@
     "sha256": "c328289e8fc4cc8e5fe085c9524a3edf3f8627c3054478dd32003b66aa0d941d"
   },
   "model": {
-    "model_id": "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4",
-    "revision": "68c4276063d1496cdf13d0b8e8221f899bfa77f7",
-    "quantization": "GPTQ-Int4",
+    "model_id": "Qwen/Qwen2.5-3B-Instruct",
+    "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "quantization": "none",
+    "precision": "float16",
+    "source_checkpoint_dtype": "bfloat16",
     "parameter_count": "3.09B",
     "context_length": 32768
   },
@@ -59,18 +61,15 @@
     "torch": "2.2.1",
     "transformers": "4.43.2",
     "accelerate": "0.33.0",
-    "optimum": "1.17.1",
-    "auto_gptq": "0.7.1",
     "runtime_policy": "exact-version match required before first inference",
     "requirements_path": "requirements-pilot.txt",
-    "requirements_sha256": "658f3582b83d098783390da94eb4f126f49d3bcfa98199a6a219f5243b800e5c",
+    "requirements_sha256": "ba60700f0aed2f34b7cd02bdf0c1d14c046958a69b61a006c7abffa6fd722260",
     "jsonschema": "4.23.0",
-    "compatibility_lane": "legacy-autogptq-transformers-4.43.2-numpy1-pyarrow15",
+    "compatibility_lane": "qwen2.5-3b-instruct-native-fp16-t4",
     "numpy": "1.26.4",
     "datasets": "2.21.0",
     "pyarrow": "15.0.2",
-    "fsspec": "2024.6.1",
-    "peft": "0.11.1"
+    "fsspec": "2024.6.1"
   },
   "expected_records": 40,
   "selection_review": {
@@ -85,5 +84,13 @@
       "commons-math-defects4j-MATH-949"
     ],
     "contamination_audit_path": "docs/CONTAMINATION_AUDIT_2026-10-08_FINAL.md"
+  },
+  "pre_inference_configuration_change": {
+    "date": "2026-10-09",
+    "previous_model_id": "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4",
+    "previous_revision": "68c4276063d1496cdf13d0b8e8221f899bfa77f7",
+    "reason": "Before any study record was written, the GPTQ loader reported many newly initialized layer biases and stochastic generation failed with non-finite sampling probabilities.",
+    "replacement": "Official Qwen/Qwen2.5-3B-Instruct checkpoint pinned to an exact Hub revision; source BF16 weights are loaded explicitly as FP16 for T4 compatibility.",
+    "preservation": "Cases, conditions, seeds, prompts, context renderers, evaluation and statistical plan unchanged. No prior pilot inference records exist."
   }
 }
