@@ -4,81 +4,97 @@
 **Status:** Research plan; not a replacement for the frozen confirmatory results  
 **Date:** 2026-10-10
 
-## 1. Purpose
+## 1. Goal
 
-The goal is to strengthen the scientific quality and competition readiness of the project, first for the regional evaluation and then for the national final. More records alone do not guarantee stronger evidence. The next phase must improve measurement validity, case diversity, independence, reproducibility, and interpretation.
+Strengthen the evidence and the student's research defense for the regional stage, with a longer-term goal of reaching the national final. Awards cannot be guaranteed. The most defensible path is sound measurement, independent cases, a fair comparison, transparent limitations, and a report the student can personally explain.
 
-## 2. What the completed confirmatory experiment currently says
+## 2. Historical experiment: frozen and limited
 
-The frozen primary alias metric recorded Standard Context = 0/80 and CCDG Context = 0/80; case-level majority success was 0/16 in both conditions, with exact two-sided McNemar p = 1.00. This is a floor-effect result. It does **not** establish that CCDG has no effect, and it does **not** establish equivalence. It indicates that the frozen metric/model/task combination did not distinguish the conditions on the primary endpoint.
+The completed confirmatory artifact contains 160 outputs from 16 cases × 2 conditions × 5 seeds. Its frozen primary alias metric recorded Standard Context = 0/80 and CCDG Context = 0/80; case-level majority success was 0/16 in both, with exact two-sided McNemar p = 1.00. There were no parse errors or artifact hash mismatches.
 
-These frozen results and their original analysis must remain unchanged. Any new scoring analysis applied to the same confirmatory responses must be marked exploratory and must not be presented as a preregistered confirmatory result.
+This is a floor-effect result. It does **not** establish that CCDG has no effect or that the two conditions are equivalent. It indicates that the frozen literal-alias endpoint did not distinguish the conditions.
 
-## 3. Work sequence
+A code audit found another limitation: the legacy Standard renderer contains an explicit error-description field, whereas the legacy CCDG renderer omits that field and adds dependency edges. The historical comparison therefore does not isolate graph representation alone. See `docs/CONTEXT_INFORMATION_PARITY_AUDIT_2026-10-10.md`.
 
-### Gate A — Diagnose the measurement system before collecting more confirmatory data
+Preserve the original contexts, manifest, scoring rubric, outputs, report and statistical result unchanged. Any new analysis of the already-seen 160 outputs is post-hoc and exploratory. A blinded reviewer packet has been prepared; it has not yet been independently reviewed by humans and cannot replace the frozen endpoint.
 
-1. Inspect the output schema, prompt, parser, ground-truth labels, and alias matching as separate layers.
-2. Construct a small, manually adjudicated calibration set with cases whose expected root causes are unambiguous and whose accepted aliases are defined before model outputs are reviewed.
-3. Test the scoring rubric against both correct and deliberately incorrect examples. Record false acceptance and false rejection.
-4. Have a second reviewer independently label a subset if feasible; resolve disagreements before freezing the rubric.
-5. Keep schema validity, component identification, root-cause correctness, evidence quality, and abstention as separate measures. Do not combine them into one score without a predeclared rule.
-6. Decide in advance whether the primary endpoint is exact root-cause identification, a rubric-based correctness label, or another defensible metric. State its limitations.
+## 3. Gate A — Validate the scoring instrument
 
-**Gate A exit condition:** scoring code passes tests, manual examples behave as expected, and the rubric and primary endpoint are versioned and frozen before new confirmatory inference.
+1. Treat synthetic fixtures as software behavior tests only; they are not evidence of empirical scoring accuracy.
+2. Prepare a source-grounded calibration set of unambiguous diagnoses and plausible paraphrases, plus incorrect mechanisms, negations, unresolved multiple guesses, partial answers, and unscorable outputs.
+3. Have two reviewers independently label the examples before reconciling disagreements where feasible.
+4. Measure matcher false-rejection and false-acceptance behavior on the adjudicated set; report uncertain examples and reviewer disagreement.
+5. Freeze the scoring rubric, reviewer procedure, case-level aggregation rule and analysis script before generating any new confirmatory outputs.
 
-### Gate B — Improve and expand the benchmark
+**Gate A exit condition:** the measure has documented source-grounded calibration evidence and a frozen versioned rubric. Unit tests alone do not satisfy this condition.
 
-1. Continue screening real, licensed, reproducible cross-component bugs from suitable repositories, preserving issue provenance, fixed revision, failing test, component boundaries, and ground-truth evidence.
-2. Exclude cases with ambiguous root causes, weak dependency evidence, unavailable reproduction steps, likely benchmark contamination, or insufficient CCDG suitability; record reasons in machine-readable form.
-3. Track unique bugs and repositories separately from repeated inference records. Repeats estimate output variability; they do not increase the number of independent software defects.
-4. Inspect whether multiple candidate cases derive from the same underlying defect, duplicated patch, or closely related test. Group or exclude dependent cases as appropriate.
-5. Keep a held-out confirmatory case set that is not used to develop prompts, aliases, scoring rules, or CCDG construction guidelines.
-6. Before selecting the final sample size, estimate the expected paired outcome pattern and conduct a power/sample-size analysis for the predeclared paired comparison. Do not choose sample size based on which size is likely to produce statistical significance.
+## 4. Gate B — Improve independent case data
 
-### Gate C — Freeze a new independent confirmatory protocol
+1. Screen new, licensed and reproducible multi-component defects. Record issue/PR provenance, fixed revision, failing test, source evidence, affected and diagnosing components, dependency path, case quality, license and contamination risk.
+2. Exclude ambiguous causes, missing or irreproducible fixes, weak component relationships, likely duplicates, and cases unsuitable for CCDG. Record the exclusion reason in machine-readable form.
+3. Prefer a diverse sample across projects and defect families; do not fill the sample only with cases from one repository.
+4. Review exposure risk conservatively. Older public Defects4J cases may have appeared in model training data; this is a risk, not proof of model exposure. Newly public cases may reduce but cannot eliminate contamination risk.
+5. Count distinct defects as the statistical unit. Five generations for one defect are repeated measurements, not five independent cases.
+6. Keep a new held-out confirmatory sample separate from calibration, prompt development, and exploratory review.
 
-Before running any new confirmatory inference, commit a manifest containing:
-- inclusion/exclusion criteria and case identifiers;
-- model ID and immutable revision, quantization/backend, environment, and generation settings;
-- exact Standard Context and CCDG Context templates;
-- primary and secondary endpoints, scoring rubric, and analysis code version;
-- number of cases, repetitions, randomization/order policy, and missing/error handling;
-- planned paired statistical test, effect-size estimate, confidence interval, and multiplicity policy;
-- prompt, input, and artifact hashes.
+## 5. Gate C — Use an information-matched three-condition design
 
-Any changes after the freeze must be logged and, if they affect the protocol, treated as a new version rather than silently overwriting the frozen one.
+The v2 code is implemented separately in `dijitalikiz/context_v2.py`; historical renderers remain unchanged.
 
-### Gate D — Run, audit, and interpret
+| Condition | Content | Research purpose |
+|---|---|---|
+| A. Standard baseline | Source + Technology + Error description + I_base | Baseline without an explicit edge list |
+| B. Dependency-enriched prose | Exactly the same base information plus each dependency edge expressed as a sentence | Effect of explicitly adding dependency facts |
+| C. CCDG triples | Exactly the same base information and same edge endpoints, relation labels and details as B, represented as directed triples | Whether graph representation adds value over equivalent prose |
 
-1. Run both conditions on the same eligible cases, with order randomized or balanced where technically practical.
-2. Preserve every raw response and error; never delete an inconvenient outcome.
-3. Validate record count, schema, prompt hash, model/config metadata, duplicate IDs, missing records, and artifact integrity.
-4. Report absolute performance in both conditions, paired differences, uncertainty intervals, effect size, and the planned statistical test.
-5. Report failures and null results, not only favorable metrics. If both conditions remain at floor, treat the experiment as inconclusive for the intended comparison and investigate task/model suitability without claiming CCDG success.
-6. Separate confirmatory results from any exploratory analyses, alternative metrics, or later model comparisons.
+The primary planned contrast is **C versus B**. Secondary contrasts are B versus A and C versus A. These contrasts and how multiple comparisons are handled must be declared before inference.
 
-## 4. Hypothesis discipline
+The v2 implementation has tests for shared base information, edge-field parity, neutral treatment headers and ground-truth leakage. A fail-closed parity auditor also exists at `scripts/audit_context_v2_parity.py`. The full repository validation run at [GitHub Actions #37992620612](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37992620612) passed tests, artifact integrity audit, and the no-inference source bundle build. No v2 model inference has been run. Before using v2, additionally freeze tokenizer-based prompt lengths and prompt hashes for every condition/case.
 
-The research hypothesis is not a result that must be made true. The defensible hypothesis is that explicit cross-component dependency representation may improve root-cause diagnosis compared with an information-matched standard context. The null or an inconclusive result remains possible. Evidence should determine the conclusion, not the desired award outcome.
+## 6. Gate D — Power and protocol freeze
 
-## 5. Competition-readiness principles
+Use `docs/FOLLOWUP_SAMPLE_SIZE_SENSITIVITY_2026-10-10.md` as a sensitivity illustration, not an estimate from the old result. For instance, one illustrative discordance assumption (prose-only 0.05, graph-only 0.25) requires about 61 independent paired cases to reach 80% power under an exact two-sided McNemar test at alpha 0.05. These are assumptions, not observed probabilities, and must be justified before the sample size is frozen.
 
-- The student must understand and be able to explain the research question, CCDG construction, dataset provenance, code, analysis, limitations, and conclusions.
-- Cite sources for benchmark cases, software versions, methods, and claims.
-- Follow the applicable TÜBİTAK 2026–2027 template and instructions; transparently disclose AI assistance as required by the applicable guidance and rules.
-- Do not claim that the project has won, is a finalist, or proves a general result before independent evaluation.
-- Keep an immutable archive of the report, manifests, raw results, analysis outputs, source commit, and integrity-audit report.
+Before new inference, commit a manifest with:
+- independent case IDs and inclusion/exclusion rules;
+- primary and secondary comparisons and multiplicity handling;
+- scoring rubric and case-level aggregation rule;
+- model, immutable revision, runtime, generation parameters;
+- all three context versions, token counts and hashes;
+- sample size and power assumptions;
+- generation order/randomization, retries, missing outputs and error handling;
+- statistical test, effect size and interval plan.
 
-## 6. Immediate next actions
+If the available independent case pool cannot support a justified sample, report the limitation rather than inflating the sample with repeated seeds.
 
-- [ ] Inspect and test the current scoring/alias matcher against manually adjudicated examples.
-- [ ] Prepare a rubric and calibration dataset without changing frozen confirmatory outcomes.
-- [ ] Audit the existing candidate pool for independence, ground-truth strength, and contamination risk.
-- [ ] Estimate sample size after the primary endpoint and expected paired effect are justified.
-- [ ] Freeze a new protocol before collecting any new confirmatory outputs.
-- [ ] Continue report-template and submission-format checks in parallel.
+## 7. Gate E — Run and interpret
 
-## 7. Validation status
+1. Run all three conditions on the same eligible cases, with order randomized or balanced where practical.
+2. Preserve all raw outputs and errors; validate schema, record counts, configuration, hashes and duplicate IDs.
+3. Aggregate repeated outputs according to the predeclared case-level rule.
+4. Report absolute performance, paired differences, uncertainty intervals, effect sizes, planned tests, limitations and missingness.
+5. Report null, adverse and inconclusive results as they stand. Do not choose an alternative score after seeing the results to produce a preferred conclusion.
+6. Archive the manifest, model/revision, prompts, data provenance, source commit, raw records, analysis outputs and an independent artifact audit.
 
-On 2026-10-10, GitHub Actions run [37991100854](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37991100854) completed successfully in validate-only mode. Repository tests/integrity checks, independent confirmatory-artifact audit, and source-bundle/launcher build passed. The pilot and confirmatory inference jobs were skipped by design; this run did not generate new model outputs.
+## 8. Competition readiness
+
+- Explain and cite all source datasets, software behavior, evaluation criteria and analysis methods.
+- Be able to explain the research question, CCDG structure, case provenance, data leakage risks, statistics and limitations without relying on an assistant to answer judges' questions.
+- Follow the official 2026–2027 TÜBİTAK template and AI transparency guidance.
+- Do not claim finalist status, award likelihood, or proven practical value before an independent selection or appropriately designed empirical result.
+- Submission formatting and final report remain separate work: official Word template transfer, PDF visual QA, references, authentic student/school/advisor information, and AI-use disclosure are still required.
+
+## 9. Current status and next actions
+
+- [x] Preserve old experiment and its conclusion unchanged.
+- [x] Add synthetic matcher behavior tests and document their non-empirical status.
+- [x] Implement separate v2 renderers and parity checks.
+- [x] Create a masked exploratory review packet and reviewer guide.
+- [ ] Complete an independent human review of the packet; report disagreement and mark the results exploratory.
+- [ ] Create and adjudicate a source-grounded scoring calibration set.
+- [ ] Expand and independently screen the candidate pool.
+- [ ] Freeze new three-arm study protocol and tokenizer-level prompt audit.
+- [ ] Only then run new confirmatory inference.
+- [ ] Finish the TÜBİTAK report template and PDF QA.
+
+**Current state:** the old experiment is complete but inconclusive for the semantic hypothesis. The new study is not yet run; no new human review/calibration has been completed. The application package is not yet submission-ready.
