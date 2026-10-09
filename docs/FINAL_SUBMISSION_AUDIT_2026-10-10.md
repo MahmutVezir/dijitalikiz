@@ -21,7 +21,7 @@ Bu denetim, 2026–2027 (58. yarışma) dönemi için TÜBİTAK'ın güncel 2204
 - ÜYZ kullanım beyanı taslağı: `docs/AI_USAGE_DISCLOSURE_DRAFT.md`
 - Güncel aday taraması ve bağımsız düzeltme tekrarı: `docs/CANDIDATE_SCREENING_2026-10-10.md`; Commons Compress #770 pre-fix/post-fix reproducer: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772
 - Makinece okunabilir sonuç özeti: `data/benchmark/confirmatory_result_summary.json`
-- Deney artefakt denetimi: 212/212 dosya doğrulandı; 160 doğrulayıcı kayıt, 0 parse hatası, 0 hash uyuşmazlığı.
+- Doğrulayıcı artefakt denetimi: 212/212 dosya doğrulandı; 160 doğrulayıcı kayıt, 0 parse hatası, 0 hash uyuşmazlığı.\n- Pilot arşivi manuel denetimi: `docs/PILOT_ARTIFACT_AUDIT_2026-10-10.md`; 55/55 manifest dosyası ve 40/40 kayıt doğrulandı, boyut/hash uyuşmazlığı yok; birincil ölçüt her koşulda 0/20.
 - Son kapsamlı doğrulama: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37992620612 — testler, bütünlük denetimi ve kaynak paketi/launcher kontrolü başarılı; inference işleri bilerek atlandı.
 
 ## Kritik bilimsel karar — değiştirilmeyecek
