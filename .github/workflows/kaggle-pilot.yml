@@ -21,8 +21,34 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  validate-only:
+    if: (github.event_name == 'workflow_dispatch' && inputs.execute_inference == false) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[validate-only]'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact Git commit
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Run repository tests and integrity checks without inference
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test]"
+          pytest -q
+          python scripts/audit_pilot_integrity.py
+          python scripts/validate_all_cases.py
+          python scripts/validate_all_candidates.py
+
   run-frozen-pilot:
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.execute_inference == true)
+    if: (github.event_name == 'push' && !contains(github.event.head_commit.message, '[validate-only]')) || (github.event_name == 'workflow_dispatch' && inputs.execute_inference == true)
     runs-on: ubuntu-24.04
     timeout-minutes: 240
     env:
