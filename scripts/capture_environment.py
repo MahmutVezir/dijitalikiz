@@ -77,6 +77,10 @@ def main() -> None:
         "optimum",
         "auto-gptq",
         "jsonschema",
+        "numpy",
+        "datasets",
+        "pyarrow",
+        "fsspec",
     ):
         key = package.replace("-", "_")
         try:
