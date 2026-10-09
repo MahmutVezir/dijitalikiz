@@ -1,0 +1,17 @@
+{
+  "case_id": "commons-lang-github-pr-1807-typeutils-wildcard-bounds",
+  "source": "Apache Commons Lang GitHub Pull Request",
+  "source_url": "https://github.com/apache/commons-lang/pull/1807",
+  "publication_date": "2026-09-27",
+  "technology": "Apache Commons Lang / Java / reflective generic types",
+  "error_description": "A wildcard type built by the library can behave differently from an equivalent JDK-reflection wildcard when upper bounds, equality symmetry, and hash codes are queried.",
+  "evidence_urls": [
+    "https://github.com/apache/commons-lang/pull/1807",
+    "https://github.com/apache/commons-lang/commit/43154e016ae213a0da5b727cd1aa18e6e0c56adb",
+    "https://github.com/apache/commons-lang/blob/ce68c67937ff49526bcf8fe4eb4af8bebcadfc94/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java",
+    "https://github.com/apache/commons-lang/blob/ce68c67937ff49526bcf8fe4eb4af8bebcadfc94/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java"
+  ],
+  "split": "candidates",
+  "annotation_status": "screening_only_ccdg_scope_pending",
+  "provenance_verification_status": "public_pr_and_merge_revision_verified"
+}
