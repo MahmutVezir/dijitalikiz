@@ -57,6 +57,7 @@ def test_frozen_runtime_versions_are_declared_in_manifest():
     assert runtime["accelerate"] == "0.33.0"
     assert runtime["optimum"] == "1.17.1"
     assert runtime["auto_gptq"] == "0.7.1"
+    assert runtime["peft"] == "0.11.1"
     assert runtime["numpy"] == "1.26.4"
     assert runtime["datasets"] == "2.21.0"
     assert runtime["pyarrow"] == "15.0.2"
