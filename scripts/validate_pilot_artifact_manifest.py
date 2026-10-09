@@ -5,10 +5,18 @@ import hashlib
 import json
 from pathlib import Path
 
+from dijitalikiz.pilot_config import (
+    expected_pilot_record_count,
+    expected_pilot_run_filenames,
+)
 
-EXPECTED_RUN_COUNT = 30
+
 REQUIRED_FINAL_FILES = {
+    "pilot_manifest.json",
+    "PROMPT_TEMPLATE.txt",
+    "SYSTEM_PROMPT.txt",
     "environment.json",
+    "model_load_preflight.json",
     "pilot_evaluation.json",
     "case_level_analysis.json",
     "pilot_qa_report.json",
@@ -33,6 +41,9 @@ def _safe_relative_path(value: str) -> Path | None:
 
 def validate(artifact_root: Path, manifest_path: Path) -> list[str]:
     errors: list[str] = []
+    artifact_root = artifact_root.resolve()
+    manifest_path = manifest_path.resolve()
+
     try:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
@@ -45,12 +56,37 @@ def validate(artifact_root: Path, manifest_path: Path) -> list[str]:
     if not isinstance(gate, dict):
         errors.append("manifest finalization_gate must be an object")
         gate = {}
+
+    pilot_config = None
+    expected_count = None
+    expected_run_entries: set[str] = set()
+    try:
+        pilot_config = json.loads(
+            (artifact_root / "pilot_manifest.json").read_text(encoding="utf-8")
+        )
+        expected_count = expected_pilot_record_count(
+            pilot_config, require_declared=True
+        )
+        expected_run_entries = {
+            f"runs/{name}"
+            for name in expected_pilot_run_filenames(
+                pilot_config, require_declared=True
+            )
+        }
+    except (OSError, json.JSONDecodeError, TypeError, ValueError) as exc:
+        errors.append(
+            "frozen pilot configuration unreadable or invalid: "
+            f"{type(exc).__name__}: {exc}"
+        )
+
+    if expected_count is not None:
+        if gate.get("expected_run_record_count") != expected_count:
+            errors.append(
+                "manifest finalization_gate.expected_run_record_count mismatch: "
+                f"expected {expected_count}, got {gate.get('expected_run_record_count')!r}"
+            )
     if gate.get("status") != "complete":
         errors.append("manifest finalization_gate.status must be complete")
-    if gate.get("expected_run_record_count") != EXPECTED_RUN_COUNT:
-        errors.append(
-            f"manifest finalization_gate.expected_run_record_count must be {EXPECTED_RUN_COUNT}"
-        )
 
     entries = manifest.get("files", [])
     if not isinstance(entries, list):
@@ -77,17 +113,15 @@ def validate(artifact_root: Path, manifest_path: Path) -> list[str]:
             continue
 
         path = (artifact_root / safe_rel).resolve()
-        root = artifact_root.resolve()
-        if root not in path.parents:
+        if artifact_root not in path.parents:
             errors.append(f"artifact path escapes artifact root: {rel}")
             continue
-
         if not path.is_file():
             errors.append(f"missing artifact file: {rel}")
             continue
 
         expected_bytes = entry.get("bytes")
-        if not isinstance(expected_bytes, int) or expected_bytes < 0:
+        if type(expected_bytes) is not int or expected_bytes < 0:
             errors.append(f"invalid byte count: {rel}")
         elif path.stat().st_size != expected_bytes:
             errors.append(f"byte-size mismatch: {rel}")
@@ -103,25 +137,35 @@ def validate(artifact_root: Path, manifest_path: Path) -> list[str]:
             f"manifest file_count mismatch: {manifest.get('file_count')!r} != {len(entries)}"
         )
 
-    run_entries = [
-        rel for rel in seen
-        if rel.startswith("runs/") and rel.endswith(".json")
-    ]
-    if len(run_entries) != EXPECTED_RUN_COUNT:
-        errors.append(
-            f"manifest must list exactly {EXPECTED_RUN_COUNT} run JSON files; found {len(run_entries)}"
-        )
+    if expected_count is not None:
+        if manifest.get("run_record_count") != expected_count:
+            errors.append(
+                "manifest run_record_count mismatch: "
+                f"expected {expected_count}, got {manifest.get('run_record_count')!r}"
+            )
 
-    if manifest.get("run_record_count") != EXPECTED_RUN_COUNT:
-        errors.append(
-            f"manifest run_record_count must be {EXPECTED_RUN_COUNT}, "
-            f"got {manifest.get('run_record_count')!r}"
-        )
+        actual_run_entries = {
+            rel for rel in seen
+            if rel.startswith("runs/") and rel.endswith(".json")
+        }
+        if actual_run_entries != expected_run_entries:
+            missing_runs = sorted(expected_run_entries - actual_run_entries)
+            unexpected_runs = sorted(actual_run_entries - expected_run_entries)
+            errors.append(
+                "run record path set mismatch; "
+                f"missing={missing_runs}; unexpected={unexpected_runs}"
+            )
 
-    missing_final = sorted(REQUIRED_FINAL_FILES - seen)
-    if missing_final:
+    required_case_files = (
+        {f"{case_id}.json" for case_id in pilot_config["cases"]}
+        if pilot_config is not None
+        else set()
+    )
+    missing_required = sorted((REQUIRED_FINAL_FILES | required_case_files) - seen)
+    if missing_required:
         errors.append(
-            "manifest missing required finalized files: " + ", ".join(missing_final)
+            "manifest missing required frozen inputs/artifacts: "
+            + ", ".join(missing_required)
         )
 
     gate_files = gate.get("required_final_files")
@@ -131,6 +175,21 @@ def validate(artifact_root: Path, manifest_path: Path) -> list[str]:
         normalized = {str(Path(value)) for value in gate_files}
         if normalized != REQUIRED_FINAL_FILES:
             errors.append("manifest finalization_gate.required_final_files mismatch")
+
+    actual_files = {
+        path.relative_to(artifact_root).as_posix()
+        for path in artifact_root.rglob("*")
+        if path.is_file() and path.resolve() != manifest_path
+    }
+    unlisted_files = sorted(actual_files - seen)
+    if unlisted_files:
+        errors.append("unlisted artifact file(s): " + ", ".join(unlisted_files))
+    listed_missing_files = sorted(seen - actual_files)
+    if listed_missing_files:
+        errors.append(
+            "manifest lists file(s) absent from artifact root: "
+            + ", ".join(listed_missing_files)
+        )
 
     return errors
 
