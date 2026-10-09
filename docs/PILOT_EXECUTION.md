@@ -1,6 +1,6 @@
-# Pilot Execution Readiness
+# Frozen Pilot Execution — Completed State
 
-Status: model configuration frozen; local/Kaggle inference execution pending.
+**Status:** The frozen 40-inference pilot completed successfully and its artifact passed independent integrity verification on 2026-10-09. This supersedes earlier readiness notes that described execution as pending.
 
 ## Frozen configuration
 
@@ -17,75 +17,23 @@ Status: model configuration frozen; local/Kaggle inference execution pending.
 - Conditions: Standard and CCDG
 - Cases: MATH-927, MATH-950, MATH-949, MATH-988
 
-## Frozen runtime compatibility lock
+## Runtime compatibility lock
 
-`requirements-pilot.txt` is checksum-locked by `data/pilot/pilot_manifest.json`.
-The runtime pins Torch 2.2.1, Transformers 4.43.2, Accelerate 0.33.0,
-NumPy 1.26.4, PyArrow 15.0.2, datasets 2.21.0 and fsspec 2024.6.1.
-AutoGPTQ/Optimum/PEFT are not installed or used in this inference lane. This keeps
-the transitive data stack reproducible and avoids the incompatible GPTQ loader
-observed before any study record existed. The Kaggle launcher runs `pip check`
-before preflight.
+`requirements-pilot.txt` is checksum-locked by `data/pilot/pilot_manifest.json`. The runtime pins Torch 2.2.1, Transformers 4.43.2, Accelerate 0.33.0, NumPy 1.26.4, PyArrow 15.0.2, datasets 2.21.0 and fsspec 2024.6.1. AutoGPTQ/Optimum/PEFT are not used in this inference lane. The former GPTQ checkpoint was rejected before any study record was written because the loader reported unexpected parameter initialization and stochastic generation failed with invalid sampling probabilities.
 
-## Execution rule
+## Execution record
 
-İlk inference başlamadan önce model, revision, temperature, seeds, prompt, case records ve context renderer frozen durumdadır. İlk inference sonrasında bunlardan hiçbiri değiştirilemez.
+- Workflow: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37968099402
+- Source commit: `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`
+- Artifact ID: `11634641753`
+- Archive SHA-256: `b12594415894d5cac18442d3bd6c505e843b1a14027272c1afa398a59101aca0`
+- Expected / found records: 40 / 40.
+- Parse failures: 0.
+- Internal artifact file inventory: 55 files, all size/hash checks passed; no missing or unexpected files.
+- Original strict complete-diagnostic endpoint: Standard 0/20, CCDG 0/20; no case passed the 3-of-5 case rule.
 
-Runner fail-closed'dur: mevcut run kayıtlarını ezmez. Interrupted execution için `--resume` yalnızca eksik kayıtları tamamlamak amacıyla kullanılır.
+## Artifact and interpretation
 
-## Kaggle Frozen Pilot
+The original pilot evaluation and all raw records remain unchanged. The pilot exposed a potential construct-validity weakness in literal canonical matching. The pre-confirmatory scoring amendment is documented in `docs/CONFIRMATORY_SCORING_PROTOCOL.md`; it does not relabel pilot scores or allow the confirmatory rubric to be changed after main outputs are seen.
 
-Desteklenen workflow adı: **Kaggle Frozen Pilot**.
-
-- Workflow manual-only ve opt-in'dir.
-- `execute_inference=true` olmadan job çalışmaz.
-- GitHub Actions exact Git commit'i `git archive` ile private Kaggle kernel paketine koyar.
-- Kaggle kernel; environment capture, CUDA preflight, model-load preflight, frozen audit, 40 inference ve finalization zincirini çalıştırır.
-- Finalization sırası: integrity audit → evaluation → case-level analysis → QA → JSONL → artifact manifest.
-- İndirilen artifact manifest workflow tarafından ayrıca SHA-256 doğrulanır.
-- Deney çıktısı `main` branch'e otomatik commit edilmez.
-
-Kaggle tarafında doğrudan private GitHub clone yapılmaz; gerekli kaynak exact bundle olarak taşınır.
-
-## Local execution
-
-```bash
-pip install -r requirements-pilot.txt
-python scripts/pilot_preflight.py --require-cuda
-python scripts/model_load_preflight.py
-python scripts/capture_environment.py
-python scripts/run_pilot.py
-```
-
-Expected:
-`4 cases × 2 conditions × 5 seeds = 40 records`
-
-Sonrasında:
-
-```bash
-python scripts/finalize_pilot.py
-```
-
-Final artifacts:
-
-```
-data/pilot/pilot_records.jsonl
-data/pilot/pilot_evaluation.json
-data/pilot/case_level_analysis.json
-data/pilot/pilot_qa_report.json
-data/pilot/artifact_manifest.json
-```
-
-## Artifact integrity
-
-`artifact_manifest.json` canonical pilot output listesini ve SHA-256 bütünlük bilgisini taşır.
-
-Bağımsız doğrulama:
-
-```bash
-python scripts/validate_pilot_artifact_manifest.py
-```
-
-## Scientific gate
-
-Pilot tamamlanmadan main benchmark freeze edilmez. Pilot çıktıları sadece execution integrity ve predeclared pilot analysis için kullanılır; confirmatory benchmark case selection sonuçlara göre geriye dönük yapılmaz.
+The pilot is feasibility/scoring-protocol evidence, not sufficient evidence that CCDG helps or does not help.
