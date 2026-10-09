@@ -118,6 +118,8 @@ def test_validate_only_path_never_runs_inference():
     assert "run_confirmatory.py" not in validate_job
     assert "validate_benchmark_manifest.py" in validate_job
     assert "audit_confirmatory_integrity.py" in validate_job
+    assert "scripts/build_confirmatory_launcher.py" in validate_job
+    assert "py_compile /tmp/dijitalikiz-confirmatory-launcher-check/kernel.py" in validate_job
 
 
 def test_confirmatory_run_is_separately_opt_in_and_fails_closed():
