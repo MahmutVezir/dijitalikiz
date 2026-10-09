@@ -17,9 +17,12 @@ def test_kaggle_pilot_is_manual_or_scoped_trigger_and_opt_in():
     assert 'description: "Run the frozen 40-inference pilot on Kaggle GPU"' in workflow
     assert "default: false" in workflow
     assert (
-        "if: github.event_name == 'push' || "
-        "(github.event_name == 'workflow_dispatch' && inputs.execute_inference == true)"
+        "if: (github.event_name == 'push' && !contains(github.event.head_commit.message, '[validate-only]')) "
+        "|| (github.event_name == 'workflow_dispatch' && inputs.execute_inference == true)"
     ) in workflow
+    assert "validate-only:" in workflow
+    assert "pytest -q" in workflow
+    assert "kaggle kernels push" in workflow
 
 
 def test_kaggle_pilot_is_read_only_against_github_repository():
@@ -100,3 +103,12 @@ def test_kaggle_runtime_and_installed_packages_are_not_exported_as_artifacts():
     assert "RUNTIME_ROOT.mkdir(parents=True, exist_ok=True)" in workflow
     assert 'output_dir = KERNEL_ROOT / "pilot-output"' in workflow
     assert "group: dijitalikiz-frozen-pilot-output-v2" in workflow
+
+
+def test_validate_only_path_never_runs_inference():
+    workflow = workflow_text()
+    assert "contains(github.event.head_commit.message, '[validate-only]')" in workflow
+    assert "github.event_name == 'workflow_dispatch' && inputs.execute_inference == false" in workflow
+    validate_job = workflow.split("  validate-only:", 1)[1].split("  run-frozen-pilot:", 1)[0]
+    assert "kaggle kernels push" not in validate_job
+    assert "run_confirmatory.py" not in validate_job
