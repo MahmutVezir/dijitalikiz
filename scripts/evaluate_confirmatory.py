@@ -89,7 +89,9 @@ def main()->int:
                 parse_ok=record.get("parse_error") is None and record.get("parsed_output") is not None
                 if parse_ok:
                     output=DiagnosticOutput.from_dict(record["parsed_output"])
-                    score=evaluate_output(output,case.ground_truth)
+                    legacy_score=evaluate_output(output,case.ground_truth)
+                    primary_pass=root_cause_alias_match(output,aliases_by_case[case_id])
+                    score={"passed":primary_pass,"checks":{"root_cause_alias":primary_pass},"primary_endpoint":"root_cause_correctness_with_predeclared_aliases","complete_diagnostic_passed":legacy_score["passed"],"secondary_checks":legacy_score["checks"]}
                 else:
                     score={"passed":False,"checks":{"component":False,"entity":False,"operation":False,"root_cause":False,"required_relations":False}}
                 records.append({"case_id":case_id,"condition":condition,"seed":seed,"parse_ok":parse_ok,"parse_error":record.get("parse_error"),"score":score})
