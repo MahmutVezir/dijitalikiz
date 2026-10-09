@@ -62,7 +62,7 @@ Bir bağımsız gerçek yazılım hatası birincil deneysel birimdir. Beş seed,
 
 ### Pilot
 
-3 vaka × 2 koşul × 5 seed = 30 inference.
+4 vaka × 2 koşul × 5 seed = 40 inference.
 
 ### Confirmatory Benchmark
 
@@ -92,7 +92,7 @@ Bu bölüm yalnızca gerçek pilot ve confirmatory artifactleri tamamlandıktan 
 
 ### Pilot
 
-- Toplam koşu: 30
+- Toplam koşu: 40
 - Parse başarı oranı: [artifact]
 - Standard seed-pass: [artifact]
 - CCDG seed-pass: [artifact]
