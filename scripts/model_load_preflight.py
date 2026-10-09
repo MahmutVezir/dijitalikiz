@@ -16,6 +16,7 @@ FROZEN_PACKAGES = {
     "accelerate": "0.33.0",
     "optimum": "1.17.1",
     "auto_gptq": "0.7.1",
+    "peft": "0.11.1",
     "jsonschema": "4.23.0",
     "numpy": "1.26.4",
     "datasets": "2.21.0",
