@@ -99,6 +99,25 @@ def main() -> int:
         raise RuntimeError("Confirmatory benchmark contains no cases.")
     if len(cases) != len(set(cases)):
         raise RuntimeError("Confirmatory benchmark case IDs must be unique.")
+    scoring = manifest.get("scoring_rubric", {})
+    rubric_path = ROOT / scoring.get("path", "data/benchmark/evaluation_rubric.json")
+    rubric_bytes = rubric_path.read_bytes()
+    rubric_sha256 = hashlib.sha256(rubric_bytes).hexdigest()
+    if rubric_sha256 != scoring.get("sha256"):
+        raise RuntimeError(
+            f"Scoring rubric SHA-256 mismatch: expected {scoring.get('sha256')}, got {rubric_sha256}"
+        )
+    rubric = json.loads(rubric_bytes.decode("utf-8"))
+    if scoring.get("primary_endpoint") != rubric.get("primary_endpoint"):
+        raise RuntimeError("Scoring endpoint does not match the rubric.")
+    rubric_cases = [item.get("case_id") for item in rubric.get("cases", [])]
+    if rubric_cases != list(cases):
+        raise RuntimeError("Rubric case IDs/order do not match confirmatory manifest.")
+    if not all(
+        isinstance(item.get("root_cause_aliases"), list) and item["root_cause_aliases"]
+        for item in rubric.get("cases", [])
+    ):
+        raise RuntimeError("Every case must have predeclared root-cause aliases.")
     if set(cases) & set(manifest.get("pilot_case_ids", [])):
         raise RuntimeError("Confirmatory benchmark overlaps pilot cases.")
 
