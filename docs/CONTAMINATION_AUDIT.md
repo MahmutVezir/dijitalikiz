@@ -6,10 +6,15 @@ Assess whether the frozen model could have encountered the exact benchmark cases
 
 This is a risk assessment, not proof that contamination did or did not occur.
 
-## Frozen model
+## Frozen model used for the pilot
 
-- Model: Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4
-- Revision: 68c4276063d1496cdf13d0b8e8221f899bfa77f7
+- Model: Qwen/Qwen2.5-3B-Instruct
+- Revision: aa8e72537993ba99e69dfaafa59ed015b17504d1
+- Load precision: FP16; no quantization
+
+### Pre-inference model-lane change — 2026-10-09
+
+The previously planned GPTQ-Int4 checkpoint was not used for any study inference. Its loader reported newly initialized layer parameters and stochastic generation failed with invalid sampling probabilities before any pilot record had been written. The runtime therefore changed to the official Qwen2.5-3B-Instruct checkpoint at the exact revision above, loaded as FP16. The defect-case public-exposure audit below remains a case-provenance assessment; references to the prior GPTQ checkpoint are historical and are not evidence that the new run used that checkpoint. This note does not claim actual training-data contamination for either checkpoint.
 
 ## Audit scope
 
@@ -39,7 +44,7 @@ Do not modify the benchmark based on whether the model happens to answer correct
 
 ## Completed web-index audit — 2026-10-04
 
-The audit was performed against the frozen Qwen2.5-3B-Instruct-GPTQ-Int4 checkpoint family and the three pilot cases. The search is evidence of public exposure, not proof of model training inclusion.
+The audit was initially performed on 2026-10-04 while the planned checkpoint was Qwen2.5-3B-Instruct-GPTQ-Int4 and covered the three then-selected pilot cases. The case-level public exposure evidence remains relevant to the same Qwen2.5-3B-Instruct model family, but the checkpoint changed before any inference. The search is evidence of public exposure, not proof of model training inclusion.
 
 | Case | Searches performed | Public overlap found | Risk |
 |---|---|---|---|
@@ -52,7 +57,7 @@ These risk labels are now the authoritative assessment-level contamination field
 Interpretation:
 - MATH-927 and MATH-988 are high-risk contamination cases and should not be used as the sole basis for a strong causal claim about CCDG effectiveness.
 - MATH-950 remains medium risk, not low risk, because public provenance exists even though the search did not locate an additional indexed reproduction.
-- The frozen model repository identifies the selected checkpoint as a GPTQ-quantized Qwen2.5-3B-Instruct model and points to the Qwen2.5 family; the public model card does not establish that any particular Apache Commons Math case was included in training.
+- The current pilot checkpoint is the official Qwen2.5-3B-Instruct model; the public model card does not establish that any particular Apache Commons Math case was included in training.
 - Therefore the audit does not claim that the model memorized any case. It only establishes varying degrees of public exposure risk.
 
 Sources consulted during this audit included the official Apache JIRA page for MATH-927, the public research literature reproducing the MATH-927 and MATH-988 fix metadata, and the official Hugging Face model card for the frozen model family.
