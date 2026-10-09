@@ -54,6 +54,33 @@ jobs:
           python scripts/validate_benchmark_manifest.py
           python scripts/audit_confirmatory_integrity.py
 
+      - name: Build confirmatory source bundle and launcher without inference
+        shell: bash
+        run: |
+          set -euo pipefail
+          git archive \
+            --format=tar.gz \
+            --output=/tmp/dijitalikiz-confirmatory-source-check.tar.gz \
+            HEAD \
+            data/benchmark \
+            data/pilot \
+            data/assessments \
+            dijitalikiz \
+            scripts \
+            schemas \
+            docs \
+            requirements-pilot.txt \
+            pyproject.toml \
+            README.md
+
+          test -s /tmp/dijitalikiz-confirmatory-source-check.tar.gz
+          python scripts/build_confirmatory_launcher.py \
+            --bundle /tmp/dijitalikiz-confirmatory-source-check.tar.gz \
+            --source-commit "$GITHUB_SHA" \
+            --output-dir /tmp/dijitalikiz-confirmatory-launcher-check
+          python -m py_compile /tmp/dijitalikiz-confirmatory-launcher-check/kernel.py
+          sha256sum /tmp/dijitalikiz-confirmatory-launcher-check/kernel.py
+
   run-frozen-pilot:
     if: (github.event_name == 'push' && !contains(github.event.head_commit.message, '[validate-only]') && !contains(github.event.head_commit.message, '[confirmatory]')) || (github.event_name == 'workflow_dispatch' && inputs.execute_inference == true && inputs.execute_confirmatory == false)
     runs-on: ubuntu-24.04
