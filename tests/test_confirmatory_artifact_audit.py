@@ -17,9 +17,16 @@ class ConfirmatoryAuditUnitTests(unittest.TestCase):
     def test_alias_match_uses_contiguous_normalized_phrase(self):
         output = {
             "root_cause_class": "Semantic Misclassification",
-            "explanation": "The exception path is mislabeled as an unconditional edge.",
+            "explanation": "The exception path mislabeled as unconditional edge.",
         }
         self.assertTrue(root_cause_alias_match(output, ["exception path mislabeled as unconditional edge"]))
+
+    def test_near_paraphrase_is_not_accepted_by_fixed_phrase_rule(self):
+        output = {
+            "root_cause_class": "Semantic Misclassification",
+            "explanation": "The exception path is mislabeled as an unconditional edge.",
+        }
+        self.assertFalse(root_cause_alias_match(output, ["exception path mislabeled as unconditional edge"]))
 
     def test_alias_match_does_not_accept_unrelated_phrase(self):
         output = {"root_cause_class": "Type Error", "explanation": "A list was sorted incorrectly."}
