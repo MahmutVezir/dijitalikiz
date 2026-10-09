@@ -28,26 +28,39 @@ jobs:
           python - <<'PY'
           import hashlib
           import json
+          import shutil
           import zipfile
           from pathlib import Path
 
-          path = Path("/tmp/tubitak-template/proje_yazma_sablonu_2026-2027.docx")
-          assert path.is_file() and path.stat().st_size > 1000, "Downloaded template is missing or implausibly small"
-          with zipfile.ZipFile(path) as package:
+          out_dir = Path("/tmp/tubitak-template")
+          docx_path = out_dir / "proje_yazma_sablonu_2026-2027.docx"
+          assert docx_path.is_file() and docx_path.stat().st_size > 1000, "Downloaded template is missing or implausibly small"
+          with zipfile.ZipFile(docx_path) as package:
               bad = package.testzip()
               assert bad is None, f"Corrupt DOCX package member: {bad}"
               names = set(package.namelist())
               assert "word/document.xml" in names, "Downloaded file is not a valid DOCX package"
-          digest = hashlib.sha256(path.read_bytes()).hexdigest()
+
+          report_src = Path("docs/TUBITAK_REPORT_DRAFT.md")
+          ai_src = Path("docs/AI_USAGE_DISCLOSURE_DRAFT.md")
+          assert report_src.is_file() and ai_src.is_file(), "Report draft or AI disclosure draft is missing"
+          shutil.copy2(report_src, out_dir / report_src.name)
+          shutil.copy2(ai_src, out_dir / ai_src.name)
+
+          def digest_file(path):
+              return hashlib.sha256(path.read_bytes()).hexdigest()
+
           manifest = {
               "source_url": "https://tubitak.gov.tr/sites/default/files/2026-09/proje_yazma_sablonu_2026-2027.docx",
-              "file_name": path.name,
-              "size_bytes": path.stat().st_size,
-              "sha256": digest,
+              "file_name": docx_path.name,
+              "size_bytes": docx_path.stat().st_size,
+              "sha256": digest_file(docx_path),
               "zip_test": "passed",
               "document_xml_present": True,
+              "report_source": {"file_name": report_src.name, "sha256": digest_file(out_dir / report_src.name)},
+              "ai_disclosure_source": {"file_name": ai_src.name, "sha256": digest_file(out_dir / ai_src.name)},
           }
-          Path("/tmp/tubitak-template/template_manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          (out_dir / "template_manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
           print(json.dumps(manifest, indent=2, ensure_ascii=False))
           PY
 
