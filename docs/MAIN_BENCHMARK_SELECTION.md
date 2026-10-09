@@ -96,7 +96,7 @@ The predeclared McNemar design alternative is P(Standard fails, CCDG passes)=0.6
 
 ### Freeze status
 
-`data/benchmark/benchmark_manifest.json` is intentionally still `draft`. It will be changed to `frozen` only by `scripts/freeze_benchmark.py` after a complete 30-record pilot artifact has been verified. Confirmatory inference is blocked while the manifest is not frozen.
+`data/benchmark/benchmark_manifest.json` is intentionally still `draft`. It will be changed to `frozen` only by `scripts/freeze_benchmark.py` after a complete 40-record pilot artifact has been verified. Confirmatory inference is blocked while the manifest is not frozen.
 
 Historical cases whose issue-creation date was not consistently exposed are recorded with the fixing-commit date in the legacy `publication_date` field and an explicit `date_basis` provenance note. This is not an assertion that fix date equals issue publication date.
 
