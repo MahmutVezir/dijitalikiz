@@ -13,7 +13,7 @@ Bu depo, Standard Context ile açık ve yapılandırılmış Cross-Component Dep
 - Birincil analiz birimi yazılım vakasıdır; seed bağımsız vaka değildir.
 - Vaka düzeyinde başarı, 5 seed'in en az 3'ünde tam tanı doğruluğudur.
 - Birincil karşılaştırma exact iki taraflı McNemar testiyle yapılır.
-- Pilot sonuçları görülmeden ana benchmark lehine protokol değiştirilemez.
+- Confirmatory vaka seçimi model çıktılarından bağımsız yapılır. Pilot sonrasında scoring protokolünde gerekli görülen değişiklikler tarih ve gerekçeleriyle kaydedilir; önceden kayıtlı kararlar gibi sunulmaz.
 
 ## Ana bileşenler
 
@@ -106,10 +106,25 @@ Kod/protokol tarafı frozen pilot için hazırdır. Ancak bilimsel çalışma he
 
 Bu kapılar tamamlanmadan proje bilimsel olarak bitmiş ilan edilmez.
 
-## Confirmatory benchmark status — 2026-10-08
+## Confirmatory benchmark status — 2026-10-09
 
-The repository now contains a preselected **16-case confirmatory benchmark** with provenance, fixing-commit anchors, CCDG/ground-truth records, contamination-risk assessments, and a predeclared McNemar power design. Pilot cases are excluded and no model outputs were used for case selection.
+### Frozen pilot: completed and integrity-checked
 
-The confirmatory execution lane is manual-only and fail-closed. It requires a successful 40-record pilot for the exact same Git commit, then freezes the already-preselected manifest in the execution workspace and runs **16 × 2 × 5 = 160** confirmatory inference records on a private Kaggle GPU kernel.
+- GitHub Actions run: [37968099402](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37968099402).
+- Pilot source commit: `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`.
+- Artifact ID: `11634641753`; GitHub artifact SHA-256: `b12594415894d5cac18442d3bd6c505e843b1a14027272c1afa398a59101aca0`.
+- All 40 expected inference records are present. The JSONL export contains 40 records; all outputs parse, and no parse failures were reported.
+- An independent review of the downloaded artifact verified its internal SHA-256/size inventory and found no missing or unlisted files.
+- Under the pilot's strict complete-diagnostic endpoint, Standard passed 0/20 and CCDG passed 0/20; no pilot case reached the 3-of-5 majority threshold. This is pilot diagnostic evidence, not the confirmatory hypothesis result.
 
-The benchmark manifest remains `draft` in `main` until the pilot artifact is complete. This is deliberate: scientific conclusions are not inferred from software readiness.
+### Confirmatory benchmark: frozen
+
+The confirmatory manifest is now `frozen`, with 16 independent cases, five seeds per case, and two conditions: **16 × 2 × 5 = 160 inference records**. Pilot cases are excluded. The design's power values are assumptions declared for planning, not estimates derived from confirmatory outcomes.
+
+The pilot source commit and confirmatory launch commit are different: `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5` and `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`, respectively. This is recorded explicitly because the confirmatory manifest and runner were frozen after the pilot artifact was verified. The shared experimental core at these commits was checked: `dijitalikiz/context.py`, `dijitalikiz/models.py`, `dijitalikiz/evaluation.py`, the prompt and system-prompt files, the pilot manifest, and the pinned requirements file have identical Git blob SHAs. The confirmatory bundle records its own exact source commit and bundle checksum.
+
+**Scoring-protocol amendment:** the primary confirmatory endpoint is root-cause correctness against predeclared aliases. The repository records that pilot outputs were consulted for scoring-protocol diagnostics and that this amendment was made on 2026-10-09 before confirmatory outputs were examined. This is a documented post-pilot amendment; the TÜBİTAK report must not describe the endpoint as fully preregistered before any model outputs were seen. Case selection itself remains independent of model outputs.
+
+### Execution status and next gate
+
+The launch trigger commit is `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`. Its completed workflow state and the 160-record confirmatory artifact have not yet been independently verified in this review. No confirmatory result is claimed until all 160 records, the primary analysis, QA report, and SHA-256 artifact manifest pass validation.
