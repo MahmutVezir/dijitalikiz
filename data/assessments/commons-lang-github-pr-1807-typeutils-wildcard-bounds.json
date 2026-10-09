@@ -1,0 +1,27 @@
+{
+  "case_id": "commons-lang-github-pr-1807-typeutils-wildcard-bounds",
+  "provenance_quality": "pass",
+  "root_cause_quality": "pass",
+  "fix_quality": "unknown",
+  "dependency_strength": "moderate",
+  "dependency_evidence": "TypeUtils.WildcardTypeImpl has to match the java.lang.reflect.WildcardType contract for implicit Object upper bounds, symmetric equality and hash codes; the implementation also uses ArrayUtils for empty/bounds normalization. However, the changed production logic is concentrated in one TypeUtils nested implementation.",
+  "ccdg_suitability": "moderate",
+  "contamination_risk": "medium",
+  "contamination_risk_reason": "The exact PR and fixing revision are publicly accessible from September/October 2026, after the Qwen2.5 model-family release; the exact training-data cutoff is not established. Public-source exposure is not proof of training inclusion.",
+  "IC1": "pass",
+  "IC2": "pass",
+  "IC3": "pass",
+  "IC4": "pass",
+  "IC5": "pass",
+  "IC6": "unknown",
+  "IC7": "unknown",
+  "eligible_for_pilot": false,
+  "eligible_for_main": false,
+  "exclusion_reason": "SCREENING-PENDING, not a permanent exclusion: candidate has a weaker internal cross-component boundary than the Commons Compress cases. Build/assess the graph and controlled context prompts before deciding whether its dependency signal is strong enough.",
+  "notes": [
+    "GitHub PR #1807 was merged on 2026-10-04 at 43154e016ae213a0da5b727cd1aa18e6e0c56adb.",
+    "Changed production code is in TypeUtils.java and regression tests are added in TypeUtilsTest.java.",
+    "The PR explicitly discloses that Claude assisted in locating the defect and drafting the patch/test; the maintainer states they reviewed it and ran the Maven build. This source-history fact is recorded, not treated as evidence of our model's training exposure.",
+    "Keep separate from the existing frozen 16-case confirmatory manifest."
+  ]
+}
