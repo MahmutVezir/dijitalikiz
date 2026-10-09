@@ -25,3 +25,10 @@ The predeclared assumed alternative remains CCDG-favouring (`p_standard_only = 0
 
 ## Gate decision
 The main confirmatory manifest remains `draft`. Do not launch the 160 confirmatory model calls until the rubric hash, per-case aliases, candidate records, manifest validator, runner integrity checks and full test suite pass. No main-benchmark outputs are present or used by this review.
+
+
+## Retrospective status update — 2026-10-09 (supersedes only the pre-launch gate statement)
+
+The Gate decision above is preserved as the status observed before confirmatory inference. The benchmark was subsequently frozen and the confirmatory run completed successfully as GitHub Actions run #95 (`37976682761`). The 160-record artifact passed independent file/hash inventory checks. Results and the scoring-floor-effect limitation are documented in `docs/CONFIRMATORY_RESULTS_2026-10-09.md`.
+
+This update does not alter the frozen pilot records, pilot scoring, confirmatory rubric, confirmatory run records, or their checksums. The confirmatory run had zero root-cause alias matches in both conditions and all 16 cases tied as failures; therefore p = 1.00 is not evidence of equivalence. High public-exposure contamination labels are risk assessments, not proof that training data contained these cases.
