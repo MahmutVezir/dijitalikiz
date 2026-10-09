@@ -63,13 +63,14 @@
     "auto_gptq": "0.7.1",
     "runtime_policy": "exact-version match required before first inference",
     "requirements_path": "requirements-pilot.txt",
-    "requirements_sha256": "905939f24de1f4a5831da1d77a26eb028361716dacc24043f781b2525fdd55fe",
+    "requirements_sha256": "658f3582b83d098783390da94eb4f126f49d3bcfa98199a6a219f5243b800e5c",
     "jsonschema": "4.23.0",
     "compatibility_lane": "legacy-autogptq-transformers-4.43.2-numpy1-pyarrow15",
     "numpy": "1.26.4",
     "datasets": "2.21.0",
     "pyarrow": "15.0.2",
-    "fsspec": "2024.6.1"
+    "fsspec": "2024.6.1",
+    "peft": "0.11.1"
   },
   "expected_records": 40,
   "selection_review": {
