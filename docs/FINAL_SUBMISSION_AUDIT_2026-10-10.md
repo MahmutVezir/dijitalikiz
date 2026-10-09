@@ -18,6 +18,8 @@ Bu denetim, 2026–2027 (58. yarışma) dönemi için TÜBİTAK'ın güncel 2204
 - Kaynakça: 11 kaynak.
 - Rapor taslağı: `docs/TUBITAK_REPORT_DRAFT.md`
 - Dondurulmuş sonuç kaydı: `docs/CONFIRMATORY_RESULTS_2026-10-09.md`
+- ÜYZ kullanım beyanı taslağı: `docs/AI_USAGE_DISCLOSURE_DRAFT.md`
+- Güncel aday taraması ve bağımsız düzeltme tekrarı: `docs/CANDIDATE_SCREENING_2026-10-10.md`; Commons Compress #770 pre-fix/post-fix reproducer: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772
 - Makinece okunabilir sonuç özeti: `data/benchmark/confirmatory_result_summary.json`
 - Deney artefakt denetimi: 212/212 dosya doğrulandı; 160 doğrulayıcı kayıt, 0 parse hatası, 0 hash uyuşmazlığı.
 - Son kapsamlı doğrulama: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37992620612 — testler, bütünlük denetimi ve kaynak paketi/launcher kontrolü başarılı; inference işleri bilerek atlandı.
@@ -54,7 +56,7 @@ TÜBİTAK sayfasındaki bağlantılı değerlendirme formunda (son erişilebilir
 - [ ] PDF üret; sayfa sınırını güncel resmî talimatlardan doğrula.
 - [ ] PDF'yi sayfa sayfa görsel olarak incele: taşan tablo, boş sayfa, kopuk başlık, okunmayan şekil, yanlış sayfa numarası veya bozuk Türkçe karakter olmamalı.
 - [ ] Tüm atıfların kaynakçayla bire bir eşleştiğini ve bibliyografik bilgilerin doğruluğunu kontrol et.
-- [ ] TÜBİTAK'ın Üretken Yapay Zekânın Sorumlu ve Güvenilir Kullanımı rehberini incele ve gerekli şeffaf beyanı yap.
+- [ ] TÜBİTAK'ın Üretken Yapay Zekânın Sorumlu ve Güvenilir Kullanımı rehberini incele ve gerekli şeffaf beyanı yap; `docs/AI_USAGE_DISCLOSURE_DRAFT.md` taslağını gerçek kullanım kayıtlarıyla doğrula.
 - [ ] Öğrenci/öğrenciler, okul, danışman ve gerekli izin/etik alanlarını yalnızca doğru bilgilerle doldur.
 - [ ] Öğrenci ve varsa danışmanın ARBİS/TYBS kayıtlarını güncel resmî kılavuza göre kontrol et.
 - [ ] Dosya adı, gizlilik, PDF uzantısı ve boyut koşullarını güncel çağrı metnine göre denetle.
