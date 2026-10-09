@@ -265,7 +265,7 @@ def audit_artifact(artifact_root: str | Path) -> dict:
         (r.get("case_id"), r.get("condition"), r.get("seed")): r for r in eval_records
     }
     case_pass = {condition: {} for condition in conditions}
-    primary_counts = Counter()
+    primary_passes = Counter()
     for key in sorted(expected_evaluation):
         item = evaluation_lookup.get(key)
         run = records_by_key.get(key)
@@ -277,7 +277,7 @@ def audit_artifact(artifact_root: str | Path) -> dict:
         actual_alias = should_parse and root_cause_alias_match(run["parsed_output"], aliases_by_case.get(key[0], []))
         if item.get("score", {}).get("passed") is not actual_alias:
             errors.append(f"{key}: frozen evaluator result disagrees with alias-matcher recomputation")
-        primary_counts[key[1]]["passed"] += int(actual_alias)
+        primary_passes[key[1]] += int(actual_alias)
         case_pass[key[1]].setdefault(key[0], 0)
         case_pass[key[1]][key[0]] += int(actual_alias)
 
@@ -342,7 +342,7 @@ def audit_artifact(artifact_root: str | Path) -> dict:
         "case_count": n,
         "condition_record_counts": {condition: len([k for k in records_by_key if k[1] == condition]) for condition in conditions},
         "primary_seed_level_alias_hits": dict(alias_hits),
-        "primary_seed_level_passes": {condition: primary_counts[condition]["passed"] for condition in conditions},
+        "primary_seed_level_passes": {condition: primary_passes[condition] for condition in conditions},
         "case_level_majority_passes": {condition: sum(majority[condition].get(case, False) for case in case_ids) for condition in conditions},
         "case_level_contingency_table": computed["contingency_table"],
         "standard_accuracy": computed["standard_accuracy"],
