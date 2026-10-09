@@ -319,7 +319,12 @@ def audit_artifact(artifact_root: str | Path) -> dict:
             if len(jsonl_records) != len(expected_names):
                 errors.append("confirmatory_records.jsonl count differs from design")
             else:
-                expected_jsonl_records = [records_by_key[(c, cond, seed)] for c, cond, seed in sorted(expected_evaluation)]
+                # Match the producer's deterministic ordering: sorted full run filenames.
+                expected_jsonl_records = []
+                for name in sorted(expected_names):
+                    case_id, condition, seed_part = name[:-5].rsplit("__", 2)
+                    seed = int(seed_part.removeprefix("seed"))
+                    expected_jsonl_records.append(records_by_key[(case_id, condition, seed)])
                 if jsonl_records != expected_jsonl_records:
                     errors.append("confirmatory_records.jsonl records differ from individual run files or deterministic order")
         except (OSError, json.JSONDecodeError) as exc:
