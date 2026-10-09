@@ -57,3 +57,15 @@ def test_frozen_runtime_versions_are_declared_in_manifest():
     assert runtime["accelerate"] == "0.33.0"
     assert runtime["optimum"] == "1.17.1"
     assert runtime["auto_gptq"] == "0.7.1"
+    assert runtime["numpy"] == "1.26.4"
+    assert runtime["datasets"] == "2.21.0"
+    assert runtime["pyarrow"] == "15.0.2"
+    assert runtime["fsspec"] == "2024.6.1"
+    requirements = __import__("pathlib").Path("requirements-pilot.txt").read_text(encoding="utf-8")
+    for package, version in (
+        ("numpy", runtime["numpy"]),
+        ("datasets", runtime["datasets"]),
+        ("pyarrow", runtime["pyarrow"]),
+        ("fsspec", runtime["fsspec"]),
+    ):
+        assert f"{package}=={version}" in requirements
