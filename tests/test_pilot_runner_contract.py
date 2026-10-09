@@ -55,9 +55,9 @@ def test_frozen_runtime_versions_are_declared_in_manifest():
     assert runtime["torch"] == "2.2.1"
     assert runtime["transformers"] == "4.43.2"
     assert runtime["accelerate"] == "0.33.0"
-    assert runtime["optimum"] == "1.17.1"
-    assert runtime["auto_gptq"] == "0.7.1"
-    assert runtime["peft"] == "0.11.1"
+    assert "optimum" not in runtime
+    assert "auto_gptq" not in runtime
+    assert "peft" not in runtime
     assert runtime["numpy"] == "1.26.4"
     assert runtime["datasets"] == "2.21.0"
     assert runtime["pyarrow"] == "15.0.2"
@@ -70,3 +70,14 @@ def test_frozen_runtime_versions_are_declared_in_manifest():
         ("fsspec", runtime["fsspec"]),
     ):
         assert f"{package}=={version}" in requirements
+
+def test_frozen_model_uses_exact_native_fp16_checkpoint():
+    import json
+
+    manifest = json.loads(run_pilot.MANIFEST.read_text(encoding="utf-8"))
+    model = manifest["model"]
+    assert model["model_id"] == "Qwen/Qwen2.5-3B-Instruct"
+    assert model["revision"] == "aa8e72537993ba99e69dfaafa59ed015b17504d1"
+    assert model["quantization"] == "none"
+    assert model["precision"] == "float16"
+    assert "pre_inference_configuration_change" in manifest
