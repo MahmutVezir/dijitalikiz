@@ -1,0 +1,27 @@
+{
+  "case_id": "commons-compress-github-pr-770-tar-pax-header-memory-bound",
+  "provenance_quality": "pass",
+  "root_cause_quality": "pass",
+  "fix_quality": "unknown",
+  "dependency_strength": "strong",
+  "dependency_evidence": "The fix threads a configurable PAX header memory bound from AbstractTarBuilder into both TarArchiveInputStream and TarFile, then through shared TarUtils parsing into the existing MemoryLimitException check. The defect/mitigation crosses builder configuration, two archive-reading APIs and shared parsing.",
+  "ccdg_suitability": "strong",
+  "contamination_risk": "medium",
+  "contamination_risk_reason": "The exact PR and fixing revision are publicly accessible from April 2026, after the Qwen2.5 model-family release; the exact training-data cutoff is not established, so exposure cannot be ruled out.",
+  "IC1": "pass",
+  "IC2": "pass",
+  "IC3": "pass",
+  "IC4": "pass",
+  "IC5": "pass",
+  "IC6": "unknown",
+  "IC7": "unknown",
+  "eligible_for_pilot": false,
+  "eligible_for_main": false,
+  "exclusion_reason": "SCREENING-PENDING, not a permanent exclusion: build the structured case/CCDG, independently reproduce the large-PAX-header behavior and verify the fix, then complete IC6/IC7 review before any pilot/main inclusion.",
+  "notes": [
+    "GitHub PR #770 is closed/merged; reported merge commit: bab5629f6b3cea44cf0622cdd92c8cefcfbf360a.",
+    "Changed code includes AbstractTarBuilder, TarArchiveInputStream, TarFile, TarConstants and TarUtils; a new PaxHeaderOomTest regression test was added.",
+    "The fixing commit adds a default PAX-header size cap and a builder configuration option; the project has not independently reproduced pre-fix/post-fix behavior yet.",
+    "Keep separate from the existing frozen 16-case confirmatory manifest."
+  ]
+}
