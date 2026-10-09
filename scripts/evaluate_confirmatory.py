@@ -12,10 +12,24 @@ from dijitalikiz.models import DiagnosticOutput, ResearchCase
 
 ROOT=Path(".")
 MAJORITY_REQUIRED=3
+RUBRIC_PATH=ROOT/"data/benchmark/evaluation_rubric.json"
 
 
 def sha256_text(v:str)->str:
     return hashlib.sha256(v.encode("utf-8")).hexdigest()
+
+
+def normalize_phrase(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", (value or "").lower()).strip()
+
+
+def root_cause_alias_match(output, aliases: list[str]) -> bool:
+    haystack = " " + normalize_phrase(output.root_cause_class + " " + output.explanation) + " "
+    return any(
+        (" " + normalized + " ") in haystack
+        for normalized in (normalize_phrase(alias) for alias in aliases)
+        if normalized
+    )
 
 
 def sha256_json(v:object)->str:
