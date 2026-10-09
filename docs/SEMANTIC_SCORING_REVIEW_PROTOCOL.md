@@ -68,3 +68,12 @@ Sonuçlar, mevcut dondurulmuş alias skoru ile yan yana raporlanır. İki ölç�
 Mevcut yeniden inceleme CCDG'yi desteklese bile doğru ifade: **“Koşul-kör anlamsal tekrar puanlama, CCDG lehine keşifsel kanıt sundu; bu bulgu bağımsız yeni vakalar üzerinde önceden dondurulmuş bir puanlama protokolüyle doğrulanmalıdır.”**
 
 Yalnızca yeni, uygun biçimde önceden dondurulmuş doğrulayıcı deney sonuçları hipotezin doğrulandığı iddiasına dayanak olabilir. Pozitif sonuç üretmek için eşikler, vaka seçimi veya puanlama sonucu görüldükten sonra değiştirilmez.
+
+
+## 6. Yöntemsel kaynaklar
+
+Bu protokol, tek bir otomatik hakemi kesin doğruluk ölçütü olarak kabul etmez. Yazılım mühendisliği çıktılarında LLM-as-a-judge yaklaşımlarını insan puanlarıyla karşılaştıran 2025 tarihli bir çalışma, hakem model performansının göreve göre değiştiğini ve bazı görevlerde klasik metrikleri aşamadığını bildirir ([Wang ve diğerleri, 2025](https://doi.org/10.1145/3728963)). Bu nedenle burada bağımsız puanlayıcılar, körleme ve puanlayıcılar arası anlaşmanın raporlanması tercih edilir.
+
+Önceden kayıt ilkeleri için OSF rehberi; hipotez, ölçüt, örneklem ve karar kurallarının veriler incelenmeden önce açık biçimde belirlenmesini önerir ([OSF: Effective Practices for a Rigorous Preregistration](https://help.osf.io/article/330-welcome-to-registrations)). Bu rehber doğrultusunda mevcut yeniden puanlama keşifsel olarak etiketlenmiştir; ileriye dönük deneyin ölçüm ve analiz kararları yeni inference başlamadan önce dondurulmalıdır.
+
+Yazılım mühendisliği araştırmaları için topluluk standartları: [ACM SIGSOFT Empirical Standards](https://www2.sigsoft.org/EmpiricalStandards/).
