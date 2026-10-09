@@ -20,11 +20,12 @@ def exact_mcnemar_power(
 ) -> float:
     """Approximate two-sided McNemar power by exact binomial conditioning.
 
-    p_standard_only = P(Standard fails, CCDG passes)
-    p_ccdg_only = P(Standard passes, CCDG fails)
+    p_standard_only = P(Standard passes, CCDG fails)
+    p_ccdg_only = P(Standard fails, CCDG passes)
 
-    Conditional on a discordant pair, B ~ Binomial(D, q), where
-    q = p_standard_only / (p_standard_only + p_ccdg_only).
+    Conditional on a discordant pair, B counts CCDG-only wins and
+    B ~ Binomial(D, q), where
+    q = p_ccdg_only / (p_standard_only + p_ccdg_only).
     The discordant-pair count D ~ Binomial(n, p_standard_only+p_ccdg_only).
 
     The rejection rule uses the standard exact two-sided binomial test.
@@ -33,7 +34,7 @@ def exact_mcnemar_power(
     if not (0 < d_prob <= 1):
         return 0.0
 
-    q = p_standard_only / d_prob
+    q = p_ccdg_only / d_prob
     power = 0.0
 
     for d in range(1, n + 1):
