@@ -16,6 +16,16 @@ Status: model configuration frozen; local/Kaggle inference execution pending.
 - Conditions: Standard and CCDG
 - Cases: MATH-927, MATH-950, MATH-949, MATH-988
 
+## Frozen runtime compatibility lock
+
+`requirements-pilot.txt` is checksum-locked by `data/pilot/pilot_manifest.json`.
+The legacy GPTQ stack explicitly pins NumPy 1.26.4, PyArrow 15.0.2,
+datasets 2.21.0, fsspec 2024.6.1 and PEFT 0.11.1 alongside the existing
+Torch/Transformers/AutoGPTQ versions. This prevents the dependency resolver from
+silently choosing the observed NumPy 1.x / PyArrow 26 incompatible combination.
+The Kaggle launcher runs `pip check` before preflight; model-load preflight then
+imports and version-checks the pinned data stack before loading the checkpoint.
+
 ## Execution rule
 
 İlk inference başlamadan önce model, revision, temperature, seeds, prompt, case records ve context renderer frozen durumdadır. İlk inference sonrasında bunlardan hiçbiri değiştirilemez.
