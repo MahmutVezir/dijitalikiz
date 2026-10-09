@@ -42,8 +42,13 @@
 - [ ] Özetin 150–250 kelime ve toplam bölümün güncel sayfa sınırında olduğunu teyit et.
 - [ ] Kişi/okul/danışman/izin alanlarını gerçek bilgilerle tamamla.
 - [ ] Son PDF'yi oluşturup her sayfayı görsel olarak denetle.
+- [ ] TÜBİTAK'ın sorumlu ÜYZ rehberine göre yapay zekâ araçlarının kullanımını şeffaf biçimde beyan et; öğrenci araştırma tasarımını, kodu ve sonuçları açıklayabilmeli.
+- [ ] 2026–2027 resmî Word şablonunu doğrudan kullan; bölüm sırası, yazı biçimi ve sayfa düzenini doğrula.
+- [ ] Nihai PDF'yi oluştur ve her sayfayı görsel olarak denetle.
+- [ ] Öğrenci/okul/danışman ve gerekli izin bilgilerini gerçek kayıtlarla tamamla.
 - [ ] TYBS/ARBİS ve teslim gereksinimlerini doğrula.
 - [ ] Nihai rapor, sonuç özeti, artifact ve kaynak commit'ini tutarlı biçimde arşivle.
+- [ ] Ayrıntılı teslim kapıları: `docs/FINAL_SUBMISSION_AUDIT_2026-10-10.md`.
 
 ## Bilimsel karar
 
