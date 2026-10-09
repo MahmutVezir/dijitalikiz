@@ -10,6 +10,8 @@ import shutil
 import sys
 from pathlib import Path
 
+from dijitalikiz.pilot_config import expected_pilot_record_count
+
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "data/pilot/pilot_manifest.json"
 
@@ -59,6 +61,14 @@ def main() -> int:
         ))
 
     expected_cases = len(manifest["cases"]) * len(manifest["conditions"]) * len(manifest["generation"]["seeds"])
+    try:
+        validated_count = expected_pilot_record_count(manifest, require_declared=True)
+        count_ok = validated_count == expected_cases
+        count_detail = f"declared={validated_count}; calculated={expected_cases}"
+    except (TypeError, ValueError) as exc:
+        count_ok = False
+        count_detail = str(exc)
+    results.append(check(count_ok, "frozen_run_count_contract", count_detail))
     results.append(check(
         manifest["replications"] == len(manifest["generation"]["seeds"]),
         "replication_seed_match",
