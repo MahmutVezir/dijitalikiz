@@ -93,7 +93,7 @@ def main()->int:
                     primary_pass=root_cause_alias_match(output,aliases_by_case[case_id])
                     score={"passed":primary_pass,"checks":{"root_cause_alias":primary_pass},"primary_endpoint":"root_cause_correctness_with_predeclared_aliases","complete_diagnostic_passed":legacy_score["passed"],"secondary_checks":legacy_score["checks"]}
                 else:
-                    score={"passed":False,"checks":{"component":False,"entity":False,"operation":False,"root_cause":False,"required_relations":False}}
+                    score={"passed":False,"checks":{"root_cause_alias":False},"primary_endpoint":"root_cause_correctness_with_predeclared_aliases","complete_diagnostic_passed":False,"secondary_checks":{"component":False,"entity":False,"operation":False,"root_cause":False,"required_relations":False}}
                 records.append({"case_id":case_id,"condition":condition,"seed":seed,"parse_ok":parse_ok,"parse_error":record.get("parse_error"),"score":score})
 
     by_condition={}
