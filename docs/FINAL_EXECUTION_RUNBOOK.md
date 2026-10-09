@@ -1,6 +1,6 @@
 # Final Execution Runbook
 
-## 1. Frozen pilot — 30 inference records
+## 1. Frozen pilot — 40 inference records
 
 GitHub Actions -> Kaggle Frozen Pilot -> Run workflow -> set execute_inference=true.
 
@@ -9,7 +9,7 @@ The workflow:
 - resolves the Kaggle account automatically;
 - packages the exact Git commit;
 - runs preflight + model-load preflight on a private GPU kernel;
-- executes 3 cases × 2 conditions × 5 seeds = 30 records;
+- executes 4 cases × 2 conditions × 5 seeds = 40 records;
 - evaluates, aggregates 3/5 seed majority, builds QA and SHA-256 artifact manifest;
 - returns the immutable pilot artifact to GitHub Actions.
 
