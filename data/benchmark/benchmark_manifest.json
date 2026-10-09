@@ -38,7 +38,7 @@
   },
   "scoring_rubric": {
     "path": "data/benchmark/evaluation_rubric.json",
-    "sha256": "8fbb88eac71a567b5d72e26fd4060cd7853500e2117b7bf0315e76726b64a83c",
+    "sha256": "e6f2787fddaa74211a5d63c3e7ba8af7cf354a58dd0a5f7d5f0d78136b98f636",
     "version": "1.0",
     "primary_endpoint": "root_cause_correctness_with_predeclared_aliases"
   },
