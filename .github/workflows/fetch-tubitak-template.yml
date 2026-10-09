@@ -1,0 +1,60 @@
+name: Fetch official TÜBİTAK 2204-A 2026-2027 template
+
+on:
+  push:
+    paths:
+      - ".github/template-fetch-trigger"
+      - ".github/workflows/fetch-tubitak-template.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fetch-official-template:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v5
+
+      - name: Download and verify official Word template
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://tubitak.gov.tr/sites/default/files/2026-09/proje_yazma_sablonu_2026-2027.docx"
+          mkdir -p /tmp/tubitak-template
+          curl --fail --silent --show-error --location --retry 3 --retry-all-errors "$URL" --output /tmp/tubitak-template/proje_yazma_sablonu_2026-2027.docx
+          python - <<'PY'
+          import hashlib
+          import json
+          import zipfile
+          from pathlib import Path
+
+          path = Path("/tmp/tubitak-template/proje_yazma_sablonu_2026-2027.docx")
+          assert path.is_file() and path.stat().st_size > 1000, "Downloaded template is missing or implausibly small"
+          with zipfile.ZipFile(path) as package:
+              bad = package.testzip()
+              assert bad is None, f"Corrupt DOCX package member: {bad}"
+              names = set(package.namelist())
+              assert "word/document.xml" in names, "Downloaded file is not a valid DOCX package"
+          digest = hashlib.sha256(path.read_bytes()).hexdigest()
+          manifest = {
+              "source_url": "$URL",
+              "file_name": path.name,
+              "size_bytes": path.stat().st_size,
+              "sha256": digest,
+              "zip_test": "passed",
+              "document_xml_present": True,
+          }
+          Path("/tmp/tubitak-template/template_manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+          print(json.dumps(manifest, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Upload verified template as short-lived artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tubitak-official-template-2026-2027
+          path: /tmp/tubitak-template/
+          if-no-files-found: error
+          retention-days: 5
