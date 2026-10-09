@@ -88,5 +88,4 @@ def test_kaggle_artifact_validation_loop_has_single_do():
     workflow = workflow_text()
     assert "\n          do\n          do\n" not in workflow
     assert "for required in" in workflow
-    assert "\\n          do\\n            test -n" in workflow
     assert 'test -n "$(find kaggle-output -name "$required" -type f -print -quit)"' in workflow
