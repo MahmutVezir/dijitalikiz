@@ -1,28 +1,25 @@
 from __future__ import annotations
 
-import argparse
 import json
 import platform
+import random
 import sys
 from datetime import datetime, timezone
 from importlib.metadata import PackageNotFoundError, version as distribution_version
 from pathlib import Path
 
-MODEL_ID = "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4"
-MODEL_REVISION = "68c4276063d1496cdf13d0b8e8221f899bfa77f7"
-FROZEN_PACKAGES = {
-    "torch": "2.2.1",
-    "transformers": "4.43.2",
-    "accelerate": "0.33.0",
-    "optimum": "1.17.1",
-    "auto_gptq": "0.7.1",
-    "peft": "0.11.1",
-    "jsonschema": "4.23.0",
-    "numpy": "1.26.4",
-    "datasets": "2.21.0",
-    "pyarrow": "15.0.2",
-    "fsspec": "2024.6.1",
-}
+ROOT = Path(__file__).resolve().parents[1]
+MANIFEST_PATH = ROOT / "data" / "pilot" / "pilot_manifest.json"
+FROZEN_PACKAGE_KEYS = (
+    "torch",
+    "transformers",
+    "accelerate",
+    "jsonschema",
+    "numpy",
+    "datasets",
+    "pyarrow",
+    "fsspec",
+)
 
 
 def package_version(name: str) -> str:
@@ -33,16 +30,22 @@ def package_version(name: str) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Fail-closed load/compatibility gate for the frozen Qwen GPTQ pilot."
-    )
-    parser.add_argument("--output", default="data/pilot/model_load_preflight.json")
-    args = parser.parse_args()
-
     import torch
     import transformers
+    import numpy
+    import datasets
+    import pyarrow
+    import fsspec
     from huggingface_hub import model_info
     from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer
+
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    model_spec = manifest["model"]
+    runtime = manifest["runtime"]
+    generation = manifest["generation"]
+    model_id = model_spec["model_id"]
+    revision = model_spec["revision"]
+    precision = model_spec["precision"]
 
     checks: list[dict] = []
 
@@ -51,16 +54,18 @@ def main() -> int:
 
     def write_report(device_map=None) -> dict:
         payload = {
-            "status": "pass" if all(c["ok"] for c in checks) else "fail",
+            "status": "pass" if all(item["ok"] for item in checks) else "fail",
             "captured_at_utc": datetime.now(timezone.utc).isoformat(),
             "python": sys.version,
             "platform": platform.platform(),
-            "model_id": MODEL_ID,
-            "model_revision": MODEL_REVISION,
+            "model_id": model_id,
+            "model_revision": revision,
+            "precision": precision,
+            "quantization": model_spec.get("quantization"),
             "checks": checks,
             "device_map": device_map,
         }
-        output = Path(args.output)
+        output = ROOT / "data" / "pilot" / "model_load_preflight.json"
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(
             json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
@@ -69,58 +74,48 @@ def main() -> int:
         print(json.dumps(payload, indent=2, ensure_ascii=False))
         return payload
 
-    for package, expected in FROZEN_PACKAGES.items():
-        actual = package_version(package)
+    # Freeze and verify the complete runtime before loading model weights.
+    for package_key in FROZEN_PACKAGE_KEYS:
+        expected = runtime.get(package_key)
+        actual = package_version(package_key)
         check(
-            f"{package}_version",
-            actual == expected,
+            f"{package_key}_version",
+            bool(expected) and actual == expected,
             f"expected={expected}, actual={actual}",
         )
 
-    # Import the transitive data stack explicitly before attempting GPTQ model load.
-    # This catches NumPy/PyArrow ABI mismatches at the preflight boundary.
-    try:
-        import numpy
-        import datasets
-        import pyarrow
-        import fsspec
-
-        stack_detail = (
+    check(
+        "data_stack_imports",
+        all(
+            [
+                numpy.__version__ == runtime["numpy"],
+                datasets.__version__ == runtime["datasets"],
+                pyarrow.__version__ == runtime["pyarrow"],
+                fsspec.__version__ == runtime["fsspec"],
+            ]
+        ),
+        (
             f"numpy={numpy.__version__}; datasets={datasets.__version__}; "
             f"pyarrow={pyarrow.__version__}; fsspec={fsspec.__version__}"
-        )
-        check(
-            "gptq_data_stack_imports",
-            numpy.__version__ == FROZEN_PACKAGES["numpy"]
-            and datasets.__version__ == FROZEN_PACKAGES["datasets"]
-            and pyarrow.__version__ == FROZEN_PACKAGES["pyarrow"]
-            and fsspec.__version__ == FROZEN_PACKAGES["fsspec"],
-            stack_detail,
-        )
-    except Exception as exc:
-        check(
-            "gptq_data_stack_imports",
-            False,
-            f"{type(exc).__name__}: {exc}",
-        )
-
+        ),
+    )
     check(
         "torch_runtime_version",
-        torch.__version__.split("+")[0] == FROZEN_PACKAGES["torch"],
+        torch.__version__.split("+")[0] == runtime["torch"],
         f"actual={torch.__version__}",
     )
     check(
         "transformers_runtime_version",
-        transformers.__version__ == FROZEN_PACKAGES["transformers"],
+        transformers.__version__ == runtime["transformers"],
         f"actual={transformers.__version__}",
     )
 
     try:
-        resolved_sha = model_info(MODEL_ID, revision=MODEL_REVISION).sha
+        resolved_sha = model_info(model_id, revision=revision).sha
         check(
             "model_revision_resolves",
-            resolved_sha == MODEL_REVISION,
-            f"expected={MODEL_REVISION}, resolved={resolved_sha}",
+            resolved_sha == revision,
+            f"expected={revision}, resolved={resolved_sha}",
         )
     except Exception as exc:
         check(
@@ -129,77 +124,119 @@ def main() -> int:
             f"{type(exc).__name__}: {exc}",
         )
 
-    config = AutoConfig.from_pretrained(MODEL_ID, revision=MODEL_REVISION)
-    qcfg = getattr(config, "quantization_config", None) or {}
-    quant_method = (
-        qcfg.get("quant_method")
-        if isinstance(qcfg, dict)
-        else getattr(qcfg, "quant_method", None)
-    )
-    bits = qcfg.get("bits") if isinstance(qcfg, dict) else getattr(qcfg, "bits", None)
-
+    config = AutoConfig.from_pretrained(model_id, revision=revision)
+    quantization_config = getattr(config, "quantization_config", None)
     check(
         "architecture_qwen2",
         getattr(config, "model_type", None) == "qwen2",
         f"model_type={getattr(config, 'model_type', None)!r}",
     )
     check(
-        "quantization_method_gptq",
-        str(quant_method).lower() == "gptq",
-        f"quant_method={quant_method!r}",
+        "quantization_disabled",
+        not quantization_config,
+        f"quantization_config={quantization_config!r}",
     )
     check(
-        "quantization_bits_4",
-        str(bits) == "4",
-        f"bits={bits!r}",
+        "frozen_precision_fp16",
+        precision == "float16",
+        f"manifest_precision={precision!r}",
+    )
+    check(
+        "cuda_available",
+        torch.cuda.is_available(),
+        "CUDA available" if torch.cuda.is_available() else "CUDA unavailable",
     )
 
-    # Persist diagnostics and stop before downloading/loading the large model if
-    # any pinned runtime dependency failed its explicit compatibility checks.
-    if not all(c["ok"] for c in checks):
+    # A failed dependency/config check must stop before model load or study inference.
+    if not all(item["ok"] for item in checks):
         write_report()
-        raise RuntimeError(
-            "Model/data-stack compatibility gate failed; frozen pilot not started."
-        )
+        raise RuntimeError("Frozen model/runtime compatibility gate failed.")
 
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, revision=MODEL_REVISION)
-    model = AutoModelForCausalLM.from_pretrained(
-        MODEL_ID,
-        revision=MODEL_REVISION,
-        torch_dtype="auto",
+    tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision)
+    model, loading_info = AutoModelForCausalLM.from_pretrained(
+        model_id,
+        revision=revision,
+        torch_dtype=torch.float16,
         device_map="auto",
+        output_loading_info=True,
     )
+
     check("tokenizer_loaded", tokenizer is not None, type(tokenizer).__name__)
-    check("model_loaded", model is not None, type(model).__name__)
     check(
         "model_class",
         model.__class__.__name__ == "Qwen2ForCausalLM",
         model.__class__.__name__,
     )
+    model_dtype = str(next(model.parameters()).dtype)
+    check(
+        "loaded_model_dtype_fp16",
+        next(model.parameters()).dtype == torch.float16,
+        model_dtype,
+    )
 
-    # A tiny, non-study smoke generation validates the actual GPTQ/Transformers
-    # inference kernel before the 40 frozen study runs. It is not part of n=40.
+    tied_output_weight = bool(getattr(model.config, "tie_word_embeddings", False))
+    missing_keys = list(loading_info.get("missing_keys", []))
+    if tied_output_weight:
+        missing_keys = [key for key in missing_keys if key != "lm_head.weight"]
+    unexpected_keys = list(loading_info.get("unexpected_keys", []))
+    mismatched_keys = list(loading_info.get("mismatched_keys", []))
+    error_messages = list(loading_info.get("error_msgs", []))
+    check(
+        "checkpoint_weights_match_model",
+        not missing_keys and not unexpected_keys and not mismatched_keys and not error_messages,
+        (
+            f"missing_keys={missing_keys[:10]}; unexpected_keys={unexpected_keys[:10]}; "
+            f"mismatched_keys={mismatched_keys[:10]}; error_msgs={error_messages[:3]}"
+        ),
+    )
+
+    # Test finite logits before running the same sampling mode used by the frozen pilot.
     smoke = "Reply with exactly OK."
     inputs = tokenizer([smoke], return_tensors="pt").to(model.device)
-    with torch.inference_mode():
-        output_ids = model.generate(
-            **inputs,
-            max_new_tokens=4,
-            do_sample=False,
-        )
-    decoded = tokenizer.decode(
-        output_ids[0][inputs.input_ids.shape[-1]:],
-        skip_special_tokens=True,
-    ).strip()
-    check("smoke_generation", bool(decoded), f"decoded={decoded!r}")
+    finite_logits = False
+    logits_detail = "not evaluated"
+    try:
+        with torch.inference_mode():
+            logits = model(**inputs, use_cache=False).logits
+            finite_logits = bool(torch.isfinite(logits).all().item())
+        logits_detail = f"finite={finite_logits}; shape={tuple(logits.shape)}; dtype={logits.dtype}"
+    except Exception as exc:
+        logits_detail = f"{type(exc).__name__}: {exc}"
+    check("smoke_logits_finite", finite_logits, logits_detail)
+
+    sampled_ok = False
+    sampled_detail = "not evaluated"
+    try:
+        random.seed(42)
+        torch.manual_seed(42)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(42)
+        with torch.inference_mode():
+            output_ids = model.generate(
+                **inputs,
+                max_new_tokens=min(4, int(generation["max_new_tokens"])),
+                do_sample=bool(generation["do_sample"]),
+                temperature=float(generation["temperature"]),
+                top_p=float(generation["top_p"]),
+            )
+        decoded = tokenizer.decode(
+            output_ids[0][inputs.input_ids.shape[-1]:],
+            skip_special_tokens=True,
+        ).strip()
+        sampled_ok = bool(decoded)
+        sampled_detail = f"decoded={decoded!r}"
+    except Exception as exc:
+        sampled_detail = f"{type(exc).__name__}: {exc}"
+    check("pilot_sampling_smoke", sampled_ok, sampled_detail)
 
     payload = write_report(getattr(model, "hf_device_map", None))
     if payload["status"] != "pass":
         raise RuntimeError(
-            "Model load/GPTQ compatibility gate failed; frozen pilot not started."
+            "Model loading or pilot-mode sampling preflight failed; study inference not started."
         )
     print(
-        "MODEL LOAD PREFLIGHT PASSED: Qwen GPTQ checkpoint loaded and smoke generation succeeded."
+        "MODEL LOAD PREFLIGHT PASSED: exact checkpoint weights match, FP16 logits are finite, "
+        "and frozen sampling-mode smoke generation succeeded."
     )
     return 0
 
