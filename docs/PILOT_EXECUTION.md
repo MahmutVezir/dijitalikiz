@@ -4,9 +4,10 @@ Status: model configuration frozen; local/Kaggle inference execution pending.
 
 ## Frozen configuration
 
-- Model: Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4
-- Hugging Face revision: 68c4276063d1496cdf13d0b8e8221f899bfa77f7
-- Quantization: GPTQ 4-bit
+- Model: Qwen/Qwen2.5-3B-Instruct
+- Hugging Face revision: aa8e72537993ba99e69dfaafa59ed015b17504d1
+- Quantization: none
+- Load precision: FP16 (source checkpoint uses BF16 weights)
 - Replications: 5
 - Seeds: 42, 43, 44, 45, 46
 - Temperature: 0.2
@@ -19,12 +20,12 @@ Status: model configuration frozen; local/Kaggle inference execution pending.
 ## Frozen runtime compatibility lock
 
 `requirements-pilot.txt` is checksum-locked by `data/pilot/pilot_manifest.json`.
-The legacy GPTQ stack explicitly pins NumPy 1.26.4, PyArrow 15.0.2,
-datasets 2.21.0, fsspec 2024.6.1 and PEFT 0.11.1 alongside the existing
-Torch/Transformers/AutoGPTQ versions. This prevents the dependency resolver from
-silently choosing the observed NumPy 1.x / PyArrow 26 incompatible combination.
-The Kaggle launcher runs `pip check` before preflight; model-load preflight then
-imports and version-checks the pinned data stack before loading the checkpoint.
+The runtime pins Torch 2.2.1, Transformers 4.43.2, Accelerate 0.33.0,
+NumPy 1.26.4, PyArrow 15.0.2, datasets 2.21.0 and fsspec 2024.6.1.
+AutoGPTQ/Optimum/PEFT are not installed or used in this inference lane. This keeps
+the transitive data stack reproducible and avoids the incompatible GPTQ loader
+observed before any study record existed. The Kaggle launcher runs `pip check`
+before preflight.
 
 ## Execution rule
 
