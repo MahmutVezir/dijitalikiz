@@ -85,7 +85,7 @@ def main() -> int:
         shutil.which("git") or "not found",
     ))
 
-    for package in ("torch", "transformers", "accelerate", "optimum", "auto_gptq", "jsonschema", "numpy", "datasets", "pyarrow", "fsspec"):
+    for package in ("torch", "transformers", "accelerate", "optimum", "auto_gptq", "peft", "jsonschema", "numpy", "datasets", "pyarrow", "fsspec"):
         installed = importlib.util.find_spec(package) is not None
         results.append(check(installed, f"python_package_{package}", "installed" if installed else "missing"))
 
@@ -109,7 +109,7 @@ def main() -> int:
             f"expected={expected_python}, actual={actual_python}",
         ))
 
-    for package_key in ("torch", "transformers", "accelerate", "optimum", "auto_gptq", "jsonschema", "numpy", "datasets", "pyarrow", "fsspec"):
+    for package_key in ("torch", "transformers", "accelerate", "optimum", "auto_gptq", "peft", "jsonschema", "numpy", "datasets", "pyarrow", "fsspec"):
         expected = expected_runtime.get(package_key)
         if expected:
             actual = package_version(package_key)
