@@ -78,6 +78,7 @@ def main()->int:
                 frozen={
                     "case_id":case_id,"condition":condition,"seed":seed,
                     "model_id":pilot["model"]["model_id"],"model_revision":pilot["model"]["revision"],
+                    "model_dtype":"float16","quantization":"none",
                     "temperature":pilot["generation"]["temperature"],"top_p":pilot["generation"]["top_p"],
                     "max_new_tokens":pilot["generation"]["max_new_tokens"],
                     "prompt_sha256":expected_prompt,"context_sha256":sha256_text(context),
