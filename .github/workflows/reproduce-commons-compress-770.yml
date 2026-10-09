@@ -37,6 +37,17 @@ jobs:
           printf 'PRE_FIX_REVISION=%s\n' "$(git -C /tmp/commons-compress-pre-fix rev-parse HEAD)"
           printf 'FIXED_REVISION=%s\n' "$(git -C /tmp/commons-compress-fixed rev-parse HEAD)"
 
+      - name: Verify and prefetch the published Maven parent POM
+        shell: bash
+        run: |
+          set -euo pipefail
+          POM_DIR="$HOME/.m2/repository/org/apache/commons/commons-parent/102"
+          mkdir -p "$POM_DIR"
+          curl --fail --silent --show-error --location --retry 3 --retry-all-errors "https://repo.maven.apache.org/maven2/org/apache/commons/commons-parent/102/commons-parent-102.pom" --output "$POM_DIR/commons-parent-102.pom"
+          test -s "$POM_DIR/commons-parent-102.pom"
+          sha256sum "$POM_DIR/commons-parent-102.pom"
+          rm -f "$POM_DIR"/*.lastUpdated
+
       - name: Confirm identical regression test fails before the fix
         shell: bash
         run: |
@@ -45,7 +56,7 @@ jobs:
           cp .github/reproduction/PaxHeaderOomReproductionTest.java /tmp/commons-compress-pre-fix/src/test/java/org/apache/commons/compress/archivers/tar/
           cd /tmp/commons-compress-pre-fix
           set +e
-          mvn -B -ntp -Dstyle.color=never -Dtest=PaxHeaderOomReproductionTest test > /tmp/pax-header-pre-fix.log 2>&1
+          mvn -U -B -ntp -Dstyle.color=never -Dtest=PaxHeaderOomReproductionTest test > /tmp/pax-header-pre-fix.log 2>&1
           status=$?
           set -e
           if [ "$status" -eq 0 ]; then
@@ -68,5 +79,5 @@ jobs:
           mkdir -p /tmp/commons-compress-fixed/src/test/java/org/apache/commons/compress/archivers/tar
           cp .github/reproduction/PaxHeaderOomReproductionTest.java /tmp/commons-compress-fixed/src/test/java/org/apache/commons/compress/archivers/tar/
           cd /tmp/commons-compress-fixed
-          mvn -B -ntp -Dstyle.color=never -Dtest=PaxHeaderOomReproductionTest test
+          mvn -U -B -ntp -Dstyle.color=never -Dtest=PaxHeaderOomReproductionTest test
           echo "FIX VERIFIED: the same oversized-PAX-header regression test passes on the fixed revision."
