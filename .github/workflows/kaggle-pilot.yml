@@ -51,6 +51,8 @@ jobs:
           python scripts/audit_pilot_integrity.py
           python scripts/validate_all_cases.py
           python scripts/validate_all_candidates.py
+          python scripts/validate_benchmark_manifest.py
+          python scripts/audit_confirmatory_integrity.py
 
   run-frozen-pilot:
     if: (github.event_name == 'push' && !contains(github.event.head_commit.message, '[validate-only]') && !contains(github.event.head_commit.message, '[confirmatory]')) || (github.event_name == 'workflow_dispatch' && inputs.execute_inference == true && inputs.execute_confirmatory == false)
