@@ -61,3 +61,12 @@ def test_kaggle_automation_is_single_canonical_workflow():
     workflow_dir = ROOT / ".github" / "workflows"
     workflow_names = sorted(path.name for path in workflow_dir.glob("*.yml"))
     assert workflow_names == ["kaggle-pilot.yml"]
+
+
+def test_preselected_manifest_passes_full_frozen_gate_without_changing_repo_status():
+    draft = json.loads(
+        (ROOT / "data" / "benchmark" / "benchmark_manifest.json").read_text(encoding="utf-8")
+    )
+    frozen_candidate = {**draft, "status": "frozen"}
+    assert draft["status"] == "draft"
+    assert not validate_manifest(frozen_candidate, ROOT)
