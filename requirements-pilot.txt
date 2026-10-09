@@ -1,9 +1,13 @@
 # Frozen pilot runtime compatibility lane
 # Legacy GPTQ checkpoint lane intentionally pinned for reproducibility.
-# Qwen's published checkpoint is GPTQ-Int4 and its 2024 Transformers guidance used AutoGPTQ.
+# Keep the data stack compatible with NumPy 1.x required by the pinned GPTQ runtime.
+numpy==1.26.4
 torch==2.2.1
 transformers==4.43.2
 accelerate==0.33.0
 optimum==1.17.1
 auto-gptq==0.7.1
+datasets==2.21.0
+pyarrow==17.0.0
+fsspec==2024.6.1
 jsonschema==4.23.0
