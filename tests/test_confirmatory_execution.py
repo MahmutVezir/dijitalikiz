@@ -1,4 +1,5 @@
 from pathlib import Path
+import hashlib
 import json
 import py_compile
 
@@ -20,6 +21,12 @@ def test_preselected_confirmatory_manifest_is_complete_draft():
     assert manifest["power_assumption"]["required_case_count"] == 16
     assert manifest["power_assumption"]["achieved_power"] >= manifest["power_assumption"]["target_power"]
     assert not validate_manifest(manifest, ROOT)
+    rubric_path = ROOT / manifest["scoring_rubric"]["path"]
+    rubric_bytes = rubric_path.read_bytes()
+    assert hashlib.sha256(rubric_bytes).hexdigest() == manifest["scoring_rubric"]["sha256"]
+    rubric = json.loads(rubric_bytes.decode("utf-8"))
+    assert [item["case_id"] for item in rubric["cases"]] == manifest["case_ids"]
+    assert all(item["root_cause_aliases"] for item in rubric["cases"])
 
 
 def test_predeclared_power_matches_exact_utility():
