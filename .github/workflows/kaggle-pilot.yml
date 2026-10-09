@@ -19,6 +19,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   # Isolate repaired downloads from a stale run using the former output layout.
@@ -53,6 +54,37 @@ jobs:
           python scripts/validate_all_candidates.py
           python scripts/validate_benchmark_manifest.py
           python scripts/audit_confirmatory_integrity.py
+
+      - name: Independently audit the completed confirmatory artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ARTIFACT_ID="11640450681"
+          EXPECTED_SHA256="e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd"
+          ARCHIVE="/tmp/dijitalikiz-confirmatory-artifact.zip"
+          DEST="/tmp/dijitalikiz-confirmatory-artifact"
+          mkdir -p "$DEST"
+
+          curl --fail --silent --show-error --location \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" \
+            --output "$ARCHIVE"
+
+          ACTUAL_SHA256="$(sha256sum "$ARCHIVE" | awk '{print $1}')"
+          test "$ACTUAL_SHA256" = "$EXPECTED_SHA256" || {
+            echo "Confirmatory archive SHA-256 mismatch: $ACTUAL_SHA256"
+            exit 1
+          }
+
+          unzip -q "$ARCHIVE" -d "$DEST"
+          python scripts/audit_confirmatory_artifact.py \
+            --artifact-root "$DEST/confirmatory-output" \
+            --output "$DEST/independent-audit.json"
+          cat "$DEST/independent-audit.json"
 
       - name: Build confirmatory source bundle and launcher without inference
         shell: bash
