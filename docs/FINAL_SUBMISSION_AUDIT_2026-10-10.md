@@ -43,7 +43,7 @@ TÜBİTAK sayfasındaki bağlantılı değerlendirme formunda (son erişilebilir
 
 - **Problem ve soru:** CCDG'nin çapraz bileşen kök neden teşhisine katkısı açık ve ölçülebilir tanımlanmalı.
 - **Yöntem:** Eski deneyin bilgi-paritesi sınırlılığı açıkça belirtilmeli. Yeni karşılaştırmada aynı bağımlılık bilgisinin yalnızca gösterim biçimi değiştirilerek sunulduğu doğrulanmalı.
-- **Yaratıcılık ve etki:** CCDG'nin yenilik iddiası literatürle karşılaştırılmalı; mevcut deney CCDG etkisini veya pratik faydayı kanıtlamadığı için bu yönde iddia kurulMamalı.
+- **Yaratıcılık ve etki:** CCDG'nin yenilik iddiası literatürle karşılaştırılmalı; mevcut deney CCDG etkisini veya pratik faydayı kanıtlamadığı için bu yönde iddia kurulmamalı.
 - **Sonuçlar ve tartışma:** taban etkisi, puanlama geçerliği, bilgi-paritesi kısıtı, kamuya açık veri nedeniyle contamination riski ve genellenebilirlik sınırları açıkça raporlanmalı.
 - **Sunum ve proje hâkimiyeti:** Öğrenci kendi kodunu, deney tasarımını, istatistiği, sınırlılıkları ve yapay zekâ kullanımını açıklayabilmeli.
 
