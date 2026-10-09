@@ -1,6 +1,6 @@
 {
   "version": "0.1",
-  "status": "draft",
+  "status": "frozen",
   "pilot_case_ids": [
     "commons-math-defects4j-MATH-927",
     "commons-math-defects4j-MATH-950",
@@ -72,5 +72,19 @@
       ],
       "reason": "MATH-392 has a clearer cross-component fix spanning the shared regression abstraction plus OLS and GLS implementations."
     }
+  },
+  "freeze_metadata": {
+    "frozen_at_utc": "2026-10-09T18:42:51+00:00",
+    "pilot_completion_verified": true,
+    "case_selection_model_outputs_consulted": false,
+    "case_selection_preselected_before_inference": true,
+    "scoring_protocol_amendment_recorded": true,
+    "pilot_outputs_consulted_for_scoring_protocol_diagnostics": true,
+    "confirmatory_outputs_consulted": false,
+    "pilot_artifact_run_id": 37968099402,
+    "pilot_artifact_id": 11634641753,
+    "pilot_artifact_sha256": "b12594415894d5cac18442d3bd6c505e843b1a14027272c1afa398a59101aca0",
+    "pilot_source_commit": "d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5",
+    "verified_pilot_record_count": 40
   }
 }
