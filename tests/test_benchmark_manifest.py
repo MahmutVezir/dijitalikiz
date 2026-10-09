@@ -1,3 +1,4 @@
+import hashlib
 import json
 from pathlib import Path
 
@@ -87,8 +88,24 @@ def test_frozen_manifest_accepts_complete_cases(tmp_path):
             json.dumps(assessment), encoding="utf-8"
         )
 
+    rubric_path = tmp_path / "data" / "benchmark" / "evaluation_rubric.json"
+    rubric_path.parent.mkdir(parents=True, exist_ok=True)
+    rubric_bytes = json.dumps({
+        "primary_endpoint": "root_cause_correctness_with_predeclared_aliases",
+        "cases": [
+            {"case_id": "main-a", "root_cause_aliases": ["root cause A"]},
+            {"case_id": "main-b", "root_cause_aliases": ["root cause B"]},
+        ],
+    }).encode("utf-8")
+    rubric_path.write_bytes(rubric_bytes)
+
     errors = validate_manifest({
         "status": "frozen",
+        "scoring_rubric": {
+            "path": "data/benchmark/evaluation_rubric.json",
+            "sha256": hashlib.sha256(rubric_bytes).hexdigest(),
+            "primary_endpoint": "root_cause_correctness_with_predeclared_aliases",
+        },
         "case_ids": ["main-a", "main-b"],
         "pilot_case_ids": ["pilot-a"],
         "contamination_audit_completed": True,
