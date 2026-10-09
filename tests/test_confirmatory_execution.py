@@ -69,8 +69,24 @@ def test_confirmatory_scripts_compile():
 
 def test_kaggle_automation_is_single_canonical_workflow():
     workflow_dir = ROOT / ".github" / "workflows"
-    workflow_names = sorted(path.name for path in workflow_dir.glob("*.yml"))
-    assert workflow_names == ["kaggle-pilot.yml"]
+    workflow_paths = sorted(workflow_dir.glob("*.yml"))
+    kaggle_workflows = [
+        path.name
+        for path in workflow_paths
+        if "kaggle" in path.name.lower()
+        or '"enable_gpu": true' in path.read_text(encoding="utf-8").lower()
+    ]
+    assert kaggle_workflows == ["kaggle-pilot.yml"]
+
+    # Separate offline/reproduction workflows may exist, but none may add a
+    # second frozen-pilot/confirmatory Kaggle execution path.
+    for path in workflow_paths:
+        if path.name == "kaggle-pilot.yml":
+            continue
+        source = path.read_text(encoding="utf-8")
+        assert "run-frozen-pilot:" not in source
+        assert "run-confirmatory:" not in source
+        assert "KAGGLE_API_TOKEN" not in source
 
 def test_confirmatory_kaggle_kernel_isolated_from_exported_artifacts():
     kernel_path = ROOT / "kaggle" / "confirmatory_kernel.py"
