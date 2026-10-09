@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "report_date": "2026-10-09",
+  "status": "execution_complete_primary_endpoint_floor_effect",
+  "workflow_run": {
+    "id": 37976682761,
+    "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/37976682761",
+    "conclusion": "success",
+    "head_sha": "e1e083f5400432b98143bdb35ff2c5b435ea8f6e"
+  },
+  "artifact": {
+    "id": 11640450681,
+    "archive_sha256": "e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd",
+    "internal_file_count": 212,
+    "verified_files": 212,
+    "run_record_count": 160
+  },
+  "design": {
+    "case_count": 16,
+    "conditions": [
+      "standard",
+      "ccdg"
+    ],
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "expected_records": 160,
+    "independent_unit": "software_case",
+    "case_pass_rule": "at least 3 of 5 seeds"
+  },
+  "execution_integrity": {
+    "parsed_records": 160,
+    "parse_failures": 0,
+    "distinct_source_commits": 1,
+    "raw_output_hash_mismatches": 0,
+    "artifact_missing_files": 0,
+    "artifact_unlisted_files": 0,
+    "artifact_size_mismatches": 0,
+    "artifact_hash_mismatches": 0,
+    "duplicate_output_groups": 0
+  },
+  "primary_endpoint": {
+    "name": "root_cause_correctness_with_predeclared_aliases",
+    "standard_passes": 0,
+    "standard_records": 80,
+    "ccdg_passes": 0,
+    "ccdg_records": 80,
+    "standard_case_majority_passes": 0,
+    "ccdg_case_majority_passes": 0,
+    "contingency_table": {
+      "both_pass": 0,
+      "standard_only": 0,
+      "ccdg_only": 0,
+      "both_fail": 16
+    },
+    "exact_two_sided_mcnemar_p": 1,
+    "paired_risk_difference": 0,
+    "paired_risk_difference_ci_95": [
+      -0.1936076805344365,
+      0.1936076805344365
+    ],
+    "alpha": 0.05,
+    "decision": "do_not_reject_null_under_frozen_endpoint"
+  },
+  "interpretation": {
+    "floor_effect": true,
+    "equivalence_established": false,
+    "absence_of_ccdg_effect_proven": false,
+    "semantic_root_cause_hypothesis_resolved": false,
+    "reason": "All 16 case outcomes tied as failures under the frozen literal alias matcher; the test had zero discordant pairs."
+  },
+  "limitations": {
+    "high_public_exposure_risk_cases": 16,
+    "training_set_membership_proven": false,
+    "scoring_protocol_amendment_date": "2026-10-09",
+    "pilot_outputs_used_for_scoring_diagnostics": true,
+    "confirmatory_outputs_used_for_case_selection": false
+  },
+  "required_follow_up": "Keep frozen results unchanged; any re-scoring of these outputs is exploratory. For confirmatory semantic testing, prevalidate the scoring instrument and preregister a new independent sample."
+}
