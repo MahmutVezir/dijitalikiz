@@ -96,6 +96,10 @@ The primary endpoint is root-cause correctness with the rubric's predeclared ali
 
 The pilot source commit is `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`; the confirmatory launch commit is `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`. They are not identical because the manifest and confirmatory runner were frozen after pilot completion. The shared experimental core files—context renderer, models, legacy evaluator, prompt template, system prompt, pilot manifest, and pinned requirements—were checked and have identical blob SHAs across these two commits. Each phase must retain its own source commit and the confirmatory source-bundle checksum.
 
-### Remaining acceptance gate
+### Confirmatory run completed — frozen endpoint has a floor effect
 
-The confirmatory phase is not result-complete until the exact launch run is verified, all 160 expected records are present and internally consistent, the primary analysis and QA report are generated, and the full artifact manifest passes checksum and inventory validation. No effectiveness claim may be made before that gate passes.
+GitHub Actions run [#95 / 37976682761](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37976682761) completed successfully for source commit `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`. Artifact ID `11640450681` was downloaded and its ZIP checksum matched `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`. Independent audit of the included manifest found 212/212 files intact and 160/160 unique run records, with zero parse failures.
+
+Under the frozen primary root-cause alias endpoint, Standard passed 0/80 seeds and CCDG passed 0/80; all 16 case-level outcomes were failures under both conditions. The exact two-sided McNemar p-value is 1.00, paired difference 0.00, and the stored 95% paired interval is [-0.1936, 0.1936]. This is a floor-effect outcome, **not** proof of equivalence or proof that CCDG has no effect. The fixed contiguous-phrase matcher did not accept any output alias, so the intended semantic hypothesis remains unresolved by this operationalization.
+
+Full result and limitations: [`docs/CONFIRMATORY_RESULTS_2026-10-09.md`](CONFIRMATORY_RESULTS_2026-10-09.md). Artifact integrity checker: `scripts/audit_confirmatory_artifact.py`. Any semantic review of existing outputs must be exploratory; do not revise the frozen primary score retrospectively.
