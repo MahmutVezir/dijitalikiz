@@ -30,6 +30,7 @@ Bu depo, Standard Context ile açık ve yapılandırılmış Cross-Component Dep
 - `scripts/power_mcnemar.py`: power analizi
 - `docs/MAIN_BENCHMARK_SELECTION.md`: ana benchmark seçimi ve freeze kuralları
 - `docs/ANALYSIS_PLAN.md`: önceden belirlenmiş istatistik planı
+- `docs/SEMANTIC_SCORING_REVIEW_PROTOCOL.md`: dondurulmuş sonucu değiştirmeden anlamsal yeniden inceleme ve bağımsız takip deneyi protokolü
 - `docs/CONTAMINATION_AUDIT.md`: contamination risk protokolü
 - `data/pilot/pilot_manifest.json`: frozen pilot konfigürasyonu
 
