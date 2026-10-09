@@ -23,7 +23,13 @@ def test_preselected_confirmatory_manifest_is_complete_draft():
 
 
 def test_predeclared_power_matches_exact_utility():
-    observed = exact_mcnemar_power(16, 0.60, 0.05, alpha=0.05)
+    power = json.loads(
+        (ROOT / "data" / "benchmark" / "benchmark_manifest.json").read_text(encoding="utf-8")
+    )["power_assumption"]
+    assert power["alternative"] == "ccdg_better_than_standard"
+    observed = exact_mcnemar_power(
+        16, power["p_standard_only"], power["p_ccdg_only"], alpha=0.05
+    )
     assert observed >= 0.80
     assert round(observed, 4) == 0.8070
 
