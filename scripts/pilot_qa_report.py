@@ -5,7 +5,12 @@ import json
 from pathlib import Path
 
 
-def build_report(evaluation: dict, manifest: dict, assessments: dict[str, dict]) -> dict:
+def build_report(
+    evaluation: dict,
+    manifest: dict,
+    assessments: dict[str, dict],
+    review: dict | None = None,
+) -> dict:
     by_condition = evaluation.get("by_condition", {})
     duplicate_groups = evaluation.get("duplicate_output_groups", [])
     case_level = evaluation.get("case_level", {})
@@ -17,10 +22,17 @@ def build_report(evaluation: dict, manifest: dict, assessments: dict[str, dict])
     if duplicate_groups:
         flags.append("identical_parsed_outputs_across_seeds_present")
 
-    contamination = {
-        case_id: assessments.get(case_id, {}).get("contamination_risk", "unknown")
-        for case_id in manifest["cases"]
+    review_risk = {
+        item.get("case_id"): item.get("contamination_risk", "unknown")
+        for item in (review or {}).get("decisions", [])
+        if item.get("case_id") and item.get("decision") == "include"
     }
+    contamination = {}
+    for case_id in manifest["cases"]:
+        risk = assessments.get(case_id, {}).get("contamination_risk")
+        if risk in (None, "unknown"):
+            risk = review_risk.get(case_id, "unknown")
+        contamination[case_id] = risk
     unresolved_contamination = sorted(
         case_id for case_id, risk in contamination.items() if risk == "unknown"
     )
@@ -60,7 +72,17 @@ def main() -> int:
         if path.is_file():
             assessments[case_id] = json.loads(path.read_text(encoding="utf-8"))
 
-    report = build_report(evaluation, manifest, assessments)
+    review: dict | None = None
+    review_path = Path(
+        manifest.get("selection_review", {}).get(
+            "review_path",
+            "data/pilot/final_candidate_review_2026-10-08.json",
+        )
+    )
+    if review_path.is_file():
+        review = json.loads(review_path.read_text(encoding="utf-8"))
+
+    report = build_report(evaluation, manifest, assessments, review)
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(
