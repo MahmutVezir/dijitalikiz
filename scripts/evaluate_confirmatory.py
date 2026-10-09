@@ -100,10 +100,14 @@ def main()->int:
     for condition in conditions:
         subset=[r for r in records if r["condition"]==condition]
         parse_ok=sum(r["parse_ok"] for r in subset); passed=sum(r["score"]["passed"] for r in subset)
+        complete_passed=sum(r["score"].get("complete_diagnostic_passed",False) for r in subset)
         by_condition[condition]={
+            "primary_endpoint":"root_cause_correctness_with_predeclared_aliases",
             "n_expected":len(cases)*len(seeds),"n_found":len(subset),"n_parse_ok":parse_ok,
             "parse_failure_rate":1-(parse_ok/len(subset)) if subset else None,
-            "n_scored":len(subset),"n_passed":passed,"pass_rate":passed/len(subset) if subset else None
+            "n_scored":len(subset),"n_passed":passed,"pass_rate":passed/len(subset) if subset else None,
+            "complete_diagnostic_n_passed":complete_passed,
+            "complete_diagnostic_pass_rate":complete_passed/len(subset) if subset else None
         }
 
     duplicates=[]
