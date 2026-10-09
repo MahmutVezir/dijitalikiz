@@ -1,0 +1,20 @@
+{
+  "case_id": "commons-compress-github-pr-770-tar-pax-header-memory-bound",
+  "source": "Apache Commons Compress GitHub Pull Request",
+  "source_url": "https://github.com/apache/commons-compress/pull/770",
+  "publication_date": "2026-04-23",
+  "technology": "Apache Commons Compress / Java / TAR PAX archive parsing",
+  "error_description": "Processing a TAR archive with an exceptionally large PAX extended header can cause excessive memory use in both streaming and file-based archive reading paths.",
+  "evidence_urls": [
+    "https://github.com/apache/commons-compress/pull/770",
+    "https://github.com/apache/commons-compress/commit/bab5629f6b3cea44cf0622cdd92c8cefcfbf360a",
+    "https://github.com/apache/commons-compress/blob/2c0456f242a4107b52378f95f79dad3d7bf2bf86/src/main/java/org/apache/commons/compress/archivers/tar/AbstractTarBuilder.java",
+    "https://github.com/apache/commons-compress/blob/2c0456f242a4107b52378f95f79dad3d7bf2bf86/src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java",
+    "https://github.com/apache/commons-compress/blob/2c0456f242a4107b52378f95f79dad3d7bf2bf86/src/main/java/org/apache/commons/compress/archivers/tar/TarFile.java",
+    "https://github.com/apache/commons-compress/blob/2c0456f242a4107b52378f95f79dad3d7bf2bf86/src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java",
+    "https://github.com/apache/commons-compress/blob/2c0456f242a4107b52378f95f79dad3d7bf2bf86/src/test/java/org/apache/commons/compress/archivers/tar/PaxHeaderOomTest.java"
+  ],
+  "split": "candidates",
+  "annotation_status": "source_reviewed_independent_reproduction_pending",
+  "provenance_verification_status": "public_pr_and_merge_revision_verified"
+}
