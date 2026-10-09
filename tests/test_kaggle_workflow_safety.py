@@ -76,3 +76,10 @@ def test_kaggle_pilot_checks_canonical_final_artifacts():
     ):
         assert name in workflow
     assert "validate_pilot_artifact_manifest.py" in workflow
+
+
+def test_kaggle_pilot_uses_node24_compatible_python_action_and_checks_dependencies():
+    workflow = workflow_text()
+    assert "uses: actions/setup-python@v6" in workflow
+    assert "uses: actions/setup-python@v5" not in workflow
+    assert 'run(str(target_python), "-m", "pip", "check", cwd=WORKDIR)' in workflow
