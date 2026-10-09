@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -36,6 +37,41 @@ def validate_manifest(manifest: dict, root: Path | None = None) -> list[str]:
     root = root or Path(".")
 
     if status == "frozen":
+        scoring = manifest.get("scoring_rubric")
+        if not isinstance(scoring, dict):
+            errors.append("a frozen benchmark requires a scoring_rubric with path and sha256")
+        else:
+            scoring_path_value = scoring.get("path")
+            expected_rubric_sha = scoring.get("sha256")
+            if not isinstance(scoring_path_value, str) or not scoring_path_value:
+                errors.append("scoring_rubric.path must be a non-empty string")
+            else:
+                rubric_path = root / scoring_path_value
+                if not rubric_path.is_file():
+                    errors.append(f"missing scoring rubric: {rubric_path}")
+                else:
+                    try:
+                        rubric_bytes = rubric_path.read_bytes()
+                        actual_rubric_sha = hashlib.sha256(rubric_bytes).hexdigest()
+                        if actual_rubric_sha != expected_rubric_sha:
+                            errors.append("scoring rubric SHA-256 does not match manifest")
+                        rubric = json.loads(rubric_bytes.decode("utf-8"))
+                        if scoring.get("primary_endpoint") != rubric.get("primary_endpoint"):
+                            errors.append("scoring rubric primary endpoint does not match manifest")
+                        rubric_ids = [item.get("case_id") for item in rubric.get("cases", [])]
+                        if rubric_ids != case_ids:
+                            errors.append("scoring rubric case IDs/order must match manifest case_ids")
+                        for item in rubric.get("cases", []):
+                            aliases = item.get("root_cause_aliases")
+                            if not isinstance(aliases, list) or not aliases or not all(
+                                isinstance(alias, str) and alias.strip() for alias in aliases
+                            ):
+                                errors.append(
+                                    f"{item.get('case_id', '<unknown>')}: root_cause_aliases must be non-empty strings"
+                                )
+                    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+                        errors.append(f"cannot read scoring rubric: {type(exc).__name__}: {exc}")
+
         for case_id in case_ids:
             case_path = root / "data" / "benchmark" / "cases" / f"{case_id}.json"
             if not case_path.is_file():
