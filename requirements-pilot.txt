@@ -1,13 +1,10 @@
-# Frozen pilot runtime compatibility lane
-# Legacy GPTQ checkpoint lane intentionally pinned for reproducibility.
-# Keep the data stack compatible with NumPy 1.x required by the pinned GPTQ runtime.
+# Frozen pilot runtime for the official Qwen2.5-3B-Instruct checkpoint.
+# Load its BF16 source weights explicitly as FP16 for NVIDIA T4 compatibility.
+# The failed pre-inference GPTQ lane is intentionally not part of this runtime.
 numpy==1.26.4
 torch==2.2.1
 transformers==4.43.2
 accelerate==0.33.0
-optimum==1.17.1
-auto-gptq==0.7.1
-peft==0.11.1
 datasets==2.21.0
 pyarrow==15.0.2
 fsspec==2024.6.1
