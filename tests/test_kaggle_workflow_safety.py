@@ -116,6 +116,8 @@ def test_validate_only_path_never_runs_inference():
     validate_job = workflow.split("  validate-only:", 1)[1].split("  run-frozen-pilot:", 1)[0]
     assert "kaggle kernels push" not in validate_job
     assert "run_confirmatory.py" not in validate_job
+    assert "validate_benchmark_manifest.py" in validate_job
+    assert "audit_confirmatory_integrity.py" in validate_job
 
 
 def test_confirmatory_run_is_separately_opt_in_and_fails_closed():
