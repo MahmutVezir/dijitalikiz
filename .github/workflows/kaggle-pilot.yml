@@ -541,7 +541,7 @@ jobs:
           python scripts/validate_pilot_artifact_manifest.py             --artifact-root "$ROOT"             --manifest "$MANIFEST_PATH"
 
       - name: Upload immutable pilot artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dijitalikiz-pilot-${{ github.sha }}
           path: kaggle-output/
@@ -743,7 +743,7 @@ jobs:
             --manifest "$ARTIFACT_ROOT/artifact_manifest.json"
 
       - name: Upload immutable confirmatory artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dijitalikiz-confirmatory-${{ github.sha }}
           path: kaggle-confirmatory-output/
