@@ -4,39 +4,68 @@ import argparse
 import json
 from pathlib import Path
 
+from dijitalikiz.pilot_config import (
+    expected_pilot_record_count,
+    expected_pilot_run_filenames,
+)
 
-EXPECTED_RUN_COUNT = 30
+
+MANIFEST = Path("data/pilot/pilot_manifest.json")
 
 
-def build(runs_dir: Path, output: Path) -> int:
+def build(
+    runs_dir: Path,
+    output: Path,
+    manifest_path: Path = MANIFEST,
+) -> int:
     if not runs_dir.is_dir():
         raise RuntimeError(f"Pilot runs directory is missing: {runs_dir}")
 
-    records = []
-    for path in sorted(runs_dir.glob("*.json")):
-        payload = json.loads(path.read_text(encoding="utf-8"))
-        records.append(payload)
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        expected_count = expected_pilot_record_count(manifest, require_declared=True)
+        expected_names = expected_pilot_run_filenames(manifest, require_declared=True)
+    except (OSError, json.JSONDecodeError, TypeError, ValueError) as exc:
+        raise RuntimeError(f"Frozen pilot manifest is invalid: {exc}") from exc
 
-    if len(records) != EXPECTED_RUN_COUNT:
+    actual_names = {path.name for path in runs_dir.iterdir()}
+    if actual_names != expected_names:
+        missing = sorted(expected_names - actual_names)
+        unexpected = sorted(actual_names - expected_names)
         raise RuntimeError(
-            f"Frozen pilot JSONL export requires exactly {EXPECTED_RUN_COUNT} run records; "
-            f"found {len(records)}."
+            "Frozen pilot run-file set mismatch; "
+            f"expected {expected_count} files, found {len(actual_names)}; "
+            f"missing={missing}; unexpected={unexpected}."
+        )
+
+    records = [
+        json.loads((runs_dir / name).read_text(encoding="utf-8"))
+        for name in sorted(expected_names)
+    ]
+    if len(records) != expected_count:
+        raise RuntimeError(
+            f"Frozen pilot JSONL export requires {expected_count} records; found {len(records)}."
         )
 
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open("w", encoding="utf-8", newline="\n") as handle:
         for record in records:
-            handle.write(json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n")
+            handle.write(
+                json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n"
+            )
     return len(records)
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Export the 30 frozen pilot run records to deterministic JSONL.")
+    parser = argparse.ArgumentParser(
+        description="Export the frozen pilot run records to deterministic JSONL."
+    )
     parser.add_argument("--runs-dir", default="data/pilot/runs")
     parser.add_argument("--output", default="data/pilot/pilot_records.jsonl")
+    parser.add_argument("--manifest", default=str(MANIFEST))
     args = parser.parse_args()
 
-    count = build(Path(args.runs_dir), Path(args.output))
+    count = build(Path(args.runs_dir), Path(args.output), Path(args.manifest))
     print(f"EXPORTED PILOT JSONL: {count} records -> {args.output}")
     return 0
 
