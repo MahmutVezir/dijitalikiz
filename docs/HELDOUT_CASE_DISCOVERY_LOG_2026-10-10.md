@@ -66,7 +66,7 @@
 - Defect summary: the FTP server's `SYST` response could be treated as a fully qualified class name and loaded/initialized before the requested class was verified as an `FTPFileEntryParser`. A non-parser class's static initializer could run due to remote-controlled input.
 - Candidate cross-component path: remote FTP `SYST` response -> parser auto-detection -> classloader lookup/initialization -> type-assignability guard -> constructor side effects.
 - Preliminary fit: **strong candidate** for tracing untrusted-input flow across FTP protocol handling, parser dispatch and Java class-loading behavior. Public fix is known; model exposure remains unknown.
-- Screening status: **pending on the six-lead red-green run**. Not eligible until exact-test red/green artifact and independent human source review/adjudication pass.
+- Screening status: **red-green pass in [run #38052846346](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346)**. Not eligible until exact-test red/green artifact and independent human source review/adjudication pass.
 
 ### Lead HD-006 — Commons Text StringMatcher overload loses buffer window start
 
@@ -76,7 +76,7 @@
 - Defect summary: the `CharSequence` default overload forwarded `bufferEnd` into the `bufferStart` argument, which could prevent custom prefix matchers from matching a valid window. The issue was observable through `StringSubstitutor`.
 - Candidate cross-component path: `StringSubstitutor` scanning -> `StringMatcher` overload dispatch -> `CharSequenceUtils` conversion -> buffer-window contract -> placeholder replacement outcome.
 - Preliminary fit: **promising integration/API-contract lead**; public fix is known and the main change is small, so independent reviewers must decide whether the component boundary is sufficiently substantive for CCDG.
-- Screening status: **pending on the six-lead red-green run**. Not eligible until exact-test red/green artifact and independent human source review/adjudication pass.
+- Screening status: **red-green pass in [run #38052846346](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346)**. Not eligible until exact-test red/green artifact and independent human source review/adjudication pass.
 
 
 ### Lead HD-007 — Commons Net CR/LF command injection across protocol senders
@@ -87,7 +87,7 @@
 - Defect summary: protocol command senders concatenated caller-controlled command arguments into control-channel text without rejecting carriage-return/line-feed characters. A supplied argument could add an unintended second protocol command.
 - Candidate cross-component path: application-provided command/argument -> FTP/NNTP/POP3/SMTP sender -> control-channel command assembly -> protocol parser interprets a second command.
 - Preliminary fit: **promising shared-invariant lead across four protocol implementations**. The four protocol targets come from one shared change and should count as one independent defect case, not four. Independent reviewers must decide whether the common mechanism is coherent enough for CCDG.
-- Screening status: **pending in the next red-green run**. Not eligible until every named test fails before the fix and passes after it, then independent source review and adjudication pass.
+- Screening status: **red-green pass in [run #38053125548](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053125548)**. Not eligible until every named test fails before the fix and passes after it, then independent source review and adjudication pass.
 
 ## Screened but not admitted
 
