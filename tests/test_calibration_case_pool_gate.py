@@ -35,6 +35,12 @@ def _complete_fixture(root: Path):
     before = "b" * 40
     record = {
         "case_id": case_id,
+        "software_twin_snapshot": {
+            "repository_url": "https://github.com/example/project",
+            "snapshot_revision": before,
+            "regression_test": "ExampleRegressionTest#failsOnPreFixRevision",
+            "observed_failure_signal": "The regression assertion failed on the pinned snapshot revision.",
+        },
         "source": "Independent test fixture",
         "source_url": "https://example.org/pr/1",
         "publication_date": "2026-01-01",
@@ -75,6 +81,8 @@ def _complete_fixture(root: Path):
             "case_id": case_id,
             "case_record_path": f"data/calibration/cases/{case_id}.json",
             "source_url": "https://example.org/pr/1",
+            "repository_url": "https://github.com/example/project",
+            "regression_test_targets": ["ExampleRegressionTest#failsOnPreFixRevision"],
             "fix_revision": fix,
             "pre_fix_revision": before,
             "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
