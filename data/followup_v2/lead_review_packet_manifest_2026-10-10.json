@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "status": "packets_created_review_pending",
+  "status": "superseded_not_for_distribution",
   "created_at_utc": "2026-10-10T13:19:00Z",
   "source_audit": {
     "path": "data/followup_v2/discovery_screening_audit_run_38054680670.json",
@@ -38,7 +38,9 @@
     "target_independent_case_count": 61,
     "model_inference_authorized": false,
     "historical_40_record_pilot_mutated": false,
-    "historical_160_output_confirmatory_mutated": false
+    "historical_160_output_confirmatory_mutated": false,
+    "current_review_packets_fresh": false,
+    "current_review_packets_regenerated": false
   },
   "distribution_policy": {
     "send_reviewer_a_package_only_to_reviewer_a": true,
@@ -46,5 +48,15 @@
     "share_coordinator_key_only_after_both_reviews_are_locked": true,
     "coordinator_key_package_not_committed_to_repository": true
   },
-  "interpretation": "This manifest hashes the blinded reviewer packet deliverables and public source audit. It does not contain the unblinding key and does not claim any human review or adjudication has occurred."
+  "interpretation": "This manifest hashes the superseded 11-candidate blinded packets and their old source audit only. Do not distribute those packets as the current review set. Rebuild from data/followup_v2/discovery_screening_audit_run_38057613670.json and create a new hash-bound manifest after verifying the output files. The manifest does not contain the unblinding key and does not claim any human review or adjudication has occurred.",
+  "supersession": {
+    "reason": "The original packet set was generated from an earlier 11-lead screening audit. Strict screening later corrected the test patch protocol and added a twelfth lead; old packet hashes remain historical and must not be distributed as the current set.",
+    "superseded_at_utc": "2026-10-10T00:00:00Z",
+    "current_audit_path": "data/followup_v2/discovery_screening_audit_run_38057613670.json",
+    "current_audit_blob_sha": "b39c063bd428b45e5f3db86ea0a046c8a06a5785",
+    "current_audit_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670",
+    "current_candidate_count": 12,
+    "current_regression_target_count": 22,
+    "packet_regeneration_required": true
+  }
 }
