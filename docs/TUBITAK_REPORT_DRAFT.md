@@ -10,6 +10,16 @@
 **Tematik alan:** Dijital İkiz  
 **Proje türü:** Kontrollü deneysel araştırma
 
+## Yapay Zekâ Araçları Kullanım Beyanı
+
+**Kullanılan araçlar:** OpenAI ChatGPT (GPT-6; erişim dönemi: Eylül-Ekim 2026) ve deney yanıtlarını üreten sabit Qwen/Qwen2.5-3B-Instruct modeli (Ekim 2026).
+
+**Kullanım amacı:** Araştırma sorusu ve yöntem taslağını netleştirme, alternatif deney tasarımlarını değerlendirme, Python kodu ve test taslakları hazırlama, GitHub Actions doğrulama akışlarındaki hataları inceleme, bütünlük kontrollerini ve rapor taslaklarını geliştirme. Qwen modeli ise dondurulmuş deney koşullarında yazılım hatalarına ilişkin yanıt üretmek için deney konusu olarak kullanılmıştır.
+
+**Kullanım kapsamı:** ChatGPT desteği araştırma planı, kod/test taslakları, otomatik doğrulama betikleri, araştırma belgeleri ve rapor diliyle sınırlıdır. Sentetik eşleştirici örnekleri ampirik başarı verisi değildir. Qwen yanıtları deney kayıtlarında saklanmış; sonuçlar sonradan tercih edilen hipotezi destekleyecek şekilde değiştirilmemiştir.
+
+**İnsan müdahalesi:** Kod ve artefaktlar otomatik test ve SHA-256 bütünlük denetimleriyle kontrol edilmiştir. Ancak ölçüm aracının taban etkisi ve tarihsel bağlamlar arasındaki bilgi paritesi sınırlılığı açıkça raporlanmıştır. Başvuru sahibi, nihai raporu ve yöntemini bağımsız biçimde açıklayabildiğini başvuru öncesinde doğrulamalı; bu beyanı gerçek kullanım kayıtları ve güncel TYBS alanlarıyla son kez eşleştirmelidir.
+
 ## Proje özeti
 
 Büyük dil modelleri (LLM), yazılım hatalarını açıklama ve kök nedenlerini belirleme amacıyla kullanılmaktadır. Ancak bağımlılık ilişkilerinin açık bir grafik olarak sunulmasının kök neden teşhisine katkısı, bağlamdaki diğer bilgi farklarından ayrılarak ölçülmelidir. Bu projede Standard Context ile CCDG Context koşulları karşılaştırılmış; sonraki kod denetimi iki bağlamın tam bilgi eşdeğerliğine sahip olmadığını ortaya çıkarmıştır. Bu nedenle sonuçlar saf grafik gösterimi etkisi olarak yorumlanmamaktadır. Deneylerde sabit bir Qwen2.5-3B-Instruct model checkpoint'i kullanılmış; dört gerçek yazılım hatası üzerinde 40 koşuluk pilot ve pilot vakalarından bağımsız 16 vaka üzerinde 160 koşuluk doğrulayıcı deney yürütülmüştür. Her vaka, Standard ve CCDG koşullarında beş sabit tohumla çalıştırılmış; aynı vaka iki koşulda eşleştirilmiş ve istatistiksel analiz birimi bağımsız yazılım vakası olarak tanımlanmıştır. Tüm 200 inference çıktısı ayrıştırılmış, ham çıktı hash'leri ve artifact dosya envanteri doğrulanmıştır. Dondurulmuş doğrulayıcı birincil ölçütü, her vaka için önceden belirlenmiş kök neden ifadelerinin açıklamada bitişik ifade olarak eşleşmesine dayanır. Bu ölçütte Standard 0/80, CCDG 0/80 geçiş üretmiş; 16 vakanın tamamı iki koşulda da başarısız sınıflandırılmış ve exact iki taraflı McNemar testi p=1,00 bulunmuştur. Bu sonuç, kullanılan eşleştiricinin taban etkisini göstermektedir; koşulların eşdeğerliğini veya CCDG'nin etkisizliğini kanıtlamaz. Araştırmanın anlamsal hipotezi bu operasyonelleştirmeyle çözümlenememiştir.
@@ -101,6 +111,18 @@ Birincil karşılaştırma, aynı yazılım vakası için Standard ve CCDG koşu
 
 Örneklem planlaması, doğrulayıcı sonuçlar görülmeden önce kaydedilen McNemar tasarım varsayımlarına dayanmıştır: P(Standard doğru, CCDG yanlış)=0,05 ve P(Standard yanlış, CCDG doğru)=0,60; hedef güç 0,80, α=0,05 ve 16 bağımsız vaka için hesaplanan güç yaklaşık 0,807'dir. Bu değerler tasarım varsayımlarıdır; gözlenen pilot veya doğrulayıcı sonuçlardan türetilmemiştir.
 
+## Proje İş-Zaman Çizelgesi
+
+Çizelgede **X** tamamlanan/yürütülen işi, **P** planlanan işi gösterir. Ekim 2026 itibarıyla tamamlanan deney kayıtları ile devam eden rapor, puanlama kalibrasyonu ve başvuru hazırlığı birbirinden ayrılmıştır.
+
+| İşin adı | Nisan | Mayıs | Haziran | Temmuz | Ağustos | Eylül | Ekim | Kasım | Aralık | Ocak |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Literatür, araştırma sorusu ve hipotezler |  |  |  |  |  | X | X |  |  |  |
+| Aday vakalar, CCDG yapısı ve doğrulama kodu |  |  |  |  |  | X | X | P |  |  |
+| Pilot ve doğrulayıcı deney / analiz |  |  |  |  |  |  | X |  |  |  |
+| Rapor, kaynakça ve başvuru paketi |  |  |  |  |  |  | X | P | P | P |
+| Puanlama kalibrasyonu ve eşleştirilmiş takip tasarımı |  |  |  |  |  |  |  | P | P | P |
+
 ## 4. Bulgular
 
 ### 4.1 Çalıştırma ve bütünlük sonuçları
@@ -145,13 +167,13 @@ Bu sebeple p=1,00 sonucu **koşulların eşdeğer olduğunun kanıtı değildir*
 
 Pilot deneyden sonra, katı tam-teşhis puanlamasının doğal dildeki açıklama biçimlerini başarısız sayabileceği görüldüğünden, doğrulayıcı deneyin birincil ölçütü kaynak kanıtlarına dayalı sabit kök neden alias'larına dönüştürülmüştür. Değişiklik 9 Ekim 2026'da, doğrulayıcı çıktılar incelenmeden önce kayda alınmıştır; ancak pilot çıktıları puanlama sorununun teşhisi için görülmüştür. Bu nedenle bu karar, bütün model çıktıları görülmeden önce eksiksiz biçimde ön kayıt yapılmış bir karar olarak sunulmamaktadır. Vaka seçiminin model çıktılarından bağımsız olduğu ve alias ifadelerinin model çıktılarından türetilmediği kaydedilmiştir. Pilot değerlendirmesi ve doğrulayıcı sonuçlar sonradan değiştirilmemiştir.
 
-## 5. Tartışma
+## Sonuç ve Tartışma
 
 Araştırmanın olumlu yönleri, aynı vaka havuzunun iki koşulda çalıştırılması, tohumların bağımsız vaka sayılmaması, model revizyonunun sabitlenmesi, ground truth'un model bağlamlarından çıkarılması ve çıktıların hash'lerle doğrulanmasıdır. Bununla birlikte, kod denetimi Standard ve CCDG bağlamlarının sunulan bilgi bakımından tam eşleştirilmediğini göstermiştir: Standart bağlam açık hata açıklamasını içerirken CCDG bağlamı bunu aynı biçimde sunmamış ve açık bağımlılık kenarları eklemiştir. Bu karışan değişken, tarihsel deneyin yalnızca grafik gösterimi etkisini izole etmesini engeller. Ayrıca birincil ölçüt, bitişik ifade eşleşmesini anlamsal doğruluğun vekili olarak kullandığından parafrazları yanlışlıkla başarısız sayabilir.
 
 Sonuç, CCDG lehine istatistiksel kanıt sağlamamaktadır; ancak birincil ölçütün tüm vakaları başarısız sınıflandırması nedeniyle CCDG aleyhine güvenilir bir etkisizlik sonucu da sağlamamaktadır. Anlamsal soruyu sınamak için yeni bir doğrulayıcı deneyden önce, skorlayıcının insan uzmanlar tarafından körlenmiş koşullarda test edilmesi, eşanlamlı/parafraz vakalarının önceden tanımlı kurallarla puanlanması ve yeni bağımsız vaka örnekleminin sonuçlara bakılmadan önce kaydedilmesi gerekir. Ayrıca koşullar arasında aynı temel hata açıklamasını koruyan üç koşullu tasarım kullanılmalı; CCDG üçlüleri aynı bağımlılık bilgisini doğal dilde sunan karşılaştırma koluyla sınanmalıdır. Bu mevcut 160 çıktının sonradan yeniden puanlanması halinde yapılacak değerlendirme yalnızca keşfedici (exploratory) sayılmalı; değiştirilen puanlar mevcut doğrulayıcı sonuç gibi sunulmamalıdır.
 
-## 6. Sınırlılıklar
+### Sınırlılıklar
 
 **Bağlam bilgi paritesi:** Tarihsel Standard Context açık hata açıklamasını içerirken CCDG Context bu alanı aynı biçimde sunmamıştır; CCDG ayrıca açık bağımlılık kenarları eklemiştir. Bu karışan değişken, saf temsil etkisinin ayrıştırılmasını engeller.
 
@@ -163,15 +185,23 @@ Sonuç, CCDG lehine istatistiksel kanıt sağlamamaktadır; ancak birincil ölç
 6. **Puanlama protokolü kronolojisi:** Birincil ölçüt pilot sonrası değiştirilmiş ve bu değişiklik kayda alınmıştır. Bu nedenle ön kayıt sınırlılığı açıkça belirtilmelidir.
 7. **Model kapsamı:** Sonuçlar yalnızca sabitlenen Qwen2.5-3B-Instruct checkpoint'i, FP16 yüklemesi, istemleri, ayarları ve seçilen vaka havuzu bağlamında geçerlidir.
 
-## 7. Sonuç ve öneriler
+### Sonuç
 
 Pilot ve doğrulayıcı deneylerin teknik çalıştırması tamamlanmış; 40 pilot ve 160 doğrulayıcı inference kaydı, JSON ayrıştırma ve artifact hash kontrolleriyle doğrulanmıştır. Dondurulmuş doğrulayıcı birincil alias ölçütünde Standard ve CCDG koşullarının ikisi de 0/80 geçiş göstermiş; 16 vakanın tamamı iki koşulda da başarısız sınıflandırılmıştır. Exact iki taraflı McNemar sonucu p=1,00 ve gözlenen risk farkı 0,00'dır.
 
 Bu bulgu, CCDG'nin anlamsal teşhiste yararsız olduğu ya da iki yöntemin eşdeğer olduğu şeklinde yorumlanamaz. Ölçüt taban etkisi göstermiştir ve araştırmanın anlamsal hipotezini cevaplayamamıştır; ayrıca koşulların bilgi içeriği tam eşleştirilmediği için saf grafik gösterimi etkisi izole edilememiştir. Bilimsel olarak savunulabilir sonuç, tarihsel kurulumda dondurulmuş birincil ölçüt altında fark tespit edilmediğini, ancak bu tasarımın anlamsal hipotezi çözümlemek için yetersiz kaldığını belirtmektir. Sonraki çalışma, kaynak kanıtlarına dayalı ölçüt kalibrasyonu ve aynı temel bilgiyi koruyan üç koşullu (Standart, bağımlılık bilgisi içeren düz metin, CCDG üçlüleri) yeni bağımsız vaka tasarımıyla önceden dondurulmuş bir protokol izlemelidir.
 
-## 8. Yeniden üretilebilirlik ve kanıt kayıtları
+## Öneriler
 
-- Depo: https://github.com/MahmutVezir/dijitalikiz
+1. Puanlama aracını kaynak kod, hata raporu, başarısız test ve sabit düzeltme revizyonuyla doğrulanmış örnekler üzerinde kalibre etmek; doğru parafraz, yanlış mekanizma, olumsuzlama ve birden fazla ihtimal içeren yanıtları ayırmak.
+2. Yeni doğrulayıcı çalışmada aynı temel hata açıklamasını koruyan üç koşul kullanmak: Standart bağlam (A), bağımlılık bilgisi içeren düz metin (B) ve aynı kenar bilgilerini üçlülerle gösteren CCDG (C). Birincil karşılaştırmayı C-B olarak önceden belirlemek.
+3. Puanlama rubriğini, bağımsız vaka listesini, model/tokenizer sürümünü, tüm istem hash'lerini, örneklem büyüklüğünü ve istatistiksel analiz planını yeni inference başlamadan önce dondurmak.
+4. Vaka kalitesini ve bağımsızlığını artırırken her yazılım hatasını ayrı bir istatistiksel birim saymak; aynı hatadaki tekrarları bağımsız yeni vakalar olarak değerlendirmemek.
+5. Sonuçlar olumlu, olumsuz veya belirsiz olduğunda tümünü raporlamak; hipotezi desteklemek için veriyi, eşik değerlerini veya puanlama yöntemini sonuçlar görüldükten sonra değiştirmemek.
+
+## Yeniden Üretilebilirlik ve Kanıt Kayıtları
+
+- Kaynak deposu: https://github.com/MahmutVezir/dijitalikiz (URL kaynak kökenini tanımlar; herkese açık erişim garantisi değildir).
 - Pilot çalıştırma: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37968099402
 - Doğrulayıcı çalıştırma: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37976682761
 - Pilot kaynak commit: `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`
@@ -181,6 +211,8 @@ Bu bulgu, CCDG'nin anlamsal teşhiste yararsız olduğu ya da iki yöntemin eşd
 - Sonuç özeti: `data/benchmark/confirmatory_result_summary.json`
 - Ayrıntılı sonuç ve bağımsız denetim: `docs/CONFIRMATORY_RESULTS_2026-10-09.md`, `scripts/audit_confirmatory_artifact.py`
 - Skorlama değişikliği: `docs/CONFIRMATORY_SCORING_PROTOCOL.md`
+- Pilot arşivinin bağımsız bütünlük denetimi: `docs/PILOT_ARTIFACT_AUDIT_2026-10-10.md`; CI denetimi: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37994308924
+- Yeni adayın pre-fix/post-fix regresyon doğrulaması: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772
 
 ## Kaynakça
 
@@ -205,3 +237,22 @@ Bu bulgu, CCDG'nin anlamsal teşhiste yararsız olduğu ya da iki yöntemin eşd
 [10] Chen, X., Lin, M., Schärli, N., & Zhou, D. (2023). Teaching Large Language Models to Self-Debug. https://arxiv.org/abs/2304.05128
 
 [11] Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., et al. (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. *Advances in Neural Information Processing Systems (NeurIPS)*. https://arxiv.org/abs/2005.11401
+
+## Ekler
+
+### Ek 1. Dondurulmuş deney kayıtları ve bütünlük denetimi
+
+Pilot ve doğrulayıcı çalıştırmaların ham JSON kayıtları, `artifact_manifest.json` dosyaları, kaynak commit kimlikleri ve SHA-256 değerleri proje arşivinde saklanmaktadır. Doğrulayıcı arşivinde 212/212 dosya ve 160/160 inference kaydı; pilot arşivinde 55/55 manifest dosyası ve 40/40 kayıt doğrulanmıştır.
+
+### Ek 2. Sonuç ve puanlama kayıtları
+
+`docs/CONFIRMATORY_RESULTS_2026-10-09.md`, `data/benchmark/confirmatory_result_summary.json` ve `docs/SCORING_RUBRIC_CALIBRATION_PROTOCOL.md`. Dondurulmuş sonuçlar değiştirilmemiştir; mevcut çıktılara yönelik sonradan yapılacak insan değerlendirmesi yalnızca keşfedici olarak raporlanmalıdır.
+
+### Ek 3. Yöntem denetimleri ve sonraki çalışma tasarımı
+
+`docs/CONTEXT_INFORMATION_PARITY_AUDIT_2026-10-10.md`, `docs/NEXT_RESEARCH_PHASE_PLAN_2026-10-10.md` ve `docs/FOLLOWUP_SAMPLE_SIZE_SENSITIVITY_2026-10-10.md`. Bu kayıtlar tarihsel bağlam bilgi paritesi kısıtını ve sonraki üç koşullu deneyin önceden dondurulması gereğini açıklar.
+
+### Ek 4. Aday vaka kanıtı ve kaynak kod
+
+Commons Compress #770 için kaynak PR ve düzeltme öncesi/sonrası regresyon tekrarı: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772. Aynı regresyon doğrulaması düzeltme öncesi sürümde beklenen biçimde başarısız, düzeltilmiş sürümde başarılı olmuştur. İlgili kaynak kod, testler, şemalar, puanlama yardımcıları ve deney kayıtları sürümlü proje arşivinde tutulmaktadır. Depo bağlantısı herkese açık erişim garantisi değildir; erişim gereken dosyalar güncel TÜBİTAK başvuru sistemine ek belge olarak ve geçerli boyut/sayfa kurallarına göre sunulmalıdır. Bu aday dondurulmuş doğrulayıcı deney kümesine dahil edilmemiştir.
+
