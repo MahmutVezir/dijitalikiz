@@ -1,1 +1,1 @@
-[screening-only] Re-run red-green screen using isolated test diffs, not whole fixed-revision test files 2026-10-10
+[screening-only] Re-run isolated red-green harness with the documented Spring Resource test fixture adjustment 2026-10-10
