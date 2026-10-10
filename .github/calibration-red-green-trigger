@@ -4,3 +4,4 @@ mode=red-green-only-no-llm-inference
 retry=2026-10-10T13:30Z
 reason=disable-maven-cache-for-research-repo-checkout
 retry=report-search-and-log-copy-fix
+retry=parameterized-junit-and-focused-expiring-map-test
