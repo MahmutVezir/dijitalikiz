@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "status": "draft",
+  "frozen": false,
+  "minimum_examples_per_challenge_class": 4,
+  "required_challenge_classes": [
+    "canonical_correct",
+    "correct_paraphrase",
+    "wrong_mechanism",
+    "negated_correct_phrase",
+    "multiple_hypotheses",
+    "partial_diagnosis",
+    "unscorable_output"
+  ],
+  "files": {
+    "examples": "data/calibration/examples.jsonl",
+    "reviewer_a": "data/calibration/reviewer_a.jsonl",
+    "reviewer_b": "data/calibration/reviewer_b.jsonl",
+    "adjudication": "data/calibration/adjudication.jsonl"
+  },
+  "policy": {
+    "independent_from_pilot_and_confirmatory_cases": true,
+    "reviewers_blinded_to_model_condition_and_challenge_class": true,
+    "strict_binary_target": "Only adjudicated correct root-cause diagnoses count as correct; partial, incorrect, and unscorable examples are reported separately. Unscorable examples are excluded from matcher sensitivity/specificity.",
+    "frozen_study_artifacts_may_not_be_rescored_as_confirmatory": true
+  },
+  "freeze_metadata": {
+    "frozen_at_utc": null,
+    "rubric_version": null,
+    "adjudication_commit": null
+  }
+}
