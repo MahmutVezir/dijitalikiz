@@ -1,1 +1,1 @@
-[validate-only] Revalidate all candidate snapshot bindings, current mainline gates and frozen artifacts 2026-10-10T13:15Z
+[validate-only] Validate workflow guard tests, revision-bound snapshots, calibration gates and frozen artifacts 2026-10-10T13:22Z
