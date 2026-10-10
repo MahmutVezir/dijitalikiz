@@ -1,0 +1,150 @@
+name: Audit Unplanned Kaggle Kernel
+
+on:
+  push:
+    branches:
+      - research/scoring-calibration-mainline-v2
+    paths:
+      - ".github/kaggle-incident-audit-trigger"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dijitalikiz-incident-audit-run-134
+  cancel-in-progress: false
+
+jobs:
+  audit-unplanned-kernel:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/research/scoring-calibration-mainline-v2' && contains(github.event.head_commit.message, '[incident-audit]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+      KERNEL_REF: mahmutvezir/dijitalikiz-frozen-pilot-c8b6f8f2-38047007838-1
+
+    steps:
+      - name: Checkout audit workflow commit
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install Kaggle CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade kaggle
+          test -n "$KAGGLE_API_TOKEN" || {
+            echo "Missing GitHub Actions secret KAGGLE_API_TOKEN."
+            exit 1
+          }
+          kaggle --version
+
+      - name: Retrieve the existing kernel status, logs, and outputs only
+        shell: bash
+        run: |
+          set -uo pipefail
+          OUT="$GITHUB_WORKSPACE/incident-audit-output"
+          mkdir -p "$OUT/raw-output"
+
+          set +e
+          kaggle kernels status "$KERNEL_REF" > "$OUT/status.txt" 2>&1
+          STATUS_RC=$?
+          kaggle kernels logs "$KERNEL_REF" > "$OUT/kernel.log" 2>&1
+          LOG_RC=$?
+          kaggle kernels output "$KERNEL_REF" -p "$OUT/raw-output" --force > "$OUT/output-download.txt" 2>&1
+          OUTPUT_RC=$?
+          set -e
+
+          {
+            echo "kernel_ref=$KERNEL_REF"
+            echo "kernel_status_command_exit=$STATUS_RC"
+            echo "kernel_logs_command_exit=$LOG_RC"
+            echo "kernel_output_download_exit=$OUTPUT_RC"
+            echo "audit_commit=$GITHUB_SHA"
+            echo "note=This workflow only reads an existing kernel; it never pushes or executes a kernel."
+          } > "$OUT/command_exit_codes.txt"
+
+          echo "=== Kernel status response ==="
+          cat "$OUT/status.txt" || true
+          echo "=== Output download response ==="
+          cat "$OUT/output-download.txt" || true
+          echo "=== Tail of existing kernel execution log ==="
+          tail -n 100 "$OUT/kernel.log" || true
+
+      - name: Build a hash-bound incident inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          root = Path("incident-audit-output")
+          required = [
+              "pilot_manifest.json",
+              "PROMPT_TEMPLATE.txt",
+              "SYSTEM_PROMPT.txt",
+              "environment.json",
+              "model_load_preflight.json",
+              "pilot_records.jsonl",
+              "pilot_evaluation.json",
+              "case_level_analysis.json",
+              "pilot_qa_report.json",
+              "artifact_manifest.json",
+          ]
+          files = sorted(
+              p.relative_to(root).as_posix()
+              for p in root.rglob("*")
+              if p.is_file() and p.name != "audit_summary.json" and p.name != "SHA256SUMS.txt"
+          )
+          names = {Path(p).name for p in files}
+          record_files = [p for p in files if Path(p).name == "pilot_records.jsonl"]
+          record_counts = {}
+          for rel in record_files:
+              path = root / rel
+              try:
+                  record_counts[rel] = sum(1 for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
+              except UnicodeDecodeError:
+                  record_counts[rel] = "unreadable_as_utf8"
+          summary = {
+              "incident": "unplanned-run-38047007838",
+              "kernel_ref": "mahmutvezir/dijitalikiz-frozen-pilot-c8b6f8f2-38047007838-1",
+              "audit_type": "read_only_retrieval",
+              "model_inference_started_by_this_workflow": False,
+              "retrieved_files": files,
+              "required_artifact_names_found": [name for name in required if name in names],
+              "required_artifact_names_missing": [name for name in required if name not in names],
+              "pilot_record_file_line_counts": record_counts,
+              "sha256": {
+                  rel: hashlib.sha256((root / rel).read_bytes()).hexdigest()
+                  for rel in files
+              },
+          }
+          (root / "audit_summary.json").write_text(
+              json.dumps(summary, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+
+          find incident-audit-output -type f ! -name SHA256SUMS.txt -print0 \
+            | sort -z \
+            | xargs -0 -r sha256sum > incident-audit-output/SHA256SUMS.txt
+          echo "=== Archived incident files ==="
+          find incident-audit-output -type f -printf '%p (%s bytes)\n' | sort
+
+      - name: Upload read-only incident audit artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: unplanned-kaggle-run-134-audit-${{ github.run_id }}
+          path: incident-audit-output/
+          if-no-files-found: error
+          retention-days: 30
