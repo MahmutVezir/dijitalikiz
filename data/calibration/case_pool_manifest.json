@@ -18,7 +18,9 @@
     {
       "case_id": "commons-compress-github-pr-770-tar-pax-header-memory-bound",
       "repository_url": "https://github.com/apache/commons-compress",
-      "regression_test_targets": ["PaxHeaderOomTest#testDefaultLimitRejectsOversizedPaxHeader"],
+      "regression_test_targets": [
+        "PaxHeaderOomTest#testDefaultLimitRejectsOversizedPaxHeader"
+      ],
       "case_record_path": "data/calibration/cases/commons-compress-github-pr-770-tar-pax-header-memory-bound.json",
       "source_url": "https://github.com/apache/commons-compress/pull/770",
       "fix_revision": "bab5629f6b3cea44cf0622cdd92c8cefcfbf360a",
@@ -41,12 +43,18 @@
       "reproduction_evidence_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772",
       "ground_truth_adjudication_status": "pending_independent_review",
       "role": "calibration_candidate_and_possible_future_study_candidate",
-      "inference_allowed": false
+      "inference_allowed": false,
+      "reproduction_workflow_run_id": "37993954772",
+      "reproduction_artifact_id": null,
+      "observed_pre_fix_failure_signal": "A 20 MiB PAX header was not rejected on the pinned pre-fix revision; the regression assertion failed because MemoryLimitException was not thrown."
     },
     {
       "case_id": "commons-compress-github-pr-803-empty-framed-stream-recursion",
       "repository_url": "https://github.com/apache/commons-compress",
-      "regression_test_targets": ["FramedLZ4CompressorInputStreamTest#testManyEmptyConcatenatedFramesDoNotOverflowStack", "FramedSnappyCompressorInputStreamTest#testManyPaddingChunksDoNotOverflowStack"],
+      "regression_test_targets": [
+        "FramedLZ4CompressorInputStreamTest#testManyEmptyConcatenatedFramesDoNotOverflowStack",
+        "FramedSnappyCompressorInputStreamTest#testManyPaddingChunksDoNotOverflowStack"
+      ],
       "case_record_path": "data/calibration/cases/commons-compress-github-pr-803-empty-framed-stream-recursion.json",
       "source_url": "https://github.com/apache/commons-compress/pull/803",
       "fix_revision": "7e688ebdba45ab16aa5b7f870474dac285a494af",
@@ -64,15 +72,21 @@
       ],
       "ccdg_suitability": "strong",
       "contamination_risk": "medium_public_exposure_exact_training_cutoff_unknown",
-      "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
+      "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
       "ground_truth_adjudication_status": "pending_independent_review",
       "role": "calibration_candidate_and_possible_future_study_candidate",
-      "inference_allowed": false
+      "inference_allowed": false,
+      "reproduction_evidence_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
+      "reproduction_workflow_run_id": "38045048274",
+      "reproduction_artifact_id": 11667702346,
+      "observed_pre_fix_failure_signal": "Reading many legal empty LZ4 frames and many Snappy padding chunks triggered stack overflow on the pinned pre-fix revision."
     },
     {
       "case_id": "commons-collections-github-pr-694-passive-expiring-map-synchronized-views",
       "repository_url": "https://github.com/apache/commons-collections",
-      "regression_test_targets": ["PassiveExpiringMapTest#testCollectionsSynchronizedMapExpiration"],
+      "regression_test_targets": [
+        "PassiveExpiringMapTest#testCollectionsSynchronizedMapExpiration"
+      ],
       "case_record_path": "data/calibration/cases/commons-collections-github-pr-694-passive-expiring-map-synchronized-views.json",
       "source_url": "https://github.com/apache/commons-collections/pull/694",
       "fix_revision": "491fc77589f1b262d19f5c109fc42794edfcb36e",
@@ -90,15 +104,22 @@
       ],
       "ccdg_suitability": "strong",
       "contamination_risk": "medium_public_exposure_exact_training_cutoff_unknown",
-      "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
+      "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
       "ground_truth_adjudication_status": "pending_independent_review",
       "role": "calibration_candidate_and_possible_future_study_candidate",
-      "inference_allowed": false
+      "inference_allowed": false,
+      "reproduction_evidence_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
+      "reproduction_workflow_run_id": "38045048274",
+      "reproduction_artifact_id": 11667447648,
+      "observed_pre_fix_failure_signal": "An expired entry remained visible through a synchronized map view on the pinned pre-fix revision."
     },
     {
       "case_id": "commons-collections-github-pr-731-transformed-multivalued-map-null-transformer",
       "repository_url": "https://github.com/apache/commons-collections",
-      "regression_test_targets": ["TransformedMultiValuedMapTest#testPutAllIterableWithNullTransformers", "TransformedMultiValuedMapTest#testPutAllIterableAppliesTransformValueOverride"],
+      "regression_test_targets": [
+        "TransformedMultiValuedMapTest#testPutAllIterableWithNullTransformers",
+        "TransformedMultiValuedMapTest#testPutAllIterableAppliesTransformValueOverride"
+      ],
       "case_record_path": "data/calibration/cases/commons-collections-github-pr-731-transformed-multivalued-map-null-transformer.json",
       "source_url": "https://github.com/apache/commons-collections/pull/731",
       "fix_revision": "b0ce37f0d62f0a6efa306d90d446f6d0f9549bdb",
@@ -116,15 +137,21 @@
       ],
       "ccdg_suitability": "moderate",
       "contamination_risk": "medium_public_exposure_exact_training_cutoff_unknown",
-      "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
+      "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
       "ground_truth_adjudication_status": "pending_independent_review",
       "role": "calibration_candidate",
-      "inference_allowed": false
+      "inference_allowed": false,
+      "reproduction_evidence_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
+      "reproduction_workflow_run_id": "38045048274",
+      "reproduction_artifact_id": 11666767357,
+      "observed_pre_fix_failure_signal": "Bulk insertion raised NullPointerException when the optional value transformer was null on the pinned pre-fix revision."
     },
     {
       "case_id": "commons-lang-github-pr-1783-methodutils-nonpublic-class-accessible-method",
       "repository_url": "https://github.com/apache/commons-lang",
-      "regression_test_targets": ["MethodUtilsTest#testInvokeMethodOnNonPublicClass"],
+      "regression_test_targets": [
+        "MethodUtilsTest#testInvokeMethodOnNonPublicClass"
+      ],
       "case_record_path": "data/calibration/cases/commons-lang-github-pr-1783-methodutils-nonpublic-class-accessible-method.json",
       "source_url": "https://github.com/apache/commons-lang/pull/1783",
       "fix_revision": "d8f4116d4ba03ed32b104b3af891de7a67f2ce97",
@@ -142,15 +169,21 @@
       ],
       "ccdg_suitability": "moderate",
       "contamination_risk": "medium_public_exposure_exact_training_cutoff_unknown",
-      "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
+      "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
       "ground_truth_adjudication_status": "pending_independent_review",
       "role": "calibration_candidate",
-      "inference_allowed": false
+      "inference_allowed": false,
+      "reproduction_evidence_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
+      "reproduction_workflow_run_id": "38045048274",
+      "reproduction_artifact_id": 11666737592,
+      "observed_pre_fix_failure_signal": "Invoking a public interface method through a non-public implementation raised IllegalAccessException on the pinned pre-fix revision."
     },
     {
       "case_id": "commons-codec-github-pr-443-git-identifiers-utf8-tree-order",
       "repository_url": "https://github.com/apache/commons-codec",
-      "regression_test_targets": ["GitIdentifiersTest#testTreeIdSortsSupplementaryPlaneNamesLikeGit"],
+      "regression_test_targets": [
+        "GitIdentifiersTest#testTreeIdSortsSupplementaryPlaneNamesLikeGit"
+      ],
       "case_record_path": "data/calibration/cases/commons-codec-github-pr-443-git-identifiers-utf8-tree-order.json",
       "source_url": "https://github.com/apache/commons-codec/pull/443",
       "fix_revision": "f49b96388c2d97d093d8669cf74f57a5a92e7dff",
@@ -168,15 +201,22 @@
       ],
       "ccdg_suitability": "moderate",
       "contamination_risk": "medium_public_exposure_exact_training_cutoff_unknown",
-      "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
+      "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
       "ground_truth_adjudication_status": "pending_independent_review",
       "role": "calibration_candidate",
-      "inference_allowed": false
+      "inference_allowed": false,
+      "reproduction_evidence_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
+      "reproduction_workflow_run_id": "38045048274",
+      "reproduction_artifact_id": 11667397748,
+      "observed_pre_fix_failure_signal": "The tree identifier differed from git write-tree for supplementary-plane Unicode names on the pinned pre-fix revision."
     },
     {
       "case_id": "commons-lang-github-pr-1808-randomstringutils-tilde-exclusive-upper-bound",
       "repository_url": "https://github.com/apache/commons-lang",
-      "regression_test_targets": ["RandomStringUtilsTest#testRandomGraphIncludesTilde", "RandomStringUtilsTest#testRandomPrintIncludesTilde"],
+      "regression_test_targets": [
+        "RandomStringUtilsTest#testRandomGraphIncludesTilde",
+        "RandomStringUtilsTest#testRandomPrintIncludesTilde"
+      ],
       "case_record_path": "data/calibration/cases/commons-lang-github-pr-1808-randomstringutils-tilde-exclusive-upper-bound.json",
       "source_url": "https://github.com/apache/commons-lang/pull/1808",
       "fix_revision": "75d71af80ace2d75dab3f6bb82ac2ef91650634e",
@@ -194,10 +234,14 @@
       ],
       "ccdg_suitability": "weak_single_component",
       "contamination_risk": "medium_public_exposure_exact_training_cutoff_unknown",
-      "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
+      "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
       "ground_truth_adjudication_status": "pending_independent_review",
       "role": "calibration_only_low_ccdg_suitability",
-      "inference_allowed": false
+      "inference_allowed": false,
+      "reproduction_evidence_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
+      "reproduction_workflow_run_id": "38045048274",
+      "reproduction_artifact_id": 11666727569,
+      "observed_pre_fix_failure_signal": "The documented tilde endpoint was not generated within the regression test's bounded attempts on the pinned pre-fix revision."
     }
   ],
   "excluded_from_current_calibration_pool": [
@@ -216,6 +260,6 @@
     "frozen": false,
     "date_utc": null,
     "eligible_case_ids": [],
-    "reason": "Do not freeze or run model inference until each chosen case has an independent pre-fix failure/fixed-revision pass and its root-cause/CCDG annotation has been independently reviewed."
+    "reason": "All seven candidate regressions have red/green reproduction evidence, but independent root-cause/CCDG adjudication and the scoring calibration review are not complete. No model inference is permitted."
   }
 }
