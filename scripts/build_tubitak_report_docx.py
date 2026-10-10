@@ -173,6 +173,20 @@ def add_schedule_table(doc, schedule_xml, rows):
         vals = task + [""] * (11 - len(task))
         for ci in range(11):
             set_cell(tbl.cell(ri, ci), vals[ci], SCHEDULE_PT, alignment=WD_ALIGN_PARAGRAPH.CENTER if ci else WD_ALIGN_PARAGRAPH.LEFT)
+
+    # Repeat the official two-row month header when a table must continue on
+    # another page, and prevent any task row from splitting across pages.
+    for ri in (0, 1):
+        tr_pr = tbl.rows[ri]._tr.get_or_add_trPr()
+        if not tr_pr.xpath("./w:tblHeader"):
+            header_flag = OxmlElement("w:tblHeader")
+            header_flag.set(qn("w:val"), "true")
+            tr_pr.append(header_flag)
+    for ri in range(2, len(tbl.rows)):
+        tr_pr = tbl.rows[ri]._tr.get_or_add_trPr()
+        if not tr_pr.xpath("./w:cantSplit"):
+            tr_pr.append(OxmlElement("w:cantSplit"))
+
     tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
     spacer = doc.add_paragraph()
     spacer.paragraph_format.space_after = Pt(2)
@@ -300,6 +314,8 @@ def build_body(source, doc, schedule_xml):
             p.paragraph_format.space_after = Pt(2)
             p.paragraph_format.keep_with_next = True
             p.paragraph_format.line_spacing = 1.0
+            if current_section == "Proje İş-Zaman Çizelgesi":
+                p.paragraph_format.page_break_before = True
             p.alignment = WD_ALIGN_PARAGRAPH.LEFT
             set_font(p.add_run(current_section), BODY_PT, bold=True)
             i += 1
