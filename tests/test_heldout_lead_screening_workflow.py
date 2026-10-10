@@ -25,7 +25,7 @@ def test_heldout_lead_screening_is_scoped_and_read_only():
     assert "model.generate" not in workflow
 
 
-def test_heldout_lead_screening_pins_three_exact_pre_fix_and_fixed_revisions():
+def test_heldout_lead_screening_pins_exact_revisions_for_all_discovery_leads():
     workflow = workflow_text()
     expected = {
         "lang-1800-era-calendar": (
@@ -39,6 +39,18 @@ def test_heldout_lead_screening_pins_three_exact_pre_fix_and_fixed_revisions():
         "collections-728-ordered-next-key": (
             "a5248efd7f4f857f88770565414948e2d0524933",
             "04b30be69f4355f218d587703bc20b1a591c3e3c",
+        ),
+        "net-404-ftps-data-hostname-verifier": (
+            "faa4edd7e287a3db465a32efd9c2d5faa15757fe",
+            "a79729464f6e69b773171ff30e3d483cab7afd70",
+        ),
+        "net-403-ftp-parser-type-before-instantiation": (
+            "a3d19751891edb9f7cb8c11bc344eaf1683b2b32",
+            "6e38749760c0366aac1637c7dc15e4ccf76329c9",
+        ),
+        "text-768-stringmatcher-charsequence-window": (
+            "a6cbba814422a06a0366468b2346f52aaacf8f3d",
+            "81de4f7a7c7d3b13d89edd72d4c4b92aa33e6c81",
         ),
     }
     for case_id, (pre_fix, fixed) in expected.items():
