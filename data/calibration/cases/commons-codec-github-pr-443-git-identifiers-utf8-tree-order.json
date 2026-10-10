@@ -57,5 +57,11 @@
     "pre_fix_revision": "506b762f724fbca2fa2dc198b81598dbb214fd28",
     "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
     "case_status": "calibration_case_draft_not_eligible"
+  },
+  "software_twin_snapshot": {
+    "repository_url": "https://github.com/apache/commons-codec",
+    "snapshot_revision": "506b762f724fbca2fa2dc198b81598dbb214fd28",
+    "regression_test": "GitIdentifiersTest#testTreeIdSortsSupplementaryPlaneNamesLikeGit",
+    "observed_failure_signal": "The tree identifier differed from git write-tree for supplementary-plane Unicode names on the pinned pre-fix revision."
   }
 }
