@@ -28,6 +28,11 @@ def _complete_fixture(root: Path):
         root / "schemas" / "research_case.schema.json",
         json.loads(shutil_schema.read_text(encoding="utf-8")),
     )
+    review_schema = ROOT / "schemas" / "case_ground_truth_review_audit.schema.json"
+    _write_json(
+        root / "schemas" / "case_ground_truth_review_audit.schema.json",
+        json.loads(review_schema.read_text(encoding="utf-8")),
+    )
     _write_json(root / "data" / "pilot" / "pilot_manifest.json", {"cases": []})
     _write_json(root / "data" / "benchmark" / "benchmark_manifest.json", {"case_ids": []})
 
