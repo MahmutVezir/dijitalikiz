@@ -103,7 +103,7 @@ Birincil karşılaştırma, aynı yazılım vakası için Standard ve CCDG koşu
 | Vaka/CCDG |  |  |  |  |  | X | X | P |  |  |
 | Deney ve istatistiksel analiz |  |  |  |  |  |  | X |  |  |  |
 | Rapor ve başvuru paketi |  |  |  |  |  |  | X | P | P | P |
-| Puanlama kalibrasyonu ve yeni tasarım |  |  |  |  |  |  |  | P | P | P |
+| Skor ve tasarım |  |  |  |  |  |  |  | P | P | P |
 
 ## Bulgular
 
