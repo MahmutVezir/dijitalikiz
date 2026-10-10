@@ -275,5 +275,15 @@
     "date_utc": null,
     "eligible_case_ids": [],
     "reason": "All seven candidate regressions have red/green reproduction evidence, but independent root-cause/CCDG adjudication and the scoring calibration review are not complete. No model inference is permitted."
+  },
+  "review_gate": {
+    "status": "pending",
+    "frozen": false,
+    "protocol_version": "case-ground-truth-review-v1",
+    "audit_path": "data/calibration/case_ground_truth_review_audit.json",
+    "audit_sha256": null,
+    "reviewers_required": 2,
+    "independent_adjudicator_required": true,
+    "reason": "No independent human reviewer responses or adjudication record have been received. Software assertions cannot substitute for human source review."
   }
 }
