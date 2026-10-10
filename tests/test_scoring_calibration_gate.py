@@ -112,6 +112,8 @@ def _complete_fixture(root: Path):
         "status": "adjudicated",
         "frozen": True,
         "minimum_examples_per_challenge_class": 1,
+        "minimum_distinct_source_cases": 7,
+        "minimum_distinct_cases_per_challenge_class": 1,
         "required_challenge_classes": CHALLENGE_CLASSES,
         "files": {
             "examples": "data/calibration/examples.jsonl",
