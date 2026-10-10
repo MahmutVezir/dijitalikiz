@@ -95,6 +95,14 @@ def _validate_human_review_audit(
     if audit is None:
         return
 
+    review_schema_path = root / "schemas" / "case_ground_truth_review_audit.schema.json"
+    review_schema = _read_json(review_schema_path, issues, "case_ground_truth_review_audit_schema")
+    if review_schema is not None:
+        schema_validator = Draft202012Validator(review_schema, format_checker=FormatChecker())
+        schema_errors = sorted(schema_validator.iter_errors(audit), key=lambda error: list(error.path))
+        for error in schema_errors[:20]:
+            issues.append(f"case_ground_truth_review_audit_schema_error: {error.message}")
+
     try:
         audit_sha256 = hashlib.sha256(audit_path.read_bytes()).hexdigest()
     except OSError as exc:
