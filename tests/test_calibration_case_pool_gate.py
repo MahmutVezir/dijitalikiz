@@ -119,6 +119,9 @@ def test_all_candidate_case_records_validate_without_ground_truth_label_leakage(
     assert not any("ground_truth_root_cause_label_leaked_into_context" in issue for issue in report["issues"])
 
     manifest = json.loads((ROOT / "data" / "calibration" / "case_pool_manifest.json").read_text(encoding="utf-8"))
+    assert manifest["model_inference_permitted"] is False
+    assert manifest["selection_freeze"]["frozen"] is False
+    assert manifest["selection_freeze"]["eligible_case_ids"] == []
     for candidate in manifest["candidates"]:
         case_path = ROOT / candidate["case_record_path"]
         record = json.loads(case_path.read_text(encoding="utf-8"))
@@ -130,6 +133,17 @@ def test_all_candidate_case_records_validate_without_ground_truth_label_leakage(
         assert len(snapshot["observed_failure_signal"].strip()) >= 15
         assert record["provenance"]["fix_commit"] == candidate["fix_revision"]
         assert record["provenance"]["pre_fix_revision"] == candidate["pre_fix_revision"]
+        assert record["provenance"]["reproduction_status"] == candidate["reproduction_status"]
+        assert record["provenance"]["reproduction_status"] == "independent_pre_fix_failure_and_fixed_revision_pass"
+        assert record["provenance"]["ground_truth_adjudication_status"] == "pending_independent_review"
+        assert record["provenance"]["role"] == "scoring_calibration_candidate_only"
+
+    by_id = {candidate["case_id"]: candidate for candidate in manifest["candidates"]}
+    parallel_case = by_id["commons-compress-github-pr-803-empty-framed-stream-recursion"]
+    assert parallel_case["ccdg_suitability"] == "weak_for_single_cross_component_chain_parallel_decoder_paths"
+    assert parallel_case["role"] == "calibration_only_parallel_decoder_paths"
+    weak_control = by_id["commons-lang-github-pr-1808-randomstringutils-tilde-exclusive-upper-bound"]
+    assert weak_control["ccdg_suitability"] == "weak_single_component_boundary_control"
 
 def test_qualified_and_frozen_case_pool_can_pass_gate(tmp_path):
     manifest_path, _ = _complete_fixture(tmp_path)
