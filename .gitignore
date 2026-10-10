@@ -7,3 +7,11 @@ venv/
 .dist-info/
 build/
 dist/
+
+# Private/blinded scoring-calibration materials (never commit reviewer identity,
+# independent annotations, unblinding key, or intermediate packets).
+data/calibration/reviewer_a.jsonl
+data/calibration/reviewer_b.jsonl
+data/calibration/adjudication.jsonl
+data/calibration/review_key_private.json
+data/calibration/review_packets/
