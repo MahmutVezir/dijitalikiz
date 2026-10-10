@@ -35,7 +35,7 @@ The script writes:
 - `packet_manifest.json`
 - `REVIEWER_INSTRUCTIONS.md`
 
-Give Reviewer A only A's packet and Reviewer B only B's packet. The packets use different random orderings and omit provisional root-cause labels, component labels, `I_base`, CCDG edges, and the selection rationale. Keep `review_key_private.json` outside version control and inaccessible to both reviewers until both independent submissions are locked. Do not place response files in the repository while review is in progress.
+Give Reviewer A only A's packet and Reviewer B only B's packet. The packets use different random orderings and omit provisional root-cause labels, component labels, `I_base`, CCDG edges, selection rationale, the public PR URL/body, the reproduction-log URL, and the observed-failure synopsis. They provide the exact repository, pre-fix/fixed revisions, revision tree links, and regression test targets so reviewers can inspect the source evidence directly. Reviewers should not open the public issue/PR discussion or pre-existing reproduction logs until their initial independent decisions are locked; these can prime the root-cause hypothesis. Keep `review_key_private.json` outside version control and inaccessible to both reviewers until both independent submissions are locked. Do not place response files in the repository while review is in progress.
 
 Each reviewer response must be a JSONL file with one record per `review_id`, containing at minimum these fields:
 - `review_id`, `reviewer_id`
