@@ -59,6 +59,12 @@ jobs:
             fix: 81de4f7a7c7d3b13d89edd72d4c4b92aa33e6c81
             tests: StringMatcherTest#testIsMatchCharSequencePassesBufferStartThrough,StringMatcherTest#testIsMatchCharSequenceStartDelegatesThroughTheCorrectedOverload,StringMatcherTest#testIsMatchOverloadsAgreeOnTheSameWindow,StringMatcherTest#testStringSubstitutorHandsACustomMatcherTheRealBufferStart
             test_files: src/test/java/org/apache/commons/text/matcher/StringMatcherTest.java
+          - case_id: net-400-crlf-command-injection
+            repo: apache/commons-net
+            pre_fix: 2a3aa71b077ae9290d9c3b95f6ad23b0e0a357c2
+            fix: a07b6c41b5c2369506e7d86c4808dc51317e1481
+            tests: FTPTest#testRejectCRLFInArgs,NNTPTest#testRejectCRLFInArgs,POP3Test#testRejectCRLFInArgs,SMTPTest#testRejectCRLFInArgs
+            test_files: src/test/java/org/apache/commons/net/ftp/FTPTest.java src/test/java/org/apache/commons/net/nntp/NNTPTest.java src/test/java/org/apache/commons/net/pop3/POP3Test.java src/test/java/org/apache/commons/net/smtp/SMTPTest.java
 
     env:
       UPSTREAM_REPO: ${{ matrix.repo }}
