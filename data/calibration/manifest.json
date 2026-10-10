@@ -24,7 +24,14 @@
     "independent_from_pilot_and_confirmatory_cases": true,
     "reviewers_blinded_to_model_condition_and_challenge_class": true,
     "strict_binary_target": "Only adjudicated correct root-cause diagnoses count as correct; partial, incorrect, and unscorable examples are reported separately. Unscorable examples are excluded from matcher sensitivity/specificity.",
+    "future_primary_endpoint": "Blinded source-grounded human adjudication at case level, unless a distinct preregistered protocol provides a justified alternative.",
     "frozen_study_artifacts_may_not_be_rescored_as_confirmatory": true
+  },
+  "readiness_policy": {
+    "minimum_initial_reviewer_exact_agreement": 0.8,
+    "minimum_initial_reviewer_cohen_kappa": 0.7,
+    "rationale": "Minimum reliability gate for the proposed blinded human rubric; thresholds are fixed before calibration annotations are collected.",
+    "low_matcher_accuracy_action": "Do not use the literal alias matcher as the primary semantic endpoint; retain it as a diagnostic and use blinded human adjudication for a separately preregistered study."
   },
   "freeze_metadata": {
     "frozen_at_utc": null,
