@@ -1,16 +1,10 @@
-# TÜBİTAK 2204-A Proje Raporu — Sonuçlarla Güncellenmiş Taslak
+# TÜBİTAK 2204-A Proje Raporu Taslağı
 
-> **Durum:** Deneyler tamamlandı ve artifact'ler doğrulandı. Bu dosya, 2026–2027 resmî TÜBİTAK Proje Yazım Şablonu'na aktarılmak üzere hazırlanmış içerik taslağıdır; resmî Word şablonuna son aktarım, başvuru alanları ve PDF son kontrolü ayrıca yapılmalıdır. Sonuçlar dondurulmuş deney kayıtlarından alınmıştır. Doğrulayıcı deneyin birincil ölçütü taban etkisi göstermiştir; bu rapor CCDG'nin anlamsal olarak etkisiz olduğunu iddia etmez.
+**Proje Ana Alanı:** Yazılım  
+**Proje Tematik Alanı:** Dijital İkiz  
+**Proje Adı (Başlığı):** LLM Tabanlı Çapraz-Bileşen Hata Teşhisinde Yapılandırılmış Bağımlılık Temsilinin Etkisinin Deneysel İncelenmesi
 
-## Proje adı
-
-**LLM Tabanlı Çapraz-Bileşen Hata Teşhisinde Yapılandırılmış Bağımlılık Temsilinin Etkisinin Deneysel İncelenmesi**
-
-**Ana alan:** Yazılım  
-**Tematik alan:** Dijital İkiz  
-**Proje türü:** Kontrollü deneysel araştırma
-
-## Yapay Zekâ Araçları Kullanım Beyanı
+## Yapay Zeka Araçları Kullanım Beyanı
 
 **Kullanılan araçlar:** OpenAI ChatGPT (GPT-6; erişim dönemi: Eylül-Ekim 2026) ve deney yanıtlarını üreten sabit Qwen/Qwen2.5-3B-Instruct modeli (Ekim 2026).
 
@@ -20,27 +14,24 @@
 
 **İnsan müdahalesi:** Kod ve artefaktlar otomatik test ve SHA-256 bütünlük denetimleriyle kontrol edilmiştir. Ancak ölçüm aracının taban etkisi ve tarihsel bağlamlar arasındaki bilgi paritesi sınırlılığı açıkça raporlanmıştır. Başvuru sahibi, nihai raporu ve yöntemini bağımsız biçimde açıklayabildiğini başvuru öncesinde doğrulamalı; bu beyanı gerçek kullanım kayıtları ve güncel TYBS alanlarıyla son kez eşleştirmelidir.
 
-## Proje özeti
+## Özet
 
 Büyük dil modelleri (LLM), yazılım hatalarını açıklama ve kök nedenlerini belirleme amacıyla kullanılmaktadır. Ancak bağımlılık ilişkilerinin açık bir grafik olarak sunulmasının kök neden teşhisine katkısı, bağlamdaki diğer bilgi farklarından ayrılarak ölçülmelidir. Bu projede Standard Context ile CCDG Context koşulları karşılaştırılmış; sonraki kod denetimi iki bağlamın tam bilgi eşdeğerliğine sahip olmadığını ortaya çıkarmıştır. Bu nedenle sonuçlar saf grafik gösterimi etkisi olarak yorumlanmamaktadır. Deneylerde sabit bir Qwen2.5-3B-Instruct model checkpoint'i kullanılmış; dört gerçek yazılım hatası üzerinde 40 koşuluk pilot ve pilot vakalarından bağımsız 16 vaka üzerinde 160 koşuluk doğrulayıcı deney yürütülmüştür. Her vaka, Standard ve CCDG koşullarında beş sabit tohumla çalıştırılmış; aynı vaka iki koşulda eşleştirilmiş ve istatistiksel analiz birimi bağımsız yazılım vakası olarak tanımlanmıştır. Tüm 200 inference çıktısı ayrıştırılmış, ham çıktı hash'leri ve artifact dosya envanteri doğrulanmıştır. Dondurulmuş doğrulayıcı birincil ölçütü, her vaka için önceden belirlenmiş kök neden ifadelerinin açıklamada bitişik ifade olarak eşleşmesine dayanır. Bu ölçütte Standard 0/80, CCDG 0/80 geçiş üretmiş; 16 vakanın tamamı iki koşulda da başarısız sınıflandırılmış ve exact iki taraflı McNemar testi p=1,00 bulunmuştur. Bu sonuç, kullanılan eşleştiricinin taban etkisini göstermektedir; koşulların eşdeğerliğini veya CCDG'nin etkisizliğini kanıtlamaz. Araştırmanın anlamsal hipotezi bu operasyonelleştirmeyle çözümlenememiştir.
 
-## Anahtar kelimeler
+## Anahtar Kelimeler
 
 Büyük dil modelleri; yazılım hata teşhisi; kök neden analizi; CCDG; Defects4J.
 
-## İçindekiler
+## Amaç
 
-1. [Giriş](#1-giriş)
-2. [Amaç ve hipotezler](#2-amaç-ve-hipotezler)
-3. [Yöntem](#3-yöntem)
-4. [Bulgular](#4-bulgular)
-5. [Tartışma](#5-tartışma)
-6. [Sınırlılıklar](#6-sınırlılıklar)
-7. [Sonuç ve öneriler](#7-sonuç-ve-öneriler)
-8. [Yeniden üretilebilirlik ve kanıt kayıtları](#8-yeniden-üretilebilirlik-ve-kanıt-kayıtları)
-9. [Kaynakça](#kaynakça)
+Araştırmanın amacı, açık ve yapılandırılmış çapraz-bileşen bağımlılık temsilinin LLM tabanlı hata teşhisine etkisini tekrarlanabilir bir deneyle ölçmektir.
 
-## 1. Giriş
+- **H1 (araştırma beklentisi):** CCDG koşulu, Standard Context'e kıyasla vaka düzeyinde kök neden doğruluğunu artırır.
+- **H0 (istatistiksel sıfır hipotezi):** Dondurulmuş doğrulayıcı ölçütte Standard ve CCDG koşullarının vaka düzeyindeki başarı olasılıkları arasında fark yoktur.
+
+Birincil doğrulayıcı ölçüt, pilot sonrası ve doğrulayıcı inference başlamadan önce dondurulan vaka-özel kök neden alias eşleştiricisidir. Bu puanlama protokolü, pilot çıktılarından sonra ölçüm sorunu teşhis edilerek değiştirilmiştir. Bu nedenle nihai raporda ölçüt, tüm model çıktıları görülmeden önce kaydedilmiş gibi sunulmamaktadır. Önceki tam-teşhis puanı ve pilot verisi değiştirilmemiş; tam-teşhis ölçütü ikincil sonuç olarak korunmuştur.
+
+## Giriş
 
 Büyük dil modelleri doğal dilde hata açıklama, kod üretme ve yazılım mühendisliği iş akışlarında giderek daha fazla araştırılmaktadır. Gerçek hata kayıtlarının kontrollü biçimde incelenmesi, modellerin yalnızca örnek kodlarda değil, gerçek yazılım projelerinde de hangi koşullarda başarılı olduğunu ölçmek için önemlidir. Defects4J, gerçek Java projelerinden alınan hata örnekleri ve hata düzeltme sürümleriyle kontrollü yazılım çalışmaları için bir veri kaynağı sağlamaktadır (Just et al., 2014). SWE-bench gibi çalışmalar ise gerçek GitHub sorunlarının çözümünde model performansını ölçmenin, bağlamı ve çok dosyalı değişiklikleri doğru anlamayı gerektirdiğini göstermektedir (Jimenez et al., 2024).
 
@@ -50,18 +41,9 @@ Kod temsillerinde yapısal bilginin kullanılması yeni bir fikir değildir. Gra
 
 **Araştırma sorusu:** Aynı yazılım hatasına ilişkin temel kanıtlar korunurken, bileşenler arası bağımlılıkların açık CCDG biçiminde sunulması LLM'nin kök neden teşhis doğruluğunu Standard Context'e göre artırır mı?
 
-## 2. Amaç ve hipotezler
+## Yöntem
 
-Araştırmanın amacı, açık ve yapılandırılmış çapraz-bileşen bağımlılık temsilinin LLM tabanlı hata teşhisine etkisini tekrarlanabilir bir deneyle ölçmektir.
-
-- **H1 (araştırma beklentisi):** CCDG koşulu, Standard Context'e kıyasla vaka düzeyinde kök neden doğruluğunu artırır.
-- **H0 (istatistiksel sıfır hipotezi):** Dondurulmuş doğrulayıcı ölçütte Standard ve CCDG koşullarının vaka düzeyindeki başarı olasılıkları arasında fark yoktur.
-
-Birincil doğrulayıcı ölçüt, pilot sonrası ve doğrulayıcı inference başlamadan önce dondurulan vaka-özel kök neden alias eşleştiricisidir. Bu puanlama protokolü, pilot çıktılarından sonra ölçüm sorunu teşhis edilerek değiştirilmiştir. Bu nedenle nihai raporda ölçüt, tüm model çıktıları görülmeden önce kaydedilmiş gibi sunulmamaktadır. Önceki tam-teşhis puanı ve pilot verisi değiştirilmemiş; tam-teşhis ölçütü ikincil sonuç olarak korunmuştur.
-
-## 3. Yöntem
-
-### 3.1 Araştırma tasarımı
+### Araştırma tasarımı
 
 Aynı bağımsız yazılım vakası iki koşulda değerlendirilmiştir:
 
@@ -70,7 +52,7 @@ Aynı bağımsız yazılım vakası iki koşulda değerlendirilmiştir:
 
 Model checkpoint'i, sistem istemi, ana istem şablonu, tohumlar ve üretim ayarları sabit tutulmuştur. Ground truth iki deney koşulunun model bağlamlarına eklenmemiştir. Ancak bağlam oluşturucularının kod denetimi, iki koşulun sunulan bilgi bakımından tam eşleştirilmediğini göstermiştir: Standard Context açık hata açıklamasını içerirken CCDG Context açık bağımlılık kenarları eklemiş ve açık hata açıklaması alanını dışarıda bırakmıştır. Bu yüzden tarihsel deney, yalnızca grafik gösteriminin nedensel etkisini izole edememektedir. Bu fark mevcut sonuçlar görülerek sonradan düzeltilmemiş; tarihsel kod, istem hash'leri ve kayıtlar yeniden yazılmamıştır.
 
-### 3.2 Veri ve vaka seçimi
+### Veri ve vaka seçimi
 
 Pilot deney dört gerçek Apache Commons Math / Defects4J hatasından oluşturulmuştur: MATH-927, MATH-950, MATH-949 ve MATH-988. Her pilot vakası iki koşulda beş sabit tohumla çalıştırılmıştır: **4 × 2 × 5 = 40 inference**.
 
@@ -78,7 +60,7 @@ Doğrulayıcı deney, pilot vakalarını içermeyen 16 bağımsız vakadan oluş
 
 Seçilen tüm doğrulayıcı vakalar için kamuya açık olma kaynaklı contamination riski yüksek olarak etiketlenmiştir. Bu etiket, vakaların modelin eğitim verisinde kesinlikle bulunduğunu göstermez; yalnızca bu ihtimalin araştırma açısından bir sınırlılık olduğunu belirtir.
 
-### 3.3 Model ve üretim ayarları
+### Model ve üretim ayarları
 
 - Model: `Qwen/Qwen2.5-3B-Instruct`
 - Sabit checkpoint revizyonu: `aa8e72537993ba99e69dfaafa59ed015b17504d1`
@@ -93,7 +75,7 @@ Seçilen tüm doğrulayıcı vakalar için kamuya açık olma kaynaklı contamin
 
 İlk planlamada değerlendirilen GPTQ checkpoint'i, herhangi bir araştırma kaydı yazılmadan önce model yükleyicisinin bazı parametrelerde beklenmeyen başlatma bildirmesi ve tek örnekli örnekleme testinde geçersiz olasılıklarla karşılaşılması nedeniyle kullanılmamıştır. Yerine tam revizyonu sabitlenmiş resmî Qwen2.5-3B-Instruct checkpoint'i alınmış ve FP16 olarak yüklenmiştir. Bu, inference öncesi model uyumluluğu düzeltmesidir; pilot kayıtları başladıktan sonra yapılmış bir model değişikliği değildir.
 
-### 3.4 Ölçüm aracı ve vaka düzeyi karar
+### Ölçüm aracı ve vaka düzeyi karar
 
 Her inference sonucu JSON formatında istenmiş ve ayrıştırılmıştır. Dondurulmuş doğrulayıcı birincil ölçüt, her vaka için kaynak kanıtları ve ground truth temel alınarak önceden yazılan kök neden alias ifadelerinden en az birinin `root_cause_class` ve `explanation` alanlarının birleştirilmiş metninde normalleştirme sonrası **bitişik ifade** olarak bulunmasına dayanır. Noktalama işaretleri ve boşluklar normalleştirilir; eş anlamlı olabilecek fakat alias ifadesiyle bitişik eşleşmeyen açıklamalar geçiş sayılmaz. Ayrıştırma veya şema hataları başarısız koşu olarak ele alınır.
 
@@ -101,11 +83,11 @@ Bir vaka-koşul bileşimi, beş tohumun en az üçünde birincil ölçütü geç
 
 Bu ölçüt deterministik ve tekrarlanabilir olmakla birlikte semantik bir değerlendirici değildir. Anlamca doğruya yakın bir açıklamayı, sabit alias dizisi bitişik geçmediği için başarısız sayabilir. Bu sınırlılık, sonuçların yorumunda merkezi önemdedir.
 
-### 3.5 Veri bütünlüğü ve tekrarlanabilirlik
+### Veri bütünlüğü ve tekrarlanabilirlik
 
 Her kayıt model kimliği ve revizyonu, tohum, koşul, istem/bağlam hash'leri, ham çıktı hash'i, zaman damgaları ve ayrıştırılmış sonuçla ilişkilendirilmiştir. Deney kaynakları sabit Git commit'leri üzerinden paketlenmiştir. Pilot ve doğrulayıcı artifact'leri GitHub Actions'ta saklanmış; artifact içindeki dosya manifestleri dosya boyutu ve SHA-256 hash'leri üzerinden yeniden kontrol edilmiştir. Normal depo güncellemeleri deney çıktılarının üzerine yazmamıştır.
 
-### 3.6 İstatistiksel analiz
+### İstatistiksel analiz
 
 Birincil karşılaştırma, aynı yazılım vakası için Standard ve CCDG koşullarından elde edilen ikili vaka düzeyi sonuçların eşleştirilmiş karşılaştırmasıdır. İki taraflı exact McNemar testi, α = 0,05 ile kullanılmıştır. Etki, CCDG başarısı eksi Standard başarısı olarak tanımlanan eşleştirilmiş risk farkıyla raporlanmıştır. %95 güven aralığı, iki uyumsuz sonuç oranı için Wilson skor aralıklarını kullanan önceden kayıtlı Newcombe-tipi yaklaşımla hesaplanmıştır.
 
@@ -123,9 +105,9 @@ Birincil karşılaştırma, aynı yazılım vakası için Standard ve CCDG koşu
 | Rapor, kaynakça ve başvuru paketi |  |  |  |  |  |  | X | P | P | P |
 | Puanlama kalibrasyonu ve eşleştirilmiş takip tasarımı |  |  |  |  |  |  |  | P | P | P |
 
-## 4. Bulgular
+## Bulgular
 
-### 4.1 Çalıştırma ve bütünlük sonuçları
+### Çalıştırma ve bütünlük sonuçları
 
 | Ölçüt | Pilot | Doğrulayıcı deney |
 |---|---:|---:|
@@ -138,7 +120,7 @@ Birincil karşılaştırma, aynı yazılım vakası için Standard ve CCDG koşu
 
 Doğrulayıcı deney, GitHub Actions run ID `37976682761` üzerinde başarıyla tamamlanmıştır. Artifact ID `11640450681`, arşiv SHA-256 değeri `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd` şeklindedir. Bağımsız denetimde 212/212 dosya, 160/160 inference kaydı doğrulanmış; ham çıktı hash'lerinde uyuşmazlık ve beklenmeyen dosya bulunmamıştır. Bu kontroller çalıştırma ve veri bütünlüğünü doğrular; tek başlarına teşhis doğruluğunu kanıtlamaz.
 
-### 4.2 Dondurulmuş birincil ölçüt
+### Dondurulmuş birincil ölçüt
 
 | Sonuç | Standard Context | CCDG Context |
 |---|---:|---:|
@@ -157,13 +139,13 @@ Vaka düzeyindeki eşleştirilmiş tablo aşağıdadır.
 
 Exact iki taraflı McNemar testi **p = 1,00** üretmiştir. Gözlenen eşleştirilmiş risk farkı (CCDG − Standard) **0,00**; hesaplanan %95 güven aralığı **[-0,1936; 0,1936]** olmuştur. Sıfır uyumsuz vaka vardır; bütün vakalar her iki koşulda da ölçüte göre başarısız sayılmıştır. Bu nedenle sıfır hipotezi reddedilememiştir.
 
-### 4.3 Sonucun doğru yorumu
+### Sonucun doğru yorumu
 
 Birincil ölçütte iki koşulda da hiç geçiş olmaması, belirgin bir **taban etkisine** işaret eder. Bitişik ifade kuralı, aynı kavramı farklı kelimelerle açıklayan çıktıları başarısız sayabilir. Örneğin, bir çıktının hata akışını ve `UNCOND` / `ON_EX` kenar türleri arasındaki karışıklığı tarif etmesi, sabit alias ile tam ifade eşleşmesi üretmedikçe geçiş sayılmayabilir. Bu durum, ölçütün anlamsal doğruluğu tam olarak yansıtmadığını gösteren bir ölçüm sınırlılığıdır; tüm model cevaplarının doğru olduğunu göstermez.
 
 Bu sebeple p=1,00 sonucu **koşulların eşdeğer olduğunun kanıtı değildir** ve **CCDG'nin etkisiz olduğunu kanıtlamaz**. Bulgular yalnızca, dondurulmuş literal-alias ölçütü altında fark tespit edilmediğini göstermektedir. Projenin asıl bilimsel sorusu olan CCDG'nin anlamsal kök neden teşhisini artırıp artırmadığı bu ölçüm aracıyla çözümlenememiştir.
 
-### 4.4 Puanlama protokolü değişikliği
+### Puanlama protokolü değişikliği
 
 Pilot deneyden sonra, katı tam-teşhis puanlamasının doğal dildeki açıklama biçimlerini başarısız sayabileceği görüldüğünden, doğrulayıcı deneyin birincil ölçütü kaynak kanıtlarına dayalı sabit kök neden alias'larına dönüştürülmüştür. Değişiklik 9 Ekim 2026'da, doğrulayıcı çıktılar incelenmeden önce kayda alınmıştır; ancak pilot çıktıları puanlama sorununun teşhisi için görülmüştür. Bu nedenle bu karar, bütün model çıktıları görülmeden önce eksiksiz biçimde ön kayıt yapılmış bir karar olarak sunulmamaktadır. Vaka seçiminin model çıktılarından bağımsız olduğu ve alias ifadelerinin model çıktılarından türetilmediği kaydedilmiştir. Pilot değerlendirmesi ve doğrulayıcı sonuçlar sonradan değiştirilmemiştir.
 
@@ -199,21 +181,6 @@ Bu bulgu, CCDG'nin anlamsal teşhiste yararsız olduğu ya da iki yöntemin eşd
 4. Vaka kalitesini ve bağımsızlığını artırırken her yazılım hatasını ayrı bir istatistiksel birim saymak; aynı hatadaki tekrarları bağımsız yeni vakalar olarak değerlendirmemek.
 5. Sonuçlar olumlu, olumsuz veya belirsiz olduğunda tümünü raporlamak; hipotezi desteklemek için veriyi, eşik değerlerini veya puanlama yöntemini sonuçlar görüldükten sonra değiştirmemek.
 
-## Yeniden Üretilebilirlik ve Kanıt Kayıtları
-
-- Kaynak deposu: https://github.com/MahmutVezir/dijitalikiz (URL kaynak kökenini tanımlar; herkese açık erişim garantisi değildir).
-- Pilot çalıştırma: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37968099402
-- Doğrulayıcı çalıştırma: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37976682761
-- Pilot kaynak commit: `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`
-- Doğrulayıcı kaynak commit: `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`
-- Doğrulayıcı artifact ID: `11640450681`
-- Doğrulayıcı artifact SHA-256: `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`
-- Sonuç özeti: `data/benchmark/confirmatory_result_summary.json`
-- Ayrıntılı sonuç ve bağımsız denetim: `docs/CONFIRMATORY_RESULTS_2026-10-09.md`, `scripts/audit_confirmatory_artifact.py`
-- Skorlama değişikliği: `docs/CONFIRMATORY_SCORING_PROTOCOL.md`
-- Pilot arşivinin bağımsız bütünlük denetimi: `docs/PILOT_ARTIFACT_AUDIT_2026-10-10.md`; CI denetimi: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37994308924
-- Yeni adayın pre-fix/post-fix regresyon doğrulaması: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772
-
 ## Kaynaklar
 
 Chen, M., Tworek, J., Jun, H., Yuan, Q., Pinto, H. P. de O., Kaplan, J., Edwards, H., Burda, Y., Joseph, N., Brockman, G., Ray, A., Puri, R., Krueger, G., Petrov, M., Khlaaf, H., Sastry, G., Mishkin, P., Chan, B., Gray, S., . . . Zaremba, W. (2021). Evaluating large language models trained on code. *arXiv preprint arXiv:2107.03374*. https://doi.org/10.48550/arXiv.2107.03374
@@ -240,6 +207,21 @@ Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K. R., & Cao, Y. (20
 
 ## Ekler
 
+### Yeniden Üretilebilirlik ve Kanıt Kayıtları
+
+- Kaynak deposu: https://github.com/MahmutVezir/dijitalikiz (URL kaynak kökenini tanımlar; herkese açık erişim garantisi değildir).
+- Pilot çalıştırma: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37968099402
+- Doğrulayıcı çalıştırma: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37976682761
+- Pilot kaynak commit: `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`
+- Doğrulayıcı kaynak commit: `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`
+- Doğrulayıcı artifact ID: `11640450681`
+- Doğrulayıcı artifact SHA-256: `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`
+- Sonuç özeti: `data/benchmark/confirmatory_result_summary.json`
+- Ayrıntılı sonuç ve bağımsız denetim: `docs/CONFIRMATORY_RESULTS_2026-10-09.md`, `scripts/audit_confirmatory_artifact.py`
+- Skorlama değişikliği: `docs/CONFIRMATORY_SCORING_PROTOCOL.md`
+- Pilot arşivinin bağımsız bütünlük denetimi: `docs/PILOT_ARTIFACT_AUDIT_2026-10-10.md`; CI denetimi: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37994308924
+- Yeni adayın pre-fix/post-fix regresyon doğrulaması: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772
+
 ### Ek 1. Dondurulmuş deney kayıtları ve bütünlük denetimi
 
 Pilot ve doğrulayıcı çalıştırmaların ham JSON kayıtları, `artifact_manifest.json` dosyaları, kaynak commit kimlikleri ve SHA-256 değerleri proje arşivinde saklanmaktadır. Doğrulayıcı arşivinde 212/212 dosya ve 160/160 inference kaydı; pilot arşivinde 55/55 manifest dosyası ve 40/40 kayıt doğrulanmıştır.
@@ -255,4 +237,3 @@ Pilot ve doğrulayıcı çalıştırmaların ham JSON kayıtları, `artifact_man
 **Aday vaka kanıtı ve kaynak kod**
 
 Commons Compress #770 için kaynak PR ve düzeltme öncesi/sonrası regresyon tekrarı: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772. Aynı regresyon doğrulaması düzeltme öncesi sürümde beklenen biçimde başarısız, düzeltilmiş sürümde başarılı olmuştur. İlgili kaynak kod, testler, şemalar, puanlama yardımcıları ve deney kayıtları sürümlü proje arşivinde tutulmaktadır. Depo bağlantısı herkese açık erişim garantisi değildir; erişim gereken dosyalar güncel TÜBİTAK başvuru sistemine ek belge olarak ve geçerli boyut/sayfa kurallarına göre sunulmalıdır. Bu aday dondurulmuş doğrulayıcı deney kümesine dahil edilmemiştir.
-
