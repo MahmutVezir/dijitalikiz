@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
-  "audit_id": "heldout-lead-red-green-2026-10-10-run-38052846346",
+  "audit_id": "heldout-lead-red-green-2026-10-10-run-38053125548",
   "status": "technical_screening_pass",
   "created_at_utc": "2026-10-10T12:35:30Z",
   "source_repository": "MahmutVezir/dijitalikiz",
   "workflow": {
     "name": "Held-out Lead Red-Green Screening",
     "path": ".github/workflows/heldout-lead-red-green.yml",
-    "run_id": 38052846346,
-    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
-    "head_sha": "90f9ff927ca60f73ca48ac9e26adf6edae7c968d",
+    "run_id": 38053125548,
+    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053125548",
+    "head_sha": "d20386b56a262a65c25b957dcbbee958fba6f029",
     "purpose": "Pinned-revision source/test screening only; no model inference."
   },
   "policy": {
@@ -19,7 +19,7 @@
     "independent_human_source_review_completed": false,
     "separate_adjudication_completed": false,
     "heldout_confirmatory_inclusion_authorized": false,
-    "interpretation": "Red/green reproduction supports that the named regression tests distinguish the pinned pre-fix and fixed revisions. It does not establish CCDG suitability, causal-edge truth beyond the tests, independent human adjudication, or eligibility for the confirmatory sample."
+    "interpretation": "All seven discovery leads have a matching named-test fail-before/pass-after artifact and verified artifact ZIP SHA-256. This is only technical reproduction evidence. It does not establish cross-component suitability, independent human adjudication, scoring calibration, or eligibility for held-out confirmation."
   },
   "candidates": [
     {
@@ -43,10 +43,10 @@
         }
       ],
       "reproduction_status": "independent_ci_red_green_pass",
-      "artifact_id": 11670426228,
+      "artifact_id": 11670072327,
       "artifact_name": "heldout-lead-screening-lang-1800-era-calendar",
-      "artifact_sha256": "2990ac6e53cbc6255416cac94f02c49f75f46c3ce0420242e4cd9a7591fcb8d4",
-      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
+      "artifact_sha256": "29775811330714ac9ed236c426b414b8fdb7bef6aa4d4837d999d103824d86b4",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053125548",
       "human_review_status": "pending",
       "cross_component_suitability": "pending independent review",
       "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
@@ -67,10 +67,10 @@
         }
       ],
       "reproduction_status": "independent_ci_red_green_pass",
-      "artifact_id": 11670645880,
+      "artifact_id": 11670686569,
       "artifact_name": "heldout-lead-screening-lang-1807-wildcard-upper-bound",
-      "artifact_sha256": "5cdc15131b18ef6aab142f805d57d02806c4d1fc18ff7757e9814fe0c078a05a",
-      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
+      "artifact_sha256": "c675fdcc4c63a1bdbc2cbd1d844dc6a7d5c2b4894e3e009503dd25667d3d3fca",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053125548",
       "human_review_status": "pending",
       "cross_component_suitability": "uncertain; requires independent source review",
       "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
@@ -103,10 +103,10 @@
         }
       ],
       "reproduction_status": "independent_ci_red_green_pass",
-      "artifact_id": 11670685949,
+      "artifact_id": 11670886178,
       "artifact_name": "heldout-lead-screening-collections-728-ordered-next-key",
-      "artifact_sha256": "fb4a600db4b1c4cc48216d6dff296d0c62bbb82e38c0876ab77956847eea8f92",
-      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
+      "artifact_sha256": "cabb8b447b82f6d5cd0cedb37db177a375a54fe45297fe80a7c5950a0165046d",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053125548",
       "human_review_status": "pending",
       "cross_component_suitability": "uncertain; potentially one related local bug family",
       "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
@@ -127,10 +127,10 @@
         }
       ],
       "reproduction_status": "independent_ci_red_green_pass",
-      "artifact_id": 11670695851,
+      "artifact_id": 11670546676,
       "artifact_name": "heldout-lead-screening-net-404-ftps-data-hostname-verifier",
-      "artifact_sha256": "51975b98454322462a3f69d5ebc8153a13b4b2be6756ab0009aa8de6bd0ead08",
-      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
+      "artifact_sha256": "25a90dd3c2d8abf32f07bb11fc7a412c492fa51102c2a33f834f1bcaafb18aa3",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053125548",
       "human_review_status": "pending",
       "cross_component_suitability": "promising; control/data channel and TLS hostname verification",
       "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
@@ -151,10 +151,10 @@
         }
       ],
       "reproduction_status": "independent_ci_red_green_pass",
-      "artifact_id": 11670780801,
+      "artifact_id": 11669927479,
       "artifact_name": "heldout-lead-screening-net-403-ftp-parser-type-before-instantiation",
-      "artifact_sha256": "92a87e05edc80c2c22a0416cab024a87971f76ca7a2a0277d3ee4e01cc8faf5f",
-      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
+      "artifact_sha256": "b19cebe5465fa7db8e11db5a503b12f0561b06bea81000fc23fc194c6ddd6150",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053125548",
       "human_review_status": "pending",
       "cross_component_suitability": "strong candidate; untrusted protocol reply -> parser dispatch -> class initialization",
       "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
@@ -193,12 +193,54 @@
         }
       ],
       "reproduction_status": "independent_ci_red_green_pass",
-      "artifact_id": 11670810314,
+      "artifact_id": 11669737839,
       "artifact_name": "heldout-lead-screening-text-768-stringmatcher-charsequence-window",
-      "artifact_sha256": "683a6c24c6226164e9ba06d7d400cec88ea04a204d30e4f48d4d1799d7401b82",
-      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
+      "artifact_sha256": "e9fbd201ca4e28003ca37689a53fb99de72bea07bd01bd8187a4358de9e44489",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053125548",
       "human_review_status": "pending",
       "cross_component_suitability": "promising, subject to cross-component-edge review",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "net-400-crlf-command-injection",
+      "pull_request_url": "https://github.com/apache/commons-net/pull/400",
+      "repository_url": "https://github.com/apache/commons-net",
+      "pre_fix_sha": "2a3aa71b077ae9290d9c3b95f6ad23b0e0a357c2",
+      "fixed_sha": "a07b6c41b5c2369506e7d86c4808dc51317e1481",
+      "regression_tests": [
+        {
+          "target": "FTPTest#testRejectCRLFInArgs",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "NNTPTest#testRejectCRLFInArgs",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "POP3Test#testRejectCRLFInArgs",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "SMTPTest#testRejectCRLFInArgs",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "independent_ci_red_green_pass",
+      "artifact_id": 11670836233,
+      "artifact_name": "heldout-lead-screening-net-400-crlf-command-injection",
+      "artifact_sha256": "a9fd35394be6ff00106093fcac7ec2a4fd594d312dd50f3efc27f74e0ddd505b",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053125548",
+      "human_review_status": "pending",
+      "cross_component_suitability": "promising shared-invariant lead across FTP, NNTP, POP3 and SMTP; count as one defect, subject to review",
       "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
       "heldout_confirmatory_eligible": false
     }
@@ -211,8 +253,8 @@
     "Only after a defensible held-out pool is frozen proceed to runtime/tokenizer check, pre-registration freeze, and inference authorization."
   ],
   "screening_summary": {
-    "total_leads": 6,
-    "red_green_pass": 6,
+    "total_leads": 7,
+    "red_green_pass": 7,
     "failed_or_unresolved": 0,
     "independent_human_review_complete": 0,
     "adjudication_complete": 0,
