@@ -35,7 +35,7 @@ Birincil doğrulayıcı ölçüt, pilot sonrası ve doğrulayıcı inference ba�
 
 Büyük dil modelleri doğal dilde hata açıklama, kod üretme ve yazılım mühendisliği iş akışlarında giderek daha fazla araştırılmaktadır. Gerçek hata kayıtlarının kontrollü biçimde incelenmesi, modellerin yalnızca örnek kodlarda değil, gerçek yazılım projelerinde de hangi koşullarda başarılı olduğunu ölçmek için önemlidir. Defects4J, gerçek Java projelerinden alınan hata örnekleri ve hata düzeltme sürümleriyle kontrollü yazılım çalışmaları için bir veri kaynağı sağlamaktadır (Just et al., 2014). SWE-bench gibi çalışmalar ise gerçek GitHub sorunlarının çözümünde model performansını ölçmenin, bağlamı ve çok dosyalı değişiklikleri doğru anlamayı gerektirdiğini göstermektedir (Jimenez et al., 2024).
 
-Kod temsillerinde yapısal bilginin kullanılması yeni bir fikir değildir. GraphCodeBERT, kodla ilişkili veri akışı bilgisini temsil öğrenimine dahil eden bir yaklaşım örneğidir (Guo et al., 2021). CodeBERT ve kod üzerinde eğitilmiş büyük dil modellerinin değerlendirilmesine yönelik çalışmalar da kod anlama ve üretme görevlerinin ayrı değerlendirme gerektirdiğini vurgulamaktadır (M. Chen et al., 2021; Feng et al., 2020). Yazılım mühendisliği için LLM literatürünü inceleyen sistematik çalışmalar, görevler, veri kümeleri ve değerlendirme yöntemleri arasında önemli farklılıklar bulunduğunu raporlamıştır (Hou et al., 2024). Qwen2.5 teknik raporu, bu araştırmada kullanılan model ailesinin mimari ve değerlendirme bağlamını açıklar; ancak tek başına bu projedeki CCDG hipotezini destekleyen doğrudan kanıt değildir (Qwen Team, 2024).
+Kod temsillerinde yapısal bilginin kullanılması yeni bir fikir değildir. GraphCodeBERT, kodla ilişkili veri akışı bilgisini temsil öğrenimine dahil eden bir yaklaşım örneğidir (Guo et al., 2021). CodeBERT ve kod üzerinde eğitilmiş büyük dil modellerinin değerlendirilmesine yönelik çalışmalar da kod anlama ve üretme görevlerinin ayrı değerlendirme gerektirdiğini vurgulamaktadır (Feng et al., 2020; M. Chen et al., 2021). Yazılım mühendisliği için LLM literatürünü inceleyen sistematik çalışmalar, görevler, veri kümeleri ve değerlendirme yöntemleri arasında önemli farklılıklar bulunduğunu raporlamıştır (Hou et al., 2024). Qwen2.5 teknik raporu, bu araştırmada kullanılan model ailesinin mimari ve değerlendirme bağlamını açıklar; ancak tek başına bu projedeki CCDG hipotezini destekleyen doğrudan kanıt değildir (Qwen Team, 2024).
 
 İstemleme ve akıl yürütme çalışmaları, modelden istenen görev tanımının ve sunulan kanıtların çıktıları etkileyebileceğini göstermiştir (Wei et al., 2022; Yao et al., 2023). Modelin kendi çıktısını denetlemesi üzerine yapılan çalışmalar (X. Chen et al., 2023) ve dış bilgi kaynaklarını modele sağlayan retrieval-augmented generation yaklaşımı (Lewis et al., 2020) da bağlamın ve doğrulama stratejisinin önemini gösterir; ancak bunlar CCDG etkisini doğrudan sınamaz. Bununla birlikte, bileşenler arası bağımlılıkların açık bir grafik olarak verilmesinin, aynı temel hata kanıtlarını kullanan standart bir bağlama göre kök neden teşhisini artırıp artırmadığı ayrı bir deneysel sorudur. Bu proje, genel LLM yetenekleri hakkında geniş bir iddia ileri sürmek yerine, tek bir sabit model ve belirli gerçek yazılım hataları üzerinde iki bağlam temsilini eşleştirilmiş bir tasarımla karşılaştırmaktadır.
 
@@ -183,27 +183,27 @@ Bu bulgu, CCDG'nin anlamsal teşhiste yararsız olduğu ya da iki yöntemin eşd
 
 ## Kaynaklar
 
-Chen, M., Tworek, J., Jun, H., Yuan, Q., Pinto, H. P. de O., Kaplan, J., Edwards, H., Burda, Y., Joseph, N., Brockman, G., Ray, A., Puri, R., Krueger, G., Petrov, M., Khlaaf, H., Sastry, G., Mishkin, P., Chan, B., Gray, S., . . . Zaremba, W. (2021). Evaluating large language models trained on code. *arXiv preprint arXiv:2107.03374*. https://doi.org/10.48550/arXiv.2107.03374
+Chen, M., Tworek, J., Jun, H., Yuan, Q., Pinto, H. P. de O., Kaplan, J., Edwards, H., Burda, Y., Joseph, N., Brockman, G., Ray, A., Puri, R., Krueger, G., Petrov, M., Khlaaf, H., Sastry, G., Mishkin, P., Chan, B., Gray, S., . . . Zaremba, W. (2021). Evaluating large language models trained on code. *arXiv*. https://doi.org/10.48550/arXiv.2107.03374
 
 Chen, X., Lin, M., Schärli, N., & Zhou, D. (2023). Teaching large language models to self-debug [Preprint]. *arXiv*. https://arxiv.org/abs/2304.05128
 
-Feng, Z., Guo, D., Tang, D., Duan, N., Feng, X., Gong, M., Shou, L., Qin, B., Liu, T., Jiang, D., & Zhou, M. (2020). CodeBERT: A pre-trained model for programming and natural languages [Preprint]. *arXiv*. https://arxiv.org/abs/2002.08155
+Feng, Z., Guo, D., Tang, D., Duan, N., Feng, X., Gong, M., Shou, L., Qin, B., Liu, T., Jiang, D., & Zhou, M. (2020). CodeBERT: A pre-trained model for programming and natural languages. In *Findings of the Association for Computational Linguistics: EMNLP 2020* (pp. 1536–1547). https://doi.org/10.18653/v1/2020.findings-emnlp.139
 
-Guo, D., Ren, S., Lu, S., Feng, Z., Tang, D., Liu, S., Zhou, L., Duan, N., Svyatkovskiy, A., Fu, S., Tufano, M., Deng, S. K., Clement, C., Drain, D., Sundaresan, N., Yin, J., Jiang, D., & Zhou, M. (2021). GraphCodeBERT: Pre-training code representations with data flow. In *International Conference on Learning Representations*. https://arxiv.org/abs/2009.08366
+Guo, D., Ren, S., Lu, S., Feng, Z., Tang, D., Liu, S., Zhou, L., Duan, N., Svyatkovskiy, A., Fu, S., Tufano, M., Deng, S. K., Clement, C., Drain, D., Sundaresan, N., Yin, J., Jiang, D., & Zhou, M. (2021). GraphCodeBERT: Pre-training code representations with data flow. In *International Conference on Learning Representations*. https://mlanthology.org/iclr/2021/guo2021iclr-graphcodebert/
 
 Hou, X., Zhao, Y., Liu, Y., Yang, Z., Wang, K., Li, L., Luo, X., Lo, D., Grundy, J., & Wang, H. (2024). Large language models for software engineering: A systematic literature review. *ACM Transactions on Software Engineering and Methodology, 33*(8), Article 220. https://doi.org/10.1145/3695988
 
 Jimenez, C. E., Yang, J., Wettig, A., Yao, S., Pei, K., Press, O., & Narasimhan, K. R. (2024). SWE-bench: Can language models resolve real-world GitHub issues? In *The Twelfth International Conference on Learning Representations*. https://openreview.net/forum?id=VTF8yNQM66
 
-Just, R., Jalali, D., & Ernst, M. D. (2014). Defects4J: A database of existing faults to enable controlled testing studies for Java programs. In *Proceedings of the International Symposium on Software Testing and Analysis (ISSTA)*. https://doi.org/10.1145/2610384.2628055
+Just, R., Jalali, D., & Ernst, M. D. (2014). Defects4J: A database of existing faults to enable controlled testing studies for Java programs. In *Proceedings of the International Symposium on Software Testing and Analysis* (pp. 437–440). https://doi.org/10.1145/2610384.2628055
 
-Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., Küttler, H., Lewis, M., Yih, W.-T., Rocktäschel, T., Riedel, S., & Kiela, D. (2020). Retrieval-augmented generation for knowledge-intensive NLP tasks. In *Advances in Neural Information Processing Systems* (Vol. 33). https://arxiv.org/abs/2005.11401
+Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., Küttler, H., Lewis, M., Yih, W.-T., Rocktäschel, T., Riedel, S., & Kiela, D. (2020). Retrieval-augmented generation for knowledge-intensive NLP tasks. In *Advances in Neural Information Processing Systems* (Vol. 33, pp. 9459–9474). https://arxiv.org/abs/2005.11401
 
 Qwen Team. (2024). Qwen2.5 technical report [Preprint]. *arXiv*. https://arxiv.org/abs/2412.15115
 
-Wei, J., Wang, X., Schuurmans, D., Bosma, M., Ichter, B., Xia, F., Chi, E., Le, Q. V., & Zhou, D. (2022). Chain-of-thought prompting elicits reasoning in large language models. In *Advances in Neural Information Processing Systems* (Vol. 35). https://arxiv.org/abs/2201.11903
+Wei, J., Wang, X., Schuurmans, D., Bosma, M., Ichter, B., Xia, F., Chi, E., Le, Q. V., & Zhou, D. (2022). Chain-of-thought prompting elicits reasoning in large language models. In *Advances in Neural Information Processing Systems* (Vol. 35, pp. 24824–24837). https://doi.org/10.52202/068431-1800
 
-Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K. R., & Cao, Y. (2023). ReAct: Synergizing reasoning and acting in language models. In *International Conference on Learning Representations*. https://arxiv.org/abs/2210.03629
+Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K. R., & Cao, Y. (2023). ReAct: Synergizing reasoning and acting in language models. In *International Conference on Learning Representations*. https://mlanthology.org/iclr/2023/yao2023iclr-react/
 
 ## Ekler
 
