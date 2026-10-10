@@ -20,7 +20,7 @@
 - Relevant changed files: `src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java`; `src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java`; `src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java`.
 - Regression test targets in the fixed change: `FastDateFormatTest#testEraRoundTripNonGregorianCalendar`; `FastDatePrinterTest#testEraMixedCalendarTypes`.
 - Possible cross-component path to review: locale selection -> calendar implementation/era field -> printer era rendering -> parser round-trip.
-- Risks/limitations: upstream PR discloses Claude Code assistance in defect discovery and patch/test drafting; public exposure is documented, model training exposure remains unknown. The exact pre-fix SHA is now pinned; the independent red/green test job is still running and no result has been accepted yet.
+- Risks/limitations: upstream PR discloses Claude Code assistance in defect discovery and patch/test drafting; public exposure is documented, model training exposure remains unknown. The exact pre-fix SHA is pinned, and the independent red/green run #38052846346 passed the named tests before/after the fix. This does not replace human source adjudication.
 - Current decision: **promising lead; not eligible yet**. A reviewer must validate that the task requires cross-component dependency reasoning rather than only one local formatting fix.
 
 ### Lead HD-002 — Commons Lang TypeUtils/JDK WildcardType bound contract
@@ -32,7 +32,7 @@
 - Relevant changed files: `src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java`; `src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java`.
 - Regression test target: `TypeUtilsTest#testUnboundedWildcardType` (including equality/hash-code and implicit-bound assertions).
 - Possible dependency path to review: custom `WildcardTypeImpl` construction -> `getUpperBounds` contract -> equality normalization -> hash-code consistency with JDK reflection values.
-- Risks/limitations: upstream PR discloses Claude assistance; public exposure is documented but model training exposure is unknown. This may be too localized to `TypeUtils` and JDK interoperation to qualify as a strong cross-component case. The exact pre-fix SHA is now pinned; independent red/green testing is pending.
+- Risks/limitations: upstream PR discloses Claude assistance; public exposure is documented but model training exposure is unknown. This may be too localized to `TypeUtils` and JDK interoperation to qualify as a strong cross-component case. The exact pre-fix SHA is pinned, and the independent red/green run #38052846346 passed the named test before/after the fix. This does not replace human source adjudication.
 - Current decision: **moderate/uncertain lead; not eligible yet**. Use only if independent reviewers find the cross-component relation substantive.
 
 ### Lead HD-003 — Commons Collections ordered-map nextKey inconsistency
@@ -44,7 +44,7 @@
 - Relevant changed files: `src/main/java/org/apache/commons/collections4/map/AbstractSortedMapDecorator.java`; `src/main/java/org/apache/commons/collections4/bidimap/DualTreeBidiMap.java`; regression tests for `DualTreeBidiMap`, `FixedSizeSortedMap`, and `UnmodifiableSortedMap`.
 - Regression test targets in the fixed change include `DualTreeBidiMapTest#testNextKeyAbsentKey`, `FixedSizeSortedMapTest#testNextKey`, and `UnmodifiableSortedMapTest#testNextKey`.
 - Possible dependency path to review: `OrderedMap.nextKey` contract -> decorator traversal logic -> bidirectional sorted-map implementation and wrappers.
-- Risks/limitations: the exact pre-fix SHA is now pinned; independent red/green testing is pending. This may be one family of duplicated local implementation bugs rather than a sufficiently deep cross-component causal chain.
+- Risks/limitations: the exact pre-fix SHA is pinned, and the independent red/green run #38052846346 passed the named tests before/after the fix. This does not replace human source adjudication. This may be one family of duplicated local implementation bugs rather than a sufficiently deep cross-component causal chain.
 - Current decision: **possible lead; not eligible yet**.
 
 
@@ -56,7 +56,7 @@
 - Defect summary: a configured TLS hostname verifier ran on the FTPS control connection but not on the data-channel TLS handshake. This can make data-channel identity checking inconsistent with the configured server-identity check.
 - Candidate cross-component path: FTP command/listing flow -> data-connection socket creation -> TLS handshake -> configured `HostnameVerifier` -> acceptance/rejection of data-channel peer.
 - Preliminary fit: **promising security/integration lead** because the defect crosses control/data connection flows and TLS identity verification. Public fix is known; model exposure remains unknown.
-- Screening status: **pending on the six-lead red-green run**. Not eligible until exact-test red/green artifact and independent human source review/adjudication pass.
+- Screening status: **red-green pass in run #38052846346**. Not eligible until exact-test red/green artifact and independent human source review/adjudication pass.
 
 ### Lead HD-005 — Commons Net FTP parser class initialization from untrusted SYST reply
 
@@ -96,15 +96,15 @@
 ## Current count
 
 - Held-out eligible cases: **0**.
-- Discovery leads in this note: **6** (only HD-001 through HD-003 have a completed red-green artifact so far; HD-004 through HD-006 are still pending).
+- Discovery leads in this note: **6**, all six have a completed red-green artifact in run [#38052846346](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346).
 - Calibration-only cases remain permanently excluded from held-out confirmation.
 - No new model inference was run or authorized.
 
 ## Automated screening added (2026-10-10)
 
-The separate workflow [Held-out Lead Red-Green Screening](https://github.com/MahmutVezir/dijitalikiz/actions/workflows/heldout-lead-red-green.yml) now tests the named regression tests against each pinned pre-fix and fixed commit. It performs source-build tests only and does not load or query any LLM. The first complete screening run [#38052390809](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052390809) passed for all three leads. Every named test executed and failed on the pinned pre-fix revision, then passed on the pinned fixed revision with zero failures/errors/skips. The archived evidence is SHA-256 pinned in [discovery_screening_audit.json](../data/followup_v2/discovery_screening_audit.json).
+The separate workflow [Held-out Lead Red-Green Screening](https://github.com/MahmutVezir/dijitalikiz/actions/workflows/heldout-lead-red-green.yml) now tests the named regression tests against each pinned pre-fix and fixed commit. It performs source-build tests only and does not load or query any LLM. The original screening run [#38052390809](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052390809) passed the first three leads, and the expanded six-lead run [#38052846346](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346) passed all six. Every named test executed and failed on the pinned pre-fix revision, then passed on the pinned fixed revision without failure/error/skip. The corresponding artifact ZIP digests and per-test red/green results are SHA-256 pinned in [discovery_screening_audit.json](../data/followup_v2/discovery_screening_audit.json).
 
-The workflow and a small safety-test file were added on the research branch. A separate CI-only check was triggered for the repository test suite; its final result has not yet been confirmed in this note. The workflow artifacts now provide revision-bound reproduction evidence, but they still do not replace independent human source review/adjudication. Specifically, Lang #1800 produced the expected era mismatch / parse failure before the fix; Lang #1807 produced a hashCode mismatch before the fix; and Collections #728 produced two successor-key assertion failures plus one `NoSuchElementException` before the fix. All six target invocations passed after their respective fixes.
+The workflow and its inference-safety test are in the research branch. The separate [Research Validation (No Inference) run #38052846291](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846291) passed 161 tests and historical artifact checks. The red/green artifacts provide revision-bound reproduction evidence, but they still do not replace independent human source review/adjudication. The pre-fix failures include the expected era mismatch/parse failure (Lang #1800), a hashCode mismatch (Lang #1807), wrong-successor / `NoSuchElementException` behavior (Collections #728), data-channel hostname-verifier omission (Net #404), class-initialization-before-type-check (Net #403), and buffer-window forwarding mismatch (Text #768). Each named test passed after its respective fix.
 
 The sample-size sensitivity calculation is also documented in [SAMPLE_SIZE_SENSITIVITY_AUDIT_2026-10-10.md](SAMPLE_SIZE_SENSITIVITY_AUDIT_2026-10-10.md). Its key implication is that the 61-case target only reaches about 80% power under the current strong assumed discordance imbalance; modest alternatives require a larger independent-case pool.
 
