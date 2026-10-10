@@ -121,3 +121,16 @@ A clean mainline-based draft PR now carries the calibration and case-pool gates:
 3. Build a separate, source-grounded scoring-calibration set; independently label outputs and controls, then report false acceptance/rejection, reviewer agreement, and uncertainty.
 4. Freeze the three-condition, information-matched protocol, scoring rule, prompt/token audit, sample-size rationale, and separate confirmatory case set before new confirmatory inference.
 5. Do not launch any new confirmatory model inference until all previous gates pass. The old 160-record result remains unchanged and inconclusive for the semantic hypothesis.
+
+
+## Stage 2 — Independent case review and a real human-evidence gate (2026-10-10)
+
+- Added `docs/CANDIDATE_SOURCE_AUDIT_2026-10-10.md`, a provisional case-by-case source/structure review. It explicitly is not represented as independent human adjudication.
+- Classified every current candidate as a scoring-calibration-only candidate. The calibration set must not be reused as a future confirmatory set after the scoring instrument has been assessed on it.
+- Flagged Commons Compress #803 as parallel LZ4/Snappy decoder paths rather than one causal chain, and Commons Lang #1808 as a weak single-component boundary case. These may serve as calibration controls only and must not be used to inflate the future study's strong cross-component case count.
+- Aligned reproduction-status metadata in all seven records with the archived pre-fix/fixed-revision evidence. Version-bound snapshots include repository, exact pre-fix revision, regression-test target, and observed failure signal.
+- Added `scripts/build_case_ground_truth_review_packets.py`. It builds separately ordered reviewer packets with provisional root-cause labels, `I_base`, and CCDG edges omitted; the unblinding map is written only to a caller-selected private path outside the repository.
+- Added `schemas/case_ground_truth_review_audit.schema.json` and strengthened `scripts/validate_calibration_case_pool.py`: selected cases now require a frozen audit with two distinct reviewers, an independent adjudicator, hashes of packet/response artifacts, exact revision bindings, evidence URLs, a coherent-defect decision, and an adjudicated root-cause/dependency graph. A manifest boolean by itself cannot authorize inference.
+- Added tests for packet leakage, private-key path safety, hash mismatch, and missing human-review evidence. These are software tests; they do not constitute human review or a successful full CI run.
+
+**Current blocker:** No independent human packet responses or adjudication record exist. The review gate in `data/calibration/case_pool_manifest.json` remains `pending`, selection is not frozen, `eligible_case_ids=[]`, and `model_inference_permitted=false`. Do not modify these flags to bypass the gate. First generate the packets, obtain two genuine independent source-based reviews, adjudicate disagreement, then validate and freeze the audit.
