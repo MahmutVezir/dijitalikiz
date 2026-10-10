@@ -1,1 +1,1 @@
-[validate-only] Validate source-review packet tooling, human-evidence gate, candidate provenance and frozen artifacts 2026-10-10T13:40Z
+[validate-only] Re-run repository tests after review-audit assertion fix; inference disabled 2026-10-10T13:48Z
