@@ -3,6 +3,9 @@
   "status": "draft",
   "frozen": false,
   "minimum_examples_per_challenge_class": 4,
+  "minimum_independent_model_output_examples": 7,
+  "minimum_independent_model_output_source_cases": 7,
+  "minimum_human_authored_or_synthetic_control_examples": 7,
   "minimum_distinct_source_cases": 7,
   "minimum_distinct_cases_per_challenge_class": 3,
   "required_challenge_classes": [
