@@ -1,3 +1,4 @@
+import hashlib
 import json
 from pathlib import Path
 
@@ -96,6 +97,62 @@ def _complete_fixture(root: Path):
             "eligible_case_ids": [case_id],
         },
     }
+    audit_path = root / "data" / "calibration" / "case_ground_truth_review_audit.json"
+    audit = {
+        "protocol_version": "case-ground-truth-review-v1",
+        "status": "adjudicated",
+        "frozen": True,
+        "review_packet_manifest_sha256": "c" * 64,
+        "reviewers": [
+            {
+                "reviewer_id": "reviewer-a",
+                "independent_review_attestation": True,
+                "source_revision_review_attestation": True,
+                "reviewed_packet_sha256": "a" * 64,
+                "response_sha256": "b" * 64,
+            },
+            {
+                "reviewer_id": "reviewer-b",
+                "independent_review_attestation": True,
+                "source_revision_review_attestation": True,
+                "reviewed_packet_sha256": "d" * 64,
+                "response_sha256": "e" * 64,
+            },
+        ],
+        "adjudicator": {
+            "reviewer_id": "adjudicator-c",
+            "source_evidence_reviewed": True,
+            "completed_at_utc": "2026-10-10T00:00:00Z",
+        },
+        "case_decisions": [
+            {
+                "case_id": case_id,
+                "pre_fix_revision": before,
+                "fixed_revision": fix,
+                "review_a_decision": "keep",
+                "review_b_decision": "keep",
+                "final_decision": "keep_for_scoring_calibration",
+                "root_cause_adjudicated": True,
+                "dependency_edges_adjudicated": True,
+                "single_coherent_defect": True,
+                "disagreement_resolved": True,
+                "ccdg_suitability": "moderate",
+                "rationale": "Both revisions and the test support the same bounded root cause and dependency path.",
+                "evidence_urls": [
+                    "https://github.com/example/project/blob/" + before + "/src/A.java",
+                    "https://github.com/example/project/blob/" + fix + "/src/A.java",
+                ],
+            }
+        ],
+    }
+    _write_json(audit_path, audit)
+    manifest["review_gate"] = {
+        "status": "adjudicated",
+        "frozen": True,
+        "audit_path": "data/calibration/case_ground_truth_review_audit.json",
+        "audit_sha256": hashlib.sha256(audit_path.read_bytes()).hexdigest(),
+    }
+
     manifest_path = root / "data" / "calibration" / "case_pool_manifest.json"
     _write_json(manifest_path, manifest)
     return manifest_path, case_id
@@ -183,3 +240,35 @@ def test_case_pool_gate_rejects_missing_pre_fix_reproduction(tmp_path):
     assert report["status"] == "blocked"
     assert report["model_inference_permitted"] is False
     assert f"{case_id}_independent_red_green_reproduction_not_complete" in report["issues"]
+
+
+def test_case_pool_gate_rejects_selected_cases_without_review_audit(tmp_path):
+    manifest_path, _ = _complete_fixture(tmp_path)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    audit_path = tmp_path / manifest["review_gate"]["audit_path"]
+    audit_path.unlink()
+
+    report = audit_case_pool(
+        manifest_path=manifest_path,
+        pilot_manifest_path=tmp_path / "data" / "pilot" / "pilot_manifest.json",
+        benchmark_manifest_path=tmp_path / "data" / "benchmark" / "benchmark_manifest.json",
+    )
+    assert report["status"] == "blocked"
+    assert report["model_inference_permitted"] is False
+    assert "missing_case_ground_truth_review_audit" in report["issues"]
+
+
+def test_case_pool_gate_rejects_tampered_review_audit_hash(tmp_path):
+    manifest_path, _ = _complete_fixture(tmp_path)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["review_gate"]["audit_sha256"] = "f" * 64
+    _write_json(manifest_path, manifest)
+
+    report = audit_case_pool(
+        manifest_path=manifest_path,
+        pilot_manifest_path=tmp_path / "data" / "pilot" / "pilot_manifest.json",
+        benchmark_manifest_path=tmp_path / "data" / "benchmark" / "benchmark_manifest.json",
+    )
+    assert report["status"] == "blocked"
+    assert report["model_inference_permitted"] is False
+    assert "case_ground_truth_review_audit_sha256_mismatch" in report["issues"]
