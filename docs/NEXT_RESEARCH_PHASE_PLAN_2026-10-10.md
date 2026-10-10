@@ -134,6 +134,37 @@ The log's QA summary reports 20/20 parseable/scored outputs per condition, but z
 - Aligned reproduction-status metadata in all seven records with the archived pre-fix/fixed-revision evidence. Version-bound snapshots include repository, exact pre-fix revision, regression-test target, and observed failure signal.
 - Added `scripts/build_case_ground_truth_review_packets.py`. It builds separately ordered reviewer packets with provisional root-cause labels, `I_base`, and CCDG edges omitted; the unblinding map is written only to a caller-selected private path outside the repository.
 - Added `schemas/case_ground_truth_review_audit.schema.json` and strengthened `scripts/validate_calibration_case_pool.py`: selected cases now require a frozen audit with two distinct reviewers, an independent adjudicator, hashes of packet/response artifacts, exact revision bindings, evidence URLs, a coherent-defect decision, and an adjudicated root-cause/dependency graph. A manifest boolean by itself cannot authorize inference.
-- Added tests for packet leakage, private-key path safety, review-audit hash mismatch, and missing human-review evidence. Validation-only run [#142](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38048057855) passed after the phase-plan documentation update: 144 tests, frozen pilot configuration gate, archived 40-record pilot artifact, 160-record confirmatory artifact, and source-bundle/confirmatory-launcher build. The pilot and confirmatory inference jobs were skipped. These checks validate the tooling and stored artifacts, not the human review or the research hypothesis.
+- Added tests for packet leakage, private-key path safety, review-audit hash mismatch, and missing human-review evidence. The latest integrated validation-only run [#151](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38048719322) passed 144 tests and historical artifact integrity audits; both inference jobs were skipped. Subsequent Stage 3 draft assets are covered by the current ongoing/current-head validation sequence and must not be described as validated until that run passes. These checks validate tooling and archived artifacts, not human review or the research hypothesis.
 
 **Current blocker:** No independent human packet responses or adjudication record exist. The review gate in `data/calibration/case_pool_manifest.json` remains `pending`, selection is not frozen, `eligible_case_ids=[]`, and `model_inference_permitted=false`. Do not modify these flags to bypass the gate. First generate the packets, obtain two genuine independent source-based reviews, adjudicate disagreement, then validate and freeze the audit. The unplanned kernel log recovery in run #134 does not satisfy any of these human-evidence requirements and its raw JSONL is not available in the retained audit artifact.
+
+
+## Stage 3 — Preregistration and measurement infrastructure (2026-10-10; no inference)
+
+**Status: preparatory implementation. The protocol is a draft; new model inference remains forbidden. Stage 2's independent human review and scoring calibration are still open.**
+
+Added a separate prospective v2 experiment plan so the flawed historical comparison is not repeated:
+
+- `docs/FOLLOWUP_V2_PREREGISTRATION_DRAFT_2026-10-10.md` documents the three arms A (baseline), B (dependency facts in prose), C (the same facts as CCDG triples), the single primary contrast C vs B, secondary contrasts B vs A and C vs A, human-blinded scoring, case-level McNemar analysis, and explicit null/adverse reporting.
+- `data/followup_v2/protocol_manifest.json` is machine-readable and deliberately remains `status: draft`, `model_inference_permitted: false`, with an empty held-out case pool and pending gates.
+- `schemas/followup_v2_protocol.schema.json` and `scripts/validate_followup_v2_protocol.py` define a fail-closed readiness gate. It rejects overlap with the historic pilot/confirmatory case IDs and the calibration pool; checks sample-size arithmetic; and requires source review, calibration, prompt-tokenizer audit, compatibility, randomized schedule, analysis hash and final freeze evidence before readiness.
+- `schemas/followup_v2_heldout_case_review.schema.json` defines a two-reviewer and separate-adjudicator audit specifically for the new held-out sample. Calibration decisions are not reused as confirmatory inclusion decisions.
+- `scripts/build_followup_v2_schedule.py` creates a balanced, pre-hashed case-condition-seed order from a completed held-out pool without executing the model.
+- `scripts/analyze_followup_v2.py` consumes only final human-adjudicated output labels, requires complete unique case-condition-seed coverage, computes the declared exact McNemar contrasts, adjusts the secondary tests with Holm, and estimates a paired case-level risk-difference interval by preregistered bootstrap.
+- `scripts/audit_followup_v2_tokenizer.py` is a no-generation prompt audit for shared context bytes, task/system prompt hashes, final chat-template rendered-input hashes, token-ID hashes and context-length budget. It must be executed after the selected held-out cases and runtime gate exist; no real token audit result is claimed yet.
+- Tests were added for protocol blocking, historic/calibration case overlap, schedule reproducibility, outcome coverage, McNemar/ Holm calculations, prompt hashing and context overflow. The current CI run must be green before these are treated as validated.
+
+### Prospective sample-size assumption
+
+The draft plans 61 distinct defects × 3 conditions × 5 generations = 915 outputs, using the existing exact-McNemar sensitivity calculation with assumed prose-only discordance 0.05 and graph-only discordance 0.25 (estimated power 0.8052). These are design assumptions, not observations from the historic data. The target cannot be reduced just because a smaller pool is convenient; if 61 defensible held-out cases cannot be sourced and reviewed, record the limitation and revise only before any v2 confirmatory outputs exist.
+
+### Stage 3 exit gates (all currently pending)
+
+1. Complete the two independent source reviews and separate adjudication for the seven calibration candidates.
+2. Build and independently adjudicate the separate scoring-calibration examples; pass at least 0.80 initial reviewer exact agreement and Cohen's kappa ≥ 0.70. Keep the literal alias matcher diagnostic rather than the semantic primary endpoint.
+3. Source at least 61 new eligible defects, with exact pre-fix/fixed revisions, regression tests, license/provenance, coherent root cause, cross-component edge review, contamination assessment and reviewer evidence. Exclude every old pilot/confirmatory/calibration case.
+4. Run a no-inference tokenizer/runtime audit on the actual new held-out contexts and verify all 183 case-condition prompts plus generation reserve fit the model context; for 61 cases the expected total is 183 prompts and 915 generation cells.
+5. Freeze the sample, exact prompt/context hashes, model and runtime, randomized schedule, rating rubric, missing-output/retry policy, analysis code and one primary test before v2 inference.
+6. Run inference only after the gate validator reports `ready` and the independent human gates are true. New records must live in `data/followup_v2/`; never mutate the historical artifacts.
+
+**Decision:** Stage 3 protocol/analysis preparation has started, but the study is not ready for inference. A draft manifest is not a completed experiment and must not be presented as a positive result in the TÜBİTAK application.
