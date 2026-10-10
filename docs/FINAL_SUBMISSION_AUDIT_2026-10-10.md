@@ -25,8 +25,9 @@ Bu denetim, 2026–2027 (58. yarışma) dönemi için TÜBİTAK'ın güncel 2204
 - Son kapsamlı doğrulama: https://github.com/MahmutVezir/dijitalikiz/actions/runs/38043725220 — depo testleri, 160 kayıtlık doğrulayıcı artefakt denetimi, 40 kayıtlık pilot artefakt denetimi ve kaynak paketi/launcher kontrolü başarılı; inference işleri bilerek atlandı.
 - Resmî Word şablonu indirme ve DOCX bütünlüğü: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37994665457; 2026–2027 DOCX geçerli OOXML paketi olarak doğrulandı.
 - Yerel rapor çıktı dosyaları: `TUBITAK_2204A_Rapor_Taslak_2026-2027.docx` ve `.pdf`; ikisi de 9 sayfalık, son render/görsel incelemeden geçirilmiş rapor taslağıdır, henüz nihai başvuru dosyası sayılmazlar.
-- Word taslağı SHA-256: `54f7d9a21bdd798f9e26dfe465a3b616af8e3fc8f579dd15a5cc4fbae32fe93d`.
-- PDF önizlemesi SHA-256: `49664f46f9a79e9a70209e657cd968834039899493acf6adf87751967fcacb46`.
+- Word taslağı SHA-256: `cc9a1f21a3f23bb9d7dc93c6e565bead4dffb296b4ad571d42bc3af1484d81cf`.
+- PDF önizlemesi SHA-256: `ec71c66078649040b37ead34f94b4b0d164a19632269c9e74dd5a00bd31d67f4`.
+- Teslim manifesti taslağı: `TUBITAK_2204A_Teslim_Manifesti_Taslak.json`; SHA-256: `611010851544b05b1944d6e122c014388e7c4aedcd0c2ff43d10caf8b9e46176`.
 - İndirilen resmî şablon SHA-256: `195975a64cda8bc3175c6211be108f2b4293ee0893f061bcdfc3ac184989cc87` (DOCX 25.040 bayt; geçerli OOXML paketi).
 
 ## Kritik bilimsel karar — değiştirilmeyecek
@@ -66,7 +67,7 @@ TÜBİTAK sayfasındaki bağlantılı değerlendirme formunda (son erişilebilir
 - [ ] Öğrenci(ler), okul, danışman ve gerekli izin/etik bilgilerini yalnızca doğru bilgilerle sisteme gir. Raporda gereksiz kişisel bilgi yayımlama.
 - [ ] Öğrencinin ARBİS/TYBS kayıtlarını güncel resmî kılavuza göre kontrol et ve başvuru sistemindeki alanları doldur.
 - [ ] Gereken kod, manifest, çıktı veya ekleri 20 sayfa/boyut ve gizlilik koşullarına göre TYBS'ye ayrıca ekle. GitHub bağlantısı tek başına jüriye erişim garantisi değildir.
-- [ ] Nihai PDF, DOCX kaynak sürümü, sonuç JSON'u ve artifact kanıtlarını aynı sürüme bağlayan teslim manifesti oluştur.
+- [x] Nihai DOCX/PDF hash'leri, resmî şablon kimliği ve deney artefaktı kanıtlarını bağlayan yerel teslim manifesti taslağı oluşturuldu: `TUBITAK_2204A_Teslim_Manifesti_Taslak.json`. Başvuru öncesi Office dışa aktarma sonrasında hash'ler yeniden hesaplanmalıdır.
 - [ ] Başvuruyu 4 Ocak 2027 saat 17.30'dan önce tamamla; son günü bekleme.
 
 ## Son durum
