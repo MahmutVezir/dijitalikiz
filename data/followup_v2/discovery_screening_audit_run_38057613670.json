@@ -1,0 +1,731 @@
+{
+  "schema_version": "1.0",
+  "audit_id": "discovery-screening-run-38057613670-strict",
+  "status": "technical_screening_pass_human_review_pending",
+  "created_at_local": "2026-10-10",
+  "source_repository": "https://github.com/MahmutVezir/dijitalikiz",
+  "workflow": {
+    "name": "Held-out Lead Red-Green Screening",
+    "path": ".github/workflows/heldout-lead-red-green.yml",
+    "run_id": 38057613670,
+    "run_number": 86,
+    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670",
+    "source_branch": "research/scoring-calibration-mainline-v2",
+    "source_branch_head_sha": "923c7cb91417282ca25e69f74a6248da92ef6706",
+    "conclusion": "success",
+    "purpose": "Pinned-revision source/test screening only; no model inference."
+  },
+  "repository_validation": {
+    "workflow_name": "Research Validation (No Inference)",
+    "run_id": 38057613640,
+    "run_number": 57,
+    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613640",
+    "conclusion": "success",
+    "scope": [
+      "pytest",
+      "workflow safety tests",
+      "historical pilot and confirmatory integrity",
+      "case/candidate validation",
+      "no-model-inference safety gate"
+    ],
+    "model_inference_performed": false
+  },
+  "method": {
+    "test_source_policy": "diff_only_no_full_test_file_replacement",
+    "steps": [
+      "Pin exact pre-fix and fixed commits",
+      "Generate a binary diff limited to the named regression test files",
+      "Verify patch applicability and apply it to the pre-fix snapshot",
+      "Record SHA-256 of regression-tests.patch",
+      "Run named regression tests against pre-fix and require failure",
+      "Reset source to fixed revision, apply the same explicitly declared case-specific fixture adjustment if any, and require the exact same test-file hashes",
+      "Run the same named regression tests against fixed source and require pass",
+      "Download each uploaded artifact and verify its ZIP SHA-256 against the Actions artifact digest"
+    ],
+    "artifact_hash_verification": "12/12 downloaded ZIP digests matched GitHub artifact digests",
+    "fixture_hash_verification": "12/12 artifacts contained identical pre-fix and fixed regression-test file hashes",
+    "spring_fixture_adjustment": "The upstream Spring regression test calls createRequest(String, ...) although the local helper signature requires Resource. The workflow adapts this test fixture to ClassPathResource on both sides only, logs the adjustment, and changes no production source."
+  },
+  "policy": {
+    "historical_artifacts_mutated": false,
+    "model_inference_performed": false,
+    "scoring_calibration_performed": false,
+    "independent_human_source_review_completed": false,
+    "separate_adjudication_completed": false,
+    "heldout_confirmatory_inclusion_authorized": false,
+    "interpretation": "Technical red/green reproduction does not establish root-cause truth, cross-component suitability, independent adjudication, contamination status, or confirmatory eligibility."
+  },
+  "candidates": [
+    {
+      "case_id": "net-404-ftps-data-hostname-verifier",
+      "pull_request_url": "https://github.com/apache/commons-net/pull/404",
+      "repository_url": "https://github.com/apache/commons-net",
+      "pre_fix_sha": "faa4edd7e287a3db465a32efd9c2d5faa15757fe",
+      "fixed_sha": "a79729464f6e69b773171ff30e3d483cab7afd70",
+      "build_tool": "maven",
+      "regression_tests": [
+        {
+          "target": "FTPSClientTest#testHostnameVerifierUsedForDataConnection",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "test_patch_policy": "diff_only_no_full_test_file_replacement",
+      "regression_test_patch_sha256": "f2fe27ee0709ac962e92c520e4e173776dd4663dbcfa18e69ee0bb1794d337a2",
+      "pre_fix_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/net/ftp/AbstractFtpsTest.java",
+          "sha256": "f77a680649b741eafdab68ed5b34397ea2c6824d5262552efa7da72316d4306d"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/net/ftp/FTPSClientTest.java",
+          "sha256": "8864be93d595a9d0e8726e458415ee1d61e189dc8e6cff5bf158eade14edd21c"
+        }
+      ],
+      "fixed_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/net/ftp/AbstractFtpsTest.java",
+          "sha256": "f77a680649b741eafdab68ed5b34397ea2c6824d5262552efa7da72316d4306d"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/net/ftp/FTPSClientTest.java",
+          "sha256": "8864be93d595a9d0e8726e458415ee1d61e189dc8e6cff5bf158eade14edd21c"
+        }
+      ],
+      "test_fixture_hashes_identical": true,
+      "artifact": {
+        "id": 11672018748,
+        "name": "heldout-lead-screening-net-404-ftps-data-hostname-verifier",
+        "size_bytes": 7185,
+        "sha256": "893884cc2de6d4caede4ac7c6b85ebffae43120b618cd2bc6bf171a3e38c1428",
+        "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670/artifacts/11672018748"
+      },
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "cross_component_suitability": "not yet adjudicated",
+      "contamination_risk": "public PR and fix are disclosed; case-specific exposure must be independently assessed",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "spring-37285-part-spill-disk-limit",
+      "pull_request_url": "https://github.com/spring-projects/spring-framework/pull/37285",
+      "repository_url": "https://github.com/spring-projects/spring-framework",
+      "pre_fix_sha": "bb7ea37f1b3d47a4309bfacd7511cd1c6f4c2297",
+      "fixed_sha": "94afeedad60972dbe79325a0e8aed2824c57f922",
+      "build_tool": "gradle",
+      "regression_tests": [
+        {
+          "target": "DefaultPartHttpMessageReaderTests#exceedDiskUsageOnSpillOver",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "test_patch_policy": "diff_only_no_full_test_file_replacement",
+      "regression_test_patch_sha256": "a67e869a24760bbe726aea5ee5ef5dd1c6c023367d1b91e677a1233f62adcac2",
+      "pre_fix_test_file_sha256": [
+        {
+          "path": "spring-web/src/test/java/org/springframework/http/codec/multipart/DefaultPartHttpMessageReaderTests.java",
+          "sha256": "55ceb5f05b1591097dfad1d34b17aeb90be78be62c5f90102ef895b618096852"
+        }
+      ],
+      "fixed_test_file_sha256": [
+        {
+          "path": "spring-web/src/test/java/org/springframework/http/codec/multipart/DefaultPartHttpMessageReaderTests.java",
+          "sha256": "55ceb5f05b1591097dfad1d34b17aeb90be78be62c5f90102ef895b618096852"
+        }
+      ],
+      "test_fixture_hashes_identical": true,
+      "artifact": {
+        "id": 11671854573,
+        "name": "heldout-lead-screening-spring-37285-part-spill-disk-limit",
+        "size_bytes": 6046,
+        "sha256": "c52009de8ff1cc7ab826de4179c00c5c369b6a07d4e5bcd5904176fb232191a4",
+        "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670/artifacts/11671854573"
+      },
+      "module": "spring-web",
+      "test_harness_adjustment": {
+        "id": "spring-create-request-resource",
+        "reason": "Upstream regression test passes a String to a test helper whose signature requires Resource. A narrow local fixture adaptation uses ClassPathResource on both pre-fix and fixed snapshots; production source is unchanged."
+      },
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "cross_component_suitability": "not yet adjudicated",
+      "contamination_risk": "public PR and fix are disclosed; case-specific exposure must be independently assessed",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "jackson-6256-objectnode-anygetter-filter",
+      "pull_request_url": "https://github.com/FasterXML/jackson-databind/pull/6256",
+      "repository_url": "https://github.com/FasterXML/jackson-databind",
+      "pre_fix_sha": "e62a0704a10493001bf8ece5b16c1867b16bab45",
+      "fixed_sha": "aa9cd983faeea37317c172fffd8fa2ccbe8177a1",
+      "build_tool": "maven",
+      "regression_tests": [
+        {
+          "target": "AnyGetterTest#objectNodeAnyGetterHonorsIgnoreProperties",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        },
+        {
+          "target": "AnyGetterTest#objectNodeAnyGetterHonorsIncludeProperties",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "test_patch_policy": "diff_only_no_full_test_file_replacement",
+      "regression_test_patch_sha256": "cc2c8512869e7ae155491c7a7d0d47118f6eb3a3b4e0e798f3690fbe36a9b23f",
+      "pre_fix_test_file_sha256": [
+        {
+          "path": "src/test/java/tools/jackson/databind/ser/AnyGetterTest.java",
+          "sha256": "d3c78d7e644a2b98c644c535f14b041fafa15afdf22e6d63416b8d406e4fab59"
+        }
+      ],
+      "fixed_test_file_sha256": [
+        {
+          "path": "src/test/java/tools/jackson/databind/ser/AnyGetterTest.java",
+          "sha256": "d3c78d7e644a2b98c644c535f14b041fafa15afdf22e6d63416b8d406e4fab59"
+        }
+      ],
+      "test_fixture_hashes_identical": true,
+      "artifact": {
+        "id": 11671853973,
+        "name": "heldout-lead-screening-jackson-6256-objectnode-anygetter-filter",
+        "size_bytes": 8329,
+        "sha256": "0fea96638441b0eaa2c6a4e86ed1f084bb9e38ea31842f484389fa95f7a5b372",
+        "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670/artifacts/11671853973"
+      },
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "cross_component_suitability": "not yet adjudicated",
+      "contamination_risk": "public PR and fix are disclosed; case-specific exposure must be independently assessed",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "net-400-crlf-command-injection",
+      "pull_request_url": "https://github.com/apache/commons-net/pull/400",
+      "repository_url": "https://github.com/apache/commons-net",
+      "pre_fix_sha": "2a3aa71b077ae9290d9c3b95f6ad23b0e0a357c2",
+      "fixed_sha": "a07b6c41b5c2369506e7d86c4808dc51317e1481",
+      "build_tool": "maven",
+      "regression_tests": [
+        {
+          "target": "FTPTest#testRejectCRLFInArgs",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        },
+        {
+          "target": "NNTPTest#testRejectCRLFInArgs",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        },
+        {
+          "target": "POP3Test#testRejectCRLFInArgs",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        },
+        {
+          "target": "SMTPTest#testRejectCRLFInArgs",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "test_patch_policy": "diff_only_no_full_test_file_replacement",
+      "regression_test_patch_sha256": "fef35d0c2800d5e91b6bbe76f3069e012264a8866b1c2d4e7572a3914a2d9a38",
+      "pre_fix_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/net/ftp/FTPTest.java",
+          "sha256": "87337325d6db2b9ba8c85d05656f706077191bb099d6d43fe7061de311a0ed05"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/net/nntp/NNTPTest.java",
+          "sha256": "bb2e9bab747a059acb2254660ae9a429b49435be7aeced86f70854853f54379a"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/net/pop3/POP3Test.java",
+          "sha256": "6ea8abeaceb513b6d29e7fbbcf412ffddb032f390a72f51e65fb933c21ff67dd"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/net/smtp/SMTPTest.java",
+          "sha256": "48d06ea00e754ca308bd2b023e2c637ab08918c7d80ba5d96bbfb926e64a70a6"
+        }
+      ],
+      "fixed_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/net/ftp/FTPTest.java",
+          "sha256": "87337325d6db2b9ba8c85d05656f706077191bb099d6d43fe7061de311a0ed05"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/net/nntp/NNTPTest.java",
+          "sha256": "bb2e9bab747a059acb2254660ae9a429b49435be7aeced86f70854853f54379a"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/net/pop3/POP3Test.java",
+          "sha256": "6ea8abeaceb513b6d29e7fbbcf412ffddb032f390a72f51e65fb933c21ff67dd"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/net/smtp/SMTPTest.java",
+          "sha256": "48d06ea00e754ca308bd2b023e2c637ab08918c7d80ba5d96bbfb926e64a70a6"
+        }
+      ],
+      "test_fixture_hashes_identical": true,
+      "artifact": {
+        "id": 11671818987,
+        "name": "heldout-lead-screening-net-400-crlf-command-injection",
+        "size_bytes": 7434,
+        "sha256": "cac78fbc0b64eb54281e66b8bc30873f9344377dd5419657da2dd83f1f02a2a2",
+        "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670/artifacts/11671818987"
+      },
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "cross_component_suitability": "not yet adjudicated",
+      "contamination_risk": "public PR and fix are disclosed; case-specific exposure must be independently assessed",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "collections-728-ordered-next-key",
+      "pull_request_url": "https://github.com/apache/commons-collections/pull/728",
+      "repository_url": "https://github.com/apache/commons-collections",
+      "pre_fix_sha": "a5248efd7f4f857f88770565414948e2d0524933",
+      "fixed_sha": "04b30be69f4355f218d587703bc20b1a591c3e3c",
+      "build_tool": "maven",
+      "regression_tests": [
+        {
+          "target": "DualTreeBidiMapTest#testNextKeyAbsentKey",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        },
+        {
+          "target": "FixedSizeSortedMapTest#testNextKey",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        },
+        {
+          "target": "UnmodifiableSortedMapTest#testNextKey",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "test_patch_policy": "diff_only_no_full_test_file_replacement",
+      "regression_test_patch_sha256": "10df253e46e70596e2536cf07daef5dc11f97b40fb5170c2fb99645e132bda6a",
+      "pre_fix_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/collections4/bidimap/DualTreeBidiMapTest.java",
+          "sha256": "79b45ee3b71b76a85e52c426b3189e986ca24879924b6206e3c78ed2450cbe65"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/collections4/map/FixedSizeSortedMapTest.java",
+          "sha256": "7fcd011e2d999a08009c2729740bdb9b8e7aebc61c7faa6c3b2fe848f62bbcef"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/collections4/map/UnmodifiableSortedMapTest.java",
+          "sha256": "d1c350bac7ede967bf77f12eb5724ec9caa3a9383e13f7f30ad662173c68feef"
+        }
+      ],
+      "fixed_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/collections4/bidimap/DualTreeBidiMapTest.java",
+          "sha256": "79b45ee3b71b76a85e52c426b3189e986ca24879924b6206e3c78ed2450cbe65"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/collections4/map/FixedSizeSortedMapTest.java",
+          "sha256": "7fcd011e2d999a08009c2729740bdb9b8e7aebc61c7faa6c3b2fe848f62bbcef"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/collections4/map/UnmodifiableSortedMapTest.java",
+          "sha256": "d1c350bac7ede967bf77f12eb5724ec9caa3a9383e13f7f30ad662173c68feef"
+        }
+      ],
+      "test_fixture_hashes_identical": true,
+      "artifact": {
+        "id": 11671732651,
+        "name": "heldout-lead-screening-collections-728-ordered-next-key",
+        "size_bytes": 7500,
+        "sha256": "8394d5c033508de3852d0fca32bead2a2ca4fcc31202831b890c040e9592e54a",
+        "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670/artifacts/11671732651"
+      },
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "cross_component_suitability": "not yet adjudicated",
+      "contamination_risk": "public PR and fix are disclosed; case-specific exposure must be independently assessed",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "netty-17759-pooled-derived-retained-slice",
+      "pull_request_url": "https://github.com/netty/netty/pull/17759",
+      "repository_url": "https://github.com/netty/netty",
+      "pre_fix_sha": "006a2f1d92db733d10112de251600da7b6f8ec51",
+      "fixed_sha": "d84dc6b1c290de2046bd0df5ba893e7f337cb0e6",
+      "build_tool": "maven",
+      "regression_tests": [
+        {
+          "target": "PooledBigEndianHeapByteBufTest#testRetainedSliceOfNonRetainedDerivedBufferCoversTheReadableBytes",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "test_patch_policy": "diff_only_no_full_test_file_replacement",
+      "regression_test_patch_sha256": "3d2df774c2cd853fd5c3996cfc7f62fe94197a8cb3d7ed83a43847317aec8cc1",
+      "pre_fix_test_file_sha256": [
+        {
+          "path": "buffer/src/test/java/io/netty/buffer/AbstractByteBufTest.java",
+          "sha256": "e2b045b4db6338450c2f2b882ae7f512f1e9dd38a0026aa8411af4df96d220ba"
+        }
+      ],
+      "fixed_test_file_sha256": [
+        {
+          "path": "buffer/src/test/java/io/netty/buffer/AbstractByteBufTest.java",
+          "sha256": "e2b045b4db6338450c2f2b882ae7f512f1e9dd38a0026aa8411af4df96d220ba"
+        }
+      ],
+      "test_fixture_hashes_identical": true,
+      "artifact": {
+        "id": 11671577868,
+        "name": "heldout-lead-screening-netty-17759-pooled-derived-retained-slice",
+        "size_bytes": 17265,
+        "sha256": "5cf5a823b89e02dc7ee584f7732359f04096bd1f78da87deabbe6e8435b88a85",
+        "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670/artifacts/11671577868"
+      },
+      "module": "buffer",
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "cross_component_suitability": "not yet adjudicated",
+      "contamination_risk": "public PR and fix are disclosed; case-specific exposure must be independently assessed",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "compress-805-pack200-error-propagation",
+      "pull_request_url": "https://github.com/apache/commons-compress/pull/805",
+      "repository_url": "https://github.com/apache/commons-compress",
+      "pre_fix_sha": "9a624106e6a5fce948d97ee262ed5742f6e4ceb4",
+      "fixed_sha": "17ce90728476f64d095f59cacf45c20ef3ade216",
+      "build_tool": "maven",
+      "regression_tests": [
+        {
+          "target": "CodeAttributeTest#testNegativeReferenceIndex",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "test_patch_policy": "diff_only_no_full_test_file_replacement",
+      "regression_test_patch_sha256": "e572ddb58812f64fbac5acbf59839cb6cc6b463e28bdae9f5bf4e17377d20cc5",
+      "pre_fix_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/compress/harmony/unpack200/CodeAttributeTest.java",
+          "sha256": "7d06cc282dcb8d4684c5b7fd5cb46d12ecd343f8ef8a34222caf72a59fd3871c"
+        }
+      ],
+      "fixed_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/compress/harmony/unpack200/CodeAttributeTest.java",
+          "sha256": "7d06cc282dcb8d4684c5b7fd5cb46d12ecd343f8ef8a34222caf72a59fd3871c"
+        }
+      ],
+      "test_fixture_hashes_identical": true,
+      "artifact": {
+        "id": 11671352836,
+        "name": "heldout-lead-screening-compress-805-pack200-error-propagation",
+        "size_bytes": 8880,
+        "sha256": "52a579caba600c591cbe809d4a9b78507656f107b250c3d1c19e68e38d9b2fa7",
+        "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670/artifacts/11671352836"
+      },
+      "build_prerequisite_note": "This case requires pinned Apache Commons Parent 104 source POM installation before the test; the prerequisite is captured in the screening workflow.",
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "cross_component_suitability": "not yet adjudicated",
+      "contamination_risk": "public PR and fix are disclosed; case-specific exposure must be independently assessed",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "jackson-6096-jsonview-array-update",
+      "pull_request_url": "https://github.com/FasterXML/jackson-databind/pull/6096",
+      "repository_url": "https://github.com/FasterXML/jackson-databind",
+      "pre_fix_sha": "05f0d04f6a63829d322145cf8ba87511cbf56445",
+      "fixed_sha": "82d58088dfeb6a6d1af0cc45b9f2fb5e00828f08",
+      "build_tool": "maven",
+      "regression_tests": [
+        {
+          "target": "FailOnUnexpectedView6077Test$BeanAsArrayUpdate#hiddenRoleUpdateRejectedWhenEnabled",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "test_patch_policy": "diff_only_no_full_test_file_replacement",
+      "regression_test_patch_sha256": "adb8fef5594b0ec9ad2abc00d40c9670b7a8cdb3e3e1688121b99d072e7ffe45",
+      "pre_fix_test_file_sha256": [
+        {
+          "path": "src/test/java/tools/jackson/databind/views/FailOnUnexpectedView6077Test.java",
+          "sha256": "ac2ed4c37bcf8d974c1c0ed1efdff912eebe3a9a01b90e5e5ba61997c5a440c6"
+        }
+      ],
+      "fixed_test_file_sha256": [
+        {
+          "path": "src/test/java/tools/jackson/databind/views/FailOnUnexpectedView6077Test.java",
+          "sha256": "ac2ed4c37bcf8d974c1c0ed1efdff912eebe3a9a01b90e5e5ba61997c5a440c6"
+        }
+      ],
+      "test_fixture_hashes_identical": true,
+      "artifact": {
+        "id": 11671198022,
+        "name": "heldout-lead-screening-jackson-6096-jsonview-array-update",
+        "size_bytes": 8408,
+        "sha256": "bec442254cd4b55ebecbd736b5f2a70045adc25f6e7fbe91d832ff2922a44fe7",
+        "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670/artifacts/11671198022"
+      },
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "cross_component_suitability": "not yet adjudicated",
+      "contamination_risk": "public PR and fix are disclosed; case-specific exposure must be independently assessed",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "net-403-ftp-parser-type-before-instantiation",
+      "pull_request_url": "https://github.com/apache/commons-net/pull/403",
+      "repository_url": "https://github.com/apache/commons-net",
+      "pre_fix_sha": "a3d19751891edb9f7cb8c11bc344eaf1683b2b32",
+      "fixed_sha": "6e38749760c0366aac1637c7dc15e4ccf76329c9",
+      "build_tool": "maven",
+      "regression_tests": [
+        {
+          "target": "DefaultFTPFileEntryParserFactoryTest#testNonParserClassIsNotInstantiated",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "test_patch_policy": "diff_only_no_full_test_file_replacement",
+      "regression_test_patch_sha256": "8215ad6aa12125fce3a8226b5212a00dc284560e0b7b3e77c649fddca4e83951",
+      "pre_fix_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/net/ftp/parser/DefaultFTPFileEntryParserFactoryTest.java",
+          "sha256": "277dc6818a7260caf26921aee3d712edfda9ce2eb3f2b917b72b5489a24e6497"
+        }
+      ],
+      "fixed_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/net/ftp/parser/DefaultFTPFileEntryParserFactoryTest.java",
+          "sha256": "277dc6818a7260caf26921aee3d712edfda9ce2eb3f2b917b72b5489a24e6497"
+        }
+      ],
+      "test_fixture_hashes_identical": true,
+      "artifact": {
+        "id": 11671192981,
+        "name": "heldout-lead-screening-net-403-ftp-parser-type-before-instantiation",
+        "size_bytes": 6829,
+        "sha256": "916f605ae86cd6b99282ba5329eaf35fb4045b7996983f4b67933b60513adf84",
+        "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670/artifacts/11671192981"
+      },
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "cross_component_suitability": "not yet adjudicated",
+      "contamination_risk": "public PR and fix are disclosed; case-specific exposure must be independently assessed",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "lang-1800-era-calendar",
+      "pull_request_url": "https://github.com/apache/commons-lang/pull/1800",
+      "repository_url": "https://github.com/apache/commons-lang",
+      "pre_fix_sha": "324d9fbd091749a9c70aed4b038fd0b4a520b3cf",
+      "fixed_sha": "c7f1a6d27707e8cd8cbed94f83e0c58d2c480614",
+      "build_tool": "maven",
+      "regression_tests": [
+        {
+          "target": "FastDateFormatTest#testEraRoundTripNonGregorianCalendar",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        },
+        {
+          "target": "FastDatePrinterTest#testEraMixedCalendarTypes",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "test_patch_policy": "diff_only_no_full_test_file_replacement",
+      "regression_test_patch_sha256": "1d977d9e81d1004cf3b936729295c95a1ef995e2fc954f1690a87a5771ae2d3e",
+      "pre_fix_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java",
+          "sha256": "8ebc139ebc4d1ab754187fbee5745d7401d8f4d78760f1e95aee4143e027edd9"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java",
+          "sha256": "81e6618f3a2580f35812a000322a30425bac9ee562ebe489974144798327c36e"
+        }
+      ],
+      "fixed_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java",
+          "sha256": "8ebc139ebc4d1ab754187fbee5745d7401d8f4d78760f1e95aee4143e027edd9"
+        },
+        {
+          "path": "src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java",
+          "sha256": "81e6618f3a2580f35812a000322a30425bac9ee562ebe489974144798327c36e"
+        }
+      ],
+      "test_fixture_hashes_identical": true,
+      "artifact": {
+        "id": 11671074713,
+        "name": "heldout-lead-screening-lang-1800-era-calendar",
+        "size_bytes": 7574,
+        "sha256": "07b13ba8f6a61b741b10ea7d6109c592445c3675016f41bd72769696160eab6b",
+        "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670/artifacts/11671074713"
+      },
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "cross_component_suitability": "not yet adjudicated",
+      "contamination_risk": "public PR and fix are disclosed; case-specific exposure must be independently assessed",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "text-768-stringmatcher-charsequence-window",
+      "pull_request_url": "https://github.com/apache/commons-text/pull/768",
+      "repository_url": "https://github.com/apache/commons-text",
+      "pre_fix_sha": "a6cbba814422a06a0366468b2346f52aaacf8f3d",
+      "fixed_sha": "81de4f7a7c7d3b13d89edd72d4c4b92aa33e6c81",
+      "build_tool": "maven",
+      "regression_tests": [
+        {
+          "target": "StringMatcherTest#testIsMatchCharSequencePassesBufferStartThrough",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        },
+        {
+          "target": "StringMatcherTest#testIsMatchCharSequenceStartDelegatesThroughTheCorrectedOverload",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        },
+        {
+          "target": "StringMatcherTest#testIsMatchOverloadsAgreeOnTheSameWindow",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        },
+        {
+          "target": "StringMatcherTest#testStringSubstitutorHandsACustomMatcherTheRealBufferStart",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "test_patch_policy": "diff_only_no_full_test_file_replacement",
+      "regression_test_patch_sha256": "031aab4c49858d606eb94a42b8ed27312518c032426911324f2f8f224f14f581",
+      "pre_fix_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/text/matcher/StringMatcherTest.java",
+          "sha256": "e1fed453f2a04085c1bf10e3eae027894928553992811b068c3f84ef5a7dec20"
+        }
+      ],
+      "fixed_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/text/matcher/StringMatcherTest.java",
+          "sha256": "e1fed453f2a04085c1bf10e3eae027894928553992811b068c3f84ef5a7dec20"
+        }
+      ],
+      "test_fixture_hashes_identical": true,
+      "artifact": {
+        "id": 11671058014,
+        "name": "heldout-lead-screening-text-768-stringmatcher-charsequence-window",
+        "size_bytes": 7759,
+        "sha256": "053494aadd1c50d3b5b333cd18b461859d071f39ff16549eb01e481d10120be5",
+        "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670/artifacts/11671058014"
+      },
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "cross_component_suitability": "not yet adjudicated",
+      "contamination_risk": "public PR and fix are disclosed; case-specific exposure must be independently assessed",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "lang-1807-wildcard-upper-bound",
+      "pull_request_url": "https://github.com/apache/commons-lang/pull/1807",
+      "repository_url": "https://github.com/apache/commons-lang",
+      "pre_fix_sha": "25c4bfcd6d9dc3a7333088bfc3031b05cd93837e",
+      "fixed_sha": "43154e016ae213a0da5b727cd1aa18e6e0c56adb",
+      "build_tool": "maven",
+      "regression_tests": [
+        {
+          "target": "TypeUtilsTest#testUnboundedWildcardType",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed",
+          "failure_count": 1
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "test_patch_policy": "diff_only_no_full_test_file_replacement",
+      "regression_test_patch_sha256": "d503e63f940eb79e12f52cbc085105b2c77566d2fb7f4c912da0e9b72b12aea4",
+      "pre_fix_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java",
+          "sha256": "eb0c2ce1317e41a9a3ecd86c942df56fe4a7355ea0ed245df95639ac50c5cf8b"
+        }
+      ],
+      "fixed_test_file_sha256": [
+        {
+          "path": "src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java",
+          "sha256": "eb0c2ce1317e41a9a3ecd86c942df56fe4a7355ea0ed245df95639ac50c5cf8b"
+        }
+      ],
+      "test_fixture_hashes_identical": true,
+      "artifact": {
+        "id": 11671039797,
+        "name": "heldout-lead-screening-lang-1807-wildcard-upper-bound",
+        "size_bytes": 6825,
+        "sha256": "bf6b32d6eb07e74f4c855ac69a5f0ba27fd7cda22ebe6303fe7c59a71a1b7278",
+        "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670/artifacts/11671039797"
+      },
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "cross_component_suitability": "not yet adjudicated",
+      "contamination_risk": "public PR and fix are disclosed; case-specific exposure must be independently assessed",
+      "heldout_confirmatory_eligible": false
+    }
+  ],
+  "next_gates": [
+    "Two independent reviewers inspect source at both pinned revisions, regression tests, root-cause completeness, causal mechanism, dependency edges, component boundaries, provenance/licensing and exposure risk.",
+    "A separate adjudicator resolves disagreements with a recorded rationale and signs the candidate audit.",
+    "Exclude weak/local defects and any case without a defensible cross-component causal path.",
+    "Keep cases used for scoring calibration, prompt development or adjudication training out of the held-out confirmatory pool.",
+    "Freeze the independent pool only after review, then finish model runtime/tokenizer/prompt hash validation, randomized schedule, analysis review and preregistration."
+  ],
+  "screening_summary": {
+    "total_leads": 12,
+    "regression_targets": 22,
+    "red_green_pass": 12,
+    "failed_or_unresolved": 0,
+    "artifact_sha256_matches": 12,
+    "test_fixture_hashes_identical": 12,
+    "independent_human_review_complete": 0,
+    "adjudication_complete": 0,
+    "heldout_eligible": 0,
+    "target_heldout_independent_cases": 61
+  },
+  "candidates_count_accepted_as_heldout": 0
+}
