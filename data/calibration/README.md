@@ -6,6 +6,8 @@ This directory defines the *future* calibration gate. It deliberately does not c
 
 Create `examples.jsonl` from defects and response examples that are independent of every frozen pilot and confirmatory case. Every row must meet `schemas/scoring_calibration_example.schema.json`, including a source URL, fixed revision, supporting evidence URLs, a short case summary, a gold root-cause rationale, response text, challenge class, and the legacy matcher's accept/reject result.
 
+Record response origin explicitly. Genuine new model responses use `response_origin: "independent_model_output"` and must retain model ID, immutable model revision, seed, prompt SHA-256, and raw-output SHA-256 in `generation_metadata`. Human-authored and synthetic adversarial controls use their respective origin labels and `generation_metadata: null`. Do not relabel a hand-written response as model-generated. The manifest requires at least seven independent model-output examples from seven distinct defect cases and seven control examples; the class and diversity thresholds apply as additional requirements.
+
 The draft manifest requires at least four examples of each challenge class (28 total minimum): canonical correct answer, correct paraphrase, wrong mechanism, negated mention of the correct phrase, multiple unresolved hypotheses, partial diagnosis, and unscorable output. These are a minimum design safeguard, not a claim that 28 examples guarantee general validity. Include multiple independent defect cases, not 28 variants of a single bug.
 
 Do **not** use any response from the frozen 40-run pilot or 160-run confirmatory experiment to calibrate the score. The audit rejects overlap between calibration source case IDs and the pilot/confirmatory manifests.
