@@ -67,6 +67,7 @@ class ResearchCase:
     i_base: list[str]
     ccdg: list[DependencyEdge]
     ground_truth: GroundTruth
+    software_twin_snapshot: dict[str, str] | None = None
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "ResearchCase":
@@ -79,6 +80,28 @@ class ResearchCase:
             )
             for edge in payload.get("ccdg", [])
         ]
+        snapshot_payload = payload.get("software_twin_snapshot")
+        if snapshot_payload is not None and not isinstance(snapshot_payload, dict):
+            raise TypeError("software_twin_snapshot must be an object when provided")
+        snapshot = None
+        if isinstance(snapshot_payload, dict):
+            required_snapshot_fields = (
+                "repository_url",
+                "snapshot_revision",
+                "regression_test",
+                "observed_failure_signal",
+            )
+            missing_snapshot_fields = [
+                key for key in required_snapshot_fields
+                if not isinstance(snapshot_payload.get(key), str) or not snapshot_payload[key].strip()
+            ]
+            if missing_snapshot_fields:
+                raise ValueError(
+                    "software_twin_snapshot missing non-empty fields: "
+                    + ", ".join(missing_snapshot_fields)
+                )
+            snapshot = {key: snapshot_payload[key] for key in required_snapshot_fields}
+
         return cls(
             case_id=str(payload.get("case_id", "")),
             source=str(payload.get("source", "")),
@@ -89,4 +112,5 @@ class ResearchCase:
             i_base=[str(item) for item in payload.get("i_base", [])],
             ccdg=edges,
             ground_truth=GroundTruth.from_dict(payload.get("ground_truth", {})),
+            software_twin_snapshot=snapshot,
         )
