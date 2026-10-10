@@ -70,3 +70,34 @@ def test_v2_contexts_do_not_expose_ground_truth_labels():
     for rendered in contexts:
         assert "Ground truth:" not in rendered
         assert case.ground_truth.root_cause not in rendered
+
+def test_v2_conditions_share_revision_bound_software_twin_snapshot():
+    case_path = ROOT / "data" / "benchmark" / "cases" / "commons-math-defects4j-MATH-305.json"
+    payload = json.loads(case_path.read_text(encoding="utf-8"))
+    snapshot = {
+        "repository_url": "https://github.com/example/project",
+        "snapshot_revision": "a" * 40,
+        "regression_test": "ExampleRegressionTest#failsOnPreFixRevision",
+        "observed_failure_signal": "The regression assertion failed on the pinned snapshot revision.",
+    }
+    payload["software_twin_snapshot"] = snapshot
+    case = ResearchCase.from_dict(payload)
+
+    contexts = [
+        render_standard_context_v2(case),
+        render_dependency_prose_context_v2(case),
+        render_ccdg_context_v2(case),
+    ]
+    required_lines = [
+        "Version-bound software-system twin snapshot:",
+        f"Repository: {snapshot['repository_url']}",
+        f"Observed code revision: {snapshot['snapshot_revision']}",
+        f"Regression test: {snapshot['regression_test']}",
+        f"Observed failure signal: {snapshot['observed_failure_signal']}",
+    ]
+    for rendered in contexts:
+        for line in required_lines:
+            assert line in rendered
+        assert "fixed_revision" not in rendered
+        assert "ground_truth" not in rendered.lower()
+

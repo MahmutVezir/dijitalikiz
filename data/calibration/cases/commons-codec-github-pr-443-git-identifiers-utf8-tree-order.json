@@ -1,0 +1,69 @@
+{
+  "case_id": "commons-codec-github-pr-443-git-identifiers-utf8-tree-order",
+  "source": "Apache Commons Codec GitHub Pull Request and source history",
+  "source_url": "https://github.com/apache/commons-codec/pull/443",
+  "publication_date": "2026-09-14",
+  "technology": "Apache Commons Codec / Java / Git-compatible tree identifiers and Unicode ordering",
+  "error_description": "GitIdentifiers can compute a tree identifier that differs from git write-tree when directory entries include certain Unicode names outside the Basic Multilingual Plane.",
+  "i_base": [
+    "GitIdentifiers.TreeIdBuilder orders DirectoryEntry values before computing a tree identifier.",
+    "Java String.compareTo orders UTF-16 code units.",
+    "Git tree sorting compares name bytes as unsigned byte values, with a special slash convention for directory names.",
+    "Supplementary-plane characters can sort differently under UTF-16 code-unit comparison and UTF-8 byte comparison.",
+    "The regression test compares the produced identifier with an identifier pinned from git write-tree."
+  ],
+  "ccdg": [
+    {
+      "source": "GitIdentifiers.TreeIdBuilder",
+      "target": "DirectoryEntry.compareTo",
+      "relation": "delegates_entry_ordering",
+      "details": "Tree entries are sorted before the identifier is computed."
+    },
+    {
+      "source": "DirectoryEntry.compareTo",
+      "target": "Java String.compareTo",
+      "relation": "used_in_legacy_sort_key",
+      "details": "UTF-16 code-unit order differs from Git's defined byte order for some names."
+    },
+    {
+      "source": "Git tree-sort specification",
+      "target": "unsigned UTF-8 byte order",
+      "relation": "defines_expected_order",
+      "details": "The comparator must reproduce the external Git tree ordering rule."
+    },
+    {
+      "source": "entry ordering",
+      "target": "treeId output",
+      "relation": "determines_hash_input",
+      "details": "Changing the order of serialized entries changes the resulting tree identifier."
+    }
+  ],
+  "ground_truth": {
+    "component": "GitIdentifiers.DirectoryEntry.compareTo",
+    "entity": "sort key for Unicode tree entry names",
+    "operation": "order directory entries before computing treeId",
+    "root_cause": "utf16_string_order_differs_from_unsigned_utf8_git_tree_order",
+    "required_relations": [
+      "GitIdentifiers.TreeIdBuilder",
+      "DirectoryEntry.compareTo",
+      "UTF-8 byte ordering",
+      "git write-tree"
+    ]
+  },
+  "split": "candidates",
+  "provenance": {
+    "pull_request": 443,
+    "fix_commit": "f49b96388c2d97d093d8669cf74f57a5a92e7dff",
+    "pre_fix_revision": "506b762f724fbca2fa2dc198b81598dbb214fd28",
+    "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
+    "case_status": "calibration_case_draft_not_eligible_for_experiment",
+    "ground_truth_adjudication_status": "pending_independent_review",
+    "role": "scoring_calibration_candidate_only"
+  },
+  "software_twin_snapshot": {
+    "repository_url": "https://github.com/apache/commons-codec",
+    "snapshot_revision": "506b762f724fbca2fa2dc198b81598dbb214fd28",
+    "regression_test": "GitIdentifiersTest#testTreeIdSortsSupplementaryPlaneNamesLikeGit",
+    "observed_failure_signal": "The tree identifier differed from git write-tree for supplementary-plane Unicode names on the pinned pre-fix revision."
+  }
+}

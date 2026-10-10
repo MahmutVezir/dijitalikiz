@@ -7,3 +7,19 @@ venv/
 .dist-info/
 build/
 dist/
+
+# Private/blinded scoring-calibration materials (never commit reviewer identity,
+# independent annotations, unblinding key, or intermediate packets).
+data/calibration/reviewer_a.jsonl
+data/calibration/reviewer_b.jsonl
+data/calibration/adjudication.jsonl
+data/calibration/review_key_private.json
+data/calibration/review_packets/
+
+# Raw human ground-truth review packets, answers, and unblinding maps are private.
+data/calibration/case_review_packets/
+data/calibration/case_review_reviewer_a.jsonl
+data/calibration/case_review_reviewer_b.jsonl
+data/calibration/case_review_adjudication.jsonl
+data/calibration/case_review_key_private.json
+

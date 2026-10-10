@@ -1,0 +1,69 @@
+{
+  "case_id": "commons-lang-github-pr-1808-randomstringutils-tilde-exclusive-upper-bound",
+  "source": "Apache Commons Lang GitHub Pull Request and source history",
+  "source_url": "https://github.com/apache/commons-lang/pull/1808",
+  "publication_date": "2026-10-01",
+  "technology": "Apache Commons Lang / Java / random character generation and range bounds",
+  "error_description": "RandomStringUtils.nextGraph and nextPrint fail to generate the tilde character even though the documented POSIX character sets include that endpoint.",
+  "i_base": [
+    "RandomStringUtils.nextGraph and nextPrint delegate to a shared random-generation method.",
+    "The shared method interprets its end parameter as exclusive.",
+    "The documented graph range ends at 0x7E and the documented print range also ends at 0x7E.",
+    "The sibling nextAscii method passes 127 to include the character at 0x7E.",
+    "The fix changes the end argument to 127 and adds boundary tests that require tilde to appear."
+  ],
+  "ccdg": [
+    {
+      "source": "RandomStringUtils.nextGraph",
+      "target": "shared random generation",
+      "relation": "delegates_character_range",
+      "details": "The method passes a start and exclusive end bound."
+    },
+    {
+      "source": "RandomStringUtils.nextPrint",
+      "target": "shared random generation",
+      "relation": "delegates_character_range",
+      "details": "The print range uses the same exclusive-end convention."
+    },
+    {
+      "source": "exclusive upper-bound convention",
+      "target": "documented character endpoint",
+      "relation": "determines_reachability",
+      "details": "An end value of 126 excludes code point 126 itself."
+    },
+    {
+      "source": "generated character range",
+      "target": "POSIX graph/print contract",
+      "relation": "must_cover_documented_endpoint",
+      "details": "The endpoint must be reachable while no out-of-range character is generated."
+    }
+  ],
+  "ground_truth": {
+    "component": "RandomStringUtils.nextGraph and RandomStringUtils.nextPrint",
+    "entity": "documented tilde endpoint at code point 0x7E",
+    "operation": "pass the upper bound to the shared random generation method",
+    "root_cause": "exclusive_upper_bound_truncates_documented_character_set",
+    "required_relations": [
+      "nextGraph",
+      "nextPrint",
+      "exclusive upper bound",
+      "0x7E"
+    ]
+  },
+  "split": "candidates",
+  "provenance": {
+    "pull_request": 1808,
+    "fix_commit": "75d71af80ace2d75dab3f6bb82ac2ef91650634e",
+    "pre_fix_revision": "7b6048b7a9d1339a12d353cb85b2222df7bf5668",
+    "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
+    "case_status": "calibration_case_draft_not_eligible_for_experiment",
+    "ground_truth_adjudication_status": "pending_independent_review",
+    "role": "scoring_calibration_candidate_only"
+  },
+  "software_twin_snapshot": {
+    "repository_url": "https://github.com/apache/commons-lang",
+    "snapshot_revision": "7b6048b7a9d1339a12d353cb85b2222df7bf5668",
+    "regression_test": "RandomStringUtilsTest#testRandomGraphIncludesTilde",
+    "observed_failure_signal": "The documented tilde endpoint was not generated within the regression test's bounded attempts on the pinned pre-fix revision."
+  }
+}

@@ -21,6 +21,16 @@ def _shared_base_lines(case: ResearchCase) -> list[str]:
         "I_base:",
     ]
     lines.extend(f"- {item}" for item in case.i_base)
+    snapshot = case.software_twin_snapshot
+    if snapshot is not None:
+        lines.extend([
+            "",
+            "Version-bound software-system twin snapshot:",
+            f"Repository: {snapshot['repository_url']}",
+            f"Observed code revision: {snapshot['snapshot_revision']}",
+            f"Regression test: {snapshot['regression_test']}",
+            f"Observed failure signal: {snapshot['observed_failure_signal']}",
+        ])
     return lines
 
 

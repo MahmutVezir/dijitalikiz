@@ -35,7 +35,8 @@ Preserve the original contexts, manifest, scoring rubric, outputs, report and st
 3. Prefer a diverse sample across projects and defect families; do not fill the sample only with cases from one repository.
 4. Review exposure risk conservatively. Older public Defects4J cases may have appeared in model training data; this is a risk, not proof of model exposure. Newly public cases may reduce but cannot eliminate contamination risk.
 5. Count distinct defects as the statistical unit. Five generations for one defect are repeated measurements, not five independent cases.
-6. Keep a new held-out confirmatory sample separate from calibration, prompt development, and exploratory review.\n7. Initial candidate expansion added three recent public fixes and one structured case draft. Commons Compress #770 passed an independent regression test on the exact pre-fix and fixed commits in [run 37993954772](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772). This verifies the tested failure/fix behavior but does not yet satisfy all dataset eligibility criteria; the candidate remains outside the frozen benchmark.
+6. Keep a new held-out confirmatory sample separate from calibration, prompt development, and exploratory review.
+7. Initial candidate expansion added three recent public fixes and one structured case draft. Commons Compress #770 passed an independent regression test on the exact pre-fix and fixed commits in [run 37993954772](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772). This verifies the tested failure/fix behavior but does not yet satisfy all dataset eligibility criteria; the candidate remains outside the frozen benchmark.
 
 ## 5. Gate C — Use an information-matched three-condition design
 
@@ -89,7 +90,9 @@ If the available independent case pool cannot support a justified sample, report
 - [x] Preserve old experiment and its conclusion unchanged.
 - [x] Add synthetic matcher behavior tests and document their non-empirical status.
 - [x] Implement separate v2 renderers and parity checks.
-- [x] Create a masked exploratory review packet and reviewer guide.\n- [x] Audit the archived pilot artifact: 55/55 manifest files and 40/40 run records; zero file hash/size mismatches. Frozen primary score remains 0/20 in each condition.\n- [x] Add three source-reviewed candidate records and a structured PAX-header case draft; independently reproduce #770 pre-fix failure and fixed-revision pass.
+- [x] Create a masked exploratory review packet and reviewer guide.
+- [x] Audit the archived pilot artifact: 55/55 manifest files and 40/40 run records; zero file hash/size mismatches. Frozen primary score remains 0/20 in each condition.
+- [x] Add three source-reviewed candidate records and a structured PAX-header case draft; independently reproduce #770 pre-fix failure and fixed-revision pass.
 - [ ] Complete an independent human review of the packet; report disagreement and mark the results exploratory.
 - [ ] Create and adjudicate a source-grounded scoring calibration set.
 - [ ] Expand and independently screen the candidate pool.
@@ -98,3 +101,35 @@ If the available independent case pool cannot support a justified sample, report
 - [ ] Finish the TÜBİTAK report template and PDF QA.
 
 **Current state:** the old experiment is complete but inconclusive for the semantic hypothesis. The new study is not yet run; no new human review/calibration has been completed. The application package is not yet submission-ready.
+
+## Stage 1 — Current-mainline research gates (2026-10-10)
+
+A clean mainline-based draft PR now carries the calibration and case-pool gates: [PR #5](https://github.com/MahmutVezir/dijitalikiz/pull/5). It remains a draft until the new branch passes its own validation; the earlier PR's successful tests are not treated as evidence that this rebased branch passes.
+
+- Seven independent defect candidates are recorded under `data/calibration/cases/`. The #770 regression reproduction is recorded in [run 37993954772](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772); six additional red/green reproductions are recorded in [run 38045048274](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274). These runs validate those regression scenarios, not the final correctness of their root-cause/CCDG annotations.
+- All seven candidate case records now contain revision-bound software-twin snapshot fields (repository, pre-fix revision, regression-test identifier, and observed failure signal); a regression test asserts these bindings remain consistent with the case-pool manifest. This metadata is required for eligibility but does not constitute independent ground-truth adjudication.
+- The case-pool manifest is deliberately unfrozen, has no eligible cases, and sets `model_inference_permitted=false`.
+- The scoring-calibration manifest remains `draft` and `frozen=false`. No independent reviewer labels, adjudications, or calibration examples are claimed to be complete.
+- The existing pilot and confirmatory manifests, frozen confirmatory summary, and historical results document have the same Git blob hashes on the branch as on `main`; the historic scores are preserved.
+- The Kaggle workflow changes in PR #5 add a `main`-branch guard for inference jobs. That guard is only on the draft branch until reviewed and merged.
+
+### Next exit gates
+
+1. The rebased PR must pass its own repository tests and historical artifact-integrity checks.
+2. Independent reviewers must assess candidate root causes and cross-component dependency paths against source revisions and regression evidence.
+3. Build a separate, source-grounded scoring-calibration set; independently label outputs and controls, then report false acceptance/rejection, reviewer agreement, and uncertainty.
+4. Freeze the three-condition, information-matched protocol, scoring rule, prompt/token audit, sample-size rationale, and separate confirmatory case set before new confirmatory inference.
+5. Do not launch any new confirmatory model inference until all previous gates pass. The old 160-record result remains unchanged and inconclusive for the semantic hypothesis.
+
+
+## Stage 2 — Independent case review and a real human-evidence gate (2026-10-10)
+
+- Added `docs/CANDIDATE_SOURCE_AUDIT_2026-10-10.md`, a provisional case-by-case source/structure review. It explicitly is not represented as independent human adjudication.
+- Classified every current candidate as a scoring-calibration-only candidate. The calibration set must not be reused as a future confirmatory set after the scoring instrument has been assessed on it.
+- Flagged Commons Compress #803 as parallel LZ4/Snappy decoder paths rather than one causal chain, and Commons Lang #1808 as a weak single-component boundary case. These may serve as calibration controls only and must not be used to inflate the future study's strong cross-component case count.
+- Aligned reproduction-status metadata in all seven records with the archived pre-fix/fixed-revision evidence. Version-bound snapshots include repository, exact pre-fix revision, regression-test target, and observed failure signal.
+- Added `scripts/build_case_ground_truth_review_packets.py`. It builds separately ordered reviewer packets with provisional root-cause labels, `I_base`, and CCDG edges omitted; the unblinding map is written only to a caller-selected private path outside the repository.
+- Added `schemas/case_ground_truth_review_audit.schema.json` and strengthened `scripts/validate_calibration_case_pool.py`: selected cases now require a frozen audit with two distinct reviewers, an independent adjudicator, hashes of packet/response artifacts, exact revision bindings, evidence URLs, a coherent-defect decision, and an adjudicated root-cause/dependency graph. A manifest boolean by itself cannot authorize inference.
+- Added tests for packet leakage, private-key path safety, review-audit hash mismatch, and missing human-review evidence. Validation-only workflow [run #132](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38046622820) passed: 144 tests, frozen pilot integrity audit, confirmatory integrity audit, and source-bundle/launcher build. Both inference jobs were skipped. These checks validate the tooling, not the human review or the research hypothesis.
+
+**Current blocker:** No independent human packet responses or adjudication record exist. The review gate in `data/calibration/case_pool_manifest.json` remains `pending`, selection is not frozen, `eligible_case_ids=[]`, and `model_inference_permitted=false`. Do not modify these flags to bypass the gate. First generate the packets, obtain two genuine independent source-based reviews, adjudicate disagreement, then validate and freeze the audit.
