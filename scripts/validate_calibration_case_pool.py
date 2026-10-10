@@ -63,6 +63,154 @@ def _valid_sha(value: Any) -> bool:
     return isinstance(value, str) and bool(SHA40.fullmatch(value))
 
 
+HEX64 = re.compile(r"^[0-9a-f]{64}$", re.IGNORECASE)
+
+
+def _valid_sha256(value: Any) -> bool:
+    return isinstance(value, str) and bool(HEX64.fullmatch(value))
+
+
+def _validate_human_review_audit(
+    *,
+    root: Path,
+    manifest: dict[str, Any],
+    selected_case_ids: list[Any],
+    candidates: dict[str, dict[str, Any]],
+    issues: list[str],
+) -> None:
+    """Require review evidence; do not trust manifest flags alone."""
+    if not selected_case_ids:
+        return
+
+    gate = manifest.get("review_gate")
+    if not isinstance(gate, dict):
+        issues.append("missing_case_ground_truth_review_gate")
+        return
+    if gate.get("status") != "adjudicated" or gate.get("frozen") is not True:
+        issues.append("case_ground_truth_review_gate_not_frozen")
+    audit_path = _resolve(root, gate.get("audit_path"), "case_ground_truth_review_audit", issues)
+    if audit_path is None:
+        return
+    audit = _read_json(audit_path, issues, "case_ground_truth_review_audit")
+    if audit is None:
+        return
+
+    try:
+        audit_sha256 = hashlib.sha256(audit_path.read_bytes()).hexdigest()
+    except OSError as exc:
+        issues.append(f"cannot_hash_case_ground_truth_review_audit: {exc}")
+        return
+    if not _valid_sha256(gate.get("audit_sha256")):
+        issues.append("case_ground_truth_review_gate_missing_audit_sha256")
+    elif gate.get("audit_sha256") != audit_sha256:
+        issues.append("case_ground_truth_review_audit_sha256_mismatch")
+
+    if audit.get("protocol_version") != "case-ground-truth-review-v1":
+        issues.append("case_ground_truth_review_audit_protocol_mismatch")
+    if audit.get("status") != "adjudicated" or audit.get("frozen") is not True:
+        issues.append("case_ground_truth_review_audit_not_frozen")
+    if not _valid_sha256(audit.get("review_packet_manifest_sha256")):
+        issues.append("case_ground_truth_review_audit_missing_packet_manifest_hash")
+
+    reviewers = audit.get("reviewers")
+    reviewer_ids: list[str] = []
+    if not isinstance(reviewers, list) or len(reviewers) != 2:
+        issues.append("case_ground_truth_review_requires_exactly_two_reviewers")
+        reviewers = []
+    for index, reviewer in enumerate(reviewers):
+        if not isinstance(reviewer, dict):
+            issues.append(f"case_ground_truth_reviewer_{index}_not_object")
+            continue
+        reviewer_id = reviewer.get("reviewer_id")
+        if not isinstance(reviewer_id, str) or not reviewer_id.strip():
+            issues.append(f"case_ground_truth_reviewer_{index}_missing_id")
+        else:
+            reviewer_ids.append(reviewer_id)
+        if reviewer.get("independent_review_attestation") is not True:
+            issues.append(f"case_ground_truth_reviewer_{index}_independence_not_attested")
+        if reviewer.get("source_revision_review_attestation") is not True:
+            issues.append(f"case_ground_truth_reviewer_{index}_source_review_not_attested")
+        if not _valid_sha256(reviewer.get("reviewed_packet_sha256")):
+            issues.append(f"case_ground_truth_reviewer_{index}_missing_packet_hash")
+        if not _valid_sha256(reviewer.get("response_sha256")):
+            issues.append(f"case_ground_truth_reviewer_{index}_missing_response_hash")
+    if len(reviewer_ids) != 2 or len(set(reviewer_ids)) != 2:
+        issues.append("case_ground_truth_reviewers_not_distinct")
+
+    adjudicator = audit.get("adjudicator")
+    if not isinstance(adjudicator, dict):
+        issues.append("case_ground_truth_review_missing_adjudicator")
+        adjudicator = {}
+    adjudicator_id = adjudicator.get("reviewer_id")
+    if not isinstance(adjudicator_id, str) or not adjudicator_id.strip():
+        issues.append("case_ground_truth_review_adjudicator_id_missing")
+    elif adjudicator_id in reviewer_ids:
+        issues.append("case_ground_truth_adjudicator_not_independent_of_reviewers")
+    if adjudicator.get("source_evidence_reviewed") is not True:
+        issues.append("case_ground_truth_adjudicator_source_review_not_attested")
+    if not isinstance(adjudicator.get("completed_at_utc"), str) or not adjudicator["completed_at_utc"].strip():
+        issues.append("case_ground_truth_adjudicator_timestamp_missing")
+
+    case_decisions = audit.get("case_decisions")
+    if not isinstance(case_decisions, list):
+        issues.append("case_ground_truth_review_missing_case_decisions")
+        case_decisions = []
+    decisions_by_id: dict[str, dict[str, Any]] = {}
+    for item in case_decisions:
+        if not isinstance(item, dict):
+            issues.append("case_ground_truth_decision_not_object")
+            continue
+        case_id = item.get("case_id")
+        if not isinstance(case_id, str) or not case_id.strip():
+            issues.append("case_ground_truth_decision_missing_case_id")
+            continue
+        if case_id in decisions_by_id:
+            issues.append(f"{case_id}_duplicate_case_ground_truth_decision")
+            continue
+        decisions_by_id[case_id] = item
+
+    for raw_case_id in selected_case_ids:
+        if not isinstance(raw_case_id, str):
+            issues.append(f"selected_case_id_not_string: {raw_case_id!r}")
+            continue
+        case_id = raw_case_id
+        item = decisions_by_id.get(case_id)
+        if item is None:
+            issues.append(f"{case_id}_missing_independent_ground_truth_review_evidence")
+            continue
+        candidate = candidates.get(case_id, {})
+        for field, manifest_field in (
+            ("pre_fix_revision", "pre_fix_revision"),
+            ("fixed_revision", "fix_revision"),
+        ):
+            if item.get(field) != candidate.get(manifest_field):
+                issues.append(f"{case_id}_review_audit_{field}_mismatch")
+        if item.get("review_a_decision") not in {"keep", "revise", "exclude"}:
+            issues.append(f"{case_id}_review_a_decision_invalid")
+        if item.get("review_b_decision") not in {"keep", "revise", "exclude"}:
+            issues.append(f"{case_id}_review_b_decision_invalid")
+        if item.get("final_decision") != "keep_for_scoring_calibration":
+            issues.append(f"{case_id}_not_adjudicated_for_calibration")
+        if item.get("root_cause_adjudicated") is not True:
+            issues.append(f"{case_id}_root_cause_not_adjudicated")
+        if item.get("dependency_edges_adjudicated") is not True:
+            issues.append(f"{case_id}_dependency_edges_not_adjudicated")
+        if item.get("single_coherent_defect") is not True:
+            issues.append(f"{case_id}_not_a_single_coherent_defect")
+        if item.get("disagreement_resolved") is not True:
+            issues.append(f"{case_id}_review_disagreement_not_resolved")
+        suitability = item.get("ccdg_suitability")
+        if suitability not in {"strong", "moderate", "weak"}:
+            issues.append(f"{case_id}_invalid_adjudicated_ccdg_suitability")
+        if not isinstance(item.get("rationale"), str) or len(item["rationale"].strip()) < 30:
+            issues.append(f"{case_id}_review_rationale_too_short")
+        evidence = item.get("evidence_urls")
+        if not isinstance(evidence, list) or len(evidence) < 2 or not all(
+            isinstance(url, str) and url.startswith("https://") for url in evidence
+        ):
+            issues.append(f"{case_id}_insufficient_version_specific_evidence_urls")
+
+
 def audit_case_pool(
     *,
     manifest_path: Path = DEFAULT_MANIFEST,
@@ -220,6 +368,14 @@ def audit_case_pool(
                 snapshot["observed_failure_signal"].strip()
             ) < 15:
                 issues.append(f"{case_id}_twin_snapshot_failure_signal_missing")
+
+    _validate_human_review_audit(
+        root=root,
+        manifest=manifest,
+        selected_case_ids=selected,
+        candidates=indexed,
+        issues=issues,
+    )
 
     if manifest.get("status") != "frozen":
         issues.append("case_pool_manifest_not_frozen")
