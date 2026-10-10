@@ -75,7 +75,7 @@ def test_tokenizer_audit_emits_three_hashed_cells_and_no_model_outputs(tmp_path)
         tokenizer=FakeTokenizer(),
         transformers_version="test-only",
     )
-    assert report["status"] == "pass"
+    assert report["status"] == "pass", report["failures"]
     assert report["case_count"] == 1
     assert report["actual_prompt_cell_count"] == 3
     assert {row["condition_id"] for row in report["prompts"]} == {"A", "B", "C"}
@@ -94,7 +94,7 @@ def test_tokenizer_audit_blocks_when_prompt_exceeds_generation_budget(tmp_path):
         transformers_version="test-only",
     )
     assert report["status"] == "blocked"
-    assert any(item.startswith("context_overflow:") for item in report["failures"])
+    assert any(item.startswith("context_overflow:") for item in report["failures"]), report["failures"]
 
 
 def test_tokenizer_audit_rejects_system_prompt_hash_mismatch(tmp_path):
