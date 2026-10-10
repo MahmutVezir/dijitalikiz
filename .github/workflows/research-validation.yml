@@ -18,6 +18,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: research-validation-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate-only:
     name: Validate repository and historical artifacts (no inference)
