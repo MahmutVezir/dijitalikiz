@@ -265,7 +265,7 @@ def test_case_pool_gate_rejects_selected_cases_without_review_audit(tmp_path):
     )
     assert report["status"] == "blocked"
     assert report["model_inference_permitted"] is False
-    assert "missing_case_ground_truth_review_audit" in report["issues"]
+    assert any(issue.startswith("missing_case_ground_truth_review_audit:") for issue in report["issues"])
 
 
 def test_case_pool_gate_rejects_tampered_review_audit_hash(tmp_path):
