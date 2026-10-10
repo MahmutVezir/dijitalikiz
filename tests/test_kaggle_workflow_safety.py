@@ -18,12 +18,17 @@ def test_kaggle_pilot_is_manual_or_scoped_trigger_and_opt_in():
     assert "default: false" in workflow
     assert "execute_confirmatory:" in workflow
     assert 'description: "Run the frozen 160-inference confirmatory benchmark on Kaggle GPU"' in workflow
-    assert (
-        "if: (github.event_name == 'push' && !contains(github.event.head_commit.message, '[validate-only]') "
-        "&& !contains(github.event.head_commit.message, '[confirmatory]')) "
-        "|| (github.event_name == 'workflow_dispatch' && inputs.execute_inference == true "
-        "&& inputs.execute_confirmatory == false)"
-    ) in workflow
+    pilot_job = workflow.split("  run-frozen-pilot:", 1)[1].split("  reject-ambiguous-selection:", 1)[0]
+    confirmatory_job = workflow.split("  run-confirmatory:", 1)[1]
+
+    # Frozen model inference is restricted to main even if a feature-branch
+    # trigger file is changed accidentally.
+    assert "if: github.ref == 'refs/heads/main' && (" in pilot_job
+    assert "if: github.ref == 'refs/heads/main' && (" in confirmatory_job
+    assert "!contains(github.event.head_commit.message, '[validate-only]')" in pilot_job
+    assert "!contains(github.event.head_commit.message, '[confirmatory]')" in pilot_job
+    assert "inputs.execute_inference == true && inputs.execute_confirmatory == false" in pilot_job
+    assert "inputs.execute_confirmatory == true && inputs.execute_inference == false" in confirmatory_job
     assert "validate-only:" in workflow
     assert "pytest -q" in workflow
     assert "kaggle kernels push" in workflow
