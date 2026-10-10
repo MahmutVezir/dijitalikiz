@@ -107,7 +107,7 @@
 ## Current count
 
 - Held-out eligible cases: **0**.
-- Discovery leads in this note: **7**; HD-001 through HD-006 have completed red-green artifacts in run [#38052846346](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346), while HD-007 is pending screening.
+- Discovery leads in this note: **7**, all seven have completed red-green artifacts. HD-001 through HD-006 passed in [run #38052846346](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346); HD-007 passed in [run #38053125548](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053125548).
 - Calibration-only cases remain permanently excluded from held-out confirmation.
 - No new model inference was run or authorized.
 
