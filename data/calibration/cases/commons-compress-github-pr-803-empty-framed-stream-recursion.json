@@ -42,11 +42,12 @@
     "component": "FramedLZ4CompressorInputStream.nextBlock and FramedSnappyCompressorInputStream.readNextBlock",
     "entity": "repeated legal zero-output frames or padding chunks",
     "operation": "advance to the next data block or EOF",
-    "root_cause": "recursive_advance_over_legal_empty_framed_units",
+    "root_cause": "repeated_zero_output_units_are_advanced_recursively_in_each_decoder_instead_of_iteratively",
     "required_relations": [
-      "FramedLZ4CompressorInputStream",
-      "FramedSnappyCompressorInputStream",
-      "zero-output frames",
+      "FramedLZ4CompressorInputStream.init",
+      "FramedLZ4CompressorInputStream.nextBlock",
+      "FramedSnappyCompressorInputStream.readNextBlock",
+      "zero-output frames or padding chunks",
       "EOF"
     ]
   },
@@ -55,18 +56,20 @@
     "pull_request": 803,
     "fix_commit": "7e688ebdba45ab16aa5b7f870474dac285a494af",
     "pre_fix_revision": "05862dd50eb51a6a1246cab50dc2a8619b301695",
-    "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
+    "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
     "case_status": "calibration_case_draft_not_eligible_for_experiment",
     "regression_test": "FramedLZ4CompressorInputStreamTest#testManyEmptyConcatenatedFramesDoNotOverflowStack",
     "regression_test_status": "red_green_pass",
     "reproduction_workflow": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
     "reproduction_artifact_id": 11667702346,
-    "ground_truth_adjudication_status": "pending_independent_review"
+    "ground_truth_adjudication_status": "pending_independent_review",
+    "role": "scoring_calibration_candidate_only"
   },
   "software_twin_snapshot": {
     "repository_url": "https://github.com/apache/commons-compress",
     "snapshot_revision": "05862dd50eb51a6a1246cab50dc2a8619b301695",
     "regression_test": "FramedLZ4CompressorInputStreamTest#testManyEmptyConcatenatedFramesDoNotOverflowStack",
     "observed_failure_signal": "Reading many legal empty LZ4 frames triggered stack overflow on the pinned pre-fix revision; the companion Snappy padding regression also failed."
-  }
+  },
+  "ccdg_suitability": "weak_for_single_cross_component_chain_parallel_decoder_paths"
 }
