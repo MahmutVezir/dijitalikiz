@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.0",
+  "audit_id": "heldout-lead-red-green-2026-10-10-run-38052390809",
+  "status": "technical_screening_pass",
+  "created_at_utc": "2026-10-10T12:35:30Z",
+  "source_repository": "MahmutVezir/dijitalikiz",
+  "workflow": {
+    "name": "Held-out Lead Red-Green Screening",
+    "path": ".github/workflows/heldout-lead-red-green.yml",
+    "run_id": 38052390809,
+    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052390809",
+    "head_sha": "d699c2a678d0a9443d3f841bc1f28b2689af3740",
+    "purpose": "Pinned-revision source/test screening only; no model inference."
+  },
+  "policy": {
+    "historical_artifacts_mutated": false,
+    "model_inference_performed": false,
+    "scoring_calibration_performed": false,
+    "independent_human_source_review_completed": false,
+    "separate_adjudication_completed": false,
+    "heldout_confirmatory_inclusion_authorized": false,
+    "interpretation": "Red/green reproduction supports that the named regression tests distinguish the pinned pre-fix and fixed revisions. It does not establish CCDG suitability, causal-edge truth beyond the tests, independent human adjudication, or eligibility for the confirmatory sample."
+  },
+  "candidates": [
+    {
+      "case_id": "lang-1800-era-calendar",
+      "pull_request_url": "https://github.com/apache/commons-lang/pull/1800",
+      "repository_url": "https://github.com/apache/commons-lang",
+      "pre_fix_sha": "324d9fbd091749a9c70aed4b038fd0b4a520b3cf",
+      "fixed_sha": "c7f1a6d27707e8cd8cbed94f83e0c58d2c480614",
+      "regression_tests": [
+        {
+          "target": "FastDateFormatTest#testEraRoundTripNonGregorianCalendar",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed"
+        },
+        {
+          "target": "FastDatePrinterTest#testEraMixedCalendarTypes",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed"
+        }
+      ],
+      "observed_pre_fix_signals": [
+        "ParseException: unparseable Thai-calendar formatted date",
+        "AssertionFailedError: expected era BE but was AD"
+      ],
+      "reproduction_status": "independent_ci_red_green_pass",
+      "artifact_id": 11670585260,
+      "artifact_name": "heldout-lead-screening-lang-1800-era-calendar",
+      "artifact_sha256": "9da4668161a616669e632b744d12b2dcb8e9ed708ef582ff6f0e3bb2571ab964",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052390809",
+      "human_review_status": "pending",
+      "cross_component_suitability": "pending independent review",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "lang-1807-wildcard-upper-bound",
+      "pull_request_url": "https://github.com/apache/commons-lang/pull/1807",
+      "repository_url": "https://github.com/apache/commons-lang",
+      "pre_fix_sha": "25c4bfcd6d9dc3a7333088bfc3031b05cd93837e",
+      "fixed_sha": "43154e016ae213a0da5b727cd1aa18e6e0c56adb",
+      "regression_tests": [
+        {
+          "target": "TypeUtilsTest#testUnboundedWildcardType",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed"
+        }
+      ],
+      "observed_pre_fix_signals": [
+        "AssertionFailedError: expected hashCode 88700417 but was 4784415"
+      ],
+      "reproduction_status": "independent_ci_red_green_pass",
+      "artifact_id": 11670390521,
+      "artifact_name": "heldout-lead-screening-lang-1807-wildcard-upper-bound",
+      "artifact_sha256": "4adfe83c5b8b9e2c04577e05cf28301c5e6463eeb1628793f1028457e57192e1",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052390809",
+      "human_review_status": "pending",
+      "cross_component_suitability": "uncertain; requires independent source review",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "collections-728-ordered-next-key",
+      "pull_request_url": "https://github.com/apache/commons-collections/pull/728",
+      "repository_url": "https://github.com/apache/commons-collections",
+      "pre_fix_sha": "a5248efd7f4f857f88770565414948e2d0524933",
+      "fixed_sha": "04b30be69f4355f218d587703bc20b1a591c3e3c",
+      "regression_tests": [
+        {
+          "target": "DualTreeBidiMapTest#testNextKeyAbsentKey",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed"
+        },
+        {
+          "target": "FixedSizeSortedMapTest#testNextKey",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed"
+        },
+        {
+          "target": "UnmodifiableSortedMapTest#testNextKey",
+          "pre_fix": "failed_as_expected",
+          "fixed": "passed"
+        }
+      ],
+      "observed_pre_fix_signals": [
+        "AssertionFailedError: expected null but got successor key",
+        "NoSuchElementException for an absent key beyond the final entry"
+      ],
+      "reproduction_status": "independent_ci_red_green_pass",
+      "artifact_id": 11670111312,
+      "artifact_name": "heldout-lead-screening-collections-728-ordered-next-key",
+      "artifact_sha256": "fae9f4dfbacf1fedbc07f6b532e0576756cb8b75673cb9aaef4e21f44fd3248f",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052390809",
+      "human_review_status": "pending",
+      "cross_component_suitability": "uncertain; potentially one related local bug family",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    }
+  ],
+  "next_gates": [
+    "Two independent reviewers inspect source at both pinned revisions, test semantics, causal mechanism, component boundaries, and license/provenance.",
+    "A separate adjudicator resolves disagreements and signs the case-review audit.",
+    "Exclude any case that is not one coherent defect or lacks a defensible cross-component dependency path.",
+    "Keep calibration cases, historic cases, and these leads out of the v2 held-out pool until all gates are passed.",
+    "Only after a defensible held-out pool is frozen proceed to runtime/tokenizer check, pre-registration freeze, and inference authorization."
+  ]
+}
