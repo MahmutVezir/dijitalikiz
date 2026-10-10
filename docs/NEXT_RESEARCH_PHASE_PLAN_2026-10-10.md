@@ -102,25 +102,25 @@ If the available independent case pool cannot support a justified sample, report
 
 **Current state:** the old experiment is complete but inconclusive for the semantic hypothesis. The new study is not yet run; no new human review/calibration has been completed. The application package is not yet submission-ready.
 
-## Stage 1 — Current-mainline research gates (2026-10-10)
+## Stage 1 — Mainline research-gate verification (updated 2026-10-10)
 
-A clean mainline-based draft PR now carries the calibration and case-pool gates: [PR #5](https://github.com/MahmutVezir/dijitalikiz/pull/5). It remains a draft until the new branch passes its own validation; the earlier PR's successful tests are not treated as evidence that this rebased branch passes.
+The current research-gate implementation is in draft [PR #6](https://github.com/MahmutVezir/dijitalikiz/pull/6), based on the latest `main` commit `e46174504f82238297f4bb9abd107d91367ce7a9`. The PR is still a draft; passing CI does not satisfy the independent human-evidence gate.
 
-- Seven independent defect candidates are recorded under `data/calibration/cases/`. The #770 regression reproduction is recorded in [run 37993954772](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772); six additional red/green reproductions are recorded in [run 38045048274](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274). These runs validate those regression scenarios, not the final correctness of their root-cause/CCDG annotations.
-- All seven candidate case records now contain revision-bound software-twin snapshot fields (repository, pre-fix revision, regression-test identifier, and observed failure signal); a regression test asserts these bindings remain consistent with the case-pool manifest. This metadata is required for eligibility but does not constitute independent ground-truth adjudication.
+- Seven source-linked defect candidates are recorded under `data/calibration/cases/`. They are **calibration-only**, not eligible held-out confirmatory cases.
+- All seven candidate case records contain revision-bound software-twin snapshot fields (repository, exact pre-fix revision, regression-test identifier, observed failure signal). This establishes provenance metadata, not truth of root-cause or CCDG labels.
 - The case-pool manifest is deliberately unfrozen, has no eligible cases, and sets `model_inference_permitted=false`.
-- The scoring-calibration manifest remains `draft` and `frozen=false`. No independent reviewer labels, adjudications, or calibration examples are claimed to be complete.
-- The existing pilot and confirmatory manifests, frozen confirmatory summary, and historical results document have the same Git blob hashes on the branch as on `main`; the historic scores are preserved.
-- The Kaggle workflow changes in PR #5 add a `main`-branch guard for inference jobs. That guard is only on the draft branch until reviewed and merged.
+- The scoring-calibration manifest remains `draft` and `frozen=false`. No independent reviewer labels, adjudications, or scored calibration examples are claimed complete.
+- The current PR head `1b1467c77390f6a277637638b65aec19f959ff2f` passed [validation-only run #140](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38047908557): 144 tests; pilot-configuration integrity gate; independent audit of the archived 40-record pilot artifact; independent audit of all 160 confirmatory records; source-bundle and confirmatory-launcher build. Both inference jobs were skipped.
+- The temporary trigger-file edit used to run validation was restored to the exact same content as `main`; the PR diff is again limited to 29 research-gate files.
+- The mainline inference controls require the frozen-pilot and confirmatory jobs to run only on `main`; push-triggered pilot inference additionally requires explicit `[pilot]`. Normal PR updates and `[validate-only]` runs do not authorize inference.
 
-### Next exit gates
+### Incident that remains under audit
 
-1. The rebased PR must pass its own repository tests and historical artifact-integrity checks.
-2. Independent reviewers must assess candidate root causes and cross-component dependency paths against source revisions and regression evidence.
-3. Build a separate, source-grounded scoring-calibration set; independently label outputs and controls, then report false acceptance/rejection, reviewer agreement, and uncertainty.
-4. Freeze the three-condition, information-matched protocol, scoring rule, prompt/token audit, sample-size rationale, and separate confirmatory case set before new confirmatory inference.
-5. Do not launch any new confirmatory model inference until all previous gates pass. The old 160-record result remains unchanged and inconclusive for the semantic hypothesis.
+[Actions run #134](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38047007838) was unintentionally triggered before the main-only guard was present on the feature branch. Its Kaggle kernel reached `KernelWorkerStatus.COMPLETE`, but output retrieval failed because `pilot_manifest.json` was missing; artifact validation and upload were skipped. The exact kernel is [`mahmutvezir/dijitalikiz-frozen-pilot-c8b6f8f2-38047007838-1`](https://www.kaggle.com/code/mahmutvezir/dijitalikiz-frozen-pilot-c8b6f8f2-38047007838-1). The actual Kaggle log and any persisted outputs still require operator inspection. Do not assert that no inference occurred, do not count this run as a valid study result, and do not merge recovered records into the historical frozen datasets.
 
+### Stage 1 exit assessment
+
+**Technical repository validation: passed.** Historical artifact-integrity checks: passed. Operational-run audit: **pending** because the unintended Kaggle output has not been independently inspected. The remaining human review gate is tracked in Stage 2 below.
 
 ## Stage 2 — Independent case review and a real human-evidence gate (2026-10-10)
 
@@ -130,6 +130,6 @@ A clean mainline-based draft PR now carries the calibration and case-pool gates:
 - Aligned reproduction-status metadata in all seven records with the archived pre-fix/fixed-revision evidence. Version-bound snapshots include repository, exact pre-fix revision, regression-test target, and observed failure signal.
 - Added `scripts/build_case_ground_truth_review_packets.py`. It builds separately ordered reviewer packets with provisional root-cause labels, `I_base`, and CCDG edges omitted; the unblinding map is written only to a caller-selected private path outside the repository.
 - Added `schemas/case_ground_truth_review_audit.schema.json` and strengthened `scripts/validate_calibration_case_pool.py`: selected cases now require a frozen audit with two distinct reviewers, an independent adjudicator, hashes of packet/response artifacts, exact revision bindings, evidence URLs, a coherent-defect decision, and an adjudicated root-cause/dependency graph. A manifest boolean by itself cannot authorize inference.
-- Added tests for packet leakage, private-key path safety, review-audit hash mismatch, and missing human-review evidence. Validation-only workflow [run #132](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38046622820) passed: 144 tests, frozen pilot integrity audit, confirmatory integrity audit, and source-bundle/launcher build. Both inference jobs were skipped. These checks validate the tooling, not the human review or the research hypothesis.
+- Added tests for packet leakage, private-key path safety, review-audit hash mismatch, and missing human-review evidence. The current PR-head validation-only workflow [run #140](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38047908557) passed 144 tests, validated the frozen pilot configuration, audited the 40-record archived pilot artifact and 160-record confirmatory artifact, and built the source bundle/confirmatory launcher. Both inference jobs were skipped. These checks validate the tooling and stored artifacts, not the human review or the research hypothesis.
 
 **Current blocker:** No independent human packet responses or adjudication record exist. The review gate in `data/calibration/case_pool_manifest.json` remains `pending`, selection is not frozen, `eligible_case_ids=[]`, and `model_inference_permitted=false`. Do not modify these flags to bypass the gate. First generate the packets, obtain two genuine independent source-based reviews, adjudicate disagreement, then validate and freeze the audit.
