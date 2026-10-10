@@ -118,7 +118,7 @@ Birincil karşılaştırma, aynı yazılım vakası için Standard ve CCDG koşu
 | Doğrulanan artifact dosyası | 55 | 212 |
 | Eksik / fazla / hash'i uyuşmayan artifact dosyası | 0 | 0 |
 
-Doğrulayıcı deney, GitHub Actions run ID `37976682761` üzerinde başarıyla tamamlanmıştır. Artifact ID `11640450681`, arşiv SHA-256 değeri `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd` şeklindedir. Bağımsız denetimde 212/212 dosya, 160/160 inference kaydı doğrulanmış; ham çıktı hash'lerinde uyuşmazlık ve beklenmeyen dosya bulunmamıştır. Bu kontroller çalıştırma ve veri bütünlüğünü doğrular; tek başlarına teşhis doğruluğunu kanıtlamaz.
+Doğrulayıcı deney, GitHub Actions run ID `37976682761` üzerinde tamamlanmıştır. Arşiv kimliği ve SHA-256 değeri Ek 1’de verilmiştir. Bağımsız denetimde 212/212 dosya ve 160/160 inference kaydı doğrulanmış; ham çıktı hash'lerinde uyuşmazlık ve beklenmeyen dosya bulunmamıştır. Bu kontroller çalıştırma ve veri bütünlüğünü doğrular; tek başlarına teşhis doğruluğunu kanıtlamaz.
 
 ### Dondurulmuş birincil ölçüt
 
@@ -177,9 +177,7 @@ Bu bulgu, CCDG'nin anlamsal teşhiste yararsız olduğu ya da iki yöntemin eşd
 
 1. Puanlama aracını kaynak kod, hata raporu, başarısız test ve sabit düzeltme revizyonuyla doğrulanmış örnekler üzerinde kalibre etmek; doğru parafraz, yanlış mekanizma, olumsuzlama ve birden fazla ihtimal içeren yanıtları ayırmak.
 2. Yeni doğrulayıcı çalışmada aynı temel hata açıklamasını koruyan üç koşul kullanmak: Standart bağlam (A), bağımlılık bilgisi içeren düz metin (B) ve aynı kenar bilgilerini üçlülerle gösteren CCDG (C). Birincil karşılaştırmayı C-B olarak önceden belirlemek.
-3. Puanlama rubriğini, bağımsız vaka listesini, model/tokenizer sürümünü, tüm istem hash'lerini, örneklem büyüklüğünü ve istatistiksel analiz planını yeni inference başlamadan önce dondurmak.
-4. Vaka kalitesini ve bağımsızlığını artırırken her yazılım hatasını ayrı bir istatistiksel birim saymak; aynı hatadaki tekrarları bağımsız yeni vakalar olarak değerlendirmemek.
-5. Sonuçlar olumlu, olumsuz veya belirsiz olduğunda tümünü raporlamak; hipotezi desteklemek için veriyi, eşik değerlerini veya puanlama yöntemini sonuçlar görüldükten sonra değiştirmemek.
+3. Puanlama protokolünü, bağımsız vaka listesini, model/tokenizer sürümünü, tüm istem hash’lerini, örneklem büyüklüğünü ve analiz planını inference öncesinde dondurmak; her bağımsız yazılım hatasını bir istatistiksel birim saymak ve olumlu, olumsuz veya belirsiz sonuçları, sonradan eşik ya da puanlama değiştirmeden raporlamak.
 
 ## Kaynaklar
 
@@ -207,16 +205,16 @@ Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K. R., & Cao, Y. (20
 
 ## Ekler
 
-### Ek 1. Deney çalıştırmaları ve bütünlük kanıtı
+### Ek 1. Dondurulmuş deney kayıtları ve bütünlük kanıtı
 
-- Pilot çalıştırma: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37968099402; kaynak commit `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`.
-- Doğrulayıcı deney: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37976682761; kaynak commit `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`; artifact ID `11640450681`; arşiv SHA-256 `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`.
-- Bağımsız bütünlük denetimleri pilotta 55/55 manifest dosyası ve 40/40 kaydı; doğrulayıcı arşivde 212/212 dosya ve 160/160 kaydı doğrulamıştır. Boyut veya SHA-256 uyuşmazlığı bulunmamıştır. Bu kontroller veri bütünlüğünü gösterir; teşhis doğruluğunu tek başına kanıtlamaz.
+Pilot çalıştırma: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37968099402; kaynak commit `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`. Doğrulayıcı çalışma: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37976682761; kaynak commit `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`; artifact ID `11640450681`.
 
-### Ek 2. Sonuç ve yöntem kayıtları
+Doğrulayıcı arşiv SHA-256: `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`.
 
-Dondurulmuş sonuçlar `docs/CONFIRMATORY_RESULTS_2026-10-09.md` ve `data/benchmark/confirmatory_result_summary.json` dosyalarında; ölçüt geçmişi `docs/CONFIRMATORY_SCORING_PROTOCOL.md` ve `docs/SCORING_RUBRIC_CALIBRATION_PROTOCOL.md` dosyalarında tutulur. Tarihsel bağlam bilgi-paritesi kısıtı ve takip deneyinin tasarımı `docs/CONTEXT_INFORMATION_PARITY_AUDIT_2026-10-10.md`, `docs/NEXT_RESEARCH_PHASE_PLAN_2026-10-10.md` ve `docs/FOLLOWUP_SAMPLE_SIZE_SENSITIVITY_2026-10-10.md` içinde açıklanır. Dondurulmuş sonuçlar değiştirilmemiştir; aynı çıktılarla yapılacak insan değerlendirmesi yalnızca keşfedici olarak raporlanmalıdır.
+Bağımsız denetimler pilotta 55/55 manifest dosyası ve 40/40 kaydı; doğrulayıcı arşivde 212/212 dosya ve 160/160 kaydı doğrulamıştır. Boyut veya SHA-256 uyuşmazlığı bulunmamıştır. Bu kontroller veri bütünlüğünü gösterir; teşhis doğruluğunu tek başına kanıtlamaz.
 
-### Ek 3. Aday vaka için bağımsız düzeltme kanıtı
+### Ek 2. Aday vaka için bağımsız düzeltme kanıtı ve kaynak kod
 
-Apache Commons Compress #770 kaynak PR: https://github.com/apache/commons-compress/pull/770; sabit düzeltme commit'i `bab5629f6b3cea44cf0622cdd92c8cefcfbf360a`. Bağımsız regresyon tekrarı: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772. Aynı test, düzeltme öncesi sürümde beklenen biçimde başarısız ve sabit sürümde başarılı olmuştur. Adayın kaynak kaydı ve geçici CCDG taslağı proje deposunda tutulur; bu aday dondurulmuş 16 vakalık doğrulayıcı deney kümesine eklenmemiştir.
+Apache Commons Compress #770 kaynak PR: https://github.com/apache/commons-compress/pull/770. Sabit düzeltme commit'i `bab5629f6b3cea44cf0622cdd92c8cefcfbf360a`. Bağımsız regresyon tekrarı: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772. Aynı test, düzeltme öncesi sürümde beklenen biçimde başarısız ve sabit sürümde başarılı olmuştur.
+
+Bu aday, dondurulmuş 16 vakalık doğrulayıcı deney kümesine eklenmemiştir; yalnızca gelecek çalışma için adaydır. Araştırma kodu, testler, kaynak değerlendirmeleri ve yeniden üretilebilirlik belgeleri https://github.com/MahmutVezir/dijitalikiz adresindeki proje deposunda sürümlenmiştir. Başvuruya ayrıca dosya yüklenmesi gerekirse güncel TYBS talimatları izlenmelidir.
