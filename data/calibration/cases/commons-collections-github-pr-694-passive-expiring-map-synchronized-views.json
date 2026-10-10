@@ -55,13 +55,14 @@
     "pull_request": 694,
     "fix_commit": "491fc77589f1b262d19f5c109fc42794edfcb36e",
     "pre_fix_revision": "e78f814ec86f3a85cfa1b0f5e07e4fbf2ed24a97",
-    "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
+    "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
     "case_status": "calibration_case_draft_not_eligible_for_experiment",
     "regression_test": "PassiveExpiringMapTest#testCollectionsSynchronizedMapExpiration",
     "regression_test_status": "red_green_pass",
     "reproduction_workflow": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
     "reproduction_artifact_id": 11667447648,
-    "ground_truth_adjudication_status": "pending_independent_review"
+    "ground_truth_adjudication_status": "pending_independent_review",
+    "role": "scoring_calibration_candidate_only"
   },
   "software_twin_snapshot": {
     "repository_url": "https://github.com/apache/commons-collections",
