@@ -181,16 +181,16 @@ def build_packets(
 
     guide = destinations["manifest_output"].parent / "REVIEWER_INSTRUCTIONS.md"
     guide.write_text(
-        "# Independent source-ground-truth review\n\n"
-        "These packets are not model prompts. Each reviewer must work independently and must not receive the private unblinding key or the other reviewer's answers.\n\n"
-        "For every review_id, inspect the source URL, exact pre-fix revision, fixed revision, and the listed regression tests. Provide a separate JSONL response with: "
-        "`review_id`, `reviewer_id`, `decision` (keep, revise, or exclude), `root_cause_rationale`, `components`, "
+        "# Bağımsız kaynak-kök neden ve CCDG incelemesi\n\n"
+        "Bu paketler model promptu değildir. Her değerlendirici kendi paketini bağımsız incelemeli; özel eşleştirme anahtarını ve diğer değerlendiricinin yanıtlarını görmemelidir.\n\n"
+        "Her `review_id` için kaynak bağlantısını, tam pre-fix sürümünü, düzeltilmiş sürümü ve listelenen regresyon testlerini inceleyin. Ayrı bir JSONL yanıtında şu alanları doldurun: "
+        "`review_id`, `reviewer_id`, `decision` (keep, revise veya exclude), `root_cause_rationale`, `components`, "
         "`dependency_edges` (source, relation, target, evidence_urls), `is_single_coherent_defect` (boolean), "
-        "`ccdg_suitability` (strong, moderate, weak, or ineligible), `contamination_risk` (low, medium, high, or unknown), "
-        "`evidence_urls` (at least two version-specific links where possible), and `limitations`.\n\n"
-        "Do not copy a diagnosis from a PR title or the failure signal. Verify behavior in both pinned revisions and cite exact source/test locations. "
-        "If evidence is insufficient or the issue combines parallel mechanisms, choose revise or exclude and explain why. "
-        "Do not share review files until both reviewers have finished. The coordinator may use the private key only after both files are locked.\n",
+        "`ccdg_suitability` (strong, moderate, weak veya ineligible), `contamination_risk` (low, medium, high veya unknown), "
+        "`evidence_urls` (mümkünse en az iki sürüme bağlı bağlantı) ve `limitations`.\n\n"
+        "PR başlığından veya hata sinyalinden teşhisi kopyalamayın. Her iki sabit sürümdeki davranışı doğrulayın ve kesin kaynak/test konumlarına bağlantı verin. "
+        "Kanıt yetersizse ya da kayıt birden fazla paralel mekanizmayı birleştiriyorsa `revise` veya `exclude` seçip gerekçesini yazın. "
+        "İki değerlendirici de yanıtlarını bitirip kilitlemeden dosyaları paylaşmayın. Koordinatör özel anahtarı ancak iki yanıt kilitlendikten sonra kullanabilir.\n",
         encoding="utf-8",
     )
     return {
