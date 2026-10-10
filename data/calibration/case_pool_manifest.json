@@ -70,16 +70,20 @@
         "legal zero-output frames/chunks",
         "stream EOF handling"
       ],
-      "ccdg_suitability": "strong",
+      "ccdg_suitability": "weak_for_single_cross_component_chain_parallel_decoder_paths",
       "contamination_risk": "medium_public_exposure_exact_training_cutoff_unknown",
       "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
       "ground_truth_adjudication_status": "pending_independent_review",
-      "role": "calibration_candidate_and_possible_future_study_candidate",
+      "role": "calibration_only_parallel_decoder_paths",
       "inference_allowed": false,
       "reproduction_evidence_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
       "reproduction_workflow_run_id": "38045048274",
       "reproduction_artifact_id": 11667702346,
-      "observed_pre_fix_failure_signal": "Reading many legal empty LZ4 frames and many Snappy padding chunks triggered stack overflow on the pinned pre-fix revision."
+      "observed_pre_fix_failure_signal": "Reading many legal empty LZ4 frames and many Snappy padding chunks triggered stack overflow on the pinned pre-fix revision.",
+      "notes": [
+        "Both named regression tests are reproduced in pre-fix/fixed revisions, but LZ4 and Snappy are parallel decoder implementations, not one causal path.",
+        "Keep as calibration-only unless independent reviewers agree that the unit of analysis and graph representation are defensible."
+      ]
     },
     {
       "case_id": "commons-collections-github-pr-694-passive-expiring-map-synchronized-views",
@@ -135,16 +139,19 @@
         "valueTransformer",
         "TransformedMultiValuedMap.transformValue"
       ],
-      "ccdg_suitability": "moderate",
+      "ccdg_suitability": "moderate_bulk_path_vs_null_safe_helper",
       "contamination_risk": "medium_public_exposure_exact_training_cutoff_unknown",
       "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
       "ground_truth_adjudication_status": "pending_independent_review",
-      "role": "calibration_candidate",
+      "role": "calibration_only_moderate_graph_suitability",
       "inference_allowed": false,
       "reproduction_evidence_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
       "reproduction_workflow_run_id": "38045048274",
       "reproduction_artifact_id": 11666767357,
-      "observed_pre_fix_failure_signal": "Bulk insertion raised NullPointerException when the optional value transformer was null on the pinned pre-fix revision."
+      "observed_pre_fix_failure_signal": "Bulk insertion raised NullPointerException when the optional value transformer was null on the pinned pre-fix revision.",
+      "notes": [
+        "The case contains a helper-mediated path and should be reviewed to ensure the ground truth focuses on the null-safe transformation mechanism, not only NullPointerException."
+      ]
     },
     {
       "case_id": "commons-lang-github-pr-1783-methodutils-nonpublic-class-accessible-method",
@@ -199,16 +206,20 @@
         "Git tree-sort rule",
         "treeId output"
       ],
-      "ccdg_suitability": "moderate",
+      "ccdg_suitability": "moderate_internal_helper_to_tree_identifier_path",
       "contamination_risk": "medium_public_exposure_exact_training_cutoff_unknown",
       "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
       "ground_truth_adjudication_status": "pending_independent_review",
-      "role": "calibration_candidate",
+      "role": "calibration_only_moderate_graph_suitability",
       "inference_allowed": false,
       "reproduction_evidence_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
       "reproduction_workflow_run_id": "38045048274",
       "reproduction_artifact_id": 11667397748,
-      "observed_pre_fix_failure_signal": "The tree identifier differed from git write-tree for supplementary-plane Unicode names on the pinned pre-fix revision."
+      "observed_pre_fix_failure_signal": "The tree identifier differed from git write-tree for supplementary-plane Unicode names on the pinned pre-fix revision.",
+      "notes": [
+        "The mechanism is well-grounded, but most of the causal path is internal to one utility's ordering and hashing pipeline.",
+        "Require an independent review that the graph adds an authentic cross-component relationship rather than merely restating call structure."
+      ]
     },
     {
       "case_id": "commons-lang-github-pr-1808-randomstringutils-tilde-exclusive-upper-bound",
@@ -232,16 +243,19 @@
         "exclusive upper-bound convention",
         "POSIX graph/print character range"
       ],
-      "ccdg_suitability": "weak_single_component",
+      "ccdg_suitability": "weak_single_component_boundary_control",
       "contamination_risk": "medium_public_exposure_exact_training_cutoff_unknown",
       "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
       "ground_truth_adjudication_status": "pending_independent_review",
-      "role": "calibration_only_low_ccdg_suitability",
+      "role": "calibration_only_negative_control_for_weak_ccdg_suitability",
       "inference_allowed": false,
       "reproduction_evidence_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
       "reproduction_workflow_run_id": "38045048274",
       "reproduction_artifact_id": 11666727569,
-      "observed_pre_fix_failure_signal": "The documented tilde endpoint was not generated within the regression test's bounded attempts on the pinned pre-fix revision."
+      "observed_pre_fix_failure_signal": "The documented tilde endpoint was not generated within the regression test's bounded attempts on the pinned pre-fix revision.",
+      "notes": [
+        "Useful as a boundary-condition control for scoring, but not a strong primary case for cross-component dependency representation."
+      ]
     }
   ],
   "excluded_from_current_calibration_pool": [
