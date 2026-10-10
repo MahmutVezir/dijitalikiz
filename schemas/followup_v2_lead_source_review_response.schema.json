@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Follow-up v2 Lead Source Review Response",
+  "type": "object",
+  "required": [
+    "protocol_version",
+    "review_id",
+    "reviewer_id",
+    "decision",
+    "root_cause_rationale",
+    "components",
+    "dependency_edges",
+    "is_single_coherent_defect",
+    "ccdg_suitability",
+    "license_reviewed",
+    "contamination_risk",
+    "limitations",
+    "evidence_urls"
+  ],
+  "properties": {
+    "protocol_version": {
+      "const": "followup-v2-lead-source-review-1.0"
+    },
+    "review_id": {
+      "type": "string",
+      "pattern": "^REV-[0-9A-F]{16}$"
+    },
+    "reviewer_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision": {
+      "enum": [
+        "keep",
+        "revise",
+        "exclude"
+      ]
+    },
+    "root_cause_rationale": {
+      "type": "string",
+      "minLength": 40
+    },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "component_id",
+          "role",
+          "evidence_urls"
+        ],
+        "properties": {
+          "component_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_urls": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "dependency_edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source",
+          "relation",
+          "target",
+          "evidence_urls"
+        ],
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "relation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_urls": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "is_single_coherent_defect": {
+      "type": "boolean"
+    },
+    "ccdg_suitability": {
+      "enum": [
+        "strong",
+        "moderate",
+        "weak",
+        "ineligible"
+      ]
+    },
+    "license_reviewed": {
+      "type": "boolean"
+    },
+    "contamination_risk": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "unknown"
+      ]
+    },
+    "limitations": {
+      "type": "string",
+      "minLength": 10
+    },
+    "evidence_urls": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    }
+  },
+  "additionalProperties": false
+}
