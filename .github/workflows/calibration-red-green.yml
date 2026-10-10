@@ -1,0 +1,206 @@
+name: Calibration Candidate Red-Green Reproduction
+
+on:
+  push:
+    paths:
+      - ".github/calibration-red-green-trigger"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce:
+    name: Reproduce ${{ matrix.case_id }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - case_id: compress-803-empty-frames
+            repo: apache/commons-compress
+            pre_fix: 05862dd50eb51a6a1246cab50dc2a8619b301695
+            fix: 7e688ebdba45ab16aa5b7f870474dac285a494af
+            tests: FramedLZ4CompressorInputStreamTest#testManyEmptyConcatenatedFramesDoNotOverflowStack,FramedSnappyCompressorInputStreamTest#testManyPaddingChunksDoNotOverflowStack
+            test_files: src/test/java/org/apache/commons/compress/compressors/lz4/FramedLZ4CompressorInputStreamTest.java src/test/java/org/apache/commons/compress/compressors/snappy/FramedSnappyCompressorInputStreamTest.java
+          - case_id: collections-694-expiring-views
+            repo: apache/commons-collections
+            pre_fix: e78f814ec86f3a85cfa1b0f5e07e4fbf2ed24a97
+            fix: 491fc77589f1b262d19f5c109fc42794edfcb36e
+            tests: PassiveExpiringMapTest#testCollectionsSynchronizedMapExpiration,PassiveExpiringMapTest#testCollectionViewRemoval
+            test_files: src/test/java/org/apache/commons/collections4/map/PassiveExpiringMapTest.java
+          - case_id: collections-731-null-transformer
+            repo: apache/commons-collections
+            pre_fix: b76ec29cbf3b5659de244fe643b4875726a8fa49
+            fix: b0ce37f0d62f0a6efa306d90d446f6d0f9549bdb
+            tests: TransformedMultiValuedMapTest#testPutAllIterableWithNullTransformers,TransformedMultiValuedMapTest#testPutAllIterableAppliesTransformValueOverride
+            test_files: src/test/java/org/apache/commons/collections4/multimap/TransformedMultiValuedMapTest.java
+          - case_id: lang-1783-accessible-method
+            repo: apache/commons-lang
+            pre_fix: 80ac358a4c9bcd9cb03eb50bdd33de9755a109a5
+            fix: d8f4116d4ba03ed32b104b3af891de7a67f2ce97
+            tests: MethodUtilsTest#testInvokeMethodOnNonPublicClass
+            test_files: src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java
+          - case_id: codec-443-utf8-tree-order
+            repo: apache/commons-codec
+            pre_fix: 506b762f724fbca2fa2dc198b81598dbb214fd28
+            fix: f49b96388c2d97d093d8669cf74f57a5a92e7dff
+            tests: GitIdentifiersTest#testTreeIdSortsSupplementaryPlaneNamesLikeGit
+            test_files: src/test/java/org/apache/commons/codec/digest/GitIdentifiersTest.java
+          - case_id: lang-1808-tilde-endpoint
+            repo: apache/commons-lang
+            pre_fix: 7b6048b7a9d1339a12d353cb85b2222df7bf5668
+            fix: 75d71af80ace2d75dab3f6bb82ac2ef91650634e
+            tests: RandomStringUtilsTest#testRandomGraphIncludesTilde,RandomStringUtilsTest#testRandomPrintIncludesTilde
+            test_files: src/test/java/org/apache/commons/lang3/RandomStringUtilsTest.java
+
+    env:
+      UPSTREAM_REPO: ${{ matrix.repo }}
+      PRE_FIX_SHA: ${{ matrix.pre_fix }}
+      FIX_SHA: ${{ matrix.fix }}
+      TEST_TARGETS: ${{ matrix.tests }}
+      TEST_FILES: ${{ matrix.test_files }}
+      CASE_ID: ${{ matrix.case_id }}
+
+    steps:
+      - name: Checkout research repository for evidence upload
+        uses: actions/checkout@v5
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Clone upstream and pin both revisions
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/upstream"
+          git clone --quiet --filter=blob:none "https://github.com/$UPSTREAM_REPO.git" "$SRC"
+          git -C "$SRC" fetch --quiet --no-tags origin "$PRE_FIX_SHA"
+          git -C "$SRC" fetch --quiet --no-tags origin "$FIX_SHA"
+          git -C "$SRC" checkout --detach "$PRE_FIX_SHA"
+          mkdir -p "$GITHUB_WORKSPACE/calibration-red-green/$CASE_ID"
+          {
+            echo "case_id=$CASE_ID"
+            echo "repository=$UPSTREAM_REPO"
+            echo "pre_fix_sha=$PRE_FIX_SHA"
+            echo "fix_sha=$FIX_SHA"
+            echo "test_targets=$TEST_TARGETS"
+          } > "$GITHUB_WORKSPACE/calibration-red-green/$CASE_ID/metadata.txt"
+
+      - name: Inject exact fixed-revision regression tests into pre-fix checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/upstream"
+          for test_file in $TEST_FILES; do
+            mkdir -p "$SRC/$(dirname "$test_file")"
+            git -C "$SRC" show "$FIX_SHA:$test_file" > "$SRC/$test_file"
+          done
+
+      - name: Expect regression tests to fail on pre-fix revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/upstream"
+          LOG="$GITHUB_WORKSPACE/calibration-red-green/$CASE_ID/pre-fix-maven.log"
+          set +e
+          (cd "$SRC" && mvn -B -ntp clean -Dtest="$TEST_TARGETS" test) > "$LOG" 2>&1
+          rc=$?
+          set -e
+          if [ "$rc" -eq 0 ]; then
+            echo "ERROR: regression unexpectedly passed on pre-fix revision."
+            cat "$LOG"
+            exit 1
+          fi
+          python - "$SRC/target/surefire-reports" "$TEST_TARGETS" <<'PY'
+          import json, sys
+          from pathlib import Path
+          from xml.etree import ElementTree as ET
+
+          report_dir = Path(sys.argv[1])
+          targets = [item.strip() for item in sys.argv[2].split(",") if item.strip()]
+          cases = []
+          for file in report_dir.rglob("TEST-*.xml") if report_dir.exists() else []:
+              try:
+                  root = ET.parse(file).getroot()
+              except ET.ParseError:
+                  continue
+              for node in root.iter("testcase"):
+                  cases.append((node.get("classname", ""), node.get("name", ""), node))
+          result = []
+          for target in targets:
+              class_name, method = target.split("#", 1)
+              matches = [(cn, name, node) for cn, name, node in cases
+                         if cn.endswith("." + class_name) and name == method]
+              if not matches:
+                  raise SystemExit(f"BLOCKED: targeted regression test did not execute on pre-fix revision: {target}")
+              failed = [node for _, _, node in matches if node.find("failure") is not None or node.find("error") is not None]
+              if not failed:
+                  raise SystemExit(f"BLOCKED: test did not demonstrate a pre-fix regression failure: {target}")
+              result.append({"test": target, "pre_fix_result": "failed_as_expected", "failure_count": len(failed)})
+          print(json.dumps({"status": "red_confirmed", "tests": result}, indent=2))
+          PY
+          cp "$LOG" "$GITHUB_WORKSPACE/calibration-red-green/$CASE_ID/pre-fix-maven.log"
+
+      - name: Run the same tests on fixed revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/upstream"
+          LOG="$GITHUB_WORKSPACE/calibration-red-green/$CASE_ID/fixed-maven.log"
+          git -C "$SRC" reset --hard "$FIX_SHA"
+          (cd "$SRC" && mvn -B -ntp clean -Dtest="$TEST_TARGETS" test) > "$LOG" 2>&1 || {
+            cat "$LOG"
+            echo "ERROR: regression tests did not pass on fixed revision."
+            exit 1
+          }
+          python - "$SRC/target/surefire-reports" "$TEST_TARGETS" <<'PY'
+          import json, sys
+          from pathlib import Path
+          from xml.etree import ElementTree as ET
+
+          report_dir = Path(sys.argv[1])
+          targets = [item.strip() for item in sys.argv[2].split(",") if item.strip()]
+          cases = []
+          for file in report_dir.rglob("TEST-*.xml") if report_dir.exists() else []:
+              try:
+                  root = ET.parse(file).getroot()
+              except ET.ParseError:
+                  continue
+              for node in root.iter("testcase"):
+                  cases.append((root.get("name", ""), node.get("classname", ""), node.get("name", ""), node))
+          result = []
+          for target in targets:
+              class_name, method = target.split("#", 1)
+              matches = [(suite, cn, name, node) for suite, cn, name, node in cases
+                         if cn.endswith("." + class_name) and name == method]
+              if not matches:
+                  raise SystemExit(f"BLOCKED: targeted regression test did not execute on fixed revision: {target}")
+              bad = [node for _, _, _, node in matches
+                     if node.find("failure") is not None or node.find("error") is not None or node.find("skipped") is not None]
+              if bad:
+                  raise SystemExit(f"FAILED: targeted regression test did not pass cleanly on fixed revision: {target}")
+              result.append({"test": target, "fixed_result": "passed"})
+          print(json.dumps({"status": "green_confirmed", "tests": result}, indent=2))
+          PY
+          cp "$LOG" "$GITHUB_WORKSPACE/calibration-red-green/$CASE_ID/fixed-maven.log"
+          {
+            echo "status=red_green_pass"
+            echo "pre_fix_sha=$PRE_FIX_SHA"
+            echo "fixed_sha=$FIX_SHA"
+            echo "test_targets=$TEST_TARGETS"
+          } > "$GITHUB_WORKSPACE/calibration-red-green/$CASE_ID/result.txt"
+
+      - name: Upload reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: calibration-red-green-${{ matrix.case_id }}
+          path: calibration-red-green/${{ matrix.case_id }}/
+          if-no-files-found: warn
+          retention-days: 90
