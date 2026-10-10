@@ -1,0 +1,72 @@
+{
+  "case_id": "commons-collections-github-pr-731-transformed-multivalued-map-null-transformer",
+  "source": "Apache Commons Collections GitHub Pull Request and source history",
+  "source_url": "https://github.com/apache/commons-collections/pull/731",
+  "publication_date": "2026-09-03",
+  "technology": "Apache Commons Collections / Java / transformed multivalued maps and iterable utilities",
+  "error_description": "TransformedMultiValuedMap.putAll throws NullPointerException when its optional value transformer is null, even though adding one value with put follows the documented no-conversion behavior.",
+  "i_base": [
+    "TransformedMultiValuedMap supports a null transformer to represent no conversion.",
+    "The single-value put path applies values through the map's transformValue method.",
+    "The bulk putAll(K, Iterable) path previously passed the transformer into FluentIterable and IterableUtils transformation helpers.",
+    "The iterable transformation utility rejects a null transformer instead of treating it as no conversion.",
+    "The fix routes the bulk operation through transformValue so subclasses overriding that method retain consistent behavior."
+  ],
+  "ccdg": [
+    {
+      "source": "TransformedMultiValuedMap.putAll",
+      "target": "FluentIterable.of(values)",
+      "relation": "creates_bulk_value_pipeline",
+      "details": "Bulk insertion prepares values for conversion."
+    },
+    {
+      "source": "FluentIterable.of(values)",
+      "target": "IterableUtils.transformedIterable",
+      "relation": "delegates_transformation",
+      "details": "The iterable helper requires a non-null transformer."
+    },
+    {
+      "source": "valueTransformer",
+      "target": "bulk transformation",
+      "relation": "controls_conversion",
+      "details": "A null transformer represents no conversion in the map API."
+    },
+    {
+      "source": "TransformedMultiValuedMap.put",
+      "target": "transformValue",
+      "relation": "uses_null_safe_conversion_path",
+      "details": "The single-value operation defines the intended behavior."
+    }
+  ],
+  "ground_truth": {
+    "component": "TransformedMultiValuedMap.putAll",
+    "entity": "optional valueTransformer in the bulk insertion path",
+    "operation": "putAll(K, Iterable)",
+    "root_cause": "bulk_transform_path_rejects_null_transformer_instead_of_using_null_safe_value_transform",
+    "required_relations": [
+      "TransformedMultiValuedMap.putAll",
+      "IterableUtils.transformedIterable",
+      "valueTransformer",
+      "transformValue"
+    ]
+  },
+  "split": "candidates",
+  "provenance": {
+    "pull_request": 731,
+    "fix_commit": "b0ce37f0d62f0a6efa306d90d446f6d0f9549bdb",
+    "pre_fix_revision": "b76ec29cbf3b5659de244fe643b4875726a8fa49",
+    "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
+    "case_status": "calibration_case_draft_not_eligible_for_experiment",
+    "regression_test": "TransformedMultiValuedMapTest#testPutAllIterableWithNullTransformers",
+    "regression_test_status": "red_green_pass",
+    "reproduction_workflow": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
+    "reproduction_artifact_id": 11666767357,
+    "ground_truth_adjudication_status": "pending_independent_review"
+  },
+  "software_twin_snapshot": {
+    "repository_url": "https://github.com/apache/commons-collections",
+    "snapshot_revision": "b76ec29cbf3b5659de244fe643b4875726a8fa49",
+    "regression_test": "TransformedMultiValuedMapTest#testPutAllIterableWithNullTransformers",
+    "observed_failure_signal": "Bulk insertion raised NullPointerException when the optional value transformer was null on the pinned pre-fix revision."
+  }
+}
