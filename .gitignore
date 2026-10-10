@@ -15,3 +15,11 @@ data/calibration/reviewer_b.jsonl
 data/calibration/adjudication.jsonl
 data/calibration/review_key_private.json
 data/calibration/review_packets/
+
+# Raw human ground-truth review packets, answers, and unblinding maps are private.
+data/calibration/case_review_packets/
+data/calibration/case_review_reviewer_a.jsonl
+data/calibration/case_review_reviewer_b.jsonl
+data/calibration/case_review_adjudication.jsonl
+data/calibration/case_review_key_private.json
+
