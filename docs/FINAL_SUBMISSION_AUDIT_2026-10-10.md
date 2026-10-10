@@ -13,7 +13,7 @@ Bu denetim, 2026–2027 (58. yarışma) dönemi için TÜBİTAK'ın güncel 2204
 
 - Proje başlığı: **LLM Tabanlı Çapraz-Bileşen Hata Teşhisinde Yapılandırılmış Bağımlılık Temsilinin Etkisinin Deneysel İncelenmesi**
 - Başlık uzunluğu: 11 kelime; 15 kelimelik sınırın altında.
-- Özet: 194 kelime (belgeden yeniden sayıldı); 150–250 kelime aralığında.
+- Özet: boşluk temelli sayımda 186 kelime; alternatif sözcük ayırıcısıyla 191. Her iki sayım da 150–250 kelime sınırı içinde.
 - Anahtar kelimeler: 5.
 - Kaynakça: 11 kaynak; bibliyografik doğruluk ve APA uyumu son insan denetimi bekliyor.
 - Rapor taslağı: `docs/TUBITAK_REPORT_DRAFT.md`
@@ -25,8 +25,8 @@ Bu denetim, 2026–2027 (58. yarışma) dönemi için TÜBİTAK'ın güncel 2204
 - Son kapsamlı doğrulama: https://github.com/MahmutVezir/dijitalikiz/actions/runs/38043725220 — depo testleri, 160 kayıtlık doğrulayıcı artefakt denetimi, 40 kayıtlık pilot artefakt denetimi ve kaynak paketi/launcher kontrolü başarılı; inference işleri bilerek atlandı.
 - Resmî Word şablonu indirme ve DOCX bütünlüğü: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37994665457; 2026–2027 DOCX geçerli OOXML paketi olarak doğrulandı.
 - Yerel rapor çıktı dosyaları: `TUBITAK_2204A_Rapor_Taslak_2026-2027.docx` ve `.pdf`; ikisi de 9 sayfalık, son render/görsel incelemeden geçirilmiş rapor taslağıdır, henüz nihai başvuru dosyası sayılmazlar.
-- Word taslağı SHA-256: `f7ce62ce08622fd6976368f500988e039bfd2af7d18b8b64da13d9fea80a34ea`.
-- PDF önizlemesi SHA-256: `8c245af8638dc324fb9711b0876506ba26701fcca18c317d32238dc33d1f563f`.
+- Word taslağı SHA-256: `54f7d9a21bdd798f9e26dfe465a3b616af8e3fc8f579dd15a5cc4fbae32fe93d`.
+- PDF önizlemesi SHA-256: `49664f46f9a79e9a70209e657cd968834039899493acf6adf87751967fcacb46`.
 - İndirilen resmî şablon SHA-256: `195975a64cda8bc3175c6211be108f2b4293ee0893f061bcdfc3ac184989cc87` (DOCX 25.040 bayt; geçerli OOXML paketi).
 
 ## Kritik bilimsel karar — değiştirilmeyecek
