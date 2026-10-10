@@ -55,13 +55,14 @@
     "pull_request": 731,
     "fix_commit": "b0ce37f0d62f0a6efa306d90d446f6d0f9549bdb",
     "pre_fix_revision": "b76ec29cbf3b5659de244fe643b4875726a8fa49",
-    "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
+    "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
     "case_status": "calibration_case_draft_not_eligible_for_experiment",
     "regression_test": "TransformedMultiValuedMapTest#testPutAllIterableWithNullTransformers",
     "regression_test_status": "red_green_pass",
     "reproduction_workflow": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
     "reproduction_artifact_id": 11666767357,
-    "ground_truth_adjudication_status": "pending_independent_review"
+    "ground_truth_adjudication_status": "pending_independent_review",
+    "role": "scoring_calibration_candidate_only"
   },
   "software_twin_snapshot": {
     "repository_url": "https://github.com/apache/commons-collections",
