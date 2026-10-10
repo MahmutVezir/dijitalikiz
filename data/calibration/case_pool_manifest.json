@@ -17,6 +17,8 @@
   "candidates": [
     {
       "case_id": "commons-compress-github-pr-770-tar-pax-header-memory-bound",
+      "repository_url": "https://github.com/apache/commons-compress",
+      "regression_test_targets": ["PaxHeaderOomTest#testDefaultLimitRejectsOversizedPaxHeader"],
       "case_record_path": "data/calibration/cases/commons-compress-github-pr-770-tar-pax-header-memory-bound.json",
       "source_url": "https://github.com/apache/commons-compress/pull/770",
       "fix_revision": "bab5629f6b3cea44cf0622cdd92c8cefcfbf360a",
@@ -43,6 +45,8 @@
     },
     {
       "case_id": "commons-compress-github-pr-803-empty-framed-stream-recursion",
+      "repository_url": "https://github.com/apache/commons-compress",
+      "regression_test_targets": ["FramedLZ4CompressorInputStreamTest#testManyEmptyConcatenatedFramesDoNotOverflowStack", "FramedSnappyCompressorInputStreamTest#testManyPaddingChunksDoNotOverflowStack"],
       "case_record_path": "data/calibration/cases/commons-compress-github-pr-803-empty-framed-stream-recursion.json",
       "source_url": "https://github.com/apache/commons-compress/pull/803",
       "fix_revision": "7e688ebdba45ab16aa5b7f870474dac285a494af",
@@ -67,6 +71,8 @@
     },
     {
       "case_id": "commons-collections-github-pr-694-passive-expiring-map-synchronized-views",
+      "repository_url": "https://github.com/apache/commons-collections",
+      "regression_test_targets": ["PassiveExpiringMapTest#testCollectionsSynchronizedMapExpiration"],
       "case_record_path": "data/calibration/cases/commons-collections-github-pr-694-passive-expiring-map-synchronized-views.json",
       "source_url": "https://github.com/apache/commons-collections/pull/694",
       "fix_revision": "491fc77589f1b262d19f5c109fc42794edfcb36e",
@@ -91,6 +97,8 @@
     },
     {
       "case_id": "commons-collections-github-pr-731-transformed-multivalued-map-null-transformer",
+      "repository_url": "https://github.com/apache/commons-collections",
+      "regression_test_targets": ["TransformedMultiValuedMapTest#testPutAllIterableWithNullTransformers", "TransformedMultiValuedMapTest#testPutAllIterableAppliesTransformValueOverride"],
       "case_record_path": "data/calibration/cases/commons-collections-github-pr-731-transformed-multivalued-map-null-transformer.json",
       "source_url": "https://github.com/apache/commons-collections/pull/731",
       "fix_revision": "b0ce37f0d62f0a6efa306d90d446f6d0f9549bdb",
@@ -115,6 +123,8 @@
     },
     {
       "case_id": "commons-lang-github-pr-1783-methodutils-nonpublic-class-accessible-method",
+      "repository_url": "https://github.com/apache/commons-lang",
+      "regression_test_targets": ["MethodUtilsTest#testInvokeMethodOnNonPublicClass"],
       "case_record_path": "data/calibration/cases/commons-lang-github-pr-1783-methodutils-nonpublic-class-accessible-method.json",
       "source_url": "https://github.com/apache/commons-lang/pull/1783",
       "fix_revision": "d8f4116d4ba03ed32b104b3af891de7a67f2ce97",
@@ -139,6 +149,8 @@
     },
     {
       "case_id": "commons-codec-github-pr-443-git-identifiers-utf8-tree-order",
+      "repository_url": "https://github.com/apache/commons-codec",
+      "regression_test_targets": ["GitIdentifiersTest#testTreeIdSortsSupplementaryPlaneNamesLikeGit"],
       "case_record_path": "data/calibration/cases/commons-codec-github-pr-443-git-identifiers-utf8-tree-order.json",
       "source_url": "https://github.com/apache/commons-codec/pull/443",
       "fix_revision": "f49b96388c2d97d093d8669cf74f57a5a92e7dff",
@@ -163,6 +175,8 @@
     },
     {
       "case_id": "commons-lang-github-pr-1808-randomstringutils-tilde-exclusive-upper-bound",
+      "repository_url": "https://github.com/apache/commons-lang",
+      "regression_test_targets": ["RandomStringUtilsTest#testRandomGraphIncludesTilde", "RandomStringUtilsTest#testRandomPrintIncludesTilde"],
       "case_record_path": "data/calibration/cases/commons-lang-github-pr-1808-randomstringutils-tilde-exclusive-upper-bound.json",
       "source_url": "https://github.com/apache/commons-lang/pull/1808",
       "fix_revision": "75d71af80ace2d75dab3f6bb82ac2ef91650634e",
