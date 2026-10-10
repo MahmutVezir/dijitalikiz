@@ -1,0 +1,68 @@
+name: Research Validation (No Inference)
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/research-validation.yml"
+      - ".github/workflows/heldout-lead-red-green.yml"
+      - "scripts/**"
+      - "tests/**"
+      - "schemas/**"
+      - "dijitalikiz/**"
+      - "data/calibration/**"
+      - "data/followup_v2/**"
+      - "pyproject.toml"
+      - "requirements*.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-only:
+    name: Validate repository and historical artifacts (no inference)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact PR commit
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install test dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test]"
+          python -m pip check
+
+      - name: Run unit and workflow safety tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          pytest -q
+          python -m compileall -q scripts dijitalikiz
+
+      - name: Validate historical and candidate data without inference
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/audit_pilot_integrity.py
+          python scripts/validate_all_cases.py
+          python scripts/validate_all_candidates.py
+          python scripts/validate_benchmark_manifest.py
+          python scripts/audit_confirmatory_integrity.py
+
+      - name: Confirm no model execution command is invoked by this workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eq 'scripts/(run_pilot|run_confirmatory|run_frozen_pilot|run_followup_v2)\.py' .github/workflows/research-validation.yml
+          ! grep -Eq 'kaggle kernels (push|start)' .github/workflows/research-validation.yml
+          ! grep -q 'KAGGLE_API_TOKEN' .github/workflows/research-validation.yml
