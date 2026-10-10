@@ -122,11 +122,16 @@ def test_packet_has_only_source_revision_evidence_not_provisional_graph_labels(t
     )
     row = json.loads((output / "reviewer_a.jsonl").read_text(encoding="utf-8").splitlines()[0])
     assert set(row) == {
-        "review_id", "source_url", "repository_url", "pre_fix_revision",
-        "fixed_revision", "regression_test_targets", "reproduction_evidence_url",
-        "observed_failure_signal", "review_task",
+        "review_id", "repository_url", "pre_fix_revision", "fixed_revision",
+        "source_tree_urls", "regression_test_targets", "review_task",
     }
+    assert row["source_tree_urls"]["pre_fix"].endswith(row["pre_fix_revision"])
+    assert row["source_tree_urls"]["fixed"].endswith(row["fixed_revision"])
     assert row["review_task"]["identify_actual_root_cause_from_source"] is True
+    assert row["review_task"]["do_not_open_public_pr_body_or_reproduction_logs_before_initial_review_locked"] is True
     assert "root_cause" not in row
     assert "ccdg" not in row
     assert "case_id" not in row
+    assert "source_url" not in row
+    assert "reproduction_evidence_url" not in row
+    assert "observed_failure_signal" not in row
