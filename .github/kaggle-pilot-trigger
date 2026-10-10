@@ -1,1 +1,1 @@
-[validate-only] Run updated measurement-calibration and case-pool gates 2026-10-10
+[validate-only] Run research-calibration gates on mainline-rebased branch; inference disabled
