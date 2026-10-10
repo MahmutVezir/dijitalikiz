@@ -89,7 +89,8 @@ If the available independent case pool cannot support a justified sample, report
 - [x] Preserve old experiment and its conclusion unchanged.
 - [x] Add synthetic matcher behavior tests and document their non-empirical status.
 - [x] Implement separate v2 renderers and parity checks.
-- [x] Create a masked exploratory review packet and reviewer guide.\n- [x] Audit the archived pilot artifact: 55/55 manifest files and 40/40 run records; zero file hash/size mismatches. Frozen primary score remains 0/20 in each condition.\n- [x] Add three source-reviewed candidate records and a structured PAX-header case draft; independently reproduce #770 pre-fix failure and fixed-revision pass.
+- [x] Create a masked exploratory review packet and reviewer guide.
+- [x] Add independent calibration schema, blinded-review packet builder, fail-closed completeness/reliability validator, provenance controls, and synthetic unit tests; validation-only run #121 passed 133 tests and both historical artifact audits. This validates the tooling only, not the scoring instrument; real calibration examples and human reviews remain outstanding.\n- [x] Audit the archived pilot artifact: 55/55 manifest files and 40/40 run records; zero file hash/size mismatches. Frozen primary score remains 0/20 in each condition.\n- [x] Add three source-reviewed candidate records and a structured PAX-header case draft; independently reproduce #770 pre-fix failure and fixed-revision pass.
 - [ ] Complete an independent human review of the packet; report disagreement and mark the results exploratory.
 - [ ] Create and adjudicate a source-grounded scoring calibration set.
 - [ ] Expand and independently screen the candidate pool.
