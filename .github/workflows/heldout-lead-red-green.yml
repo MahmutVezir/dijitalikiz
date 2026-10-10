@@ -69,6 +69,31 @@ jobs:
             fix: a07b6c41b5c2369506e7d86c4808dc51317e1481
             tests: FTPTest#testRejectCRLFInArgs,NNTPTest#testRejectCRLFInArgs,POP3Test#testRejectCRLFInArgs,SMTPTest#testRejectCRLFInArgs
             test_files: src/test/java/org/apache/commons/net/ftp/FTPTest.java src/test/java/org/apache/commons/net/nntp/NNTPTest.java src/test/java/org/apache/commons/net/pop3/POP3Test.java src/test/java/org/apache/commons/net/smtp/SMTPTest.java
+          - case_id: compress-805-pack200-error-propagation
+            repo: apache/commons-compress
+            pre_fix: 9a624106e6a5fce948d97ee262ed5742f6e4ceb4
+            fix: 17ce90728476f64d095f59cacf45c20ef3ade216
+            tests: CodeAttributeTest#testNegativeReferenceIndex
+            test_files: src/test/java/org/apache/commons/compress/harmony/unpack200/CodeAttributeTest.java
+          - case_id: jackson-6096-jsonview-array-update
+            repo: FasterXML/jackson-databind
+            pre_fix: 05f0d04f6a63829d322145cf8ba87511cbf56445
+            fix: 82d58088dfeb6a6d1af0cc45b9f2fb5e00828f08
+            tests: FailOnUnexpectedView6077Test$BeanAsArrayUpdate#hiddenRoleUpdateRejectedWhenEnabled
+            test_files: src/test/java/tools/jackson/databind/views/FailOnUnexpectedView6077Test.java
+          - case_id: jackson-6256-objectnode-anygetter-filter
+            repo: FasterXML/jackson-databind
+            pre_fix: e62a0704a10493001bf8ece5b16c1867b16bab45
+            fix: aa9cd983faeea37317c172fffd8fa2ccbe8177a1
+            tests: AnyGetterTest#objectNodeAnyGetterHonorsIgnoreProperties,AnyGetterTest#objectNodeAnyGetterHonorsIncludeProperties
+            test_files: src/test/java/tools/jackson/databind/ser/AnyGetterTest.java
+          - case_id: netty-17759-pooled-derived-retained-slice
+            repo: netty/netty
+            module: buffer
+            pre_fix: 006a2f1d92db733d10112de251600da7b6f8ec51
+            fix: d84dc6b1c290de2046bd0df5ba893e7f337cb0e6
+            tests: AbstractByteBufTest#testRetainedSliceOfNonRetainedDerivedBufferCoversTheReadableBytes
+            test_files: buffer/src/test/java/io/netty/buffer/AbstractByteBufTest.java
 
     env:
       UPSTREAM_REPO: ${{ matrix.repo }}
@@ -77,6 +102,7 @@ jobs:
       TEST_TARGETS: ${{ matrix.tests }}
       TEST_FILES: ${{ matrix.test_files }}
       CASE_ID: ${{ matrix.case_id }}
+      MAVEN_MODULE: ${{ matrix.module || '' }}
 
     steps:
       - name: Checkout research repository for screening evidence
@@ -125,7 +151,11 @@ jobs:
           SRC="$RUNNER_TEMP/upstream"
           LOG="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID/pre-fix-maven.log"
           set +e
-          (cd "$SRC" && mvn -B -ntp clean -Dtest="$TEST_TARGETS" test) > "$LOG" 2>&1
+          if [ -n "$MAVEN_MODULE" ]; then
+            (cd "$SRC" && mvn -B -ntp -pl "$MAVEN_MODULE" -am clean -Dtest="$TEST_TARGETS" -Dsurefire.failIfNoSpecifiedTests=false test) > "$LOG" 2>&1
+          else
+            (cd "$SRC" && mvn -B -ntp clean -Dtest="$TEST_TARGETS" test) > "$LOG" 2>&1
+          fi
           rc=$?
           set -e
           if [ "$rc" -eq 0 ]; then
@@ -173,11 +203,19 @@ jobs:
           SRC="$RUNNER_TEMP/upstream"
           LOG="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID/fixed-maven.log"
           git -C "$SRC" reset --hard "$FIX_SHA"
-          (cd "$SRC" && mvn -B -ntp clean -Dtest="$TEST_TARGETS" test) > "$LOG" 2>&1 || {
-            cat "$LOG"
-            echo "ERROR: regression tests did not pass on fixed revision."
-            exit 1
-          }
+          if [ -n "$MAVEN_MODULE" ]; then
+            (cd "$SRC" && mvn -B -ntp -pl "$MAVEN_MODULE" -am clean -Dtest="$TEST_TARGETS" -Dsurefire.failIfNoSpecifiedTests=false test) > "$LOG" 2>&1 || {
+              cat "$LOG"
+              echo "ERROR: regression tests did not pass on fixed revision."
+              exit 1
+            }
+          else
+            (cd "$SRC" && mvn -B -ntp clean -Dtest="$TEST_TARGETS" test) > "$LOG" 2>&1 || {
+              cat "$LOG"
+              echo "ERROR: regression tests did not pass on fixed revision."
+              exit 1
+            }
+          fi
           export EVIDENCE_DIR="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID"
           python - "$SRC" "$TEST_TARGETS" <<'PY'
           import json, os, sys
