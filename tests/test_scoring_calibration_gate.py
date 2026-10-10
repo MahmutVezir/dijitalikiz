@@ -1,0 +1,238 @@
+import json
+from pathlib import Path
+
+from scripts.build_scoring_calibration_review_packets import build_packets
+from scripts.validate_scoring_calibration import audit_calibration
+
+
+ROOT = Path(__file__).resolve().parents[1]
+CHALLENGE_CLASSES = [
+    "canonical_correct",
+    "correct_paraphrase",
+    "wrong_mechanism",
+    "negated_correct_phrase",
+    "multiple_hypotheses",
+    "partial_diagnosis",
+    "unscorable_output",
+]
+LABEL_BY_CLASS = {
+    "canonical_correct": "correct",
+    "correct_paraphrase": "correct",
+    "wrong_mechanism": "incorrect",
+    "negated_correct_phrase": "incorrect",
+    "multiple_hypotheses": "incorrect",
+    "partial_diagnosis": "partially_correct",
+    "unscorable_output": "unscorable",
+}
+MATCHER_BY_CLASS = {
+    "canonical_correct": True,
+    "correct_paraphrase": False,
+    "wrong_mechanism": False,
+    "negated_correct_phrase": True,
+    "multiple_hypotheses": True,
+    "partial_diagnosis": False,
+    "unscorable_output": False,
+}
+
+
+def _write_json(path: Path, value):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
+
+
+def _write_jsonl(path: Path, rows):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        "".join(json.dumps(row) + "\n" for row in rows),
+        encoding="utf-8",
+    )
+
+
+def _complete_fixture(root: Path):
+    (root / "schemas").mkdir(parents=True, exist_ok=True)
+    _write_json(
+        root / "schemas" / "scoring_calibration_example.schema.json",
+        json.loads((ROOT / "schemas" / "scoring_calibration_example.schema.json").read_text(encoding="utf-8")),
+    )
+    _write_json(root / "data" / "pilot" / "pilot_manifest.json", {"cases": ["pilot-case"]})
+    _write_json(root / "data" / "benchmark" / "benchmark_manifest.json", {"case_ids": ["confirmatory-case"]})
+
+    examples = []
+    for i, challenge_class in enumerate(CHALLENGE_CLASSES, start=1):
+        examples.append({
+            "schema_version": "1.0",
+            "example_id": f"CAL-{i:03d}",
+            "source_case_id": f"independent-case-{i}",
+            "source_url": f"https://example.org/issues/{i}",
+            "fixed_revision": f"{i:040x}",
+            "evidence_urls": [f"https://example.org/issues/{i}", f"https://example.org/commit/{i}"],
+            "case_summary": "A documented software defect whose root-cause mechanism is independently supported by issue and fix evidence.",
+            "ground_truth_root_cause": f"verified mechanism {i}",
+            "ground_truth_rationale": "The issue report, failing test, and fixed revision jointly support this root-cause explanation.",
+            "response_text": f"Candidate diagnostic response {i}.",
+            "challenge_class": challenge_class,
+            "legacy_matcher_accepts": MATCHER_BY_CLASS[challenge_class],
+            "is_from_frozen_study_output": False,
+        })
+    _write_jsonl(root / "data" / "calibration" / "examples.jsonl", examples)
+
+    packet_a, packet_b, key = build_packets(examples)
+    key_path = root / "private" / "review_key_private.json"
+    _write_json(key_path, key)
+
+    reviewer_a = []
+    reviewer_b = []
+    adjudications = []
+    for key_row in key["items"]:
+        review_id = key_row["review_id"]
+        label = LABEL_BY_CLASS[key_row["challenge_class"]]
+        common = {
+            "review_id": review_id,
+            "label": label,
+            "rationale": "The cited issue and fix evidence support this independent label decision.",
+            "evidence_urls": ["https://example.org/issue", "https://example.org/fix"],
+            "condition_blinded": True,
+            "challenge_class_blinded": True,
+            "matcher_result_blinded": True,
+        }
+        reviewer_a.append({**common, "reviewer_id": "reviewer-A"})
+        reviewer_b.append({**common, "reviewer_id": "reviewer-B"})
+        adjudications.append({
+            **common,
+            "adjudicator_id": "adjudicator-C",
+            "disagreement_resolved": True,
+        })
+
+    _write_jsonl(root / "data" / "calibration" / "reviewer_a.jsonl", reviewer_a)
+    _write_jsonl(root / "data" / "calibration" / "reviewer_b.jsonl", reviewer_b)
+    _write_jsonl(root / "data" / "calibration" / "adjudication.jsonl", adjudications)
+
+    manifest = {
+        "schema_version": "1.0",
+        "status": "adjudicated",
+        "frozen": True,
+        "minimum_examples_per_challenge_class": 1,
+        "required_challenge_classes": CHALLENGE_CLASSES,
+        "files": {
+            "examples": "data/calibration/examples.jsonl",
+            "reviewer_a": "data/calibration/reviewer_a.jsonl",
+            "reviewer_b": "data/calibration/reviewer_b.jsonl",
+            "adjudication": "data/calibration/adjudication.jsonl",
+        },
+        "freeze_metadata": {
+            "frozen_at_utc": "2026-10-10T00:00:00Z",
+            "rubric_version": "test-1.0",
+            "adjudication_commit": "test-commit",
+        },
+    }
+    manifest_path = root / "data" / "calibration" / "manifest.json"
+    _write_json(manifest_path, manifest)
+    return manifest_path, key_path
+
+
+def test_packet_builder_masks_gold_and_matcher_metadata():
+    examples = [{
+        "example_id": "CAL-001",
+        "source_case_id": "independent-case",
+        "source_url": "https://example.org/issue",
+        "evidence_urls": ["https://example.org/issue"],
+        "case_summary": "An independently documented software defect with a stable fix.",
+        "ground_truth_root_cause": "verified cause",
+        "ground_truth_rationale": "Issue and fix evidence establish the cause.",
+        "response_text": "Candidate response.",
+        "challenge_class": "correct_paraphrase",
+        "legacy_matcher_accepts": False,
+        "is_from_frozen_study_output": False,
+    }]
+    packet_a, packet_b, key = build_packets(examples)
+    for packet in (packet_a, packet_b):
+        assert len(packet) == 1
+        item = packet[0]
+        assert "response_text" in item
+        assert "challenge_class" not in item
+        assert "legacy_matcher_accepts" not in item
+        assert "ground_truth_root_cause" not in item
+        assert "source_case_id" not in item
+    assert key["key_status"] == "PRIVATE_DO_NOT_SHARE_BEFORE_REVIEWS_LOCKED"
+    assert key["items"][0]["challenge_class"] == "correct_paraphrase"
+
+
+def test_calibration_gate_blocks_when_annotation_files_are_missing(tmp_path):
+    manifest_path = tmp_path / "data" / "calibration" / "manifest.json"
+    _write_json(manifest_path, {
+        "schema_version": "1.0",
+        "status": "draft",
+        "frozen": False,
+        "minimum_examples_per_challenge_class": 4,
+        "required_challenge_classes": CHALLENGE_CLASSES,
+        "files": {
+            "examples": "data/calibration/examples.jsonl",
+            "reviewer_a": "data/calibration/reviewer_a.jsonl",
+            "reviewer_b": "data/calibration/reviewer_b.jsonl",
+            "adjudication": "data/calibration/adjudication.jsonl",
+        },
+    })
+    report = audit_calibration(
+        manifest_path=manifest_path,
+        key_path=tmp_path / "private" / "missing_key.json",
+        pilot_manifest_path=tmp_path / "data" / "pilot" / "missing.json",
+        benchmark_manifest_path=tmp_path / "data" / "benchmark" / "missing.json",
+    )
+    assert report["status"] == "blocked"
+    assert report["ready_for_new_confirmatory_inference"] is False
+    assert report["issue_count"] > 0
+
+
+def test_complete_fixture_reports_matcher_errors_and_reviewer_agreement(tmp_path):
+    manifest_path, key_path = _complete_fixture(tmp_path)
+    report = audit_calibration(
+        manifest_path=manifest_path,
+        key_path=key_path,
+        pilot_manifest_path=tmp_path / "data" / "pilot" / "pilot_manifest.json",
+        benchmark_manifest_path=tmp_path / "data" / "benchmark" / "benchmark_manifest.json",
+    )
+    assert report["status"] == "pass"
+    assert report["ready_for_new_confirmatory_inference"] is True
+    metrics = report["metrics"]
+    assert metrics["initial_review_exact_agreement"] == 1.0
+    assert metrics["initial_review_cohen_kappa"] == 1.0
+    matcher = metrics["matcher_diagnostics"]
+    assert matcher["confusion_matrix"] == {
+        "true_positive": 1,
+        "false_positive": 2,
+        "true_negative": 2,
+        "false_negative": 1,
+    }
+    assert matcher["n_unscorable_excluded"] == 1
+
+
+def test_calibration_gate_rejects_overlap_with_frozen_cases(tmp_path):
+    manifest_path, key_path = _complete_fixture(tmp_path)
+    examples_path = tmp_path / "data" / "calibration" / "examples.jsonl"
+    examples = [json.loads(line) for line in examples_path.read_text(encoding="utf-8").splitlines()]
+    examples[0]["source_case_id"] = "confirmatory-case"
+    _write_jsonl(examples_path, examples)
+    report = audit_calibration(
+        manifest_path=manifest_path,
+        key_path=key_path,
+        pilot_manifest_path=tmp_path / "data" / "pilot" / "pilot_manifest.json",
+        benchmark_manifest_path=tmp_path / "data" / "benchmark" / "benchmark_manifest.json",
+    )
+    assert report["status"] == "blocked"
+    assert any("overlaps_frozen_case" in issue for issue in report["issues"])
+
+
+def test_calibration_gate_rejects_blinding_leaks(tmp_path):
+    manifest_path, key_path = _complete_fixture(tmp_path)
+    reviewer_path = tmp_path / "data" / "calibration" / "reviewer_a.jsonl"
+    rows = [json.loads(line) for line in reviewer_path.read_text(encoding="utf-8").splitlines()]
+    rows[0]["challenge_class"] = "correct_paraphrase"
+    _write_jsonl(reviewer_path, rows)
+    report = audit_calibration(
+        manifest_path=manifest_path,
+        key_path=key_path,
+        pilot_manifest_path=tmp_path / "data" / "pilot" / "pilot_manifest.json",
+        benchmark_manifest_path=tmp_path / "data" / "benchmark" / "benchmark_manifest.json",
+    )
+    assert report["status"] == "blocked"
+    assert any("leaks_blinding_field_challenge_class" in issue for issue in report["issues"])
