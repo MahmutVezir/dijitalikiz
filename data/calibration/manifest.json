@@ -3,6 +3,8 @@
   "status": "draft",
   "frozen": false,
   "minimum_examples_per_challenge_class": 4,
+  "minimum_distinct_source_cases": 7,
+  "minimum_distinct_cases_per_challenge_class": 3,
   "required_challenge_classes": [
     "canonical_correct",
     "correct_paraphrase",
