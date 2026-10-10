@@ -1,1 +1,1 @@
-[validate-only] Re-run repository tests after review-audit assertion fix; inference disabled 2026-10-10T13:48Z
+[validate-only] Verify latest source-review tooling, review-audit gate and immutable historical artifacts 2026-10-10T13:55Z
