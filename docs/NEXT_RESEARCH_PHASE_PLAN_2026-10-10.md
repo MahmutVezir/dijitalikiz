@@ -168,3 +168,17 @@ The draft plans 61 distinct defects × 3 conditions × 5 generations = 915 outpu
 6. Run inference only after the gate validator reports `ready` and the independent human gates are true. New records must live in `data/followup_v2/`; never mutate the historical artifacts.
 
 **Decision:** Stage 3 protocol/analysis preparation has started, but the study is not ready for inference. A draft manifest is not a completed experiment and must not be presented as a positive result in the TÜBİTAK application.
+
+## Current implementation addendum — 2026-10-10
+
+The following is an updated operational snapshot; it does not replace the frozen historic results or authorize new model inference.
+
+- The pull-request validation-only workflow [#38053151032](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053151032) completed successfully: **163 tests passed**, repository/case/benchmark checks passed, historic pilot and confirmatory artifact integrity checks passed, and no model inference was run.
+- Six discovery leads now have completed red/green evidence from [screening run #38052846346](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346). The downloaded artifact ZIP digests were checked against the GitHub-reported digests, and each archive contains red/green JSON, Maven logs, and revision metadata. The structured record is `data/followup_v2/discovery_screening_audit.json`.
+- A seventh lead, Commons Net PR #400 (CR/LF validation across FTP, NNTP, POP3 and SMTP command senders), has been added with pinned pre-fix/fixed commits. Its own matrix job in [run #38053125548](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053125548) reports success; the full seven-case run and artifact archive audit are still in progress.
+- The reviewer packet builder and its tests were changed to reduce priming: the blind packets no longer include the PR URL/body, reproduction-log URL or observed-failure synopsis. Reviewers receive the repository and pinned source-tree links plus regression-test targets and are instructed to inspect source/test evidence before opening public discussion or prior logs.
+- The design-only sensitivity audit shows that 61 cases reach ~80% power only under the strong assumed B-only/C-only discordance probabilities 0.05/0.25. More modest illustrative assumptions require 92, 129, 168 or 249 independent cases depending on the assumed effect. These are hypothetical power scenarios, not empirical estimates. The student/reviewer must justify the assumption before freezing the preregistration.
+- **Eligibility remains unchanged:** six leads have technically reproducible tests; that does not make them held-out cases. Independent human source review, separate adjudication, scoring calibration, and 61 or otherwise justified independent held-out cases remain incomplete. The v2 manifest remains draft with `model_inference_permitted=false`; historical pilot/confirmatory results remain untouched.
+
+Next: finish the seven-case screening archive audit, keep only cases that independent reviewers judge to have coherent, defensible cross-component dependencies, and then source enough diverse new candidates. Do not move leads into the held-out manifest solely to reach the target count.
+
