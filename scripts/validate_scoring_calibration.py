@@ -111,7 +111,19 @@ def _validate_annotation_rows(
     require_blinding_flags: bool,
 ) -> str | None:
     reviewer_ids: set[str] = set()
+    allowed_fields = {
+        "review_id", "label", "rationale", "evidence_urls", reviewer_field,
+        "condition_blinded", "challenge_class_blinded", "matcher_result_blinded",
+    }
+    if label == "adjudication":
+        allowed_fields.add("disagreement_resolved")
     for review_id, row in indexed.items():
+        extra_fields = set(row) - allowed_fields
+        missing_fields = allowed_fields - set(row)
+        if extra_fields:
+            issues.append(f"{label}_{review_id}_unexpected_fields: {','.join(sorted(extra_fields))}")
+        if missing_fields:
+            issues.append(f"{label}_{review_id}_missing_fields: {','.join(sorted(missing_fields))}")
         reviewer_id = row.get(reviewer_field)
         if not isinstance(reviewer_id, str) or not reviewer_id.strip():
             issues.append(f"{label}_{review_id}_missing_{reviewer_field}")
@@ -244,6 +256,7 @@ def audit_calibration(
         examples_by_id: dict[str, dict[str, Any]] = {}
         valid_classes = set(manifest.get("required_challenge_classes", []))
         class_counts: Counter[str] = Counter()
+        source_cases_by_class: dict[str, set[str]] = {}
         for row in examples:
             example_id = row.get("example_id")
             if not isinstance(example_id, str) or not example_id.strip():
@@ -258,6 +271,9 @@ def audit_calibration(
                 issues.append(f"{example_id}_unknown_challenge_class")
             else:
                 class_counts[challenge_class] += 1
+                source_case = row.get("source_case_id")
+                if isinstance(source_case, str) and source_case.strip():
+                    source_cases_by_class.setdefault(challenge_class, set()).add(source_case)
             if row.get("is_from_frozen_study_output") is not False:
                 issues.append(f"{example_id}_uses_frozen_study_output")
         minimum = manifest.get("minimum_examples_per_challenge_class")
@@ -268,6 +284,29 @@ def audit_calibration(
             if class_counts[challenge_class] < minimum:
                 issues.append(
                     f"insufficient_examples_for_{challenge_class}: {class_counts[challenge_class]} < {minimum}"
+                )
+        minimum_distinct = manifest.get("minimum_distinct_source_cases")
+        if not isinstance(minimum_distinct, int) or minimum_distinct < 2:
+            issues.append("invalid_minimum_distinct_source_cases")
+            minimum_distinct = 2
+        observed_sources = {
+            row.get("source_case_id") for row in examples_by_id.values()
+            if isinstance(row.get("source_case_id"), str) and row.get("source_case_id").strip()
+        }
+        if len(observed_sources) < minimum_distinct:
+            issues.append(
+                f"insufficient_distinct_source_cases: {len(observed_sources)} < {minimum_distinct}"
+            )
+        minimum_distinct_per_class = manifest.get("minimum_distinct_cases_per_challenge_class")
+        if not isinstance(minimum_distinct_per_class, int) or minimum_distinct_per_class < 1:
+            issues.append("invalid_minimum_distinct_cases_per_challenge_class")
+            minimum_distinct_per_class = 1
+        for challenge_class in sorted(valid_classes):
+            distinct_count = len(source_cases_by_class.get(challenge_class, set()))
+            if distinct_count < minimum_distinct_per_class:
+                issues.append(
+                    f"insufficient_distinct_cases_for_{challenge_class}: "
+                    f"{distinct_count} < {minimum_distinct_per_class}"
                 )
         pilot_ids = _case_ids(pilot_manifest_path, "cases", issues, "pilot_manifest")
         benchmark_ids = _case_ids(benchmark_manifest_path, "case_ids", issues, "benchmark_manifest")
