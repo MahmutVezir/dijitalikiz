@@ -22,19 +22,36 @@ def _fixture_audit(path: Path) -> Path:
             "pre_fix_sha": f"{index + 1:040x}",
             "fixed_sha": f"{index + 11:040x}",
             "regression_tests": [{"target": f"ExampleTest#regression{index}"}],
-            "artifact_id": index + 101,
-            "artifact_sha256": f"{index + 1:064x}",
+            "artifact": {
+                "id": index + 101,
+                "sha256": f"{index + 1:064x}",
+            },
             "reproduction_status": "ci_red_green_pass",
-            "human_review_status": "pending",
+            "test_patch_policy": "diff_only_no_full_test_file_replacement",
+            "test_fixture_hashes_identical": True,
+            "independent_source_review_status": "pending",
+            "separate_adjudication_status": "pending",
             "heldout_confirmatory_eligible": False,
             "cross_component_suitability": "private provisional label",
             "contamination_risk": "medium_public_source_exposure",
         })
     _write_json(path, {
-        "status": "technical_screening_pass",
+        "status": "technical_screening_pass_human_review_pending",
         "workflow": {
             "conclusion": "success",
             "run_url": "https://github.com/example/project/actions/runs/123",
+        },
+        "repository_validation": {
+            "conclusion": "success",
+            "model_inference_performed": False,
+        },
+        "policy": {
+            "historical_artifacts_mutated": False,
+            "model_inference_performed": False,
+            "scoring_calibration_performed": False,
+            "independent_human_source_review_completed": False,
+            "separate_adjudication_completed": False,
+            "heldout_confirmatory_inclusion_authorized": False,
         },
         "candidates": candidates,
     })
@@ -110,12 +127,29 @@ def test_builder_refuses_audit_that_already_admits_candidate_to_confirmatory_sam
 
 def test_builder_fails_closed_when_screening_artifact_hash_is_missing(tmp_path):
     audit = json.loads(_fixture_audit(tmp_path / "audit.json").read_text(encoding="utf-8"))
-    audit["candidates"][1]["artifact_sha256"] = "not-a-hash"
+    audit["candidates"][1]["artifact"]["sha256"] = "not-a-hash"
     audit_path = tmp_path / "bad-audit.json"
     _write_json(audit_path, audit)
     output = tmp_path / "private-review"
 
     with pytest.raises(ValueError, match="invalid screening artifact SHA-256"):
+        build_packets(
+            audit_path=audit_path,
+            reviewer_a_output=output / "a.jsonl",
+            reviewer_b_output=output / "b.jsonl",
+            key_output=output / "key.json",
+            manifest_output=output / "manifest.json",
+        )
+
+
+def test_builder_rejects_obsolete_incomplete_screening_audit(tmp_path):
+    audit = json.loads(_fixture_audit(tmp_path / "audit.json").read_text(encoding="utf-8"))
+    audit["status"] = "technical_screening_pass"
+    audit_path = tmp_path / "obsolete-audit.json"
+    _write_json(audit_path, audit)
+    output = tmp_path / "private-review"
+
+    with pytest.raises(ValueError, match="current strict screen"):
         build_packets(
             audit_path=audit_path,
             reviewer_a_output=output / "a.jsonl",
