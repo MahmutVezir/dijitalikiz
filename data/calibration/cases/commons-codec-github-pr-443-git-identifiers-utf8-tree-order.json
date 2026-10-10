@@ -55,8 +55,10 @@
     "pull_request": 443,
     "fix_commit": "f49b96388c2d97d093d8669cf74f57a5a92e7dff",
     "pre_fix_revision": "506b762f724fbca2fa2dc198b81598dbb214fd28",
-    "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
-    "case_status": "calibration_case_draft_not_eligible"
+    "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
+    "case_status": "calibration_case_draft_not_eligible_for_experiment",
+    "ground_truth_adjudication_status": "pending_independent_review",
+    "role": "scoring_calibration_candidate_only"
   },
   "software_twin_snapshot": {
     "repository_url": "https://github.com/apache/commons-codec",
