@@ -207,33 +207,16 @@ Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K. R., & Cao, Y. (20
 
 ## Ekler
 
-### Yeniden Üretilebilirlik ve Kanıt Kayıtları
+### Ek 1. Deney çalıştırmaları ve bütünlük kanıtı
 
-- Kaynak deposu: https://github.com/MahmutVezir/dijitalikiz (URL kaynak kökenini tanımlar; herkese açık erişim garantisi değildir).
-- Pilot çalıştırma: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37968099402
-- Doğrulayıcı çalıştırma: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37976682761
-- Pilot kaynak commit: `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`
-- Doğrulayıcı kaynak commit: `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`
-- Doğrulayıcı artifact ID: `11640450681`
-- Doğrulayıcı artifact SHA-256: `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`
-- Sonuç özeti: `data/benchmark/confirmatory_result_summary.json`
-- Ayrıntılı sonuç ve bağımsız denetim: `docs/CONFIRMATORY_RESULTS_2026-10-09.md`, `scripts/audit_confirmatory_artifact.py`
-- Skorlama değişikliği: `docs/CONFIRMATORY_SCORING_PROTOCOL.md`
-- Pilot arşivinin bağımsız bütünlük denetimi: `docs/PILOT_ARTIFACT_AUDIT_2026-10-10.md`; CI denetimi: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37994308924
-- Yeni adayın pre-fix/post-fix regresyon doğrulaması: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772
+- **Pilot:** [GitHub Actions 37968099402](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37968099402); kaynak commit `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`; arşiv, `artifact_manifest.json` ile korunmuştur.
+- **Doğrulayıcı deney:** [GitHub Actions 37976682761](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37976682761); kaynak commit `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`; artifact ID `11640450681`; arşiv SHA-256 `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`.
+- Bağımsız bütünlük denetimleri pilotta 55/55 manifest dosyası ve 40/40 kaydı; doğrulayıcı arşivde 212/212 dosya ve 160/160 kaydı doğrulamıştır. Dosya boyutu ve SHA-256 uyuşmazlığı bulunmamıştır. Bu kontroller veri bütünlüğünü gösterir; teşhis doğruluğunu tek başına kanıtlamaz.
 
-### Ek 1. Dondurulmuş deney kayıtları ve bütünlük denetimi
+### Ek 2. Sonuç ve yöntem kayıtları
 
-Pilot ve doğrulayıcı çalıştırmaların ham JSON kayıtları, `artifact_manifest.json` dosyaları, kaynak commit kimlikleri ve SHA-256 değerleri proje arşivinde saklanmaktadır. Doğrulayıcı arşivinde 212/212 dosya ve 160/160 inference kaydı; pilot arşivinde 55/55 manifest dosyası ve 40/40 kayıt doğrulanmıştır.
+Dondurulmuş sonuçlar `docs/CONFIRMATORY_RESULTS_2026-10-09.md` ve `data/benchmark/confirmatory_result_summary.json` dosyalarında; ölçüt geçmişi `docs/CONFIRMATORY_SCORING_PROTOCOL.md` ve `docs/SCORING_RUBRIC_CALIBRATION_PROTOCOL.md` dosyalarında tutulur. Tarihsel bağlam bilgi-paritesi kısıtı ve takip deneyinin tasarımı `docs/CONTEXT_INFORMATION_PARITY_AUDIT_2026-10-10.md`, `docs/NEXT_RESEARCH_PHASE_PLAN_2026-10-10.md` ve `docs/FOLLOWUP_SAMPLE_SIZE_SENSITIVITY_2026-10-10.md` içinde açıklanır. Dondurulmuş birincil sonuçlar değiştirilmemiştir; aynı çıktılarla yapılacak insan değerlendirmesi yalnızca keşfedici olarak raporlanmalıdır.
 
-**Sonuç ve puanlama kayıtları**
+### Ek 3. Aday vaka için bağımsız düzeltme kanıtı
 
-`docs/CONFIRMATORY_RESULTS_2026-10-09.md`, `data/benchmark/confirmatory_result_summary.json` ve `docs/SCORING_RUBRIC_CALIBRATION_PROTOCOL.md`. Dondurulmuş sonuçlar değiştirilmemiştir; mevcut çıktılara yönelik sonradan yapılacak insan değerlendirmesi yalnızca keşfedici olarak raporlanmalıdır.
-
-**Yöntem denetimleri ve sonraki çalışma tasarımı**
-
-`docs/CONTEXT_INFORMATION_PARITY_AUDIT_2026-10-10.md`, `docs/NEXT_RESEARCH_PHASE_PLAN_2026-10-10.md` ve `docs/FOLLOWUP_SAMPLE_SIZE_SENSITIVITY_2026-10-10.md`. Bu kayıtlar tarihsel bağlam bilgi paritesi kısıtını ve sonraki üç koşullu deneyin önceden dondurulması gereğini açıklar.
-
-**Aday vaka kanıtı ve kaynak kod**
-
-Commons Compress #770 için kaynak PR ve düzeltme öncesi/sonrası regresyon tekrarı: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772. Aynı regresyon doğrulaması düzeltme öncesi sürümde beklenen biçimde başarısız, düzeltilmiş sürümde başarılı olmuştur. İlgili kaynak kod, testler, şemalar, puanlama yardımcıları ve deney kayıtları sürümlü proje arşivinde tutulmaktadır. Depo bağlantısı herkese açık erişim garantisi değildir; erişim gereken dosyalar güncel TÜBİTAK başvuru sistemine ek belge olarak ve geçerli boyut/sayfa kurallarına göre sunulmalıdır. Bu aday dondurulmuş doğrulayıcı deney kümesine dahil edilmemiştir.
+Apache Commons Compress #770 için [bağımsız regresyon tekrarı](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772), 20 MiB PAX başlığının düzeltme öncesi sürümde beklenen biçimde hata vermediğini ve aynı testin sabit düzeltme revizyonunda bellek sınırını doğruladığını göstermiştir. Adayın kaynak kaydı ve geçici CCDG taslağı proje deposunda tutulur; bu aday dondurulmuş 16 vakalık doğrulayıcı deney kümesine eklenmemiştir.
