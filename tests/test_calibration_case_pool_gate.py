@@ -118,6 +118,18 @@ def test_all_candidate_case_records_validate_without_ground_truth_label_leakage(
     assert not any("research_case_schema_error" in issue for issue in report["issues"])
     assert not any("ground_truth_root_cause_label_leaked_into_context" in issue for issue in report["issues"])
 
+    manifest = json.loads((ROOT / "data" / "calibration" / "case_pool_manifest.json").read_text(encoding="utf-8"))
+    for candidate in manifest["candidates"]:
+        case_path = ROOT / candidate["case_record_path"]
+        record = json.loads(case_path.read_text(encoding="utf-8"))
+        snapshot = record.get("software_twin_snapshot")
+        assert isinstance(snapshot, dict), candidate["case_id"]
+        assert snapshot["repository_url"] == candidate["repository_url"]
+        assert snapshot["snapshot_revision"] == candidate["pre_fix_revision"]
+        assert snapshot["regression_test"] in candidate["regression_test_targets"]
+        assert len(snapshot["observed_failure_signal"].strip()) >= 15
+        assert record["provenance"]["fix_commit"] == candidate["fix_revision"]
+        assert record["provenance"]["pre_fix_revision"] == candidate["pre_fix_revision"]
 
 def test_qualified_and_frozen_case_pool_can_pass_gate(tmp_path):
     manifest_path, _ = _complete_fixture(tmp_path)
