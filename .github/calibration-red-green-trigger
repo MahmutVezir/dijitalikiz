@@ -1,3 +1,5 @@
 calibration-red-green protocol v1
 requested_on=2026-10-10
 mode=red-green-only-no-llm-inference
+retry=2026-10-10T13:30Z
+reason=disable-maven-cache-for-research-repo-checkout
