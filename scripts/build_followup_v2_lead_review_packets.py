@@ -11,7 +11,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_AUDIT = ROOT / "data" / "followup_v2" / "discovery_screening_audit_run_38054680670.json"
+DEFAULT_AUDIT = ROOT / "data" / "followup_v2" / "discovery_screening_audit_run_38057613670.json"
 DEFAULT_OUTPUT_DIR = Path("/tmp/dijitalikiz-heldout-source-review")
 SHA40 = re.compile(r"^[0-9a-fA-F]{40}$")
 SHA64 = re.compile(r"^[0-9a-fA-F]{64}$")
@@ -40,10 +40,36 @@ def _valid_sha256(value: Any) -> bool:
 
 
 def _validate_audit(audit: dict[str, Any]) -> list[dict[str, Any]]:
-    if audit.get("status") != "technical_screening_pass":
-        raise ValueError("Discovery audit is not marked technical_screening_pass.")
-    if audit.get("workflow", {}).get("conclusion") != "success":
+    # Only accept the current strict screen: earlier runs copied whole fixed test files
+    # and are retained as history, not as packet-building evidence.
+    if audit.get("status") != "technical_screening_pass_human_review_pending":
+        raise ValueError("Discovery audit is not the current strict screen with human review pending.")
+    workflow = audit.get("workflow")
+    if not isinstance(workflow, dict) or workflow.get("conclusion") != "success":
         raise ValueError("Source-screening workflow did not complete successfully.")
+    if not isinstance(workflow.get("run_url"), str) or not workflow["run_url"].startswith("https://github.com/"):
+        raise ValueError("Source-screening workflow URL is missing or invalid.")
+
+    validation = audit.get("repository_validation")
+    if not isinstance(validation, dict) or validation.get("conclusion") != "success":
+        raise ValueError("Repository no-inference validation did not complete successfully.")
+    if validation.get("model_inference_performed") is not False:
+        raise ValueError("Repository validation does not confirm that model inference was not performed.")
+
+    policy = audit.get("policy")
+    if not isinstance(policy, dict):
+        raise ValueError("Strict audit is missing the policy record.")
+    for field in (
+        "historical_artifacts_mutated",
+        "model_inference_performed",
+        "scoring_calibration_performed",
+        "independent_human_source_review_completed",
+        "separate_adjudication_completed",
+        "heldout_confirmatory_inclusion_authorized",
+    ):
+        if policy.get(field) is not False:
+            raise ValueError(f"Strict audit policy must explicitly keep {field}=false.")
+
     candidates = audit.get("candidates")
     if not isinstance(candidates, list) or not candidates:
         raise ValueError("Discovery audit must contain a non-empty candidates array.")
@@ -58,12 +84,21 @@ def _validate_audit(audit: dict[str, Any]) -> list[dict[str, Any]]:
         seen.add(case_id)
         if candidate.get("heldout_confirmatory_eligible") is not False:
             raise ValueError(f"{case_id}: discovery lead must not already be marked eligible.")
-        if candidate.get("human_review_status") != "pending":
-            raise ValueError(f"{case_id}: this builder expects human review to remain pending.")
-        if candidate.get("reproduction_status") not in {"ci_red_green_pass", "red_green_pass"}:
-            raise ValueError(f"{case_id}: no completed red/green status.")
-        if not _valid_sha256(candidate.get("artifact_sha256")):
+        if candidate.get("independent_source_review_status") != "pending":
+            raise ValueError(f"{case_id}: source review must remain pending before packet distribution.")
+        if candidate.get("separate_adjudication_status") != "pending":
+            raise ValueError(f"{case_id}: separate adjudication must remain pending before packet distribution.")
+        if candidate.get("reproduction_status") != "ci_red_green_pass":
+            raise ValueError(f"{case_id}: candidate lacks the strict red/green status.")
+        if candidate.get("test_patch_policy") != "diff_only_no_full_test_file_replacement":
+            raise ValueError(f"{case_id}: screening did not use the approved test-patch policy.")
+        if candidate.get("test_fixture_hashes_identical") is not True:
+            raise ValueError(f"{case_id}: pre-fix and fixed test-fixture hashes do not match.")
+        artifact = candidate.get("artifact")
+        if not isinstance(artifact, dict) or not _valid_sha256(artifact.get("sha256")):
             raise ValueError(f"{case_id}: missing or invalid screening artifact SHA-256.")
+        if not isinstance(artifact.get("id"), int):
+            raise ValueError(f"{case_id}: screening artifact ID is missing.")
         if not isinstance(candidate.get("pre_fix_sha"), str) or SHA40.fullmatch(candidate["pre_fix_sha"]) is None:
             raise ValueError(f"{case_id}: invalid pre-fix commit SHA.")
         if not isinstance(candidate.get("fixed_sha"), str) or SHA40.fullmatch(candidate["fixed_sha"]) is None:
@@ -158,8 +193,8 @@ def build_packets(
             "case_id": candidate["case_id"],
             "pull_request_url": candidate.get("pull_request_url"),
             "screening_run_url": audit["workflow"]["run_url"],
-            "screening_artifact_id": candidate.get("artifact_id"),
-            "screening_artifact_sha256": candidate["artifact_sha256"],
+            "screening_artifact_id": candidate["artifact"]["id"],
+            "screening_artifact_sha256": candidate["artifact"]["sha256"],
             "preliminary_suitability_private_do_not_share": candidate.get("cross_component_suitability"),
             "contamination_risk_private_do_not_share": candidate.get("contamination_risk"),
         }
