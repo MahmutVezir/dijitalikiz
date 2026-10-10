@@ -38,7 +38,7 @@ def sha256_file(path: Path) -> str:
 
 def normalize_label(text: str) -> str:
     value = unicodedata.normalize("NFKD", text.strip())
-    return "".join(char for char in value if not unicodedata.combining(char)).casefold()
+    return "".join(char for char in value if not unicodedata.combining(char)).replace("ı", "i").casefold()
 
 
 def words(text: str) -> int:
