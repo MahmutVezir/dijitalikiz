@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import re
+import unicodedata
 from copy import deepcopy
 from pathlib import Path
 
@@ -33,6 +34,11 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: f.read(1 << 20), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def normalize_label(text: str) -> str:
+    value = unicodedata.normalize("NFKD", text.strip())
+    return "".join(char for char in value if not unicodedata.combining(char)).casefold()
 
 
 def words(text: str) -> int:
@@ -152,9 +158,9 @@ def is_separator(row):
 def add_schedule_table(doc, schedule_xml, rows):
     if len(rows) < 2:
         raise ValueError("Schedule table needs at least one task.")
-    if len(rows[0]) != 11 or rows[0][0].casefold() not in ("işin adı", "işin adi"):
+    if len(rows[0]) != 11 or normalize_label(rows[0][0]) != "isin adi":
         raise ValueError("Unexpected work-time table header.")
-    if [x.casefold() for x in rows[0][1:]] != [x.casefold() for x in MONTHS]:
+    if [normalize_label(x) for x in rows[0][1:]] != [normalize_label(x) for x in MONTHS]:
         raise ValueError("Schedule months do not match the official table template.")
     body = doc._element.body
     sectpr = body.sectPr
