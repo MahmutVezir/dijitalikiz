@@ -99,11 +99,11 @@ Birincil karşılaştırma, aynı yazılım vakası için Standard ve CCDG koşu
 
 | İşin adı | Nisan | Mayıs | Haziran | Temmuz | Ağustos | Eylül | Ekim | Kasım | Aralık | Ocak |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Literatür, araştırma sorusu ve hipotezler |  |  |  |  |  | X | X |  |  |  |
-| Aday vakalar, CCDG yapısı ve doğrulama kodu |  |  |  |  |  | X | X | P |  |  |
-| Pilot ve doğrulayıcı deney / analiz |  |  |  |  |  |  | X |  |  |  |
-| Rapor, kaynakça ve başvuru paketi |  |  |  |  |  |  | X | P | P | P |
-| Puanlama kalibrasyonu ve eşleştirilmiş takip tasarımı |  |  |  |  |  |  |  | P | P | P |
+| Literatür ve hipotezler |  |  |  |  |  | X | X |  |  |  |
+| Aday vakalar ve CCDG doğrulaması |  |  |  |  |  | X | X | P |  |  |
+| Deney ve istatistiksel analiz |  |  |  |  |  |  | X |  |  |  |
+| Rapor ve başvuru paketi |  |  |  |  |  |  | X | P | P | P |
+| Puanlama kalibrasyonu ve yeni tasarım |  |  |  |  |  |  |  | P | P | P |
 
 ## Bulgular
 
