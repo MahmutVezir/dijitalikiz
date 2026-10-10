@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0",
+  "status": "discovery_only",
+  "created_on": "2026-10-10",
+  "purpose": "Track sourced defects for possible prospective follow-up study screening. This file is not the confirmatory sample and does not admit any candidate for inference.",
+  "model_inference_permitted": false,
+  "historical_artifacts_immutable": true,
+  "current_eligible_heldout_count": 0,
+  "target_eligible_heldout_count": 61,
+  "admission_policy": [
+    "Exact immutable pre-fix and fixed commits must be pinned.",
+    "The fixed revision's regression tests must fail on the pre-fix checkout and pass on the fixed checkout; retain hashed CI logs.",
+    "Two independent source reviewers and a separate adjudicator must validate root cause, dependency edges, defect coherence, license/provenance, and suitability.",
+    "Reject weak or ambiguous cases instead of padding the sample.",
+    "Never reuse any historical pilot/confirmatory case or calibration-only case.",
+    "Public source exposure is a contamination risk; it is not proof of model training-data membership."
+  ],
+  "screening_workflow": ".github/workflows/heldout-red-green-screening.yml",
+  "leads": [
+    {
+      "lead_id": "HD-001",
+      "case_id_candidate": "commons-lang-pr-1800-fastdateprinter-era-calendar",
+      "source_url": "https://github.com/apache/commons-lang/pull/1800",
+      "repository_url": "https://github.com/apache/commons-lang",
+      "pre_fix_revision": "6e8ced140e457a1622c8dd031cfa826d962a95ad",
+      "fixed_revision": "c7f1a6d27707e8cd8cbed94f83e0c58d2c480614",
+      "pre_fix_revision_basis": "base_sha recorded by pull-request metadata",
+      "fixed_revision_basis": "merge commit recorded by pull-request metadata",
+      "regression_test_targets": [
+        "FastDateFormatTest#testEraRoundTripNonGregorianCalendar",
+        "FastDatePrinterTest#testEraMixedCalendarTypes"
+      ],
+      "test_files": [
+        "src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java",
+        "src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java"
+      ],
+      "problem_summary": "FastDatePrinter used Gregorian era symbols while formatting calendars such as Thai Buddhist and Japanese Imperial calendars; the formatter and parser could disagree about era labels, and Japanese era indexes could exceed the two-entry Gregorian era table.",
+      "possible_dependency_path": [
+        "locale selection",
+        "Calendar implementation and era field",
+        "FastDatePrinter era rendering",
+        "FastDateParser era parsing / round-trip"
+      ],
+      "provisional_ccdg_suitability": "moderate_pending_human_review",
+      "contamination_risk": "public_pr_and_commit; exact_model_training_exposure_unknown",
+      "upstream_ai_assistance_disclosed": true,
+      "source_red_green_status": "pending_workflow_result",
+      "human_review_status": "pending",
+      "eligible_for_followup_v2": false,
+      "exclusion_reason_if_not_admitted": null,
+      "notes": "Most promising current lead because the reported failure crosses formatter and parser behavior. Review must establish that a graph representation tests meaningful cross-component reasoning rather than only a local formatting defect."
+    },
+    {
+      "lead_id": "HD-002",
+      "case_id_candidate": "commons-lang-pr-1807-typeutils-wildcard-bounds",
+      "source_url": "https://github.com/apache/commons-lang/pull/1807",
+      "repository_url": "https://github.com/apache/commons-lang",
+      "pre_fix_revision": "29624cdb50ecd794207d561345b2fc9ca3a9d326",
+      "fixed_revision": "43154e016ae213a0da5b727cd1aa18e6e0c56adb",
+      "pre_fix_revision_basis": "base_sha recorded by pull-request metadata",
+      "fixed_revision_basis": "merge commit recorded by pull-request metadata",
+      "regression_test_targets": [
+        "TypeUtilsTest#testWildcardTypeImplicitUpperBound",
+        "TypeUtilsTest#testUnboundedWildcardType"
+      ],
+      "test_files": [
+        "src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java"
+      ],
+      "problem_summary": "TypeUtils constructed an unbounded WildcardType with an empty upper-bound array, conflicting with the Java reflection contract that the implicit upper bound is Object and causing asymmetric equals behavior and inconsistent hashCode values against JDK wildcard objects.",
+      "possible_dependency_path": [
+        "TypeUtils WildcardTypeImpl construction",
+        "java.lang.reflect.WildcardType upper-bound contract",
+        "equals normalization",
+        "hashCode consistency with JDK reflection objects"
+      ],
+      "provisional_ccdg_suitability": "weak_to_moderate_pending_human_review",
+      "contamination_risk": "public_pr_and_commit; exact_model_training_exposure_unknown",
+      "upstream_ai_assistance_disclosed": true,
+      "source_red_green_status": "pending_workflow_result",
+      "human_review_status": "pending",
+      "eligible_for_followup_v2": false,
+      "exclusion_reason_if_not_admitted": "likely a localized implementation/contract boundary; require reviewers to justify cross-component validity",
+      "notes": "Do not admit merely because the fix and tests are clear. A strong cross-component relation must be demonstrated."
+    },
+    {
+      "lead_id": "HD-003",
+      "case_id_candidate": "commons-collections-pr-728-ordered-map-nextkey",
+      "source_url": "https://github.com/apache/commons-collections/pull/728",
+      "repository_url": "https://github.com/apache/commons-collections",
+      "pre_fix_revision": "974e910d63a95cf1f80933d474bcf73eb2c8bba4",
+      "fixed_revision": "04b30be69f4355f218d587703bc20b1a591c3e3c",
+      "pre_fix_revision_basis": "base_sha recorded by pull-request metadata",
+      "fixed_revision_basis": "merge commit recorded by pull-request metadata",
+      "regression_test_targets": [
+        "DualTreeBidiMapTest#testNextKeyAbsentKey",
+        "FixedSizeSortedMapTest#testNextKey",
+        "UnmodifiableSortedMapTest#testNextKey"
+      ],
+      "test_files": [
+        "src/test/java/org/apache/commons/collections4/bidimap/DualTreeBidiMapTest.java",
+        "src/test/java/org/apache/commons/collections4/map/FixedSizeSortedMapTest.java",
+        "src/test/java/org/apache/commons/collections4/map/UnmodifiableSortedMapTest.java"
+      ],
+      "problem_summary": "Sorted-map decorators and DualTreeBidiMap could mishandle nextKey for an absent key or throw past the end; wrappers inherited or duplicated the boundary behavior.",
+      "possible_dependency_path": [
+        "OrderedMap.nextKey contract",
+        "AbstractSortedMapDecorator traversal",
+        "DualTreeBidiMap implementation",
+        "FixedSizeSortedMap / UnmodifiableSortedMap wrapper behavior"
+      ],
+      "provisional_ccdg_suitability": "weak_to_moderate_pending_human_review",
+      "contamination_risk": "public_pr_and_commit; exact_model_training_exposure_unknown",
+      "upstream_ai_assistance_disclosed": false,
+      "source_red_green_status": "pending_workflow_result",
+      "human_review_status": "pending",
+      "eligible_for_followup_v2": false,
+      "exclusion_reason_if_not_admitted": "may be duplicated local logic rather than a genuine causal cross-component defect",
+      "notes": "A candidate only; do not count multiple affected wrappers as independent defect cases."
+    }
+  ],
+  "screened_out_leads": [
+    {
+      "source_url": "https://github.com/apache/commons-lang/pull/1799",
+      "reason": "The currently visible change mainly concerns one string-normalization method and its regression test; not suitable for inflating the cross-component held-out sample."
+    },
+    {
+      "source_url": "https://github.com/apache/commons-compress/pull/813",
+      "reason": "The pull request was open in the observed snapshot; no immutable accepted fixed-defect case is admitted."
+    },
+    {
+      "source_url": "https://github.com/apache/commons-compress/pull/814",
+      "reason": "The change was an in-progress feature pull request, not an accepted fixed-defect case."
+    }
+  ],
+  "next_actions": [
+    "Observe the source-only red/green workflow result and retain its artifacts and hashes.",
+    "Manually assess each failure log to distinguish expected regression failures from build, dependency, or unrelated errors.",
+    "Obtain two independent source reviews and a separate adjudication for the most defensible candidates.",
+    "Source additional candidates from diverse repositories; do not extrapolate three leads toward a completed 61-case sample.",
+    "Keep the follow-up protocol draft and inference gate closed until all prerequisites are evidenced."
+  ]
+}
