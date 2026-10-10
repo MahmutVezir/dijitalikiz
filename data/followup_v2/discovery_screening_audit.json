@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
-  "audit_id": "heldout-lead-red-green-2026-10-10-run-38052390809",
+  "audit_id": "heldout-lead-red-green-2026-10-10-run-38052846346",
   "status": "technical_screening_pass",
   "created_at_utc": "2026-10-10T12:35:30Z",
   "source_repository": "MahmutVezir/dijitalikiz",
   "workflow": {
     "name": "Held-out Lead Red-Green Screening",
     "path": ".github/workflows/heldout-lead-red-green.yml",
-    "run_id": 38052390809,
-    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052390809",
-    "head_sha": "d699c2a678d0a9443d3f841bc1f28b2689af3740",
+    "run_id": 38052846346,
+    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
+    "head_sha": "90f9ff927ca60f73ca48ac9e26adf6edae7c968d",
     "purpose": "Pinned-revision source/test screening only; no model inference."
   },
   "policy": {
@@ -32,23 +32,21 @@
         {
           "target": "FastDateFormatTest#testEraRoundTripNonGregorianCalendar",
           "pre_fix": "failed_as_expected",
+          "failure_count": 1,
           "fixed": "passed"
         },
         {
           "target": "FastDatePrinterTest#testEraMixedCalendarTypes",
           "pre_fix": "failed_as_expected",
+          "failure_count": 1,
           "fixed": "passed"
         }
       ],
-      "observed_pre_fix_signals": [
-        "ParseException: unparseable Thai-calendar formatted date",
-        "AssertionFailedError: expected era BE but was AD"
-      ],
       "reproduction_status": "independent_ci_red_green_pass",
-      "artifact_id": 11670585260,
+      "artifact_id": 11670426228,
       "artifact_name": "heldout-lead-screening-lang-1800-era-calendar",
-      "artifact_sha256": "9da4668161a616669e632b744d12b2dcb8e9ed708ef582ff6f0e3bb2571ab964",
-      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052390809",
+      "artifact_sha256": "2990ac6e53cbc6255416cac94f02c49f75f46c3ce0420242e4cd9a7591fcb8d4",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
       "human_review_status": "pending",
       "cross_component_suitability": "pending independent review",
       "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
@@ -64,17 +62,15 @@
         {
           "target": "TypeUtilsTest#testUnboundedWildcardType",
           "pre_fix": "failed_as_expected",
+          "failure_count": 1,
           "fixed": "passed"
         }
       ],
-      "observed_pre_fix_signals": [
-        "AssertionFailedError: expected hashCode 88700417 but was 4784415"
-      ],
       "reproduction_status": "independent_ci_red_green_pass",
-      "artifact_id": 11670390521,
+      "artifact_id": 11670645880,
       "artifact_name": "heldout-lead-screening-lang-1807-wildcard-upper-bound",
-      "artifact_sha256": "4adfe83c5b8b9e2c04577e05cf28301c5e6463eeb1628793f1028457e57192e1",
-      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052390809",
+      "artifact_sha256": "5cdc15131b18ef6aab142f805d57d02806c4d1fc18ff7757e9814fe0c078a05a",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
       "human_review_status": "pending",
       "cross_component_suitability": "uncertain; requires independent source review",
       "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
@@ -90,30 +86,119 @@
         {
           "target": "DualTreeBidiMapTest#testNextKeyAbsentKey",
           "pre_fix": "failed_as_expected",
+          "failure_count": 1,
           "fixed": "passed"
         },
         {
           "target": "FixedSizeSortedMapTest#testNextKey",
           "pre_fix": "failed_as_expected",
+          "failure_count": 1,
           "fixed": "passed"
         },
         {
           "target": "UnmodifiableSortedMapTest#testNextKey",
           "pre_fix": "failed_as_expected",
+          "failure_count": 1,
           "fixed": "passed"
         }
       ],
-      "observed_pre_fix_signals": [
-        "AssertionFailedError: expected null but got successor key",
-        "NoSuchElementException for an absent key beyond the final entry"
-      ],
       "reproduction_status": "independent_ci_red_green_pass",
-      "artifact_id": 11670111312,
+      "artifact_id": 11670685949,
       "artifact_name": "heldout-lead-screening-collections-728-ordered-next-key",
-      "artifact_sha256": "fae9f4dfbacf1fedbc07f6b532e0576756cb8b75673cb9aaef4e21f44fd3248f",
-      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052390809",
+      "artifact_sha256": "fb4a600db4b1c4cc48216d6dff296d0c62bbb82e38c0876ab77956847eea8f92",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
       "human_review_status": "pending",
       "cross_component_suitability": "uncertain; potentially one related local bug family",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "net-404-ftps-data-hostname-verifier",
+      "pull_request_url": "https://github.com/apache/commons-net/pull/404",
+      "repository_url": "https://github.com/apache/commons-net",
+      "pre_fix_sha": "faa4edd7e287a3db465a32efd9c2d5faa15757fe",
+      "fixed_sha": "a79729464f6e69b773171ff30e3d483cab7afd70",
+      "regression_tests": [
+        {
+          "target": "FTPSClientTest#testHostnameVerifierUsedForDataConnection",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "independent_ci_red_green_pass",
+      "artifact_id": 11670695851,
+      "artifact_name": "heldout-lead-screening-net-404-ftps-data-hostname-verifier",
+      "artifact_sha256": "51975b98454322462a3f69d5ebc8153a13b4b2be6756ab0009aa8de6bd0ead08",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
+      "human_review_status": "pending",
+      "cross_component_suitability": "promising; control/data channel and TLS hostname verification",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "net-403-ftp-parser-type-before-instantiation",
+      "pull_request_url": "https://github.com/apache/commons-net/pull/403",
+      "repository_url": "https://github.com/apache/commons-net",
+      "pre_fix_sha": "a3d19751891edb9f7cb8c11bc344eaf1683b2b32",
+      "fixed_sha": "6e38749760c0366aac1637c7dc15e4ccf76329c9",
+      "regression_tests": [
+        {
+          "target": "DefaultFTPFileEntryParserFactoryTest#testNonParserClassIsNotInstantiated",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "independent_ci_red_green_pass",
+      "artifact_id": 11670780801,
+      "artifact_name": "heldout-lead-screening-net-403-ftp-parser-type-before-instantiation",
+      "artifact_sha256": "92a87e05edc80c2c22a0416cab024a87971f76ca7a2a0277d3ee4e01cc8faf5f",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
+      "human_review_status": "pending",
+      "cross_component_suitability": "strong candidate; untrusted protocol reply -> parser dispatch -> class initialization",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "text-768-stringmatcher-charsequence-window",
+      "pull_request_url": "https://github.com/apache/commons-text/pull/768",
+      "repository_url": "https://github.com/apache/commons-text",
+      "pre_fix_sha": "a6cbba814422a06a0366468b2346f52aaacf8f3d",
+      "fixed_sha": "81de4f7a7c7d3b13d89edd72d4c4b92aa33e6c81",
+      "regression_tests": [
+        {
+          "target": "StringMatcherTest#testIsMatchCharSequencePassesBufferStartThrough",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "StringMatcherTest#testIsMatchCharSequenceStartDelegatesThroughTheCorrectedOverload",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "StringMatcherTest#testIsMatchOverloadsAgreeOnTheSameWindow",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "StringMatcherTest#testStringSubstitutorHandsACustomMatcherTheRealBufferStart",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "independent_ci_red_green_pass",
+      "artifact_id": 11670810314,
+      "artifact_name": "heldout-lead-screening-text-768-stringmatcher-charsequence-window",
+      "artifact_sha256": "683a6c24c6226164e9ba06d7d400cec88ea04a204d30e4f48d4d1799d7401b82",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346",
+      "human_review_status": "pending",
+      "cross_component_suitability": "promising, subject to cross-component-edge review",
       "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
       "heldout_confirmatory_eligible": false
     }
@@ -124,5 +209,14 @@
     "Exclude any case that is not one coherent defect or lacks a defensible cross-component dependency path.",
     "Keep calibration cases, historic cases, and these leads out of the v2 held-out pool until all gates are passed.",
     "Only after a defensible held-out pool is frozen proceed to runtime/tokenizer check, pre-registration freeze, and inference authorization."
-  ]
+  ],
+  "screening_summary": {
+    "total_leads": 6,
+    "red_green_pass": 6,
+    "failed_or_unresolved": 0,
+    "independent_human_review_complete": 0,
+    "adjudication_complete": 0,
+    "heldout_eligible": 0,
+    "target_heldout_independent_cases": 61
+  }
 }
