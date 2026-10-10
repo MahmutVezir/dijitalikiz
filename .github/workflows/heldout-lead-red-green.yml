@@ -175,15 +175,30 @@ jobs:
             echo "purpose=resolve_immutable_upstream_parent_only"
           } > "$OUT/commons-parent-104-metadata.txt"
 
-      - name: Inject regression tests from the pinned fixed revision
+      - name: Apply only the pinned test-file diff to the pre-fix revision
         shell: bash
         run: |
           set -euo pipefail
           SRC="$RUNNER_TEMP/upstream"
+          OUT="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID"
+          mkdir -p "$OUT"
           for test_file in $TEST_FILES; do
             mkdir -p "$SRC/$(dirname "$test_file")"
-            git -C "$SRC" show "$FIX_SHA:$test_file" > "$SRC/$test_file"
           done
+          PATCH="$OUT/regression-tests.patch"
+          git -C "$SRC" diff --binary "$PRE_FIX_SHA" "$FIX_SHA" -- $TEST_FILES > "$PATCH"
+          if [ ! -s "$PATCH" ]; then
+            echo "BLOCKED: no test-file diff exists between pinned revisions."
+            exit 2
+          fi
+          git -C "$SRC" apply --check "$PATCH"
+          git -C "$SRC" apply "$PATCH"
+          sha256sum "$PATCH" | awk '{print $1}' > "$OUT/regression-tests.patch.sha256"
+          {
+            echo "test_patch_sha256=$(cat "$OUT/regression-tests.patch.sha256")"
+            echo "test_patch_source=$PRE_FIX_SHA..$FIX_SHA"
+            echo "test_patch_policy=diff_only_no_full_test_file_replacement"
+          } >> "$OUT/metadata.txt"
 
       - name: Require regression tests to fail on the pinned pre-fix revision
         shell: bash
