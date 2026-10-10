@@ -1,16 +1,17 @@
 # Held-out case discovery and technical screening — 2026-10-10
 
-**Status: technical red/green screen passed; independent human review is still pending.** This log summarizes the latest source-only candidate run. It does not admit any case to the held-out confirmatory sample and does not authorize model inference.
+**Status: technical red/green screen passed; independent human review is still pending.** This log summarizes the latest corrected source-only screen. It does not admit any case to the held-out confirmatory sample and does not authorize model inference.
 
 ## Latest verified screen
 
-- **Workflow:** [Held-out Lead Red-Green Screening, run #38053933548](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053933548) — success.
-- **Repository validation:** [Research Validation (No Inference), run #38053933488](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053933488) — success.
+- **Current screening run:** [Held-out Lead Red-Green Screening, #38054680670](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670) — success.
+- **Repository validation:** [Research Validation (No Inference), #38054680672](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680672) — success.
 - **Scope:** 11 public defect leads across Apache Commons Lang, Commons Collections, Commons Net, Commons Text, Commons Compress, Jackson Databind, and Netty.
-- **Test evidence:** 21 named regression targets failed on their pinned pre-fix revisions and passed on their fixed revisions. Each job uploaded a log archive, and SHA-256 hashes of all 11 downloaded ZIP artifacts are recorded in the machine-readable audit.
-- **Model execution:** none. The workflows use Java/Maven tests only; they do not load the Qwen model, run Kaggle inference, or change pilot/confirmatory data.
+- **Test evidence:** 21 named regression targets failed on their pinned pre-fix revisions and passed on their pinned fixed revisions. All 11 screening jobs, including artifact upload, succeeded.
+- **Reproducibility fix:** The first rerun, [#38054377625](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054377625), could not run the Compress 805 test because Maven could not resolve `org.apache.commons:commons-parent:104`. That attempt was **not** counted as a regression failure. The corrected workflow installs the POM from the pinned Apache Commons Parent 104 RC1 source commit `9066f72892fba9af187520ba37889ae068a333ba`, records the POM hash, and then runs the named test. In the corrected run, Compress 805 passed both red and green checks.
+- **Model execution:** none. The workflow uses Java/Maven tests only; it does not load Qwen, run Kaggle inference, or alter the historic pilot/confirmatory archives.
 
-Machine-readable evidence: [discovery_screening_audit_run_38053933548.json](https://github.com/MahmutVezir/dijitalikiz/blob/research/scoring-calibration-mainline-v2/data/followup_v2/discovery_screening_audit_run_38053933548.json). The earlier seven-lead screen [#38053125548](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053125548) is preserved as a prior technical checkpoint.
+Machine-readable, hash-bound evidence: [discovery_screening_audit_run_38054680670.json](https://github.com/MahmutVezir/dijitalikiz/blob/research/scoring-calibration-mainline-v2/data/followup_v2/discovery_screening_audit_run_38054680670.json). The prior complete screen [#38053933548](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38053933548) is retained as a separate historical checkpoint; its archive hashes are not overwritten.
 
 ## Most promising leads for human review
 
@@ -21,7 +22,7 @@ Machine-readable evidence: [discovery_screening_audit_run_38053933548.json](http
 5. [Commons Compress #805 — preserve Pack200 exception propagation](https://github.com/apache/commons-compress/pull/805): malformed nested reference data should propagate the declared exception through the unpacker adapter rather than escaping as a bare `Error`.
 6. [Jackson Databind #6256 — property filters for ObjectNode any-getter entries](https://github.com/FasterXML/jackson-databind/pull/6256): node-valued any-getter serialization should respect the same inclusion/ignore rules as map serialization.
 
-Other passing leads include Commons Lang #1800 and #1807, Commons Collections #728, Jackson Databind #6096, and Netty #17759. The audit records each case's exact revisions, test targets, artifact ID, artifact hash, and provisional limitations.
+Other passing leads include Commons Lang #1800 and #1807, Commons Collections #728, Jackson Databind #6096, and Netty #17759. The machine-readable audit records each case's exact revisions, test targets, artifact ID, downloaded ZIP SHA-256, and provisional limitations.
 
 These are prioritization notes only, not final gold labels. Commons Lang #1807 may be too localized, Commons Collections #728 may represent a related implementation family rather than a deep cross-component causal path, and the Jackson/Netty leads also need reviewers to confirm that their candidate graph represents meaningful cross-component dependencies.
 
@@ -33,7 +34,7 @@ These are prioritization notes only, not final gold labels. Commons Lang #1807 m
 - Scoring-rubric calibration and reviewer-reliability gate: not complete.
 - V2 protocol freeze and model inference permission: still blocked.
 
-Every source and fix is public; the model's exact training-data exposure is unknown. Passing the regression test only establishes that a test distinguishes the pinned revisions. It does not establish that the proposed root cause is complete, every CCDG edge is justified, or a case is appropriate for measuring graph-structure effects.
+Every source and fix is public; the model's exact training-data exposure is unknown. Passing a regression test only establishes that the test distinguishes pinned revisions. It does not establish that the proposed root cause is complete, every CCDG edge is justified, or that the case is appropriate for measuring graph-structure effects.
 
 ## Next required gates
 
