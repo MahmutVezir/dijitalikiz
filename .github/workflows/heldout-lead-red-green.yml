@@ -140,7 +140,7 @@ jobs:
         run: |
           set -euo pipefail
           PARENT_DIR="$RUNNER_TEMP/commons-parent"
-          PARENT_SHA="ec5913040edfba1e8cbef2418b7b825473c1f2cf"
+          PARENT_SHA="9066f72892fba9af187520ba37889ae068a333ba"
           OUT="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID"
           git clone --quiet --filter=blob:none https://github.com/apache/commons-parent.git "$PARENT_DIR"
           git -C "$PARENT_DIR" fetch --quiet --no-tags origin "$PARENT_SHA"
@@ -157,6 +157,7 @@ jobs:
           }
           {
             echo "commons_parent_sha=$PARENT_SHA"
+            echo "commons_parent_revision=commons-parent-104-RC1"
             echo "commons_parent_coordinate=org.apache.commons:commons-parent:104:pom"
             echo "commons_parent_pom_sha256=$(cut -d ' ' -f 1 "$OUT/commons-parent-104-pom.sha256")"
             echo "purpose=resolve_immutable_upstream_parent_only"
