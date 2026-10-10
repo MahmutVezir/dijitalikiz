@@ -23,6 +23,9 @@ def test_heldout_lead_screening_is_scoped_and_read_only():
     assert "run-frozen-pilot:" not in workflow
     assert "run-confirmatory:" not in workflow
     assert "model.generate" not in workflow
+    assert "MAVEN_MODULE" in workflow
+    assert '-pl "$MAVEN_MODULE" -am' in workflow
+    assert "surefire.failIfNoSpecifiedTests=false" in workflow
 
 
 def test_heldout_lead_screening_pins_exact_revisions_for_all_discovery_leads():
@@ -55,6 +58,22 @@ def test_heldout_lead_screening_pins_exact_revisions_for_all_discovery_leads():
         "net-400-crlf-command-injection": (
             "2a3aa71b077ae9290d9c3b95f6ad23b0e0a357c2",
             "a07b6c41b5c2369506e7d86c4808dc51317e1481",
+        ),
+        "compress-805-pack200-error-propagation": (
+            "9a624106e6a5fce948d97ee262ed5742f6e4ceb4",
+            "17ce90728476f64d095f59cacf45c20ef3ade216",
+        ),
+        "jackson-6096-jsonview-array-update": (
+            "05f0d04f6a63829d322145cf8ba87511cbf56445",
+            "82d58088dfeb6a6d1af0cc45b9f2fb5e00828f08",
+        ),
+        "jackson-6256-objectnode-anygetter-filter": (
+            "e62a0704a10493001bf8ece5b16c1867b16bab45",
+            "aa9cd983faeea37317c172fffd8fa2ccbe8177a1",
+        ),
+        "netty-17759-pooled-derived-retained-slice": (
+            "006a2f1d92db733d10112de251600da7b6f8ec51",
+            "d84dc6b1c290de2046bd0df5ba893e7f337cb0e6",
         ),
     }
     for case_id, (pre_fix, fixed) in expected.items():
