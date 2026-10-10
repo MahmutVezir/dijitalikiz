@@ -11,11 +11,13 @@
     "require_independent_pre_fix_failure_and_fixed_revision_pass_before_calibration_inference": true,
     "require_independent_ground_truth_review_before_inference": true,
     "exclude_calibration_cases_from_any_later_confirmatory_sample": true,
-    "do_not_treat_a_public_pull_request_description_as_sufficient_ground_truth_by_itself": true
+    "do_not_treat_a_public_pull_request_description_as_sufficient_ground_truth_by_itself": true,
+    "minimum_calibration_case_count": 7
   },
   "candidates": [
     {
       "case_id": "commons-compress-github-pr-770-tar-pax-header-memory-bound",
+      "case_record_path": "data/calibration/cases/commons-compress-github-pr-770-tar-pax-header-memory-bound.json",
       "source_url": "https://github.com/apache/commons-compress/pull/770",
       "fix_revision": "bab5629f6b3cea44cf0622cdd92c8cefcfbf360a",
       "pre_fix_revision": "829b5dd6ffe976c0a03231e65790a65af9f3a6ee",
@@ -41,6 +43,7 @@
     },
     {
       "case_id": "commons-compress-github-pr-803-empty-framed-stream-recursion",
+      "case_record_path": "data/calibration/cases/commons-compress-github-pr-803-empty-framed-stream-recursion.json",
       "source_url": "https://github.com/apache/commons-compress/pull/803",
       "fix_revision": "7e688ebdba45ab16aa5b7f870474dac285a494af",
       "pre_fix_revision": "05862dd50eb51a6a1246cab50dc2a8619b301695",
@@ -64,6 +67,7 @@
     },
     {
       "case_id": "commons-collections-github-pr-694-passive-expiring-map-synchronized-views",
+      "case_record_path": "data/calibration/cases/commons-collections-github-pr-694-passive-expiring-map-synchronized-views.json",
       "source_url": "https://github.com/apache/commons-collections/pull/694",
       "fix_revision": "491fc77589f1b262d19f5c109fc42794edfcb36e",
       "pre_fix_revision": "e78f814ec86f3a85cfa1b0f5e07e4fbf2ed24a97",
@@ -87,6 +91,7 @@
     },
     {
       "case_id": "commons-collections-github-pr-731-transformed-multivalued-map-null-transformer",
+      "case_record_path": "data/calibration/cases/commons-collections-github-pr-731-transformed-multivalued-map-null-transformer.json",
       "source_url": "https://github.com/apache/commons-collections/pull/731",
       "fix_revision": "b0ce37f0d62f0a6efa306d90d446f6d0f9549bdb",
       "pre_fix_revision": "b76ec29cbf3b5659de244fe643b4875726a8fa49",
@@ -110,6 +115,7 @@
     },
     {
       "case_id": "commons-lang-github-pr-1783-methodutils-nonpublic-class-accessible-method",
+      "case_record_path": "data/calibration/cases/commons-lang-github-pr-1783-methodutils-nonpublic-class-accessible-method.json",
       "source_url": "https://github.com/apache/commons-lang/pull/1783",
       "fix_revision": "d8f4116d4ba03ed32b104b3af891de7a67f2ce97",
       "pre_fix_revision": "80ac358a4c9bcd9cb03eb50bdd33de9755a109a5",
@@ -133,6 +139,7 @@
     },
     {
       "case_id": "commons-codec-github-pr-443-git-identifiers-utf8-tree-order",
+      "case_record_path": "data/calibration/cases/commons-codec-github-pr-443-git-identifiers-utf8-tree-order.json",
       "source_url": "https://github.com/apache/commons-codec/pull/443",
       "fix_revision": "f49b96388c2d97d093d8669cf74f57a5a92e7dff",
       "pre_fix_revision": "506b762f724fbca2fa2dc198b81598dbb214fd28",
@@ -156,6 +163,7 @@
     },
     {
       "case_id": "commons-lang-github-pr-1808-randomstringutils-tilde-exclusive-upper-bound",
+      "case_record_path": "data/calibration/cases/commons-lang-github-pr-1808-randomstringutils-tilde-exclusive-upper-bound.json",
       "source_url": "https://github.com/apache/commons-lang/pull/1808",
       "fix_revision": "75d71af80ace2d75dab3f6bb82ac2ef91650634e",
       "pre_fix_revision": "7b6048b7a9d1339a12d353cb85b2222df7bf5668",
