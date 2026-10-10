@@ -65,4 +65,4 @@ jobs:
           set -euo pipefail
           ! grep -Eq 'scripts/(run_pilot|run_confirmatory|run_frozen_pilot|run_followup_v2)\.py' .github/workflows/research-validation.yml
           ! grep -Eq 'kaggle kernels (push|start)' .github/workflows/research-validation.yml
-          ! grep -q 'KAGGLE_API_TOKEN' .github/workflows/research-validation.yml
+          ! grep -q 'KAGGLE_''API_TOKEN' .github/workflows/research-validation.yml
