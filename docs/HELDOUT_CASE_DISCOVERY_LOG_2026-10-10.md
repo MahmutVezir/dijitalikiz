@@ -16,10 +16,10 @@
 - Source PR: https://github.com/apache/commons-lang/pull/1800
 - Fix commit: https://github.com/apache/commons-lang/commit/c7f1a6d27707e8cd8cbed94f83e0c58d2c480614
 - Problem described upstream: FastDatePrinter sourced era names from a Gregorian two-entry symbol table even when the printer used Thai Buddhist or Japanese Imperial calendars; formatting could produce the wrong era or throw for an era index beyond the Gregorian table, while the parser obtained era names from the calendar.
-- Relevant changed files: `src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java`; `src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java`; `src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java`.
+- Exact pinned revisions: pre-fix `324d9fbd091749a9c70aed4b038fd0b4a520b3cf`; fixed `c7f1a6d27707e8cd8cbed94f83e0c58d2c480614` (confirmed as a one-commit comparison).\n- Relevant changed files: `src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java`; `src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java`; `src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java`.
 - Regression test targets in the fixed change: `FastDateFormatTest#testEraRoundTripNonGregorianCalendar`; `FastDatePrinterTest#testEraMixedCalendarTypes`.
 - Possible cross-component path to review: locale selection -> calendar implementation/era field -> printer era rendering -> parser round-trip.
-- Risks/limitations: upstream PR discloses Claude Code assistance in defect discovery and patch/test drafting; public exposure is documented, model training exposure remains unknown. Exact pre-fix SHA and a new independent red/green artifact have not been pinned in this project's intake record.
+- Risks/limitations: upstream PR discloses Claude Code assistance in defect discovery and patch/test drafting; public exposure is documented, model training exposure remains unknown. The exact pre-fix SHA is now pinned; the independent red/green test job is still running and no result has been accepted yet.
 - Current decision: **promising lead; not eligible yet**. A reviewer must validate that the task requires cross-component dependency reasoning rather than only one local formatting fix.
 
 ### Lead HD-002 — Commons Lang TypeUtils/JDK WildcardType bound contract
@@ -27,10 +27,10 @@
 - Source PR: https://github.com/apache/commons-lang/pull/1807
 - Fix commit: https://github.com/apache/commons-lang/commit/43154e016ae213a0da5b727cd1aa18e6e0c56adb
 - Problem described upstream: a custom unbounded WildcardType could expose an empty upper-bound array even though the Java reflection contract supplies `Object`; this caused equality to be asymmetric against the JDK's wildcard implementation and hash codes to disagree.
-- Relevant changed files: `src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java`; `src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java`.
+- Exact pinned revisions: pre-fix `25c4bfcd6d9dc3a7333088bfc3031b05cd93837e`; fixed `43154e016ae213a0da5b727cd1aa18e6e0c56adb` (confirmed as a one-commit comparison).\n- Relevant changed files: `src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java`; `src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java`.
 - Regression test target: `TypeUtilsTest#testUnboundedWildcardType` (including equality/hash-code and implicit-bound assertions).
 - Possible dependency path to review: custom `WildcardTypeImpl` construction -> `getUpperBounds` contract -> equality normalization -> hash-code consistency with JDK reflection values.
-- Risks/limitations: upstream PR discloses Claude assistance; public exposure is documented but model training exposure is unknown. This may be too localized to `TypeUtils` and JDK interoperation to qualify as a strong cross-component case. Exact pre-fix SHA and independent red/green artifact are not yet pinned in this project's intake record.
+- Risks/limitations: upstream PR discloses Claude assistance; public exposure is documented but model training exposure is unknown. This may be too localized to `TypeUtils` and JDK interoperation to qualify as a strong cross-component case. The exact pre-fix SHA is now pinned; independent red/green testing is pending.
 - Current decision: **moderate/uncertain lead; not eligible yet**. Use only if independent reviewers find the cross-component relation substantive.
 
 ### Lead HD-003 — Commons Collections ordered-map nextKey inconsistency
@@ -38,10 +38,10 @@
 - Source PR: https://github.com/apache/commons-collections/pull/728
 - Fix commit: https://github.com/apache/commons-collections/commit/04b30be69f4355f218d587703bc20b1a591c3e3c
 - Problem described upstream: `AbstractSortedMapDecorator.nextKey` and `DualTreeBidiMap.nextKey` could skip a valid successor for an absent key or throw past the end instead of returning null; related decorators inherit behavior.
-- Relevant changed files: `src/main/java/org/apache/commons/collections4/map/AbstractSortedMapDecorator.java`; `src/main/java/org/apache/commons/collections4/bidimap/DualTreeBidiMap.java`; regression tests for `DualTreeBidiMap`, `FixedSizeSortedMap`, and `UnmodifiableSortedMap`.
+- Exact pinned revisions: pre-fix `a5248efd7f4f857f88770565414948e2d0524933`; fixed `04b30be69f4355f218d587703bc20b1a591c3e3c` (confirmed as a one-commit comparison).\n- Relevant changed files: `src/main/java/org/apache/commons/collections4/map/AbstractSortedMapDecorator.java`; `src/main/java/org/apache/commons/collections4/bidimap/DualTreeBidiMap.java`; regression tests for `DualTreeBidiMap`, `FixedSizeSortedMap`, and `UnmodifiableSortedMap`.
 - Regression test targets in the fixed change include `DualTreeBidiMapTest#testNextKeyAbsentKey`, `FixedSizeSortedMapTest#testNextKey`, and `UnmodifiableSortedMapTest#testNextKey`.
 - Possible dependency path to review: `OrderedMap.nextKey` contract -> decorator traversal logic -> bidirectional sorted-map implementation and wrappers.
-- Risks/limitations: exact pre-fix SHA and an independent red/green reproduction artifact are not yet pinned in this project's intake record. This may be one family of duplicated local implementation bugs rather than a sufficiently deep cross-component causal chain.
+- Risks/limitations: the exact pre-fix SHA is now pinned; independent red/green testing is pending. This may be one family of duplicated local implementation bugs rather than a sufficiently deep cross-component causal chain.
 - Current decision: **possible lead; not eligible yet**.
 
 ## Screened but not admitted
@@ -65,3 +65,12 @@
 - Discovery leads in this note: **3** (none eligible).
 - Calibration-only cases remain permanently excluded from held-out confirmation.
 - No new model inference was run or authorized.
+
+## Automated screening added (2026-10-10)
+
+The separate workflow [Held-out Lead Red-Green Screening](https://github.com/MahmutVezir/dijitalikiz/actions/workflows/heldout-lead-red-green.yml) now tests the named regression tests against each pinned pre-fix and fixed commit. It performs source-build tests only and does not load or query any LLM. The first screening runs are in progress; none of the leads is yet admitted based on them. A run must show that each named regression test actually executed and failed before the fix, then passed without skips/errors after the fix. Merely observing a non-zero Maven exit code is not enough.
+
+The workflow and a small safety-test file were added on the research branch. A separate CI-only check was triggered for the repository test suite; its final result has not yet been confirmed in this note. The new workflow artifacts, once complete, will provide revision-bound reproduction evidence but still will not replace independent human source review/adjudication.
+
+The sample-size sensitivity calculation is also documented in [SAMPLE_SIZE_SENSITIVITY_AUDIT_2026-10-10.md](SAMPLE_SIZE_SENSITIVITY_AUDIT_2026-10-10.md). Its key implication is that the 61-case target only reaches about 80% power under the current strong assumed discordance imbalance; modest alternatives require a larger independent-case pool.
+
