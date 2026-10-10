@@ -100,6 +100,7 @@ def audit_case_pool(
         candidates = []
 
     indexed: dict[str, dict[str, Any]] = {}
+    case_records: dict[str, dict[str, Any]] = {}
     seen_case_paths: set[str] = set()
     for index, candidate in enumerate(candidates):
         if not isinstance(candidate, dict):
@@ -123,6 +124,14 @@ def audit_case_pool(
             issues.append(f"{case_id}_invalid_fix_revision")
         if not _valid_sha(candidate.get("pre_fix_revision")):
             issues.append(f"{case_id}_invalid_pre_fix_revision")
+        repository_url = candidate.get("repository_url")
+        if not isinstance(repository_url, str) or not repository_url.startswith("https://github.com/"):
+            issues.append(f"{case_id}_invalid_repository_url")
+        test_targets = candidate.get("regression_test_targets")
+        if not isinstance(test_targets, list) or not test_targets or not all(
+            isinstance(target, str) and "#" in target and target.strip() for target in test_targets
+        ):
+            issues.append(f"{case_id}_invalid_regression_test_targets")
 
         record_path = _resolve(root, candidate.get("case_record_path"), f"{case_id}_case_record", issues)
         if record_path is None:
@@ -135,6 +144,7 @@ def audit_case_pool(
         record = _read_json(record_path, issues, f"{case_id}_case_record")
         if record is None:
             continue
+        case_records[case_id] = record
         if validator is not None:
             schema_errors = sorted(validator.iter_errors(record), key=lambda error: list(error.path))
             for error in schema_errors[:10]:
@@ -194,6 +204,22 @@ def audit_case_pool(
             issues.append(f"{case_id}_ground_truth_not_independently_adjudicated")
         if candidate.get("inference_allowed") is not True:
             issues.append(f"{case_id}_inference_allowed_flag_not_set")
+
+        case_record = case_records.get(case_id)
+        snapshot = case_record.get("software_twin_snapshot") if case_record else None
+        if not isinstance(snapshot, dict):
+            issues.append(f"{case_id}_missing_version_bound_software_twin_snapshot")
+        else:
+            if snapshot.get("repository_url") != candidate.get("repository_url"):
+                issues.append(f"{case_id}_twin_snapshot_repository_mismatch")
+            if snapshot.get("snapshot_revision") != candidate.get("pre_fix_revision"):
+                issues.append(f"{case_id}_twin_snapshot_revision_mismatch")
+            if snapshot.get("regression_test") not in candidate.get("regression_test_targets", []):
+                issues.append(f"{case_id}_twin_snapshot_regression_test_mismatch")
+            if not isinstance(snapshot.get("observed_failure_signal"), str) or len(
+                snapshot["observed_failure_signal"].strip()
+            ) < 15:
+                issues.append(f"{case_id}_twin_snapshot_failure_signal_missing")
 
     if manifest.get("status") != "frozen":
         issues.append("case_pool_manifest_not_frozen")
