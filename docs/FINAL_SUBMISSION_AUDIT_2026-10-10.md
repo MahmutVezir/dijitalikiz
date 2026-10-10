@@ -13,16 +13,18 @@ Bu denetim, 2026–2027 (58. yarışma) dönemi için TÜBİTAK'ın güncel 2204
 
 - Proje başlığı: **LLM Tabanlı Çapraz-Bileşen Hata Teşhisinde Yapılandırılmış Bağımlılık Temsilinin Etkisinin Deneysel İncelenmesi**
 - Başlık uzunluğu: 11 kelime; 15 kelimelik sınırın altında.
-- Özet: 179 kelime; 150–250 kelime aralığında.
+- Özet: 186 kelime; 150–250 kelime aralığında.
 - Anahtar kelimeler: 5.
-- Kaynakça: 11 kaynak.
+- Kaynakça: 11 kaynak; bibliyografik doğruluk ve APA uyumu son insan denetimi bekliyor.
 - Rapor taslağı: `docs/TUBITAK_REPORT_DRAFT.md`
 - Dondurulmuş sonuç kaydı: `docs/CONFIRMATORY_RESULTS_2026-10-09.md`
 - ÜYZ kullanım beyanı taslağı: `docs/AI_USAGE_DISCLOSURE_DRAFT.md`
 - Güncel aday taraması ve bağımsız düzeltme tekrarı: `docs/CANDIDATE_SCREENING_2026-10-10.md`; Commons Compress #770 pre-fix/post-fix reproducer: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772
 - Makinece okunabilir sonuç özeti: `data/benchmark/confirmatory_result_summary.json`
 - Doğrulayıcı artefakt denetimi: 212/212 dosya doğrulandı; 160 doğrulayıcı kayıt, 0 parse hatası, 0 hash uyuşmazlığı.\n- Pilot arşivi manuel denetimi: `docs/PILOT_ARTIFACT_AUDIT_2026-10-10.md`; 55/55 manifest dosyası ve 40/40 kayıt doğrulandı, boyut/hash uyuşmazlığı yok; birincil ölçüt her koşulda 0/20.
-- Son kapsamlı doğrulama: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37992620612 — testler, bütünlük denetimi ve kaynak paketi/launcher kontrolü başarılı; inference işleri bilerek atlandı.
+- Son kapsamlı doğrulama: https://github.com/MahmutVezir/dijitalikiz/actions/runs/38043725220 — depo testleri, 160 kayıtlık doğrulayıcı artefakt denetimi, 40 kayıtlık pilot artefakt denetimi ve kaynak paketi/launcher kontrolü başarılı; inference işleri bilerek atlandı.
+- Resmî Word şablonu indirme ve DOCX bütünlüğü: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37994665457; 2026–2027 DOCX geçerli OOXML paketi olarak doğrulandı.
+- Yerel rapor çıktı dosyaları: `TUBITAK_2204A_Rapor_Taslak_2026-2027.docx` ve `.pdf`; ikisi de rapor taslağının biçimsel işlenmiş teslimleridir, henüz nihai başvuru dosyası sayılmazlar.
 
 ## Kritik bilimsel karar — değiştirilmeyecek
 
@@ -49,20 +51,21 @@ TÜBİTAK sayfasındaki bağlantılı değerlendirme formunda (son erişilebilir
 - **Sonuçlar ve tartışma:** taban etkisi, puanlama geçerliği, bilgi-paritesi kısıtı, kamuya açık veri nedeniyle contamination riski ve genellenebilirlik sınırları açıkça raporlanmalı.
 - **Sunum ve proje hâkimiyeti:** Öğrenci kendi kodunu, deney tasarımını, istatistiği, sınırlılıkları ve yapay zekâ kullanımını açıklayabilmeli.
 
-## Teslimden önce zorunlu kapılar
+## Teslim kapıları — durum 10 Ekim 2026
 
-- [ ] 2026–2027 resmî Word şablonunu indir ve başlık alanlarını, bölüm sırasını, biçimi ve talimatları doğrudan şablon üzerinde doğrula.
-- [ ] Raporu resmî şablona aktar; mevcut taslak başlıklarını zorunlu alanlarla karşılaştır.
-- [ ] PDF üret; sayfa sınırını güncel resmî talimatlardan doğrula.
-- [ ] PDF'yi sayfa sayfa görsel olarak incele: taşan tablo, boş sayfa, kopuk başlık, okunmayan şekil, yanlış sayfa numarası veya bozuk Türkçe karakter olmamalı.
-- [ ] Tüm atıfların kaynakçayla bire bir eşleştiğini ve bibliyografik bilgilerin doğruluğunu kontrol et.
-- [ ] TÜBİTAK'ın Üretken Yapay Zekânın Sorumlu ve Güvenilir Kullanımı rehberini incele ve gerekli şeffaf beyanı yap; `docs/AI_USAGE_DISCLOSURE_DRAFT.md` taslağını gerçek kullanım kayıtlarıyla doğrula.
-- [ ] Öğrenci/öğrenciler, okul, danışman ve gerekli izin/etik alanlarını yalnızca doğru bilgilerle doldur.
-- [ ] Öğrenci ve varsa danışmanın ARBİS/TYBS kayıtlarını güncel resmî kılavuza göre kontrol et.
-- [ ] Dosya adı, gizlilik, PDF uzantısı ve boyut koşullarını güncel çağrı metnine göre denetle.
-- [ ] Nihai PDF, rapor kaynak commit'i, sonuç JSON'u ve artifact kanıtlarını aynı sürüme bağlayan teslim manifesti oluştur.
+- [x] Resmî 2026–2027 Word şablonu indirildi ve OOXML/ZIP bütünlüğü kontrol edildi: [indirme ve doğrulama akışı](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37994665457).
+- [x] Resmî şablonun bölüm sırası, rapor yazım kuralları ve iş-zaman çizelgesi incelendi. Hazırlanan Word raporu aynı zorunlu bölüm sırasına ve 12 punto / 2,5 cm / tek satır aralığı koşullarına göre düzenlendi; 9 sayfa.
+- [x] PDF üretildi; 9 sayfa olarak render edildi ve tüm sayfalar görsel olarak kontrol edildi. Tablo taşması, bozuk Türkçe karakter, kesilmiş metin veya boş sayfa saptanmadı.
+- [x] Başlık 11 kelime; özet 186 kelime; anahtar kelime 5. Sayfa sınırı 20 sayfanın altında.
+- [ ] **Şablon fontu için son dışa aktarma kontrolü:** DOCX içindeki font ailesi Times New Roman olarak ayarlandı; bu Linux ortamındaki PDF renderı Times New Roman kurulu olmadığı için uyumlu bir serif ikamesiyle üretildi. Nihai PDF'yi Times New Roman kurulu Microsoft Word/uyumlu Office ortamında tekrar dışa aktar ve görsel kontrolü tekrarla.
+- [ ] Tüm 11 kaynağın bibliyografik bilgilerini ve APA biçimini insan tarafından doğrula; metin içi atıf-kaynakça eşleşmesini son kez kontrol et.
+- [ ] `docs/AI_USAGE_DISCLOSURE_DRAFT.md` ve rapordaki ÜYZ beyanını gerçek kullanım kayıtları ve güncel TÜBİTAK rehberiyle öğrenci olarak gözden geçir; gerçeğe uymayan ifadeleri düzelt.
+- [ ] Öğrenci(ler), okul, danışman ve gerekli izin/etik bilgilerini yalnızca doğru bilgilerle sisteme gir. Raporda gereksiz kişisel bilgi yayımlama.
+- [ ] Öğrencinin ARBİS/TYBS kayıtlarını güncel resmî kılavuza göre kontrol et ve başvuru sistemindeki alanları doldur.
+- [ ] Gereken kod, manifest, çıktı veya ekleri 20 sayfa/boyut ve gizlilik koşullarına göre TYBS'ye ayrıca ekle. GitHub bağlantısı tek başına jüriye erişim garantisi değildir.
+- [ ] Nihai PDF, DOCX kaynak sürümü, sonuç JSON'u ve artifact kanıtlarını aynı sürüme bağlayan teslim manifesti oluştur.
 - [ ] Başvuruyu 4 Ocak 2027 saat 17.30'dan önce tamamla; son günü bekleme.
 
 ## Son durum
 
-**Araştırma çalıştırması tamamlandı; başvuru dosyası henüz teslim için tamamlanmış sayılmaz.** En önemli bilimsel sonraki aşama, puanlama geçerliğini ve yeni üç koşullu bilgi-eşleştirilmiş tasarımı doğrulamak; başvuru tarafında ise resmî Word şablonuna aktarım, PDF görsel denetimi, doğru kişi/okul/danışman bilgileri ve yapay zekâ kullanım beyanıdır.
+**Araştırma çalıştırması tamamlandı; Word rapor taslağı ve PDF önizlemesi hazırlandı, ancak başvuru henüz teslim edilmeye hazır değildir.** Kalan kritik insan denetimleri; kaynakların doğrulanması, ÜYZ kullanım beyanının gözden geçirilmesi, gerçek öğrenci/okul/danışman ve TYBS bilgileri, ayrıca Times New Roman kurulu Office ortamından son PDF dışa aktarımıdır. Yeni semantik doğrulayıcı çalışma ise ayrı bir gelecek araştırmasıdır; mevcut tamamlanmış sonucun yerine geçmez.
