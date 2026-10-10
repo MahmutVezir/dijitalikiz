@@ -35,6 +35,10 @@ Do **not** use any response from the frozen 40-run pilot or 160-run confirmatory
 
 The output must say `status: "pass"` and `ready_for_new_confirmatory_inference: true`. Any error or missing annotation keeps the gate blocked.
 
+The reliability gate is declared in `data/calibration/manifest.json` before annotation: at least 0.80 exact initial-review agreement and Cohen's `kappa >= 0.70`. If either is not reached (or kappa is undefined), do not start a confirmatory study; clarify the rubric, retrain/calibrate reviewers using examples outside the held-out sample, and version the revised protocol before repeating calibration. Do not relax thresholds after seeing labels merely to pass the gate.
+
+The validator also reports the legacy alias matcher's sensitivity and specificity. These diagnostics do not authorize the old alias matcher to be the semantic primary endpoint. The future primary endpoint is blinded, source-grounded human adjudication at case level; any automated primary endpoint would require a distinct protocol and prior justification.
+
 ## Review labels
 
 - `correct`: identifies the underlying root-cause mechanism and is supported by case evidence.
