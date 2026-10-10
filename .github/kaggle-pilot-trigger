@@ -1,1 +1,1 @@
-[validate-only] Verify documented calibration tooling status and frozen artifacts
+[validate-only] Test calibration case pool eligibility and ground-truth leakage gates
