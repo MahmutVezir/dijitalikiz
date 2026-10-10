@@ -64,7 +64,6 @@ def build_token_audit(
     model = manifest["model"]
     prompts = manifest["prompts"]
     case_pool = manifest["case_pool"]
-    generation = manifest["generation"]
     context_limit = int(prompts["max_context_tokens"])
     reserve = int(prompts["generation_reserve_tokens"])
     case_ids = list(case_pool["case_ids"])
