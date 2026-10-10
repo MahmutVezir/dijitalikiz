@@ -78,6 +78,17 @@
 - Preliminary fit: **promising integration/API-contract lead**; public fix is known and the main change is small, so independent reviewers must decide whether the component boundary is sufficiently substantive for CCDG.
 - Screening status: **pending on the six-lead red-green run**. Not eligible until exact-test red/green artifact and independent human source review/adjudication pass.
 
+
+### Lead HD-007 — Commons Net CR/LF command injection across protocol senders
+
+- Source PR: https://github.com/apache/commons-net/pull/400
+- Exact revisions: pre-fix `2a3aa71b077ae9290d9c3b95f6ad23b0e0a357c2`; fix `a07b6c41b5c2369506e7d86c4808dc51317e1481` (one-commit comparison).
+- Regression tests from the fixed revision: `FTPTest#testRejectCRLFInArgs`, `NNTPTest#testRejectCRLFInArgs`, `POP3Test#testRejectCRLFInArgs`, and `SMTPTest#testRejectCRLFInArgs`.
+- Defect summary: protocol command senders concatenated caller-controlled command arguments into control-channel text without rejecting carriage-return/line-feed characters. A supplied argument could add an unintended second protocol command.
+- Candidate cross-component path: application-provided command/argument -> FTP/NNTP/POP3/SMTP sender -> control-channel command assembly -> protocol parser interprets a second command.
+- Preliminary fit: **promising shared-invariant lead across four protocol implementations**. The four protocol targets come from one shared change and should count as one independent defect case, not four. Independent reviewers must decide whether the common mechanism is coherent enough for CCDG.
+- Screening status: **pending in the next red-green run**. Not eligible until every named test fails before the fix and passes after it, then independent source review and adjudication pass.
+
 ## Screened but not admitted
 
 - Commons Lang PR #1799 (`stripAccents` Hangul recomposition): https://github.com/apache/commons-lang/pull/1799. The available description and diff point mainly to one string-normalization method and its unit test. Keep out of the primary cross-component pool unless reviewers identify a stronger justified component boundary; otherwise it may serve only as a calibration/control lead if permitted by that separate protocol.
@@ -96,7 +107,7 @@
 ## Current count
 
 - Held-out eligible cases: **0**.
-- Discovery leads in this note: **6**, all six have a completed red-green artifact in run [#38052846346](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346).
+- Discovery leads in this note: **7**; HD-001 through HD-006 have completed red-green artifacts in run [#38052846346](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38052846346), while HD-007 is pending screening.
 - Calibration-only cases remain permanently excluded from held-out confirmation.
 - No new model inference was run or authorized.
 
