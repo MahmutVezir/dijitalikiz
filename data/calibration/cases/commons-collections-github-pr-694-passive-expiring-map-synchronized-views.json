@@ -1,0 +1,61 @@
+{
+  "case_id": "commons-collections-github-pr-694-passive-expiring-map-synchronized-views",
+  "source": "Apache Commons Collections GitHub Pull Request and source history",
+  "source_url": "https://github.com/apache/commons-collections/pull/694",
+  "publication_date": "2026-07-05",
+  "technology": "Apache Commons Collections / Java / map decorators and collection views",
+  "error_description": "Expired entries may remain visible when a PassiveExpiringMap is wrapped in Collections.synchronizedMap and callers reuse entrySet, keySet, or values views; removals through iterators may also leave bookkeeping state inconsistent.",
+  "i_base": [
+    "PassiveExpiringMap removes expired entries through removeAllExpired and related expiration checks.",
+    "Collections.synchronizedMap supplies synchronized collection views and can cache views obtained from the wrapped map.",
+    "PassiveExpiringMap exposes entrySet, keySet, and values, each of which has expiration-related side effects.",
+    "The map keeps expiration times in a separate expirationMap that must be updated when entries are removed through collection views.",
+    "The fix adds custom collection-view decorators and iterators and adds tests for cached views, expiration, and iterator removal."
+  ],
+  "ccdg": [
+    {
+      "source": "Collections.synchronizedMap",
+      "target": "cached entrySet/keySet/values views",
+      "relation": "wraps_and_exposes",
+      "details": "View caching can route later calls to wrapper views rather than the map's own view methods."
+    },
+    {
+      "source": "PassiveExpiringMap view methods",
+      "target": "removeAllExpired",
+      "relation": "triggers_expiration_cleanup",
+      "details": "Direct access to map views invokes cleanup."
+    },
+    {
+      "source": "custom view iterators",
+      "target": "expirationMap",
+      "relation": "synchronizes_removal_bookkeeping",
+      "details": "Iterator removals must update the internal expiration index."
+    },
+    {
+      "source": "collection view access",
+      "target": "expired map entries",
+      "relation": "controls_visibility",
+      "details": "Missed cleanup leaves expired entries visible through a wrapper."
+    }
+  ],
+  "ground_truth": {
+    "component": "PassiveExpiringMap collection-view behavior under Collections.synchronizedMap",
+    "entity": "cached collection views and expirationMap bookkeeping",
+    "operation": "entrySet, keySet, values access and iterator removal",
+    "root_cause": "synchronized_wrapper_views_bypass_expiration_side_effects",
+    "required_relations": [
+      "PassiveExpiringMap",
+      "Collections.synchronizedMap",
+      "removeAllExpired",
+      "expirationMap"
+    ]
+  },
+  "split": "candidates",
+  "provenance": {
+    "pull_request": 694,
+    "fix_commit": "491fc77589f1b262d19f5c109fc42794edfcb36e",
+    "pre_fix_revision": "e78f814ec86f3a85cfa1b0f5e07e4fbf2ed24a97",
+    "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
+    "case_status": "calibration_case_draft_not_eligible"
+  }
+}
