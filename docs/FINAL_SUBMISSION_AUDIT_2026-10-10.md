@@ -13,7 +13,7 @@ Bu denetim, 2026–2027 (58. yarışma) dönemi için TÜBİTAK'ın güncel 2204
 
 - Proje başlığı: **LLM Tabanlı Çapraz-Bileşen Hata Teşhisinde Yapılandırılmış Bağımlılık Temsilinin Etkisinin Deneysel İncelenmesi**
 - Başlık uzunluğu: 11 kelime; 15 kelimelik sınırın altında.
-- Özet: 186 kelime; 150–250 kelime aralığında.
+- Özet: 194 kelime (belgeden yeniden sayıldı); 150–250 kelime aralığında.
 - Anahtar kelimeler: 5.
 - Kaynakça: 11 kaynak; bibliyografik doğruluk ve APA uyumu son insan denetimi bekliyor.
 - Rapor taslağı: `docs/TUBITAK_REPORT_DRAFT.md`
@@ -24,7 +24,10 @@ Bu denetim, 2026–2027 (58. yarışma) dönemi için TÜBİTAK'ın güncel 2204
 - Doğrulayıcı artefakt denetimi: 212/212 dosya doğrulandı; 160 doğrulayıcı kayıt, 0 parse hatası, 0 hash uyuşmazlığı.\n- Pilot arşivi manuel denetimi: `docs/PILOT_ARTIFACT_AUDIT_2026-10-10.md`; 55/55 manifest dosyası ve 40/40 kayıt doğrulandı, boyut/hash uyuşmazlığı yok; birincil ölçüt her koşulda 0/20.
 - Son kapsamlı doğrulama: https://github.com/MahmutVezir/dijitalikiz/actions/runs/38043725220 — depo testleri, 160 kayıtlık doğrulayıcı artefakt denetimi, 40 kayıtlık pilot artefakt denetimi ve kaynak paketi/launcher kontrolü başarılı; inference işleri bilerek atlandı.
 - Resmî Word şablonu indirme ve DOCX bütünlüğü: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37994665457; 2026–2027 DOCX geçerli OOXML paketi olarak doğrulandı.
-- Yerel rapor çıktı dosyaları: `TUBITAK_2204A_Rapor_Taslak_2026-2027.docx` ve `.pdf`; ikisi de rapor taslağının biçimsel işlenmiş teslimleridir, henüz nihai başvuru dosyası sayılmazlar.
+- Yerel rapor çıktı dosyaları: `TUBITAK_2204A_Rapor_Taslak_2026-2027.docx` ve `.pdf`; ikisi de 9 sayfalık, son render/görsel incelemeden geçirilmiş rapor taslağıdır, henüz nihai başvuru dosyası sayılmazlar.
+- Word taslağı SHA-256: `f7ce62ce08622fd6976368f500988e039bfd2af7d18b8b64da13d9fea80a34ea`.
+- PDF önizlemesi SHA-256: `8c245af8638dc324fb9711b0876506ba26701fcca18c317d32238dc33d1f563f`.
+- İndirilen resmî şablon SHA-256: `195975a64cda8bc3175c6211be108f2b4293ee0893f061bcdfc3ac184989cc87` (DOCX 25.040 bayt; geçerli OOXML paketi).
 
 ## Kritik bilimsel karar — değiştirilmeyecek
 
@@ -54,8 +57,8 @@ TÜBİTAK sayfasındaki bağlantılı değerlendirme formunda (son erişilebilir
 ## Teslim kapıları — durum 10 Ekim 2026
 
 - [x] Resmî 2026–2027 Word şablonu indirildi ve OOXML/ZIP bütünlüğü kontrol edildi: [indirme ve doğrulama akışı](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37994665457).
-- [x] Resmî şablonun bölüm sırası, rapor yazım kuralları ve iş-zaman çizelgesi incelendi. Hazırlanan Word raporu aynı zorunlu bölüm sırasına ve 12 punto / 2,5 cm / tek satır aralığı koşullarına göre düzenlendi; 9 sayfa.
-- [x] PDF üretildi; 9 sayfa olarak render edildi ve tüm sayfalar görsel olarak kontrol edildi. Tablo taşması, bozuk Türkçe karakter, kesilmiş metin veya boş sayfa saptanmadı.
+- [x] Resmî şablonun bölüm sırası, rapor yazım kuralları ve iş-zaman çizelgesi incelendi. Word rapor taslağı bu zorunlu bölüm sırasına ve 12 punto / 2,5 cm / tek satır aralığı koşullarına göre oluşturuldu; 9 sayfa. Dosya orijinal şablonun içeriğinin üzerine doldurulmuş bir form değil, aynı kuralları izleyen düzenlenebilir rapor taslağıdır.
+- [x] PDF üretildi; 9 sayfa olarak render edildi ve tüm sayfalar hem DOCX render'ında hem bağımsız PDF render'ında görsel olarak kontrol edildi. Taşan tablo, bozuk Türkçe karakter, kesilmiş metin veya boş sayfa saptanmadı.
 - [x] Başlık 11 kelime; özet 186 kelime; anahtar kelime 5. Sayfa sınırı 20 sayfanın altında.
 - [ ] **Şablon fontu için son dışa aktarma kontrolü:** DOCX içindeki font ailesi Times New Roman olarak ayarlandı; bu Linux ortamındaki PDF renderı Times New Roman kurulu olmadığı için uyumlu bir serif ikamesiyle üretildi. Nihai PDF'yi Times New Roman kurulu Microsoft Word/uyumlu Office ortamında tekrar dışa aktar ve görsel kontrolü tekrarla.
 - [ ] Tüm 11 kaynağın bibliyografik bilgilerini ve APA biçimini insan tarafından doğrula; metin içi atıf-kaynakça eşleşmesini son kez kontrol et.
