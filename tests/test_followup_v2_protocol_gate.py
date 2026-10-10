@@ -82,11 +82,11 @@ def test_discovery_screening_audit_records_red_green_evidence_without_authorizin
 
     candidates = audit["candidates"]
     case_ids = [candidate["case_id"] for candidate in candidates]
-    assert len(case_ids) == len(set(case_ids)) == 6
+    assert len(case_ids) == len(set(case_ids)) == 7
     summary = audit["screening_summary"]
     assert summary == {
-        "total_leads": 6,
-        "red_green_pass": 6,
+        "total_leads": 7,
+        "red_green_pass": 7,
         "failed_or_unresolved": 0,
         "independent_human_review_complete": 0,
         "adjudication_complete": 0,
