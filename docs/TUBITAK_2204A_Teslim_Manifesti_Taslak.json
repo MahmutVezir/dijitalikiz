@@ -1,0 +1,88 @@
+{
+  "manifest_type": "tubitak_2204a_submission_manifest_draft",
+  "status": "draft_not_submission_ready",
+  "created_at_local": "2026-10-10",
+  "project": {
+    "title": "LLM Tabanlı Çapraz-Bileşen Hata Teşhisinde Yapılandırılmış Bağımlılık Temsilinin Etkisinin Deneysel İncelenmesi",
+    "main_field": "Yazılım",
+    "thematic_field": "Dijital İkiz",
+    "title_word_count_whitespace": 11,
+    "summary_word_count_whitespace": 186,
+    "summary_word_count_alt_tokenizer": 191,
+    "keywords": [
+      "Büyük dil modelleri",
+      "yazılım hata teşhisi",
+      "kök neden analizi",
+      "CCDG",
+      "Defects4J"
+    ],
+    "keyword_count": 5
+  },
+  "files": [
+    {
+      "role": "editable_report_draft",
+      "file_name": "TUBITAK_2204A_Rapor_Taslak_2026-2027.docx",
+      "size_bytes": 31019,
+      "sha256": "cc9a1f21a3f23bb9d7dc93c6e565bead4dffb296b4ad571d42bc3af1484d81cf",
+      "format": "DOCX"
+    },
+    {
+      "role": "reviewed_pdf_preview",
+      "file_name": "TUBITAK_2204A_Rapor_Taslak_2026-2027.pdf",
+      "size_bytes": 163278,
+      "sha256": "ec71c66078649040b37ead34f94b4b0d164a19632269c9e74dd5a00bd31d67f4",
+      "format": "PDF",
+      "pages": 9,
+      "page_size": "A4",
+      "encrypted": false
+    }
+  ],
+  "official_template": {
+    "file_name": "proje_yazma_sablonu_2026-2027.docx",
+    "source_url": "https://tubitak.gov.tr/sites/default/files/2026-09/proje_yazma_sablonu_2026-2027.docx",
+    "size_bytes": 25040,
+    "sha256": "195975a64cda8bc3175c6211be108f2b4293ee0893f061bcdfc3ac184989cc87",
+    "valid_docx_package": true
+  },
+  "research_evidence": {
+    "pilot_records": 40,
+    "confirmatory_records": 160,
+    "confirmatory_standard_passes": "0/80",
+    "confirmatory_ccdg_passes": "0/80",
+    "exact_two_sided_mcnemar_p": 1.0,
+    "interpretation": "Floor effect; does not establish equivalence or no CCDG effect. Historical context arms were not fully information-matched.",
+    "confirmatory_artifact_audit": "212/212 manifest files and 160/160 records passed independent integrity checks.",
+    "pilot_artifact_audit": "55/55 manifest files and 40/40 records passed independent integrity checks."
+  },
+  "verification_links": {
+    "latest_validation": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38044898606",
+    "pilot_archive_validation": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/37994308924",
+    "candidate_770_pref_fix_reproduction": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772",
+    "template_fetch_verification": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/37994665457"
+  },
+  "open_pre_submission_checks": [
+    "Student review of AI-use declaration and confirmation that all statements match actual use.",
+    "Human verification of bibliographic metadata and in-text citation/reference matching.",
+    "Final PDF export from Microsoft Word/Office or compatible environment with Times New Roman installed; the container PDF renderer uses Liberation Serif fallback.",
+    "Fill authentic student/school/advisor and required ethics/permission data in TYBS; do not invent details.",
+    "Review eligibility, attachments, PDF constraints and submit before the official deadline."
+  ],
+  "official_deadline": "2027-01-04 17:30 Europe/Istanbul",
+  "repository_metadata": {
+    "repository": "MahmutVezir/dijitalikiz",
+    "snapshot_commit_before_manifest_upload": "0a0129708d23999647d92c0a417ae6b6e1439aa1",
+    "report_source_markdown_commit": "44293250fbed36501c57b14fb9dc406cdd19f0c2",
+    "submission_audit_commit": "5bb34171b4b6e5ccf6cda7c89048e61ec83a9baa",
+    "validation_run_at_snapshot": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38044898606",
+    "validation_status": "success; repository tests and integrity checks passed, independent pilot/confirmatory artifact audits passed, source bundle/launcher build passed; model inference skipped"
+  },
+  "qa_status": {
+    "docx_render_pages": 9,
+    "pdf_render_pages": 9,
+    "pdf_a4": true,
+    "pdf_encrypted": false,
+    "all_9_pdf_pages_visually_reviewed": true,
+    "font_caveat": "DOCX is set to Times New Roman 12 pt. The Linux preview substitutes Liberation Serif because Times New Roman is unavailable in the renderer; final official PDF should be exported from a TNR-equipped Word/Office environment."
+  }
+}
+
