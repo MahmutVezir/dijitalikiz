@@ -209,14 +209,14 @@ Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K. R., & Cao, Y. (20
 
 ### Ek 1. Deney çalıştırmaları ve bütünlük kanıtı
 
-- **Pilot:** [GitHub Actions 37968099402](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37968099402); kaynak commit `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`; arşiv, `artifact_manifest.json` ile korunmuştur.
-- **Doğrulayıcı deney:** [GitHub Actions 37976682761](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37976682761); kaynak commit `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`; artifact ID `11640450681`; arşiv SHA-256 `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`.
-- Bağımsız bütünlük denetimleri pilotta 55/55 manifest dosyası ve 40/40 kaydı; doğrulayıcı arşivde 212/212 dosya ve 160/160 kaydı doğrulamıştır. Dosya boyutu ve SHA-256 uyuşmazlığı bulunmamıştır. Bu kontroller veri bütünlüğünü gösterir; teşhis doğruluğunu tek başına kanıtlamaz.
+- Pilot çalıştırma: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37968099402; kaynak commit `d50adaf9b6d0b017a5d30c9ebd9dd404988dbfb5`.
+- Doğrulayıcı deney: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37976682761; kaynak commit `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`; artifact ID `11640450681`; arşiv SHA-256 `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`.
+- Bağımsız bütünlük denetimleri pilotta 55/55 manifest dosyası ve 40/40 kaydı; doğrulayıcı arşivde 212/212 dosya ve 160/160 kaydı doğrulamıştır. Boyut veya SHA-256 uyuşmazlığı bulunmamıştır. Bu kontroller veri bütünlüğünü gösterir; teşhis doğruluğunu tek başına kanıtlamaz.
 
 ### Ek 2. Sonuç ve yöntem kayıtları
 
-Dondurulmuş sonuçlar `docs/CONFIRMATORY_RESULTS_2026-10-09.md` ve `data/benchmark/confirmatory_result_summary.json` dosyalarında; ölçüt geçmişi `docs/CONFIRMATORY_SCORING_PROTOCOL.md` ve `docs/SCORING_RUBRIC_CALIBRATION_PROTOCOL.md` dosyalarında tutulur. Tarihsel bağlam bilgi-paritesi kısıtı ve takip deneyinin tasarımı `docs/CONTEXT_INFORMATION_PARITY_AUDIT_2026-10-10.md`, `docs/NEXT_RESEARCH_PHASE_PLAN_2026-10-10.md` ve `docs/FOLLOWUP_SAMPLE_SIZE_SENSITIVITY_2026-10-10.md` içinde açıklanır. Dondurulmuş birincil sonuçlar değiştirilmemiştir; aynı çıktılarla yapılacak insan değerlendirmesi yalnızca keşfedici olarak raporlanmalıdır.
+Dondurulmuş sonuçlar `docs/CONFIRMATORY_RESULTS_2026-10-09.md` ve `data/benchmark/confirmatory_result_summary.json` dosyalarında; ölçüt geçmişi `docs/CONFIRMATORY_SCORING_PROTOCOL.md` ve `docs/SCORING_RUBRIC_CALIBRATION_PROTOCOL.md` dosyalarında tutulur. Tarihsel bağlam bilgi-paritesi kısıtı ve takip deneyinin tasarımı `docs/CONTEXT_INFORMATION_PARITY_AUDIT_2026-10-10.md`, `docs/NEXT_RESEARCH_PHASE_PLAN_2026-10-10.md` ve `docs/FOLLOWUP_SAMPLE_SIZE_SENSITIVITY_2026-10-10.md` içinde açıklanır. Dondurulmuş sonuçlar değiştirilmemiştir; aynı çıktılarla yapılacak insan değerlendirmesi yalnızca keşfedici olarak raporlanmalıdır.
 
 ### Ek 3. Aday vaka için bağımsız düzeltme kanıtı
 
-Apache Commons Compress #770 için [bağımsız regresyon tekrarı](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772), 20 MiB PAX başlığının düzeltme öncesi sürümde beklenen biçimde hata vermediğini ve aynı testin sabit düzeltme revizyonunda bellek sınırını doğruladığını göstermiştir. Adayın kaynak kaydı ve geçici CCDG taslağı proje deposunda tutulur; bu aday dondurulmuş 16 vakalık doğrulayıcı deney kümesine eklenmemiştir.
+Apache Commons Compress #770 kaynak PR: https://github.com/apache/commons-compress/pull/770; sabit düzeltme commit'i `bab5629f6b3cea44cf0622cdd92c8cefcfbf360a`. Bağımsız regresyon tekrarı: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772. Aynı test, düzeltme öncesi sürümde beklenen biçimde başarısız ve sabit sürümde başarılı olmuştur. Adayın kaynak kaydı ve geçici CCDG taslağı proje deposunda tutulur; bu aday dondurulmuş 16 vakalık doğrulayıcı deney kümesine eklenmemiştir.
