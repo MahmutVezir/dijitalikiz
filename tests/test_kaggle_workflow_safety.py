@@ -27,6 +27,7 @@ def test_kaggle_pilot_is_manual_or_scoped_trigger_and_opt_in():
     assert "if: github.ref == 'refs/heads/main' && (" in confirmatory_job
     assert "!contains(github.event.head_commit.message, '[validate-only]')" in pilot_job
     assert "!contains(github.event.head_commit.message, '[confirmatory]')" in pilot_job
+    assert "contains(github.event.head_commit.message, '[pilot]')" in pilot_job
     assert "inputs.execute_inference == true && inputs.execute_confirmatory == false" in pilot_job
     assert "inputs.execute_confirmatory == true && inputs.execute_inference == false" in confirmatory_job
     assert "validate-only:" in workflow
