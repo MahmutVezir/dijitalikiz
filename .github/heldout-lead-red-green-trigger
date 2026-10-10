@@ -1,1 +1,1 @@
-[screening-only] Re-run red-green screen with Gradle support for Spring Framework candidate 2026-10-10
+[screening-only] Re-run red-green screen using isolated test diffs, not whole fixed-revision test files 2026-10-10
