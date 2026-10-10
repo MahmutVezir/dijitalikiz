@@ -1,0 +1,77 @@
+{
+  "case_id": "commons-compress-github-pr-770-tar-pax-header-memory-bound",
+  "source": "Apache Commons Compress GitHub Pull Request and source history",
+  "source_url": "https://github.com/apache/commons-compress/pull/770",
+  "publication_date": "2026-04-23",
+  "technology": "Apache Commons Compress / Java / TAR PAX extended-header parsing",
+  "error_description": "A TAR archive with an exceptionally large PAX extended header can cause excessive memory use while metadata is parsed. The affected behavior is reached through both streaming and file-based TAR reading.",
+  "i_base": [
+    "TarArchiveInputStream traverses TAR entries and handles PAX metadata records.",
+    "TarFile provides a separate file-based entry traversal path for TAR archives.",
+    "Both reader paths delegate special TAR record handling to the shared TarUtils helper.",
+    "The shared PAX parser receives the header's declared size and accumulates metadata fields into a map.",
+    "The reported defect concerns parsing exceptionally large PAX metadata without a default upper bound on the memory admitted for that header."
+  ],
+  "ccdg": [
+    {
+      "source": "TarArchiveInputStream.getNextEntry",
+      "target": "TarUtils.handleSpecialTarRecord",
+      "relation": "delegates_special_record_handling",
+      "details": "Streaming reader passes PAX record metadata into the common handler."
+    },
+    {
+      "source": "TarFile.getNextTarEntry",
+      "target": "TarUtils.handleSpecialTarRecord",
+      "relation": "delegates_special_record_handling",
+      "details": "File-based reader uses the same common handler for PAX records."
+    },
+    {
+      "source": "TarUtils.handleSpecialTarRecord",
+      "target": "TarUtils.parsePaxHeaders",
+      "relation": "invokes_shared_pax_parser",
+      "details": "Local and global PAX header branches call the shared parser with the declared header size."
+    },
+    {
+      "source": "TarUtils.parsePaxHeaders",
+      "target": "PAX metadata map",
+      "relation": "accumulates_parsed_metadata",
+      "details": "Key/value records are stored in the resulting metadata map; oversized header data can cause excessive memory consumption if not bounded."
+    }
+  ],
+  "ground_truth": {
+    "component": "TarUtils.parsePaxHeaders",
+    "entity": "PAX extended-header metadata",
+    "operation": "parsePaxHeaders(InputStream, Map, long, ...)",
+    "root_cause": "missing_pax_header_size_limit_before_parsing",
+    "required_relations": [
+      "TarArchiveInputStream",
+      "TarFile",
+      "TarUtils.handleSpecialTarRecord",
+      "TarUtils.parsePaxHeaders",
+      "PAX metadata"
+    ]
+  },
+  "split": "candidates",
+  "provenance": {
+    "source_system": "Apache Commons Compress GitHub",
+    "pull_request": 770,
+    "fix_commit": "bab5629f6b3cea44cf0622cdd92c8cefcfbf360a",
+    "fixed_revision_date": "2026-07-18",
+    "date_basis": "pull_request_creation_date_recorded_separately_from_fix_merge_date",
+    "regression_test": "PaxHeaderOomTest#testDefaultLimitRejectsOversizedPaxHeader",
+    "regression_test_status": "red_green_pass",
+    "case_status": "calibration_case_draft_not_eligible_for_experiment",
+    "reproduction_workflow": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772",
+    "pre_fix_revision": "829b5dd6ffe976c0a03231e65790a65af9f3a6ee",
+    "fixed_revision": "bab5629f6b3cea44cf0622cdd92c8cefcfbf360a",
+    "pre_fix_expected_observation": "The 20 MiB PAX header was not rejected; the regression test failed with 'Should have thrown MemoryLimitException'.",
+    "fixed_expected_observation": "The same regression test passed; MemoryLimitException was thrown for the oversized header.",
+    "ground_truth_adjudication_status": "pending_independent_review"
+  },
+  "software_twin_snapshot": {
+    "repository_url": "https://github.com/apache/commons-compress",
+    "snapshot_revision": "829b5dd6ffe976c0a03231e65790a65af9f3a6ee",
+    "regression_test": "PaxHeaderOomTest#testDefaultLimitRejectsOversizedPaxHeader",
+    "observed_failure_signal": "A 20 MiB PAX header was not rejected on the pinned pre-fix revision; the regression assertion failed because MemoryLimitException was not thrown."
+  }
+}
