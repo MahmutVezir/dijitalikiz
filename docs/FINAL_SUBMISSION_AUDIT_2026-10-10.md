@@ -16,7 +16,7 @@ Bu denetim, 2026–2027 (58. yarışma) dönemi için TÜBİTAK'ın güncel 2204
 - Özet: boşluk temelli sayımda 186 kelime; alternatif sözcük ayırıcısıyla 191. Her iki sayım da 150–250 kelime sınırı içinde.
 - Anahtar kelimeler: 5.
 - Kaynakça: 11 kaynak; bibliyografik doğruluk ve APA uyumu son insan denetimi bekliyor.
-- Rapor taslağı: `docs/TUBITAK_REPORT_DRAFT.md`
+- Rapor kaynağı (APA atıflı Markdown): `docs/TUBITAK_REPORT_DRAFT.md`\n- Resmî 2026–2027 şablonu başarıyla indirildi ve paketi doğrulandı: 25.040 bayt; SHA-256 `195975a64cda8bc3175c6211be108f2b4293ee0893f061bcdfc3ac184989cc87`.\n- Şablona göre biçimlendirilmiş rapor taslağı: 10 sayfa, Times New Roman 12 punto, 2,5 cm kenar boşlukları, tek satır aralığı, APA yazar-yıl atıfları ve kaynakça; özet 186 kelime, başlık 11 kelime, anahtar kelime 5. Her ek kendi sayfasından başlar. Word ve PDF çıktıları yerel kalite denetiminden geçirilmiştir.
 - Dondurulmuş sonuç kaydı: `docs/CONFIRMATORY_RESULTS_2026-10-09.md`
 - ÜYZ kullanım beyanı taslağı: `docs/AI_USAGE_DISCLOSURE_DRAFT.md`
 - Güncel aday taraması ve bağımsız düzeltme tekrarı: `docs/CANDIDATE_SCREENING_2026-10-10.md`; Commons Compress #770 pre-fix/post-fix reproducer: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772
