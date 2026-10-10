@@ -1,1 +1,1 @@
-[validate-only] Run research-calibration gates on mainline-rebased branch; inference disabled
+[validate-only] Validate current-mainline scoring calibration gates and frozen artifact integrity 2026-10-10T13:04Z
