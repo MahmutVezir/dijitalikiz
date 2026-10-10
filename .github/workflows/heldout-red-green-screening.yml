@@ -19,18 +19,21 @@ jobs:
       matrix:
         include:
           - case_id: lang-1800-era-calendar
+            pr_number: 1800
             repo: apache/commons-lang
             pre_fix: 6e8ced140e457a1622c8dd031cfa826d962a95ad
             fix: c7f1a6d27707e8cd8cbed94f83e0c58d2c480614
             tests: FastDateFormatTest#testEraRoundTripNonGregorianCalendar,FastDatePrinterTest#testEraMixedCalendarTypes
             test_files: src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java
           - case_id: lang-1807-wildcard-bounds
+            pr_number: 1807
             repo: apache/commons-lang
             pre_fix: 29624cdb50ecd794207d561345b2fc9ca3a9d326
             fix: 43154e016ae213a0da5b727cd1aa18e6e0c56adb
             tests: TypeUtilsTest#testWildcardTypeImplicitUpperBound,TypeUtilsTest#testUnboundedWildcardType
             test_files: src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java
           - case_id: collections-728-nextkey
+            pr_number: 728
             repo: apache/commons-collections
             pre_fix: 974e910d63a95cf1f80933d474bcf73eb2c8bba4
             fix: 04b30be69f4355f218d587703bc20b1a591c3e3c
@@ -38,6 +41,7 @@ jobs:
             test_files: src/test/java/org/apache/commons/collections4/bidimap/DualTreeBidiMapTest.java src/test/java/org/apache/commons/collections4/map/FixedSizeSortedMapTest.java src/test/java/org/apache/commons/collections4/map/UnmodifiableSortedMapTest.java
 
     env:
+      PR_NUMBER: ${{ matrix.pr_number }}
       UPSTREAM_REPO: ${{ matrix.repo }}
       PRE_FIX_SHA: ${{ matrix.pre_fix }}
       FIX_SHA: ${{ matrix.fix }}
@@ -63,6 +67,7 @@ jobs:
           git clone --quiet --filter=blob:none "https://github.com/$UPSTREAM_REPO.git" "$SRC"
           git -C "$SRC" fetch --quiet --no-tags origin "$PRE_FIX_SHA"
           git -C "$SRC" fetch --quiet --no-tags origin "$FIX_SHA"
+          git -C "$SRC" fetch --quiet --no-tags origin "+refs/pull/$PR_NUMBER/head:refs/remotes/origin/pr/$PR_NUMBER"
           git -C "$SRC" checkout --detach "$PRE_FIX_SHA"
           mkdir -p "$GITHUB_WORKSPACE/heldout-red-green/$CASE_ID"
           {
@@ -82,7 +87,7 @@ jobs:
           SRC="$RUNNER_TEMP/upstream"
           for test_file in $TEST_FILES; do
             mkdir -p "$SRC/$(dirname "$test_file")"
-            git -C "$SRC" show "$FIX_SHA:$test_file" > "$SRC/$test_file"
+            git -C "$SRC" show "refs/remotes/origin/pr/$PR_NUMBER:$test_file" > "$SRC/$test_file"
           done
 
       - name: Require regression tests to fail on pre-fix revision
