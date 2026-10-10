@@ -298,7 +298,11 @@ def build_body(source, doc, schedule_xml):
         value = " ".join(part.strip() for part in para_lines).strip()
         if value:
             p = doc.add_paragraph()
-            p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+            p.alignment = (
+                WD_ALIGN_PARAGRAPH.LEFT
+                if current_section in {"Kaynaklar", "Ekler"}
+                else WD_ALIGN_PARAGRAPH.JUSTIFY
+            )
             p.paragraph_format.line_spacing = 1.0
             p.paragraph_format.space_after = Pt(5)
             p.paragraph_format.keep_together = True
