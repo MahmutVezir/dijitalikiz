@@ -92,7 +92,7 @@ jobs:
             module: buffer
             pre_fix: 006a2f1d92db733d10112de251600da7b6f8ec51
             fix: d84dc6b1c290de2046bd0df5ba893e7f337cb0e6
-            tests: AbstractByteBufTest#testRetainedSliceOfNonRetainedDerivedBufferCoversTheReadableBytes
+            tests: PooledBigEndianHeapByteBufTest#testRetainedSliceOfNonRetainedDerivedBufferCoversTheReadableBytes
             test_files: buffer/src/test/java/io/netty/buffer/AbstractByteBufTest.java
 
     env:
