@@ -1,6 +1,10 @@
 name: Held-out Lead Red-Green Screening
 
 on:
+  pull_request:
+    paths:
+      - ".github/heldout-lead-red-green-trigger"
+      - ".github/workflows/heldout-lead-red-green.yml"
   push:
     paths:
       - ".github/heldout-lead-red-green-trigger"
