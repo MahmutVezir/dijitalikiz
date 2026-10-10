@@ -55,6 +55,8 @@ def build_packets(
             "ground_truth_root_cause",
             "ground_truth_rationale",
             "response_text",
+            "response_origin",
+            "generation_metadata",
             "challenge_class",
             "legacy_matcher_accepts",
             "source_case_id",
@@ -69,6 +71,16 @@ def build_packets(
             raise ValueError(f"{example_id}: response_text must be non-empty.")
         if not isinstance(row["evidence_urls"], list) or not row["evidence_urls"]:
             raise ValueError(f"{example_id}: at least one source evidence URL is required.")
+        origin = row["response_origin"]
+        if origin not in {"independent_model_output", "human_authored_control", "synthetic_adversarial_control"}:
+            raise ValueError(f"{example_id}: unsupported response_origin: {origin!r}")
+        metadata = row["generation_metadata"]
+        if origin == "independent_model_output":
+            required_metadata = {"model_id", "model_revision", "seed", "prompt_sha256", "raw_output_sha256"}
+            if not isinstance(metadata, dict) or not required_metadata.issubset(metadata):
+                raise ValueError(f"{example_id}: independent model outputs require complete generation_metadata")
+        elif metadata is not None:
+            raise ValueError(f"{example_id}: human-authored/synthetic controls must set generation_metadata to null")
 
         # The reviewer receives source evidence and the response, but not the
         # case identifier, gold label, challenge class, or matcher decision.
@@ -89,6 +101,7 @@ def build_packets(
             "review_id": review_id,
             "example_id": example_id,
             "source_case_id": row["source_case_id"],
+            "response_origin": row["response_origin"],
             "ground_truth_root_cause": row["ground_truth_root_cause"],
             "ground_truth_rationale": row["ground_truth_rationale"],
             "challenge_class": row["challenge_class"],
