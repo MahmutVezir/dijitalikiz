@@ -58,13 +58,20 @@
     "fix_commit": "bab5629f6b3cea44cf0622cdd92c8cefcfbf360a",
     "fixed_revision_date": "2026-07-18",
     "date_basis": "pull_request_creation_date_recorded_separately_from_fix_merge_date",
-    "regression_test": "src/test/java/org/apache/commons/compress/archivers/tar/PaxHeaderOomTest.java",
-    "regression_test_status": "independently_reproduced_pre_fix_failure_and_fixed_revision_pass",
-    "case_status": "candidate_case_draft_not_eligible_for_experiment",
+    "regression_test": "PaxHeaderOomTest#testDefaultLimitRejectsOversizedPaxHeader",
+    "regression_test_status": "red_green_pass",
+    "case_status": "calibration_case_draft_not_eligible_for_experiment",
     "reproduction_workflow": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772",
     "pre_fix_revision": "829b5dd6ffe976c0a03231e65790a65af9f3a6ee",
     "fixed_revision": "bab5629f6b3cea44cf0622cdd92c8cefcfbf360a",
     "pre_fix_expected_observation": "The 20 MiB PAX header was not rejected; the regression test failed with 'Should have thrown MemoryLimitException'.",
-    "fixed_expected_observation": "The same regression test passed; MemoryLimitException was thrown for the oversized header."
+    "fixed_expected_observation": "The same regression test passed; MemoryLimitException was thrown for the oversized header.",
+    "ground_truth_adjudication_status": "pending_independent_review"
+  },
+  "software_twin_snapshot": {
+    "repository_url": "https://github.com/apache/commons-compress",
+    "snapshot_revision": "829b5dd6ffe976c0a03231e65790a65af9f3a6ee",
+    "regression_test": "PaxHeaderOomTest#testDefaultLimitRejectsOversizedPaxHeader",
+    "observed_failure_signal": "A 20 MiB PAX header was not rejected on the pinned pre-fix revision; the regression assertion failed because MemoryLimitException was not thrown."
   }
 }
