@@ -142,6 +142,19 @@ def add_data_table(doc, rows):
             cell_borders(cell)
             if ri == 0:
                 cell_shading(cell)
+
+    # Keep rows intact and repeat the column header on continuation pages.
+    if len(table.rows) > 1:
+        tr_pr = table.rows[0]._tr.get_or_add_trPr()
+        if not tr_pr.xpath("./w:tblHeader"):
+            header_flag = OxmlElement("w:tblHeader")
+            header_flag.set(qn("w:val"), "true")
+            tr_pr.append(header_flag)
+    for row in table.rows:
+        tr_pr = row._tr.get_or_add_trPr()
+        if not tr_pr.xpath("./w:cantSplit"):
+            tr_pr.append(OxmlElement("w:cantSplit"))
+
     p = doc.add_paragraph()
     p.paragraph_format.space_after = Pt(2)
 
