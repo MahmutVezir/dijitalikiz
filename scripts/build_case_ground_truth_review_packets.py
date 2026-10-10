@@ -45,21 +45,28 @@ def _pack_candidate(candidate: dict[str, Any], record: dict[str, Any], review_id
     if not isinstance(snapshot, dict):
         raise ValueError(f"{candidate.get('case_id')}: missing software_twin_snapshot")
 
-    # Intentionally exclude the provisional root cause, component labels,
-    # I_base, CCDG edges, graph suitability, and case-selection rationale.
-    # The reviewer must inspect source and revisions without being primed by
-    # the current annotations.
+    repository_url = str(candidate.get("repository_url", "")).rstrip("/")
+    pre_fix_revision = candidate.get("pre_fix_revision")
+    fixed_revision = candidate.get("fix_revision")
+
+    # Reduce priming: do not expose the PR body/title, reproduction log, or
+    # observed-failure synopsis before initial source annotations are locked.
+    # Provisional labels, I_base, CCDG edges, graph suitability, and selection
+    # rationale stay in the private key, never in the reviewer packet.
     return {
         "review_id": review_id,
-        "source_url": candidate.get("source_url"),
-        "repository_url": candidate.get("repository_url"),
-        "pre_fix_revision": candidate.get("pre_fix_revision"),
-        "fixed_revision": candidate.get("fix_revision"),
+        "repository_url": repository_url,
+        "pre_fix_revision": pre_fix_revision,
+        "fixed_revision": fixed_revision,
+        "source_tree_urls": {
+            "pre_fix": f"{repository_url}/tree/{pre_fix_revision}",
+            "fixed": f"{repository_url}/tree/{fixed_revision}",
+        },
         "regression_test_targets": candidate.get("regression_test_targets"),
-        "reproduction_evidence_url": candidate.get("reproduction_evidence_url"),
-        "observed_failure_signal": snapshot.get("observed_failure_signal"),
         "review_task": {
             "inspect_both_pinned_revisions": True,
+            "inspect_source_and_regression_tests_before_issue_discussion": True,
+            "do_not_open_public_pr_body_or_reproduction_logs_before_initial_review_locked": True,
             "identify_actual_root_cause_from_source": True,
             "identify_affected_and_interacting_components": True,
             "draw_only_evidence_supported_dependency_edges": True,
@@ -188,7 +195,7 @@ def build_packets(
         "`dependency_edges` (source, relation, target, evidence_urls), `is_single_coherent_defect` (boolean), "
         "`ccdg_suitability` (strong, moderate, weak veya ineligible), `contamination_risk` (low, medium, high veya unknown), "
         "`evidence_urls` (mümkünse en az iki sürüme bağlı bağlantı) ve `limitations`.\n\n"
-        "PR başlığından veya hata sinyalinden teşhisi kopyalamayın. Her iki sabit sürümdeki davranışı doğrulayın ve kesin kaynak/test konumlarına bağlantı verin. "
+        "İlk kararınızı kilitlemeden public PR açıklamasını/tartışmasını veya önceden toplanmış hata günlüğünü açmayın; paket bu bağlantıları kasıtlı olarak içermez. Önce yalnızca sabitlenmiş iki sürümdeki kaynak kodu ve regresyon testlerini inceleyin. PR başlığından veya hata sinyalinden teşhisi kopyalamayın. Her iki sabit sürümdeki davranışı doğrulayın ve kesin kaynak/test konumlarına bağlantı verin. "
         "Kanıt yetersizse ya da kayıt birden fazla paralel mekanizmayı birleştiriyorsa `revise` veya `exclude` seçip gerekçesini yazın. "
         "İki değerlendirici de yanıtlarını bitirip kilitlemeden dosyaları paylaşmayın. Koordinatör özel anahtarı ancak iki yanıt kilitlendikten sonra kullanabilir.\n",
         encoding="utf-8",
