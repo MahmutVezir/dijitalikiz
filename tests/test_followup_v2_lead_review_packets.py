@@ -62,6 +62,7 @@ def test_builder_creates_blinded_packets_and_private_unblinding_key(tmp_path):
     assert result["model_inference_authorized"] is False
     assert len(packet_a) == len(packet_b) == 4
     assert {row["review_id"] for row in packet_a} == {row["review_id"] for row in packet_b}
+    assert [row["review_id"] for row in packet_a] != [row["review_id"] for row in packet_b]
     assert all("private-lead-" not in serialized_packets for _ in [0])
     assert "pull/1" not in serialized_packets
     assert "private provisional label" not in serialized_packets
