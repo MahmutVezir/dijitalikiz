@@ -55,8 +55,10 @@
     "pull_request": 1783,
     "fix_commit": "d8f4116d4ba03ed32b104b3af891de7a67f2ce97",
     "pre_fix_revision": "80ac358a4c9bcd9cb03eb50bdd33de9755a109a5",
-    "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
-    "case_status": "calibration_case_draft_not_eligible"
+    "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
+    "case_status": "calibration_case_draft_not_eligible_for_experiment",
+    "ground_truth_adjudication_status": "pending_independent_review",
+    "role": "scoring_calibration_candidate_only"
   },
   "software_twin_snapshot": {
     "repository_url": "https://github.com/apache/commons-lang",
