@@ -100,7 +100,7 @@ Birincil karşılaştırma, aynı yazılım vakası için Standard ve CCDG koşu
 | İşin adı | Nisan | Mayıs | Haziran | Temmuz | Ağustos | Eylül | Ekim | Kasım | Aralık | Ocak |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Literatür ve hipotezler |  |  |  |  |  | X | X |  |  |  |
-| Aday vakalar ve CCDG doğrulaması |  |  |  |  |  | X | X | P |  |  |
+| Vaka/CCDG |  |  |  |  |  | X | X | P |  |  |
 | Deney ve istatistiksel analiz |  |  |  |  |  |  | X |  |  |  |
 | Rapor ve başvuru paketi |  |  |  |  |  |  | X | P | P | P |
 | Puanlama kalibrasyonu ve yeni tasarım |  |  |  |  |  |  |  | P | P | P |
