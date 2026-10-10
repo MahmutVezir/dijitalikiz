@@ -116,7 +116,7 @@ jobs:
             cat "$LOG"
             exit 1
           fi
-          python - "$SRC/target/surefire-reports" "$TEST_TARGETS" <<'PY'
+          python - "$SRC" "$TEST_TARGETS" <<'PY'
           import json, sys
           from pathlib import Path
           from xml.etree import ElementTree as ET
@@ -144,7 +144,6 @@ jobs:
               result.append({"test": target, "pre_fix_result": "failed_as_expected", "failure_count": len(failed)})
           print(json.dumps({"status": "red_confirmed", "tests": result}, indent=2))
           PY
-          cp "$LOG" "$GITHUB_WORKSPACE/calibration-red-green/$CASE_ID/pre-fix-maven.log"
 
       - name: Run the same tests on fixed revision
         shell: bash
@@ -158,7 +157,7 @@ jobs:
             echo "ERROR: regression tests did not pass on fixed revision."
             exit 1
           }
-          python - "$SRC/target/surefire-reports" "$TEST_TARGETS" <<'PY'
+          python - "$SRC" "$TEST_TARGETS" <<'PY'
           import json, sys
           from pathlib import Path
           from xml.etree import ElementTree as ET
@@ -187,7 +186,6 @@ jobs:
               result.append({"test": target, "fixed_result": "passed"})
           print(json.dumps({"status": "green_confirmed", "tests": result}, indent=2))
           PY
-          cp "$LOG" "$GITHUB_WORKSPACE/calibration-red-green/$CASE_ID/fixed-maven.log"
           {
             echo "status=red_green_pass"
             echo "pre_fix_sha=$PRE_FIX_SHA"
