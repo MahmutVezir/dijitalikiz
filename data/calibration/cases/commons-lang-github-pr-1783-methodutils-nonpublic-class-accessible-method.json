@@ -57,5 +57,11 @@
     "pre_fix_revision": "80ac358a4c9bcd9cb03eb50bdd33de9755a109a5",
     "reproduction_status": "pending_independent_pre_fix_failure_and_fixed_revision_pass",
     "case_status": "calibration_case_draft_not_eligible"
+  },
+  "software_twin_snapshot": {
+    "repository_url": "https://github.com/apache/commons-lang",
+    "snapshot_revision": "80ac358a4c9bcd9cb03eb50bdd33de9755a109a5",
+    "regression_test": "MethodUtilsTest#testInvokeMethodOnNonPublicClass",
+    "observed_failure_signal": "Invoking a public interface method through a non-public implementation raised IllegalAccessException on the pinned pre-fix revision."
   }
 }
