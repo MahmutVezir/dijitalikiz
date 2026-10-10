@@ -66,7 +66,9 @@
     "fixed_revision": "bab5629f6b3cea44cf0622cdd92c8cefcfbf360a",
     "pre_fix_expected_observation": "The 20 MiB PAX header was not rejected; the regression test failed with 'Should have thrown MemoryLimitException'.",
     "fixed_expected_observation": "The same regression test passed; MemoryLimitException was thrown for the oversized header.",
-    "ground_truth_adjudication_status": "pending_independent_review"
+    "ground_truth_adjudication_status": "pending_independent_review",
+    "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
+    "role": "scoring_calibration_candidate_only"
   },
   "software_twin_snapshot": {
     "repository_url": "https://github.com/apache/commons-compress",
