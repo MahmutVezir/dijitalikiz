@@ -72,7 +72,6 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
-          cache: maven
 
       - name: Clone upstream and pin both revisions
         shell: bash
