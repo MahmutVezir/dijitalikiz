@@ -58,3 +58,10 @@ The manifest at `data/followup_v2/protocol_manifest.json` must remain `status: d
 6. The student researcher approves the freeze and the manifest captures the final source commit and SHA-256 fingerprints.
 
 Do not change booleans to bypass missing real artifacts. The validator must verify evidence files and hashes, not merely trust status strings. This draft introduces no model inference and does not authorize either the old Kaggle runner or a new v2 runner.
+
+## Prospective sample-size sensitivity audit (2026-10-10)
+
+A separate design audit shows the proposed 61-case target has 80% power only under a relatively strong assumed imbalance in paired discordances (B-only pass 0.05; C-only pass 0.25). Under illustrative alternatives (0.05 vs 0.20) the power at 61 cases is 0.5904 and 92 cases are needed to reach 80%; under (0.05 vs 0.15) power at 61 cases is 0.3142 and 168 cases are needed. See [SAMPLE_SIZE_SENSITIVITY_AUDIT_2026-10-10.md](SAMPLE_SIZE_SENSITIVITY_AUDIT_2026-10-10.md).
+
+These scenarios are assumptions, not model-derived estimates. Before the protocol is frozen, a qualified reviewer must assess the power calculation and justify the effect-size assumption; the sensitivity range must be declared before v2 confirmatory outputs exist. Do not reduce or increase the case count after observing v2 outcomes. If a defensible larger case pool is infeasible, report the expected precision honestly rather than adding weak or duplicated cases.
+
