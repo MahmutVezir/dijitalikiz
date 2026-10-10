@@ -87,6 +87,13 @@ jobs:
             fix: aa9cd983faeea37317c172fffd8fa2ccbe8177a1
             tests: AnyGetterTest#objectNodeAnyGetterHonorsIgnoreProperties,AnyGetterTest#objectNodeAnyGetterHonorsIncludeProperties
             test_files: src/test/java/tools/jackson/databind/ser/AnyGetterTest.java
+          - case_id: spring-37285-part-spill-disk-limit
+            repo: spring-projects/spring-framework
+            module: spring-web
+            pre_fix: bb7ea37f1b3d47a4309bfacd7511cd1c6f4c2297
+            fix: 94afeedad60972dbe79325a0e8aed2824c57f922
+            tests: DefaultPartHttpMessageReaderTests#exceedDiskUsageOnSpillOver
+            test_files: spring-web/src/test/java/org/springframework/http/codec/multipart/DefaultPartHttpMessageReaderTests.java
           - case_id: netty-17759-pooled-derived-retained-slice
             repo: netty/netty
             module: buffer
