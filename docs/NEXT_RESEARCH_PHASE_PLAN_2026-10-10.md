@@ -35,7 +35,8 @@ Preserve the original contexts, manifest, scoring rubric, outputs, report and st
 3. Prefer a diverse sample across projects and defect families; do not fill the sample only with cases from one repository.
 4. Review exposure risk conservatively. Older public Defects4J cases may have appeared in model training data; this is a risk, not proof of model exposure. Newly public cases may reduce but cannot eliminate contamination risk.
 5. Count distinct defects as the statistical unit. Five generations for one defect are repeated measurements, not five independent cases.
-6. Keep a new held-out confirmatory sample separate from calibration, prompt development, and exploratory review.\n7. Initial candidate expansion added three recent public fixes and one structured case draft. Commons Compress #770 passed an independent regression test on the exact pre-fix and fixed commits in [run 37993954772](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772). This verifies the tested failure/fix behavior but does not yet satisfy all dataset eligibility criteria; the candidate remains outside the frozen benchmark.
+6. Keep a new held-out confirmatory sample separate from calibration, prompt development, and exploratory review.
+7. Initial candidate expansion added three recent public fixes and one structured case draft. Commons Compress #770 passed an independent regression test on the exact pre-fix and fixed commits in [run 37993954772](https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772). This verifies the tested failure/fix behavior but does not yet satisfy all dataset eligibility criteria; the candidate remains outside the frozen benchmark.
 
 ## 5. Gate C — Use an information-matched three-condition design
 
@@ -90,7 +91,13 @@ If the available independent case pool cannot support a justified sample, report
 - [x] Add synthetic matcher behavior tests and document their non-empirical status.
 - [x] Implement separate v2 renderers and parity checks.
 - [x] Create a masked exploratory review packet and reviewer guide.
-- [x] Add independent calibration schema, blinded-review packet builder, fail-closed completeness/reliability validator, provenance controls, and synthetic unit tests; validation-only run #121 passed 133 tests and both historical artifact audits. This validates the tooling only, not the scoring instrument; real calibration examples and human reviews remain outstanding.\n- [x] Audit the archived pilot artifact: 55/55 manifest files and 40/40 run records; zero file hash/size mismatches. Frozen primary score remains 0/20 in each condition.\n- [x] Add three source-reviewed candidate records and a structured PAX-header case draft; independently reproduce #770 pre-fix failure and fixed-revision pass.
+- [x] Add independent calibration schema, blinded-review packet builder, fail-closed completeness/reliability validator, provenance controls, and synthetic unit tests; validation-only run #121 passed 133 tests and both historical artifact audits. This validates the tooling only, not the scoring instrument; real calibration examples and human reviews remain outstanding.
+- [x] Audit the archived pilot artifact: 55/55 manifest files and 40/40 run records; zero file hash/size mismatches. Frozen primary score remains 0/20 in each condition.
+- [x] Add three source-reviewed candidate records and a structured PAX-header case draft; independently reproduce #770 pre-fix failure and fixed-revision pass.
+
+- [x] Add an isolated upstream red/green reproduction workflow for six candidate defects. It requires each pinned regression test to fail on the pre-fix revision and pass on the fixed revision; workflow corrections are in progress after the first run exposed CI/report-path issues. No LLM inference is triggered by this workflow.
+- [x] Audit the current official 2027 guide and linked evaluation forms; document the material Digital Twin thematic-fit risk and required evidence/decision before submitting: `docs/TUBITAK_2027_THEME_FIT_AUDIT_2026-10-10.md`.
+
 - [ ] Complete an independent human review of the packet; report disagreement and mark the results exploratory.
 - [ ] Create and adjudicate a source-grounded scoring calibration set.
 - [ ] Expand and independently screen the candidate pool.
