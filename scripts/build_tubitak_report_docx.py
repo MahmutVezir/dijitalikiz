@@ -205,7 +205,8 @@ def setup(doc):
         section.right_margin = Cm(2.5)
         section.header_distance = Cm(1.25)
         section.footer_distance = Cm(1.25)
-        page_number(section.footer.paragraphs[0])
+        # Preserve the official template's embedded PAGE field. Inserting another
+        # field into the secondary paragraph creates duplicate page numbers.
     normal = doc.styles["Normal"]
     normal.font.name = FONT
     normal.font.size = Pt(BODY_PT)
@@ -400,6 +401,10 @@ def main():
         raise ValueError("AI-use declaration heading is missing.")
     if len(check.sections) != 1 or len(check.tables) != 4:
         raise ValueError(f"Unexpected document structure: sections={len(check.sections)}, tables={len(check.tables)}")
+    footer_fields = check.sections[0].footer._element.xpath(".//w:instrText")
+    page_fields = [item for item in footer_fields if "PAGE" in (item.text or "").upper()]
+    if len(page_fields) != 1:
+        raise ValueError(f"Expected one official page-number field, found {len(page_fields)}.")
     sec = check.sections[0]
     for value in (sec.top_margin, sec.bottom_margin, sec.left_margin, sec.right_margin):
         if abs(value.cm - 2.5) > 0.02:
