@@ -41,6 +41,24 @@ jobs:
             fix: 04b30be69f4355f218d587703bc20b1a591c3e3c
             tests: DualTreeBidiMapTest#testNextKeyAbsentKey,FixedSizeSortedMapTest#testNextKey,UnmodifiableSortedMapTest#testNextKey
             test_files: src/test/java/org/apache/commons/collections4/bidimap/DualTreeBidiMapTest.java src/test/java/org/apache/commons/collections4/map/FixedSizeSortedMapTest.java src/test/java/org/apache/commons/collections4/map/UnmodifiableSortedMapTest.java
+          - case_id: net-404-ftps-data-hostname-verifier
+            repo: apache/commons-net
+            pre_fix: faa4edd7e287a3db465a32efd9c2d5faa15757fe
+            fix: a79729464f6e69b773171ff30e3d483cab7afd70
+            tests: FTPSClientTest#testHostnameVerifierUsedForDataConnection
+            test_files: src/test/java/org/apache/commons/net/ftp/AbstractFtpsTest.java src/test/java/org/apache/commons/net/ftp/FTPSClientTest.java
+          - case_id: net-403-ftp-parser-type-before-instantiation
+            repo: apache/commons-net
+            pre_fix: a3d19751891edb9f7cb8c11bc344eaf1683b2b32
+            fix: 6e38749760c0366aac1637c7dc15e4ccf76329c9
+            tests: DefaultFTPFileEntryParserFactoryTest#testNonParserClassIsNotInstantiated
+            test_files: src/test/java/org/apache/commons/net/ftp/parser/DefaultFTPFileEntryParserFactoryTest.java
+          - case_id: text-768-stringmatcher-charsequence-window
+            repo: apache/commons-text
+            pre_fix: a6cbba814422a06a0366468b2346f52aaacf8f3d
+            fix: 81de4f7a7c7d3b13d89edd72d4c4b92aa33e6c81
+            tests: StringMatcherTest#testIsMatchCharSequencePassesBufferStartThrough,StringMatcherTest#testIsMatchCharSequenceStartDelegatesThroughTheCorrectedOverload,StringMatcherTest#testIsMatchOverloadsAgreeOnTheSameWindow,StringMatcherTest#testStringSubstitutorHandsACustomMatcherTheRealBufferStart
+            test_files: src/test/java/org/apache/commons/text/matcher/StringMatcherTest.java
 
     env:
       UPSTREAM_REPO: ${{ matrix.repo }}
