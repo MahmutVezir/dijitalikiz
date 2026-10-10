@@ -57,3 +57,22 @@ Private/blinded material is ignored by Git in `.gitignore`. Never commit the pri
 ## Current status
 
 The repository contains the schema and fail-closed tooling, but it intentionally does not contain real calibration examples, reviewer annotations, adjudication, or a private key. The gate is therefore **blocked** until real source-grounded examples are assembled and independently reviewed. Tooling and synthetic software tests must not be misrepresented as completed human validation.
+
+
+## Independent ground-truth / CCDG review before case-pool freeze
+
+The scoring-case manifest has a separate `review_gate`. The current status is `pending`; there is no adjudication artifact and no model inference is authorized. Do not manually switch the flags to make the gate pass.
+
+Build two separately ordered review packets locally:
+
+```bash
+python scripts/build_case_ground_truth_review_packets.py \
+  --manifest data/calibration/case_pool_manifest.json \
+  --output-dir /tmp/dijitalikiz-case-ground-truth-review
+```
+
+The two packets intentionally omit the provisional root-cause label, component labels, `I_base`, and CCDG edges. Reviewers receive only the source PR, repository, pre-fix/fixed revisions, regression-test targets, reproduction evidence, and observed failure signal. They must inspect the exact source/test revisions and independently identify the mechanism and dependency relations.
+
+Keep `review_key_private.json`, both reviewer packets, and the two raw review responses outside Git and do not give the private key to either reviewer. Once both reviews are complete, compare decisions against source evidence and document the resolution. The review audit must comply with `schemas/case_ground_truth_review_audit.schema.json`, include hashes of the exact packets/responses, distinct reviewer IDs, an independent adjudicator, exact revisions, evidence URLs, and case-level decisions.
+
+Only after genuine review and adjudication are complete may a frozen `data/calibration/case_ground_truth_review_audit.json` be committed and its SHA-256 recorded in `review_gate.audit_sha256`. The case-pool validator checks this audit file and its schema; setting candidate booleans alone is insufficient. Never fabricate reviewer identities, labels, response hashes, or adjudication timestamps.
