@@ -407,6 +407,37 @@ def audit_calibration(
                 },
             }
 
+    if metrics is not None:
+        readiness = manifest.get("readiness_policy", {})
+        minimum_agreement = readiness.get("minimum_initial_reviewer_exact_agreement")
+        minimum_kappa = readiness.get("minimum_initial_reviewer_cohen_kappa")
+        if not isinstance(minimum_agreement, (int, float)) or not 0 <= minimum_agreement <= 1:
+            issues.append("invalid_minimum_initial_reviewer_exact_agreement")
+        elif metrics["initial_review_exact_agreement"] is None or metrics["initial_review_exact_agreement"] < minimum_agreement:
+            issues.append(
+                "initial_reviewer_exact_agreement_below_threshold: "
+                f"{metrics['initial_review_exact_agreement']} < {minimum_agreement}"
+            )
+        if not isinstance(minimum_kappa, (int, float)) or not 0 <= minimum_kappa <= 1:
+            issues.append("invalid_minimum_initial_reviewer_cohen_kappa")
+        elif metrics["initial_review_cohen_kappa"] is None or metrics["initial_review_cohen_kappa"] < minimum_kappa:
+            issues.append(
+                "initial_reviewer_cohen_kappa_below_threshold: "
+                f"{metrics['initial_review_cohen_kappa']} < {minimum_kappa}"
+            )
+        matcher = metrics["matcher_diagnostics"]
+        sensitivity = matcher["matcher_sensitivity"]
+        specificity = matcher["matcher_specificity"]
+        metrics["legacy_alias_matcher_decision"] = {
+            "sensitivity": sensitivity,
+            "specificity": specificity,
+            "meets_0_90_sensitivity_and_specificity_diagnostic_threshold": (
+                sensitivity is not None and specificity is not None
+                and sensitivity >= 0.90 and specificity >= 0.90
+            ),
+            "primary_endpoint_recommendation": "Use blinded source-grounded human adjudication for the next study; do not keep literal alias matching as the semantic primary endpoint solely because this finite calibration set scores well.",
+        }
+
     if manifest.get("status") != "adjudicated" or manifest.get("frozen") is not True:
         issues.append("manifest_not_frozen_after_adjudication")
     freeze_metadata = manifest.get("freeze_metadata", {})
