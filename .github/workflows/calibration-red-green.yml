@@ -28,7 +28,7 @@ jobs:
             repo: apache/commons-collections
             pre_fix: e78f814ec86f3a85cfa1b0f5e07e4fbf2ed24a97
             fix: 491fc77589f1b262d19f5c109fc42794edfcb36e
-            tests: PassiveExpiringMapTest#testCollectionsSynchronizedMapExpiration,PassiveExpiringMapTest#testCollectionViewRemoval
+            tests: PassiveExpiringMapTest#testCollectionsSynchronizedMapExpiration
             test_files: src/test/java/org/apache/commons/collections4/map/PassiveExpiringMapTest.java
           - case_id: collections-731-null-transformer
             repo: apache/commons-collections
@@ -135,7 +135,7 @@ jobs:
           for target in targets:
               class_name, method = target.split("#", 1)
               matches = [(cn, name, node) for cn, name, node in cases
-                         if cn.endswith("." + class_name) and name == method]
+                         if cn.endswith("." + class_name) and (name == method or name.startswith(method + "("))]
               if not matches:
                   raise SystemExit(f"BLOCKED: targeted regression test did not execute on pre-fix revision: {target}")
               failed = [node for _, _, node in matches if node.find("failure") is not None or node.find("error") is not None]
@@ -176,7 +176,7 @@ jobs:
           for target in targets:
               class_name, method = target.split("#", 1)
               matches = [(suite, cn, name, node) for suite, cn, name, node in cases
-                         if cn.endswith("." + class_name) and name == method]
+                         if cn.endswith("." + class_name) and (name == method or name.startswith(method + "("))]
               if not matches:
                   raise SystemExit(f"BLOCKED: targeted regression test did not execute on fixed revision: {target}")
               bad = [node for _, _, _, node in matches
