@@ -35,6 +35,7 @@ def prepare_root(tmp_path: Path):
     (root / "data/pilot/PROMPT_TEMPLATE.txt").write_text(task, encoding="utf-8")
     source_case_path = Path(__file__).resolve().parents[1] / "data/benchmark/cases/commons-math-defects4j-MATH-305.json"
     case = json.loads(source_case_path.read_text(encoding="utf-8"))
+    case["case_id"] = "test-case"
     case["split"] = "followup_v2_confirmatory"
     case["software_twin_snapshot"] = {
         "repository_url": "https://github.com/example/project",
