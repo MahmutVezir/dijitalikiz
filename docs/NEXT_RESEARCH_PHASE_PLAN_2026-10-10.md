@@ -152,7 +152,7 @@ Added a separate prospective v2 experiment plan so the flawed historical compari
 - `scripts/build_followup_v2_schedule.py` creates a balanced, pre-hashed case-condition-seed order from a completed held-out pool without executing the model.
 - `scripts/analyze_followup_v2.py` consumes only final human-adjudicated output labels, requires complete unique case-condition-seed coverage, computes the declared exact McNemar contrasts, adjusts the secondary tests with Holm, and estimates a paired case-level risk-difference interval by preregistered bootstrap.
 - `scripts/audit_followup_v2_tokenizer.py` is a no-generation prompt audit for shared context bytes, task/system prompt hashes, final chat-template rendered-input hashes, token-ID hashes and context-length budget. It must be executed after the selected held-out cases and runtime gate exist; no real token audit result is claimed yet.
-- Tests were added for protocol blocking, historic/calibration case overlap, schedule reproducibility, outcome coverage, McNemar/ Holm calculations, prompt hashing and context overflow. The current CI run must be green before these are treated as validated.
+- Tests were added for protocol blocking, historic/calibration case overlap, schedule reproducibility, outcome coverage, McNemar/Holm calculations, prompt hashing and context overflow. Validation-only run [#155](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38049849852) passed **158 tests**; historical pilot/confirmatory artifact audits and source-bundle/launcher checks also passed, and both inference jobs were skipped. The draft manifest remains intentionally blocked, with no held-out case IDs and no model inference authorization.
 
 ### Prospective sample-size assumption
 
