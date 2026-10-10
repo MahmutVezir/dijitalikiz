@@ -257,6 +257,8 @@ def audit_calibration(
         valid_classes = set(manifest.get("required_challenge_classes", []))
         class_counts: Counter[str] = Counter()
         source_cases_by_class: dict[str, set[str]] = {}
+        origin_counts: Counter[str] = Counter()
+        model_output_cases: set[str] = set()
         for row in examples:
             example_id = row.get("example_id")
             if not isinstance(example_id, str) or not example_id.strip():
@@ -274,6 +276,20 @@ def audit_calibration(
                 source_case = row.get("source_case_id")
                 if isinstance(source_case, str) and source_case.strip():
                     source_cases_by_class.setdefault(challenge_class, set()).add(source_case)
+            origin = row.get("response_origin")
+            if origin in {"independent_model_output", "human_authored_control", "synthetic_adversarial_control"}:
+                origin_counts[origin] += 1
+                source_case = row.get("source_case_id")
+                if origin == "independent_model_output" and isinstance(source_case, str):
+                    model_output_cases.add(source_case)
+                if origin == "independent_model_output":
+                    metadata = row.get("generation_metadata")
+                    if not isinstance(metadata, dict):
+                        issues.append(f"{example_id}_model_output_missing_generation_metadata")
+                elif row.get("generation_metadata") is not None:
+                    issues.append(f"{example_id}_control_has_unexpected_generation_metadata")
+            else:
+                issues.append(f"{example_id}_invalid_response_origin")
             if row.get("is_from_frozen_study_output") is not False:
                 issues.append(f"{example_id}_uses_frozen_study_output")
         minimum = manifest.get("minimum_examples_per_challenge_class")
@@ -296,6 +312,32 @@ def audit_calibration(
         if len(observed_sources) < minimum_distinct:
             issues.append(
                 f"insufficient_distinct_source_cases: {len(observed_sources)} < {minimum_distinct}"
+            )
+        minimum_model_outputs = manifest.get("minimum_independent_model_output_examples")
+        if not isinstance(minimum_model_outputs, int) or minimum_model_outputs < 1:
+            issues.append("invalid_minimum_independent_model_output_examples")
+            minimum_model_outputs = 1
+        observed_model_outputs = origin_counts["independent_model_output"]
+        if observed_model_outputs < minimum_model_outputs:
+            issues.append(
+                f"insufficient_independent_model_outputs: {observed_model_outputs} < {minimum_model_outputs}"
+            )
+        minimum_model_cases = manifest.get("minimum_independent_model_output_source_cases")
+        if not isinstance(minimum_model_cases, int) or minimum_model_cases < 1:
+            issues.append("invalid_minimum_independent_model_output_source_cases")
+            minimum_model_cases = 1
+        if len(model_output_cases) < minimum_model_cases:
+            issues.append(
+                f"insufficient_independent_model_output_source_cases: {len(model_output_cases)} < {minimum_model_cases}"
+            )
+        minimum_controls = manifest.get("minimum_human_authored_or_synthetic_control_examples")
+        if not isinstance(minimum_controls, int) or minimum_controls < 1:
+            issues.append("invalid_minimum_human_authored_or_synthetic_control_examples")
+            minimum_controls = 1
+        observed_controls = origin_counts["human_authored_control"] + origin_counts["synthetic_adversarial_control"]
+        if observed_controls < minimum_controls:
+            issues.append(
+                f"insufficient_control_examples: {observed_controls} < {minimum_controls}"
             )
         minimum_distinct_per_class = manifest.get("minimum_distinct_cases_per_challenge_class")
         if not isinstance(minimum_distinct_per_class, int) or minimum_distinct_per_class < 1:
@@ -400,6 +442,26 @@ def audit_calibration(
                 ) if comparable_ids else None,
                 "initial_review_cohen_kappa": _cohen_kappa(reviewer_a_labels, reviewer_b_labels),
                 "matcher_diagnostics": _score_metrics(examples_by_id, adjudications_by_example),
+                "response_origin_counts": dict(Counter(
+                    row.get("response_origin", "<missing>") for row in examples_by_id.values()
+                )),
+                "matcher_diagnostics_by_response_origin": {
+                    origin: _score_metrics(
+                        {
+                            example_id: example
+                            for example_id, example in examples_by_id.items()
+                            if example.get("response_origin") == origin
+                        },
+                        {
+                            example_id: adjudications_by_example[example_id]
+                            for example_id, example in examples_by_id.items()
+                            if example.get("response_origin") == origin and example_id in adjudications_by_example
+                        },
+                    )
+                    for origin in sorted({
+                        row.get("response_origin", "<missing>") for row in examples_by_id.values()
+                    })
+                },
                 "labels_by_reviewer": {
                     "reviewer_a": dict(Counter(reviewer_a_labels)),
                     "reviewer_b": dict(Counter(reviewer_b_labels)),
@@ -453,6 +515,9 @@ def audit_calibration(
         "example_count": len(examples) if examples is not None else 0,
         "challenge_class_counts": dict(Counter(
             row.get("challenge_class", "<missing>") for row in examples or []
+        )),
+        "response_origin_counts": dict(Counter(
+            row.get("response_origin", "<missing>") for row in examples or []
         )),
         "metrics": metrics,
         "issue_count": len(issues),
