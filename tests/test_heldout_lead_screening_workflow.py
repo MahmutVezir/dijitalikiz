@@ -52,6 +52,10 @@ def test_heldout_lead_screening_pins_exact_revisions_for_all_discovery_leads():
             "a6cbba814422a06a0366468b2346f52aaacf8f3d",
             "81de4f7a7c7d3b13d89edd72d4c4b92aa33e6c81",
         ),
+        "net-400-crlf-command-injection": (
+            "2a3aa71b077ae9290d9c3b95f6ad23b0e0a357c2",
+            "a07b6c41b5c2369506e7d86c4808dc51317e1481",
+        ),
     }
     for case_id, (pre_fix, fixed) in expected.items():
         assert f"case_id: {case_id}" in workflow
