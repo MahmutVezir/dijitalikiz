@@ -1,1 +1,1 @@
-[validate-only] Run tests and historical artifact integrity checks for scoring calibration gate
+[validate-only] Validate response-origin calibration gate and historical experiment integrity
