@@ -1,0 +1,196 @@
+name: Held-out Lead Red-Green Screening
+
+on:
+  push:
+    paths:
+      - ".github/heldout-lead-red-green-trigger"
+      - ".github/workflows/heldout-lead-red-green.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce:
+    name: Screen candidate (no model inference)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - case_id: lang-1800-era-calendar
+            repo: apache/commons-lang
+            pre_fix: 324d9fbd091749a9c70aed4b038fd0b4a520b3cf
+            fix: c7f1a6d27707e8cd8cbed94f83e0c58d2c480614
+            tests: FastDateFormatTest#testEraRoundTripNonGregorianCalendar,FastDatePrinterTest#testEraMixedCalendarTypes
+            test_files: src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java
+          - case_id: lang-1807-wildcard-upper-bound
+            repo: apache/commons-lang
+            pre_fix: 25c4bfcd6d9dc3a7333088bfc3031b05cd93837e
+            fix: 43154e016ae213a0da5b727cd1aa18e6e0c56adb
+            tests: TypeUtilsTest#testUnboundedWildcardType
+            test_files: src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java
+          - case_id: collections-728-ordered-next-key
+            repo: apache/commons-collections
+            pre_fix: a5248efd7f4f857f88770565414948e2d0524933
+            fix: 04b30be69f4355f218d587703bc20b1a591c3e3c
+            tests: DualTreeBidiMapTest#testNextKeyAbsentKey,FixedSizeSortedMapTest#testNextKey,UnmodifiableSortedMapTest#testNextKey
+            test_files: src/test/java/org/apache/commons/collections4/bidimap/DualTreeBidiMapTest.java src/test/java/org/apache/commons/collections4/map/FixedSizeSortedMapTest.java src/test/java/org/apache/commons/collections4/map/UnmodifiableSortedMapTest.java
+
+    env:
+      UPSTREAM_REPO: ${{ matrix.repo }}
+      PRE_FIX_SHA: ${{ matrix.pre_fix }}
+      FIX_SHA: ${{ matrix.fix }}
+      TEST_TARGETS: ${{ matrix.tests }}
+      TEST_FILES: ${{ matrix.test_files }}
+      CASE_ID: ${{ matrix.case_id }}
+
+    steps:
+      - name: Checkout research repository for screening evidence
+        uses: actions/checkout@v5
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Clone upstream and pin exact revisions
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/upstream"
+          git clone --quiet --filter=blob:none "https://github.com/$UPSTREAM_REPO.git" "$SRC"
+          git -C "$SRC" fetch --quiet --no-tags origin "$PRE_FIX_SHA"
+          git -C "$SRC" fetch --quiet --no-tags origin "$FIX_SHA"
+          git -C "$SRC" checkout --detach "$PRE_FIX_SHA"
+          OUT="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID"
+          mkdir -p "$OUT"
+          {
+            echo "case_id=$CASE_ID"
+            echo "repository=$UPSTREAM_REPO"
+            echo "pre_fix_sha=$PRE_FIX_SHA"
+            echo "fix_sha=$FIX_SHA"
+            echo "test_targets=$TEST_TARGETS"
+            echo "purpose=screening_only_no_model_inference"
+          } > "$OUT/metadata.txt"
+
+      - name: Inject regression tests from the pinned fixed revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/upstream"
+          for test_file in $TEST_FILES; do
+            mkdir -p "$SRC/$(dirname "$test_file")"
+            git -C "$SRC" show "$FIX_SHA:$test_file" > "$SRC/$test_file"
+          done
+
+      - name: Require regression tests to fail on the pinned pre-fix revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/upstream"
+          LOG="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID/pre-fix-maven.log"
+          set +e
+          (cd "$SRC" && mvn -B -ntp clean -Dtest="$TEST_TARGETS" test) > "$LOG" 2>&1
+          rc=$?
+          set -e
+          if [ "$rc" -eq 0 ]; then
+            echo "ERROR: regression unexpectedly passed on pre-fix revision."
+            cat "$LOG"
+            exit 1
+          fi
+          export EVIDENCE_DIR="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID"
+          python - "$SRC" "$TEST_TARGETS" <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          from xml.etree import ElementTree as ET
+
+          report_dir = Path(sys.argv[1])
+          targets = [item.strip() for item in sys.argv[2].split(",") if item.strip()]
+          cases = []
+          for file in report_dir.rglob("TEST-*.xml") if report_dir.exists() else []:
+              try:
+                  root = ET.parse(file).getroot()
+              except ET.ParseError:
+                  continue
+              for node in root.iter("testcase"):
+                  cases.append((node.get("classname", ""), node.get("name", ""), node))
+          result = []
+          for target in targets:
+              class_name, method = target.split("#", 1)
+              matches = [(cn, name, node) for cn, name, node in cases
+                         if cn.endswith("." + class_name) and (name == method or name.startswith(method + "("))]
+              if not matches:
+                  raise SystemExit(f"BLOCKED: targeted regression test did not execute on pre-fix revision: {target}")
+              failed = [node for _, _, node in matches if node.find("failure") is not None or node.find("error") is not None]
+              if not failed:
+                  raise SystemExit(f"BLOCKED: test did not demonstrate a pre-fix regression failure: {target}")
+              result.append({"test": target, "pre_fix_result": "failed_as_expected", "failure_count": len(failed)})
+          payload = {"status": "red_confirmed", "tests": result}
+          out = Path(os.environ["EVIDENCE_DIR"]) / "red-result.json"
+          out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(payload, indent=2))
+          PY
+
+      - name: Require the same tests to pass on the pinned fixed revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/upstream"
+          LOG="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID/fixed-maven.log"
+          git -C "$SRC" reset --hard "$FIX_SHA"
+          (cd "$SRC" && mvn -B -ntp clean -Dtest="$TEST_TARGETS" test) > "$LOG" 2>&1 || {
+            cat "$LOG"
+            echo "ERROR: regression tests did not pass on fixed revision."
+            exit 1
+          }
+          export EVIDENCE_DIR="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID"
+          python - "$SRC" "$TEST_TARGETS" <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          from xml.etree import ElementTree as ET
+
+          report_dir = Path(sys.argv[1])
+          targets = [item.strip() for item in sys.argv[2].split(",") if item.strip()]
+          cases = []
+          for file in report_dir.rglob("TEST-*.xml") if report_dir.exists() else []:
+              try:
+                  root = ET.parse(file).getroot()
+              except ET.ParseError:
+                  continue
+              for node in root.iter("testcase"):
+                  cases.append((node.get("classname", ""), node.get("name", ""), node))
+          result = []
+          for target in targets:
+              class_name, method = target.split("#", 1)
+              matches = [(cn, name, node) for cn, name, node in cases
+                         if cn.endswith("." + class_name) and (name == method or name.startswith(method + "("))]
+              if not matches:
+                  raise SystemExit(f"BLOCKED: targeted regression test did not execute on fixed revision: {target}")
+              bad = [node for _, _, node in matches
+                     if node.find("failure") is not None or node.find("error") is not None or node.find("skipped") is not None]
+              if bad:
+                  raise SystemExit(f"FAILED: test did not pass cleanly on fixed revision: {target}")
+              result.append({"test": target, "fixed_result": "passed"})
+          payload = {"status": "green_confirmed", "tests": result}
+          out = Path(os.environ["EVIDENCE_DIR"]) / "green-result.json"
+          out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(payload, indent=2))
+          PY
+          {
+            echo "status=red_green_pass"
+            echo "pre_fix_sha=$PRE_FIX_SHA"
+            echo "fixed_sha=$FIX_SHA"
+            echo "test_targets=$TEST_TARGETS"
+          } > "$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID/result.txt"
+
+      - name: Upload source-screening evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-lead-screening-${{ matrix.case_id }}
+          path: heldout-lead-screening/${{ matrix.case_id }}/
+          if-no-files-found: warn
+          retention-days: 90
