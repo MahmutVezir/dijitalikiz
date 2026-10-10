@@ -99,7 +99,7 @@ jobs:
             echo "BLOCKED: regression unexpectedly passed on the pre-fix revision."
             exit 1
           fi
-          python - "$SRC" "$TEST_TARGETS" "$CASE_ID" <<'PY'
+          python - "$SRC" "$TEST_TARGETS" "$CASE_ID" "$GITHUB_WORKSPACE/heldout-red-green/$CASE_ID" <<'PY'
           import json, sys
           from pathlib import Path
           from xml.etree import ElementTree as ET
@@ -126,7 +126,7 @@ jobs:
                   raise SystemExit(f"BLOCKED: test did not demonstrate a pre-fix failure: {target}")
               results.append({"test": target, "pre_fix": "failed_as_expected", "failed_invocations": len(failed)})
           payload = {"status": "red_confirmed", "case_id": sys.argv[3], "tests": results}
-          (Path(sys.argv[3]).parent / "red-evidence.json").write_text(json.dumps(payload, indent=2) + "\n")
+          (Path(sys.argv[4]) / "red-evidence.json").write_text(json.dumps(payload, indent=2) + "\n")
           print(json.dumps(payload, indent=2))
           PY
 
