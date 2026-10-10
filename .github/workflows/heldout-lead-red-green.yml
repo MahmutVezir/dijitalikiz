@@ -134,6 +134,34 @@ jobs:
             echo "purpose=screening_only_no_model_inference"
           } > "$OUT/metadata.txt"
 
+      - name: Install pinned Commons Parent 104 for Compress 1.29 snapshot
+        if: matrix.case_id == 'compress-805-pack200-error-propagation'
+        shell: bash
+        run: |
+          set -euo pipefail
+          PARENT_DIR="$RUNNER_TEMP/commons-parent"
+          PARENT_SHA="ec5913040edfba1e8cbef2418b7b825473c1f2cf"
+          OUT="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID"
+          git clone --quiet --filter=blob:none https://github.com/apache/commons-parent.git "$PARENT_DIR"
+          git -C "$PARENT_DIR" fetch --quiet --no-tags origin "$PARENT_SHA"
+          git -C "$PARENT_DIR" checkout --detach "$PARENT_SHA"
+          test "$(git -C "$PARENT_DIR" rev-parse HEAD)" = "$PARENT_SHA"
+          grep -q '<groupId>org.apache.commons</groupId>' "$PARENT_DIR/pom.xml"
+          grep -q '<artifactId>commons-parent</artifactId>' "$PARENT_DIR/pom.xml"
+          grep -q '<version>104</version>' "$PARENT_DIR/pom.xml"
+          sha256sum "$PARENT_DIR/pom.xml" > "$OUT/commons-parent-104-pom.sha256"
+          (cd "$PARENT_DIR" && mvn -B -ntp -N install) > "$OUT/commons-parent-104-install.log" 2>&1 || {
+            cat "$OUT/commons-parent-104-install.log"
+            echo "BLOCKED: could not install pinned Apache Commons Parent 104 POM."
+            exit 1
+          }
+          {
+            echo "commons_parent_sha=$PARENT_SHA"
+            echo "commons_parent_coordinate=org.apache.commons:commons-parent:104:pom"
+            echo "commons_parent_pom_sha256=$(cut -d ' ' -f 1 "$OUT/commons-parent-104-pom.sha256")"
+            echo "purpose=resolve_immutable_upstream_parent_only"
+          } > "$OUT/commons-parent-104-metadata.txt"
+
       - name: Inject regression tests from the pinned fixed revision
         shell: bash
         run: |
