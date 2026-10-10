@@ -244,15 +244,15 @@ Bu bulgu, CCDG'nin anlamsal teşhiste yararsız olduğu ya da iki yöntemin eşd
 
 Pilot ve doğrulayıcı çalıştırmaların ham JSON kayıtları, `artifact_manifest.json` dosyaları, kaynak commit kimlikleri ve SHA-256 değerleri proje arşivinde saklanmaktadır. Doğrulayıcı arşivinde 212/212 dosya ve 160/160 inference kaydı; pilot arşivinde 55/55 manifest dosyası ve 40/40 kayıt doğrulanmıştır.
 
-### Ek 2. Sonuç ve puanlama kayıtları
+**Sonuç ve puanlama kayıtları**
 
 `docs/CONFIRMATORY_RESULTS_2026-10-09.md`, `data/benchmark/confirmatory_result_summary.json` ve `docs/SCORING_RUBRIC_CALIBRATION_PROTOCOL.md`. Dondurulmuş sonuçlar değiştirilmemiştir; mevcut çıktılara yönelik sonradan yapılacak insan değerlendirmesi yalnızca keşfedici olarak raporlanmalıdır.
 
-### Ek 3. Yöntem denetimleri ve sonraki çalışma tasarımı
+**Yöntem denetimleri ve sonraki çalışma tasarımı**
 
 `docs/CONTEXT_INFORMATION_PARITY_AUDIT_2026-10-10.md`, `docs/NEXT_RESEARCH_PHASE_PLAN_2026-10-10.md` ve `docs/FOLLOWUP_SAMPLE_SIZE_SENSITIVITY_2026-10-10.md`. Bu kayıtlar tarihsel bağlam bilgi paritesi kısıtını ve sonraki üç koşullu deneyin önceden dondurulması gereğini açıklar.
 
-### Ek 4. Aday vaka kanıtı ve kaynak kod
+**Aday vaka kanıtı ve kaynak kod**
 
 Commons Compress #770 için kaynak PR ve düzeltme öncesi/sonrası regresyon tekrarı: https://github.com/MahmutVezir/dijitalikiz/actions/runs/37993954772. Aynı regresyon doğrulaması düzeltme öncesi sürümde beklenen biçimde başarısız, düzeltilmiş sürümde başarılı olmuştur. İlgili kaynak kod, testler, şemalar, puanlama yardımcıları ve deney kayıtları sürümlü proje arşivinde tutulmaktadır. Depo bağlantısı herkese açık erişim garantisi değildir; erişim gereken dosyalar güncel TÜBİTAK başvuru sistemine ek belge olarak ve geçerli boyut/sayfa kurallarına göre sunulmalıdır. Bu aday dondurulmuş doğrulayıcı deney kümesine dahil edilmemiştir.
 
