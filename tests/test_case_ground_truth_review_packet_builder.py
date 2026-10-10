@@ -91,7 +91,7 @@ def test_packets_mask_case_ids_and_provisional_annotations_and_keep_private_key_
     assert "PrivateComponent" not in serialized_packets
     assert "Private base fact" not in serialized_packets
     assert "ground_truth" not in serialized_packets.lower()
-    assert set(key["mapping"].values().__iter__().__class__.__name__ for _ in [0]) == {"dict"}
+    assert all(isinstance(entry, dict) for entry in key["mapping"].values())
     assert {entry["case_id"] for entry in key["mapping"].values()} == {f"private-case-{i}" for i in range(4)}
     assert result["reviewer_a_packet_sha256"]
     assert result["reviewer_b_packet_sha256"]
