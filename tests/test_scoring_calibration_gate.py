@@ -70,6 +70,17 @@ def _complete_fixture(root: Path):
             "ground_truth_root_cause": f"verified mechanism {i}",
             "ground_truth_rationale": "The issue report, failing test, and fixed revision jointly support this root-cause explanation.",
             "response_text": f"Candidate diagnostic response {i}.",
+            "response_origin": (
+                "independent_model_output" if i in {1, 3, 5, 7}
+                else "human_authored_control"
+            ),
+            "generation_metadata": ({
+                "model_id": "calibration/test-model",
+                "model_revision": f"{i:040x}",
+                "seed": i,
+                "prompt_sha256": "a" * 64,
+                "raw_output_sha256": "b" * 64,
+            } if i in {1, 3, 5, 7} else None),
             "challenge_class": challenge_class,
             "legacy_matcher_accepts": MATCHER_BY_CLASS[challenge_class],
             "is_from_frozen_study_output": False,
@@ -112,6 +123,9 @@ def _complete_fixture(root: Path):
         "status": "adjudicated",
         "frozen": True,
         "minimum_examples_per_challenge_class": 1,
+        "minimum_independent_model_output_examples": 4,
+        "minimum_independent_model_output_source_cases": 4,
+        "minimum_human_authored_or_synthetic_control_examples": 3,
         "minimum_distinct_source_cases": 7,
         "minimum_distinct_cases_per_challenge_class": 1,
         "required_challenge_classes": CHALLENGE_CLASSES,
@@ -146,6 +160,8 @@ def test_packet_builder_masks_gold_and_matcher_metadata():
         "ground_truth_root_cause": "verified cause",
         "ground_truth_rationale": "Issue and fix evidence establish the cause.",
         "response_text": "Candidate response.",
+        "response_origin": "human_authored_control",
+        "generation_metadata": None,
         "challenge_class": "correct_paraphrase",
         "legacy_matcher_accepts": False,
         "is_from_frozen_study_output": False,
@@ -155,6 +171,8 @@ def test_packet_builder_masks_gold_and_matcher_metadata():
         assert len(packet) == 1
         item = packet[0]
         assert "response_text" in item
+        assert "response_origin" not in item
+        assert "generation_metadata" not in item
         assert "challenge_class" not in item
         assert "legacy_matcher_accepts" not in item
         assert "ground_truth_root_cause" not in item
@@ -210,6 +228,13 @@ def test_complete_fixture_reports_matcher_errors_and_reviewer_agreement(tmp_path
         "false_negative": 1,
     }
     assert matcher["n_unscorable_excluded"] == 1
+    assert metrics["response_origin_counts"] == {
+        "independent_model_output": 4,
+        "human_authored_control": 3,
+    }
+    by_origin = metrics["matcher_diagnostics_by_response_origin"]
+    assert by_origin["independent_model_output"]["n_total"] == 4
+    assert by_origin["human_authored_control"]["n_total"] == 3
 
 
 def test_calibration_gate_rejects_overlap_with_frozen_cases(tmp_path):
