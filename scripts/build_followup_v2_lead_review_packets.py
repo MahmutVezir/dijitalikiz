@@ -168,6 +168,8 @@ def build_packets(
     order_b = list(rows_by_id.values())
     secrets.SystemRandom().shuffle(order_a)
     secrets.SystemRandom().shuffle(order_b)
+    if [row["review_id"] for row in order_a] == [row["review_id"] for row in order_b]:
+        order_b.reverse()
     reviewer_a_bytes = _write_jsonl(destinations["reviewer_a_output"], order_a)
     reviewer_b_bytes = _write_jsonl(destinations["reviewer_b_output"], order_b)
 
