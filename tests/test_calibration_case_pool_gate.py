@@ -199,6 +199,11 @@ def test_all_candidate_case_records_validate_without_ground_truth_label_leakage(
         assert record["provenance"]["reproduction_status"] == "independent_pre_fix_failure_and_fixed_revision_pass"
         assert record["provenance"]["ground_truth_adjudication_status"] == "pending_independent_review"
         assert record["provenance"]["role"] == "scoring_calibration_candidate_only"
+        assert candidate["role"].startswith(("scoring_calibration_candidate_only", "calibration_only_"))
+
+    assert manifest["review_gate"]["status"] == "pending"
+    assert manifest["review_gate"]["frozen"] is False
+    assert manifest["review_gate"]["audit_sha256"] is None
 
     by_id = {candidate["case_id"]: candidate for candidate in manifest["candidates"]}
     parallel_case = by_id["commons-compress-github-pr-803-empty-framed-stream-recursion"]
