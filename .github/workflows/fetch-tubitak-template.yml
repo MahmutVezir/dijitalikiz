@@ -5,6 +5,8 @@ on:
     paths:
       - ".github/template-fetch-trigger"
       - ".github/workflows/fetch-tubitak-template.yml"
+      - "scripts/build_tubitak_report_docx.py"
+      - "docs/TUBITAK_REPORT_DRAFT.md"
   workflow_dispatch:
 
 permissions:
@@ -13,7 +15,7 @@ permissions:
 jobs:
   fetch-official-template:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - name: Checkout research repository
         uses: actions/checkout@v5
@@ -61,6 +63,53 @@ jobs:
               "ai_disclosure_source": {"file_name": ai_src.name, "sha256": digest_file(out_dir / ai_src.name)},
           }
           (out_dir / "template_manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          print(json.dumps(manifest, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install document build and PDF tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip python-docx
+          sudo apt-get update
+          sudo apt-get install -y libreoffice-writer poppler-utils
+
+      - name: Build report from current Markdown and official template
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_tubitak_report_docx.py \
+            --markdown docs/TUBITAK_REPORT_DRAFT.md \
+            --template /tmp/tubitak-template/proje_yazma_sablonu_2026-2027.docx \
+            --output /tmp/tubitak-template/TUBITAK_2204A_Rapor_Taslak_2026-2027.docx \
+            --manifest /tmp/tubitak-template/report_build_manifest.json
+          PDF="/tmp/tubitak-template/TUBITAK_2204A_Rapor_Taslak_2026-2027.pdf"
+          soffice --headless --convert-to pdf --outdir /tmp/tubitak-template /tmp/tubitak-template/TUBITAK_2204A_Rapor_Taslak_2026-2027.docx
+          test -s "$PDF"
+          PAGES="$(pdfinfo "$PDF" | awk '/^Pages:/ {print $2}')"
+          echo "Rendered report pages: $PAGES"
+          test "$PAGES" -le 20
+          mkdir -p /tmp/tubitak-template/render
+          pdftoppm -png -r 110 "$PDF" /tmp/tubitak-template/render/page
+          test "$(find /tmp/tubitak-template/render -name 'page-*.png' | wc -l)" -eq "$PAGES"
+          python - "$PDF" "$PAGES" <<'PY'
+          import hashlib
+          import json
+          import sys
+          from pathlib import Path
+
+          pdf = Path(sys.argv[1])
+          manifest_path = Path("/tmp/tubitak-template/report_build_manifest.json")
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          manifest["output_pdf"] = pdf.name
+          manifest["output_pdf_sha256"] = hashlib.sha256(pdf.read_bytes()).hexdigest()
+          manifest["pdf_page_count"] = int(sys.argv[2])
+          manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
           print(json.dumps(manifest, indent=2, ensure_ascii=False))
           PY
 
