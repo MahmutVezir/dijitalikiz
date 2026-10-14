@@ -224,4 +224,15 @@ A separate packet set was prepared outside version control for the **12 held-out
 - Both packages contain the same 12 opaque review IDs in different orders; case IDs, PR details, preliminary labels and screening logs are omitted. The coordinator key is stored separately and must not be sent to either reviewer.
 - Packet integrity/blinding checks passed locally. **Human source review and adjudication remain pending; no lead has been promoted and no inference is authorized.**
 
+
+### Calibration-candidate source-review packets prepared — 2026-10-14
+
+A second, independent packet set is prepared for the **seven scoring-calibration source cases**; it is not the same pool as the 12 held-out-discovery leads above.
+
+- Packet manifest: `docs/CALIBRATION_CASE_SOURCE_REVIEW_PACKET_MANIFEST_2026-10-14.md`.
+- Reviewer A ZIP SHA-256: `67416cc2496390b9cb77b06b49e6c91a0cfe7b8fa386d209f6284c7a126d92de`.
+- Reviewer B ZIP SHA-256: `3d6ef06d6859092ecac252798efa6ec3a2db59797caad072809a5c481cf08ca0`.
+- Both archives contain the same seven opaque review IDs in different orders and omit proposed causes, public PR URLs, suitability labels and screening logs. The coordinator key is separate.
+- Local structural/blinding checks passed. Human source review and separate adjudication are still pending, so the case pool remains `screening_pending` and inference remains prohibited.
+
 The unchanged research decision is: the historic endpoint had a floor effect and cannot resolve the semantic CCDG hypothesis. A future run may support, contradict, or leave the hypothesis unresolved; no desired result is assumed.
