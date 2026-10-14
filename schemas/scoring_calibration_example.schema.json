@@ -13,6 +13,7 @@
     "ground_truth_root_cause",
     "ground_truth_rationale",
     "response_text",
+    "matcher_text",
     "root_cause_aliases",
     "response_origin",
     "generation_metadata",
@@ -62,7 +63,8 @@
     },
     "response_text": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "Full diagnostic response shown to source-grounded reviewers; preserve the relevant structured answer content."
     },
     "response_origin": {
       "enum": [
@@ -136,6 +138,11 @@
         "type": "string",
         "minLength": 1
       }
+    },
+    "matcher_text": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exact literal-match surface, formed as root_cause_class + one space + explanation, matching the historic evaluator input. Do not substitute the full JSON or unrelated fields."
     }
   },
   "allOf": [
