@@ -1,1 +1,1 @@
-[screening-only] Re-run isolated red-green harness with the documented Spring Resource test fixture adjustment 2026-10-10
+[screening-only] Re-run the isolated held-out lead red-green matrix against main commit 71b317aa9232d548d9a8218afc35e8a89332795a. This workflow validates pinned pre-fix failure and fixed-revision pass only; no model inference, no case admission, and no inference authorization. Run date: 2026-10-14.
