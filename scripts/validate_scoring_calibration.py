@@ -308,13 +308,17 @@ def audit_calibration(
             if row.get("is_from_frozen_study_output") is not False:
                 issues.append(f"{example_id}_uses_frozen_study_output")
             aliases = row.get("root_cause_aliases")
-            response_text = row.get("response_text")
+            matcher_text = row.get("matcher_text")
             if not isinstance(aliases, list) or not aliases or not all(
                 isinstance(alias, str) and alias.strip() for alias in aliases
             ):
                 issues.append(f"{example_id}_invalid_root_cause_aliases")
-            elif isinstance(response_text, str):
-                computed_match = _calibration_matcher_accepts(response_text, aliases)
+            if not isinstance(matcher_text, str) or not matcher_text.strip():
+                issues.append(f"{example_id}_invalid_matcher_text")
+            elif isinstance(aliases, list) and aliases and all(
+                isinstance(alias, str) and alias.strip() for alias in aliases
+            ):
+                computed_match = _calibration_matcher_accepts(matcher_text, aliases)
                 if row.get("legacy_matcher_accepts") is not computed_match:
                     issues.append(f"{example_id}_legacy_matcher_result_mismatch")
         minimum = manifest.get("minimum_examples_per_challenge_class")
