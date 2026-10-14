@@ -1,0 +1,398 @@
+name: Held-out Lead Red-Green Screening
+
+on:
+  pull_request:
+    paths:
+      - ".github/heldout-lead-red-green-trigger"
+      - ".github/workflows/heldout-lead-red-green.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: heldout-lead-screening-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  reproduce:
+    name: Screen candidate (no model inference)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - case_id: lang-1800-era-calendar
+            repo: apache/commons-lang
+            pre_fix: 324d9fbd091749a9c70aed4b038fd0b4a520b3cf
+            fix: c7f1a6d27707e8cd8cbed94f83e0c58d2c480614
+            tests: FastDateFormatTest#testEraRoundTripNonGregorianCalendar,FastDatePrinterTest#testEraMixedCalendarTypes
+            test_files: src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java
+          - case_id: lang-1807-wildcard-upper-bound
+            repo: apache/commons-lang
+            pre_fix: 25c4bfcd6d9dc3a7333088bfc3031b05cd93837e
+            fix: 43154e016ae213a0da5b727cd1aa18e6e0c56adb
+            tests: TypeUtilsTest#testUnboundedWildcardType
+            test_files: src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java
+          - case_id: collections-728-ordered-next-key
+            repo: apache/commons-collections
+            pre_fix: a5248efd7f4f857f88770565414948e2d0524933
+            fix: 04b30be69f4355f218d587703bc20b1a591c3e3c
+            tests: DualTreeBidiMapTest#testNextKeyAbsentKey,FixedSizeSortedMapTest#testNextKey,UnmodifiableSortedMapTest#testNextKey
+            test_files: src/test/java/org/apache/commons/collections4/bidimap/DualTreeBidiMapTest.java src/test/java/org/apache/commons/collections4/map/FixedSizeSortedMapTest.java src/test/java/org/apache/commons/collections4/map/UnmodifiableSortedMapTest.java
+          - case_id: net-404-ftps-data-hostname-verifier
+            repo: apache/commons-net
+            pre_fix: faa4edd7e287a3db465a32efd9c2d5faa15757fe
+            fix: a79729464f6e69b773171ff30e3d483cab7afd70
+            tests: FTPSClientTest#testHostnameVerifierUsedForDataConnection
+            test_files: src/test/java/org/apache/commons/net/ftp/AbstractFtpsTest.java src/test/java/org/apache/commons/net/ftp/FTPSClientTest.java
+          - case_id: net-403-ftp-parser-type-before-instantiation
+            repo: apache/commons-net
+            pre_fix: a3d19751891edb9f7cb8c11bc344eaf1683b2b32
+            fix: 6e38749760c0366aac1637c7dc15e4ccf76329c9
+            tests: DefaultFTPFileEntryParserFactoryTest#testNonParserClassIsNotInstantiated
+            test_files: src/test/java/org/apache/commons/net/ftp/parser/DefaultFTPFileEntryParserFactoryTest.java
+          - case_id: text-768-stringmatcher-charsequence-window
+            repo: apache/commons-text
+            pre_fix: a6cbba814422a06a0366468b2346f52aaacf8f3d
+            fix: 81de4f7a7c7d3b13d89edd72d4c4b92aa33e6c81
+            tests: StringMatcherTest#testIsMatchCharSequencePassesBufferStartThrough,StringMatcherTest#testIsMatchCharSequenceStartDelegatesThroughTheCorrectedOverload,StringMatcherTest#testIsMatchOverloadsAgreeOnTheSameWindow,StringMatcherTest#testStringSubstitutorHandsACustomMatcherTheRealBufferStart
+            test_files: src/test/java/org/apache/commons/text/matcher/StringMatcherTest.java
+          - case_id: net-400-crlf-command-injection
+            repo: apache/commons-net
+            pre_fix: 2a3aa71b077ae9290d9c3b95f6ad23b0e0a357c2
+            fix: a07b6c41b5c2369506e7d86c4808dc51317e1481
+            tests: FTPTest#testRejectCRLFInArgs,NNTPTest#testRejectCRLFInArgs,POP3Test#testRejectCRLFInArgs,SMTPTest#testRejectCRLFInArgs
+            test_files: src/test/java/org/apache/commons/net/ftp/FTPTest.java src/test/java/org/apache/commons/net/nntp/NNTPTest.java src/test/java/org/apache/commons/net/pop3/POP3Test.java src/test/java/org/apache/commons/net/smtp/SMTPTest.java
+          - case_id: compress-805-pack200-error-propagation
+            repo: apache/commons-compress
+            pre_fix: 9a624106e6a5fce948d97ee262ed5742f6e4ceb4
+            fix: 17ce90728476f64d095f59cacf45c20ef3ade216
+            tests: CodeAttributeTest#testNegativeReferenceIndex
+            test_files: src/test/java/org/apache/commons/compress/harmony/unpack200/CodeAttributeTest.java
+          - case_id: jackson-6096-jsonview-array-update
+            repo: FasterXML/jackson-databind
+            pre_fix: 05f0d04f6a63829d322145cf8ba87511cbf56445
+            fix: 82d58088dfeb6a6d1af0cc45b9f2fb5e00828f08
+            tests: FailOnUnexpectedView6077Test$BeanAsArrayUpdate#hiddenRoleUpdateRejectedWhenEnabled
+            test_files: src/test/java/tools/jackson/databind/views/FailOnUnexpectedView6077Test.java
+          - case_id: jackson-6256-objectnode-anygetter-filter
+            repo: FasterXML/jackson-databind
+            pre_fix: e62a0704a10493001bf8ece5b16c1867b16bab45
+            fix: aa9cd983faeea37317c172fffd8fa2ccbe8177a1
+            tests: AnyGetterTest#objectNodeAnyGetterHonorsIgnoreProperties,AnyGetterTest#objectNodeAnyGetterHonorsIncludeProperties
+            test_files: src/test/java/tools/jackson/databind/ser/AnyGetterTest.java
+          - case_id: spring-37285-part-spill-disk-limit
+            repo: spring-projects/spring-framework
+            build_tool: gradle
+            module: spring-web
+            gradle_test_filters: org.springframework.http.codec.multipart.DefaultPartHttpMessageReaderTests.exceedDiskUsageOnSpillOver
+            test_patch_adjustment: spring-create-request-resource
+            pre_fix: bb7ea37f1b3d47a4309bfacd7511cd1c6f4c2297
+            fix: 94afeedad60972dbe79325a0e8aed2824c57f922
+            tests: DefaultPartHttpMessageReaderTests#exceedDiskUsageOnSpillOver
+            test_files: spring-web/src/test/java/org/springframework/http/codec/multipart/DefaultPartHttpMessageReaderTests.java
+          - case_id: netty-17759-pooled-derived-retained-slice
+            repo: netty/netty
+            module: buffer
+            pre_fix: 006a2f1d92db733d10112de251600da7b6f8ec51
+            fix: d84dc6b1c290de2046bd0df5ba893e7f337cb0e6
+            tests: PooledBigEndianHeapByteBufTest#testRetainedSliceOfNonRetainedDerivedBufferCoversTheReadableBytes
+            test_files: buffer/src/test/java/io/netty/buffer/AbstractByteBufTest.java
+
+    env:
+      UPSTREAM_REPO: ${{ matrix.repo }}
+      PRE_FIX_SHA: ${{ matrix.pre_fix }}
+      FIX_SHA: ${{ matrix.fix }}
+      TEST_TARGETS: ${{ matrix.tests }}
+      TEST_FILES: ${{ matrix.test_files }}
+      CASE_ID: ${{ matrix.case_id }}
+      MAVEN_MODULE: ${{ matrix.module || '' }}
+      BUILD_TOOL: ${{ matrix.build_tool || 'maven' }}
+      GRADLE_TEST_FILTERS: ${{ matrix.gradle_test_filters || '' }}
+      TEST_PATCH_ADJUSTMENT: ${{ matrix.test_patch_adjustment || '' }}
+
+    steps:
+      - name: Checkout research repository for screening evidence
+        uses: actions/checkout@v5
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Clone upstream and pin exact revisions
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/upstream"
+          git clone --quiet --filter=blob:none "https://github.com/$UPSTREAM_REPO.git" "$SRC"
+          git -C "$SRC" fetch --quiet --no-tags origin "$PRE_FIX_SHA"
+          git -C "$SRC" fetch --quiet --no-tags origin "$FIX_SHA"
+          git -C "$SRC" checkout --detach "$PRE_FIX_SHA"
+          OUT="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID"
+          mkdir -p "$OUT"
+          {
+            echo "case_id=$CASE_ID"
+            echo "repository=$UPSTREAM_REPO"
+            echo "pre_fix_sha=$PRE_FIX_SHA"
+            echo "fix_sha=$FIX_SHA"
+            echo "test_targets=$TEST_TARGETS"
+            echo "build_tool=$BUILD_TOOL"
+            echo "purpose=screening_only_no_model_inference"
+          } > "$OUT/metadata.txt"
+
+      - name: Install pinned Commons Parent 104 for Compress 1.29 snapshot
+        if: matrix.case_id == 'compress-805-pack200-error-propagation'
+        shell: bash
+        run: |
+          set -euo pipefail
+          PARENT_DIR="$RUNNER_TEMP/commons-parent"
+          PARENT_SHA="9066f72892fba9af187520ba37889ae068a333ba"
+          OUT="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID"
+          git clone --quiet --filter=blob:none https://github.com/apache/commons-parent.git "$PARENT_DIR"
+          git -C "$PARENT_DIR" fetch --quiet --no-tags origin "$PARENT_SHA"
+          git -C "$PARENT_DIR" checkout --detach "$PARENT_SHA"
+          test "$(git -C "$PARENT_DIR" rev-parse HEAD)" = "$PARENT_SHA"
+          grep -q '<groupId>org.apache.commons</groupId>' "$PARENT_DIR/pom.xml"
+          grep -q '<artifactId>commons-parent</artifactId>' "$PARENT_DIR/pom.xml"
+          grep -q '<version>104</version>' "$PARENT_DIR/pom.xml"
+          sha256sum "$PARENT_DIR/pom.xml" > "$OUT/commons-parent-104-pom.sha256"
+          (cd "$PARENT_DIR" && mvn -B -ntp -N install) > "$OUT/commons-parent-104-install.log" 2>&1 || {
+            cat "$OUT/commons-parent-104-install.log"
+            echo "BLOCKED: could not install pinned Apache Commons Parent 104 POM."
+            exit 1
+          }
+          {
+            echo "commons_parent_sha=$PARENT_SHA"
+            echo "commons_parent_revision=commons-parent-104-RC1"
+            echo "commons_parent_coordinate=org.apache.commons:commons-parent:104:pom"
+            echo "commons_parent_pom_sha256=$(cut -d ' ' -f 1 "$OUT/commons-parent-104-pom.sha256")"
+            echo "purpose=resolve_immutable_upstream_parent_only"
+          } > "$OUT/commons-parent-104-metadata.txt"
+
+      - name: Apply only the pinned test-file diff to the pre-fix revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/upstream"
+          OUT="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID"
+          mkdir -p "$OUT"
+          for test_file in $TEST_FILES; do
+            mkdir -p "$SRC/$(dirname "$test_file")"
+          done
+          PATCH="$OUT/regression-tests.patch"
+          git -C "$SRC" diff --binary "$PRE_FIX_SHA" "$FIX_SHA" -- $TEST_FILES > "$PATCH"
+          if [ ! -s "$PATCH" ]; then
+            echo "BLOCKED: no test-file diff exists between pinned revisions."
+            exit 2
+          fi
+          git -C "$SRC" apply --check "$PATCH"
+          git -C "$SRC" apply "$PATCH"
+          case "$TEST_PATCH_ADJUSTMENT" in
+            "")
+              ;;
+            spring-create-request-resource)
+              if [ "$CASE_ID" != "spring-37285-part-spill-disk-limit" ] || [ "$TEST_FILES" != "spring-web/src/test/java/org/springframework/http/codec/multipart/DefaultPartHttpMessageReaderTests.java" ]; then
+                echo "BLOCKED: test patch adjustment is not scoped to its declared case."
+                exit 2
+              fi
+              python - "$SRC/$TEST_FILES" <<'PY'
+          from pathlib import Path
+          import sys
+
+          path = Path(sys.argv[1])
+          text = path.read_text(encoding="utf-8")
+          needle = 'createRequest("files.multipart",'
+          replacement = 'createRequest(new ClassPathResource("files.multipart", getClass()),'
+          if text.count(needle) != 1:
+              raise SystemExit("BLOCKED: expected exactly one broken Resource-helper argument in the pinned test fixture.")
+          path.write_text(text.replace(needle, replacement), encoding="utf-8")
+          PY
+              ;;
+            *)
+              echo "BLOCKED: unsupported test patch adjustment: $TEST_PATCH_ADJUSTMENT"
+              exit 2
+              ;;
+          esac
+          sha256sum "$PATCH" | awk '{print $1}' > "$OUT/regression-tests.patch.sha256"
+          (cd "$SRC" && sha256sum $TEST_FILES) > "$OUT/pre-fix-test-file-hashes.txt"
+          {
+            echo "test_patch_sha256=$(cat "$OUT/regression-tests.patch.sha256")"
+            echo "test_patch_source=$PRE_FIX_SHA..$FIX_SHA"
+            echo "test_patch_policy=diff_only_no_full_test_file_replacement"
+            if [ -n "$TEST_PATCH_ADJUSTMENT" ]; then
+              echo "test_patch_adjustment=$TEST_PATCH_ADJUSTMENT"
+              echo "test_patch_adjustment_reason=upstream_test_fixture_called_createRequest_with_String_but_local_helper_requires_Resource"
+            fi
+          } >> "$OUT/metadata.txt"
+
+      - name: Require regression tests to fail on the pinned pre-fix revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/upstream"
+          LOG="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID/pre-fix-build.log"
+          set +e
+          if [ "$BUILD_TOOL" = "gradle" ]; then
+            if [ -z "$GRADLE_TEST_FILTERS" ]; then
+              echo "BLOCKED: Gradle candidate is missing explicit test filters."
+              exit 2
+            fi
+            (cd "$SRC" && ./gradlew --no-daemon ":$MAVEN_MODULE:test" --tests "$GRADLE_TEST_FILTERS") > "$LOG" 2>&1
+          elif [ -n "$MAVEN_MODULE" ]; then
+            (cd "$SRC" && mvn -B -ntp -pl "$MAVEN_MODULE" -am clean -Dtest="$TEST_TARGETS" -Dsurefire.failIfNoSpecifiedTests=false test) > "$LOG" 2>&1
+          else
+            (cd "$SRC" && mvn -B -ntp clean -Dtest="$TEST_TARGETS" test) > "$LOG" 2>&1
+          fi
+          rc=$?
+          set -e
+          if [ "$rc" -eq 0 ]; then
+            echo "ERROR: regression unexpectedly passed on pre-fix revision."
+            cat "$LOG"
+            exit 1
+          fi
+          export EVIDENCE_DIR="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID"
+          python - "$SRC" "$TEST_TARGETS" <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          from xml.etree import ElementTree as ET
+
+          report_dir = Path(sys.argv[1])
+          targets = [item.strip() for item in sys.argv[2].split(",") if item.strip()]
+          cases = []
+          for file in report_dir.rglob("TEST-*.xml") if report_dir.exists() else []:
+              try:
+                  root = ET.parse(file).getroot()
+              except ET.ParseError:
+                  continue
+              for node in root.iter("testcase"):
+                  cases.append((node.get("classname", ""), node.get("name", ""), node))
+          result = []
+          for target in targets:
+              class_name, method = target.split("#", 1)
+              matches = [(cn, name, node) for cn, name, node in cases
+                         if cn.endswith("." + class_name) and (name == method or name.startswith(method + "("))]
+              if not matches:
+                  raise SystemExit(f"BLOCKED: targeted regression test did not execute on pre-fix revision: {target}")
+              failed = [node for _, _, node in matches if node.find("failure") is not None or node.find("error") is not None]
+              if not failed:
+                  raise SystemExit(f"BLOCKED: test did not demonstrate a pre-fix regression failure: {target}")
+              result.append({"test": target, "pre_fix_result": "failed_as_expected", "failure_count": len(failed)})
+          payload = {"status": "red_confirmed", "tests": result}
+          out = Path(os.environ["EVIDENCE_DIR"]) / "red-result.json"
+          out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(payload, indent=2))
+          PY
+
+      - name: Require the same tests to pass on the pinned fixed revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/upstream"
+          LOG="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID/fixed-build.log"
+          git -C "$SRC" reset --hard "$FIX_SHA"
+          case "$TEST_PATCH_ADJUSTMENT" in
+            "")
+              ;;
+            spring-create-request-resource)
+              if [ "$CASE_ID" != "spring-37285-part-spill-disk-limit" ] || [ "$TEST_FILES" != "spring-web/src/test/java/org/springframework/http/codec/multipart/DefaultPartHttpMessageReaderTests.java" ]; then
+                echo "BLOCKED: test patch adjustment is not scoped to its declared case."
+                exit 2
+              fi
+              python - "$SRC/$TEST_FILES" <<'PY'
+          from pathlib import Path
+          import sys
+
+          path = Path(sys.argv[1])
+          text = path.read_text(encoding="utf-8")
+          needle = 'createRequest("files.multipart",'
+          replacement = 'createRequest(new ClassPathResource("files.multipart", getClass()),'
+          if text.count(needle) != 1:
+              raise SystemExit("BLOCKED: expected exactly one broken Resource-helper argument in the pinned test fixture.")
+          path.write_text(text.replace(needle, replacement), encoding="utf-8")
+          PY
+              ;;
+            *)
+              echo "BLOCKED: unsupported test patch adjustment: $TEST_PATCH_ADJUSTMENT"
+              exit 2
+              ;;
+          esac
+          (cd "$SRC" && sha256sum $TEST_FILES) > "$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID/fixed-test-file-hashes.txt"
+          if ! diff -u "$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID/pre-fix-test-file-hashes.txt" "$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID/fixed-test-file-hashes.txt"; then
+            echo "BLOCKED: regression test fixture differs between pinned revisions after applying the declared adjustment."
+            exit 2
+          fi
+          if [ "$BUILD_TOOL" = "gradle" ]; then
+            if [ -z "$GRADLE_TEST_FILTERS" ]; then
+              echo "BLOCKED: Gradle candidate is missing explicit test filters."
+              exit 2
+            fi
+            (cd "$SRC" && ./gradlew --no-daemon ":$MAVEN_MODULE:test" --tests "$GRADLE_TEST_FILTERS") > "$LOG" 2>&1 || {
+              cat "$LOG"
+              echo "ERROR: regression tests did not pass on fixed revision."
+              exit 1
+            }
+          elif [ -n "$MAVEN_MODULE" ]; then
+            (cd "$SRC" && mvn -B -ntp -pl "$MAVEN_MODULE" -am clean -Dtest="$TEST_TARGETS" -Dsurefire.failIfNoSpecifiedTests=false test) > "$LOG" 2>&1 || {
+              cat "$LOG"
+              echo "ERROR: regression tests did not pass on fixed revision."
+              exit 1
+            }
+          else
+            (cd "$SRC" && mvn -B -ntp clean -Dtest="$TEST_TARGETS" test) > "$LOG" 2>&1 || {
+              cat "$LOG"
+              echo "ERROR: regression tests did not pass on fixed revision."
+              exit 1
+            }
+          fi
+          export EVIDENCE_DIR="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID"
+          python - "$SRC" "$TEST_TARGETS" <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          from xml.etree import ElementTree as ET
+
+          report_dir = Path(sys.argv[1])
+          targets = [item.strip() for item in sys.argv[2].split(",") if item.strip()]
+          cases = []
+          for file in report_dir.rglob("TEST-*.xml") if report_dir.exists() else []:
+              try:
+                  root = ET.parse(file).getroot()
+              except ET.ParseError:
+                  continue
+              for node in root.iter("testcase"):
+                  cases.append((node.get("classname", ""), node.get("name", ""), node))
+          result = []
+          for target in targets:
+              class_name, method = target.split("#", 1)
+              matches = [(cn, name, node) for cn, name, node in cases
+                         if cn.endswith("." + class_name) and (name == method or name.startswith(method + "("))]
+              if not matches:
+                  raise SystemExit(f"BLOCKED: targeted regression test did not execute on fixed revision: {target}")
+              bad = [node for _, _, node in matches
+                     if node.find("failure") is not None or node.find("error") is not None or node.find("skipped") is not None]
+              if bad:
+                  raise SystemExit(f"FAILED: test did not pass cleanly on fixed revision: {target}")
+              result.append({"test": target, "fixed_result": "passed"})
+          payload = {"status": "green_confirmed", "tests": result}
+          out = Path(os.environ["EVIDENCE_DIR"]) / "green-result.json"
+          out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(payload, indent=2))
+          PY
+          {
+            echo "status=red_green_pass"
+            echo "pre_fix_sha=$PRE_FIX_SHA"
+            echo "fixed_sha=$FIX_SHA"
+            echo "test_targets=$TEST_TARGETS"
+          } > "$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID/result.txt"
+
+      - name: Upload source-screening evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-lead-screening-${{ matrix.case_id }}
+          path: heldout-lead-screening/${{ matrix.case_id }}/
+          if-no-files-found: warn
+          retention-days: 90

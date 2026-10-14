@@ -1,0 +1,90 @@
+{
+  "incident_id": "unplanned-kaggle-run-38047007838",
+  "date_utc": "2026-10-10",
+  "classification": "unplanned_operational_execution_invalid_for_official_study_results",
+  "source": {
+    "github_actions_run_id": 38047007838,
+    "github_actions_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38047007838",
+    "triggering_commit": "c8b6f8f2e9647f1ab696387ccc9962051900102b",
+    "kernel_ref": "mahmutvezir/dijitalikiz-frozen-pilot-c8b6f8f2-38047007838-1",
+    "kernel_url": "https://www.kaggle.com/code/mahmutvezir/dijitalikiz-frozen-pilot-c8b6f8f2-38047007838-1",
+    "source_commit_embedded_in_launcher": "c8b6f8f2e9647f1ab696387ccc9962051900102b",
+    "launcher_sha256": "0a39fe1e5844e94a525400af599cdd7a8e3930ab3de63b147ae6e39092f2a9b1",
+    "kernel_metadata_sha256": "54decd7fde182ff142f1077b02f6988e377a17277bfcfe51f507cbeb238dc6bc"
+  },
+  "read_only_audit": {
+    "github_actions_run_id": 38048286908,
+    "github_actions_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38048286908",
+    "artifact_id": 11668148104,
+    "artifact_name": "unplanned-kaggle-run-134-audit-38048286908",
+    "artifact_sha256": "05a43f32bea088aa13ae3f443f29f7bc92774b4422b53308bed5eb204803bd2e",
+    "artifact_created_at_utc": "2026-10-10T11:24:31Z",
+    "artifact_expires_at_utc": "2026-11-09T11:24:30Z",
+    "kernel_log_sha256": "4ffff3b573d80bd4cc837bba85ff092065e0c07fccaac588859c40a7fe7b2cb1",
+    "downloaded_log_sha256": "e899f5f297b372df7097d396f070536025aa614b1a85aafd639dd5d4903dec92",
+    "status_file_sha256": "e1dd3bd4d4802439f03411103290656727f7baa2e63ab697f6f3b676a83b8b26",
+    "retrieved_files": [
+      "command_exit_codes.txt",
+      "kernel.log",
+      "output-download.txt",
+      "raw-output/dijitalikiz-frozen-pilot-c8b6f8f2-38047007838-1.log",
+      "status.txt"
+    ],
+    "required_artifacts_retrieved": [],
+    "required_artifacts_missing": [
+      "pilot_manifest.json",
+      "PROMPT_TEMPLATE.txt",
+      "SYSTEM_PROMPT.txt",
+      "environment.json",
+      "model_load_preflight.json",
+      "pilot_records.jsonl",
+      "pilot_evaluation.json",
+      "case_level_analysis.json",
+      "pilot_qa_report.json",
+      "artifact_manifest.json"
+    ],
+    "status": "kernel_complete_log_recovered_raw_record_artifacts_unavailable"
+  },
+  "log_observations": {
+    "kernel_status": "KernelWorkerStatus.COMPLETE",
+    "log_reports_pilot_records_exported": 40,
+    "log_reports_artifact_file_count": 55,
+    "log_reports_finalization_complete": true,
+    "logged_scoring_summary": {
+      "standard": {
+        "expected": 20,
+        "found": 20,
+        "parsed": 20,
+        "scored": 20,
+        "passed": 0,
+        "pass_rate": 0
+      },
+      "ccdg": {
+        "expected": 20,
+        "found": 20,
+        "parsed": 20,
+        "scored": 20,
+        "passed": 0,
+        "pass_rate": 0
+      }
+    },
+    "cases_in_logged_qa": [
+      "commons-math-defects4j-MATH-927",
+      "commons-math-defects4j-MATH-950",
+      "commons-math-defects4j-MATH-949",
+      "commons-math-defects4j-MATH-988"
+    ],
+    "repeats_per_case_condition": 5,
+    "case_majority_passes": 0,
+    "duplicate_output_groups": 0,
+    "parse_failure_rate": 0,
+    "interpretation": "Execution-QA log only. The raw JSONL/manifest were not recovered, so figures are not accepted as official benchmark scores or hypothesis evidence."
+  },
+  "official_dataset_handling": {
+    "modify_historical_pilot": false,
+    "modify_historical_confirmatory": false,
+    "append_unplanned_records_to_official_dataset": false,
+    "use_logged_scores_as_official_result": false,
+    "allow_new_inference_before_human_gates": false
+  }
+}

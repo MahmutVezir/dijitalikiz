@@ -70,22 +70,42 @@ def test_confirmatory_scripts_compile():
 def test_kaggle_automation_is_single_canonical_workflow():
     workflow_dir = ROOT / ".github" / "workflows"
     workflow_paths = sorted(workflow_dir.glob("*.yml"))
-    kaggle_workflows = [
+
+    # Only one workflow is allowed to create or execute a Kaggle kernel.
+    # The incident auditor is explicitly read-only and must never push/run one.
+    read_only_auditor = "audit-unplanned-kaggle-kernel.yml"
+    kaggle_execution_workflows = [
         path.name
         for path in workflow_paths
-        if "kaggle" in path.name.lower()
+        if (
+            "kaggle" in path.name.lower()
+            and path.name != read_only_auditor
+        )
         or '"enable_gpu": true' in path.read_text(encoding="utf-8").lower()
     ]
-    assert kaggle_workflows == ["kaggle-pilot.yml"]
+    assert kaggle_execution_workflows == ["kaggle-pilot.yml"]
 
-    # Separate offline/reproduction workflows may exist, but none may add a
-    # second frozen-pilot/confirmatory Kaggle execution path.
     for path in workflow_paths:
         if path.name == "kaggle-pilot.yml":
             continue
+
         source = path.read_text(encoding="utf-8")
         assert "run-frozen-pilot:" not in source
         assert "run-confirmatory:" not in source
+
+        if path.name == read_only_auditor:
+            # This workflow may authenticate to read an existing kernel, but
+            # must not upload/execute code or invoke any inference script.
+            assert "KAGGLE_API_TOKEN" in source
+            assert "kaggle kernels status" in source
+            assert "kaggle kernels logs" in source
+            assert "kaggle kernels output" in source
+            assert "kaggle kernels push" not in source
+            assert "kaggle kernels start" not in source
+            assert "scripts/run_frozen_pilot.py" not in source
+            assert "scripts/run_confirmatory.py" not in source
+            continue
+
         assert "KAGGLE_API_TOKEN" not in source
 
 def test_confirmatory_kaggle_kernel_isolated_from_exported_artifacts():

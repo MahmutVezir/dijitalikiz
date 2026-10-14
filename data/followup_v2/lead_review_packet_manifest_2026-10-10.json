@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "status": "superseded_not_for_distribution",
+  "created_at_utc": "2026-10-10T13:19:00Z",
+  "source_audit": {
+    "path": "data/followup_v2/discovery_screening_audit_run_38054680670.json",
+    "github_blob_sha": "aa38d49a8e6330f6fc17584a40833a966931097b",
+    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670",
+    "candidate_count": 11,
+    "named_regression_target_count": 21
+  },
+  "reviewer_packets": {
+    "candidate_count": 11,
+    "reviewer_a": {
+      "package_filename": "reviewer_a_package.zip",
+      "package_sha256": "263e39851f8a0848e7e2d54a07dc7aa1f55133e5a054f3f13df1e637909f50b3",
+      "packet_jsonl_sha256": "3f4d62d6c34229dedde8ef8aaa0c0571a3614a4314c8254e674d026c0fa068fd"
+    },
+    "reviewer_b": {
+      "package_filename": "reviewer_b_package.zip",
+      "package_sha256": "cb2b744dbc6cd8372c458e4c93af88a9edd235ac6f8e05ef27b0cbc1ca101996",
+      "packet_jsonl_sha256": "f9762db18a663e078430ff84fae8a4bd3ef877a556fc27c3085f23bf91baa1d6"
+    },
+    "blinding_checks": {
+      "same_opaque_review_id_set": true,
+      "packet_order_identical": false,
+      "case_ids_in_reviewer_packets": false,
+      "public_pr_urls_in_reviewer_packets": false,
+      "provisional_suitability_and_contamination_labels_in_reviewer_packets": false,
+      "screening_logs_in_reviewer_packets": false
+    }
+  },
+  "stage_status": {
+    "human_review_completed": false,
+    "separate_adjudication_completed": false,
+    "scoring_calibration_completed": false,
+    "heldout_confirmatory_eligible_case_count": 0,
+    "target_independent_case_count": 61,
+    "model_inference_authorized": false,
+    "historical_40_record_pilot_mutated": false,
+    "historical_160_output_confirmatory_mutated": false,
+    "current_review_packets_fresh": false,
+    "current_review_packets_regenerated": false
+  },
+  "distribution_policy": {
+    "send_reviewer_a_package_only_to_reviewer_a": true,
+    "send_reviewer_b_package_only_to_reviewer_b": true,
+    "share_coordinator_key_only_after_both_reviews_are_locked": true,
+    "coordinator_key_package_not_committed_to_repository": true
+  },
+  "interpretation": "This manifest hashes the superseded 11-candidate blinded packets and their old source audit only. Do not distribute those packets as the current review set. Rebuild from data/followup_v2/discovery_screening_audit_run_38057613670.json and create a new hash-bound manifest after verifying the output files. The manifest does not contain the unblinding key and does not claim any human review or adjudication has occurred.",
+  "supersession": {
+    "reason": "The original packet set was generated from an earlier 11-lead screening audit. Strict screening later corrected the test patch protocol and added a twelfth lead; old packet hashes remain historical and must not be distributed as the current set.",
+    "current_audit_path": "data/followup_v2/discovery_screening_audit_run_38057613670.json",
+    "current_audit_blob_sha": "b39c063bd428b45e5f3db86ea0a046c8a06a5785",
+    "current_audit_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38057613670",
+    "current_candidate_count": 12,
+    "current_regression_target_count": 22,
+    "packet_regeneration_required": true,
+    "superseded_on": "2026-10-10"
+  }
+}

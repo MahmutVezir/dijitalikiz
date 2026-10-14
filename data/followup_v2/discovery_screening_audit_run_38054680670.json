@@ -1,0 +1,423 @@
+{
+  "schema_version": "1.0",
+  "audit_id": "heldout-lead-red-green-2026-10-10-run-38054680670",
+  "status": "technical_screening_pass",
+  "created_at_utc": "2026-10-10T13:15:00Z",
+  "source_repository": "MahmutVezir/dijitalikiz",
+  "workflow": {
+    "name": "Held-out Lead Red-Green Screening",
+    "path": ".github/workflows/heldout-lead-red-green.yml",
+    "run_id": 38054680670,
+    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670",
+    "source_branch_head_sha": "783b4096d912786af45bab302baba0793ab2dc05",
+    "pull_request_merge_checkout_sha": "7e068c4845c74338936d5fe47236507b16e88925",
+    "conclusion": "success",
+    "purpose": "Pinned-revision source/test screening only; no model inference."
+  },
+  "repository_validation": {
+    "workflow_name": "Research Validation (No Inference)",
+    "run_id": 38054680672,
+    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680672",
+    "conclusion": "success",
+    "scope": [
+      "pytest",
+      "compileall",
+      "historical pilot integrity",
+      "case/candidate validation",
+      "benchmark manifest",
+      "confirmatory artifact integrity"
+    ],
+    "model_inference_performed": false
+  },
+  "policy": {
+    "historical_artifacts_mutated": false,
+    "model_inference_performed": false,
+    "scoring_calibration_performed": false,
+    "independent_human_source_review_completed": false,
+    "separate_adjudication_completed": false,
+    "heldout_confirmatory_inclusion_authorized": false,
+    "interpretation": "All 11 discovery leads have a matching named-test fail-before/pass-after result in this corrected run; the Compress 805 case first installs its exact Apache Commons Parent 104 RC1 source POM to avoid a Maven resolution failure before the test executes. This is technical reproducibility evidence only; it does not establish root-cause truth, cross-component suitability, independent human adjudication, contamination status, or eligibility for held-out confirmation."
+  },
+  "candidates": [
+    {
+      "case_id": "lang-1800-era-calendar",
+      "pull_request_url": "https://github.com/apache/commons-lang/pull/1800",
+      "repository_url": "https://github.com/apache/commons-lang",
+      "pre_fix_sha": "324d9fbd091749a9c70aed4b038fd0b4a520b3cf",
+      "fixed_sha": "c7f1a6d27707e8cd8cbed94f83e0c58d2c480614",
+      "regression_tests": [
+        {
+          "target": "FastDateFormatTest#testEraRoundTripNonGregorianCalendar",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "FastDatePrinterTest#testEraMixedCalendarTypes",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "artifact_id": 11669829513,
+      "artifact_name": "heldout-lead-screening-lang-1800-era-calendar",
+      "artifact_size_bytes": 5453,
+      "artifact_sha256": "ec8e79a01d2c5ae48976e56248d4f0c9c175a3a1e6bbed291a3a57c0ca1204bc",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670/artifacts/11669829513",
+      "human_review_status": "pending",
+      "cross_component_suitability": "moderate candidate; formatter/parser interaction needs independent review",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "lang-1807-wildcard-upper-bound",
+      "pull_request_url": "https://github.com/apache/commons-lang/pull/1807",
+      "repository_url": "https://github.com/apache/commons-lang",
+      "pre_fix_sha": "25c4bfcd6d9dc3a7333088bfc3031b05cd93837e",
+      "fixed_sha": "43154e016ae213a0da5b727cd1aa18e6e0c56adb",
+      "regression_tests": [
+        {
+          "target": "TypeUtilsTest#testUnboundedWildcardType",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "artifact_id": 11670279543,
+      "artifact_name": "heldout-lead-screening-lang-1807-wildcard-upper-bound",
+      "artifact_size_bytes": 5052,
+      "artifact_sha256": "cef7cef16bf723db9607420601e16f5761c67f52b3aaac0704a3c0e84ebc4630",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670/artifacts/11670279543",
+      "human_review_status": "pending",
+      "cross_component_suitability": "uncertain; likely localized TypeUtils/JDK contract boundary",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "collections-728-ordered-next-key",
+      "pull_request_url": "https://github.com/apache/commons-collections/pull/728",
+      "repository_url": "https://github.com/apache/commons-collections",
+      "pre_fix_sha": "a5248efd7f4f857f88770565414948e2d0524933",
+      "fixed_sha": "04b30be69f4355f218d587703bc20b1a591c3e3c",
+      "regression_tests": [
+        {
+          "target": "DualTreeBidiMapTest#testNextKeyAbsentKey",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "FixedSizeSortedMapTest#testNextKey",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "UnmodifiableSortedMapTest#testNextKey",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "artifact_id": 11670758855,
+      "artifact_name": "heldout-lead-screening-collections-728-ordered-next-key",
+      "artifact_size_bytes": 5117,
+      "artifact_sha256": "575e644f45745fead9cc509f233c2a45bd01d1f9ce858ef094e460a3848d8e07",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670/artifacts/11670758855",
+      "human_review_status": "pending",
+      "cross_component_suitability": "uncertain; potentially a single related bug family across wrappers",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false,
+      "note": "The three affected APIs/wrappers count as one defect case, not three independent cases."
+    },
+    {
+      "case_id": "net-404-ftps-data-hostname-verifier",
+      "pull_request_url": "https://github.com/apache/commons-net/pull/404",
+      "repository_url": "https://github.com/apache/commons-net",
+      "pre_fix_sha": "faa4edd7e287a3db465a32efd9c2d5faa15757fe",
+      "fixed_sha": "a79729464f6e69b773171ff30e3d483cab7afd70",
+      "regression_tests": [
+        {
+          "target": "FTPSClientTest#testHostnameVerifierUsedForDataConnection",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "artifact_id": 11670138926,
+      "artifact_name": "heldout-lead-screening-net-404-ftps-data-hostname-verifier",
+      "artifact_size_bytes": 4928,
+      "artifact_sha256": "3e46848d7dcd0bfa73dad1ae693c577579149035e23893bca72d36c85486af45",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670/artifacts/11670138926",
+      "human_review_status": "pending",
+      "cross_component_suitability": "promising; control/data channel and TLS hostname verification",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "net-403-ftp-parser-type-before-instantiation",
+      "pull_request_url": "https://github.com/apache/commons-net/pull/403",
+      "repository_url": "https://github.com/apache/commons-net",
+      "pre_fix_sha": "a3d19751891edb9f7cb8c11bc344eaf1683b2b32",
+      "fixed_sha": "6e38749760c0366aac1637c7dc15e4ccf76329c9",
+      "regression_tests": [
+        {
+          "target": "DefaultFTPFileEntryParserFactoryTest#testNonParserClassIsNotInstantiated",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "artifact_id": 11670564004,
+      "artifact_name": "heldout-lead-screening-net-403-ftp-parser-type-before-instantiation",
+      "artifact_size_bytes": 4739,
+      "artifact_sha256": "9daeba4971f55919e0fabcfe3a8b0efafd5af7da9dad61bfd93fd7abfa2d9286",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670/artifacts/11670564004",
+      "human_review_status": "pending",
+      "cross_component_suitability": "strong candidate; untrusted SYST reply -> parser dispatch -> class initialization",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "text-768-stringmatcher-charsequence-window",
+      "pull_request_url": "https://github.com/apache/commons-text/pull/768",
+      "repository_url": "https://github.com/apache/commons-text",
+      "pre_fix_sha": "a6cbba814422a06a0366468b2346f52aaacf8f3d",
+      "fixed_sha": "81de4f7a7c7d3b13d89edd72d4c4b92aa33e6c81",
+      "regression_tests": [
+        {
+          "target": "StringMatcherTest#testIsMatchCharSequencePassesBufferStartThrough",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "StringMatcherTest#testIsMatchCharSequenceStartDelegatesThroughTheCorrectedOverload",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "StringMatcherTest#testIsMatchOverloadsAgreeOnTheSameWindow",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "StringMatcherTest#testStringSubstitutorHandsACustomMatcherTheRealBufferStart",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "artifact_id": 11670319354,
+      "artifact_name": "heldout-lead-screening-text-768-stringmatcher-charsequence-window",
+      "artifact_size_bytes": 5275,
+      "artifact_sha256": "4220ca40e576da3dbe788a6d6a8537a8ffcf935c90be56daa8080f524bc2cc24",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670/artifacts/11670319354",
+      "human_review_status": "pending",
+      "cross_component_suitability": "promising; custom matcher -> StringMatcher overload -> StringSubstitutor",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "net-400-crlf-command-injection",
+      "pull_request_url": "https://github.com/apache/commons-net/pull/400",
+      "repository_url": "https://github.com/apache/commons-net",
+      "pre_fix_sha": "2a3aa71b077ae9290d9c3b95f6ad23b0e0a357c2",
+      "fixed_sha": "a07b6c41b5c2369506e7d86c4808dc51317e1481",
+      "regression_tests": [
+        {
+          "target": "FTPTest#testRejectCRLFInArgs",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "NNTPTest#testRejectCRLFInArgs",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "POP3Test#testRejectCRLFInArgs",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "SMTPTest#testRejectCRLFInArgs",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "artifact_id": 11670603985,
+      "artifact_name": "heldout-lead-screening-net-400-crlf-command-injection",
+      "artifact_size_bytes": 5104,
+      "artifact_sha256": "7b9e9e4c742e252a91780e2cf001787ec8c57048587d7b6146d8e61b582d2e81",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670/artifacts/11670603985",
+      "human_review_status": "pending",
+      "cross_component_suitability": "promising shared input-validation invariant across FTP, NNTP, POP3, SMTP; count as one defect",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "compress-805-pack200-error-propagation",
+      "pull_request_url": "https://github.com/apache/commons-compress/pull/805",
+      "repository_url": "https://github.com/apache/commons-compress",
+      "pre_fix_sha": "9a624106e6a5fce948d97ee262ed5742f6e4ceb4",
+      "fixed_sha": "17ce90728476f64d095f59cacf45c20ef3ade216",
+      "regression_tests": [
+        {
+          "target": "CodeAttributeTest#testNegativeReferenceIndex",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "artifact_id": 11670529163,
+      "artifact_name": "heldout-lead-screening-compress-805-pack200-error-propagation",
+      "artifact_size_bytes": 7069,
+      "artifact_sha256": "7db6a021a94f74ac621bc1f26e26e2a1adb8e96f43f978997ac8a93e7dd186f5",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670/artifacts/11670529163",
+      "human_review_status": "pending",
+      "cross_component_suitability": "promising; unpacker nested-reference handling -> adapter exception propagation",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false,
+      "parent_pom_prerequisite": {
+        "coordinate": "org.apache.commons:commons-parent:104:pom",
+        "source_revision_name": "commons-parent-104-RC1",
+        "source_commit_sha": "9066f72892fba9af187520ba37889ae068a333ba",
+        "source_pom_sha256": "60a508071c4f8d75212dd913811c19221b14ecbad5be3a23a3f1d10f7688106d",
+        "install_step": "success",
+        "source_log": "commons-parent-104-install.log"
+      }
+    },
+    {
+      "case_id": "jackson-6096-jsonview-array-update",
+      "pull_request_url": "https://github.com/FasterXML/jackson-databind/pull/6096",
+      "repository_url": "https://github.com/FasterXML/jackson-databind",
+      "pre_fix_sha": "05f0d04f6a63829d322145cf8ba87511cbf56445",
+      "fixed_sha": "82d58088dfeb6a6d1af0cc45b9f2fb5e00828f08",
+      "regression_tests": [
+        {
+          "target": "FailOnUnexpectedView6077Test$BeanAsArrayUpdate#hiddenRoleUpdateRejectedWhenEnabled",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "artifact_id": 11670918278,
+      "artifact_name": "heldout-lead-screening-jackson-6096-jsonview-array-update",
+      "artifact_size_bytes": 6244,
+      "artifact_sha256": "14857e2b749131f8f1307f82c422ed736a6bf52a0e5043842db10b7e474c2234",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670/artifacts/11670918278",
+      "human_review_status": "pending",
+      "cross_component_suitability": "moderate candidate; active view filtering must hold across deserialization create/update paths",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "jackson-6256-objectnode-anygetter-filter",
+      "pull_request_url": "https://github.com/FasterXML/jackson-databind/pull/6256",
+      "repository_url": "https://github.com/FasterXML/jackson-databind",
+      "pre_fix_sha": "e62a0704a10493001bf8ece5b16c1867b16bab45",
+      "fixed_sha": "aa9cd983faeea37317c172fffd8fa2ccbe8177a1",
+      "regression_tests": [
+        {
+          "target": "AnyGetterTest#objectNodeAnyGetterHonorsIgnoreProperties",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        },
+        {
+          "target": "AnyGetterTest#objectNodeAnyGetterHonorsIncludeProperties",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "artifact_id": 11670364419,
+      "artifact_name": "heldout-lead-screening-jackson-6256-objectnode-anygetter-filter",
+      "artifact_size_bytes": 6390,
+      "artifact_sha256": "f9f4bc388cffba6b37b16df7518a854779b28f4ab88062f9b92cc21c6cd924de",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670/artifacts/11670364419",
+      "human_review_status": "pending",
+      "cross_component_suitability": "promising; any-getter writer must match map serializer filtering semantics",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    },
+    {
+      "case_id": "netty-17759-pooled-derived-retained-slice",
+      "pull_request_url": "https://github.com/netty/netty/pull/17759",
+      "repository_url": "https://github.com/netty/netty",
+      "pre_fix_sha": "006a2f1d92db733d10112de251600da7b6f8ec51",
+      "fixed_sha": "d84dc6b1c290de2046bd0df5ba893e7f337cb0e6",
+      "regression_tests": [
+        {
+          "target": "PooledBigEndianHeapByteBufTest#testRetainedSliceOfNonRetainedDerivedBufferCoversTheReadableBytes",
+          "pre_fix": "failed_as_expected",
+          "failure_count": 1,
+          "fixed": "passed"
+        }
+      ],
+      "reproduction_status": "ci_red_green_pass",
+      "artifact_id": 11670564068,
+      "artifact_name": "heldout-lead-screening-netty-17759-pooled-derived-retained-slice",
+      "artifact_size_bytes": 15626,
+      "artifact_sha256": "eb0a0b601fa524a374d8bfc1876656184ff9257bbdf663aa825c9a08fd1f6a2b",
+      "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054680670/artifacts/11670564068",
+      "human_review_status": "pending",
+      "cross_component_suitability": "moderate candidate; derived-buffer index semantics and parent/ref-count state need independent review",
+      "contamination_risk": "public issue/fix disclosed; exact model exposure unknown",
+      "heldout_confirmatory_eligible": false
+    }
+  ],
+  "next_gates": [
+    "Two independent reviewers inspect source at both pinned revisions, test semantics, causal mechanism, component boundaries, licensing/provenance, and contamination limitations.",
+    "A separate adjudicator resolves disagreements and signs the case-review audit.",
+    "Exclude any case that is not one coherent defect or lacks a defensible cross-component dependency path.",
+    "Keep all calibration cases, historical cases, and any case used to develop prompts/scoring out of the v2 held-out pool.",
+    "Only after a defensible held-out pool is frozen proceed to runtime/tokenizer check, preregistration freeze, and inference authorization."
+  ],
+  "screening_summary": {
+    "total_leads": 11,
+    "regression_targets": 21,
+    "red_green_pass": 11,
+    "failed_or_unresolved": 0,
+    "build_prerequisite_installed_for": [
+      "compress-805-pack200-error-propagation"
+    ],
+    "independent_human_review_complete": 0,
+    "adjudication_complete": 0,
+    "heldout_eligible": 0,
+    "target_heldout_independent_cases": 61
+  },
+  "prior_retry_incident": {
+    "run_id": 38054377625,
+    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38054377625",
+    "candidate": "compress-805-pack200-error-propagation",
+    "status": "blocked_infrastructure_failure_not_a_regression_result",
+    "observed_error": "Maven could not resolve org.apache.commons:commons-parent:pom:104 before the named regression test executed.",
+    "corrective_action": "Pin and install Apache Commons Parent 104 RC1 from git commit 9066f72892fba9af187520ba37889ae068a333ba before running the Compress 805 red/green tests.",
+    "corrected_parent": {
+      "coordinate": "org.apache.commons:commons-parent:104:pom",
+      "revision_name": "commons-parent-104-RC1",
+      "commit_sha": "9066f72892fba9af187520ba37889ae068a333ba",
+      "pom_sha256": "60a508071c4f8d75212dd913811c19221b14ecbad5be3a23a3f1d10f7688106d",
+      "install_evidence_artifact_id": 11670529163
+    },
+    "rerun_conclusion": "red_and_green_both_passed_after_pinning_parent"
+  }
+}

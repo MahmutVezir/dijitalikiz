@@ -1,0 +1,75 @@
+{
+  "case_id": "commons-compress-github-pr-803-empty-framed-stream-recursion",
+  "source": "Apache Commons Compress GitHub Pull Request and source history",
+  "source_url": "https://github.com/apache/commons-compress/pull/803",
+  "publication_date": "2026-08-16",
+  "technology": "Apache Commons Compress / Java / framed LZ4 and Snappy decoders",
+  "error_description": "Reading an input stream containing very large numbers of legal empty LZ4 frames or Snappy padding chunks can terminate with StackOverflowError rather than reaching end-of-file normally.",
+  "i_base": [
+    "FramedLZ4CompressorInputStream reads end markers and initializes subsequent concatenated frames.",
+    "FramedSnappyCompressorInputStream processes stream identifiers and padding or skippable chunks while searching for the next data block.",
+    "The LZ4 and Snappy frame formats permit zero-output units that may appear repeatedly before EOF.",
+    "The regression tests exercise 200,000 concatenated empty LZ4 frames and 200,000 Snappy padding chunks.",
+    "Callers expect malformed or exhausted input to be reported through the declared IOException path; StackOverflowError is outside that checked-error contract."
+  ],
+  "ccdg": [
+    {
+      "source": "FramedLZ4CompressorInputStream.init",
+      "target": "FramedLZ4CompressorInputStream.nextBlock",
+      "relation": "advances_to_next_frame",
+      "details": "End-marker processing reaches the next frame parser."
+    },
+    {
+      "source": "FramedSnappyCompressorInputStream.readNextBlock",
+      "target": "next chunk",
+      "relation": "advances_past_zero_output_chunk",
+      "details": "Stream identifier or padding chunks produce no data and require continued parsing."
+    },
+    {
+      "source": "legal empty frame or padding chunk",
+      "target": "decoder call depth",
+      "relation": "controls_repeated_advancement",
+      "details": "A long run of such units makes recursion depth depend on input length."
+    },
+    {
+      "source": "iterative frame advancement",
+      "target": "EOF handling",
+      "relation": "avoids_stack_growth",
+      "details": "The fix advances through empty units with loops."
+    }
+  ],
+  "ground_truth": {
+    "component": "FramedLZ4CompressorInputStream.nextBlock and FramedSnappyCompressorInputStream.readNextBlock",
+    "entity": "repeated legal zero-output frames or padding chunks",
+    "operation": "advance to the next data block or EOF",
+    "root_cause": "repeated_zero_output_units_are_advanced_recursively_in_each_decoder_instead_of_iteratively",
+    "required_relations": [
+      "FramedLZ4CompressorInputStream.init",
+      "FramedLZ4CompressorInputStream.nextBlock",
+      "FramedSnappyCompressorInputStream.readNextBlock",
+      "zero-output frames or padding chunks",
+      "EOF"
+    ]
+  },
+  "split": "candidates",
+  "provenance": {
+    "pull_request": 803,
+    "fix_commit": "7e688ebdba45ab16aa5b7f870474dac285a494af",
+    "pre_fix_revision": "05862dd50eb51a6a1246cab50dc2a8619b301695",
+    "reproduction_status": "independent_pre_fix_failure_and_fixed_revision_pass",
+    "case_status": "calibration_case_draft_not_eligible_for_experiment",
+    "regression_test": "FramedLZ4CompressorInputStreamTest#testManyEmptyConcatenatedFramesDoNotOverflowStack",
+    "regression_test_status": "red_green_pass",
+    "reproduction_workflow": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38045048274",
+    "reproduction_artifact_id": 11667702346,
+    "ground_truth_adjudication_status": "pending_independent_review",
+    "role": "scoring_calibration_candidate_only"
+  },
+  "software_twin_snapshot": {
+    "repository_url": "https://github.com/apache/commons-compress",
+    "snapshot_revision": "05862dd50eb51a6a1246cab50dc2a8619b301695",
+    "regression_test": "FramedLZ4CompressorInputStreamTest#testManyEmptyConcatenatedFramesDoNotOverflowStack",
+    "observed_failure_signal": "Reading many legal empty LZ4 frames triggered stack overflow on the pinned pre-fix revision; the companion Snappy padding regression also failed."
+  },
+  "ccdg_suitability": "weak_for_single_cross_component_chain_parallel_decoder_paths"
+}

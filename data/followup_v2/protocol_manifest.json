@@ -1,0 +1,146 @@
+{
+  "protocol_version": "software-twin-ccdg-v2.0",
+  "status": "draft",
+  "model_inference_permitted": false,
+  "historical_artifacts_immutable": true,
+  "design": {
+    "conditions": [
+      {
+        "id": "A",
+        "name": "standard_baseline",
+        "renderer": "render_standard_context_v2",
+        "description": "Shared source, technology, error description, I_base, and version-bound snapshot; no explicit dependency-edge section."
+      },
+      {
+        "id": "B",
+        "name": "dependency_enriched_prose",
+        "renderer": "render_dependency_prose_context_v2",
+        "description": "Exactly the same base facts as A plus every adjudicated CCDG edge expressed as a sentence."
+      },
+      {
+        "id": "C",
+        "name": "ccdg_triples",
+        "renderer": "render_ccdg_context_v2",
+        "description": "Exactly the same base facts as A and the same dependency edges as B, represented as directed triples."
+      }
+    ],
+    "primary_contrast": ["C", "B"],
+    "secondary_contrasts": [["B", "A"], ["C", "A"]],
+    "primary_unit": "independent software defect case",
+    "primary_endpoint": "For each case-condition, at least 3 of 5 outputs are independently human-rated correct after blinding/adjudication; partial, incorrect, and unscorable outputs count as not-correct for this binary endpoint.",
+    "output_labels": ["correct", "partially_correct", "incorrect", "unscorable"],
+    "blind_rating": {
+      "reviewers_per_output": 2,
+      "reviewers_blinded_to_condition": true,
+      "reviewers_blinded_to_matcher_result": true,
+      "separate_adjudicator_for_disagreement": true
+    },
+    "statistics": {
+      "primary_test": "exact two-sided McNemar",
+      "primary_alpha": 0.05,
+      "secondary_multiplicity": "Holm correction across B-vs-A and C-vs-A at familywise alpha 0.05",
+      "effect_reporting": [
+        "paired case-level risk difference",
+        "discordant-pair counts in both directions",
+        "95% confidence interval for paired difference",
+        "exact two-sided p-value"
+      ],
+      "null_adverse_or_inconclusive_results_must_be_reported": true
+    },
+    "randomization": {
+      "conditions_share_the_same_case_set": true,
+      "seed_set_shared_across_conditions": true,
+      "generation_order": "pre-generate and hash a balanced randomized schedule over case-condition-seed cells before inference",
+      "schedule_hash_required_before_inference": true
+    }
+  },
+  "sample_size": {
+    "target_independent_case_count": 61,
+    "replications_per_condition": 5,
+    "conditions": 3,
+    "target_model_outputs": 915,
+    "target_power": 0.8,
+    "alpha": 0.05,
+    "power_method": "scripts/power_mcnemar.py exact conditional-binomial calculation for paired discordance",
+    "assumptions": {
+      "p_prose_only": 0.05,
+      "p_graph_only": 0.25,
+      "prose_only_definition": "B passes and C fails at case level",
+      "graph_only_definition": "C passes and B fails at case level"
+    },
+    "required_case_count_under_assumptions": 61,
+    "achieved_power_under_assumptions": 0.8052,
+    "assumption_warning": "These are prospective sensitivity assumptions, not estimates from the historical floor-effect result. Revisit only before any v2 confirmatory outputs exist; if feasible independent cases cannot support this target, report reduced precision rather than count repeated seeds as independent cases."
+  },
+  "model": {
+    "model_id": "Qwen/Qwen2.5-3B-Instruct",
+    "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "precision": "float16",
+    "quantization": "none",
+    "context_length": 32768,
+    "status": "proposed_not_frozen",
+    "selection_rationale": "Proposed to keep the historical model checkpoint fixed while isolating context representation. Must pass a fresh model/runtime/tokenizer compatibility gate before protocol freeze.",
+    "runtime": {
+      "python": "3.11",
+      "torch": "2.2.1",
+      "transformers": "4.43.2",
+      "accelerate": "0.33.0",
+      "requirements_path": "requirements-pilot.txt",
+      "requirements_sha256": "ba60700f0aed2f34b7cd02bdf0c1d14c046958a69b61a006c7abffa6fd722260"
+    }
+  },
+  "generation": {
+    "temperature": 0.2,
+    "top_p": 1.0,
+    "do_sample": true,
+    "max_new_tokens": 256,
+    "seeds": [42, 43, 44, 45, 46],
+    "status": "proposed_not_frozen"
+  },
+  "prompts": {
+    "system_prompt_path": "data/pilot/SYSTEM_PROMPT.txt",
+    "system_prompt_sha256": "650df9feb18a6a783f2f9b6c5cf2c28b3c639c95a1044e73b007f79bb15dfa8b",
+    "task_prompt_path": "data/pilot/PROMPT_TEMPLATE.txt",
+    "task_prompt_sha256": "c328289e8fc4cc8e5fe085c9524a3edf3f8627c3054478dd32003b66aa0d941d",
+    "tokenizer_audit_path": "data/followup_v2/prompt_token_audit.json",
+    "tokenizer_audit_sha256": null,
+    "max_context_tokens": 32768,
+    "generation_reserve_tokens": 256,
+    "tokenizer_audit_status": "pending"
+  },
+  "case_pool": {
+    "case_directory": "data/followup_v2/cases",
+    "case_ids": [],
+    "minimum_independent_case_count": 61,
+    "split_name": "followup_v2_confirmatory",
+    "must_be_disjoint_from": [
+      "data/pilot/pilot_manifest.json",
+      "data/benchmark/benchmark_manifest.json",
+      "data/calibration/case_pool_manifest.json"
+    ],
+    "source_review_audit_path": "data/followup_v2/heldout_case_review_audit.json",
+    "source_review_audit_sha256": null,
+    "assessments_directory": "data/followup_v2/assessments"
+  },
+  "gates": {
+    "independent_heldout_cases": "pending",
+    "source_revision_and_regression_review": "pending",
+    "two_reviewer_ground_truth_adjudication": "pending",
+    "score_calibration_and_rater_reliability": "pending",
+    "tokenizer_prompt_hash_audit": "pending",
+    "model_runtime_compatibility": "pending",
+    "randomized_schedule_and_hash": "pending",
+    "analysis_code_and_output_schema_review": "pending",
+    "final_preregistration_freeze": "pending"
+  },
+  "freeze_metadata": {
+    "frozen_at_utc": null,
+    "frozen_source_commit": null,
+    "review_audit_sha256": null,
+    "calibration_audit_sha256": null,
+    "prompt_token_audit_sha256": null,
+    "randomized_schedule_sha256": null,
+    "analysis_code_sha256": null,
+    "student_researcher_approval": null
+  }
+}
