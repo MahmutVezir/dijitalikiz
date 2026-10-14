@@ -13,6 +13,7 @@
     "ground_truth_root_cause",
     "ground_truth_rationale",
     "response_text",
+    "root_cause_aliases",
     "response_origin",
     "generation_metadata",
     "challenge_class",
@@ -20,16 +21,49 @@
     "is_from_frozen_study_output"
   ],
   "properties": {
-    "schema_version": {"const": "1.0"},
-    "example_id": {"type": "string", "minLength": 1},
-    "source_case_id": {"type": "string", "minLength": 1},
-    "source_url": {"type": "string", "format": "uri"},
-    "fixed_revision": {"type": "string", "minLength": 7},
-    "evidence_urls": {"type": "array", "minItems": 1, "items": {"type": "string", "format": "uri"}},
-    "case_summary": {"type": "string", "minLength": 20},
-    "ground_truth_root_cause": {"type": "string", "minLength": 1},
-    "ground_truth_rationale": {"type": "string", "minLength": 30},
-    "response_text": {"type": "string", "minLength": 1},
+    "schema_version": {
+      "const": "1.0"
+    },
+    "example_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "fixed_revision": {
+      "type": "string",
+      "minLength": 7
+    },
+    "evidence_urls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "case_summary": {
+      "type": "string",
+      "minLength": 20
+    },
+    "ground_truth_root_cause": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ground_truth_rationale": {
+      "type": "string",
+      "minLength": 30
+    },
+    "response_text": {
+      "type": "string",
+      "minLength": 1
+    },
     "response_origin": {
       "enum": [
         "independent_model_output",
@@ -44,13 +78,34 @@
         },
         {
           "type": "object",
-          "required": ["model_id", "model_revision", "seed", "prompt_sha256", "raw_output_sha256"],
+          "required": [
+            "model_id",
+            "model_revision",
+            "seed",
+            "prompt_sha256",
+            "raw_output_sha256"
+          ],
           "properties": {
-            "model_id": {"type": "string", "minLength": 1},
-            "model_revision": {"type": "string", "minLength": 7},
-            "seed": {"type": "integer", "minimum": 0},
-            "prompt_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
-            "raw_output_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
+            "model_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "model_revision": {
+              "type": "string",
+              "minLength": 7
+            },
+            "seed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "prompt_sha256": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{64}$"
+            },
+            "raw_output_sha256": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{64}$"
+            }
           },
           "additionalProperties": false
         }
@@ -67,20 +122,47 @@
         "unscorable_output"
       ]
     },
-    "legacy_matcher_accepts": {"type": "boolean"},
-    "is_from_frozen_study_output": {"const": false}
+    "legacy_matcher_accepts": {
+      "type": "boolean"
+    },
+    "is_from_frozen_study_output": {
+      "const": false
+    },
+    "root_cause_aliases": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
   },
   "allOf": [
     {
       "if": {
-        "properties": {"response_origin": {"const": "independent_model_output"}},
-        "required": ["response_origin"]
+        "properties": {
+          "response_origin": {
+            "const": "independent_model_output"
+          }
+        },
+        "required": [
+          "response_origin"
+        ]
       },
       "then": {
-        "properties": {"generation_metadata": {"type": "object"}}
+        "properties": {
+          "generation_metadata": {
+            "type": "object"
+          }
+        }
       },
       "else": {
-        "properties": {"generation_metadata": {"type": "null"}}
+        "properties": {
+          "generation_metadata": {
+            "type": "null"
+          }
+        }
       }
     }
   ],
