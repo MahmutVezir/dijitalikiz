@@ -213,4 +213,15 @@ This addendum records repository state only. It does not change any historical e
 4. Build and independently review the source-grounded calibration controls; report inter-reviewer agreement, Cohen's kappa, false acceptances and false rejections. Do not freeze if the prespecified thresholds fail.
 5. Continue sourcing and reviewing new held-out cases, run the tokenizer/context audit, calculate and justify prospective sample size, and freeze the three-condition protocol before any v2 confirmatory inference.
 
+
+### Source-review packets prepared — 2026-10-14
+
+A separate packet set was prepared outside version control for the **12 held-out-discovery leads** in strict screening run #86. This is distinct from the seven-case scoring-calibration candidate pool.
+
+- Packet provenance and distribution rules: `docs/LEAD_SOURCE_REVIEW_PACKET_MANIFEST_2026-10-14.md`.
+- Reviewer A ZIP SHA-256: `c088cf249e5d8122dee0e4fa7e2146a7ea196627ffe18880b9a2ddc1b9d1b632`.
+- Reviewer B ZIP SHA-256: `49f0571a25d9f2d27ae8acc36d664c0568680b1edcede5f04f68a403a646f47f`.
+- Both packages contain the same 12 opaque review IDs in different orders; case IDs, PR details, preliminary labels and screening logs are omitted. The coordinator key is stored separately and must not be sent to either reviewer.
+- Packet integrity/blinding checks passed locally. **Human source review and adjudication remain pending; no lead has been promoted and no inference is authorized.**
+
 The unchanged research decision is: the historic endpoint had a floor effect and cannot resolve the semantic CCDG hypothesis. A future run may support, contradict, or leave the hypothesis unresolved; no desired result is assumed.
