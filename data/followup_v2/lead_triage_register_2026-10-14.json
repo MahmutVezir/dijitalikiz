@@ -18,8 +18,8 @@
       "source_url": "https://github.com/netty/netty/pull/17623",
       "pr_number": 17623,
       "merged_at_utc": "2026-10-14T09:26:16Z",
-      "pre_fix_revision": "006a2f1d92db733d10112de251600da7b6f8ec51",
-      "fixed_revision": "4457a06776b82e2832ab4111a92b74c56b4f7d4f",
+      "pre_fix_revision": "de7fa8997db278b83f56b22f89b691be58ae88ba",
+      "fixed_revision": "1addbf90c4fd35713c61e5c54ad4d21c14d7df1d",
       "merge_commit": "1addbf90c4fd35713c61e5c54ad4d21c14d7df1d",
       "regression_tests": [
         "DnsNameResolverTest#testNegativelyCachedSearchDomainDoesNotShadowPositiveOne",
@@ -36,7 +36,9 @@
       "independent_source_review_status": "pending",
       "separate_adjudication_status": "pending",
       "heldout_confirmatory_eligible": false,
-      "model_inference_permitted": false
+      "model_inference_permitted": false,
+      "original_pr_head_revision": "4457a06776b82e2832ab4111a92b74c56b4f7d4f",
+      "revision_pair_basis": "first_parent_to_merged_fix_commit"
     },
     {
       "case_id": "netty-17764-tls13-signature-algorithm-key-selection",
@@ -44,8 +46,8 @@
       "source_url": "https://github.com/netty/netty/pull/17764",
       "pr_number": 17764,
       "merged_at_utc": "2026-10-14T10:27:31Z",
-      "pre_fix_revision": "d84dc6b1c290de2046bd0df5ba893e7f337cb0e6",
-      "fixed_revision": "79fdbdb2f6e7c77c196c00f071e6a61f7b5214cd",
+      "pre_fix_revision": "3eaff63caf06a582cc3df72422aa1124734b46c6",
+      "fixed_revision": "84c167ea85e0d7f5b40caec6cab859018f9490bd",
       "merge_commit": "84c167ea85e0d7f5b40caec6cab859018f9490bd",
       "regression_tests": [
         "PkiTestingTlsTest#connectWithEd25519",
@@ -62,7 +64,9 @@
       "independent_source_review_status": "pending",
       "separate_adjudication_status": "pending",
       "heldout_confirmatory_eligible": false,
-      "model_inference_permitted": false
+      "model_inference_permitted": false,
+      "original_pr_head_revision": "79fdbdb2f6e7c77c196c00f071e6a61f7b5214cd",
+      "revision_pair_basis": "first_parent_to_merged_fix_commit"
     },
     {
       "case_id": "commons-collections-724-indexed-collection-iterator-index-drift",
@@ -70,8 +74,8 @@
       "source_url": "https://github.com/apache/commons-collections/pull/724",
       "pr_number": 724,
       "merged_at_utc": "2026-08-12T15:06:24Z",
-      "pre_fix_revision": "fa20147591fe2c8545106eaa70d4fccbe54750f4",
-      "fixed_revision": "bb2404ebc960551fcd24878a3b71e689b5890ad7",
+      "pre_fix_revision": "3ff49116a265817f7546f72052e3d0478c159e62",
+      "fixed_revision": "651a6218910a906dc50415c145d63ba06c07a659",
       "merge_commit": "651a6218910a906dc50415c145d63ba06c07a659",
       "regression_tests": [
         "IndexedCollectionTest#testIteratorRemoveUpdatesIndex"
@@ -86,7 +90,9 @@
       "independent_source_review_status": "pending",
       "separate_adjudication_status": "pending",
       "heldout_confirmatory_eligible": false,
-      "model_inference_permitted": false
+      "model_inference_permitted": false,
+      "original_pr_head_revision": "bb2404ebc960551fcd24878a3b71e689b5890ad7",
+      "revision_pair_basis": "first_parent_to_merged_fix_commit"
     },
     {
       "case_id": "commons-collections-720-synchronized-collection-foreach-lock",
@@ -94,8 +100,8 @@
       "source_url": "https://github.com/apache/commons-collections/pull/720",
       "pr_number": 720,
       "merged_at_utc": "2026-08-01T11:51:55Z",
-      "pre_fix_revision": "a2512f0b1dd197478060a8ecf88f154f316d6412",
-      "fixed_revision": "75681c50531fa10dd19574ddec055286ea93a87c",
+      "pre_fix_revision": "d58a5e3a1258877bd94ba79db9f8a5f90892624b",
+      "fixed_revision": "6ee9dd78c79f367dd8e3e1655e4664bcec960ad6",
       "merge_commit": "6ee9dd78c79f367dd8e3e1655e4664bcec960ad6",
       "regression_tests": [
         "SynchronizedCollectionTest#testForEachHoldsLock"
@@ -110,7 +116,9 @@
       "independent_source_review_status": "pending",
       "separate_adjudication_status": "pending",
       "heldout_confirmatory_eligible": false,
-      "model_inference_permitted": false
+      "model_inference_permitted": false,
+      "original_pr_head_revision": "75681c50531fa10dd19574ddec055286ea93a87c",
+      "revision_pair_basis": "first_parent_to_merged_fix_commit"
     },
     {
       "case_id": "commons-lang-1795-fastdateformat-mutable-timezone-cache-leak",
@@ -119,7 +127,7 @@
       "pr_number": 1795,
       "merged_at_utc": "2026-09-19T14:31:48Z",
       "pre_fix_revision": "d235f1e997523d7a3d9d1c63e9a1853c2ab728fd",
-      "fixed_revision": "df000db5aa3eb1a1483d6ec9a5b2dd17c604d8cb",
+      "fixed_revision": "117a9ea791b87af1b90413fa8290891ca3106cfd",
       "merge_commit": "117a9ea791b87af1b90413fa8290891ca3106cfd",
       "regression_tests": [
         "FastDateFormatTest#testTimeZoneArgumentIsCopied",
@@ -136,7 +144,9 @@
       "independent_source_review_status": "pending",
       "separate_adjudication_status": "pending",
       "heldout_confirmatory_eligible": false,
-      "model_inference_permitted": false
+      "model_inference_permitted": false,
+      "original_pr_head_revision": "df000db5aa3eb1a1483d6ec9a5b2dd17c604d8cb",
+      "revision_pair_basis": "first_parent_to_merged_fix_commit"
     },
     {
       "case_id": "commons-compress-797-lz77-back-reference-window-bound",
@@ -144,8 +154,8 @@
       "source_url": "https://github.com/apache/commons-compress/pull/797",
       "pr_number": 797,
       "merged_at_utc": "2026-08-11T11:06:16Z",
-      "pre_fix_revision": "a0df6b63a36d1c0ea2550c85a34634a9d8715913",
-      "fixed_revision": "389f1a98d2a716b2a83e0556e4e1efa67cfc2f1d",
+      "pre_fix_revision": "4a17b64939b782a5e95c5aecfd583b631cb58522",
+      "fixed_revision": "cebee156fe66578b5142b4176e6c408a76d65c0c",
       "merge_commit": "cebee156fe66578b5142b4176e6c408a76d65c0c",
       "regression_tests": [
         "AbstractLZ77CompressorInputStreamTest#testBackReferenceOffsetLargerThanWindowIsRejected"
@@ -160,7 +170,9 @@
       "independent_source_review_status": "pending",
       "separate_adjudication_status": "pending",
       "heldout_confirmatory_eligible": false,
-      "model_inference_permitted": false
+      "model_inference_permitted": false,
+      "original_pr_head_revision": "389f1a98d2a716b2a83e0556e4e1efa67cfc2f1d",
+      "revision_pair_basis": "first_parent_to_merged_fix_commit"
     }
   ],
   "reserve_or_exclude": [
@@ -215,5 +227,7 @@
     "require_contamination_risk_record": true,
     "require_no_model_inference_until_protocol_frozen": true
   },
-  "limitation": "This record is only a manual source/diff triage. No candidate in this file has been run through the repository's red-green workflow by this triage document, independently annotated by humans, adjudicated, or admitted to the v2 case pool."
+  "limitation": "This record is only a manual source/diff triage. No candidate in this file has been run through the repository's red-green workflow by this triage document, independently annotated by humans, adjudicated, or admitted to the v2 case pool.",
+  "revision_pin_method": "Each pre-fix revision is the first parent of the merged fix commit; fixed revision is the merge commit itself. The original PR head is retained separately for provenance.",
+  "note": " SHA values were corrected on 2026-10-14 to use first-parent/merged-commit pairs for strict red-green screening; PR-head SHAs are preserved as separate provenance fields. This remains source triage only."
 }
