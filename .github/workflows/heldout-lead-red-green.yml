@@ -100,6 +100,46 @@ jobs:
             fix: d84dc6b1c290de2046bd0df5ba893e7f337cb0e6
             tests: PooledBigEndianHeapByteBufTest#testRetainedSliceOfNonRetainedDerivedBufferCoversTheReadableBytes
             test_files: buffer/src/test/java/io/netty/buffer/AbstractByteBufTest.java
+          - case_id: netty-17623-negative-search-domain-cache
+            repo: netty/netty
+            module: resolver-dns
+            pre_fix: de7fa8997db278b83f56b22f89b691be58ae88ba
+            fix: 1addbf90c4fd35713c61e5c54ad4d21c14d7df1d
+            tests: DnsNameResolverTest#testNegativelyCachedSearchDomainDoesNotShadowPositiveOne,DnsNameResolverTest#testNegativelyCachedSearchDomainDoesNotShadowUncachedOne,DnsNameResolverTest#testNegativelyCachedBareHostnameStillShortCircuits
+            test_files: resolver-dns/src/test/java/io/netty/resolver/dns/DnsNameResolverTest.java
+          - case_id: netty-17764-tls13-signature-algorithm-key-selection
+            repo: netty/netty
+            module: handler
+            java_version: "21"
+            pre_fix: 3eaff63caf06a582cc3df72422aa1124734b46c6
+            fix: 84c167ea85e0d7f5b40caec6cab859018f9490bd
+            tests: PkiTestingTlsTest#connectWithEd25519,PkiTestingTlsTest#connectWithEd25519AndRsa,PkiTestingTlsTest#connectWithEd25519FailsWithoutCommonSignatureAlgorithm
+            test_files: handler/src/test/java/io/netty/handler/ssl/PkiTestingTlsTest.java
+          - case_id: collections-724-indexed-collection-iterator-index-drift
+            repo: apache/commons-collections
+            pre_fix: 3ff49116a265817f7546f72052e3d0478c159e62
+            fix: 651a6218910a906dc50415c145d63ba06c07a659
+            tests: IndexedCollectionTest#testIteratorRemoveUpdatesIndex
+            test_files: src/test/java/org/apache/commons/collections4/collection/IndexedCollectionTest.java
+          - case_id: collections-720-synchronized-collection-foreach-lock
+            repo: apache/commons-collections
+            pre_fix: d58a5e3a1258877bd94ba79db9f8a5f90892624b
+            fix: 6ee9dd78c79f367dd8e3e1655e4664bcec960ad6
+            tests: SynchronizedCollectionTest#testForEachHoldsLock
+            test_files: src/test/java/org/apache/commons/collections4/collection/SynchronizedCollectionTest.java
+          - case_id: lang-1795-fastdateformat-mutable-timezone-cache-leak
+            repo: apache/commons-lang
+            pre_fix: d235f1e997523d7a3d9d1c63e9a1853c2ab728fd
+            fix: 117a9ea791b87af1b90413fa8290891ca3106cfd
+            tests: FastDateFormatTest#testTimeZoneArgumentIsCopied,FastDateFormatTest#testTimeZoneGetterReturnsCopy,FastDateParserTest#testTimeZoneIsCopied
+            test_files: src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java src/test/java/org/apache/commons/lang3/time/FastDateParserTest.java
+          - case_id: compress-797-lz77-back-reference-window-bound
+            repo: apache/commons-compress
+            pre_fix: 4a17b64939b782a5e95c5aecfd583b631cb58522
+            fix: cebee156fe66578b5142b4176e6c408a76d65c0c
+            tests: AbstractLZ77CompressorInputStreamTest#testBackReferenceOffsetLargerThanWindowIsRejected
+            test_files: src/test/java/org/apache/commons/compress/compressors/lz77support/AbstractLZ77CompressorInputStreamTest.java
+
 
     env:
       UPSTREAM_REPO: ${{ matrix.repo }}
@@ -117,11 +157,11 @@ jobs:
       - name: Checkout research repository for screening evidence
         uses: actions/checkout@v5
 
-      - name: Set up Java 17
+      - name: Set up Java for pinned candidate
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: ${{ matrix.java_version || '17' }}
 
       - name: Clone upstream and pin exact revisions
         shell: bash
