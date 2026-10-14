@@ -20,8 +20,20 @@ def _normalize_alias_phrase(value: str) -> str:
 
 
 def _calibration_matcher_accepts(response_text: str, aliases: list[str]) -> bool:
-    """Reproduce literal contiguous alias matching on the recorded response surface."""
-    haystack = " " + _normalize_alias_phrase(response_text) + " "
+    """Reproduce the frozen evaluator using root_cause_class plus explanation."""
+    try:
+        payload = json.loads(response_text)
+    except (TypeError, json.JSONDecodeError):
+        return False
+
+    expected_fields = {"diagnosed_component", "root_cause_class", "affected_entity", "explanation"}
+    if not isinstance(payload, dict) or set(payload) != expected_fields:
+        return False
+    if not all(isinstance(payload[field], str) for field in expected_fields):
+        return False
+
+    matcher_surface = payload["root_cause_class"] + " " + payload["explanation"]
+    haystack = " " + _normalize_alias_phrase(matcher_surface) + " "
     return any(
         (" " + normalized + " ") in haystack
         for normalized in (_normalize_alias_phrase(alias) for alias in aliases)
@@ -308,17 +320,17 @@ def audit_calibration(
             if row.get("is_from_frozen_study_output") is not False:
                 issues.append(f"{example_id}_uses_frozen_study_output")
             aliases = row.get("root_cause_aliases")
-            matcher_text = row.get("matcher_text")
+            response_text = row.get("response_text")
             if not isinstance(aliases, list) or not aliases or not all(
                 isinstance(alias, str) and alias.strip() for alias in aliases
             ):
                 issues.append(f"{example_id}_invalid_root_cause_aliases")
-            if not isinstance(matcher_text, str) or not matcher_text.strip():
-                issues.append(f"{example_id}_invalid_matcher_text")
+            if not isinstance(response_text, str) or not response_text.strip():
+                issues.append(f"{example_id}_invalid_response_text")
             elif isinstance(aliases, list) and aliases and all(
                 isinstance(alias, str) and alias.strip() for alias in aliases
             ):
-                computed_match = _calibration_matcher_accepts(matcher_text, aliases)
+                computed_match = _calibration_matcher_accepts(response_text, aliases)
                 if row.get("legacy_matcher_accepts") is not computed_match:
                     issues.append(f"{example_id}_legacy_matcher_result_mismatch")
         minimum = manifest.get("minimum_examples_per_challenge_class")
