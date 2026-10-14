@@ -1,3 +1,4 @@
+import hashlib
 import json
 from pathlib import Path
 
@@ -127,6 +128,11 @@ def _complete_fixture(root: Path):
             "legacy_matcher_accepts": MATCHER_BY_CLASS[challenge_class],
             "is_from_frozen_study_output": False,
         })
+    for example in examples:
+        if example["response_origin"] == "independent_model_output":
+            example["generation_metadata"]["raw_output_sha256"] = hashlib.sha256(
+                example["response_text"].encode("utf-8")
+            ).hexdigest()
     _write_jsonl(root / "data" / "calibration" / "examples.jsonl", examples)
 
     packet_a, packet_b, key = build_packets(examples)
@@ -297,6 +303,29 @@ def test_calibration_gate_rejects_matcher_flag_not_supported_by_aliases(tmp_path
 
 
 
+def test_calibration_gate_rejects_raw_output_hash_mismatch(tmp_path):
+    manifest_path, key_path = _complete_fixture(tmp_path)
+    examples_path = tmp_path / "data" / "calibration" / "examples.jsonl"
+    examples = [json.loads(line) for line in examples_path.read_text(encoding="utf-8").splitlines()]
+    examples[0]["response_text"] = json.dumps({
+        "diagnosed_component": "Component 1",
+        "root_cause_class": "verified mechanism 1",
+        "affected_entity": "Entity 1",
+        "explanation": "Changed response content.",
+    }, ensure_ascii=False, sort_keys=True)
+    # Deliberately retain the original raw_output_sha256 to simulate a tampered record.
+    _write_jsonl(examples_path, examples)
+    report = audit_calibration(
+        manifest_path=manifest_path,
+        key_path=key_path,
+        pilot_manifest_path=tmp_path / "data" / "pilot" / "pilot_manifest.json",
+        benchmark_manifest_path=tmp_path / "data" / "benchmark" / "benchmark_manifest.json",
+    )
+    assert report["status"] == "blocked"
+    assert any("raw_output_sha256_mismatch" in issue for issue in report["issues"])
+
+
+
 def test_calibration_gate_uses_only_root_cause_and_explanation_fields(tmp_path):
     manifest_path, key_path = _complete_fixture(tmp_path)
     examples_path = tmp_path / "data" / "calibration" / "examples.jsonl"
@@ -309,6 +338,9 @@ def test_calibration_gate_uses_only_root_cause_and_explanation_fields(tmp_path):
         "affected_entity": "verified mechanism 1",
         "explanation": "No alias phrase in the scoring fields.",
     }, ensure_ascii=False, sort_keys=True)
+    examples[0]["generation_metadata"]["raw_output_sha256"] = hashlib.sha256(
+        examples[0]["response_text"].encode("utf-8")
+    ).hexdigest()
     examples[0]["legacy_matcher_accepts"] = False
     _write_jsonl(examples_path, examples)
     report = audit_calibration(
