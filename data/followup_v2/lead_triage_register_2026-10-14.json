@@ -1,0 +1,219 @@
+{
+  "schema_version": "1.0",
+  "triage_id": "heldout-lead-triage-2026-10-14",
+  "status": "source_triage_only_no_case_admitted",
+  "created_on": "2026-10-14",
+  "purpose": "Record additional source-inspected candidate leads for later Java regression screening; do not treat these as red-green-reproduced, independently reviewed, or eligible held-out confirmatory cases.",
+  "model_inference_permitted": false,
+  "historical_artifacts_immutable": true,
+  "current_protocol_manifest": "data/followup_v2/protocol_manifest.json",
+  "current_protocol_status": "draft",
+  "current_protocol_gate_status": "all prospective freeze gates remain pending",
+  "frozen_model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "model_release_basis": "Qwen/Qwen2.5-3B-Instruct model card indicates a 2024 release/update; these candidate fixes merged in 2026. This lowers exact-fixed-patch exposure risk relative to later public fixes but does not exclude exposure to pre-fix code, related patterns, or other training leakage.",
+  "candidates": [
+    {
+      "case_id": "netty-17623-negative-search-domain-cache-shadowing",
+      "repository": "netty/netty",
+      "source_url": "https://github.com/netty/netty/pull/17623",
+      "pr_number": 17623,
+      "merged_at_utc": "2026-10-14T09:26:16Z",
+      "pre_fix_revision": "006a2f1d92db733d10112de251600da7b6f8ec51",
+      "fixed_revision": "4457a06776b82e2832ab4111a92b74c56b4f7d4f",
+      "merge_commit": "1addbf90c4fd35713c61e5c54ad4d21c14d7df1d",
+      "regression_tests": [
+        "DnsNameResolverTest#testNegativelyCachedSearchDomainDoesNotShadowPositiveOne",
+        "DnsNameResolverTest#testNegativelyCachedSearchDomainDoesNotShadowUncachedOne",
+        "DnsNameResolverTest#testNegativelyCachedBareHostnameStillShortCircuits"
+      ],
+      "preliminary_ccdg_suitability": "strong",
+      "source_triage_reason": "A negative cache entry for one search-domain permutation was treated as authoritative and prevented later search domains from resolving; the fixed logic separates cache probing from the search-domain resolution ladder.",
+      "concerns": [
+        "Validate pinned pre-fix/fixed red-green behavior in the existing screening workflow.",
+        "Ensure the causal graph reflects resolver/cache/search-domain components, not merely a same-class call chain."
+      ],
+      "source_triage_status": "candidate_lead_not_technically_screened_here",
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "heldout_confirmatory_eligible": false,
+      "model_inference_permitted": false
+    },
+    {
+      "case_id": "netty-17764-tls13-signature-algorithm-key-selection",
+      "repository": "netty/netty",
+      "source_url": "https://github.com/netty/netty/pull/17764",
+      "pr_number": 17764,
+      "merged_at_utc": "2026-10-14T10:27:31Z",
+      "pre_fix_revision": "d84dc6b1c290de2046bd0df5ba893e7f337cb0e6",
+      "fixed_revision": "79fdbdb2f6e7c77c196c00f071e6a61f7b5214cd",
+      "merge_commit": "84c167ea85e0d7f5b40caec6cab859018f9490bd",
+      "regression_tests": [
+        "PkiTestingTlsTest#connectWithEd25519",
+        "PkiTestingTlsTest#connectWithEd25519AndRsa",
+        "PkiTestingTlsTest#connectWithEd25519FailsWithoutCommonSignatureAlgorithm"
+      ],
+      "preliminary_ccdg_suitability": "strong",
+      "source_triage_reason": "The OpenSSL key-material path selected key types from cipher-suite auth methods even for TLS 1.3, where client signature algorithms govern the choice; the patch touches key selection and engine protocol detection.",
+      "concerns": [
+        "Red-green reproduction may depend on JDK/OpenSSL provider support and specific runtime prerequisites.",
+        "Ensure the actual diagnosis distinguishes signature-algorithm negotiation from certificate-generation/test-provider setup."
+      ],
+      "source_triage_status": "candidate_lead_not_technically_screened_here",
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "heldout_confirmatory_eligible": false,
+      "model_inference_permitted": false
+    },
+    {
+      "case_id": "commons-collections-724-indexed-collection-iterator-index-drift",
+      "repository": "apache/commons-collections",
+      "source_url": "https://github.com/apache/commons-collections/pull/724",
+      "pr_number": 724,
+      "merged_at_utc": "2026-08-12T15:06:24Z",
+      "pre_fix_revision": "fa20147591fe2c8545106eaa70d4fccbe54750f4",
+      "fixed_revision": "bb2404ebc960551fcd24878a3b71e689b5890ad7",
+      "merge_commit": "651a6218910a906dc50415c145d63ba06c07a659",
+      "regression_tests": [
+        "IndexedCollectionTest#testIteratorRemoveUpdatesIndex"
+      ],
+      "preliminary_ccdg_suitability": "strong",
+      "source_triage_reason": "Removal through a collection decorator's iterator updated the backing collection but not its MultiMap index, leaving lookup/uniqueness behavior inconsistent. This offers a concrete state relationship between view mutation and an auxiliary index.",
+      "concerns": [
+        "Confirm pre-fix failure and fixed pass from the exact hashes.",
+        "Review whether the index/collection relation is a defensible CCDG dependency and not simply data-structure bookkeeping."
+      ],
+      "source_triage_status": "candidate_lead_not_technically_screened_here",
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "heldout_confirmatory_eligible": false,
+      "model_inference_permitted": false
+    },
+    {
+      "case_id": "commons-collections-720-synchronized-collection-foreach-lock",
+      "repository": "apache/commons-collections",
+      "source_url": "https://github.com/apache/commons-collections/pull/720",
+      "pr_number": 720,
+      "merged_at_utc": "2026-08-01T11:51:55Z",
+      "pre_fix_revision": "a2512f0b1dd197478060a8ecf88f154f316d6412",
+      "fixed_revision": "75681c50531fa10dd19574ddec055286ea93a87c",
+      "merge_commit": "6ee9dd78c79f367dd8e3e1655e4664bcec960ad6",
+      "regression_tests": [
+        "SynchronizedCollectionTest#testForEachHoldsLock"
+      ],
+      "preliminary_ccdg_suitability": "moderate",
+      "source_triage_reason": "The inherited Collection.forEach default traversed the decorated iterator without holding the synchronizing wrapper's lock; the fix guards iteration and propagates the contract to synchronized collection subclasses.",
+      "concerns": [
+        "Potentially more concurrency-contract-focused than a deep root-cause path; independent reviewers may rate CCDG suitability weak.",
+        "The test is parameterized across multiple decorator types; preserve one defect as one case rather than counting subclasses as independent observations."
+      ],
+      "source_triage_status": "candidate_lead_not_technically_screened_here",
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "heldout_confirmatory_eligible": false,
+      "model_inference_permitted": false
+    },
+    {
+      "case_id": "commons-lang-1795-fastdateformat-mutable-timezone-cache-leak",
+      "repository": "apache/commons-lang",
+      "source_url": "https://github.com/apache/commons-lang/pull/1795",
+      "pr_number": 1795,
+      "merged_at_utc": "2026-09-19T14:31:48Z",
+      "pre_fix_revision": "d235f1e997523d7a3d9d1c63e9a1853c2ab728fd",
+      "fixed_revision": "df000db5aa3eb1a1483d6ec9a5b2dd17c604d8cb",
+      "merge_commit": "117a9ea791b87af1b90413fa8290891ca3106cfd",
+      "regression_tests": [
+        "FastDateFormatTest#testTimeZoneArgumentIsCopied",
+        "FastDateFormatTest#testTimeZoneGetterReturnsCopy",
+        "FastDateParserTest#testTimeZoneIsCopied"
+      ],
+      "preliminary_ccdg_suitability": "moderate",
+      "source_triage_reason": "A mutable TimeZone reference was retained/exposed by cached formatter/parser objects, allowing one caller to alter behavior observed by other holders of a supposedly immutable shared formatter.",
+      "concerns": [
+        "Check overlap with other date/time candidates; do not over-represent closely related formatting defects.",
+        "Reviewer should decide whether the cache, formatter/parser, and mutable timezone form a cross-component causal path of sufficient complexity."
+      ],
+      "source_triage_status": "candidate_lead_not_technically_screened_here",
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "heldout_confirmatory_eligible": false,
+      "model_inference_permitted": false
+    },
+    {
+      "case_id": "commons-compress-797-lz77-back-reference-window-bound",
+      "repository": "apache/commons-compress",
+      "source_url": "https://github.com/apache/commons-compress/pull/797",
+      "pr_number": 797,
+      "merged_at_utc": "2026-08-11T11:06:16Z",
+      "pre_fix_revision": "a0df6b63a36d1c0ea2550c85a34634a9d8715913",
+      "fixed_revision": "389f1a98d2a716b2a83e0556e4e1efa67cfc2f1d",
+      "merge_commit": "cebee156fe66578b5142b4176e6c408a76d65c0c",
+      "regression_tests": [
+        "AbstractLZ77CompressorInputStreamTest#testBackReferenceOffsetLargerThanWindowIsRejected"
+      ],
+      "preliminary_ccdg_suitability": "moderate",
+      "source_triage_reason": "The decoder accepted back-reference offsets larger than its retained history window; during buffer sliding the reference index could become negative and leak an unchecked array-copy failure instead of a declared compression error.",
+      "concerns": [
+        "The named test directly targets the protected primitive; check which concrete decoders exercise the path and whether the case remains multi-component enough for CCDG.",
+        "Avoid counting multiple codec callers as separate cases if one shared root cause is used."
+      ],
+      "source_triage_status": "candidate_lead_not_technically_screened_here",
+      "independent_source_review_status": "pending",
+      "separate_adjudication_status": "pending",
+      "heldout_confirmatory_eligible": false,
+      "model_inference_permitted": false
+    }
+  ],
+  "reserve_or_exclude": [
+    {
+      "repository": "apache/commons-net",
+      "pr_number": 406,
+      "source_url": "https://github.com/apache/commons-net/pull/406",
+      "decision": "reserve_not_added_to_active_triage",
+      "reason": "Mechanism is ambient-locale/non-Gregorian date parsing, closely related to current Lang #1800 lead; avoid over-weighting one defect family until diversity is reviewed.",
+      "not_a_finding_of_duplicate_case": true
+    },
+    {
+      "repository": "apache/commons-compress",
+      "pr_number": 800,
+      "source_url": "https://github.com/apache/commons-compress/pull/800",
+      "decision": "reserve_not_added_to_active_triage",
+      "reason": "Pack200 UTF-8 prefix validation sits in the same Pack200/unpack error-handling area as an existing #805 lead; defer until reviewers assess whether both belong in the same defect family.",
+      "not_a_finding_of_duplicate_case": true
+    },
+    {
+      "repository": "apache/commons-collections",
+      "pr_number": 719,
+      "source_url": "https://github.com/apache/commons-collections/pull/719",
+      "decision": "reserve_not_added_to_active_triage",
+      "reason": "OrderedProperties key/value view mutations desynchronize backing mappings and order tracking. Promising, but collection-view state consistency is already represented by other Commons Collections leads; reserve to maintain mechanism diversity.",
+      "not_a_finding_of_duplicate_case": true
+    },
+    {
+      "repository": "apache/commons-lang",
+      "pr_number": 1812,
+      "source_url": "https://github.com/apache/commons-lang/pull/1812",
+      "decision": "exclude_from_primary_candidate_triage",
+      "reason": "The PR explicitly discloses Claude Code assistance in drafting the code change, tests, and description. Given the project's conservative screening policy, do not promote into the primary held-out shortlist. This is a methodology/source-selection choice, not proof that the frozen 2024 model was trained on the PR.",
+      "not_a_finding_of_model_contamination": true
+    },
+    {
+      "repository": "apache/commons-compress",
+      "pr_number": 806,
+      "source_url": "https://github.com/apache/commons-compress/pull/806",
+      "decision": "exclude_from_primary_candidate_triage",
+      "reason": "The identified behavior is primarily the empty-code-length guard in HuffmanDecoder and may be a weak single-component boundary case; do not spend reproduction capacity until a defensible cross-component path is demonstrated.",
+      "not_a_finding_of_bad_fix": true
+    }
+  ],
+  "gate_policy": {
+    "require_pinned_pre_fix_failure_and_fixed_pass": true,
+    "require_identical_regression_test_patch_on_both_revisions": true,
+    "require_two_independent_source_reviewers": true,
+    "require_separate_adjudicator": true,
+    "require_ground_truth_and_dependency_edge_evidence": true,
+    "require_disjoint_from_historical_pilot_confirmatory_and_scoring_calibration": true,
+    "require_contamination_risk_record": true,
+    "require_no_model_inference_until_protocol_frozen": true
+  },
+  "limitation": "This record is only a manual source/diff triage. No candidate in this file has been run through the repository's red-green workflow by this triage document, independently annotated by humans, adjudicated, or admitted to the v2 case pool."
+}
