@@ -79,6 +79,15 @@ def _complete_fixture(root: Path):
                 "partial_diagnosis": f"The public API returns the wrong value, but the underlying cause is not identified in case {i}.",
                 "unscorable_output": "I cannot determine the cause from the available evidence.",
             }[challenge_class],
+            "matcher_text": {
+                "canonical_correct": f"verified mechanism {i}",
+                "correct_paraphrase": f"The boundary branch excludes the required endpoint for case {i}.",
+                "wrong_mechanism": f"The root cause is a stale cache entry in case {i}.",
+                "negated_correct_phrase": f"The root cause is not verified mechanism {i}; evidence contradicts it.",
+                "multiple_hypotheses": f"Possible causes include verified mechanism {i} or a resource leak; the response does not decide.",
+                "partial_diagnosis": f"The public API returns the wrong value, but the underlying cause is not identified in case {i}.",
+                "unscorable_output": "I cannot determine the cause from the available evidence.",
+            }[challenge_class],
             "response_origin": (
                 "independent_model_output" if i in {1, 3, 5, 7}
                 else "human_authored_control"
@@ -169,6 +178,7 @@ def test_packet_builder_masks_gold_and_matcher_metadata():
         "ground_truth_root_cause": "verified cause",
         "ground_truth_rationale": "Issue and fix evidence establish the cause.",
         "root_cause_aliases": ["verified cause"],
+        "matcher_text": "Candidate response.",
         "response_text": "Candidate response.",
         "response_origin": "human_authored_control",
         "generation_metadata": None,
@@ -261,6 +271,26 @@ def test_calibration_gate_rejects_matcher_flag_not_supported_by_aliases(tmp_path
     )
     assert report["status"] == "blocked"
     assert any("legacy_matcher_result_mismatch" in issue for issue in report["issues"])
+
+
+
+def test_calibration_gate_uses_exact_matcher_text_not_full_response(tmp_path):
+    manifest_path, key_path = _complete_fixture(tmp_path)
+    examples_path = tmp_path / "data" / "calibration" / "examples.jsonl"
+    examples = [json.loads(line) for line in examples_path.read_text(encoding="utf-8").splitlines()]
+    examples[0]["response_text"] = "A longer reviewer-visible structured answer with other details."
+    examples[0]["matcher_text"] = "verified mechanism 1"
+    examples[0]["legacy_matcher_accepts"] = True
+    _write_jsonl(examples_path, examples)
+    report = audit_calibration(
+        manifest_path=manifest_path,
+        key_path=key_path,
+        pilot_manifest_path=tmp_path / "data" / "pilot" / "pilot_manifest.json",
+        benchmark_manifest_path=tmp_path / "data" / "benchmark" / "benchmark_manifest.json",
+    )
+    assert report["status"] == "pass"
+    assert report["ready_for_new_confirmatory_inference"] is True
+
 
 
 def test_calibration_gate_rejects_overlap_with_frozen_cases(tmp_path):
