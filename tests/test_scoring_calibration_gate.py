@@ -69,7 +69,16 @@ def _complete_fixture(root: Path):
             "case_summary": "A documented software defect whose root-cause mechanism is independently supported by issue and fix evidence.",
             "ground_truth_root_cause": f"verified mechanism {i}",
             "ground_truth_rationale": "The issue report, failing test, and fixed revision jointly support this root-cause explanation.",
-            "response_text": f"Candidate diagnostic response {i}.",
+            "root_cause_aliases": [f"verified mechanism {i}"],
+            "response_text": {
+                "canonical_correct": f"The root cause is verified mechanism {i}.",
+                "correct_paraphrase": f"The boundary branch excludes the required endpoint for case {i}.",
+                "wrong_mechanism": f"The root cause is a stale cache entry in case {i}.",
+                "negated_correct_phrase": f"The root cause is not verified mechanism {i}; evidence contradicts it.",
+                "multiple_hypotheses": f"Possible causes include verified mechanism {i} or a resource leak; the response does not decide.",
+                "partial_diagnosis": f"The public API returns the wrong value, but the underlying cause is not identified in case {i}.",
+                "unscorable_output": "I cannot determine the cause from the available evidence.",
+            }[challenge_class],
             "response_origin": (
                 "independent_model_output" if i in {1, 3, 5, 7}
                 else "human_authored_control"
@@ -159,6 +168,7 @@ def test_packet_builder_masks_gold_and_matcher_metadata():
         "case_summary": "An independently documented software defect with a stable fix.",
         "ground_truth_root_cause": "verified cause",
         "ground_truth_rationale": "Issue and fix evidence establish the cause.",
+        "root_cause_aliases": ["verified cause"],
         "response_text": "Candidate response.",
         "response_origin": "human_authored_control",
         "generation_metadata": None,
@@ -235,6 +245,22 @@ def test_complete_fixture_reports_matcher_errors_and_reviewer_agreement(tmp_path
     by_origin = metrics["matcher_diagnostics_by_response_origin"]
     assert by_origin["independent_model_output"]["n_total"] == 4
     assert by_origin["human_authored_control"]["n_total"] == 3
+
+
+def test_calibration_gate_rejects_matcher_flag_not_supported_by_aliases(tmp_path):
+    manifest_path, key_path = _complete_fixture(tmp_path)
+    examples_path = tmp_path / "data" / "calibration" / "examples.jsonl"
+    examples = [json.loads(line) for line in examples_path.read_text(encoding="utf-8").splitlines()]
+    examples[0]["legacy_matcher_accepts"] = not examples[0]["legacy_matcher_accepts"]
+    _write_jsonl(examples_path, examples)
+    report = audit_calibration(
+        manifest_path=manifest_path,
+        key_path=key_path,
+        pilot_manifest_path=tmp_path / "data" / "pilot" / "pilot_manifest.json",
+        benchmark_manifest_path=tmp_path / "data" / "benchmark" / "benchmark_manifest.json",
+    )
+    assert report["status"] == "blocked"
+    assert any("legacy_matcher_result_mismatch" in issue for issue in report["issues"])
 
 
 def test_calibration_gate_rejects_overlap_with_frozen_cases(tmp_path):
