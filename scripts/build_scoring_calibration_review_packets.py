@@ -55,7 +55,6 @@ def build_packets(
             "ground_truth_root_cause",
             "ground_truth_rationale",
             "response_text",
-            "matcher_text",
             "root_cause_aliases",
             "response_origin",
             "generation_metadata",
@@ -71,8 +70,6 @@ def build_packets(
             raise ValueError(f"{example_id}: calibration examples cannot come from frozen study outputs.")
         if not isinstance(row["response_text"], str) or not row["response_text"].strip():
             raise ValueError(f"{example_id}: response_text must be non-empty.")
-        if not isinstance(row["matcher_text"], str) or not row["matcher_text"].strip():
-            raise ValueError(f"{example_id}: matcher_text must be the exact historical matcher surface")
         if not isinstance(row["evidence_urls"], list) or not row["evidence_urls"]:
             raise ValueError(f"{example_id}: at least one source evidence URL is required.")
         aliases = row["root_cause_aliases"]

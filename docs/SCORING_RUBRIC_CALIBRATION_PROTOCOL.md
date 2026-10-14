@@ -6,7 +6,7 @@
 
 ## 1. Why this protocol is needed
 
-The completed confirmatory study has 160 valid JSON outputs but zero primary-endpoint alias matches in either condition. The frozen result must remain unchanged. Because the endpoint is a deterministic contiguous-phrase matcher rather than a semantic judge, zero matches alone cannot distinguish genuinely incorrect diagnoses from semantically plausible paraphrases. In calibration records, preserve the full reviewer-visible answer in `response_text` and separately store the exact matcher surface in `matcher_text`, defined as `root_cause_class + " " + explanation`; the legacy match boolean must be recomputed from this exact surface and the predeclared case aliases.
+The completed confirmatory study has 160 valid JSON outputs but zero primary-endpoint alias matches in either condition. The frozen result must remain unchanged. Because the endpoint is a deterministic contiguous-phrase matcher rather than a semantic judge, zero matches alone cannot distinguish genuinely incorrect diagnoses from semantically plausible paraphrases. In calibration records, preserve the full raw answer in `response_text`; the auditor must parse the exact frozen four-field output schema and derive the matcher surface internally as `root_cause_class + " " + explanation`. Do not accept a separately hand-entered matcher surface.
 
 This protocol defines how to evaluate the measurement instrument independently of the already-observed confirmatory outcomes. It does not declare any existing response correct or incorrect, and it does not permit retrospective changes to the frozen result.
 
