@@ -181,3 +181,36 @@ The following is an updated operational snapshot; it does not replace the frozen
 
 Next: finish the seven-case screening archive audit, keep only cases that independent reviewers judge to have coherent, defensible cross-component dependencies, and then source enough diverse new candidates. Do not move leads into the held-out manifest solely to reach the target count.
 
+## Operational resumption snapshot — 2026-10-14
+
+This addendum records repository state only. It does not change any historical experiment, endpoint, model result, or scientific conclusion.
+
+### Frozen study and newly merged calibration control
+
+- The historical pilot remains 40/40 records and the historical confirmatory study remains 160/160 records with their prior hash audits; no new inference was run during this resumption.
+- Main includes merge commit `99f685567a9486c9aae395f426e093b19cf22afd` and the scoring-calibration matcher change merged through PR #10.
+- Calibration examples now require a per-example `root_cause_aliases` list. The calibration auditor recomputes the literal whole-token match from `response_text` and blocks records whose stored `legacy_matcher_accepts` value disagrees. Aliases are not shown in reviewer packets and are retained in the private unblinding key. This is a reproducibility control for the literal matcher, not evidence of semantic-validity and not a replacement for human adjudication.
+- The duplicate schema-description-only PR #11 was closed; no research records or frozen metrics were changed by that PR.
+
+### Validation status — inconclusive, not pass
+
+- Validation attempts on PR #10 / PR #11 are visible as GitHub Actions runs [#38581325214](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38581325214) and [#38581406321](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38581406321).
+- GitHub's job records contain no executed step summaries, and the exposed job logs are unavailable. A rerun of #38581325214 also failed without step summaries. Therefore these outcomes do **not** establish that pytest or the integrity scripts passed or failed. A successful validation run is still required before claiming current-main test verification.
+- This status note is not a substitute for a CI pass. Do not convert the current job-level failure into a scientific result.
+
+### Calibration and follow-up gates remain blocked
+
+- `data/calibration/examples.jsonl`, reviewer annotations, adjudication, and a private review key have not been created. The calibration gate remains blocked.
+- The seven calibration case drafts still require independent source/revision/test review and a separate adjudicator; technical red/green reproduction alone does not confer eligibility.
+- `data/followup_v2/protocol_manifest.json` remains `status: "draft"`, `model_inference_permitted: false`, with an empty held-out case list and pending gates. No v2 confirmatory inference is authorised.
+- Preserve the 40/160 historic artifacts, original renderer, alias rubric, p-value, risk difference and confidence interval unchanged.
+
+### Next actions, in order
+
+1. Obtain a successful no-inference CI run on the current mainline after the matcher-calibration change; if runner setup continues to fail without steps, resolve repository Actions/runner availability rather than editing research code blindly.
+2. Have two independent reviewers inspect the seven calibration-case source revisions and regression tests; a separate adjudicator must record decisions. Exclude unsuitable cases rather than promoting them automatically.
+3. Only after case-source review passes, freeze the calibration-case set and run the separately authorised calibration-output workflow with complete model/revision, prompt hash, seed and raw-output SHA-256 metadata.
+4. Build and independently review the source-grounded calibration controls; report inter-reviewer agreement, Cohen's kappa, false acceptances and false rejections. Do not freeze if the prespecified thresholds fail.
+5. Continue sourcing and reviewing new held-out cases, run the tokenizer/context audit, calculate and justify prospective sample size, and freeze the three-condition protocol before any v2 confirmatory inference.
+
+The unchanged research decision is: the historic endpoint had a floor effect and cannot resolve the semantic CCDG hypothesis. A future run may support, contradict, or leave the hypothesis unresolved; no desired result is assumed.
