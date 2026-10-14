@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import re
@@ -327,7 +328,13 @@ def audit_calibration(
                 issues.append(f"{example_id}_invalid_root_cause_aliases")
             if not isinstance(response_text, str) or not response_text.strip():
                 issues.append(f"{example_id}_invalid_response_text")
-            elif isinstance(aliases, list) and aliases and all(
+            elif origin == "independent_model_output":
+                metadata = row.get("generation_metadata")
+                if isinstance(metadata, dict):
+                    actual_raw_sha256 = hashlib.sha256(response_text.encode("utf-8")).hexdigest()
+                    if metadata.get("raw_output_sha256") != actual_raw_sha256:
+                        issues.append(f"{example_id}_raw_output_sha256_mismatch")
+            if isinstance(response_text, str) and response_text.strip() and isinstance(aliases, list) and aliases and all(
                 isinstance(alias, str) and alias.strip() for alias in aliases
             ):
                 computed_match = _calibration_matcher_accepts(response_text, aliases)
