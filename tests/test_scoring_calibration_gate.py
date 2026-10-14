@@ -70,24 +70,48 @@ def _complete_fixture(root: Path):
             "ground_truth_root_cause": f"verified mechanism {i}",
             "ground_truth_rationale": "The issue report, failing test, and fixed revision jointly support this root-cause explanation.",
             "root_cause_aliases": [f"verified mechanism {i}"],
-            "response_text": {
-                "canonical_correct": f"The root cause is verified mechanism {i}.",
-                "correct_paraphrase": f"The boundary branch excludes the required endpoint for case {i}.",
-                "wrong_mechanism": f"The root cause is a stale cache entry in case {i}.",
-                "negated_correct_phrase": f"The root cause is not verified mechanism {i}; evidence contradicts it.",
-                "multiple_hypotheses": f"Possible causes include verified mechanism {i} or a resource leak; the response does not decide.",
-                "partial_diagnosis": f"The public API returns the wrong value, but the underlying cause is not identified in case {i}.",
-                "unscorable_output": "I cannot determine the cause from the available evidence.",
-            }[challenge_class],
-            "matcher_text": {
-                "canonical_correct": f"verified mechanism {i}",
-                "correct_paraphrase": f"The boundary branch excludes the required endpoint for case {i}.",
-                "wrong_mechanism": f"The root cause is a stale cache entry in case {i}.",
-                "negated_correct_phrase": f"The root cause is not verified mechanism {i}; evidence contradicts it.",
-                "multiple_hypotheses": f"Possible causes include verified mechanism {i} or a resource leak; the response does not decide.",
-                "partial_diagnosis": f"The public API returns the wrong value, but the underlying cause is not identified in case {i}.",
-                "unscorable_output": "I cannot determine the cause from the available evidence.",
-            }[challenge_class],
+            "response_text": (
+                json.dumps({
+                    "canonical_correct": {
+                        "diagnosed_component": f"Component {i}",
+                        "root_cause_class": f"verified mechanism {i}",
+                        "affected_entity": f"Entity {i}",
+                        "explanation": f"The source evidence supports verified mechanism {i}.",
+                    },
+                    "correct_paraphrase": {
+                        "diagnosed_component": f"Component {i}",
+                        "root_cause_class": "boundary branch excludes the required endpoint",
+                        "affected_entity": f"Entity {i}",
+                        "explanation": "The branch condition violates the endpoint contract.",
+                    },
+                    "wrong_mechanism": {
+                        "diagnosed_component": f"Component {i}",
+                        "root_cause_class": "stale cache entry",
+                        "affected_entity": f"Entity {i}",
+                        "explanation": "The cached result was not invalidated.",
+                    },
+                    "negated_correct_phrase": {
+                        "diagnosed_component": f"Component {i}",
+                        "root_cause_class": "unrelated cause",
+                        "affected_entity": f"Entity {i}",
+                        "explanation": f"The cause is not verified mechanism {i}; the evidence rules it out.",
+                    },
+                    "multiple_hypotheses": {
+                        "diagnosed_component": f"Component {i}",
+                        "root_cause_class": "uncertain cause",
+                        "affected_entity": f"Entity {i}",
+                        "explanation": f"Possible causes include verified mechanism {i} or a resource leak, but the answer does not decide.",
+                    },
+                    "partial_diagnosis": {
+                        "diagnosed_component": f"Component {i}",
+                        "root_cause_class": "incorrect public API value",
+                        "affected_entity": f"Entity {i}",
+                        "explanation": f"The public API returns a wrong value, but the underlying cause is not identified in case {i}.",
+                    },
+                }[challenge_class], ensure_ascii=False, sort_keys=True)
+                if challenge_class != "unscorable_output"
+                else "I cannot determine the cause from the available evidence."
+            ),
             "response_origin": (
                 "independent_model_output" if i in {1, 3, 5, 7}
                 else "human_authored_control"
@@ -178,7 +202,6 @@ def test_packet_builder_masks_gold_and_matcher_metadata():
         "ground_truth_root_cause": "verified cause",
         "ground_truth_rationale": "Issue and fix evidence establish the cause.",
         "root_cause_aliases": ["verified cause"],
-        "matcher_text": "Candidate response.",
         "response_text": "Candidate response.",
         "response_origin": "human_authored_control",
         "generation_metadata": None,
@@ -274,13 +297,19 @@ def test_calibration_gate_rejects_matcher_flag_not_supported_by_aliases(tmp_path
 
 
 
-def test_calibration_gate_uses_exact_matcher_text_not_full_response(tmp_path):
+def test_calibration_gate_uses_only_root_cause_and_explanation_fields(tmp_path):
     manifest_path, key_path = _complete_fixture(tmp_path)
     examples_path = tmp_path / "data" / "calibration" / "examples.jsonl"
     examples = [json.loads(line) for line in examples_path.read_text(encoding="utf-8").splitlines()]
-    examples[0]["response_text"] = "A longer reviewer-visible structured answer with other details."
-    examples[0]["matcher_text"] = "verified mechanism 1"
-    examples[0]["legacy_matcher_accepts"] = True
+    # An alias in another structured field must not count; the frozen matcher
+    # inspects only root_cause_class plus explanation.
+    examples[0]["response_text"] = json.dumps({
+        "diagnosed_component": "verified mechanism 1",
+        "root_cause_class": "different cause",
+        "affected_entity": "verified mechanism 1",
+        "explanation": "No alias phrase in the scoring fields.",
+    }, ensure_ascii=False, sort_keys=True)
+    examples[0]["legacy_matcher_accepts"] = False
     _write_jsonl(examples_path, examples)
     report = audit_calibration(
         manifest_path=manifest_path,
