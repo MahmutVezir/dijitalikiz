@@ -55,6 +55,7 @@ def build_packets(
             "ground_truth_root_cause",
             "ground_truth_rationale",
             "response_text",
+            "root_cause_aliases",
             "response_origin",
             "generation_metadata",
             "challenge_class",
@@ -71,6 +72,13 @@ def build_packets(
             raise ValueError(f"{example_id}: response_text must be non-empty.")
         if not isinstance(row["evidence_urls"], list) or not row["evidence_urls"]:
             raise ValueError(f"{example_id}: at least one source evidence URL is required.")
+        aliases = row["root_cause_aliases"]
+        if not isinstance(aliases, list) or not aliases or not all(
+            isinstance(alias, str) and alias.strip() for alias in aliases
+        ):
+            raise ValueError(f"{example_id}: root_cause_aliases must be a non-empty string list")
+        if len(set(alias.strip().lower() for alias in aliases)) != len(aliases):
+            raise ValueError(f"{example_id}: root_cause_aliases must not contain duplicates")
         origin = row["response_origin"]
         if origin not in {"independent_model_output", "human_authored_control", "synthetic_adversarial_control"}:
             raise ValueError(f"{example_id}: unsupported response_origin: {origin!r}")
@@ -106,6 +114,7 @@ def build_packets(
             "ground_truth_rationale": row["ground_truth_rationale"],
             "challenge_class": row["challenge_class"],
             "legacy_matcher_accepts": row["legacy_matcher_accepts"],
+            "root_cause_aliases": row["root_cause_aliases"],
         })
 
     def shuffled_packet(seed: int) -> list[dict[str, Any]]:
