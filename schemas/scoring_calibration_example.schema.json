@@ -123,7 +123,8 @@
       ]
     },
     "legacy_matcher_accepts": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Must equal the deterministic whole-token substring match of response_text against root_cause_aliases using lowercase ASCII normalization."
     },
     "is_from_frozen_study_output": {
       "const": false
@@ -135,7 +136,8 @@
       "items": {
         "type": "string",
         "minLength": 1
-      }
+      },
+      "description": "Predeclared, case-specific aliases used to characterize literal matching; set before the response is inspected/generated and keep out of reviewer packets."
     }
   },
   "allOf": [
