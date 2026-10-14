@@ -13,7 +13,6 @@
     "ground_truth_root_cause",
     "ground_truth_rationale",
     "response_text",
-    "matcher_text",
     "root_cause_aliases",
     "response_origin",
     "generation_metadata",
@@ -64,7 +63,7 @@
     "response_text": {
       "type": "string",
       "minLength": 1,
-      "description": "Full diagnostic response shown to source-grounded reviewers; preserve the relevant structured answer content."
+      "description": "Exact raw model/control response presented to reviewers. Valid structured responses must be JSON with exactly the four frozen DiagnosticOutput fields; malformed/unparseable output is retained verbatim and scored as a non-match."
     },
     "response_origin": {
       "enum": [
@@ -138,11 +137,6 @@
         "type": "string",
         "minLength": 1
       }
-    },
-    "matcher_text": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Exact literal-match surface, formed as root_cause_class + one space + explanation, matching the historic evaluator input. Do not substitute the full JSON or unrelated fields."
     }
   },
   "allOf": [
