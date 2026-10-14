@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -12,6 +13,20 @@ from jsonschema import Draft202012Validator
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = ROOT / "data" / "calibration" / "manifest.json"
 VALID_LABELS = {"correct", "partially_correct", "incorrect", "unscorable"}
+
+def _normalize_alias_phrase(value: str) -> str:
+    """Use the frozen alias matcher's lowercase ASCII-token normalization."""
+    return re.sub(r"[^a-z0-9]+", " ", (value or "").lower()).strip()
+
+
+def _calibration_matcher_accepts(response_text: str, aliases: list[str]) -> bool:
+    """Reproduce literal contiguous alias matching on the recorded response surface."""
+    haystack = " " + _normalize_alias_phrase(response_text) + " "
+    return any(
+        (" " + normalized + " ") in haystack
+        for normalized in (_normalize_alias_phrase(alias) for alias in aliases)
+        if normalized
+    )
 FORBIDDEN_REVIEW_FIELDS = {
     "condition", "seed", "model_id", "model_revision", "challenge_class",
     "legacy_matcher_accepts", "source_case_id", "ground_truth_root_cause",
@@ -292,6 +307,16 @@ def audit_calibration(
                 issues.append(f"{example_id}_invalid_response_origin")
             if row.get("is_from_frozen_study_output") is not False:
                 issues.append(f"{example_id}_uses_frozen_study_output")
+            aliases = row.get("root_cause_aliases")
+            response_text = row.get("response_text")
+            if not isinstance(aliases, list) or not aliases or not all(
+                isinstance(alias, str) and alias.strip() for alias in aliases
+            ):
+                issues.append(f"{example_id}_invalid_root_cause_aliases")
+            elif isinstance(response_text, str):
+                computed_match = _calibration_matcher_accepts(response_text, aliases)
+                if row.get("legacy_matcher_accepts") is not computed_match:
+                    issues.append(f"{example_id}_legacy_matcher_result_mismatch")
         minimum = manifest.get("minimum_examples_per_challenge_class")
         if not isinstance(minimum, int) or minimum < 1:
             issues.append("invalid_minimum_examples_per_challenge_class")
