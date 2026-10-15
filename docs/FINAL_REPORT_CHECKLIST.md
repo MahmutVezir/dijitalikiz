@@ -59,6 +59,16 @@ Başvuruya hazır Word/PDF üretimleri bu depodaki kaynak taslaktan ayrı teslim
 - [ ] Repository owner checks `Settings → Actions → General` for hosted `ubuntu-24.04` eligibility and `Settings → Billing and licensing → Usage` for Actions quotas/spending restrictions; then retries validation and verifies actual step outputs.
 - [ ] Only after actual test steps execute should repository CI be marked passing. This repository QA gate does not change the frozen experiment outputs or their already recorded integrity audits.
 
+## 7. Tarihsel deney bilimsel denetimi — 15 Ekim 2026
+
+- [x] Historical context renderer farkı vaka düzeyinde denetlendi: Standard'da 16/16 hata açıklaması; CCDG'de 0/16; I_base ve Source/Technology 16/16 ortak.
+- [x] Sözcüksel ipucu taraması ile 7/16 vakada I_base içinde açık fix/corrected ipucu, geniş taramada 5/16 vakada ek/örtüşen remediation ipucu bulundu. Bu sayılar regex triage işaretleridir; semantik etiket veya eğitim verisi sızıntısı kanıtı değildir.
+- [x] Aktif benchmark manifesti 16 vaka belirtirken arşiv cases klasöründe MATH-844 dahil 17 JSON dosyası vardır. MATH-844 aktif manifest/rubrikte olmadığı için tarihsel örnekleme dahil değildir; dosya inventory raporunda ayrı gösterilir.
+- [x] Non-mutating audit script ve dört test taslağı ayrı dalda eklendi. İzole yerel doğrulama harness'inde eşdeğer dört senaryo 4/4 geçti; bu, GitHub Actions veya tam depo pytest geçişi değildir.
+- [x] Bu bulgular docs/HISTORICAL_EXPERIMENT_SCIENTIFIC_AUDIT_2026-10-15.md içinde raporlandı ve tarihsel rapor taslağına eklendi.
+- [x] Resmî MEB/TÜBİTAK kayıtlarına dayanarak 2023–2026 ödül projeleri kıyaslama notu hazırlandı: docs/TUBITAK_WINNER_BENCHMARK_2023_2026.md. Erişilemeyen tam rapor yöntemleri varsayılmadı.
+- [ ] Araştırma denetimi ve rapor güncellemeleri için PR açılmalı/incelemeli; runner ataması çözülmeden otomatik repo testleri geçerli sayılmamalı.
+
 ## 6. Kör anlamsal inceleme paketi düzeltmesi — 15 Ekim 2026
 
 - [x] İlk v1.1 inceleme ZIP'lerinde beklenen kök neden `reference.root_cause` olarak ve doğrudan kaynak URL'leriyle gösteriliyordu. Bunlar **geçersiz/superseded** kabul edilmeli ve değerlendiricilere gönderilmemeli.
