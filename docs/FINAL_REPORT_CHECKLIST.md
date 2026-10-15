@@ -13,6 +13,7 @@
 - [x] Tarihsel sonuçlar değiştirilmedi: Standard 0/80, CCDG 0/80, vaka düzeyinde 0/16 başarı her iki koşulda; exact iki taraflı McNemar p=1,00. Bu, CCDG'nin etkisizliğini veya koşulların eşdeğerliğini kanıtlamaz.
 
 ## 2. Rapor taslağı ve biçim denetimi
+- [x] Tematik alan resmî 2027 rehberine göre yeniden değerlendirildi: mevcut çalışma canlı sensör verisiyle güncellenen bir dijital ikiz kurmadığından rapor `Yazılım / Yapay Zekâ` sınıflandırmasına hizalandı; karar notu `docs/TUBITAK_2027_THEME_DECISION_2026-10-15.md` dosyasındadır.
 
 - [x] Rapor, resmî 2026–2027 Word şablonu kullanılarak üretildi.
 - [x] Başlık 11 kelime; 15 kelime sınırının içinde.
