@@ -102,7 +102,7 @@ Birincil karşılaştırma, aynı yazılım vakası için Standard ve CCDG koşu
 | Literatür ve hipotezler |  |  |  |  |  | X | X |  |  |  |
 | Vaka seçimi, CCDG ve deney düzeneği |  |  |  |  |  | X | X |  |  |  |
 | Pilot/doğrulayıcı deney ve istatistiksel analiz |  |  |  |  |  |  | X |  |  |  |
-| Raporun öğrenci tarafından doğrulanması ve başvuru paketi |  |  |  |  |  |  | X | P | P | P |
+| Rapor son kontrolü ve başvuru paketi |  |  |  |  |  |  | X | P | P | P |
 
 ## Bulgular
 
