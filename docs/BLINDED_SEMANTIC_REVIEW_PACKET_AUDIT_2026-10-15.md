@@ -18,6 +18,13 @@ The original reviewer packets exposed a `reference.root_cause` answer-key object
 | Reviewer A v1.1 | `8db44313000cda343fe552c9900ea5c0e1c88646cbdfbe535ad0417193bdef12` |
 | Reviewer B v1.1 | `d99a0fefc36cebc1217ff72974ddc1b96676577ed73b4c2cccd03fb210f34490` |
 
+The first local v1.2 ZIP pair was also regenerated to align the exact deterministic seed strings and private-key schema with the repository builder. Use **only** the current hashes in the replacement table below; do not mix a packet from one generation with a key from another.
+
+| Superseded first v1.2 ZIP | SHA-256 |
+|---|---|
+| Reviewer A first v1.2 | `4aff16afb54a8ab0d2f00b5ec3963308ba5146bf2930950c375e0058f05b5f4d` |
+| Reviewer B first v1.2 | `b345925b94115558dddd6aaa263b8273e59765a9fe9d9f11a2e3b823dea42d50` |
+
 ## Replacement v1.2 packets
 
 | Packet | Records | Distinct case references | Unique review IDs | SHA-256 |
