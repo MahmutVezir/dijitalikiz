@@ -24,7 +24,7 @@ TUBITAK_REPORT_DRAFT.md üzerindeki 15 Ekim 2026 sürümünde:
 - Özet 191 kelime: **uygun** (150–250).
 - Anahtar kelime satırında beş terim: **uygun** (rehberde verilen üst sınır beş).
 - Amaç, giriş, yöntem, bulgular, sonuç/tartışma, öneriler, kaynaklar ve ekler başlıkları bulunuyor.
-- Bu denetimden önce ayrı bir içindekiler bölümü yoktu. Rapora, taslak gezinme amaçlı içindekiler listesi eklenecektir; nihai Word/PDF çıktısında gerçek sayfa numaralı içindekiler şablon içinde yenilenmelidir.
+- İlk denetimde ayrı bir içindekiler bölümü yoktu; bu güncellemede taslak gezinme amaçlı bir içindekiler listesi eklenmiştir. Nihai Word/PDF çıktısında gerçek sayfa numaralı içindekiler şablon içinde yenilenmelidir.
 - Mevcut içerik Markdown'dır ve son şablonda dizgilenmiş PDF değildir. Bu nedenle sayfa sayısı, kenar boşlukları, yazı tipi, satır aralığı ve son PDF'nin 2–20 sayfa sınırında kaldığı henüz **doğrulanmış değildir**.
 - Resmî sayfa, şablon indirme bağlantısı yayımlar. Bu oturumda bağlantıdan indirilebilir şablon dosyası alınamadı; GitHub Actions'taki fetch-official-template işi de çalıştırılmış adım olmadan başarısız oldu. Dolayısıyla rapor şablonla son biçimine getirilmiş gibi sunulmamalıdır.
 - Nihai başvuru öncesinde tek PDF açılarak kontrol edilmeli; TYBS yüklemesinde belge adları, sayfa ve boyut sınırlamaları çağrı metnine göre ayrıca doğrulanmalıdır.
