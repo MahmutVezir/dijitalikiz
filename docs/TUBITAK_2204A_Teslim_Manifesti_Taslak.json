@@ -39,15 +39,29 @@
     {
       "role": "qa_manifest",
       "file_name": "TUBITAK_2204A_Rapor_QA_Manifest_Guncel.json",
-      "size_bytes": 4582,
-      "sha256": "93e4bcb851de4b205785464f1b21c84523fec82e162b6f791b268f8650e227bc",
+      "size_bytes": 4875,
+      "sha256": "c60fac059c06b86da754f280c2b55b2d977759968d26f81a1f3b9163588d1a67",
       "format": "JSON"
+    },
+    {
+      "role": "handoff_and_blockers",
+      "file_name": "DijitalIkiz_Durum_ve_Teslim_Kapilari_2026-10-15.md",
+      "size_bytes": 7788,
+      "sha256": "96c66c528a824a7e21c771960baa237cc13b8c683b4046921be057de39a2d00f",
+      "format": "Markdown"
+    },
+    {
+      "role": "thematic_field_decision",
+      "file_name": "TUBITAK_2027_Tematik_Alan_Karari_2026-10-15.md",
+      "size_bytes": 2788,
+      "sha256": "8d5a261ffe8eeca8f9ee13abe29f098a5dccb3d4ac105c27b31f5a28ffab01ed",
+      "format": "Markdown"
     },
     {
       "role": "delivery_package",
       "file_name": "TUBITAK_2204A_Rapor_Taslak_Paketi_2026-10-15_Guncel.zip",
-      "size_bytes": 128786,
-      "sha256": "324e28cfa81351b091f2711a387e5d8ce1ad9128bc587cb78cd818d390b8583e",
+      "size_bytes": 130554,
+      "sha256": "cc0956898691a4498101fc81bee9ca52d868b3b6615dbfd2484b6f8502da8297",
       "format": "ZIP"
     }
   ],
@@ -75,10 +89,10 @@
     "template_fetch_verification": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/37994665457"
   },
   "open_pre_submission_checks": [
-    "Student and adviser confirm Software / Artificial Intelligence as the thematic classification in the current TYBS dropdown before submission.",
+    "Student and adviser confirm Software / Artificial Intelligence in the current TYBS thematic-field selection; this classification best fits the completed LLM/software diagnosis study and does not claim a live digital twin.",
     "Student review of AI-use declaration and confirmation that all statements match actual use.",
     "Human verification of bibliographic metadata and in-text citation/reference matching.",
-    "Final PDF export from Microsoft Word/Office or compatible environment with Times New Roman installed; the container PDF renderer uses Liberation Serif fallback.",
+    "Final PDF export from Word/Office with Times New Roman installed if exact-font export is required; container preview uses a metrically compatible serif fallback.",
     "Fill authentic student/school/advisor and required ethics/permission data in TYBS; do not invent details.",
     "Review eligibility, attachments, PDF constraints and submit before the official deadline."
   ],
@@ -89,10 +103,11 @@
     "report_source_markdown_commit": "41304669e015f087ed714a995816f86c3956c74a",
     "submission_audit_commit": "5bb34171b4b6e5ccf6cda7c89048e61ec83a9baa",
     "validation_run_at_snapshot": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38044898606",
-    "validation_status": "historical artifact QA passed; latest runner availability probe has not been verified through the connected GitHub API",
+    "validation_status": "No-inference CI run not verified through the connected API; do not claim test success. Historical artifacts verified by prior integrity checks.",
     "theme_decision_commit": "f281a21d22d42bef0037123c759497f194b79bd0",
     "final_checklist_commit": "bfc68d26fba3ca2ebd40c060124f78e72d9d3375",
-    "runner_probe_workflow_commit": "156c29c7e9f9cf68fe3a40ca5db4dfbb3ba31b9d"
+    "runner_probe_workflow_commit": "156c29c7e9f9cf68fe3a40ca5db4dfbb3ba31b9d",
+    "validation_paths_pr": "https://github.com/MahmutVezir/dijitalikiz/pull/25"
   },
   "qa_status": {
     "docx_render_pages": 9,
