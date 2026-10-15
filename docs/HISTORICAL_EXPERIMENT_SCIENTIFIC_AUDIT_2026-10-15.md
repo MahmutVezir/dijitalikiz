@@ -57,6 +57,19 @@ Bu davranış deterministik ve tekrar üretilebilir; fakat “modelin kök neden
 
 tests/test_scoring_matcher_characterization.py bu hata sınıflarını **sentetik** örneklerle sınar. Testler puanlayıcı davranışını tarif eder; gerçek model çıktılarında semantik doğruluk veya puanlayıcı duyarlılığı/özgüllüğü ölçmez. Gerçek insan hakemlerinin puanları henüz yoktur.
 
+### Gerçek tarihsel çıktılardan dört inceleme adayı
+
+160 kaydın arşivlenmiş, ayrıştırılmış çıktılarında; Standard koşulu, seed 42 için aşağıdaki dört yanıt dondurulmuş alias eşleştiricisinde **eşleşme üretmedi**. Özetlenen açıklamalar kök neden mekanizmasıyla anlamca uyumlu görünebilir; bu nedenle insan hakeminin incelemesi gereken olası yanlış-negatif örneklerdir. **Bunlar insan tarafından puanlanmış “doğru” yanıtlar değildir** ve burada gerçek semantik doğruluk sonucu olarak sayılmamalıdır.
+
+| Vaka / kayıt | Modelin yanıtında açıklanan mekanizma | Literal alias sonucu | İnceleme neden gerekli? |
+|---|---|---|---|
+| MATH-305 / Standard / seed 42 | MathUtils.distance içindeki int biriktiricisinin kare farkları toplarken taşmaya yol açması | Eşleşme yok | Dondurulmuş ground truth, kareli uzaklık biriktiricisindeki tamsayı taşmasını tanımlar; yanıt bunu farklı sözcüklerle anlatır. |
+| CLOSURE-14 / Standard / seed 42 | finally içinden geçen exception yolu ile normal fall-through ayrımının kaybolması ve ControlFlowGraph kenarlarının yanlış etiketlenmesi | Eşleşme yok | Ground truth, exception yolunun unconditional kenar olarak etiketlenmesini tanımlar; yanıt mekanizmayı anlatıyor gibi görünse de alias dizgesini kullanmaz. |
+| MATH-393 / Standard / seed 42 | Çoklu başlangıç optimizer'ının kaydedilmiş en iyi optimum yerine sarılmış optimizer durumunu döndürmesi | Eşleşme yok | Yanıt, beklenen en iyi sonucun döndürülmemesini anlatır fakat sabit alias'la aynı metinsel ifade değildir. |
+| TIME-12 / Standard / seed 42 | Calendar.ERA dikkate alınmadığı için BC tarih dönüşümlerinde yılın yanlış üretilmesi | Eşleşme yok | Yanıt kök neden ve etkiyi söyler; ayrıca “fix” ifadesi içerir. Bu, girdideki çözüm ipuçlarıyla etkileşim riskini de gösterir. |
+
+Bu dört kayıt için tespit edilen şey **matcher'ın başarısız sınıflandırmasıdır**; modelin semantik olarak kesin doğru olduğu değil. Kör ve bağımsız iki insan değerlendirmesi, gerekçeler ve daha sonra kaynak-kod adjudication olmadan false-negative oranı, doğruluk, kappa veya CCDG lehine bir sonuç hesaplanamaz. Eski skor değişmez.
+
 **Düzeltme:** tarihsel ölçüt değiştirilmeyecek. 160 çıktıya uygulanacak insan puanlaması sonradan yapılan keşifsel analiz olarak tutulacak. Yeni doğrulayıcı deneyde doğru/kısmen doğru/yanlış/değerlendirilemez rubriği bağımsız, kaynak kanıtları incelenmiş kalibrasyon vakalarında test edilip inference öncesinde dondurulmalı.
 
 ## 4. Girdi ipuçları ve kök nedenin bağlamdan tahmin edilebilirliği
@@ -115,7 +128,7 @@ V2 için mevcut 61 vaka/915 çıktı hedefi de yalnızca varsayılan uyumsuz çi
 
 ## 8. GitHub test ve V2 kapı durumu
 
-Bu denetimin yapıldığı sırada PR #29 (Remove answer-key leakage from exploratory review packets) birleştirilmiştir; main commit'i a697701daf1ccbece4c53f4fb510515c3b3c0e1b olmuştur. Ancak ilgili Research Validation (No Inference) koşusu 38784547655, runner_id=0, boş runner adı ve sıfır adımla sona ermiştir. Dolayısıyla yeni testler runner'da çalıştırılmış değildir. Bu, testlerin geçtiği ya da pytest hatası verdiği anlamına gelmez.
+PR #29, kör değerlendirme paketlerinden açık cevap anahtarını ve doğrudan kaynak/proje kimliklerini kaldıracak düzeltmelerle birleştirilmiştir. PR #30, denetim betiği ile dört regresyon testini eklemiştir; main commit'i şu an 7c40800274472fa672baf8909c406a9b18e2964e'dir. Buna rağmen main-branch merge run 38785788347 iş kaydı runner_id=0, boş runner adı ve sıfır adım göstermektedir. Dolayısıyla testlerin GitHub runner'ında çalıştığı doğrulanmamıştır. Bu, testlerin geçtiği ya da pytest hatası verdiği anlamına gelmez.
 
 V2 manifesti hâlen status=draft, model_inference_permitted=false ve case_ids=[] durumundadır. Kalibrasyon havuzundaki yedi vakanın bağımsız ground-truth hakemliği pending_independent_review olarak kayıtlıdır. Bu denetim hiçbir V2 çıkarımına izin vermez.
 
