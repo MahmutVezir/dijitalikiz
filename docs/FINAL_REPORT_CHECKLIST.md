@@ -50,3 +50,11 @@
 Tarihsel deney ve artefakt denetimleri tamamlanmıştır; ancak donmuş literal-alias ölçütünün taban etkisi nedeniyle semantik CCDG hipotezi çözümlenmemiştir. Mevcut sonuçlar değiştirilmemeli. Takip araştırması öneri olarak raporlanmalı ve tamamlanmış tarihsel çalışmanın verisiyle karıştırılmamalıdır.
 
 Başvuruya hazır Word/PDF üretimleri bu depodaki kaynak taslaktan ayrı teslim dosyalarıdır; kişisel başvuru alanları doğrulanmadığı ve TYBS gönderimi yapılmadığı için bu rapor **nihai gönderim** değildir.
+
+
+## 5. Repo-side validation status (separate from research results)
+
+- [x] Path filters updated in merge commit `e58303cba30e6dc9727646e389742551a974e6cf` so `docs/**`, `data/benchmark/**`, and `data/sample_cases/**` edits trigger the no-inference validation.
+- [ ] Obtain a runner-backed successful `Research Validation (No Inference)` run. Run `38759168199` ended before any steps ran; its representative job has an empty step list and logs are unavailable. This is not proof that pytest or artifact validators failed, and it is not a passing run.
+- [ ] Repository owner checks `Settings → Actions → General` for hosted `ubuntu-24.04` eligibility and `Settings → Billing and licensing → Usage` for Actions quotas/spending restrictions; then retries validation and verifies actual step outputs.
+- [ ] Only after actual test steps execute should repository CI be marked passing. This repository QA gate does not change the frozen experiment outputs or their already recorded integrity audits.
