@@ -67,7 +67,9 @@ Başvuruya hazır Word/PDF üretimleri bu depodaki kaynak taslaktan ayrı teslim
 - [x] Non-mutating audit script ve dört test taslağı ayrı dalda eklendi. İzole yerel doğrulama harness'inde eşdeğer dört senaryo 4/4 geçti; bu, GitHub Actions veya tam depo pytest geçişi değildir.
 - [x] Dört gerçek, dondurulmuş model çıktısı literal alias eşleşmesi üretmedi; bu kayıtlar yalnızca insan hakemliği için olası yanlış-negatif adayları olarak belgelendi, semantik olarak doğru diye etiketlenmedi. Ayrıntılar docs/HISTORICAL_EXPERIMENT_SCIENTIFIC_AUDIT_2026-10-15.md içinde.
 - [x] Resmî MEB/TÜBİTAK kayıtlarına dayanarak 2022–2026 ulusal ödül projeleri kıyaslama notu hazırlandı: docs/TUBITAK_WINNER_BENCHMARK_2022_2026.md. Erişilemeyen tam rapor yöntemleri varsayılmadı.
-- [ ] Araştırma denetimi ve rapor güncellemeleri PR #31'de incelenmeli; runner ataması çözülmeden otomatik repo testleri geçerli sayılmamalı.
+- [x] Araştırma yolları A/B/C; kanıt, süre ve bilimsel iddia koşullarıyla karşılaştırıldı. İç 4 Kasım hedefi için A yolu seçildi; kör anlamsal puanlama keşifseldir, B deneyinin tüm kapıları geçmeden çalıştırılması yasaktır. Karar kaydı: docs/RESEARCH_PATH_DECISION_2026-10-15.md.
+- [x] Tarihsel deney denetimi ve 2022–2026 derece projeleri kıyaslaması PR #31 ile main'e alındı (merge commit db71c5f7817263362d1b370295bb4ce5f9448334). Araştırma yolu karar kaydı PR #32 ile ekleniyor; bu dokümantasyon birleştirmeleri Actions/pytest geçişi anlamına gelmez.
+- [ ] Tam depo pytest ve veri doğrulayıcıları, hosted runner gerçek bir adım çalıştırana kadar doğrulanmış sayılmamalı.
 
 ## 6. Kör anlamsal inceleme paketi düzeltmesi — 15 Ekim 2026
 
