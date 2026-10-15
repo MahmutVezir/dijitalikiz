@@ -1,0 +1,32 @@
+name: GitHub-hosted Runner Preflight
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - ".github/workflows/runner-availability-probe.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: runner-preflight-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  runner-preflight:
+    name: Verify ubuntu-24.04 runner allocation (no project tests)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Confirm the hosted runner executed a step
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "RUNNER_PREFLIGHT=PASS"
+          echo "runner_os=${RUNNER_OS:-unknown}"
+          echo "runner_arch=${RUNNER_ARCH:-unknown}"
+          echo "python_version=$(python --version 2>&1)"
+          uname -s
