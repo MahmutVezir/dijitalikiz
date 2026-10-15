@@ -19,6 +19,9 @@ def _mask_project_identity(technology: str) -> str:
     parts = [part.strip() for part in technology.split(" / ") if part.strip()]
     if len(parts) >= 3:
         parts = parts[1:]
+    elif len(parts) == 2:
+        # Two-part values may still be "project / language"; keep only the language/domain.
+        parts = parts[-1:]
     return " / ".join(parts) if parts else "Software defect context"
 
 
