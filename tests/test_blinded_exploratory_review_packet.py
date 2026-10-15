@@ -1,4 +1,6 @@
+import hashlib
 import json
+from collections import Counter
 from pathlib import Path
 
 from scripts.build_blinded_exploratory_review_packet import build_packet
@@ -42,12 +44,14 @@ def _small_artifact(root: Path) -> None:
                     "source_commit": "test-commit",
                     "prompt_sha256": f"prompt-{condition}-{seed}",
                     "context_sha256": f"context-{condition}-{seed}",
-                    "raw_output": f'{{"diagnosis":"{condition}-{seed}"}}',
+                    "raw_output": json.dumps({
+                        "diagnosis": "opaque-" + hashlib.sha256(f"{condition}:{seed}".encode()).hexdigest()[:12]
+                    }),
                     "parsed_output": {
                         "diagnosed_component": "Component B",
-                        "root_cause_class": "synthetic root cause",
+                        "root_cause_class": "candidate mechanism",
                         "affected_entity": "test entity",
-                        "explanation": f"Synthetic test response {condition} {seed}.",
+                        "explanation": "A synthetic candidate explanation.",
                     },
                 },
             )
@@ -65,13 +69,22 @@ def test_review_packet_masks_case_condition_and_seed(tmp_path):
         assert "case-private-1" not in json.dumps(row, ensure_ascii=False)
         assert "condition" not in row
         assert "seed" not in row
+        assert "reference" not in row
+        serialized = json.dumps(row, ensure_ascii=False)
+        assert "synthetic_root_cause" not in serialized
+        assert "example.invalid" not in serialized
+        assert "source_url" not in row["source_evidence"]
+        assert "source" not in row["source_evidence"]
+        assert "publication_date" not in row["source_evidence"]
+        assert set(row["source_evidence"]) == {"technical_domain", "reported_problem", "base_facts"}
+        assert all("evidence_id" in fact and "text" in fact for fact in row["source_evidence"]["base_facts"])
         assert set(row["review"]) == {
             "root_cause_correctness",
             "component_localization",
             "evidence_consistency",
             "dependency_reasoning",
             "overall_diagnostic_status",
-            "reviewer_notes",
+            "reviewer_notes_with_evidence",
         }
     assert all("condition" in item and "seed" in item for item in key)
     assert {item["condition"] for item in key} == {"standard", "ccdg"}
@@ -110,6 +123,9 @@ def test_reviewer_packets_have_independent_order_and_stable_case_refs(tmp_path):
     rows_b = packet_b[1:]
     assert packet_a[0]["reviewer_code"] == "A"
     assert packet_b[0]["reviewer_code"] == "B"
+    assert packet_a[0]["ground_truth_and_answer_key_hidden_from_reviewer_rows"] is True
+    assert packet_b[0]["source_urls_and_project_identifiers_hidden_from_reviewer_rows"] is True
+    assert packet_a[0]["perfect_condition_blinding_guaranteed"] is False
     assert all(row["review_id"].startswith("REVIEW-A-") for row in rows_a)
     assert all(row["review_id"].startswith("REVIEW-B-") for row in rows_b)
 
@@ -128,9 +144,11 @@ def test_reviewer_packets_have_independent_order_and_stable_case_refs(tmp_path):
         json.dumps(without_review_id(row), sort_keys=True) for row in rows_b
     )
     assert a_content == b_content
-    assert [(row["case_ref"], row["response"]["raw_output"]) for row in rows_a] != [
-        (row["case_ref"], row["response"]["raw_output"]) for row in rows_b
-    ]
+    sequence_a = [(row["case_ref"], hashlib.sha256(row["response"]["raw_output"].encode()).hexdigest()) for row in rows_a]
+    sequence_b = [(row["case_ref"], hashlib.sha256(row["response"]["raw_output"].encode()).hexdigest()) for row in rows_b]
+    assert sequence_a != sequence_b
+    assert Counter(sequence_a) == Counter(sequence_b)
     assert {item["reviewer_code"] for item in key_a} == {"A"}
     assert {item["reviewer_code"] for item in key_b} == {"B"}
+    assert all(len(item["raw_output_sha256"]) == 64 for item in key_a + key_b)
 
