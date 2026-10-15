@@ -1,5 +1,37 @@
 # TÜBİTAK 2204-A Proje Raporu Taslağı
 
+## İçindekiler (taslak gezinme)
+
+Nihai rapor, TÜBİTAK'ın güncel Proje Yazım Şablonu'na aktarılırken bu liste sayfa numaralarıyla yeniden oluşturulmalıdır. Markdown taslağı tek başına başvuruya yüklenmeye hazır PDF değildir.
+
+1. Yapay Zekâ Araçları Kullanım Beyanı
+2. Özet
+3. Anahtar Kelimeler
+4. Amaç
+5. Giriş
+6. Yöntem
+   - Araştırma tasarımı
+   - Veri ve vaka seçimi
+   - Model ve üretim ayarları
+   - Ölçüm aracı ve vaka düzeyi karar
+   - Veri bütünlüğü ve tekrarlanabilirlik
+   - İstatistiksel analiz
+7. Proje İş-Zaman Çizelgesi
+8. Bulgular
+   - Çalıştırma ve bütünlük sonuçları
+   - Dondurulmuş birincil ölçüt
+   - Sonucun doğru yorumu
+   - Puanlama protokolü değişikliği
+   - 15 Ekim 2026 tarihli geriye dönük tasarım denetimi
+   - Kör anlamsal değerlendirme hazırlığı ve durumu
+9. Sonuç ve Tartışma
+   - Sınırlılıklar
+   - Sonuç
+10. Öneriler
+11. Kaynaklar
+12. Ekler
+
+
 **Proje Ana Alanı:** Yazılım  
 **Proje Tematik Alanı:** Yapay Zekâ  
 **Proje Adı (Başlığı):** LLM Tabanlı Çapraz-Bileşen Hata Teşhisinde Yapılandırılmış Bağımlılık Temsilinin Etkisinin Deneysel İncelenmesi
@@ -95,13 +127,15 @@ Birincil karşılaştırma, aynı yazılım vakası için Standard ve CCDG koşu
 
 ## Proje İş-Zaman Çizelgesi
 
-Çizelgede **X** tamamlanan/yürütülen işi, **P** planlanan işi gösterir. Ana deneyler ve dondurulmuş birincil analiz Ekim 2026 itibarıyla tamamlanmıştır. Başvuruya kadar kalan planlı işler, raporun öğrenci tarafından doğrulanması ve teslim dosyasının hazırlanmasıdır. Puanlama kalibrasyonu ve yeni üç koşullu takip deneyi bu raporda sunulan tamamlanmış deneyin parçası değildir; gelecekteki çalışmalar olarak “Öneriler” bölümünde belirtilmiştir.
+Çizelgede **X** tamamlanan/yürütülen işi, **P** planlanan işi gösterir. Tarihsel pilot ve doğrulayıcı model çalıştırmaları ile dondurulmuş birincil analiz Ekim 2026 itibarıyla tamamlanmıştır. Bununla birlikte, tarihsel 160 yanıt için hazırlanan kör değerlendirme paketleri henüz gerçek insan puanlarıyla doldurulmamıştır; bu ek çalışma tamamlanmış sayılmaz. İki bağımsız değerlendiricinin ilk puanları gerçekten teslim edilip kilitlenirse, dönen dosyalar yapısal olarak doğrulanacak ve sonuçlar yalnızca **post-hoc keşifsel** analiz olarak raporlanacaktır. Puanlar başvuru için son rapor dondurulmadan önce gelmezse insan değerlendirmesinin yapılmadığı açıkça yazılacak; semantik başarı oranı veya değerlendirici anlaşması uydurulmayacaktır. Bu ek değerlendirme tarihsel bilgi-paritesi kusurunu geriye dönük düzeltmez ve dondurulmuş birincil sonucu değiştirmez. Yeni üç koşullu V2 deneyi ayrı bir gelecek çalışmasıdır ve tüm protokol kapıları kanıtla kapanmadan model çıkarımına izin verilmemektedir.
 
 | İşin adı | Nisan | Mayıs | Haziran | Temmuz | Ağustos | Eylül | Ekim | Kasım | Aralık | Ocak |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Literatür ve hipotezler |  |  |  |  |  | X | X |  |  |  |
 | Vaka seçimi, CCDG ve deney düzeneği |  |  |  |  |  | X | X |  |  |  |
 | Pilot/doğrulayıcı deney ve istatistiksel analiz |  |  |  |  |  |  | X |  |  |  |
+| Kör insan değerlendirmesi (post-hoc keşifsel) |  |  |  |  |  |  | P | P |  |  |
+| Dönen JSONL dosyalarının yapısal doğrulanması ve keşifsel analizi |  |  |  |  |  |  | P | P |  |  |
 | Rapor son kontrolü ve başvuru paketi |  |  |  |  |  |  | X | P | P | P |
 
 ## Bulgular
