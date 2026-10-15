@@ -14,11 +14,15 @@ Use three conditions over the exact same independently selected and adjudicated 
 
 | Arm | Context | Identified effect |
 |---|---|---|
-| A | Standard baseline: source, technology, error description, I_base, and version-bound source snapshot | Baseline |
+| A | Standard baseline: source, technology, error description, and I_base; provenance-only revision/test metadata is excluded from model input | Baseline |
 | B | Same base facts plus each dependency edge as prose | Effect of explicitly exposing dependency facts (B vs A) |
 | C | Same base facts and the same endpoints, relation labels, and details as B, encoded as directed CCDG triples | Added value of graph representation over matched prose (C vs B) |
 
 The **single primary contrast is C versus B**. Secondary contrasts are B versus A and C versus A. Apply Holm correction across the two secondary tests. Do not add, remove, or reinterpret comparisons after viewing v2 outcomes.
+
+## Prompt parity and provenance leakage control
+
+All three arms must share byte-identical source, technology, error-description, and `I_base` facts. The exact dependency-edge endpoints, relation labels, and details supplied to B and C must match. Repository URLs, source revisions, regression-test identifiers, and observed failure signals may be retained in provenance/source-review records, but must not be rendered into any model context: test names and failure signals can disclose the diagnosis. This rule applies to A, B, and C alike.
 
 ## Outcome and blinded rating
 
