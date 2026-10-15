@@ -1,7 +1,7 @@
 # TÜBİTAK 2204-A Türkiye Derecesi Projelerinden Kalite Kıyaslaması (2023–2026)
 
 **Denetim tarihi:** 15 Ekim 2026  
-**Amaç:** Başarı garantisi tahmin etmek değil; resmî olarak derecesi doğrulanan örneklerde görülebilen araştırma/ürün yönlerini inceleyip mevcut LLM–CCDG projesi için ölçülebilir iyileştirme ölçütleri çıkarmak.
+**Amaç:** Başarı garantisi tahmin etmek değil; 2022–2026 döneminde resmî olarak derecesi doğrulanan örneklerde görülebilen araştırma/ürün yönlerini inceleyip mevcut LLM–CCDG projesi için ölçülebilir iyileştirme ölçütleri çıkarmak.
 
 ## Kaynak kapsamı ve sınırlılık
 
@@ -11,6 +11,7 @@
 
 | Yıl ve derece | Resmî olarak doğrulanan proje | Kaynakların erişilebilir kıldığı yöntem/sonuç | Bu projeye aktarılabilecek ders |
 |---|---|---|---|
+| 2022 — Türkiye birincisi | **Kuantum Nokta Katkılı Bor Kaynaklı Hidrojen Yakıt Pili** — Fizik | Ataşehir İlçe MEM’in 2 Mayıs 2022 tarihli haberinde Türkiye birinciliği ve proje adı bildirilir. Haberde tam teknik rapor, ölçüm protokolü veya performans tablosu sunulmadığından yakıt hücresi verimliliği hakkında sayısal iddia kurulmuyor. | Fiziksel bir yenilikçi prototip de ödül alabilir; fakat bizim çalışmada ürün/prototip gösterisi yerine sorumuzun deneysel olarak ayrıştırılması gerekir. Yöntem, karşılaştırma ve gerçek ölçüm belirsizliği açıklanmalıdır. |
 | 2023 — Türkiye birincisi | **Transformer Mimarisi Kullanarak Klasik Gitar Özelinde Sentetik Müzik Üretimi** — Yazılım / Yapay Zekâ | MEB ödül tablosu alan ve birincilik derecesini doğrular. Proje sahibinin kendi final posteri; veri kümesi özetleri, model/performans grafikleri, dinleyici değerlendirmesi kategorileri ve gitarla çalınabilirlik değerlendirmesi gösterir; posterde %98,87 çalınabilirlik oranı raporlanmıştır. Bu oran, projenin kendi posterindeki bildirilen sonuçtur; bağımsız bir yeniden üretim değildir. | Yöntemi, veriyi ve bir ölçüm sonucunu aynı hikâyede birleştirmek; tek başına “Transformer kullandım” demekten daha savunulabilir. Bizim de yalnızca CCDG kullanmak değil, B ve C koşullarının eşit bilgiyle karşılaştırılması ve ölçüm aracının geçerli olduğunun gösterilmesi gerekir. |
 | 2023 — Türkiye birincisi | **Elektrikli Araçlar İçin En Uygun Yolu Bulan Bir Rotalama Algoritması** — Matematik / Özgün Algoritma Tasarımı | MEB tablosu proje başlığını, alanını ve birinciliği doğrular. Bu incelemede tam rapor ve ayrıntılı algoritma/benchmark tabloları doğrulanabilir biçimde bulunamadığından algoritmanın iç yapısı veya sayısal başarısı hakkında iddia kurulmuyor. | Araştırma sorusu net bir hedef etrafında kurulabilir. Bizim hedef ölçütümüz de “daha iyi teşhis” ifadesinden öte, önceden tanımlı vaka düzeyi kök-neden doğruluğu olmalı ve eşleştirilmiş bir karşılaştırmaya dayanmalı. |
 | 2023 — Türkiye birincisi | **GPS Kullanmadan Konum Bulma: Ultrasonik Navigasyon** — Fizik / Milli Teknoloji Hamlesi | MEB ödül tablosu başlık, alan ve birinciliği doğrular. İncelenen kaynaklarda tam teknik rapor ve ölçüm koşulları bulunmadı. | Fiziksel sistemlerde ölçülebilir hata ve çalışma koşullarının açıklanması önemlidir. Bizim karşılığı, hata türü/veri kaynağı/bağlam ve tanı puanlama kararlarının izlenebilir olmasıdır; burada gerçek cihaz testi uydurulamaz. |
@@ -46,6 +47,7 @@ En savunulabilir kısa dönem yol, tarihsel araştırmayı olduğu gibi raporlam
 
 ## Kaynaklar
 
+- Ataşehir İlçe MEM, “TÜBİTAK 2204-A Lise Öğrencileri Araştırma Projeleri Yarışması Türkiye Finalinde Fizik Alanı Türkiye 1.’liği…” (2 Mayıs 2022) — [Kuantum Nokta Katkılı Bor Kaynaklı Hidrojen Yakıt Pili](https://atasehir.meb.gov.tr/www/tubitak-2204-a-lise-ogrencileri-arastirma-projeleri-yarismasi-turkiye-finalinde-fizik-alani-turkiye-1039ligi-ve-kimya-alani-turkiye-3039lugu-ilcemizin/icerik/940).
 - MEB OGM, “2023 Yılı 2204-A Lise Öğrencileri Araştırma Projeleri Yarışması” — [resmî ödül tablosu](https://ogmiyiornekler.meb.gov.tr/haber/2023_yili_2204-a_lise_ogrencileri_arastirma_projeleri_yarismasi-2647).
 - Proje sahibi Burak Sina Akbudak, “2204A 2023 Türkiye Finals” — [final notları ve proje posteri](https://www.burakakbudak.com.tr/en/post/2204a_2023_travel/). Poster üzerindeki metrik burada projenin kendi bildirdiği sonuç olarak aktarılmıştır.
 - Bingöl İl MEM AR-GE, “TÜBİTAK Türkiye Finalleri’nde Bingöl Zirvede…” — [2026 Voronoi ve Robofeeder haber yazısı](https://bingolarge.meb.gov.tr/www/tubitak-turkiye-finalleri039nde-bingol-zirvede-matematikte-turkiye-birinciligi-yazilimda-turkiye-ikinciligi-ile-cifte-buyuk-basari/icerik/715).
