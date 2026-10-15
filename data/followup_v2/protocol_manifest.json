@@ -9,7 +9,7 @@
         "id": "A",
         "name": "standard_baseline",
         "renderer": "render_standard_context_v2",
-        "description": "Shared source, technology, error description, I_base, and version-bound snapshot; no explicit dependency-edge section."
+        "description": "Shared source, technology, error description, and I_base; source revision and regression-test provenance are retained outside the model context; no explicit dependency-edge section."
       },
       {
         "id": "B",
