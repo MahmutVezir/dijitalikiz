@@ -5,7 +5,7 @@
 
 ## Kaynak kapsamı ve sınırlılık
 
-2023 örnekleri MEB Ortaöğretim Genel Müdürlüğünün ödül tablosundan doğrulandı. 2026 örnekleri MEB’in Bingöl il/ARGE sayfalarından kontrol edildi. Tam teknik raporu veya ölçüm protokolü herkesçe erişilebilir biçimde bulabildiğim örnek sayısı sınırlı. Bu nedenle tabloda “kaynak neyi gerçekten gösteriyor?” ve “bizim çıkarımımız ne?” ayrı tutulmuştur. Ödül kazanmış bir projenin yöntem kalitesi sadece başlığı veya basın haberinden kesin biçimde yeniden kurulamaz.
+2022 örneği Ataşehir İlçe MEM’in derece duyurusundan; 2023 örnekleri MEB Ortaöğretim Genel Müdürlüğünün ödül tablosundan; 2026 örnekleri ise MEB’in Bingöl il/ARGE sayfalarından doğrulandı. Bu, 2022–2026 penceresinden erişilebilir kaynaklara dayalı seçilmiş örneklerdir; 2024 ve 2025 yıllarının her kategorisinden tam bir derece listesi değildir. Tam teknik raporu veya ölçüm protokolünü herkesçe erişilebilir biçimde bulabildiğim örnek sayısı sınırlı. Bu nedenle tabloda “kaynak neyi gerçekten gösteriyor?” ve “bizim çıkarımımız ne?” ayrı tutulmuştur. Ödül kazanmış bir projenin yöntem kalitesi sadece başlığı veya basın haberinden kesin biçimde yeniden kurulamaz.
 
 ## Proje örnekleri
 
