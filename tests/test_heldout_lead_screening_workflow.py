@@ -10,6 +10,16 @@ def workflow_text() -> str:
     return WORKFLOW.read_text(encoding="utf-8")
 
 
+def active_case_ids(workflow: str) -> list[str]:
+    marker = "      matrix:\n        include:\n"
+    start = workflow.find(marker)
+    assert start >= 0, "screening matrix is missing"
+    start += len(marker)
+    end = workflow.find("\n\n\n    env:", start)
+    assert end >= 0, "screening matrix boundary is missing"
+    return re.findall(r"^\s*- case_id: ([^\r\n]+)$", workflow[start:end], re.MULTILINE)
+
+
 def test_heldout_lead_screening_is_scoped_and_read_only():
     workflow = workflow_text()
     assert "Held-out Lead Red-Green Screening" in workflow
@@ -28,60 +38,49 @@ def test_heldout_lead_screening_is_scoped_and_read_only():
     assert "surefire.failIfNoSpecifiedTests=false" in workflow
 
 
-def test_heldout_lead_screening_pins_exact_revisions_for_all_discovery_leads():
+def test_heldout_lead_screening_runs_only_the_six_pending_candidates():
     workflow = workflow_text()
     expected = {
-        "lang-1800-era-calendar": (
-            "324d9fbd091749a9c70aed4b038fd0b4a520b3cf",
-            "c7f1a6d27707e8cd8cbed94f83e0c58d2c480614",
+        "netty-17623-negative-search-domain-cache": (
+            "de7fa8997db278b83f56b22f89b691be58ae88ba",
+            "1addbf90c4fd35713c61e5c54ad4d21c14d7df1d",
         ),
-        "lang-1807-wildcard-upper-bound": (
-            "25c4bfcd6d9dc3a7333088bfc3031b05cd93837e",
-            "43154e016ae213a0da5b727cd1aa18e6e0c56adb",
+        "netty-17764-tls13-signature-algorithm-key-selection": (
+            "3eaff63caf06a582cc3df72422aa1124734b46c6",
+            "84c167ea85e0d7f5b40caec6cab859018f9490bd",
         ),
-        "collections-728-ordered-next-key": (
-            "a5248efd7f4f857f88770565414948e2d0524933",
-            "04b30be69f4355f218d587703bc20b1a591c3e3c",
+        "collections-724-indexed-collection-iterator-index-drift": (
+            "3ff49116a265817f7546f72052e3d0478c159e62",
+            "651a6218910a906dc50415c145d63ba06c07a659",
         ),
-        "net-404-ftps-data-hostname-verifier": (
-            "faa4edd7e287a3db465a32efd9c2d5faa15757fe",
-            "a79729464f6e69b773171ff30e3d483cab7afd70",
+        "collections-720-synchronized-collection-foreach-lock": (
+            "d58a5e3a1258877bd94ba79db9f8a5f90892624b",
+            "6ee9dd78c79f367dd8e3e1655e4664bcec960ad6",
         ),
-        "net-403-ftp-parser-type-before-instantiation": (
-            "a3d19751891edb9f7cb8c11bc344eaf1683b2b32",
-            "6e38749760c0366aac1637c7dc15e4ccf76329c9",
+        "lang-1795-fastdateformat-mutable-timezone-cache-leak": (
+            "d235f1e997523d7a3d9d1c63e9a1853c2ab728fd",
+            "117a9ea791b87af1b90413fa8290891ca3106cfd",
         ),
-        "text-768-stringmatcher-charsequence-window": (
-            "a6cbba814422a06a0366468b2346f52aaacf8f3d",
-            "81de4f7a7c7d3b13d89edd72d4c4b92aa33e6c81",
-        ),
-        "net-400-crlf-command-injection": (
-            "2a3aa71b077ae9290d9c3b95f6ad23b0e0a357c2",
-            "a07b6c41b5c2369506e7d86c4808dc51317e1481",
-        ),
-        "compress-805-pack200-error-propagation": (
-            "9a624106e6a5fce948d97ee262ed5742f6e4ceb4",
-            "17ce90728476f64d095f59cacf45c20ef3ade216",
-        ),
-        "jackson-6096-jsonview-array-update": (
-            "05f0d04f6a63829d322145cf8ba87511cbf56445",
-            "82d58088dfeb6a6d1af0cc45b9f2fb5e00828f08",
-        ),
-        "jackson-6256-objectnode-anygetter-filter": (
-            "e62a0704a10493001bf8ece5b16c1867b16bab45",
-            "aa9cd983faeea37317c172fffd8fa2ccbe8177a1",
-        ),
-        "netty-17759-pooled-derived-retained-slice": (
-            "006a2f1d92db733d10112de251600da7b6f8ec51",
-            "d84dc6b1c290de2046bd0df5ba893e7f337cb0e6",
+        "compress-797-lz77-back-reference-window-bound": (
+            "4a17b64939b782a5e95c5aecfd583b631cb58522",
+            "cebee156fe66578b5142b4176e6c408a76d65c0c",
         ),
     }
+    ids = active_case_ids(workflow)
+    assert len(ids) == len(set(ids)) == 6
+    assert set(ids) == set(expected)
+    assert "matrix.screen_pending" not in workflow
+    assert not re.search(r"^\s*screen_pending:", workflow, re.MULTILINE)
+    assert not re.search(r"^\s{4}if:.*matrix\.", workflow, re.MULTILINE)
+    assert "max-parallel: 2" in workflow
+    assert '.github/workflows/heldout-lead-red-green.yml' not in workflow.split("pull_request:", 1)[1].split("workflow_dispatch:", 1)[0]
     for case_id, (pre_fix, fixed) in expected.items():
         assert f"case_id: {case_id}" in workflow
         assert f"pre_fix: {pre_fix}" in workflow
         assert f"fix: {fixed}" in workflow
         assert re.fullmatch(r"[0-9a-f]{40}", pre_fix)
         assert re.fullmatch(r"[0-9a-f]{40}", fixed)
+        assert pre_fix != fixed
 
 
 def test_heldout_lead_screening_fails_closed_on_red_and_requires_green():
