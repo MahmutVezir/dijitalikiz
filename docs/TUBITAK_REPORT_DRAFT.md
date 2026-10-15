@@ -95,15 +95,14 @@ Birincil karşılaştırma, aynı yazılım vakası için Standard ve CCDG koşu
 
 ## Proje İş-Zaman Çizelgesi
 
-Çizelgede **X** tamamlanan/yürütülen işi, **P** planlanan işi gösterir. Ekim 2026 itibarıyla tamamlanan deney kayıtları ile devam eden rapor, puanlama kalibrasyonu ve başvuru hazırlığı birbirinden ayrılmıştır.
+Çizelgede **X** tamamlanan/yürütülen işi, **P** planlanan işi gösterir. Ana deneyler ve dondurulmuş birincil analiz Ekim 2026 itibarıyla tamamlanmıştır. Başvuruya kadar kalan planlı işler, raporun öğrenci tarafından doğrulanması ve teslim dosyasının hazırlanmasıdır. Puanlama kalibrasyonu ve yeni üç koşullu takip deneyi bu raporda sunulan tamamlanmış deneyin parçası değildir; gelecekteki çalışmalar olarak “Öneriler” bölümünde belirtilmiştir.
 
 | İşin adı | Nisan | Mayıs | Haziran | Temmuz | Ağustos | Eylül | Ekim | Kasım | Aralık | Ocak |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Literatür ve hipotezler |  |  |  |  |  | X | X |  |  |  |
-| Vaka/CCDG |  |  |  |  |  | X | X | P |  |  |
-| Deney ve istatistiksel analiz |  |  |  |  |  |  | X |  |  |  |
-| Rapor ve başvuru paketi |  |  |  |  |  |  | X | P | P | P |
-| Skor ve tasarım |  |  |  |  |  |  |  | P | P | P |
+| Vaka seçimi, CCDG ve deney düzeneği |  |  |  |  |  | X | X |  |  |  |
+| Pilot/doğrulayıcı deney ve istatistiksel analiz |  |  |  |  |  |  | X |  |  |  |
+| Raporun öğrenci tarafından doğrulanması ve başvuru paketi |  |  |  |  |  |  | X | P | P | P |
 
 ## Bulgular
 
@@ -126,9 +125,9 @@ Doğrulayıcı deney, GitHub Actions run ID `37976682761` üzerinde tamamlanmı�
 |---|---:|---:|
 | Inference kaydı | 80 | 80 |
 | Ayrıştırma hatası | 0 | 0 |
-| Alias ölçütünü geçen inference | 0/80 (%0) | 0/80 (%0) |
-| 3/5 çoğunluk kuralıyla başarılı vaka | 0/16 (%0) | 0/16 (%0) |
-| İkincil tam-teşhis geçişi | 0/80 (%0) | 0/80 (%0) |
+| Alias ölçütünü geçen inference | 0/80 (0%) | 0/80 (0%) |
+| 3/5 çoğunluk kuralıyla başarılı vaka | 0/16 (0%) | 0/16 (0%) |
+| İkincil tam-teşhis geçişi | 0/80 (0%) | 0/80 (0%) |
 
 Vaka düzeyindeki eşleştirilmiş tablo aşağıdadır.
 
