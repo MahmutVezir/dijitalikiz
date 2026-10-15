@@ -17,113 +17,22 @@ concurrency:
 jobs:
   reproduce:
     name: Screen candidate (no model inference)
-    if: ${{ matrix.screen_pending == true }}
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     strategy:
       fail-fast: false
-      max-parallel: 6
+      max-parallel: 2
       matrix:
         include:
-          - case_id: lang-1800-era-calendar
-            screen_pending: false
-            repo: apache/commons-lang
-            pre_fix: 324d9fbd091749a9c70aed4b038fd0b4a520b3cf
-            fix: c7f1a6d27707e8cd8cbed94f83e0c58d2c480614
-            tests: FastDateFormatTest#testEraRoundTripNonGregorianCalendar,FastDatePrinterTest#testEraMixedCalendarTypes
-            test_files: src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java
-          - case_id: lang-1807-wildcard-upper-bound
-            screen_pending: false
-            repo: apache/commons-lang
-            pre_fix: 25c4bfcd6d9dc3a7333088bfc3031b05cd93837e
-            fix: 43154e016ae213a0da5b727cd1aa18e6e0c56adb
-            tests: TypeUtilsTest#testUnboundedWildcardType
-            test_files: src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java
-          - case_id: collections-728-ordered-next-key
-            screen_pending: false
-            repo: apache/commons-collections
-            pre_fix: a5248efd7f4f857f88770565414948e2d0524933
-            fix: 04b30be69f4355f218d587703bc20b1a591c3e3c
-            tests: DualTreeBidiMapTest#testNextKeyAbsentKey,FixedSizeSortedMapTest#testNextKey,UnmodifiableSortedMapTest#testNextKey
-            test_files: src/test/java/org/apache/commons/collections4/bidimap/DualTreeBidiMapTest.java src/test/java/org/apache/commons/collections4/map/FixedSizeSortedMapTest.java src/test/java/org/apache/commons/collections4/map/UnmodifiableSortedMapTest.java
-          - case_id: net-404-ftps-data-hostname-verifier
-            screen_pending: false
-            repo: apache/commons-net
-            pre_fix: faa4edd7e287a3db465a32efd9c2d5faa15757fe
-            fix: a79729464f6e69b773171ff30e3d483cab7afd70
-            tests: FTPSClientTest#testHostnameVerifierUsedForDataConnection
-            test_files: src/test/java/org/apache/commons/net/ftp/AbstractFtpsTest.java src/test/java/org/apache/commons/net/ftp/FTPSClientTest.java
-          - case_id: net-403-ftp-parser-type-before-instantiation
-            screen_pending: false
-            repo: apache/commons-net
-            pre_fix: a3d19751891edb9f7cb8c11bc344eaf1683b2b32
-            fix: 6e38749760c0366aac1637c7dc15e4ccf76329c9
-            tests: DefaultFTPFileEntryParserFactoryTest#testNonParserClassIsNotInstantiated
-            test_files: src/test/java/org/apache/commons/net/ftp/parser/DefaultFTPFileEntryParserFactoryTest.java
-          - case_id: text-768-stringmatcher-charsequence-window
-            screen_pending: false
-            repo: apache/commons-text
-            pre_fix: a6cbba814422a06a0366468b2346f52aaacf8f3d
-            fix: 81de4f7a7c7d3b13d89edd72d4c4b92aa33e6c81
-            tests: StringMatcherTest#testIsMatchCharSequencePassesBufferStartThrough,StringMatcherTest#testIsMatchCharSequenceStartDelegatesThroughTheCorrectedOverload,StringMatcherTest#testIsMatchOverloadsAgreeOnTheSameWindow,StringMatcherTest#testStringSubstitutorHandsACustomMatcherTheRealBufferStart
-            test_files: src/test/java/org/apache/commons/text/matcher/StringMatcherTest.java
-          - case_id: net-400-crlf-command-injection
-            screen_pending: false
-            repo: apache/commons-net
-            pre_fix: 2a3aa71b077ae9290d9c3b95f6ad23b0e0a357c2
-            fix: a07b6c41b5c2369506e7d86c4808dc51317e1481
-            tests: FTPTest#testRejectCRLFInArgs,NNTPTest#testRejectCRLFInArgs,POP3Test#testRejectCRLFInArgs,SMTPTest#testRejectCRLFInArgs
-            test_files: src/test/java/org/apache/commons/net/ftp/FTPTest.java src/test/java/org/apache/commons/net/nntp/NNTPTest.java src/test/java/org/apache/commons/net/pop3/POP3Test.java src/test/java/org/apache/commons/net/smtp/SMTPTest.java
-          - case_id: compress-805-pack200-error-propagation
-            screen_pending: false
-            repo: apache/commons-compress
-            pre_fix: 9a624106e6a5fce948d97ee262ed5742f6e4ceb4
-            fix: 17ce90728476f64d095f59cacf45c20ef3ade216
-            tests: CodeAttributeTest#testNegativeReferenceIndex
-            test_files: src/test/java/org/apache/commons/compress/harmony/unpack200/CodeAttributeTest.java
-          - case_id: jackson-6096-jsonview-array-update
-            screen_pending: false
-            repo: FasterXML/jackson-databind
-            pre_fix: 05f0d04f6a63829d322145cf8ba87511cbf56445
-            fix: 82d58088dfeb6a6d1af0cc45b9f2fb5e00828f08
-            tests: FailOnUnexpectedView6077Test$BeanAsArrayUpdate#hiddenRoleUpdateRejectedWhenEnabled
-            test_files: src/test/java/tools/jackson/databind/views/FailOnUnexpectedView6077Test.java
-          - case_id: jackson-6256-objectnode-anygetter-filter
-            screen_pending: false
-            repo: FasterXML/jackson-databind
-            pre_fix: e62a0704a10493001bf8ece5b16c1867b16bab45
-            fix: aa9cd983faeea37317c172fffd8fa2ccbe8177a1
-            tests: AnyGetterTest#objectNodeAnyGetterHonorsIgnoreProperties,AnyGetterTest#objectNodeAnyGetterHonorsIncludeProperties
-            test_files: src/test/java/tools/jackson/databind/ser/AnyGetterTest.java
-          - case_id: spring-37285-part-spill-disk-limit
-            screen_pending: false
-            repo: spring-projects/spring-framework
-            build_tool: gradle
-            module: spring-web
-            gradle_test_filters: org.springframework.http.codec.multipart.DefaultPartHttpMessageReaderTests.exceedDiskUsageOnSpillOver
-            test_patch_adjustment: spring-create-request-resource
-            pre_fix: bb7ea37f1b3d47a4309bfacd7511cd1c6f4c2297
-            fix: 94afeedad60972dbe79325a0e8aed2824c57f922
-            tests: DefaultPartHttpMessageReaderTests#exceedDiskUsageOnSpillOver
-            test_files: spring-web/src/test/java/org/springframework/http/codec/multipart/DefaultPartHttpMessageReaderTests.java
-          - case_id: netty-17759-pooled-derived-retained-slice
-            screen_pending: false
-            repo: netty/netty
-            module: buffer
-            pre_fix: 006a2f1d92db733d10112de251600da7b6f8ec51
-            fix: d84dc6b1c290de2046bd0df5ba893e7f337cb0e6
-            tests: PooledBigEndianHeapByteBufTest#testRetainedSliceOfNonRetainedDerivedBufferCoversTheReadableBytes
-            test_files: buffer/src/test/java/io/netty/buffer/AbstractByteBufTest.java
           - case_id: netty-17623-negative-search-domain-cache
-            screen_pending: true
             repo: netty/netty
             module: resolver-dns
             pre_fix: de7fa8997db278b83f56b22f89b691be58ae88ba
             fix: 1addbf90c4fd35713c61e5c54ad4d21c14d7df1d
             tests: DnsNameResolverTest#testNegativelyCachedSearchDomainDoesNotShadowPositiveOne,DnsNameResolverTest#testNegativelyCachedSearchDomainDoesNotShadowUncachedOne,DnsNameResolverTest#testNegativelyCachedBareHostnameStillShortCircuits
             test_files: resolver-dns/src/test/java/io/netty/resolver/dns/DnsNameResolverTest.java
+
           - case_id: netty-17764-tls13-signature-algorithm-key-selection
-            screen_pending: true
             repo: netty/netty
             module: handler
             java_version: "21"
@@ -131,29 +40,29 @@ jobs:
             fix: 84c167ea85e0d7f5b40caec6cab859018f9490bd
             tests: PkiTestingTlsTest#connectWithEd25519,PkiTestingTlsTest#connectWithEd25519AndRsa,PkiTestingTlsTest#connectWithEd25519FailsWithoutCommonSignatureAlgorithm
             test_files: handler/src/test/java/io/netty/handler/ssl/PkiTestingTlsTest.java
+
           - case_id: collections-724-indexed-collection-iterator-index-drift
-            screen_pending: true
             repo: apache/commons-collections
             pre_fix: 3ff49116a265817f7546f72052e3d0478c159e62
             fix: 651a6218910a906dc50415c145d63ba06c07a659
             tests: IndexedCollectionTest#testIteratorRemoveUpdatesIndex
             test_files: src/test/java/org/apache/commons/collections4/collection/IndexedCollectionTest.java
+
           - case_id: collections-720-synchronized-collection-foreach-lock
-            screen_pending: true
             repo: apache/commons-collections
             pre_fix: d58a5e3a1258877bd94ba79db9f8a5f90892624b
             fix: 6ee9dd78c79f367dd8e3e1655e4664bcec960ad6
             tests: SynchronizedCollectionTest#testForEachHoldsLock
             test_files: src/test/java/org/apache/commons/collections4/collection/SynchronizedCollectionTest.java
+
           - case_id: lang-1795-fastdateformat-mutable-timezone-cache-leak
-            screen_pending: true
             repo: apache/commons-lang
             pre_fix: d235f1e997523d7a3d9d1c63e9a1853c2ab728fd
             fix: 117a9ea791b87af1b90413fa8290891ca3106cfd
             tests: FastDateFormatTest#testTimeZoneArgumentIsCopied,FastDateFormatTest#testTimeZoneGetterReturnsCopy,FastDateParserTest#testTimeZoneIsCopied
             test_files: src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java src/test/java/org/apache/commons/lang3/time/FastDateParserTest.java
+
           - case_id: compress-797-lz77-back-reference-window-bound
-            screen_pending: true
             repo: apache/commons-compress
             pre_fix: 4a17b64939b782a5e95c5aecfd583b631cb58522
             fix: cebee156fe66578b5142b4176e6c408a76d65c0c
