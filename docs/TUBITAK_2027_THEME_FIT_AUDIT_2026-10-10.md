@@ -6,6 +6,8 @@
 **Current intended thematic field:** Dijital İkiz  
 **Status:** Risk audit; not a claim of eligibility or award likelihood
 
+> **Superseded decision note (15 October 2026):** this document preserves the risk analysis recorded on 10 October. After checking the official 2027 guide's Digital Twin definition against the completed work, the current report is now classified as **Software / Artificial Intelligence**. The completed experiment is not a live sensor-fed twin, so the Digital Twin label should not be forced. See [the dated decision note](TUBITAK_2027_THEME_DECISION_2026-10-15.md).
+
 ## Current call and deliverable constraints
 
 The official 2204-A page says that the 2026–2027 application window is 23 September 2026 through **4 January 2027 at 17:30**. The application must be complete and in the prescribed format; an unfinished or merely proposed project is not enough. Recheck the official page before submission in case of later updates:
