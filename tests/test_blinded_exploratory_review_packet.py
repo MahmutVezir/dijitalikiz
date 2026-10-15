@@ -3,7 +3,7 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from scripts.build_blinded_exploratory_review_packet import build_packet
+from scripts.build_blinded_exploratory_review_packet import build_packet, _mask_project_identity
 
 
 def _write_json(path: Path, value):
@@ -165,3 +165,11 @@ def test_reviewer_packets_have_independent_order_and_stable_case_refs(tmp_path):
         identity = (item["source_case_id"], item["condition"], item["seed"])
         assert item["raw_output_sha256"] == expected_output_hashes[identity]
 
+
+
+
+def test_project_identity_mask_hides_two_part_project_prefix():
+    assert _mask_project_identity("Sensitive Project / Java") == "Java"
+    assert _mask_project_identity("Sensitive Project / Java / clustering") == "Java / clustering"
+    assert _mask_project_identity("Java") == "Java"
+    assert _mask_project_identity("") == "Software defect context"
