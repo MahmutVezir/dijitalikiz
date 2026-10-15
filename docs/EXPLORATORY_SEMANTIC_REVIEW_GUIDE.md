@@ -55,8 +55,9 @@ Use **correct**, **partially_correct**, **incorrect**, or **unscorable**. This i
 
 ## Packet generation
 
-Run the builder against the verified archive extraction:
+Run the builder twice against the verified archive extraction. Give only the matching packet to each reviewer; keep both key files private:
 
-    python scripts/build_blinded_exploratory_review_packet.py --artifact-root /path/to/confirmatory-output --output /path/to/review_packet.jsonl --key-output /path/to/review_key_private.json
+    python scripts/build_blinded_exploratory_review_packet.py --artifact-root /path/to/confirmatory-output --output /path/to/reviewer_A_packet.jsonl --key-output /path/to/reviewer_A_key_private.json --reviewer-label A
+    python scripts/build_blinded_exploratory_review_packet.py --artifact-root /path/to/confirmatory-output --output /path/to/reviewer_B_packet.jsonl --key-output /path/to/reviewer_B_key_private.json --reviewer-label B
 
-The review packet can be shared with reviewers. **Do not share the key file** until all independent reviews are locked. The builder validates that all case-condition-seed records exist, preserves the original responses and ground truth, and omits condition, seed, and original case ID from reviewer-facing rows.
+The builder uses a stable anonymous case-reference map, but independently deterministic row orders and reviewer-specific IDs. Each reviewer must receive only their own packet. The two key files are distinct and must not be shared with reviewers; keep them private until both independent review files are locked. The builder validates that all case-condition-seed records exist, preserves the original responses and ground truth, and omits condition, seed, and original case ID from reviewer-facing rows. Both packets are exploratory/post hoc and do not change the frozen historical result.
