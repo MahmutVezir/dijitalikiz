@@ -13,6 +13,9 @@ on:
       - "dijitalikiz/**"
       - "data/calibration/**"
       - "data/followup_v2/**"
+      - "data/benchmark/**"
+      - "data/sample_cases/**"
+      - "docs/**"
       - "pyproject.toml"
       - "requirements*.txt"
   pull_request:
@@ -25,6 +28,9 @@ on:
       - "dijitalikiz/**"
       - "data/calibration/**"
       - "data/followup_v2/**"
+      - "data/benchmark/**"
+      - "data/sample_cases/**"
+      - "docs/**"
       - "pyproject.toml"
       - "requirements*.txt"
   workflow_dispatch:
