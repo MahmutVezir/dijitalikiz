@@ -55,6 +55,14 @@ Başvuruya hazır Word/PDF üretimleri bu depodaki kaynak taslaktan ayrı teslim
 ## 5. Repo-side validation status (separate from research results)
 
 - [x] Path filters updated in merge commit `e58303cba30e6dc9727646e389742551a974e6cf` so `docs/**`, `data/benchmark/**`, and `data/sample_cases/**` edits trigger the no-inference validation.
-- [ ] Obtain a runner-backed successful `Research Validation (No Inference)` run. The latest observed main-branch run `38764618952` on theme-decision commit `e732a91fdf73b5919df68108e6bb7758bd4d3f73` failed before any steps executed; job `116524462088` has no executed step summaries. A rerun of prior run `38759981560` also ended before steps. This is not evidence that pytest or artifact validators failed, and it is not a passing run.
+- [ ] Obtain a runner-backed successful `Research Validation (No Inference)` run. Current checks are still runner-blocked: main-branch merge run `38781184907` and PR #29 run `38782157548` failed before steps. Job `116581493867` and job `116584852346` report `runner_id=0`, empty `runner_name`, and `steps=[]`; runner smoke run `38779073729` showed the same pre-step failure. This is not evidence that pytest or artifact validators failed, and it is not a passing run.
 - [ ] Repository owner checks `Settings → Actions → General` for hosted `ubuntu-24.04` eligibility and `Settings → Billing and licensing → Usage` for Actions quotas/spending restrictions; then retries validation and verifies actual step outputs.
 - [ ] Only after actual test steps execute should repository CI be marked passing. This repository QA gate does not change the frozen experiment outputs or their already recorded integrity audits.
+
+## 6. Kör anlamsal inceleme paketi düzeltmesi — 15 Ekim 2026
+
+- [x] İlk v1.1 inceleme ZIP'lerinde beklenen kök neden `reference.root_cause` olarak ve doğrudan kaynak URL'leriyle gösteriliyordu. Bunlar **geçersiz/superseded** kabul edilmeli ve değerlendiricilere gönderilmemeli.
+- [x] Düzeltilmiş v1.2 paketleri üretildi ve kaynak arşivdeki 160/160 kayıtla ham çıktı SHA-256 değerleri eşleştirildi. Yeni paket hash'leri ve sınırlılıklar `docs/BLINDED_SEMANTIC_REVIEW_PACKET_AUDIT_2026-10-15.md` dosyasındadır.
+- [ ] Gerçek bağımsız değerlendiriciler paketi ayrı ayrı tamamlayıp ilk kararlarını kilitlemeli; boş paketler insan değerlendirmesi sayılmaz.
+- [ ] Kaynak-koda dayalı hakemlik yalnızca iki bağımsız değerlendirme kilitlendikten sonra ayrı adjudication kaydında yapılmalı. İlk puanların bu sürümü, kanıt özetine dayalı keşifsel değerlendirmedir; bağımsız kaynak kodu doğrulaması değildir.
+- [ ] CI runner sorunu çözülüp gerçek test adımları çalışana kadar PR #29'daki kod değişikliği testlerden geçmiş sayılmamalıdır.

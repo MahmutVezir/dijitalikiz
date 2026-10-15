@@ -1,7 +1,9 @@
+import hashlib
 import json
+from collections import Counter
 from pathlib import Path
 
-from scripts.build_blinded_exploratory_review_packet import build_packet
+from scripts.build_blinded_exploratory_review_packet import build_packet, _mask_project_identity
 
 
 def _write_json(path: Path, value):
@@ -9,48 +11,50 @@ def _write_json(path: Path, value):
     path.write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
 
 
-def _small_artifact(root: Path) -> None:
-    _write_json(root / "benchmark_manifest.json", {"case_ids": ["case-private-1"]})
-    _write_json(
-        root / "cases" / "case-private-1.json",
-        {
-            "case_id": "case-private-1",
-            "source": "Synthetic test fixture",
-            "source_url": "https://example.invalid/issue/1",
-            "publication_date": "2026-01-01",
-            "technology": "Python",
-            "error_description": "A synthetic multi-component test defect.",
-            "i_base": ["Component A calls Component B."],
-            "ccdg": [{"source": "A", "target": "B", "relation": "calls", "details": "synthetic"}],
-            "ground_truth": {
-                "component": "Component B",
-                "entity": "test entity",
-                "operation": "run()",
-                "root_cause": "synthetic_root_cause",
-                "required_relations": ["Component A", "Component B"],
-            },
-        },
-    )
-    for condition in ("standard", "ccdg"):
-        for seed in (42, 43, 44, 45, 46):
-            _write_json(
-                root / "runs" / f"case-private-1__{condition}__seed{seed}.json",
-                {
-                    "case_id": "case-private-1",
-                    "condition": condition,
-                    "seed": seed,
-                    "source_commit": "test-commit",
-                    "prompt_sha256": f"prompt-{condition}-{seed}",
-                    "context_sha256": f"context-{condition}-{seed}",
-                    "raw_output": f'{{"diagnosis":"{condition}-{seed}"}}',
-                    "parsed_output": {
-                        "diagnosed_component": "Component B",
-                        "root_cause_class": "synthetic root cause",
-                        "affected_entity": "test entity",
-                        "explanation": f"Synthetic test response {condition} {seed}.",
-                    },
+def _small_artifact(root: Path, case_ids=("case-private-1",)) -> None:
+    _write_json(root / "benchmark_manifest.json", {"case_ids": list(case_ids)})
+    for case_id in case_ids:
+        _write_json(
+            root / "cases" / f"{case_id}.json",
+            {
+                "case_id": case_id,
+                "source": "Synthetic test fixture",
+                "source_url": f"https://example.invalid/issue/{case_id}",
+                "publication_date": "2026-01-01",
+                "technology": "Test Repository / Python / multi-component logic",
+                "error_description": "A synthetic multi-component test defect.",
+                "i_base": ["Component A calls Component B."],
+                "ccdg": [{"source": "A", "target": "B", "relation": "calls", "details": "synthetic"}],
+                "ground_truth": {
+                    "component": "Component B",
+                    "entity": "test entity",
+                    "operation": "run()",
+                    "root_cause": "synthetic_root_cause",
+                    "required_relations": ["Component A", "Component B"],
                 },
-            )
+            },
+        )
+        for condition in ("standard", "ccdg"):
+            for seed in (42, 43, 44, 45, 46):
+                opaque = hashlib.sha256(f"{case_id}:{condition}:{seed}".encode()).hexdigest()[:12]
+                _write_json(
+                    root / "runs" / f"{case_id}__{condition}__seed{seed}.json",
+                    {
+                        "case_id": case_id,
+                        "condition": condition,
+                        "seed": seed,
+                        "source_commit": "test-commit",
+                        "prompt_sha256": f"prompt-{condition}-{seed}",
+                        "context_sha256": f"context-{condition}-{seed}",
+                        "raw_output": json.dumps({"diagnosis": f"opaque-{opaque}"}),
+                        "parsed_output": {
+                            "diagnosed_component": "Component B",
+                            "root_cause_class": "candidate mechanism",
+                            "affected_entity": "test entity",
+                            "explanation": "A synthetic candidate explanation.",
+                        },
+                    },
+                )
 
 
 def test_review_packet_masks_case_condition_and_seed(tmp_path):
@@ -65,13 +69,24 @@ def test_review_packet_masks_case_condition_and_seed(tmp_path):
         assert "case-private-1" not in json.dumps(row, ensure_ascii=False)
         assert "condition" not in row
         assert "seed" not in row
+        assert "reference" not in row
+        serialized = json.dumps(row, ensure_ascii=False)
+        assert "synthetic_root_cause" not in serialized
+        assert "example.invalid" not in serialized
+        assert "source_url" not in row["source_evidence"]
+        assert "source" not in row["source_evidence"]
+        assert "publication_date" not in row["source_evidence"]
+        assert set(row["source_evidence"]) == {"technical_domain", "reported_problem", "base_facts"}
+        assert row["source_evidence"]["technical_domain"] == "Python / multi-component logic"
+        assert "Test Repository" not in serialized
+        assert all("evidence_id" in fact and "text" in fact for fact in row["source_evidence"]["base_facts"])
         assert set(row["review"]) == {
             "root_cause_correctness",
             "component_localization",
             "evidence_consistency",
             "dependency_reasoning",
             "overall_diagnostic_status",
-            "reviewer_notes",
+            "reviewer_notes_with_evidence",
         }
     assert all("condition" in item and "seed" in item for item in key)
     assert {item["condition"] for item in key} == {"standard", "ccdg"}
@@ -102,7 +117,7 @@ def test_review_packet_rejects_missing_run_records(tmp_path):
 
 def test_reviewer_packets_have_independent_order_and_stable_case_refs(tmp_path):
     root = tmp_path / "artifact"
-    _small_artifact(root)
+    _small_artifact(root, ("case-private-1", "case-private-2"))
     packet_a, key_a = build_packet(root, "f" * 64, "A")
     packet_b, key_b = build_packet(root, "f" * 64, "B")
 
@@ -110,12 +125,17 @@ def test_reviewer_packets_have_independent_order_and_stable_case_refs(tmp_path):
     rows_b = packet_b[1:]
     assert packet_a[0]["reviewer_code"] == "A"
     assert packet_b[0]["reviewer_code"] == "B"
+    assert packet_a[0]["ground_truth_and_answer_key_hidden_from_reviewer_rows"] is True
+    assert packet_b[0]["source_urls_and_project_identifiers_hidden_from_reviewer_rows"] is True
+    assert packet_a[0]["perfect_condition_blinding_guaranteed"] is False
     assert all(row["review_id"].startswith("REVIEW-A-") for row in rows_a)
     assert all(row["review_id"].startswith("REVIEW-B-") for row in rows_b)
 
     refs_a = {item["source_case_id"]: item["case_ref"] for item in key_a}
     refs_b = {item["source_case_id"]: item["case_ref"] for item in key_b}
-    assert refs_a == refs_b == {"case-private-1": refs_a["case-private-1"]}
+    assert refs_a == refs_b
+    assert set(refs_a) == {"case-private-1", "case-private-2"}
+    assert len(set(refs_a.values())) == 2
 
     def without_review_id(row):
         return {key: value for key, value in row.items() if key != "review_id"}
@@ -128,9 +148,28 @@ def test_reviewer_packets_have_independent_order_and_stable_case_refs(tmp_path):
         json.dumps(without_review_id(row), sort_keys=True) for row in rows_b
     )
     assert a_content == b_content
-    assert [(row["case_ref"], row["response"]["raw_output"]) for row in rows_a] != [
-        (row["case_ref"], row["response"]["raw_output"]) for row in rows_b
-    ]
+    sequence_a = [(row["case_ref"], hashlib.sha256(row["response"]["raw_output"].encode()).hexdigest()) for row in rows_a]
+    sequence_b = [(row["case_ref"], hashlib.sha256(row["response"]["raw_output"].encode()).hexdigest()) for row in rows_b]
+    assert sequence_a != sequence_b
+    assert Counter(sequence_a) == Counter(sequence_b)
     assert {item["reviewer_code"] for item in key_a} == {"A"}
     assert {item["reviewer_code"] for item in key_b} == {"B"}
+    assert all(len(item["raw_output_sha256"]) == 64 for item in key_a + key_b)
 
+    expected_output_hashes = {}
+    for run_path in (root / "runs").glob("*.json"):
+        run = json.loads(run_path.read_text(encoding="utf-8"))
+        identity = (run["case_id"], run["condition"], run["seed"])
+        expected_output_hashes[identity] = hashlib.sha256(run["raw_output"].encode("utf-8")).hexdigest()
+    for item in key_a + key_b:
+        identity = (item["source_case_id"], item["condition"], item["seed"])
+        assert item["raw_output_sha256"] == expected_output_hashes[identity]
+
+
+
+
+def test_project_identity_mask_hides_two_part_project_prefix():
+    assert _mask_project_identity("Sensitive Project / Java") == "Java"
+    assert _mask_project_identity("Sensitive Project / Java / clustering") == "Java / clustering"
+    assert _mask_project_identity("Java") == "Java"
+    assert _mask_project_identity("") == "Software defect context"

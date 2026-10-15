@@ -14,6 +14,21 @@ def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _mask_project_identity(technology: str) -> str:
+    """Hide the repository/project name while preserving language and task domain."""
+    parts = [part.strip() for part in technology.split(" / ") if part.strip()]
+    if len(parts) >= 3:
+        parts = parts[1:]
+    elif len(parts) == 2:
+        # Two-part values may still be "project / language"; keep only the language/domain.
+        parts = parts[-1:]
+    return " / ".join(parts) if parts else "Software defect context"
+
+
+def _sha256_text(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
 def build_packet(
     artifact_root: Path,
     artifact_sha256: str = EXPECTED_ARCHIVE_SHA256,
@@ -92,19 +107,12 @@ def build_packet(
             "review_id": "",
             "case_ref": case_refs[case_id],
             "source_evidence": {
-                "source": case.get("source", ""),
-                "source_url": case.get("source_url", ""),
-                "publication_date": case.get("publication_date", ""),
-                "technology": case.get("technology", ""),
-                "error_description": case.get("error_description", ""),
-                "i_base": case.get("i_base", []),
-            },
-            "reference": {
-                "component": case["ground_truth"].get("component", ""),
-                "entity": case["ground_truth"].get("entity", ""),
-                "operation": case["ground_truth"].get("operation", ""),
-                "root_cause": case["ground_truth"].get("root_cause", ""),
-                "required_relations": case["ground_truth"].get("required_relations", []),
+                "technical_domain": _mask_project_identity(case.get("technology", "")),
+                "reported_problem": case.get("error_description", ""),
+                "base_facts": [
+                    {"evidence_id": f"B{index}", "text": fact}
+                    for index, fact in enumerate(case.get("i_base", []), start=1)
+                ],
             },
             "response": {
                 "diagnosed_component": output.get("diagnosed_component", ""),
@@ -119,7 +127,7 @@ def build_packet(
                 "evidence_consistency": "",
                 "dependency_reasoning": "",
                 "overall_diagnostic_status": "",
-                "reviewer_notes": "",
+                "reviewer_notes_with_evidence": "",
             },
         })
         key_by_hidden_key[hidden_key] = {
@@ -132,6 +140,7 @@ def build_packet(
             "source_commit": record.get("source_commit"),
             "prompt_sha256": record.get("prompt_sha256"),
             "context_sha256": record.get("context_sha256"),
+            "raw_output_sha256": _sha256_text(record.get("raw_output", "")),
         }
 
     rng.shuffle(rows)
@@ -146,18 +155,23 @@ def build_packet(
 
     packet_metadata = {
         "record_type": "metadata",
-        "packet_version": "1.1",
+        "packet_version": "1.2",
         "packet_kind": "post_hoc_exploratory_semantic_review",
         "reviewer_code": reviewer_label,
         "source_artifact_archive_sha256": artifact_sha256,
         "n_records": len(rows),
         "condition_labels_and_seeds_in_reviewer_rows": False,
-        "original_case_ids_in_reviewer_rows": False,
+        "ground_truth_and_answer_key_hidden_from_reviewer_rows": True,
+        "source_urls_and_project_identifiers_hidden_from_reviewer_rows": True,
+        "original_case_ids_explicitly_omitted": True,
+        "case_identity_may_be_inferred_from_technical_content": True,
+        "perfect_condition_blinding_guaranteed": False,
         "frozen_primary_results_modified": False,
         "new_inference_performed": False,
         "review_status": "unreviewed_packet",
         "warning": (
-            "This packet supports exploratory post-hoc review only. It cannot replace "
+            "Exploratory post-hoc review only; no expected root cause, source URL, or source case ID is shown. "
+            "Response content may still hint at condition or case identity. This packet cannot replace "
             "or amend the frozen confirmatory endpoint."
         ),
     }
@@ -207,6 +221,7 @@ def main() -> int:
         "packet_path": str(args.output),
         "key_path": str(args.key_output),
         "reviewer_rows_include_condition_or_seed": False,
+        "expected_root_cause_or_source_identifiers_in_reviewer_rows": False,
         "frozen_results_modified": False,
     }, indent=2))
     return 0

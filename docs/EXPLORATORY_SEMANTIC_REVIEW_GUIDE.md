@@ -1,12 +1,14 @@
 # Guide for the Blinded Exploratory Semantic Review
 
-**Purpose:** Source-grounded exploratory review of existing model responses after the frozen confirmatory analysis. This is not a new confirmatory result.
+**Purpose:** Blinded, evidence-summary-based exploratory review of existing model responses after the frozen confirmatory analysis. This is not a new confirmatory result or independent source-code validation.
 
 ## What the reviewer receives
 
-The packet contains randomized review IDs, anonymized case references, public source evidence, the case ground-truth reference, and a model response. It omits the Standard/CCDG condition labels, generation seeds, and original case IDs from the reviewer-facing rows. The condition key must be kept separate until reviews are complete.
+The packet contains randomized review IDs, repeated-response case references, a sanitized task-domain label, a reported-problem summary, numbered base facts (B1, B2, …), and the model response. It deliberately omits the expected root cause, ground-truth fields, direct source URLs, project/repository identifiers, publication dates, condition labels, seeds, and source-case IDs. The private coordinator key maps review IDs back to the original records and raw-output hashes.
 
-The response rows derive from the archived confirmatory artifact. Reviewers must not edit the model response, source evidence, or reference fields. Each reviewer should work on a separate copy and submit decisions independently before discussion.
+This is not perfect anonymity: class names, technical details, and response wording may allow a reviewer to infer a case or treatment. Reviewers must not search for case identifiers, attempt to infer the condition, or discuss answers before both forms are locked. Because source links and the canonical answer are withheld, the initial review is based on the evidence summaries provided in the packet; it does not itself prove source-code ground truth.
+
+The response rows derive from the verified archived confirmatory artifact. Reviewers must not edit the model response or supplied evidence summaries. Each reviewer should work on a separate copy and submit decisions independently before discussion. Fill only the review fields. Cite the reported-problem summary or numbered base facts (for example, “B2”) in the rationale.
 
 ## Review dimensions and labels
 
@@ -40,7 +42,7 @@ Use **correct**, **partially_correct**, **incorrect**, or **unscorable**. This i
 
 1. Do not attempt to infer or record the treatment condition.
 2. Decide each response independently based on the reference and source evidence.
-3. Write a short rationale citing the specific source fact or relationship that supports the label.
+3. Write a short rationale citing the specific supplied evidence item (reported problem or B1/B2/…) that supports the label. Do not describe it as verified source-code evidence if the packet only provides the summary.
 4. Do not discuss decisions with the other reviewer until both copies are complete.
 5. After independent review, compute per-dimension agreement and make a separate adjudication record for disagreements. Do not replace original reviewer labels with adjudicated labels.
 6. Keep this analysis marked **exploratory and post hoc**. It cannot retroactively replace the frozen primary endpoint or be presented as preregistered confirmatory evidence.
@@ -60,4 +62,4 @@ Run the builder twice against the verified archive extraction. Give only the mat
     python scripts/build_blinded_exploratory_review_packet.py --artifact-root /path/to/confirmatory-output --output /path/to/reviewer_A_packet.jsonl --key-output /path/to/reviewer_A_key_private.json --reviewer-label A
     python scripts/build_blinded_exploratory_review_packet.py --artifact-root /path/to/confirmatory-output --output /path/to/reviewer_B_packet.jsonl --key-output /path/to/reviewer_B_key_private.json --reviewer-label B
 
-The builder uses a stable anonymous case-reference map, but independently deterministic row orders and reviewer-specific IDs. Each reviewer must receive only their own packet. The two key files are distinct and must not be shared with reviewers; keep them private until both independent review files are locked. The builder validates that all case-condition-seed records exist, preserves the original responses and ground truth, and omits condition, seed, and original case ID from reviewer-facing rows. Both packets are exploratory/post hoc and do not change the frozen historical result.
+The builder uses a stable anonymous case-reference map, but independently deterministic row orders and reviewer-specific IDs. Each reviewer must receive only their own packet. The two key files are distinct and must not be shared with reviewers; keep them private until both independent review files are locked. The builder validates the expected case-condition-seed inventory and records the SHA-256 of each raw output in the private key. Reviewer-facing rows preserve the exact model responses but omit the answer key, public source URLs, project identifier, condition, seed, and original case ID. Response wording may still hint at the condition, so blinding is not claimed to be perfect. Both packets are exploratory/post hoc and do not change the frozen historical result.

@@ -14,10 +14,12 @@ Mevcut doğrulayıcı deneyin dondurulmuş birincil sonucu aynen korunur: litera
 
 ### 2.1 Körleme
 
-- İncelemeciye yalnızca rastgele review_id, ilgili referans vakanın kodu ve modelin ürettiği teşhis alanları verilir.
-- Koşul (standard/ccdg), seed, istem, kaynak commit'i ve çalıştırma zamanı gizlenir.
-- Çıktılar her incelemeci için ayrı sırada sunulur.
-- İncelemeciler birbirleriyle görüşmeden önce kendi puanlarını tamamlar; dış kaynaklardan vaka aramazlar.
+- İncelemeciye rastgele review_id, ortak anonim case_ref, hata/problem özeti, numaralandırılmış temel olgular ve model yanıtı verilir.
+- Beklenen kök neden, canonical ground-truth alanları, kaynak URL'leri, proje/repo kimlikleri, yayın tarihi, koşul (standard/ccdg), seed, istem, kaynak commit'i ve çalıştırma zamanı incelemeci paketinden çıkarılır.
+- Her incelemeci için satır sırası ve review_id'ler ayrı ve tekrarlanabilir biçimde oluşturulur; case_ref eşlemesi aynı kalır ki ilk değerlendirmeler kilitlendikten sonra vaka düzeyinde hizalama yapılabilsin.
+- İncelemeciler birbirleriyle görüşmeden önce kendi puanlarını tamamlar; dış kaynaklardan vaka aramazlar. Gerekçelerde yalnızca paketteki problem özeti veya B1, B2 gibi temel olgu kimlikleri gösterilir.
+- Teknik sınıf adları ve yanıt metinleri bir vaka veya koşulun tahmin edilmesine hâlâ izin verebilir. Bu nedenle paketler **mükemmel körleme garantisi vermez**; yalnızca açık metadata/cevap anahtarı sızıntısını azaltır.
+- İncelemeci paketindeki kanıtlar, kaynak koddan bağımsız doğrulanmış bir ground truth değildir. İlk puanlar sağlanan kanıt özetine göre verilir; kaynak koda dayalı adjudication yalnızca iki bağımsız değerlendirme kilitlendikten sonra ayrı kayıtla yapılır.
 - Çalışma sahibi koşulları biliyor olsa da, bağımsız incelemeciler koşul anahtarını görmez. Dolayısıyla bu, çalışma ekibinin bütünüyle kör olduğu anlamına gelmez.
 
 ### 2.2 Birincil anlamsal ölçüt
