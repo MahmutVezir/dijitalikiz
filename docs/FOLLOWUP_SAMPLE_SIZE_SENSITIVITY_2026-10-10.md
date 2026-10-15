@@ -18,8 +18,11 @@ Target power = 0.80; two-sided alpha = 0.05 for the single predeclared primary c
 
 | Assumed prose-only probability | Assumed graph-only probability | Required independent cases | Achieved power (approx.) |
 |---:|---:|---:|---:|
-| 0.10 | 0.20 | 249 | 0.8014 |
 | 0.05 | 0.25 | 61 | 0.8052 |
+| 0.05 | 0.20 | 92 | 0.8014 |
+| 0.05 | 0.15 | 168 | 0.8006 |
+| 0.10 | 0.25 | 129 | 0.8031 |
+| 0.10 | 0.20 | 249 | 0.8014 |
 | 0.05 | 0.35 | 36 | 0.8131 |
 | 0.05 | 0.40 | 29 | 0.8062 |
 | 0.05 | 0.60 | 16 | 0.8070 |

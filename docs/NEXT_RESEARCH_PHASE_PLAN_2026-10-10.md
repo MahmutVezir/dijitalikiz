@@ -236,3 +236,43 @@ A second, independent packet set is prepared for the **seven scoring-calibration
 - Local structural/blinding checks passed. Human source review and separate adjudication are still pending, so the case pool remains `screening_pending` and inference remains prohibited.
 
 The unchanged research decision is: the historic endpoint had a floor effect and cannot resolve the semantic CCDG hypothesis. A future run may support, contradict, or leave the hypothesis unresolved; no desired result is assumed.
+
+## Current mainline resumption audit — 2026-10-15
+
+This addendum updates only current execution status; it does not change the historical study or authorize new inference.
+
+### Confirmed historic result
+
+- Frozen pilot: 40 records. Historical confirmatory study: 160 records across 16 independent cases, two conditions and five seeds.
+- Frozen primary endpoint remains Standard 0/80 and CCDG 0/80, 0/16 case-level majority passes per condition, exact two-sided McNemar (p=1.00), paired risk difference 0.00 (95% interval approximately [-0.1936, 0.1936]).
+- The code-level information-parity audit stands: legacy Standard Context contains an explicit error-description block; legacy CCDG Context omits that block while adding dependency edges. The historic renderers, raw outputs, hashes and result remain immutable.
+
+### Three-condition follow-up and title
+
+- Existing code contains `dijitalikiz/context_v2.py` renderers for A/B/C and `scripts/audit_context_v2_parity.py` for common-base and edge-field checks. This is implementation evidence, not evidence that the new case pool is ready or that a complete tokenizer audit passed on current `main`.
+- `data/followup_v2/protocol_manifest.json` remains `draft`; `model_inference_permitted=false`; held-out `case_ids=[]`; model and generation are proposed, not frozen; tokenizer and all readiness gates are pending.
+- `data/calibration/manifest.json` remains draft/unfrozen. `data/calibration/case_pool_manifest.json` is `screening_pending`; all seven source-ground-truth review/adjudication statuses are pending. No source-grounded calibration examples, independent reviewer labels or adjudication have been committed.
+- The title **“Yazılım Hatalarında Bağımlılık Bilgisinin Temsil Biçiminin Büyük Dil Modellerinde Kök Neden Teşhisine Etkisi”** (13 words) better fits the prospective three-arm follow-up. Keep the historical report title unless and until that follow-up is actually completed and reported.
+
+### Sample-size sensitivity
+
+The existing exact conditional-binomial McNemar power utility was rechecked for declared design scenarios (two-sided alpha 0.05; target power 0.80). The 61-case target gives approximately 0.805 power only under the strong directional discordance assumptions (p_{B\ only}=0.05), (p_{C\ only}=0.25). More modest illustrative assumptions require 92 cases (0.05/0.20), 168 (0.05/0.15), 129 (0.10/0.25), or 249 (0.10/0.20). These are planning assumptions, not estimates from historic results. Details are in `docs/FOLLOWUP_SAMPLE_SIZE_SENSITIVITY_2026-10-10.md`.
+
+### Runner diagnostics — not a test failure
+
+- No-inference validation run [#38764618952](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38764618952), follow-on [#38764736856](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38764736856), and runner-only probe [#38757519267](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38757519267) failed before job steps executed; relevant job records have no step summaries.
+- The public [GitHub Status](https://www.githubstatus.com/) page showed Actions operational and no incident reported for 2026-10-15 when checked. This makes an account/repository-specific restriction plausible but not proven. The owner must check repository Settings → Actions → General (hosted runner access/policy) and Settings → Billing and licensing → Usage (quota/spend/payment restrictions). Do not make this private repository public as a workaround.
+- The connected shell has no mounted project checkout and outbound name resolution is unavailable, so a full local `pytest -q` or `compileall` could not honestly be claimed for current `main`. Current-main CI remains unverified, not passed and not proven to have failed tests.
+
+### Next evidence-gated sequence
+
+1. Resolve runner eligibility and obtain one validation-only run that executes dependency install, pytest, compileall and historical artifact checks.
+2. Obtain two genuine independent reviews of the seven calibration-candidate source revisions/tests and a separate adjudication. Do not fabricate annotations.
+3. Validate the seven calibration case records on pinned revisions/tests; exclude unsuitable cross-component cases rather than promoting by count.
+4. Build source-grounded calibration examples and pass prespecified reviewer-reliability gates.
+5. Source and adjudicate independent held-out cases; justify the feasible sample size before freeze.
+6. Complete tokenizer/context, model/runtime and single-inference gates; freeze schedule, prompts, manifest and analysis hash before any confirmatory inference.
+7. Keep the historical report immutable. Only report a new study as confirmatory if it is genuinely completed; otherwise preserve its status as planned work.
+
+Official 2026–2027 call and guide: [TÜBİTAK 2204-A page](https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi). It states the deadline is **4 January 2027 at 17:30 Türkiye time** and that area/theme selection is the applicants' responsibility and cannot be changed after submission. At the time checked, the page still linked the 2025 preliminary and exhibition scoring forms; verify whether updated 2026–2027 forms are published before final submission.
+

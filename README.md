@@ -132,3 +132,18 @@ The launch trigger commit is `e1e083f5400432b98143bdb35ff2c5b435ea8f6e`. GitHub 
 The frozen primary endpoint resulted in Standard 0/80 and CCDG 0/80 seed-level alias matches; neither condition passed at case level for any of the 16 cases. Exact two-sided McNemar p = 1.00, paired risk difference = 0.00, 95% interval = [-0.1936, 0.1936], with zero discordant cases. This is a floor effect under the literal alias matcher—not proof of equivalence or of no CCDG effect. The intended semantic root-cause hypothesis remains unresolved by this operationalization.
 
 The full transparent results and limitations are documented in [`docs/CONFIRMATORY_RESULTS_2026-10-09.md`](CONFIRMATORY_RESULTS_2026-10-09.md); a reproducible result summary is in `data/benchmark/confirmatory_result_summary.json`. The next work is report preparation, literature/reference verification, and submission-quality scientific review. The frozen confirmatory artifact and score must not be changed post hoc.
+
+## Prospective follow-up v2 — status as of 2026-10-15
+
+The historical two-condition study remains immutable and inconclusive for semantic root-cause correctness. Its frozen alias endpoint produced Standard 0/80 and CCDG 0/80; this is a floor effect, not evidence of equivalence or no CCDG effect.
+
+The proposed follow-up is a separate three-condition study: A = shared base facts without explicit dependency edges; B = the same base facts plus dependency edges in prose; C = the same base facts and same edges as directed CCDG triples. The primary contrast is C vs B; secondary contrasts are B vs A and C vs A, with Holm correction planned for the two secondary tests.
+
+**No follow-up model inference is authorized.** `data/followup_v2/protocol_manifest.json` remains `draft`, `model_inference_permitted=false`, the held-out case list is empty, the tokenizer audit is pending, and all readiness gates remain pending. The scoring-calibration manifest is also draft and the separate calibration-case source-review manifest remains `screening_pending`.
+
+The proposed title **“Yazılım Hatalarında Bağımlılık Bilgisinin Temsil Biçiminin Büyük Dil Modellerinde Kök Neden Teşhisine Etkisi”** (13 words) fits a completed three-condition follow-up. The historical report should retain its current title until a new study is actually completed; do not use the prospective title to imply that it has run.
+
+The current no-inference Actions runs [#38764618952](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38764618952), [#38764736856](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38764736856), and runner-only probe [#38757519267](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38757519267) ended before job steps executed. This is neither a pytest failure nor a successful validation. GitHub's public status page showed Actions operational and no incident reported for 2026-10-15 when checked; inspect repository/account-specific runner access, policy and usage restrictions before asserting a root cause. Sources: [GitHub Status](https://www.githubstatus.com/) and [GitHub Actions billing documentation](https://docs.github.com/en/billing/concepts/product-billing/github-actions).
+
+The model-revision, runtime, single-inference, schema, prompt-hash and tokenizer gates must pass before any bulk run. The 61-case/915-output target is a prospective planning scenario, not a completed experiment.
+
