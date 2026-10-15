@@ -17,7 +17,9 @@ Workflow run `38595283872` attempted 18 jobs (the 12 previously screened cases p
 
 ## Workflow adjustment prepared
 
-The accompanying workflow change adds an explicit `screen_pending` boolean to each matrix entry and runs only entries marked `true`. Existing 12 cases are `false` because their exact screening results already exist; the six newly added cases are `true`. This avoids repeating unchanged, already-screened jobs and narrows the next run to the work that actually needs evidence.
+The active workflow matrix now contains only the six pending candidates. The 12 previously screened candidates were removed from the active matrix; their archived red-green artifacts and source audit remain the evidence for those exact revision/test combinations and must not be counted again as pending work.
+
+A first draft attempted to use `matrix.screen_pending` in the job-level `if` condition. On 2026-10-15, that was caught in static review: GitHub Actions does not list the `matrix` context as available for `jobs.<job_id>.if`. The draft was corrected before opening a PR. The current workflow uses an explicit six-case matrix, no matrix-based job-level condition, and `max-parallel: 2` to limit concurrent build pressure. This is a source/configuration correction only; no runner-backed test has yet verified the revised workflow.
 
 This adjustment does not make candidates eligible by itself and does not authorize model inference. A candidate still needs observed failure on its pinned pre-fix revision and a clean pass on its pinned fixed revision. Independent source review and adjudication remain separate required gates.
 
