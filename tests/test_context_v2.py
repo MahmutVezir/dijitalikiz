@@ -71,14 +71,14 @@ def test_v2_contexts_do_not_expose_ground_truth_labels():
         assert "Ground truth:" not in rendered
         assert case.ground_truth.root_cause not in rendered
 
-def test_v2_conditions_share_revision_bound_software_twin_snapshot():
+def test_v2_conditions_do_not_render_provenance_snapshot_or_answer_cues():
     case_path = ROOT / "data" / "benchmark" / "cases" / "commons-math-defects4j-MATH-305.json"
     payload = json.loads(case_path.read_text(encoding="utf-8"))
     snapshot = {
-        "repository_url": "https://github.com/example/project",
+        "repository_url": "https://example.invalid/provenance-only-repository",
         "snapshot_revision": "a" * 40,
-        "regression_test": "ExampleRegressionTest#failsOnPreFixRevision",
-        "observed_failure_signal": "The regression assertion failed on the pinned snapshot revision.",
+        "regression_test": "ExampleRegressionTest#revealsTheMissingPaxHeaderSizeLimit",
+        "observed_failure_signal": "PROVENANCE_ONLY_FAILURE_SIGNAL_SENTINEL_6D8F",
     }
     payload["software_twin_snapshot"] = snapshot
     case = ResearchCase.from_dict(payload)
@@ -88,16 +88,11 @@ def test_v2_conditions_share_revision_bound_software_twin_snapshot():
         render_dependency_prose_context_v2(case),
         render_ccdg_context_v2(case),
     ]
-    required_lines = [
-        "Version-bound software-system twin snapshot:",
-        f"Repository: {snapshot['repository_url']}",
-        f"Observed code revision: {snapshot['snapshot_revision']}",
-        f"Regression test: {snapshot['regression_test']}",
-        f"Observed failure signal: {snapshot['observed_failure_signal']}",
-    ]
     for rendered in contexts:
-        for line in required_lines:
-            assert line in rendered
-        assert "fixed_revision" not in rendered
+        assert "Version-bound software-system twin snapshot:" not in rendered
+        for value in snapshot.values():
+            assert value not in rendered
+        assert "Regression test:" not in rendered
+        assert "Observed code revision:" not in rendered
         assert "ground_truth" not in rendered.lower()
 

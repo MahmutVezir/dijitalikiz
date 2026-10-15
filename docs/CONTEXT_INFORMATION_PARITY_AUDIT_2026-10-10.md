@@ -60,3 +60,12 @@ No hypothesis is guaranteed to be supported. A null, negative, or inconclusive r
 ## Current state
 
 The v2 design and test code are committed, but they must pass repository CI before being treated as validated. No v2 inference has run. No new human-adjudicated calibration set has been completed. The frozen confirmatory result remains unchanged.
+
+
+## Additional answer-cue control — 2026-10-15
+
+The first draft of `context_v2.py` rendered optional version-bound snapshot metadata inside every model context, including the exact regression-test name and observed code revision. Although shared across A/B/C, a test name can reveal the intended defect mechanism and can make cases artificially easy. The follow-up experiment does not need these provenance fields to compare the representation of dependency facts.
+
+The v2 renderer has therefore been tightened: `software_twin_snapshot` remains available in the case record for source review and reproducibility, but none of its values are sent to the model in A, B or C. This does not edit the historical `context.py` renderer or alter frozen outputs. A regression test uses sentinel snapshot values and asserts that none appears in any rendered arm; the fail-closed parity audit also rejects leakage of any configured snapshot value.
+
+This is a source-level risk control, **not yet a passing test result**. The current GitHub-hosted runner issue prevents a verified full repository test run; no new inference is authorized until tests, tokenizer audit, and all human/evidence gates pass.

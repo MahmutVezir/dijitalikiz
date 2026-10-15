@@ -4,6 +4,10 @@ from __future__ import annotations
 
 Do not change the legacy renderers in dijitalikiz.context: frozen historical
 prompt hashes and confirmatory artifacts depend on those exact functions.
+
+Source revision and regression-test identifiers stay in provenance/review
+records, not model context. Test names can reveal the diagnosis and would
+introduce avoidable answer cues shared across all experimental conditions.
 """
 
 from .models import ResearchCase
@@ -21,16 +25,6 @@ def _shared_base_lines(case: ResearchCase) -> list[str]:
         "I_base:",
     ]
     lines.extend(f"- {item}" for item in case.i_base)
-    snapshot = case.software_twin_snapshot
-    if snapshot is not None:
-        lines.extend([
-            "",
-            "Version-bound software-system twin snapshot:",
-            f"Repository: {snapshot['repository_url']}",
-            f"Observed code revision: {snapshot['snapshot_revision']}",
-            f"Regression test: {snapshot['regression_test']}",
-            f"Observed failure signal: {snapshot['observed_failure_signal']}",
-        ])
     return lines
 
 

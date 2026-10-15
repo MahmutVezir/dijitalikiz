@@ -50,6 +50,23 @@ def audit_case(case: ResearchCase) -> dict[str, Any]:
         if "Ground truth:" in rendered:
             raise ValueError(f"Ground-truth section leakage in v2 context for {case.case_id}")
 
+    # Provenance-only test/revision metadata must remain outside all model arms.
+    # Regression-test names can directly hint at the correct diagnosis.
+    if case.software_twin_snapshot is not None:
+        for field, value in case.software_twin_snapshot.items():
+            if value and any(value in rendered for rendered in (standard, prose, graph)):
+                raise ValueError(
+                    f"Provenance snapshot field leaked into model context "
+                    f"({field}) for {case.case_id}"
+                )
+    if any(marker in rendered for rendered in (standard, prose, graph)
+           for marker in (
+               "Version-bound software-system twin snapshot:",
+               "Regression test:",
+               "Observed code revision:",
+           )):
+        raise ValueError(f"Provenance snapshot section leaked into context for {case.case_id}")
+
     prose_words = len(prose.split())
     graph_words = len(graph.split())
     return {
@@ -93,6 +110,7 @@ def audit_manifest(manifest_path: Path, case_dir: Path) -> dict[str, Any]:
             "Source, technology, error description, and I_base are byte-identical across all three arms.",
             "Every CCDG edge endpoint, relation label, and detail is represented in both dependency-enriched arms.",
             "No ground-truth root-cause label is included in rendered contexts.",
+            "Regression-test names and version-bound provenance snapshot fields stay outside model contexts.",
         ],
         "length_measure_caveat": "Whitespace-token counts are not model-tokenizer counts. A frozen tokenizer count and prompt hash audit is required before any inference.",
         "cases": results,
