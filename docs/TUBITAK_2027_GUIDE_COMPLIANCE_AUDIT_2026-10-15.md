@@ -22,7 +22,7 @@ istenmektedir.
 TUBITAK_REPORT_DRAFT.md üzerindeki 15 Ekim 2026 sürümünde:
 - Başlık 11 kelime: **uygun** (en fazla 15).
 - Özet 191 kelime: **uygun** (150–250).
-- Anahtar kelime satırında beş terim bulunuyor. Resmî çağrı metninin erişilebilir bölümlerinde anahtar kelime sayısı için bir üst sınır yazmıyor; şablon DOCX'i bu oturumda indirilemediği için beş terimin şablonla uyumu **nihai şablon kontrolüne bağlı**. Sayı, burada kesin bir resmî sınır olarak sunulmuyor.
+- Anahtar kelime satırında beş terim bulunuyor: **uygun** (2027 Proje Rehberi, §3.3, basılı s. 69; özetin altında en fazla beş kelimeden oluşan anahtar kelimeler isteniyor). Bu gereklilik resmî rehber PDF'sinden doğrulanmıştır; DOCX şablonunun görsel stilleri hâlâ incelenememiştir.
 - Amaç, giriş, yöntem, bulgular, sonuç/tartışma, öneriler, kaynaklar ve ekler başlıkları bulunuyor.
 - İlk denetimde ayrı bir içindekiler bölümü yoktu; bu güncellemede taslak gezinme amaçlı bir içindekiler listesi eklenmiştir. Nihai Word/PDF çıktısında gerçek sayfa numaralı içindekiler şablon içinde yenilenmelidir.
 - Mevcut içerik Markdown'dır ve son şablonda dizgilenmiş PDF değildir. Bu nedenle sayfa sayısı, kenar boşlukları, yazı tipi, satır aralığı ve son PDF'nin 2–20 sayfa sınırında kaldığı henüz **doğrulanmış değildir**.
