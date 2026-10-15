@@ -39,15 +39,15 @@
     {
       "role": "qa_manifest",
       "file_name": "TUBITAK_2204A_Rapor_QA_Manifest_Guncel.json",
-      "size_bytes": 4875,
-      "sha256": "c60fac059c06b86da754f280c2b55b2d977759968d26f81a1f3b9163588d1a67",
+      "size_bytes": 5931,
+      "sha256": "9768af42243c5fa85371d609380c34b5b8aad69576db9d7ce7c72f485c9d24c8",
       "format": "JSON"
     },
     {
       "role": "handoff_and_blockers",
       "file_name": "DijitalIkiz_Durum_ve_Teslim_Kapilari_2026-10-15.md",
-      "size_bytes": 7788,
-      "sha256": "96c66c528a824a7e21c771960baa237cc13b8c683b4046921be057de39a2d00f",
+      "size_bytes": 8397,
+      "sha256": "3111929c3b45c05211df6f54ec44f97d1c7e39b093c2be15790dbe316cb0b81a",
       "format": "Markdown"
     },
     {
@@ -60,8 +60,8 @@
     {
       "role": "delivery_package",
       "file_name": "TUBITAK_2204A_Rapor_Taslak_Paketi_2026-10-15_Guncel.zip",
-      "size_bytes": 130554,
-      "sha256": "cc0956898691a4498101fc81bee9ca52d868b3b6615dbfd2484b6f8502da8297",
+      "size_bytes": 131154,
+      "sha256": "865a0360d318ed35a8829933432cc0a437166c4664d4b92b1a0ff405c6f316c9",
       "format": "ZIP"
     }
   ],
@@ -103,11 +103,15 @@
     "report_source_markdown_commit": "41304669e015f087ed714a995816f86c3956c74a",
     "submission_audit_commit": "5bb34171b4b6e5ccf6cda7c89048e61ec83a9baa",
     "validation_run_at_snapshot": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/38044898606",
-    "validation_status": "No-inference CI run not verified through the connected API; do not claim test success. Historical artifacts verified by prior integrity checks.",
+    "validation_status": "blocked/unverified: workflow run failed before any steps; empty step list, unavailable logs, no evidence pytest or artifact validators executed",
     "theme_decision_commit": "f281a21d22d42bef0037123c759497f194b79bd0",
-    "final_checklist_commit": "bfc68d26fba3ca2ebd40c060124f78e72d9d3375",
+    "final_checklist_commit": "566c9538f184390c3d31ca471f1e29142501ba39",
     "runner_probe_workflow_commit": "156c29c7e9f9cf68fe3a40ca5db4dfbb3ba31b9d",
-    "validation_paths_pr": "https://github.com/MahmutVezir/dijitalikiz/pull/25"
+    "validation_paths_pr": "https://github.com/MahmutVezir/dijitalikiz/pull/25",
+    "validation_workflow_pr": "https://github.com/MahmutVezir/dijitalikiz/pull/25",
+    "validation_workflow_merged_commit": "e58303cba30e6dc9727646e389742551a974e6cf",
+    "no_inference_validation_run_id": "38759168199",
+    "no_inference_validation_job_id": "116505540359"
   },
   "qa_status": {
     "docx_render_pages": 9,
