@@ -1,7 +1,7 @@
 # TÜBİTAK 2204-A Proje Raporu Taslağı
 
 **Proje Ana Alanı:** Yazılım  
-**Proje Tematik Alanı:** Dijital İkiz  
+**Proje Tematik Alanı:** Yapay Zekâ  
 **Proje Adı (Başlığı):** LLM Tabanlı Çapraz-Bileşen Hata Teşhisinde Yapılandırılmış Bağımlılık Temsilinin Etkisinin Deneysel İncelenmesi
 
 ## Yapay Zeka Araçları Kullanım Beyanı
