@@ -98,3 +98,39 @@ def test_review_packet_rejects_missing_run_records(tmp_path):
         assert "Expected 10 run records" in str(exc)
     else:
         raise AssertionError("Missing run records must fail closed.")
+
+
+def test_reviewer_packets_have_independent_order_and_stable_case_refs(tmp_path):
+    root = tmp_path / "artifact"
+    _small_artifact(root)
+    packet_a, key_a = build_packet(root, "f" * 64, "A")
+    packet_b, key_b = build_packet(root, "f" * 64, "B")
+
+    rows_a = packet_a[1:]
+    rows_b = packet_b[1:]
+    assert packet_a[0]["reviewer_code"] == "A"
+    assert packet_b[0]["reviewer_code"] == "B"
+    assert all(row["review_id"].startswith("REVIEW-A-") for row in rows_a)
+    assert all(row["review_id"].startswith("REVIEW-B-") for row in rows_b)
+
+    refs_a = {item["source_case_id"]: item["case_ref"] for item in key_a}
+    refs_b = {item["source_case_id"]: item["case_ref"] for item in key_b}
+    assert refs_a == refs_b == {"case-private-1": refs_a["case-private-1"]}
+
+    def without_review_id(row):
+        return {key: value for key, value in row.items() if key != "review_id"}
+
+    import collections
+    a_content = collections.Counter(
+        json.dumps(without_review_id(row), sort_keys=True) for row in rows_a
+    )
+    b_content = collections.Counter(
+        json.dumps(without_review_id(row), sort_keys=True) for row in rows_b
+    )
+    assert a_content == b_content
+    assert [(row["case_ref"], row["response"]["raw_output"]) for row in rows_a] != [
+        (row["case_ref"], row["response"]["raw_output"]) for row in rows_b
+    ]
+    assert {item["reviewer_code"] for item in key_a} == {"A"}
+    assert {item["reviewer_code"] for item in key_b} == {"B"}
+
