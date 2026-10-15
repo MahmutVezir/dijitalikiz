@@ -156,6 +156,19 @@ Ayrıca 16 aktif vakanın 7'sinde I_base içinde “the fix”, “corrected” 
 
 Ölçüm aracının olası yanlış-negatif etkisini somutlaştırmak için, dört dondurulmuş Standard/seed-42 çıktısı ile ilgili vakaların alias listeleri karşılaştırıldı: MATH-305 yanıtı MathUtils.distance içindeki tamsayı taşmasını; CLOSURE-14 yanıtı finally üzerinden exception/fall-through ayrımını; MATH-393 yanıtı kaydedilmiş en iyi optimum yerine sarılmış optimizer durumunun dönmesini; TIME-12 yanıtı Calendar.ERA bilgisinin göz ardı edilmesini açıklıyordu. Dördünde de literal alias eşleşmesi oluşmadı. Bu kayıtlar insan hakemlerince henüz puanlanmadığından **kesin doğru yanıtlar olarak değil, kör anlamsal incelemede değerlendirilmesi gereken olası yanlış-negatif adayları** olarak ele alınır. İnsan değerlendirmesi olmadan semantik doğruluk oranı hesaplanmamıştır.
 
+
+### Kör anlamsal değerlendirme hazırlığı ve durumu (15 Ekim 2026)
+
+Tarihsel 160 model yanıtına, dondurulmuş birincil ölçütü değiştirmeden uygulanacak sonradan-körlenmiş keşifsel değerlendirme için iki ayrı v1.2 paket hazırlanmıştır. Her paket 160 yanıtı, 16 anonim vaka referansını ve 160 benzersiz değerlendirme kimliğini içerir. Kaynak arşivinin SHA-256 manifest denetiminde 212/212 dosya doğrulanmış; eksik, fazla, boyut uyuşmazlığı veya hash uyuşmazlığı saptanmamıştır. İki değerlendirici paketinin kaynak kayıtlara karşı bağlantı denetimleri her biri için 160/160 eşleşmiştir. Paketlerin SHA-256 değerleri ve sınırları ek denetim raporunda kayıtlıdır.
+
+Bu aşamada paketlerin bütünlük denetiminden geçmesi, yanıtların insanlar tarafından puanlandığı anlamına gelmez. **15 Ekim 2026 itibarıyla gerçek değerlendirici puanları teslim alınmamıştır.** Bu nedenle anlamsal başarı oranı, değerlendirici anlaşması veya Cohen kappa hesaplanmamıştır. Bu istatistikler gerçek ve bağımsız insan puanları gelmeden raporlanamaz.
+
+Paketler açık kök neden cevap anahtarını, doğrudan kaynak URL'lerini ve kaynak vaka kimliklerini değerlendiriciden saklayacak şekilde hazırlanmıştır. Bununla birlikte teknik içerik, vaka veya deney koşulunun tahmin edilmesine hâlâ imkân verebilir; kusursuz körleme garanti edilmez. Bu işlem sunulmuş problem özeti ve temel olgulara dayanan keşifsel puanlamadır; bağımsız kaynak kodu/doğrulama testi incelemesinin yerine geçmez. İki ilk değerlendirme dosyası kilitlenmeden cevap anahtarı açılmamalı ve anlaşmazlıklar tartışılmamalıdır.
+
+Bu değerlendirme, önceki literal-alias sonuçlarının yerine geçmeyecek ve tarihsel Standard ile CCDG bağlamları arasındaki bilgi içeriği farkını geriye dönük gideremeyecektir. İnsan puanları elde edilirse sonuçlar açıkça **post-hoc keşifsel** olarak verilecek; kaynak-revizyonu ve regresyon kanıtına dayalı uyuşmazlık çözümü ilk puanlardan ayrı kaydedilecektir.
+
+Ayrı bir gelecek çalışma olarak tasarlanan V2 doğrulayıcı deney de bu raporda tamamlanmış bir çalışma değildir: güncel manifest hâlâ taslak durumunda, vaka listesi boş, model çıkarımına izin kapalı ve dokuz protokol kapısının tümü beklemededir. Bu kapılar kanıtla kapanmadan V2 modeli çalıştırılmayacaktır.
+
 ## Sonuç ve Tartışma
 
 Araştırmanın olumlu yönleri, aynı vaka havuzunun iki koşulda çalıştırılması, tohumların bağımsız vaka sayılmaması, model revizyonunun sabitlenmesi, ground truth'un model bağlamlarından çıkarılması ve çıktıların hash'lerle doğrulanmasıdır. Bununla birlikte, kod denetimi Standard ve CCDG bağlamlarının sunulan bilgi bakımından tam eşleştirilmediğini göstermiştir: Standart bağlam açık hata açıklamasını içerirken CCDG bağlamı bunu aynı biçimde sunmamış ve açık bağımlılık kenarları eklemiştir. Bu karışan değişken, tarihsel deneyin yalnızca grafik gösterimi etkisini izole etmesini engeller. Ayrıca birincil ölçüt, bitişik ifade eşleşmesini anlamsal doğruluğun vekili olarak kullandığından parafrazları yanlışlıkla başarısız sayabilir.
