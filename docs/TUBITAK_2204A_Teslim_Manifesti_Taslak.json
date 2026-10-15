@@ -39,15 +39,15 @@
     {
       "role": "qa_manifest",
       "file_name": "TUBITAK_2204A_Rapor_QA_Manifest_Guncel.json",
-      "size_bytes": 6021,
-      "sha256": "52a3afe97645543d6f7719146428fc282bc98b32349422279923e780e847a727",
+      "size_bytes": 5931,
+      "sha256": "3f5852bfc59d3634370438b9f85d854318c5b729080e57b7a6defadbbd481d60",
       "format": "JSON"
     },
     {
       "role": "handoff_and_blockers",
       "file_name": "DijitalIkiz_Durum_ve_Teslim_Kapilari_2026-10-15.md",
       "size_bytes": 8397,
-      "sha256": "98b550ca2c70f9a9369302637a0a25867cfdf6833ddde3ec183172c8211d8139",
+      "sha256": "3ca9da6ef5a9af351b49098bb1c561675571f321ae184460ef7b154ee1ff00fa",
       "format": "Markdown"
     },
     {
@@ -60,8 +60,8 @@
     {
       "role": "delivery_package",
       "file_name": "TUBITAK_2204A_Rapor_Taslak_Paketi_2026-10-15_Guncel.zip",
-      "size_bytes": 131204,
-      "sha256": "10f5ea38e3bdec6aa5e8881eb1b89b45a45280ef5055b08e49da24da44cb6047",
+      "size_bytes": 131161,
+      "sha256": "90ed4d054abad767b6be0ea3857d7c79c655e755f1e288884b73875359e21207",
       "format": "ZIP"
     }
   ],
@@ -90,9 +90,10 @@
   },
   "open_pre_submission_checks": [
     "Student and adviser confirm Software / Artificial Intelligence in the current TYBS thematic-field selection; this classification best fits the completed LLM/software diagnosis study and does not claim a live digital twin.",
-    "Student review of AI-use declaration and confirmation that all statements match actual use.",
+    "Student reviews and can independently explain methods, code, statistics, limitations, and the AI-use statement.",
+    "Student verifies exact AI-use declaration against actual use and current TYBS fields.",
     "Human verification of bibliographic metadata and in-text citation/reference matching.",
-    "Final PDF export from Word/Office with Times New Roman installed if exact-font export is required; container preview uses a metrically compatible serif fallback.",
+    "Final PDF export from Word/Office with Times New Roman installed if exact-font export is required; the container preview uses a metrically compatible serif fallback.",
     "Fill authentic student/school/advisor and required ethics/permission data in TYBS; do not invent details.",
     "Review eligibility, attachments, PDF constraints and submit before the official deadline."
   ],
@@ -111,8 +112,7 @@
     "validation_workflow_pr": "https://github.com/MahmutVezir/dijitalikiz/pull/25",
     "validation_workflow_merged_commit": "e58303cba30e6dc9727646e389742551a974e6cf",
     "no_inference_validation_run_id": "38759168199",
-    "no_inference_validation_job_id": "116505540359",
-    "submission_manifest_commit": "updated by current commit (see GitHub file history)"
+    "no_inference_validation_job_id": "116505540359"
   },
   "qa_status": {
     "docx_render_pages": 9,
