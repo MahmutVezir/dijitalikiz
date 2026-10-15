@@ -17,7 +17,10 @@ def _read_json(path: Path) -> dict[str, Any]:
 def build_packet(
     artifact_root: Path,
     artifact_sha256: str = EXPECTED_ARCHIVE_SHA256,
+    reviewer_label: str = "A",
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    if reviewer_label not in {"A", "B"}:
+        raise ValueError("reviewer_label must be A or B.")
     artifact_root = artifact_root.resolve()
     manifest_path = artifact_root / "benchmark_manifest.json"
     case_dir = artifact_root / "cases"
@@ -58,16 +61,23 @@ def build_packet(
     if len(observed_keys) != expected_count:
         raise ValueError("Source artifact is missing one or more case-condition-seed combinations.")
 
-    # Reproducible shuffling is seeded by the frozen archive digest. Conditions,
-    # seeds, case identifiers and context hashes are retained only in the separate key.
-    seed_int = int(hashlib.sha256(artifact_sha256.encode("ascii")).hexdigest()[:16], 16)
-    rng = random.Random(seed_int)
+    # Keep anonymous case references stable across reviewers so their ratings can be
+    # aligned after both reviews are locked. Randomize each reviewer's row order
+    # using a separate deterministic seed.
+    case_seed = int(
+        hashlib.sha256(f"{artifact_sha256}:case-reference-map".encode("ascii")).hexdigest()[:16], 16
+    )
+    case_rng = random.Random(case_seed)
     shuffled_case_ids = list(case_ids)
-    rng.shuffle(shuffled_case_ids)
+    case_rng.shuffle(shuffled_case_ids)
     case_refs = {
         case_id: f"CASE-{index + 1:02d}"
         for index, case_id in enumerate(shuffled_case_ids)
     }
+    order_seed = int(
+        hashlib.sha256(f"{artifact_sha256}:reviewer-order:{reviewer_label}".encode("ascii")).hexdigest()[:16], 16
+    )
+    rng = random.Random(order_seed)
 
     rows: list[dict[str, Any]] = []
     key_by_hidden_key: dict[str, dict[str, Any]] = {}
@@ -113,6 +123,7 @@ def build_packet(
             },
         })
         key_by_hidden_key[hidden_key] = {
+            "reviewer_code": reviewer_label,
             "review_id": "",
             "case_ref": case_refs[case_id],
             "source_case_id": case_id,
@@ -125,7 +136,7 @@ def build_packet(
 
     rng.shuffle(rows)
     for index, row in enumerate(rows, start=1):
-        row["review_id"] = f"REVIEW-{index:03d}"
+        row["review_id"] = f"REVIEW-{reviewer_label}-{index:03d}"
         hidden_key = row.pop("_hidden_key")
         key_by_hidden_key[hidden_key]["review_id"] = row["review_id"]
 
@@ -135,8 +146,9 @@ def build_packet(
 
     packet_metadata = {
         "record_type": "metadata",
-        "packet_version": "1.0",
+        "packet_version": "1.1",
         "packet_kind": "post_hoc_exploratory_semantic_review",
+        "reviewer_code": reviewer_label,
         "source_artifact_archive_sha256": artifact_sha256,
         "n_records": len(rows),
         "condition_labels_and_seeds_in_reviewer_rows": False,
@@ -165,9 +177,15 @@ def main() -> int:
         help="Keep this key separate; do not share it with reviewers.",
     )
     parser.add_argument("--artifact-sha256", default=EXPECTED_ARCHIVE_SHA256)
+    parser.add_argument(
+        "--reviewer-label",
+        choices=("A", "B"),
+        required=True,
+        help="Build this reviewer's independently randomized packet and separate mapping key.",
+    )
     args = parser.parse_args()
 
-    packet, key_rows = build_packet(args.artifact_root, args.artifact_sha256)
+    packet, key_rows = build_packet(args.artifact_root, args.artifact_sha256, args.reviewer_label)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.key_output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
@@ -184,6 +202,7 @@ def main() -> int:
     )
     print(json.dumps({
         "status": "packet_built",
+        "reviewer_code": args.reviewer_label,
         "review_records": len(packet) - 1,
         "packet_path": str(args.output),
         "key_path": str(args.key_output),
