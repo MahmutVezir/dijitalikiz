@@ -22,12 +22,12 @@ The original reviewer packets exposed a `reference.root_cause` answer-key object
 
 | Packet | Records | Distinct case references | Unique review IDs | SHA-256 |
 |---|---:|---:|---:|---|
-| Reviewer A | 160 | 16 | 160 | `4aff16afb54a8ab0d2f00b5ec3963308ba5146bf2930950c375e0058f05b5f4d` |
-| Reviewer B | 160 | 16 | 160 | `b345925b94115558dddd6aaa263b8273e59765a9fe9d9f11a2e3b823dea42d50` |
+| Reviewer A | 160 | 16 | 160 | `0604919587fe8063b294c9ca5848d6a5843b683df68de8b66cbb9894ff61fdb0` |
+| Reviewer B | 160 | 16 | 160 | `c247950cdf55be67da4adce934397fc558e168c9f74781b550cc56bb1ced81fb` |
 
 Both ZIPs contain only `README_REVIEWER.md` and `review_packet.jsonl`; no private key is packaged. Reviewer-facing rows omit explicit expected-root-cause/ground-truth fields, source URLs, project identifiers, case IDs, condition/seed metadata, source commits, and prompt/context hashes. Review fields are blank in all 320 rows. The exact archived model-response fields are preserved.
 
-The private coordinator mappings were checked against all 160 source records per reviewer: case-condition-seed identity and raw-output SHA-256 matched 160/160, with zero mismatches. The two packets contain the same underlying response multiset and have stable shared case references, but row order differs in 160/160 positions.
+The private coordinator mappings were checked against all 160 source records per reviewer: case-condition-seed identity and raw-output SHA-256 matched 160/160, with zero mismatches. The two packets contain the same underlying response multiset and have stable shared case references, but row order differs in 159/160 positions.
 
 ## Limitations and distribution
 
