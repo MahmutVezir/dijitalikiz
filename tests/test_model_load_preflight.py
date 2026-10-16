@@ -39,11 +39,15 @@ def valid_report(manifest, manifest_bytes):
 
 
 def install_receipt_files(monkeypatch, tmp_path, report_overrides=None, manifest_overrides=None):
-    manifest = valid_manifest()
+    # The report is tied to the original manifest; write any requested mutation
+    # only to the on-disk manifest to exercise stale-receipt rejection.
+    original_manifest = valid_manifest()
+    original_manifest_bytes = json.dumps(original_manifest, sort_keys=True).encode("utf-8")
+    report = valid_report(original_manifest, original_manifest_bytes)
+    manifest_on_disk = dict(original_manifest)
     if manifest_overrides:
-        manifest.update(manifest_overrides)
-    manifest_bytes = json.dumps(manifest, sort_keys=True).encode("utf-8")
-    report = valid_report(manifest, manifest_bytes)
+        manifest_on_disk.update(manifest_overrides)
+    manifest_bytes = json.dumps(manifest_on_disk, sort_keys=True).encode("utf-8")
     if report_overrides:
         report.update(report_overrides)
     report_path = tmp_path / "compatibility_report.json"
@@ -52,7 +56,7 @@ def install_receipt_files(monkeypatch, tmp_path, report_overrides=None, manifest
     manifest_path.write_bytes(manifest_bytes)
     monkeypatch.setattr(model_load_preflight, "REPORT", report_path)
     monkeypatch.setattr(model_load_preflight, "MANIFEST", manifest_path)
-    return report, manifest
+    return report, manifest_on_disk
 
 
 def test_valid_current_receipt_is_accepted(monkeypatch, tmp_path, capsys):
