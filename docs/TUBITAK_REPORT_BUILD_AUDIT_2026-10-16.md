@@ -6,15 +6,15 @@
 
 - Kaynak depo: `MahmutVezir/dijitalikiz`
 - Kaynak dalı: `fix/tubitak-report-build-toc`
-- Kaynak commit: `1ee867c24ac71c7bf36e6b66c4f8598ce65b5e9b`
+- Kaynak commit: `4c4bac3966cc36e84e2dbf1b60e8fe85056b157a`
 - Resmî Word şablonu: https://tubitak.gov.tr/sites/default/files/2026-09/proje_yazma_sablonu_2026-2027.docx
 - Şablon indirme/derleme workflow'u: https://github.com/MahmutVezir/dijitalikiz/actions/runs/38928518027
-- Workflow artifact: `tubitak-official-template-2026-2027`, artifact ID `12057054078`; GitHub'da kısa süreli saklanır.
-- Üretilen artifact ZIP SHA-256: `24611f2cfaf68e4bc1e88c6e49918e5d75e187e5b73344d49d2ac590a46f1e74`
+- Workflow artifact: `tubitak-official-template-2026-2027`, artifact ID `12058990129`; GitHub'da kısa süreli saklanır.
+- Üretilen artifact ZIP SHA-256: `92f8146fc32e60f72f548ff0036451d1927cf89f40a5042ca091f5294296e7ba`
 - Markdown kaynak SHA-256: `a1ae03ac0ee2cfbb5417934cdb4163023f77d2e4db9f858ac23448469b7d52ba`
 - Resmî DOCX şablon SHA-256: `195975a64cda8bc3175c6211be108f2b4293ee0893f061bcdfc3ac184989cc87`
-- Üretilen DOCX SHA-256: `f9d447653bf10fe474600a273777eac021b6eef162fb780f3ada87e6fb862128`
-- Üretilen PDF SHA-256: `6c74600d1e7ebf866258f012cbfed29122f6aba4b696174caddc1f76b3e7158a`
+- Üretilen DOCX SHA-256: `72c6f407731be03ec2a57f7fb45b742d2390b6d70a84d3a90c473754f054434f`
+- Üretilen PDF SHA-256: `90f8dc0873ac062c124bbb1fd31c428ec26fecb9ef89fd38af1a85eb3fc921b8`
 
 ## Biçim ve bütünlük denetimleri
 
@@ -37,6 +37,10 @@
 - ÜYZ kullanım beyanı TASLAKTIR; öğrenci gerçek kullanımla eşleştirip onaylamalıdır. Öğrenci raporu, yöntemleri, istatistiği ve sınırları bağımsız olarak açıklayabildiğini doğrulamalıdır.
 - Bu derleme kişisel başvuru alanlarını, TYBS kaydını veya öğrenci/okul onayını tamamlamaz. PDF başvuruya gönderilmiş değildir.
 
+## Nihai yeniden derleme doğrulaması
+
+PR #41, PR #40'ın başına temiz biçimde yığıldıktan sonra aynı rapor kaynağı ve aynı resmî şablonla yeniden derlendi. Seçilen son çıktı, workflow run `38929963765` ve artifact ID `12058990129` üzerinden indirildi; PDF/DOCX hash'leri bu son paketle eşleştirildi. Kaynak Markdown SHA-256 değişmedi. Bu son çıktı için PDF yeniden render edildi ve 10 sayfalık kontakt sayfası tekrar gözden geçirildi.
+
 ## İlk başarısız derlemeden öğrenilenler
 
-Workflow run `38797017701`, 16 Ekim 2026 retry attempt #2'de resmî şablonu başarıyla indirmiş; ancak kaynak Markdown'daki geçici içindekiler başlığı, `scripts/build_tubitak_report_docx.py` bölüm sırası kontrolünü durdurmuştur. Bu rapor kaynağından sadece navigasyon bloğu kaldırıldı; bilimsel paragraflar, tablolar, tarihsel sonuçlar, istemler veya veri artefaktları değiştirilmedi. Sonraki build run `38928518027` başarıyla tamamlandı.
+Workflow run `38797017701`, 16 Ekim 2026 retry attempt #2'de resmî şablonu başarıyla indirmiş; ancak kaynak Markdown'daki geçici içindekiler başlığı, `scripts/build_tubitak_report_docx.py` bölüm sırası kontrolünü durdurmuştur. Bu rapor kaynağından sadece navigasyon bloğu kaldırıldı; bilimsel paragraflar, tablolar, tarihsel sonuçlar, istemler veya veri artefaktları değiştirilmedi. Sonraki build run `38929963765` başarıyla tamamlandı.
