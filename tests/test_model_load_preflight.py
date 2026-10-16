@@ -56,7 +56,7 @@ def install_receipt_files(monkeypatch, tmp_path, report_overrides=None, manifest
     report_path = tmp_path / "compatibility_report.json"
     manifest_path = tmp_path / "pilot_manifest.json"
     source_commit_path = tmp_path / "kaggle_source_commit.txt"
-    source_commit_path.write_text(SOURCE_COMMIT + "\\n", encoding="utf-8")
+    source_commit_path.write_text(SOURCE_COMMIT + "\n", encoding="utf-8")
     report_path.write_text(json.dumps(report), encoding="utf-8")
     manifest_path.write_bytes(manifest_bytes)
     monkeypatch.setattr(model_load_preflight, "REPORT", report_path)
@@ -124,7 +124,7 @@ def test_missing_or_invalid_report_fails_closed(monkeypatch, tmp_path, capsys):
     write_json(manifest_path, valid_manifest())
     monkeypatch.setattr(model_load_preflight, "MANIFEST", manifest_path)
     source_commit_path = tmp_path / "kaggle_source_commit.txt"
-    source_commit_path.write_text(SOURCE_COMMIT + "\\n", encoding="utf-8")
+    source_commit_path.write_text(SOURCE_COMMIT + "\n", encoding="utf-8")
     monkeypatch.setattr(model_load_preflight, "SOURCE_COMMIT", source_commit_path)
     monkeypatch.setattr(model_load_preflight, "REPORT", tmp_path / "missing_report.json")
     assert model_load_preflight.main() == 1
