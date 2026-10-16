@@ -4,6 +4,7 @@ import hashlib
 import importlib.metadata
 import json
 import platform
+import random
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -85,6 +86,8 @@ def main() -> int:
             raise ValueError("Invalid frozen case/condition/seed contract.")
         if manifest.get("replications") != len(seeds) or manifest.get("expected_records") != expected:
             raise ValueError(f"Record count contract mismatch: calculated={expected}, declared={manifest.get('expected_records')}")
+        if manifest.get("generation", {}).get("do_sample") is not True:
+            raise ValueError("Frozen pilot requires do_sample=true for the compatibility sampling smoke.")
         return f"frozen manifest valid; expected_records={expected}"
 
     def _source_commit() -> str:
@@ -180,7 +183,11 @@ def main() -> int:
     # Do not attempt model loading when any static/runtime prerequisite has failed.
     static_failed = [c for c in checks if c["status"] == "fail"]
     if static_failed:
-        check("model_loading_and_smoke_inference", False, "not run because one or more prerequisite checks failed")
+        blocked = "not run because one or more prerequisite checks failed"
+        check("checkpoint_weights_match_model", False, blocked)
+        check("smoke_logits_finite", False, blocked)
+        check("pilot_sampling_smoke", False, blocked)
+        check("model_loading_and_smoke_inference", False, blocked)
         check("diagnostic_output_schema", False, "not run because model inference was blocked")
         payload = report()
         return 0 if payload["status"] == "pass" else 1
@@ -209,7 +216,13 @@ def main() -> int:
         unexpected = list(loading_info.get("unexpected_keys", []))
         mismatched = list(loading_info.get("mismatched_keys", []))
         errors = list(loading_info.get("error_msgs", []))
-        if missing or unexpected or mismatched or errors:
+        weights_match = not (missing or unexpected or mismatched or errors)
+        check(
+            "checkpoint_weights_match_model",
+            weights_match,
+            f"missing={missing[:8]}; unexpected={unexpected[:8]}; mismatched={mismatched[:8]}; errors={errors[:3]}",
+        )
+        if not weights_match:
             raise RuntimeError(f"checkpoint weight mismatch: missing={missing[:8]}, unexpected={unexpected[:8]}, mismatched={mismatched[:8]}, errors={errors[:3]}")
         if next(model.parameters()).dtype != torch.float16:
             raise RuntimeError(f"model dtype mismatch: {next(model.parameters()).dtype}")
@@ -221,17 +234,47 @@ def main() -> int:
         ]
         smoke_text = tokenizer.apply_chat_template(smoke_messages, tokenize=False, add_generation_prompt=True)
         inputs = tokenizer([smoke_text], return_tensors="pt").to(model.device)
+        generation = manifest["generation"]
+        smoke_seed = int(generation["seeds"][0])
+        smoke_max_new_tokens = min(96, int(generation["max_new_tokens"]))
+        sampling_kwargs = {}
+        if bool(generation["do_sample"]):
+            sampling_kwargs = {
+                "temperature": float(generation["temperature"]),
+                "top_p": float(generation["top_p"]),
+            }
+
         with torch.inference_mode():
             logits = model(**inputs, use_cache=False).logits
-            if not bool(torch.isfinite(logits).all().item()):
+            logits_finite = bool(torch.isfinite(logits).all().item())
+            check("smoke_logits_finite", logits_finite, f"all_logits_finite={logits_finite}; shape={tuple(logits.shape)}")
+            if not logits_finite:
                 raise RuntimeError("smoke logits contain NaN or infinity")
+
+            # Exercise the frozen stochastic-sampling path with a synthetic,
+            # non-study prompt. Cap only the smoke output length to control cost.
+            random.seed(smoke_seed)
+            torch.manual_seed(smoke_seed)
+            if torch.cuda.is_available():
+                torch.cuda.manual_seed_all(smoke_seed)
             generated = model.generate(
                 **inputs,
-                max_new_tokens=96,
-                do_sample=False,
+                max_new_tokens=smoke_max_new_tokens,
+                do_sample=bool(generation["do_sample"]),
+                **sampling_kwargs,
             )
         raw = tokenizer.decode(generated[0][inputs.input_ids.shape[-1]:], skip_special_tokens=True).strip()
-        check("model_loading_and_smoke_inference", bool(raw), f"dtype={next(model.parameters()).dtype}; device_map={device_map}; output_chars={len(raw)}")
+        check(
+            "pilot_sampling_smoke",
+            bool(raw),
+            f"seed={smoke_seed}; do_sample={generation['do_sample']}; "
+            f"temperature={generation['temperature']}; top_p={generation['top_p']}; "
+            f"max_new_tokens={smoke_max_new_tokens} (frozen={generation['max_new_tokens']}); "
+            f"device_map={device_map}; output_chars={len(raw)}",
+        )
+        if not raw:
+            raise RuntimeError("pilot sampling smoke returned empty output")
+        check("model_loading_and_smoke_inference", True, f"dtype={next(model.parameters()).dtype}; device_map={device_map}; output_chars={len(raw)}")
         parsed = json.loads(raw)
         schema_path = ROOT / "schemas/diagnostic_output.schema.json"
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
@@ -239,6 +282,9 @@ def main() -> int:
         errors = list(jsonschema.Draft202012Validator(schema).iter_errors(parsed))
         check("diagnostic_output_schema", not errors, f"output={parsed!r}; schema_errors={[e.message for e in errors[:5]]}")
     except Exception as exc:
+        for name in ("checkpoint_weights_match_model", "smoke_logits_finite", "pilot_sampling_smoke"):
+            if not any(c["name"] == name for c in checks):
+                check(name, False, f"not completed: {type(exc).__name__}: {exc}")
         if not any(c["name"] == "model_loading_and_smoke_inference" for c in checks):
             check("model_loading_and_smoke_inference", False, f"{type(exc).__name__}: {exc}")
         elif checks[-1]["name"] != "diagnostic_output_schema":
