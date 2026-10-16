@@ -1,37 +1,5 @@
 # TÜBİTAK 2204-A Proje Raporu Taslağı
 
-## İçindekiler (taslak gezinme)
-
-Nihai rapor, TÜBİTAK'ın güncel Proje Yazım Şablonu'na aktarılırken bu liste sayfa numaralarıyla yeniden oluşturulmalıdır. Markdown taslağı tek başına başvuruya yüklenmeye hazır PDF değildir.
-
-1. Yapay Zekâ Araçları Kullanım Beyanı
-2. Özet
-3. Anahtar Kelimeler
-4. Amaç
-5. Giriş
-6. Yöntem
-   - Araştırma tasarımı
-   - Veri ve vaka seçimi
-   - Model ve üretim ayarları
-   - Ölçüm aracı ve vaka düzeyi karar
-   - Veri bütünlüğü ve tekrarlanabilirlik
-   - İstatistiksel analiz
-7. Proje İş-Zaman Çizelgesi
-8. Bulgular
-   - Çalıştırma ve bütünlük sonuçları
-   - Dondurulmuş birincil ölçüt
-   - Sonucun doğru yorumu
-   - Puanlama protokolü değişikliği
-   - 15 Ekim 2026 tarihli geriye dönük tasarım denetimi
-   - Kör anlamsal değerlendirme hazırlığı ve durumu
-9. Sonuç ve Tartışma
-   - Sınırlılıklar
-   - Sonuç
-10. Öneriler
-11. Kaynaklar
-12. Ekler
-
-
 **Proje Ana Alanı:** Yazılım  
 **Proje Tematik Alanı:** Yapay Zekâ  
 **Proje Adı (Başlığı):** LLM Tabanlı Çapraz-Bileşen Hata Teşhisinde Yapılandırılmış Bağımlılık Temsilinin Etkisinin Deneysel İncelenmesi
