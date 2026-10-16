@@ -21,6 +21,9 @@ def valid_manifest():
     }
 
 
+SOURCE_COMMIT = "d34db33fd34db33fd34db33fd34db33fd34db33f"
+
+
 def valid_report(manifest, manifest_bytes):
     return {
         "schema_version": 1,
@@ -29,7 +32,7 @@ def valid_report(manifest, manifest_bytes):
         "model_id": MODEL_ID,
         "model_revision": REVISION,
         "expected_records": manifest["expected_records"],
-        "source_commit": "d34db33fd34db33fd34db33fd34db33fd34db33f",
+        "source_commit": SOURCE_COMMIT,
         "manifest_sha256": hashlib.sha256(manifest_bytes).hexdigest(),
         "checks": [
             {"name": name, "status": "pass", "detail": "unit-test receipt"}
@@ -52,10 +55,13 @@ def install_receipt_files(monkeypatch, tmp_path, report_overrides=None, manifest
         report.update(report_overrides)
     report_path = tmp_path / "compatibility_report.json"
     manifest_path = tmp_path / "pilot_manifest.json"
+    source_commit_path = tmp_path / "kaggle_source_commit.txt"
+    source_commit_path.write_text(SOURCE_COMMIT + "\\n", encoding="utf-8")
     report_path.write_text(json.dumps(report), encoding="utf-8")
     manifest_path.write_bytes(manifest_bytes)
     monkeypatch.setattr(model_load_preflight, "REPORT", report_path)
     monkeypatch.setattr(model_load_preflight, "MANIFEST", manifest_path)
+    monkeypatch.setattr(model_load_preflight, "SOURCE_COMMIT", source_commit_path)
     return report, manifest_on_disk
 
 
@@ -74,6 +80,7 @@ def test_valid_current_receipt_is_accepted(monkeypatch, tmp_path, capsys):
         ({"model_revision": "deadbeef"}, None),
         ({"expected_records": 999}, None),
         ({"source_commit": "unknown"}, None),
+        ({"source_commit": "0" * 40}, None),
         ({"manifest_sha256": "0" * 64}, None),
         ({"schema_version": 99}, None),
         (None, {"expected_records": 41}),
@@ -116,6 +123,9 @@ def test_missing_or_invalid_report_fails_closed(monkeypatch, tmp_path, capsys):
     manifest_path = tmp_path / "pilot_manifest.json"
     write_json(manifest_path, valid_manifest())
     monkeypatch.setattr(model_load_preflight, "MANIFEST", manifest_path)
+    source_commit_path = tmp_path / "kaggle_source_commit.txt"
+    source_commit_path.write_text(SOURCE_COMMIT + "\\n", encoding="utf-8")
+    monkeypatch.setattr(model_load_preflight, "SOURCE_COMMIT", source_commit_path)
     monkeypatch.setattr(model_load_preflight, "REPORT", tmp_path / "missing_report.json")
     assert model_load_preflight.main() == 1
     assert "MISSING/INVALID" in capsys.readouterr().err
