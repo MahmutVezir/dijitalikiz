@@ -120,7 +120,7 @@ def audit_archive(
         if artifact_manifest.get("run_record_count") != expected_run_record_count:
             raise AuditFailure(f"artifact manifest run_record_count mismatch: {artifact_manifest.get('run_record_count')!r}")
         required_final = gate.get("required_final_files")
-        if not isinstance(required_final, list) or not REQUIRED_FINAL_FILES.issubset(set(required_final)):
+        if not isinstance(required_final, list) or not all(isinstance(item, str) for item in required_final) or not REQUIRED_FINAL_FILES.issubset(set(required_final)):
             raise AuditFailure("finalization_gate omits one or more required final files")
 
         listed_files = artifact_manifest.get("files")
