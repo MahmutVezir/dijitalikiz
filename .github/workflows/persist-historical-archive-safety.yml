@@ -41,12 +41,14 @@ jobs:
               "292742",
               "e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd",
               "python scripts/audit_historical_artifact.py",
-              "actions: read",
+              "actions: write",
               "contents: write",
               "pull-requests: write",
               "git switch --create",
               'git push origin "$branch"',
               "gh pr create",
+              "gh workflow run research-validation.yml --ref",
+              "gh run watch",
           ]
           missing = [item for item in required if item not in text]
           assert not missing, f"Missing required archive safety contract: {missing}"
@@ -58,6 +60,11 @@ jobs:
           push = text.index('git push origin "$branch"')
           pull_request = text.index("gh pr create")
           assert audit < branch < push < pull_request, "Archive must pass audit before any git write."
+
+          pr_create = text.index("gh pr create")
+          validation_dispatch = text.index("gh workflow run research-validation.yml --ref")
+          validation_watch = text.index("gh run watch")
+          assert pr_create < validation_dispatch < validation_watch, "Archive PR no-inference validation must be dispatched and watched after PR creation."
 
           forbidden = [
               "scripts/run_pilot.py",
