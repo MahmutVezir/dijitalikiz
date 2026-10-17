@@ -19,6 +19,7 @@ def test_workflow_pins_local_historical_archive_and_full_audit():
 def test_historical_archive_changes_trigger_both_ci_events():
     workflow = WORKFLOW_PATH.read_text(encoding="utf-8")
     assert workflow.count('"data/historical/**"') == 2
+    assert workflow.count('".github/workflows/persist-historical-archive.yml"') == 2
 
 
 def test_workflow_does_not_depend_on_expiring_actions_artifact_or_actions_read():
@@ -52,8 +53,8 @@ def test_archive_recovery_workflow_is_manual_only_and_requires_acknowledgement()
     triggers = workflow.split("permissions:", maxsplit=1)[0]
     assert "workflow_dispatch:" in triggers
     assert "type: boolean" in triggers
-    assert "\\n  schedule:" not in triggers
-    assert "\\n  push:" not in triggers
+    assert "schedule:" not in triggers
+    assert "push:" not in triggers
     assert "ARCHIVE_ACK" in workflow
     assert 'test "$ARCHIVE_ACK" = "true"' in workflow
     assert 'test "$GITHUB_REF" = "refs/heads/main"' in workflow
