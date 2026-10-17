@@ -10,7 +10,7 @@ on:
         default: false
 
 permissions:
-  actions: read
+  actions: write
   contents: write
   pull-requests: write
 
@@ -139,3 +139,31 @@ jobs:
             --head "$branch" \
             --title "data(research): persist immutable historical confirmatory archive" \
             --body-file "$RUNNER_TEMP/pull-request-body.md"
+
+          # GITHUB_TOKEN-created PR/push events do not reliably start a new workflow.
+          # Explicitly dispatch the existing no-inference validator on the archive PR branch.
+          head_sha="$(git rev-parse HEAD)"
+          gh workflow run research-validation.yml --ref "$branch"
+
+          run_id=""
+          for attempt in $(seq 1 60); do
+            run_id="$(gh run list \
+              --repo "$GITHUB_REPOSITORY" \
+              --workflow research-validation.yml \
+              --branch "$branch" \
+              --event workflow_dispatch \
+              --limit 10 \
+              --json databaseId,headSha \
+              --jq ".[] | select(.headSha == \"$head_sha\") | .databaseId" | head -n 1)"
+            if [[ -n "$run_id" ]]; then
+              break
+            fi
+            sleep 2
+          done
+
+          test -n "$run_id" || {
+            echo "::error::Archive PR was created, but no matching no-inference validation run could be found."
+            exit 1
+          }
+          echo "No-inference validation run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$run_id"
+          gh run watch "$run_id" --exit-status
