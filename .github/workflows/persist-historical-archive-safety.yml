@@ -1,12 +1,13 @@
-name: Historical archive recovery workflow safety (no inference)
+name: Historical archive read-only workflow safety (no inference)
 
 on:
   pull_request:
     branches:
-      - main
+      - "main"
     paths:
       - ".github/workflows/persist-historical-archive.yml"
       - ".github/workflows/persist-historical-archive-safety.yml"
+      - ".github/workflows/research-validation.yml"
   workflow_dispatch:
 
 permissions:
@@ -16,71 +17,75 @@ jobs:
   safety:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
+    permissions:
+      contents: read
     steps:
       - name: Checkout source for static safety checks
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
 
-      - name: Verify fail-closed archive recovery contract (no inference)
+      - name: Verify read-only archive validation contract (no inference)
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
+          import re
 
-          path = Path(".github/workflows/persist-historical-archive.yml")
-          text = path.read_text(encoding="utf-8")
-          triggers = text.split("permissions:", maxsplit=1)[0]
+          archive_path = Path(".github/workflows/persist-historical-archive.yml")
+          archive = archive_path.read_text(encoding="utf-8")
+          safety = Path(".github/workflows/persist-historical-archive-safety.yml").read_text(encoding="utf-8")
+          research = Path(".github/workflows/research-validation.yml").read_text(encoding="utf-8")
 
-          required = [
-              "workflow_dispatch:",
-              "type: boolean",
-              "ARCHIVE_ACK",
-              'test "$ARCHIVE_ACK" = "true"',
-              'test "$GITHUB_REF" = "refs/heads/main"',
-              "11640450681",
-              "292742",
-              "e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd",
+          def permissions_block(source: str) -> str:
+              match = re.search(r"(?m)^permissions:\s*\n((?:^[ \t]+[^\n]*\n)+)", source)
+              assert match, "Missing explicit permissions block"
+              return match.group(1)
+
+          for source_name, source in (("archive", archive), ("safety", safety), ("research", research)):
+              assert not re.search(r"(?m)^\s*(?:contents|actions|pull-requests):\s*write\b", source), f"write permission found in {source_name} workflow"
+              assert not re.search(r"(?m)^\s*uses:\s*actions/upload-artifact@", source), f"artifact upload action found in {source_name} workflow"
+              for action in re.findall(r"(?m)^\s*uses:\s*([^\s]+)", source):
+                  assert re.fullmatch(r"[^\s]+@[0-9a-f]{40}", action), f"un-pinned action in {source_name}: {action}"
+
+          perms = permissions_block(archive)
+          assert re.search(r"(?m)^  actions:\s*read\s*$", perms), "archive workflow must grant actions: read"
+          assert re.search(r"(?m)^  contents:\s*read\s*$", perms), "archive workflow must grant contents: read"
+          assert not re.search(r"(?m)^  (?:contents|actions|pull-requests):\s*write\b", perms), "write permissions are forbidden"
+          assert "workflow_dispatch:" in archive.split("permissions:", 1)[0], "archive verification must be manually dispatched"
+          assert "push:" not in archive.split("permissions:", 1)[0] and "pull_request:" not in archive.split("permissions:", 1)[0], "archive verification must not run automatically"
+
+          for required in (
+              'ARTIFACT_ID: "11640450681"',
+              'EXPECTED_BYTES: "292742"',
+              'EXPECTED_SHA256: "e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd"',
+              "size_in_bytes",
+              "expires_at",
+              '"expired"',
+              '"digest"',
+              "/actions/artifacts/$ARTIFACT_ID/zip",
+              '"$RUNNER_TEMP/confirmatory_artifact_2026-10-09.zip"',
+              "sha256sum --check --status",
+              "python -m zipfile -t",
               "python scripts/audit_historical_artifact.py",
-              "actions: write",
-              "contents: write",
-              "pull-requests: write",
-              "git switch --create",
-              'git push origin "$branch"',
-              "gh pr create",
-              "gh workflow run research-validation.yml --ref",
-              "gh run watch",
-          ]
-          missing = [item for item in required if item not in text]
-          assert not missing, f"Missing required archive safety contract: {missing}"
+              "--expected-run-record-count",
+              "BLOCKED/UNAVAILABLE",
+              "diagnostic log kept out of public workflow output",
+          ):
+              assert required in archive, f"missing fail-closed archive check: {required}"
 
-          assert "schedule:" not in triggers, "Recovery must not run on a schedule."
-          assert "push:" not in triggers, "Recovery must not run automatically on push."
-          audit = text.index("python scripts/audit_historical_artifact.py")
-          branch = text.index('git switch --create "$branch"')
-          push = text.index('git push origin "$branch"')
-          pull_request = text.index("gh pr create")
-          assert audit < branch < push < pull_request, "Archive must pass audit before any git write."
+          assert not re.search(r"(?m)^\s*(?:git\s+(?:switch|checkout\s+-b|push|commit|add)|gh\s+pr\s+create|gh\s+workflow\s+run|gh\s+run\s+watch)\b", archive), "Git/PR/dispatch write or orchestration command is forbidden"
+          assert not re.search(r"(?m)^\s*(?:curl|wget)\b.*(?:repos/.*/contents|git/refs|git/blobs)", archive), "direct repository write endpoint suspected"
+          assert "git push" not in archive and "gh pr create" not in archive and "actions/upload-artifact" not in archive
+          assert not re.search(r"(?m)^\s*(?:python\s+.*(?:run_pilot|run_confirmatory|run_frozen_pilot|run_followup_v2)|kaggle\s+kernels\s+(?:push|start)|nvidia-smi|torchrun)\b", archive), "model/GPU/Kaggle execution is forbidden"
 
-          pr_create = text.index("gh pr create")
-          validation_dispatch = text.index("gh workflow run research-validation.yml --ref")
-          validation_watch = text.index("gh run watch")
-          assert pr_create < validation_dispatch < validation_watch, "Archive PR no-inference validation must be dispatched and watched after PR creation."
-
-          forbidden = [
-              "scripts/run_pilot.py",
-              "scripts/run_confirmatory.py",
-              "scripts/run_frozen_pilot.py",
-              "scripts/run_followup_v2.py",
-              "kaggle kernels push",
-              "kaggle kernels start",
-              "KAGGLE_API_TOKEN",
-              "git push origin main",
-              "git push origin HEAD:main",
-          ]
-          found = [item for item in forbidden if item in text]
-          assert not found, f"Recovery must not launch inference or write directly to main: {found}"
-
-          assert "fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09" in text
-          assert "ece7cb06caefa5fff74198d8649806c4678c61a1" in text
-          print("Historical archive recovery static safety contract passed (no inference).")
+          # Repository CI must not depend on a checked-in ZIP; it runs a separate read-only artifact job.
+          assert "validate-repository" in research and "validate-historical-archive" in research, "repository and archive checks must be separate jobs"
+          assert "actions: read" in research and "contents: read" in research
+          assert "data/historical/confirmatory_artifact_2026-10-09.zip" not in research, "no archive path may be required in the checkout"
+          assert "BLOCKED/UNAVAILABLE" in research and "Historical archive verification: PASS" not in research, "unavailable archive must remain a failed/blocked gate"
+          assert "python scripts/audit_historical_artifact.py" in research
+          assert "sha256sum --check --status" in research
+          assert "python -m zipfile -t" in research
+          assert "workflow_dispatch:" in research
+          print("Read-only historical archive workflow static safety checks: PASS (no runtime archive verification implied).")
           PY
