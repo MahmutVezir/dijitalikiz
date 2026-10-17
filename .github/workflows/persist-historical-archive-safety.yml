@@ -1,0 +1,79 @@
+name: Historical archive recovery workflow safety (no inference)
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/persist-historical-archive.yml"
+      - ".github/workflows/persist-historical-archive-safety.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  safety:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout source for static safety checks
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+
+      - name: Verify fail-closed archive recovery contract (no inference)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path(".github/workflows/persist-historical-archive.yml")
+          text = path.read_text(encoding="utf-8")
+          triggers = text.split("permissions:", maxsplit=1)[0]
+
+          required = [
+              "workflow_dispatch:",
+              "type: boolean",
+              "ARCHIVE_ACK",
+              'test "$ARCHIVE_ACK" = "true"',
+              'test "$GITHUB_REF" = "refs/heads/main"',
+              "11640450681",
+              "292742",
+              "e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd",
+              "python scripts/audit_historical_artifact.py",
+              "actions: read",
+              "contents: write",
+              "pull-requests: write",
+              "git switch --create",
+              'git push origin "$branch"',
+              "gh pr create",
+          ]
+          missing = [item for item in required if item not in text]
+          assert not missing, f"Missing required archive safety contract: {missing}"
+
+          assert "schedule:" not in triggers, "Recovery must not run on a schedule."
+          assert "push:" not in triggers, "Recovery must not run automatically on push."
+          audit = text.index("python scripts/audit_historical_artifact.py")
+          branch = text.index('git switch --create "$branch"')
+          push = text.index('git push origin "$branch"')
+          pull_request = text.index("gh pr create")
+          assert audit < branch < push < pull_request, "Archive must pass audit before any git write."
+
+          forbidden = [
+              "scripts/run_pilot.py",
+              "scripts/run_confirmatory.py",
+              "scripts/run_frozen_pilot.py",
+              "scripts/run_followup_v2.py",
+              "kaggle kernels push",
+              "kaggle kernels start",
+              "KAGGLE_API_TOKEN",
+              "git push origin main",
+              "git push origin HEAD:main",
+          ]
+          found = [item for item in forbidden if item in text]
+          assert not found, f"Recovery must not launch inference or write directly to main: {found}"
+
+          assert "fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09" in text
+          assert "ece7cb06caefa5fff74198d8649806c4678c61a1" in text
+          print("Historical archive recovery static safety contract passed (no inference).")
+          PY
