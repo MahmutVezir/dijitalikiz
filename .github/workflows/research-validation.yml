@@ -37,6 +37,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: research-validation-${{ github.ref }}
@@ -82,6 +83,18 @@ jobs:
           python scripts/validate_all_candidates.py
           python scripts/validate_benchmark_manifest.py
           python scripts/audit_confirmatory_integrity.py
+
+      - name: Download and verify the pinned historical confirmatory archive (no inference)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          archive_path="$RUNNER_TEMP/confirmatory_artifact_2026-10-09.zip"
+          curl --fail --show-error --location --retry 3 --header "Authorization: Bearer $GH_TOKEN" --header "Accept: application/vnd.github+json" --output "$archive_path" "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/11640450681/zip"
+          printf '%s  %s\n' "e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd" "$archive_path" | sha256sum --check -
+          python -m zipfile -t "$archive_path"
+          python scripts/audit_historical_artifact.py --archive "$archive_path" --expected-sha256 e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd --expected-run-record-count 160
 
       - name: Confirm no model execution command is invoked by this workflow
         shell: bash
