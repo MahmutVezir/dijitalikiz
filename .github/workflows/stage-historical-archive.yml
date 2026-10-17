@@ -24,13 +24,11 @@ jobs:
 
       - name: Download and pin the original GitHub Actions ZIP bytes
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           mkdir -p data/historical
           archive_path="data/historical/confirmatory_artifact_2026-10-09.zip"
-          curl --fail --show-error --location --retry 3 --header "Authorization: Bearer $GH_TOKEN" --header "Accept: application/vnd.github+json" --output "$archive_path" "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/11640450681/zip"
+          curl --fail --show-error --location --retry 3 --header "Accept: application/vnd.github+json" --output "$archive_path" "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/11640450681/zip"
 
           printf '%s  %s\n' "e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd" "$archive_path" | sha256sum --check -
           python -m zipfile -t "$archive_path"
