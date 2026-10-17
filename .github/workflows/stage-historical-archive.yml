@@ -25,29 +25,23 @@ jobs:
       - name: Download and pin the original GitHub Actions ZIP bytes
         shell: bash
         env:
-          GH_TOKEN: \${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           mkdir -p data/historical
           archive_path="data/historical/confirmatory_artifact_2026-10-09.zip"
-          curl --fail --show-error --location --retry 3 \
-            --header "Authorization: Bearer \${GH_TOKEN}" \
-            --header "Accept: application/vnd.github+json" \
-            --output "\${archive_path}" \
-            "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/11640450681/zip"
+          curl --fail --show-error --location --retry 3 --header "Authorization: Bearer $GH_TOKEN" --header "Accept: application/vnd.github+json" --output "$archive_path" "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/11640450681/zip"
 
-          printf '%s  %s\n' \
-            "e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd" \
-            "\${archive_path}" | sha256sum --check -
-          python -m zipfile -t "\${archive_path}"
-          test "$(stat -c '%s' "\${archive_path}")" = "292742"
+          printf '%s  %s\n' "e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd" "$archive_path" | sha256sum --check -
+          python -m zipfile -t "$archive_path"
+          test "$(stat -c '%s' "$archive_path")" = "292742"
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "\${archive_path}"
+          git add "$archive_path"
           if git diff --cached --quiet; then
             echo "The pinned historical ZIP is already present on this branch."
             exit 0
           fi
           git commit -m "Archive immutable historical confirmatory artifact"
-          git push origin "HEAD:\${GITHUB_REF_NAME}"
+          git push origin "HEAD:$GITHUB_REF_NAME"
