@@ -95,6 +95,8 @@ def build_zip(
     wrong_file_size: bool = False,
     bad_jsonl: bool = False,
     bad_manifest: bool = False,
+    omit_manifest: bool = False,
+    pilot_overrides: dict | None = None,
     extra_member: str | None = None,
 ) -> str:
     cases = {case_id: case_payload(case_id) for case_id in CASE_IDS}
@@ -109,13 +111,19 @@ def build_zip(
     }
     for case_id, case in cases.items():
         payloads[f"cases/{case_id}.json"] = json.dumps(case, separators=(",", ":")).encode()
-    payloads["pilot_manifest.json"] = json.dumps({
+    pilot_payload = {
         "conditions": CONDITIONS,
         "generation": {"seeds": SEEDS, "temperature": 0.2, "top_p": 1.0, "do_sample": True, "max_new_tokens": 256},
         "model": {"model_id": PINNED_MODEL_ID, "revision": PINNED_MODEL_REVISION, "precision": "float16", "quantization": "none"},
         "prompt": {"path": "PROMPT_TEMPLATE.txt", "sha256": hashlib.sha256(PROMPT.encode()).hexdigest()},
         "system_prompt": {"path": "SYSTEM_PROMPT.txt", "sha256": hashlib.sha256(SYSTEM_PROMPT.encode()).hexdigest()},
-    }, separators=(",", ":")).encode()
+    }
+    for section, overrides in (pilot_overrides or {}).items():
+        if section in pilot_payload and isinstance(pilot_payload[section], dict) and isinstance(overrides, dict):
+            pilot_payload[section].update(overrides)
+        else:
+            pilot_payload[section] = overrides
+    payloads["pilot_manifest.json"] = json.dumps(pilot_payload, separators=(",", ":")).encode()
     if rows is None:
         rows = make_rows(cases)
     jsonl = "\n".join(json.dumps(row, separators=(",", ":")) for row in rows) + "\n"
@@ -145,7 +153,8 @@ def build_zip(
     }
     with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
         manifest_bytes = b"not-json" if bad_manifest else json.dumps(manifest, separators=(",", ":")).encode()
-        zf.writestr("confirmatory-output/artifact_manifest.json", manifest_bytes)
+        if not omit_manifest:
+            zf.writestr("confirmatory-output/artifact_manifest.json", manifest_bytes)
         for name, data in payloads.items():
             member = "confirmatory-output/" + name
             if member != omit_member:
@@ -207,6 +216,7 @@ def test_rejects_manifest_file_size_or_hash_mismatch(tmp_path, kwargs, match):
     (lambda rows: [dict(rows[0], top_p=0.5)]+rows[1:], "top_p mismatch"),
     (lambda rows: [dict(rows[0], max_new_tokens=128)]+rows[1:], "max_new_tokens mismatch"),
     (lambda rows: [dict(rows[0], prompt_sha256="0"*64)]+rows[1:], "prompt_sha256 mismatch"),
+    (lambda rows: [dict(rows[0], context_sha256="0"*64)]+rows[1:], "context_sha256 mismatch"),
     (lambda rows: [dict(rows[0], system_prompt_sha256="0"*64)]+rows[1:], "system_prompt_sha256 mismatch"),
     (lambda rows: [dict(rows[0], model_dtype="bfloat16")]+rows[1:], "model_dtype mismatch"),
     (lambda rows: [dict(rows[0], quantization="gptq-int4")]+rows[1:], "quantization mismatch"),
@@ -241,6 +251,29 @@ def test_rejects_unmanifested_payload_and_missing_case_file(tmp_path):
     with pytest.raises(AuditFailure, match="manifest-listed file is missing"):
         audit(missing_case_path, digest)
 
+
+
+@pytest.mark.parametrize("overrides,match", [
+    ({"model": {"model_id": "different/model"}}, "model ID/revision"),
+    ({"model": {"revision": "0" * 40}}, "model ID/revision"),
+    ({"generation": {"temperature": 0.7}}, "temperature does not match"),
+    ({"generation": {"top_p": 0.5}}, "top_p does not match"),
+    ({"generation": {"do_sample": False}}, "do_sample=true"),
+    ({"generation": {"max_new_tokens": 128}}, "max_new_tokens does not match"),
+    ({"generation": {"seeds": [42]}}, "seeds do not match"),
+])
+def test_rejects_mismatched_frozen_manifest_settings(tmp_path, overrides, match):
+    path = tmp_path / "bad-frozen-manifest.zip"
+    digest = build_zip(path, pilot_overrides=overrides)
+    with pytest.raises(AuditFailure, match=match):
+        audit(path, digest)
+
+
+def test_rejects_missing_artifact_manifest(tmp_path):
+    path = tmp_path / "no-artifact-manifest.zip"
+    digest = build_zip(path, omit_manifest=True)
+    with pytest.raises(AuditFailure, match="missing historical artifact manifest"):
+        audit(path, digest)
 
 def test_cli_returns_nonzero_when_archive_is_missing(monkeypatch, capsys, tmp_path):
     monkeypatch.setattr(sys, "argv", ["audit_historical_artifact.py", "--archive", str(tmp_path / "absent.zip"), "--expected-sha256", "e" * 64, "--expected-run-record-count", "160"])
