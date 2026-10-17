@@ -246,3 +246,25 @@ def test_cli_returns_nonzero_when_archive_is_missing(monkeypatch, capsys, tmp_pa
     monkeypatch.setattr(sys, "argv", ["audit_historical_artifact.py", "--archive", str(tmp_path / "absent.zip"), "--expected-sha256", "e" * 64, "--expected-run-record-count", "160"])
     assert main() == 1
     assert '"status": "fail"' in capsys.readouterr().err
+
+
+def test_rejects_corrupt_zip_container(tmp_path):
+    path = tmp_path / "not-a-zip.zip"
+    payload = b"this is not a ZIP archive"
+    path.write_bytes(payload)
+    digest = hashlib.sha256(payload).hexdigest()
+    with pytest.raises(AuditFailure, match="invalid ZIP archive"):
+        audit_archive(
+            path,
+            expected_sha256=digest,
+            expected_run_record_count=20,
+        )
+
+
+def test_rejects_context_hash_mismatch(tmp_path):
+    path = tmp_path / "context-hash-mismatch.zip"
+    rows = make_rows({case_id: case_payload(case_id) for case_id in CASE_IDS})
+    rows[0] = dict(rows[0], context_sha256="0" * 64)
+    digest = build_zip(path, rows=rows)
+    with pytest.raises(AuditFailure, match="context_sha256 mismatch"):
+        audit(path, digest)
