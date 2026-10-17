@@ -7,6 +7,7 @@ on:
     paths:
       - ".github/workflows/research-validation.yml"
       - ".github/workflows/heldout-lead-red-green.yml"
+      - ".github/workflows/persist-historical-archive.yml"
       - "scripts/**"
       - "tests/**"
       - "schemas/**"
