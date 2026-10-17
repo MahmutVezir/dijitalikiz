@@ -104,7 +104,8 @@ def main() -> int:
         "missing_records":expected-checked,
         "unexpected_records":unexpected,
         "source_commits":sorted(commits),
-        "complete":checked == expected and not unexpected
+        "complete":checked == expected and not unexpected,
+        "configuration_only":checked == 0
     },indent=2))
     return 0
 
