@@ -54,10 +54,12 @@ Başvuruya hazır Word/PDF üretimleri bu depodaki kaynak taslaktan ayrı teslim
 
 ## 5. Repo-side validation status (separate from research results)
 
-- [x] Path filters updated in merge commit `e58303cba30e6dc9727646e389742551a974e6cf` so `docs/**`, `data/benchmark/**`, and `data/sample_cases/**` edits trigger the no-inference validation.
-- [ ] Obtain a runner-backed successful `Research Validation (No Inference)` run. Current checks are still runner-blocked: main-branch merge run `38781184907` and PR #29 run `38782157548` failed before steps. Job `116581493867` and job `116584852346` report `runner_id=0`, empty `runner_name`, and `steps=[]`; runner smoke run `38779073729` showed the same pre-step failure. This is not evidence that pytest or artifact validators failed, and it is not a passing run.
-- [ ] Repository owner checks `Settings → Actions → General` for hosted `ubuntu-24.04` eligibility and `Settings → Billing and licensing → Usage` for Actions quotas/spending restrictions; then retries validation and verifies actual step outputs.
-- [ ] Only after actual test steps execute should repository CI be marked passing. This repository QA gate does not change the frozen experiment outputs or their already recorded integrity audits.
+- [x] Path filters in merge commit `e58303cba30e6dc9727646e389742551a974e6cf` make `docs/**`, `data/benchmark/**`, and `data/sample_cases/**` edits trigger no-inference validation.
+- [x] A genuine hosted runner executed no-inference run `39022301974`: `pytest -q` passed **247 tests**, `compileall` passed, and pilot/case/candidate/benchmark/config integrity checks passed. The run's final result was nevertheless **failure**, not pass, because its then-current historical-archive step expected `data/historical/confirmatory_artifact_2026-10-09.zip` in the checkout and that file was absent. This result proves the preceding steps ran; it does not prove the historical ZIP gate passed.
+- [x] Main now separates `validate-repository` from `validate-historical-archive`. The latter fetches the pinned Actions artifact (ID `11640450681`) into runner temporary storage, verifies exact artifact metadata/expiry, 292742-byte size, SHA-256 `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`, ZIP integrity, and the historical record manifest. It fails closed if the pinned source is unavailable or does not match. This is a source/workflow inspection, not evidence that the revised archive job has passed in a new run.
+- [ ] Obtain a fresh runner-backed run against the current `main` workflow and confirm its two separate job results: repository validation must pass, and historical archive integrity must independently pass or explicitly remain `BLOCKED/UNAVAILABLE` with safe evidence. Do not infer a green full workflow from the earlier 247-test pass.
+- [ ] Because runner dispatch has been intermittent, preserve run/job IDs. Repository owner should check `Settings → Actions → General` for hosted `ubuntu-24.04` eligibility and `Settings → Billing and licensing → Usage` for quotas/spending restrictions; do not assume quota or GitHub-wide outage without evidence.
+- [ ] This repository CI gate does not authorize model inference, Kaggle execution, changes to frozen historical outputs, candidate admission, or v2 protocol freeze.
 
 ## 7. Tarihsel deney bilimsel denetimi — 15 Ekim 2026
 
