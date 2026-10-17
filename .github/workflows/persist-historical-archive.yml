@@ -1,0 +1,217 @@
+name: Verify pinned historical confirmatory archive (read-only; no inference)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: verify-historical-confirmatory-archive
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: github.repository == 'MahmutVezir/dijitalikiz'
+    name: Verify historical archive in runner temporary storage
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      actions: read
+      contents: read
+    env:
+      ARTIFACT_ID: "11640450681"
+      EXPECTED_BYTES: "292742"
+      EXPECTED_SHA256: "e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd"
+      EXPECTED_RECORDS: "160"
+
+    steps:
+      - name: Checkout validator code only
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11"
+
+      - name: Install validator dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check -e .
+          python -m pip check
+          python - <<'PY'
+          from dijitalikiz.context import render_ccdg_context, render_standard_context
+          from dijitalikiz.models import ResearchCase
+          print("Historical audit imports: PASS")
+          PY
+
+      - name: Validate pinned artifact metadata
+        id: metadata
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          metadata_path="$RUNNER_TEMP/historical-artifact-metadata.json"
+          http_status="$(curl --silent --show-error --location \
+            --output "$metadata_path" --write-out '%{http_code}' \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID")" || {
+              echo "historical_archive_status=BLOCKED/UNAVAILABLE" >> "$GITHUB_STEP_SUMMARY"
+              echo "Reason: artifact metadata endpoint was unreachable." >> "$GITHUB_STEP_SUMMARY"
+              echo "::error::Historical artifact metadata is unavailable; verification is blocked."
+              exit 1
+            }
+          if [[ "$http_status" != "200" ]]; then
+            echo "historical_archive_status=BLOCKED/UNAVAILABLE" >> "$GITHUB_STEP_SUMMARY"
+            echo "Reason: artifact metadata endpoint returned HTTP $http_status." >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Historical artifact metadata is unavailable; verification is blocked."
+            exit 1
+          fi
+
+          set +e
+          python - "$metadata_path" "$ARTIFACT_ID" "$EXPECTED_BYTES" "$EXPECTED_SHA256" <<'PY'
+          import json, sys
+          from datetime import datetime, timezone
+          path, expected_id, expected_size, expected_digest = sys.argv[1:]
+          try:
+              with open(path, encoding="utf-8") as stream:
+                  value = json.load(stream)
+              if not isinstance(value, dict):
+                  raise ValueError
+              if value.get("id") != int(expected_id):
+                  print("invalid")
+                  raise SystemExit(11)
+              expires_at = datetime.fromisoformat(str(value.get("expires_at", "")).replace("Z", "+00:00"))
+              if value.get("expired") is True or expires_at <= datetime.now(timezone.utc):
+                  print("unavailable")
+                  raise SystemExit(10)
+              if value.get("expired") is not False:
+                  print("invalid")
+                  raise SystemExit(11)
+              if value.get("size_in_bytes") != int(expected_size):
+                  print("invalid")
+                  raise SystemExit(11)
+              if value.get("digest") != "sha256:" + expected_digest:
+                  print("invalid")
+                  raise SystemExit(11)
+          except SystemExit:
+              raise
+          except Exception:
+              print("invalid")
+              raise SystemExit(11)
+          print("valid")
+          PY
+          validation_code=$?
+          set -e
+          if [[ "$validation_code" -eq 10 ]]; then
+            echo "historical_archive_status=BLOCKED/UNAVAILABLE" >> "$GITHUB_STEP_SUMMARY"
+            echo "Reason: source artifact has expired or is past its expiry time." >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Historical source artifact has expired; verification is blocked."
+            exit 1
+          elif [[ "$validation_code" -ne 0 ]]; then
+            echo "historical_archive_status=FAIL" >> "$GITHUB_STEP_SUMMARY"
+            echo "Reason: source artifact metadata did not match the pinned contract." >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Historical source artifact metadata failed integrity checks."
+            exit 1
+          fi
+          expires_at="$(python - "$metadata_path" <<'PY'
+          import json, sys
+          with open(sys.argv[1], encoding="utf-8") as stream:
+              print(json.load(stream)["expires_at"])
+          PY
+          )"
+          echo "Artifact metadata: PASS (ID, expiry, size, SHA-256 digest)." >> "$GITHUB_STEP_SUMMARY"
+          echo "Artifact expires at: $expires_at (UTC)." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Download original archive to runner temporary storage
+        id: download
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          archive_path="$RUNNER_TEMP/confirmatory_artifact_2026-10-09.zip"
+          http_status="$(curl --silent --show-error --location --fail \
+            --output "$archive_path" --write-out '%{http_code}' \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip")" || {
+              echo "historical_archive_status=BLOCKED/UNAVAILABLE" >> "$GITHUB_STEP_SUMMARY"
+              echo "Reason: source artifact download was unavailable." >> "$GITHUB_STEP_SUMMARY"
+              echo "::error::Historical source artifact download is unavailable; verification is blocked."
+              exit 1
+            }
+          if [[ "$http_status" != "200" || ! -s "$archive_path" ]]; then
+            echo "historical_archive_status=BLOCKED/UNAVAILABLE" >> "$GITHUB_STEP_SUMMARY"
+            echo "Reason: source artifact download did not return a usable archive." >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Historical source artifact download is unavailable; verification is blocked."
+            exit 1
+          fi
+          echo "archive_path=$archive_path" >> "$GITHUB_OUTPUT"
+
+      - name: Verify exact archive bytes and ZIP CRC without exposing contents
+        shell: bash
+        env:
+          ARCHIVE_PATH: ${{ steps.download.outputs.archive_path }}
+        run: |
+          set -euo pipefail
+          actual_bytes="$(stat -c '%s' "$ARCHIVE_PATH")"
+          if [[ "$actual_bytes" != "$EXPECTED_BYTES" ]]; then
+            echo "historical_archive_status=FAIL" >> "$GITHUB_STEP_SUMMARY"
+            echo "Reason: archive byte length did not match the pinned contract." >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Historical archive byte-length check failed."
+            exit 1
+          fi
+          if ! printf '%s  %s\n' "$EXPECTED_SHA256" "$ARCHIVE_PATH" | sha256sum --check --status -; then
+            echo "historical_archive_status=FAIL" >> "$GITHUB_STEP_SUMMARY"
+            echo "Reason: archive SHA-256 did not match the pinned contract." >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Historical archive SHA-256 check failed."
+            exit 1
+          fi
+          if ! python -m zipfile -t "$ARCHIVE_PATH" > "$RUNNER_TEMP/zip-integrity-check.log" 2>&1; then
+            echo "historical_archive_status=FAIL" >> "$GITHUB_STEP_SUMMARY"
+            echo "Reason: ZIP integrity/CRC check failed; details withheld to avoid exposing source data." >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Historical ZIP integrity check failed."
+            exit 1
+          fi
+          echo "Byte length: PASS ($actual_bytes bytes)." >> "$GITHUB_STEP_SUMMARY"
+          echo "SHA-256: PASS ($EXPECTED_SHA256)." >> "$GITHUB_STEP_SUMMARY"
+          echo "ZIP CRC/integrity: PASS." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run historical record audit with sanitized logging
+        shell: bash
+        env:
+          ARCHIVE_PATH: ${{ steps.download.outputs.archive_path }}
+        run: |
+          set -euo pipefail
+          audit_json="$RUNNER_TEMP/historical-audit-result.json"
+          audit_log="$RUNNER_TEMP/historical-audit-private.log"
+          if ! python scripts/audit_historical_artifact.py \
+            --archive "$ARCHIVE_PATH" \
+            --expected-sha256 "$EXPECTED_SHA256" \
+            --expected-run-record-count "$EXPECTED_RECORDS" \
+            > "$audit_json" 2> "$audit_log"; then
+            echo "historical_archive_status=FAIL" >> "$GITHUB_STEP_SUMMARY"
+            echo "Historical archive record audit: FAIL (diagnostic log kept out of public workflow output)." >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Historical record audit failed; details are not printed because the archive contains third-party text and model outputs."
+            exit 1
+          fi
+          python - "$audit_json" <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, sys
+          with open(sys.argv[1], encoding="utf-8") as stream:
+              value = json.load(stream)
+          assert value.get("status") == "pass"
+          print("historical_archive_status=PASS")
+          print(f"Files checked against manifest: {value.get('files_checked')}")
+          print(f"Expected/found historical records: {value.get('expected_run_records')}/{value.get('found_run_records')}")
+          print(f"Unique historical records: {value.get('unique_run_records')}")
+          print("No archive contents were extracted, uploaded, or printed.")
+          PY
+          echo "Historical archive record audit: PASS." 
