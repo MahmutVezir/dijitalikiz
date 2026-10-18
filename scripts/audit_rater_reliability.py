@@ -64,15 +64,8 @@ def _validate_item_ids(rows: Sequence[dict[str, str]], expected_item_ids: Sequen
 def compute_rater_reliability(
     rows: Sequence[dict[str, str]],
     expected_item_ids: Sequence[str],
-    *,
-    min_exact_agreement: float = DEFAULT_MIN_EXACT_AGREEMENT,
-    min_kappa: float = DEFAULT_MIN_KAPPA,
-) -> dict[str, object]:
-    """Compute exact agreement and unweighted Cohen's kappa; never substitutes for human ratings."""
-    if not 0.0 <= min_exact_agreement <= 1.0:
-        raise ValueError("min_exact_agreement must be between 0 and 1.")
-    if not -1.0 <= min_kappa <= 1.0:
-        raise ValueError("min_kappa must be between -1 and 1.")
+ ) -> dict[str, object]:
+    """Compute agreement using fixed preregistered minima; never substitutes for human ratings."""
     if not rows:
         raise ValueError("No real paired ratings were supplied.")
     _validate_item_ids(rows, expected_item_ids)
@@ -102,11 +95,11 @@ def compute_rater_reliability(
         kappa = (exact_agreement - expected_agreement) / (1.0 - expected_agreement)
 
     gate_reasons: list[str] = []
-    if exact_agreement < min_exact_agreement:
+    if exact_agreement < DEFAULT_MIN_EXACT_AGREEMENT:
         gate_reasons.append("exact_agreement_below_threshold")
     if kappa is None:
         gate_reasons.append("cohen_kappa_undefined")
-    elif kappa < min_kappa:
+    elif kappa < DEFAULT_MIN_KAPPA:
         gate_reasons.append("cohen_kappa_below_threshold")
     gate_passed = not gate_reasons
 
@@ -121,8 +114,8 @@ def compute_rater_reliability(
         "cohen_kappa": None if kappa is None else round(kappa, 6),
         "expected_agreement": round(expected_agreement, 6),
         "thresholds": {
-            "min_exact_agreement": min_exact_agreement,
-            "min_cohen_kappa": min_kappa,
+            "min_exact_agreement": DEFAULT_MIN_EXACT_AGREEMENT,
+            "min_cohen_kappa": DEFAULT_MIN_KAPPA,
         },
         "contingency_table": table,
         "rater_a_marginals": row_totals,
@@ -145,8 +138,6 @@ def main(argv: Sequence[str] | None = None) -> int:
                         help="JSON array containing the preregistered opaque calibration item IDs.")
     parser.add_argument("--output-json", type=Path,
                         help="Optional aggregate report path; raw ratings and answers are never copied to it.")
-    parser.add_argument("--min-exact-agreement", type=float, default=DEFAULT_MIN_EXACT_AGREEMENT)
-    parser.add_argument("--min-kappa", type=float, default=DEFAULT_MIN_KAPPA)
     args = parser.parse_args(argv)
 
     try:
@@ -159,8 +150,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         report = compute_rater_reliability(
             rows,
             expected_item_ids,
-            min_exact_agreement=args.min_exact_agreement,
-            min_kappa=args.min_kappa,
         )
     except (OSError, json.JSONDecodeError, ValueError) as exc:
         print(json.dumps({"status": "blocked", "error": str(exc)}, indent=2), file=sys.stderr)
