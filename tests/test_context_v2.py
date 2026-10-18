@@ -154,3 +154,40 @@ def test_parity_contract_is_valid_and_fails_closed():
     assert contract["context_limit"] == 32768
     assert contract["generation_reserve"] == 256
     assert contract["historical_artifacts_immutable"] is True
+
+
+
+def test_v2_contexts_do_not_leak_case_identity_source_url_or_gold_fields():
+    payload = json.loads(
+        (ROOT / "data" / "benchmark" / "cases" / "commons-math-defects4j-MATH-305.json")
+        .read_text(encoding="utf-8")
+    )
+    payload["case_id"] = "CASE_ID_CANARY_V2_794D"
+    payload["source_url"] = "https://example.invalid/SOURCE_URL_CANARY_V2_794D"
+    payload["publication_date"] = "DATE_CANARY_V2_794D"
+    payload["ground_truth"] = {
+        "component": "GOLD_COMPONENT_CANARY_V2_794D",
+        "entity": "GOLD_ENTITY_CANARY_V2_794D",
+        "operation": "GOLD_OPERATION_CANARY_V2_794D",
+        "root_cause": "GOLD_ROOT_CANARY_V2_794D",
+        "required_relations": ["GOLD_RELATION_CANARY_V2_794D"],
+    }
+    case = ResearchCase.from_dict(payload)
+    contexts = [
+        render_standard_context_v2(case),
+        render_dependency_prose_context_v2(case),
+        render_ccdg_context_v2(case),
+    ]
+    forbidden = [
+        "CASE_ID_CANARY_V2_794D",
+        "SOURCE_URL_CANARY_V2_794D",
+        "DATE_CANARY_V2_794D",
+        "GOLD_COMPONENT_CANARY_V2_794D",
+        "GOLD_ENTITY_CANARY_V2_794D",
+        "GOLD_OPERATION_CANARY_V2_794D",
+        "GOLD_ROOT_CANARY_V2_794D",
+        "GOLD_RELATION_CANARY_V2_794D",
+    ]
+    for rendered in contexts:
+        for marker in forbidden:
+            assert marker not in rendered
