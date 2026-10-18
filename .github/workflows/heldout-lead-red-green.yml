@@ -29,6 +29,9 @@ jobs:
             pre_fix: de7fa8997db278b83f56b22f89b691be58ae88ba
             fix: 1addbf90c4fd35713c61e5c54ad4d21c14d7df1d
             tests: DnsNameResolverTest#testNegativelyCachedSearchDomainDoesNotShadowPositiveOne,DnsNameResolverTest#testNegativelyCachedSearchDomainDoesNotShadowUncachedOne,DnsNameResolverTest#testNegativelyCachedBareHostnameStillShortCircuits
+            # The bare-hostname case is a baseline control; it should pass before and after the fix.
+            red_tests: DnsNameResolverTest#testNegativelyCachedSearchDomainDoesNotShadowPositiveOne,DnsNameResolverTest#testNegativelyCachedSearchDomainDoesNotShadowUncachedOne
+            pre_fix_pass_tests: DnsNameResolverTest#testNegativelyCachedBareHostnameStillShortCircuits
             test_files: resolver-dns/src/test/java/io/netty/resolver/dns/DnsNameResolverTest.java
 
           - case_id: netty-17764-tls13-signature-algorithm-key-selection
@@ -74,6 +77,8 @@ jobs:
       PRE_FIX_SHA: ${{ matrix.pre_fix }}
       FIX_SHA: ${{ matrix.fix }}
       TEST_TARGETS: ${{ matrix.tests }}
+      RED_TEST_TARGETS: ${{ matrix.red_tests || matrix.tests }}
+      PRE_FIX_PASS_TARGETS: ${{ matrix.pre_fix_pass_tests || '' }}
       TEST_FILES: ${{ matrix.test_files }}
       CASE_ID: ${{ matrix.case_id }}
       MAVEN_MODULE: ${{ matrix.module || '' }}
@@ -223,13 +228,15 @@ jobs:
             exit 1
           fi
           export EVIDENCE_DIR="$GITHUB_WORKSPACE/heldout-lead-screening/$CASE_ID"
-          python - "$SRC" "$TEST_TARGETS" <<'PY'
+          python - "$SRC" "$TEST_TARGETS" "$RED_TEST_TARGETS" "$PRE_FIX_PASS_TARGETS" <<'PY'
           import json, os, sys
           from pathlib import Path
           from xml.etree import ElementTree as ET
 
           report_dir = Path(sys.argv[1])
-          targets = [item.strip() for item in sys.argv[2].split(",") if item.strip()]
+          all_targets = [item.strip() for item in sys.argv[2].split(",") if item.strip()]
+          red_targets = [item.strip() for item in sys.argv[3].split(",") if item.strip()]
+          pass_targets = [item.strip() for item in sys.argv[4].split(",") if item.strip()]
           cases = []
           for file in report_dir.rglob("TEST-*.xml") if report_dir.exists() else []:
               try:
@@ -238,17 +245,37 @@ jobs:
                   continue
               for node in root.iter("testcase"):
                   cases.append((node.get("classname", ""), node.get("name", ""), node))
-          result = []
-          for target in targets:
+
+          def matches_for(target):
               class_name, method = target.split("#", 1)
-              matches = [(cn, name, node) for cn, name, node in cases
-                         if cn.endswith("." + class_name) and (name == method or name.startswith(method + "("))]
+              return [(cn, name, node) for cn, name, node in cases
+                      if cn.endswith("." + class_name) and (name == method or name.startswith(method + "("))]
+
+          # Every named target must execute. Only defect-specific tests must fail pre-fix.
+          for target in all_targets:
+              matches = matches_for(target)
               if not matches:
                   raise SystemExit(f"BLOCKED: targeted regression test did not execute on pre-fix revision: {target}")
-              failed = [node for _, _, node in matches if node.find("failure") is not None or node.find("error") is not None]
+              if any(node.find("skipped") is not None for _, _, node in matches):
+                  raise SystemExit(f"BLOCKED: named test was skipped on pre-fix revision: {target}")
+
+          result = []
+          for target in red_targets:
+              matches = matches_for(target)
+              failed = [node for _, _, node in matches
+                        if node.find("failure") is not None or node.find("error") is not None]
               if not failed:
-                  raise SystemExit(f"BLOCKED: test did not demonstrate a pre-fix regression failure: {target}")
+                  raise SystemExit(f"BLOCKED: defect-specific test did not demonstrate a pre-fix regression failure: {target}")
               result.append({"test": target, "pre_fix_result": "failed_as_expected", "failure_count": len(failed)})
+
+          for target in pass_targets:
+              matches = matches_for(target)
+              bad = [node for _, _, node in matches
+                     if node.find("failure") is not None or node.find("error") is not None or node.find("skipped") is not None]
+              if not matches or bad:
+                  raise SystemExit(f"BLOCKED: baseline control did not pass on pre-fix revision: {target}")
+              result.append({"test": target, "pre_fix_result": "passed_as_expected_control", "pass_count": len(matches)})
+
           payload = {"status": "red_confirmed", "tests": result}
           out = Path(os.environ["EVIDENCE_DIR"]) / "red-result.json"
           out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
