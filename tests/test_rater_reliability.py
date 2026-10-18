@@ -6,6 +6,7 @@ from scripts.audit_rater_reliability import (
     LABELS,
     compute_rater_reliability,
     load_ratings_csv,
+    main,
 )
 
 
@@ -98,3 +99,24 @@ def test_csv_loader_rejects_extra_or_reordered_columns(tmp_path):
 
     with pytest.raises(ValueError, match="CSV header must be exactly"):
         load_ratings_csv(ratings_path)
+
+
+
+def test_cli_rejects_attempt_to_lower_preregistered_thresholds(tmp_path):
+    ratings_path = tmp_path / "ratings.csv"
+    ratings_path.write_text(
+        "item_id,rater_a,rater_b\nopaque-1,incorrect,incorrect\n",
+        encoding="utf-8",
+    )
+    expected_ids_path = tmp_path / "expected_ids.json"
+    expected_ids_path.write_text('["opaque-1"]', encoding="utf-8")
+
+    with pytest.raises(SystemExit) as exc_info:
+        main([
+            "--ratings-csv", str(ratings_path),
+            "--expected-item-ids", str(expected_ids_path),
+            "--min-exact-agreement", "0",
+            "--min-kappa", "-1",
+        ])
+
+    assert exc_info.value.code == 2
