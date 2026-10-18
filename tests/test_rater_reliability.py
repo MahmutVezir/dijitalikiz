@@ -137,7 +137,7 @@ def test_duplicate_items_and_invalid_labels_are_rejected():
 
 def test_calibration_metadata_rejects_underrepresented_challenge_class():
     items = expected_items()
-    items[0]["challenge_class"] = "canonical_correct"
+    items[0]["challenge_class"] = "unscorable_output"
     with pytest.raises(ValueError, match="class composition is below"):
         compute_rater_reliability(rows_with_full_agreement(items), items)
 
