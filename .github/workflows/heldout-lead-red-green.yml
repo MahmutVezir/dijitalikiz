@@ -38,6 +38,7 @@ jobs:
             repo: netty/netty
             module: handler
             java_version: "21"
+            maven_profiles: boringssl
             pre_fix: 3eaff63caf06a582cc3df72422aa1124734b46c6
             fix: 84c167ea85e0d7f5b40caec6cab859018f9490bd
             tests: PkiTestingTlsTest#connectWithEd25519,PkiTestingTlsTest#connectWithEd25519AndRsa,PkiTestingTlsTest#connectWithEd25519FailsWithoutCommonSignatureAlgorithm
@@ -82,6 +83,7 @@ jobs:
       TEST_FILES: ${{ matrix.test_files }}
       CASE_ID: ${{ matrix.case_id }}
       MAVEN_MODULE: ${{ matrix.module || '' }}
+      MAVEN_PROFILES: ${{ matrix.maven_profiles || '' }}
       BUILD_TOOL: ${{ matrix.build_tool || 'maven' }}
       GRADLE_TEST_FILTERS: ${{ matrix.gradle_test_filters || '' }}
       TEST_PATCH_ADJUSTMENT: ${{ matrix.test_patch_adjustment || '' }}
@@ -113,6 +115,7 @@ jobs:
             echo "pre_fix_sha=$PRE_FIX_SHA"
             echo "fix_sha=$FIX_SHA"
             echo "test_targets=$TEST_TARGETS"
+            echo "maven_profiles=$MAVEN_PROFILES"
             echo "build_tool=$BUILD_TOOL"
             echo "purpose=screening_only_no_model_inference"
           } > "$OUT/metadata.txt"
@@ -216,7 +219,11 @@ jobs:
             fi
             (cd "$SRC" && ./gradlew --no-daemon ":$MAVEN_MODULE:test" --tests "$GRADLE_TEST_FILTERS") > "$LOG" 2>&1
           elif [ -n "$MAVEN_MODULE" ]; then
-            (cd "$SRC" && mvn -B -ntp -pl "$MAVEN_MODULE" -am clean -Dtest="$TEST_TARGETS" -Dsurefire.failIfNoSpecifiedTests=false test) > "$LOG" 2>&1
+            if [ -n "$MAVEN_PROFILES" ]; then
+              (cd "$SRC" && mvn -B -ntp -P"$MAVEN_PROFILES" -pl "$MAVEN_MODULE" -am clean -Dtest="$TEST_TARGETS" -Dsurefire.failIfNoSpecifiedTests=false test) > "$LOG" 2>&1
+            else
+              (cd "$SRC" && mvn -B -ntp -pl "$MAVEN_MODULE" -am clean -Dtest="$TEST_TARGETS" -Dsurefire.failIfNoSpecifiedTests=false test) > "$LOG" 2>&1
+            fi
           else
             (cd "$SRC" && mvn -B -ntp clean -Dtest="$TEST_TARGETS" test) > "$LOG" 2>&1
           fi
@@ -331,11 +338,19 @@ jobs:
               exit 1
             }
           elif [ -n "$MAVEN_MODULE" ]; then
-            (cd "$SRC" && mvn -B -ntp -pl "$MAVEN_MODULE" -am clean -Dtest="$TEST_TARGETS" -Dsurefire.failIfNoSpecifiedTests=false test) > "$LOG" 2>&1 || {
-              cat "$LOG"
-              echo "ERROR: regression tests did not pass on fixed revision."
-              exit 1
-            }
+            if [ -n "$MAVEN_PROFILES" ]; then
+              (cd "$SRC" && mvn -B -ntp -P"$MAVEN_PROFILES" -pl "$MAVEN_MODULE" -am clean -Dtest="$TEST_TARGETS" -Dsurefire.failIfNoSpecifiedTests=false test) > "$LOG" 2>&1 || {
+                cat "$LOG"
+                echo "ERROR: regression tests did not pass on fixed revision."
+                exit 1
+              }
+            else
+              (cd "$SRC" && mvn -B -ntp -pl "$MAVEN_MODULE" -am clean -Dtest="$TEST_TARGETS" -Dsurefire.failIfNoSpecifiedTests=false test) > "$LOG" 2>&1 || {
+                cat "$LOG"
+                echo "ERROR: regression tests did not pass on fixed revision."
+                exit 1
+              }
+            fi
           else
             (cd "$SRC" && mvn -B -ntp clean -Dtest="$TEST_TARGETS" test) > "$LOG" 2>&1 || {
               cat "$LOG"
