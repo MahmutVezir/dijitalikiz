@@ -402,3 +402,51 @@ def test_calibration_gate_blocks_low_independent_reviewer_agreement(tmp_path):
     assert report["ready_for_new_confirmatory_inference"] is False
     assert any("below_threshold" in issue for issue in report["issues"])
 
+
+
+def test_calibration_gate_rejects_manifest_thresholds_below_protocol_floors(tmp_path):
+    manifest_path, key_path = _complete_fixture(tmp_path)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    # The fixture has perfect synthetic agreement; lowering both manifest
+    # thresholds must not turn that fixture into a valid protocol pass.
+    manifest["readiness_policy"]["minimum_initial_reviewer_exact_agreement"] = 0.0
+    manifest["readiness_policy"]["minimum_initial_reviewer_cohen_kappa"] = 0.0
+    _write_json(manifest_path, manifest)
+
+    report = audit_calibration(
+        manifest_path=manifest_path,
+        key_path=key_path,
+        pilot_manifest_path=tmp_path / "data" / "pilot" / "pilot_manifest.json",
+        benchmark_manifest_path=tmp_path / "data" / "benchmark" / "benchmark_manifest.json",
+    )
+
+    assert report["status"] == "blocked"
+    assert report["ready_for_new_confirmatory_inference"] is False
+    assert any(
+        "minimum_initial_reviewer_exact_agreement_below_protocol_floor" in issue
+        for issue in report["issues"]
+    )
+    assert any(
+        "minimum_initial_reviewer_cohen_kappa_below_protocol_floor" in issue
+        for issue in report["issues"]
+    )
+
+
+def test_calibration_gate_rejects_boolean_values_as_reliability_thresholds(tmp_path):
+    manifest_path, key_path = _complete_fixture(tmp_path)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["readiness_policy"]["minimum_initial_reviewer_exact_agreement"] = True
+    manifest["readiness_policy"]["minimum_initial_reviewer_cohen_kappa"] = False
+    _write_json(manifest_path, manifest)
+
+    report = audit_calibration(
+        manifest_path=manifest_path,
+        key_path=key_path,
+        pilot_manifest_path=tmp_path / "data" / "pilot" / "pilot_manifest.json",
+        benchmark_manifest_path=tmp_path / "data" / "benchmark" / "benchmark_manifest.json",
+    )
+
+    assert report["status"] == "blocked"
+    assert report["ready_for_new_confirmatory_inference"] is False
+    assert "invalid_minimum_initial_reviewer_exact_agreement" in report["issues"]
+    assert "invalid_minimum_initial_reviewer_cohen_kappa" in report["issues"]
