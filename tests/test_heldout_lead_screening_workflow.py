@@ -83,6 +83,22 @@ def test_heldout_lead_screening_runs_only_the_six_pending_candidates():
         assert pre_fix != fixed
 
 
+def test_tls13_candidate_explicitly_enables_boringssl_and_records_profile():
+    workflow = workflow_text()
+    marker = "          - case_id: netty-17764-tls13-signature-algorithm-key-selection\n"
+    start = workflow.find(marker)
+    assert start >= 0, "TLS 1.3 candidate is missing"
+    end = workflow.find("\n          - case_id:", start + len(marker))
+    block = workflow[start:end if end >= 0 else len(workflow)]
+
+    # The regression concerns Netty's native OpenSSL/BoringSSL key-selection path.
+    # JDK-only success cannot be accepted as evidence that this defect is reproduced.
+    assert "maven_profiles: boringssl" in block
+    assert "MAVEN_PROFILES: ${{ matrix.maven_profiles || '' }}" in workflow
+    assert 'mvn -B -ntp -P"$MAVEN_PROFILES" -pl "$MAVEN_MODULE" -am clean' in workflow
+    assert 'echo "maven_profiles=$MAVEN_PROFILES"' in workflow
+
+
 def test_heldout_lead_screening_fails_closed_on_red_and_requires_green():
     workflow = workflow_text()
     assert 'git -C "$SRC" checkout --detach "$PRE_FIX_SHA"' in workflow
