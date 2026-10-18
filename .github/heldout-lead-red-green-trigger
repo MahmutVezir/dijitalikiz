@@ -1,6 +1,7 @@
 [screening-only] Re-run the six Java candidate red-green checks against the current main workflow configuration.
 
 Trigger request date: 2026-10-18
+Native-provider correction: run the Netty TLS 1.3 candidate with the explicit Maven `boringssl` profile on both pinned revisions and record the profile in the screening evidence.
 Base main commit observed when preparing this trigger: 8d65597ae82dab3852bc5c5e1a43747d31528b2d
 Purpose: technical screening only — each named regression test must fail at its pinned pre-fix revision and pass at its pinned fixed revision.
 Hard limits: no model inference, no training, no case admission, no scoring-calibration completion, and no permission to run the v2 confirmatory study. Human source review and separate adjudication remain pending.
