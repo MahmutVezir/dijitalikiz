@@ -45,3 +45,9 @@ Rehberin “Dijital İkiz” açıklaması, fiziksel varlık/sistem/süreç ile 
 ## Çıkış kararı
 
 Taslak, başlık ve özet uzunluğu gibi bazı metinsel gereklilikleri karşılıyor; ancak **nihai başvuru dosyası hazır değil**. Kalan zorunlu kalite kapıları: resmi yazım şablonuna aktarma, sayfa numaralı içindekileri yenileme, PDF sayfa ve açılabilirlik kontrolü, öğrenci tarafından tüm teknik iddiaların son doğrulaması, gerçek değerlendirici katılımı varsa alınan dosyaların denetimi ve en son TYBS yükleme kurallarının kontrolüdür.
+
+## Sonradan eklenen durum düzeltmesi — 18 Ekim 2026
+
+Bu denetimdeki “şablon indirilemedi ve biçimlendirme doğrulanmadı” cümleleri **15 Ekim'deki ara durumu** anlatır; güncel durum olarak okunmamalıdır. Resmî 2026–2027 Word şablonu daha sonra başarıyla alındı ve rapor yeniden derlendi. Son doğrulanmış derleme kaydı: [workflow run 38929963765](https://github.com/MahmutVezir/dijitalikiz/actions/runs/38929963765), artifact ID `12058990129`. İlgili ayrıntılı güncel denetim: `docs/TUBITAK_REPORT_BUILD_AUDIT_2026-10-16.md`.
+
+Bu son derlemede rapor DOCX/PDF'si 10 sayfa olarak doğrulanıp görsel olarak incelendi. Bununla birlikte proje başvurusu henüz gönderilmiş değildir: öğrenci/okul/danışman bilgileri, kaynakların son insan kontrolü, ÜYZ kullanım beyanının gerçek kullanımla eşleşmesi ve TYBS başvuru alanları öğrenci/başvuru sahibi tarafından onaylanmalıdır. Bilimsel sonuç ve sınırlar değişmemiştir; Standard 0/80, CCDG 0/80 ve bilgi-paritesi kusuru korunur. V2 hâlâ taslak ve inference izni kapalıdır.

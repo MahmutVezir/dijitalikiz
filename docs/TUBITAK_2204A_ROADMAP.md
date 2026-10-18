@@ -1,5 +1,34 @@
 # TÜBİTAK 2204-A Proje Yol Haritası — Güncel Kabul Durumu
 
+## Durum güncellemesi — 18 Ekim 2026
+
+Bu tarihli blok, önceki 9 Ekim yol haritasının yerine geçmez; güncel başvuru/araştırma durumunu netleştirir.
+
+### TÜBİTAK teslim durumu
+- Resmî 2026–2027 Word şablonu ile 10 sayfalık rapor DOCX/PDF taslağı üretildi ve tüm sayfalar görsel olarak kontrol edildi. Son doğrulanmış build: https://github.com/MahmutVezir/dijitalikiz/actions/runs/38929963765 (artifact ID `12058990129`).
+- Rapor **henüz TYBS'ye gönderilmiş nihai başvuru değildir**. Öğrenci/okul/danışman alanları, güncel ÜYZ kullanım beyanı, kaynakça atıfları, başvuru portalı alanları ve öğrencinin içeriği kendi bilgisiyle doğrulaması son insan kontrolü beklemektedir.
+- Resmî yarışma sayfasındaki 2026–2027 son başvuru tarihi: **4 Ocak 2027, 17.30 Türkiye saati**. Başvuru: https://tybs.tubitak.gov.tr/ . Bu tarih değişmedikçe takvim için esas alınır.
+- Ana alan **Yazılım**, tematik alan **Yapay Zekâ** olarak önerilmiştir; mevcut deney gerçek zamanlı fiziksel ikiz/sensör sistemi kurmadığı için “Dijital İkiz” sınıflandırması uygun görünmemektedir.
+
+### Bilimsel iddialar ve insan incelemesi
+- Tarihsel dondurulmuş sonuç korunur: Standard 0/80, CCDG 0/80; vaka düzeyinde 0/16 ve exact iki taraflı McNemar p=1,00. Bu, eşdeğerlik veya CCDG etkisizliği kanıtı değildir; taban etkisi nedeniyle anlamsal hipotez çözümlenememiştir.
+- Tarihsel iki bağlamın bilgi paritesi kusuru geriye dönük giderilemez. Eski birincil ölçüt ve ham çıktılar değiştirilmeyecektir.
+- İki kaynak/kök-neden hakemi ve ayrı adjudicator için ön davet e-postaları gönderildi; son kontrol anında yanıt/katılım teyidi yoktu. Kimse kabul etmiş sayılmaz. İnceleme paketleri ancak kişi görevi kabul ettikten sonra gönderilecek.
+- Yeni v2 çalışması taslak, aday/held-out vaka listesi boş ve `model_inference_permitted=false`. Bağımsız vaka kaynağı/ground-truth incelemesi, skor kalibrasyonu, örneklem gerekçesi ve protokol dondurma tamamlanmadan inference yapılmamalıdır.
+
+### Teknik aday taraması — yalnızca no-inference
+- PR #51: https://github.com/MahmutVezir/dijitalikiz/pull/51
+- Son düzeltme sonrası repository/configuration safety tests ve historical artifact integrity, run 39135614091'de başarıyla tamamlandı.
+- Altı Java vaka adayı için red/green taraması run 39135614105'te tamamlandı: beş adayda hata öncesi regresyon başarısızlığı ve sabit düzeltme sürümünde temiz geçiş doğrulandı; bir TLS 1.3/Ed25519 adayı fail-closed kaldı. Kanıtlar: https://github.com/MahmutVezir/dijitalikiz/actions/runs/39135614105 .
+- TLS adayının günlüğünde sabitlenmiş hata öncesi sürümde 7 testin tamamı başarılıydı (0 fail, 0 error, 0 skip); beklenen kırmızı regresyon gösterilemedi. Düzeltme kodunun hedeflediği OpenSSL yolunun bu ortamda çalıştırıldığı kanıtlanmamıştır. Bu aday “geçti” veya “çürütüldü” olarak değil, uygun native/OpenSSL test kanıtı bekleyen bloklu aday olarak tutulmalıdır. Diğer beş teknik red/green geçişi de yalnızca regresyon yeniden üretilebilirliğini gösterir; insan kök-neden incelemesi/adjudication yerine geçmez.
+- Tarama model inference, eğitim veya Kaggle/GPU işi başlatmadı. PR #51 taslaktır; ekranlama sonucuna bakılarak otomatik vaka kabulü veya protokol açılması yapılmamalıdır.
+
+### Karar
+TÜBİTAK'a en güçlü ve savunulabilir yol; mevcut raporu tamamlanmış tarihsel deney olarak dürüstçe sunmak, taban etkisini ve bilgi paritesi sınırlılığını açık tutmak, yeni v2 çalışmasını tamamlanmış gibi göstermemek ve öğrencinin yöntemi/istatistiği bağımsız olarak açıklayabilmesini sağlamaktır. Finalistlik garanti edilemez. Ek çalışma, ancak gerçek ölçüm kalitesi veya tekrarlanabilirlik katkısı sağlıyorsa yapılmalıdır; sırf daha fazla çıktı üretmek için yeni inference başlatılmamalıdır.
+
+---
+
+
 **Proje:** LLM Tabanlı Çapraz-Bileşen Hata Teşhisinde Yapılandırılmış Bağımlılık Temsilinin Etkisinin Deneysel İncelenmesi  
 **Son doğrulanmış durum:** 9 Ekim 2026
 
