@@ -96,3 +96,61 @@ def test_v2_conditions_do_not_render_provenance_snapshot_or_answer_cues():
         assert "Observed code revision:" not in rendered
         assert "ground_truth" not in rendered.lower()
 
+
+
+
+def test_v2_base_context_is_byte_identical_across_all_conditions():
+    case = load_case("commons-math-defects4j-MATH-305")
+    standard = render_standard_context_v2(case)
+    prose = render_dependency_prose_context_v2(case)
+    graph = render_ccdg_context_v2(case)
+
+    assert prose.startswith(standard + "\n\nDependency relations in sentences:\n")
+    assert graph.startswith(standard + "\n\nDependency relations as directed triples:\n")
+
+
+def test_prose_and_triples_render_exactly_the_same_ordered_edge_ledger():
+    case = load_case("commons-math-defects4j-MATH-305")
+    prose = render_dependency_prose_context_v2(case).splitlines()
+    graph = render_ccdg_context_v2(case).splitlines()
+
+    prose_start = prose.index("Dependency relations in sentences:") + 1
+    graph_start = graph.index("Dependency relations as directed triples:") + 1
+    prose_edges = prose[prose_start:]
+    graph_edges = graph[graph_start:]
+
+    expected_prose = []
+    expected_graph = []
+    edge_signatures = []
+    for edge in case.ccdg:
+        relation = edge.relation.replace("_", " ")
+        sentence = f"{edge.source} has the dependency relation '{relation}' to {edge.target}."
+        if edge.details:
+            sentence += f" Detail: {edge.details}"
+        expected_prose.append(f"- {sentence}")
+
+        detail_suffix = f" (details: {edge.details})" if edge.details else ""
+        expected_graph.append(
+            f"- ({edge.source}) --[{edge.relation}]--> ({edge.target}){detail_suffix}"
+        )
+        edge_signatures.append((edge.source, edge.relation, edge.target, edge.details))
+
+    assert len(edge_signatures) == len(set(edge_signatures)), "Fixture contains duplicate dependency edges"
+    assert prose_edges == expected_prose
+    assert graph_edges == expected_graph
+    assert len(prose_edges) == len(graph_edges) == len(case.ccdg)
+
+
+def test_parity_contract_is_valid_and_fails_closed():
+    contract_path = ROOT / "data" / "followup_v2" / "context_parity_contract.json"
+    contract = json.loads(contract_path.read_text(encoding="utf-8"))
+
+    assert contract["status"] == "draft_not_frozen"
+    assert contract["model_inference_permitted"] is False
+    assert contract["primary_contrast"] == ["C", "B"]
+    assert contract["base_fields_equal_in_all_conditions"] == [
+        "source_description", "technology", "error_description", "I_base"
+    ]
+    assert contract["context_limit"] == 32768
+    assert contract["generation_reserve"] == 256
+    assert contract["historical_artifacts_immutable"] is True
