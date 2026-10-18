@@ -1,5 +1,32 @@
 # TÜBİTAK 2204-A Proje Yol Haritası — Güncel Kabul Durumu
 
+## Operasyonel güncelleme — 18 Ekim 2026, en son denetim
+
+Bu bölüm, aşağıdaki tarihsel notları silmeden güncel durumu tamamlar.
+
+### Resmî şartname ve başvuru bütünlüğü
+- 2026–2027 çağrı metni ve proje rehberi resmî TÜBİTAK sayfasında yayımlıdır. Şu an görünen son başvuru: **4 Ocak 2027, 17.30 Türkiye saati**. Başvuru TYBS üzerinden yapılır: https://tybs.tubitak.gov.tr/
+- Güncel kural bazlı uygunluk matrisi PR #55 ile ana dala alındı: https://github.com/MahmutVezir/dijitalikiz/blob/main/docs/TUBITAK_2027_RULE_BY_RULE_COMPLIANCE_MATRIX_2026-10-18.md . Doğrulama koşusu 39138496424 başarılıdır. Bu, matris dosyasının doğrulanmasıdır; başvuru sahibinin bütün kuralları karşıladığını kanıtlamaz.
+- Önceki yıl TÜBİTAK'a başvuru ve son başvuru tarihinden önce başka yarışmaya aynı/benzer proje sunma bilgisi hâlâ başvuru sahibi tarafından doğrulanmalıdır. Bu iki bilgi tahmin edilmemeli; netleşmeden başvuruya son onay verilmemelidir.
+- TÜBİTAK'ın Ocak 2026 ÜYZ rehberi: https://tubitak.gov.tr/sites/default/files/2026-01/UYZ_Rehberi_v04_TR.pdf . Proje taslağı/kod/analiz gibi önemli ÜYZ kullanımının online formun özel alanında; araç ve sürüm, kullanılan aşamalar/bölümler, kullanımın niteliği ve kapsamı belirtilerek beyan edilmesi gerekir. Mevcut rapordaki paragraf bu alanın yerine geçmez; final beyanı gerçek kullanım kayıtlarıyla eşleştirilmelidir.
+- Kaynak kodu stili tutarlı ve profesyonel olacak şekilde iyileştirilebilir. Fakat commit/provenance kayıtları veya zorunlu ÜYZ beyanı, katkıyı gizleyip yalnızca insan yazmış izlenimi yaratmak için silinmemeli ya da yanıltıcı biçimde yeniden yazılmamalıdır. Gerçek insan katkısı, araç yardımı ve kontrol adımları ayrıştırılmalıdır.
+
+### V2 bilimsel kalite ilerlemesi
+- PR #53 ile bilgi eşleştirme, kaynak kabulü, kör puanlama/kalibrasyon ve öğrenci savunması kalite kapıları ana dala alındı: https://github.com/MahmutVezir/dijitalikiz/blob/main/docs/V2_QUALITY_GATES_2026-10-18.md . No-inference doğrulaması 39137180429 başarılıdır.
+- PR #54 ile A/B/C temel bağlam eşitliği, B/C kenar listesi sırası/alanları ve parite sözleşmesi için testler ana dala alındı: https://github.com/MahmutVezir/dijitalikiz/commit/4ee1d39d77886c3d980641607b0899f91c60a159 . No-inference doğrulaması 39137689364 başarılıdır.
+- PR #56, vaka kimliği/kaynak URL'si/tarih ve ground-truth alanlarının A/B/C model bağlamlarına sızmasını canary değerlerle test eder. PR taslak/açık durumdadır; doğrulama 39139372063 başarılıdır. Birleştirme/son inceleme durumu ayrıca kontrol edilmelidir.
+- V2 manifestinin durumu hâlâ `status=draft`, `model_inference_permitted=false`; vaka listesinde sıfır kabul edilmiş yeni vaka vardır ve dokuz kapının tümü beklemektedir. Hiçbir yeni inference, training, GPU veya Kaggle çalışması başlatılmadı.
+- Teknik red/green taramasındaki beş geçiş, insan kaynak incelemesi veya vaka kabulü yerine geçmez. TLS 1.3/Ed25519 adayı uygun OpenSSL yolunda hedeflenen hata öncesi başarısızlığı kanıtlayana kadar engelli kalır.
+- Akademik kaynak incelemesi/hakemlik için ön davetler gönderildi; son posta kontrolünde kabul/yanıt görünmüyordu. Kabul teyidi olmadan kör paket gönderilmemeli; hiçbir puan, uzlaşma ya da adjudication yapılmış gibi kaydedilmemelidir.
+
+### Teslim raporu ve öğrenci sahipliği
+- Son doğrulanmış rapor derlemesi 10 sayfa DOCX/PDF'yi görsel kontrolden geçirdi: https://github.com/MahmutVezir/dijitalikiz/actions/runs/38929963765 . Bu önceki kaynak sürümünün derleme kanıtıdır; son içerik onayı ve başvuru tamamlanması değildir.
+- Öğrenci, yöntemi, tüm sonuçları, sınırlılıkları, kaynak delillerini ve ÜYZ kullanımını kendi cümleleriyle açıklayabilmelidir. Herhangi bir iddiayı anlayamıyorsa ezberlemek yerine kaynakla doğrulamalı ve gerekirse düzeltmeli/kaldırmalıdır.
+- İzin/etik/onam gerekliliği, insan puanlama yöntemine göre başvuru sahipleri tarafından önceden değerlendirilmelidir. Gereken belgeler veri toplanmadan önce alınmalı; “izin gerekmez” varsayımıyla ilerlenmemelidir.
+- Mevcut başvuru son onayı, doğru kişisel/okul/danışman bilgileri, ARBİS/TYBS kayıtları, önceki yarışma durumu ve ÜYZ özel beyanı öğrenci/başvuru sahibi tarafından yapılmadan tamamlandı sayılmaz.
+
+---
+
 ## Durum güncellemesi — 18 Ekim 2026
 
 Bu tarihli blok, önceki 9 Ekim yol haritasının yerine geçmez; güncel başvuru/araştırma durumunu netleştirir.
