@@ -127,3 +127,24 @@ TÜBİTAK'a en güçlü ve savunulabilir yol; mevcut raporu tamamlanmış tarihs
 ## Karar
 
 **Deneysel veri üretimi ve veri bütünlüğü aşaması tamamlandı; anlamsal hipotez dondurulmuş ölçüt ile çözümlenemedi.** Proje raporu bu negatif/taban etkisi bulgusunu dürüstçe raporlamalıdır. Resmî başvuru dosyası ancak güncel TÜBİTAK şablonuna aktarım, kişisel/kurumsal alanların doğrulanması ve nihai PDF incelemesi tamamlandığında başvuruya hazır sayılabilir.
+
+
+## 2026-10-18 — Submission-integrity and repository-quality gate
+
+### Goal
+Prepare a complete, student-owned, scientifically defensible 2026–2027 TÜBİTAK 2204-A application, aiming for the Türkiye final without promising an outcome or misrepresenting work.
+
+### Required order before cosmetic repository cleanup
+1. **Eligibility and contest-history stop gate:** obtain the applicant's truthful confirmation of age/school eligibility, prior TÜBİTAK submissions, and any prior/planned submission of the same or similar project to another competition. Do not submit until any disqualifying ambiguity is resolved.
+2. **Finish the actual research, not just the code:** retain historical results unchanged; complete independent source/license/revision checks for new held-out cases; close two-reviewer ground-truth adjudication, scorer calibration, tokenizer/prompt/runtime checks, analysis-code review, and preregistration freeze. No model inference before the manifest explicitly permits it after all gates close.
+3. **Ethics/permissions:** before collecting expert ratings or any human-subject data, determine and document applicable institutional/TÜBİTAK/MEB permission and consent requirements. Never assume permission is unnecessary.
+4. **Student ownership:** the student must independently explain the question, conditions, code, source evidence, statistics, limitations, and conclusions; conduct a mock defense against the real report and show at least one source-backed regression case. Remove claims the student cannot substantiate.
+5. **AI-use transparency:** preserve accurate records of generative-AI support. The final TYBS AI-use disclosure must identify the actual tools/versions and stages/scope used, in accordance with the current TÜBİTAK guide. The existing report draft mentions ChatGPT support for research planning, code/test drafts, automated checks, research documents and report language; this statement must be verified against actual usage and the applicant's understanding, not silently deleted to hide assistance.
+6. **Report and submission freeze:** use the current official 2026–2027 template and the latest official rules; reconcile every in-text citation and reference; rerender and inspect the final PDF; verify title/abstract/keywords/pages and attachments; confirm ARBİS/TYBS fields and downloads; save the final approved application record.
+7. **Only then do human-quality cleanup:** improve naming, formatting, comments, documentation clarity, duplicated boilerplate and unused files where justified by tests and review. Preserve license/copyright notices, source attribution, material provenance, required AI-use disclosure, test results, and historical commit/evidence records. Do not rewrite Git history, falsify authorship, backdate commits, or remove records to mislead a reviewer. Cleanup must not change scientific results or conceal meaningful external/AI contributions.
+
+### Current no-go status
+- V2 protocol remains draft; model inference is disabled; the new case pool is empty and required gates remain pending.
+- Historical primary result remains Standard 0/80 vs CCDG 0/80; it is inconclusive and must not be described as proof of equivalence or no effect.
+- Five Java regression candidates passed the currently run technical gate; the TLS 1.3 candidate remains blocked. Technical test success alone does not establish independent ground-truth validation.
+- The compliance matrix is a checklist, not proof that student-specific eligibility, previous-submission, consent, or TYBS requirements have already been met.
