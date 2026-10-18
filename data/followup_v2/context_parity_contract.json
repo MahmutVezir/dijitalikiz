@@ -1,0 +1,12 @@
+{
+  "status": "draft_not_frozen",
+  "model_inference_permitted": false,
+  "primary_contrast": ["C", "B"],
+  "base_fields_equal_in_all_conditions": ["source_description", "technology", "error_description", "I_base"],
+  "B_representation": "approved_dependency_edges_as_prose",
+  "C_representation": "same_approved_dependency_edges_as_directed_triples",
+  "required_checks": ["identical_base_fact_ids_and_values", "identical_B_C_edge_ids_endpoints_directions_labels_and_details", "no_unapproved_claims", "no_source_test_or_gold_truth_leakage", "actual_tokenizer_and_chat_template_hash_audit", "no_silent_truncation", "report_B_C_token_length_difference"],
+  "context_limit": 32768,
+  "generation_reserve": 256,
+  "historical_artifacts_immutable": true
+}
