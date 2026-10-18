@@ -64,7 +64,7 @@ def _validate_item_ids(rows: Sequence[dict[str, str]], expected_item_ids: Sequen
 def compute_rater_reliability(
     rows: Sequence[dict[str, str]],
     expected_item_ids: Sequence[str],
- ) -> dict[str, object]:
+) -> dict[str, object]:
     """Compute agreement using fixed preregistered minima; never substitutes for human ratings."""
     if not rows:
         raise ValueError("No real paired ratings were supplied.")
