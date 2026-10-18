@@ -1,0 +1,24 @@
+# V2 held-out candidate technical screen — 18 October 2026
+
+**Purpose:** Preserve the technical screening evidence for six new candidate leads. This is not an admission list, independent source adjudication, scorer calibration, or permission to run model inference.
+
+**Canonical CI run:** https://github.com/MahmutVezir/dijitalikiz/actions/runs/39135614105  
+**Screening type:** exact pre-fix/fixed-revision regression-test reproduction only; no LLM inference, training, GPU or Kaggle job.  
+**Candidate admissions into V2:** **zero** as of this note. The V2 protocol manifest remains draft and inference-disabled.
+
+| Candidate | Pre-fix SHA | Fixed SHA | Targeted regression | Technical result | Evidence artifact |
+|---|---|---|---|---|---|
+| Netty #17623 — negative DNS search-domain cache | `de7fa8997db278b83f56b22f89b691be58ae88ba` | `1addbf90c4fd35713c61e5c54ad4d21c14d7df1d` | `DnsNameResolverTest#testNegativelyCachedSearchDomainDoesNotShadowPositiveOne`; `...DoesNotShadowUncachedOne`; baseline control `...testNegativelyCachedBareHostnameStillShortcircuits` | **Red/green passed.** Defect-specific tests failed before and passed after; baseline control was required to pass at both revisions. | [artifact 12139437962](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39135614105/artifacts/12139437962) |
+| Commons Compress #797 — LZ77 back-reference window bound | `4a17b64939b782a5e95c5aecfd583b631cb58522` | `cebee156fe66578b5142b4176e6c408a76d65c0c` | `AbstractLZ77CompressorInputStreamTest#testBackReferenceOffsetLargerThanWindowIsRejected` | **Red/green passed.** | [artifact 12139554127](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39135614105/artifacts/12139554127) |
+| Commons Collections #724 — iterator removal leaves stale index | `3ff49116a265817f7546f72052e3d0478c159e62` | `651a6218910a906dc50415c145d63ba06c07a659` | `IndexedCollectionTest#testIteratorRemoveUpdatesIndex` | **Red/green passed.** | [artifact 12139891101](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39135614105/artifacts/12139891101) |
+| Commons Collections #720 — synchronized collection forEach lock | `d58a5e3a1258877bd94ba79db9f8a5f90892624b` | `6ee9dd78c79f367dd8e3e1655e4664bcec960ad6` | `SynchronizedCollectionTest#testForEachHoldsLock` | **Red/green passed.** | [artifact 12139452931](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39135614105/artifacts/12139452931) |
+| Commons Lang #1795 — mutable TimeZone leaking through formatter/parser cache | `d235f1e997523d7a3d9d1c63e9a1853c2ab728fd` | `117a9ea791b87af1b90413fa8290891ca3106cfd` | `FastDateFormatTest#testTimeZoneArgumentIsCopied`; `FastDateFormatTest#testTimeZoneGetterReturnsCopy`; `FastDateParserTest#testTimeZoneIsCopied` | **Red/green passed.** | [artifact 12139891280](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39135614105/artifacts/12139891280) |
+| Netty #17764 — TLS 1.3 signature-algorithm key selection | `3eaff63caf06a582cc3df72422aa1124734b46c6` | `84c167ea85e0d7f5b40caec6cab859018f9490bd` | `PkiTestingTlsTest#connectWithEd25519`; `#connectWithEd25519AndRsa`; `#connectWithEd25519FailsWithoutCommonSignatureAlgorithm` | **Blocked.** The pre-fix run executed 7 tests with 0 failures, 0 errors and 0 skipped; it did not demonstrate the target regression. The fix targets the OpenSSL-provider path, but this run does not prove that the relevant native path was exercised. Do not call this a pass or a scientific disproof. | [artifact 12138943916](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39135614105/artifacts/12138943916) |
+
+## What remains before any candidate can be admitted
+
+Each candidate still requires: upstream license and provenance review; duplicate/related-defect check against historical and calibration cases; source-level root-cause evidence from pinned revisions; a meaningful cross-component dependency path with evidence for every directed edge; contamination-risk assessment; two independent locked source reviews; and a separate adjudicator's evidence-based decision. The review records must be kept apart from model-facing prompts.
+
+The five passing regression checks establish only that the named test differentiates the pinned revisions for the tested scenario. They do **not** establish that the defect is suitable for the graph-representation research question or that any dependency edge/gold diagnosis is correct. The seven earlier calibration candidates remain permanently excluded from the V2 confirmatory set.
+
+Do not change `data/followup_v2/protocol_manifest.json` to frozen or enable inference merely because this screen passed. Populate the held-out case list only after independent review and adjudication have actually been completed and recorded.
