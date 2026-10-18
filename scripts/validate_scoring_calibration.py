@@ -14,6 +14,8 @@ from jsonschema import Draft202012Validator
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = ROOT / "data" / "calibration" / "manifest.json"
 VALID_LABELS = {"correct", "partially_correct", "incorrect", "unscorable"}
+PROTOCOL_MIN_INITIAL_REVIEW_EXACT_AGREEMENT = 0.80
+PROTOCOL_MIN_INITIAL_REVIEW_COHEN_KAPPA = 0.70
 
 def _normalize_alias_phrase(value: str) -> str:
     """Use the frozen alias matcher's lowercase ASCII-token normalization."""
@@ -521,16 +523,46 @@ def audit_calibration(
         readiness = manifest.get("readiness_policy", {})
         minimum_agreement = readiness.get("minimum_initial_reviewer_exact_agreement")
         minimum_kappa = readiness.get("minimum_initial_reviewer_cohen_kappa")
-        if not isinstance(minimum_agreement, (int, float)) or not 0 <= minimum_agreement <= 1:
+
+        valid_agreement_threshold = (
+            isinstance(minimum_agreement, (int, float))
+            and not isinstance(minimum_agreement, bool)
+            and math.isfinite(minimum_agreement)
+            and 0 <= minimum_agreement <= 1
+        )
+        if not valid_agreement_threshold:
             issues.append("invalid_minimum_initial_reviewer_exact_agreement")
-        elif metrics["initial_review_exact_agreement"] is None or metrics["initial_review_exact_agreement"] < minimum_agreement:
+        elif minimum_agreement < PROTOCOL_MIN_INITIAL_REVIEW_EXACT_AGREEMENT:
+            issues.append(
+                "minimum_initial_reviewer_exact_agreement_below_protocol_floor: "
+                f"{minimum_agreement} < {PROTOCOL_MIN_INITIAL_REVIEW_EXACT_AGREEMENT}"
+            )
+        elif (
+            metrics["initial_review_exact_agreement"] is None
+            or metrics["initial_review_exact_agreement"] < minimum_agreement
+        ):
             issues.append(
                 "initial_reviewer_exact_agreement_below_threshold: "
                 f"{metrics['initial_review_exact_agreement']} < {minimum_agreement}"
             )
-        if not isinstance(minimum_kappa, (int, float)) or not 0 <= minimum_kappa <= 1:
+
+        valid_kappa_threshold = (
+            isinstance(minimum_kappa, (int, float))
+            and not isinstance(minimum_kappa, bool)
+            and math.isfinite(minimum_kappa)
+            and 0 <= minimum_kappa <= 1
+        )
+        if not valid_kappa_threshold:
             issues.append("invalid_minimum_initial_reviewer_cohen_kappa")
-        elif metrics["initial_review_cohen_kappa"] is None or metrics["initial_review_cohen_kappa"] < minimum_kappa:
+        elif minimum_kappa < PROTOCOL_MIN_INITIAL_REVIEW_COHEN_KAPPA:
+            issues.append(
+                "minimum_initial_reviewer_cohen_kappa_below_protocol_floor: "
+                f"{minimum_kappa} < {PROTOCOL_MIN_INITIAL_REVIEW_COHEN_KAPPA}"
+            )
+        elif (
+            metrics["initial_review_cohen_kappa"] is None
+            or metrics["initial_review_cohen_kappa"] < minimum_kappa
+        ):
             issues.append(
                 "initial_reviewer_cohen_kappa_below_threshold: "
                 f"{metrics['initial_review_cohen_kappa']} < {minimum_kappa}"
