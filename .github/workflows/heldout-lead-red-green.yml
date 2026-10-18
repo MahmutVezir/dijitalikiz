@@ -255,7 +255,7 @@ jobs:
           for target in all_targets:
               matches = matches_for(target)
               if not matches:
-                  raise SystemExit(f"BLOCKED: named test did not execute on pre-fix revision: {target}")
+                  raise SystemExit(f"BLOCKED: targeted regression test did not execute on pre-fix revision: {target}")
               if any(node.find("skipped") is not None for _, _, node in matches):
                   raise SystemExit(f"BLOCKED: named test was skipped on pre-fix revision: {target}")
 
