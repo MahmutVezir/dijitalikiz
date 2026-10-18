@@ -22,6 +22,7 @@ The ZIP member counts exclude directory entries. Archive SHA-256 values are comp
 ### `RSC-Bench-pilot-v1.0-stage4-gated.zip`
 
 - Contains the RSC-Bench pilot repository, including experiment code, prompt templates, schemas, source notes, pilot cases, ground-truth labels, and CCDG records.
+- Its README describes an earlier React/Supabase multi-component integration study, and its four real pilot cases cite Supabase issues/discussion. The current follow-up plan in this repository focuses on pinned Java software-defect cases. Treat this ZIP as a legacy historical pilot bundle, not as evidence that any current Java candidate is eligible for calibration or held-out confirmation.
 - Contains four public Supabase technical-source references in the pilot data: Supabase issue #35459, Supabase issue #47835, Supabase discussion #40671, and Supabase Storage issue #1109.
 - Contains 25 cache/compiled files under `__pycache__` or `.pytest_cache`; these are not needed as canonical source evidence and should be excluded from any newly prepared release package.
 - No exact-name license/notice file was found inside the archive.
