@@ -4,7 +4,7 @@
 
 ## Purpose
 
-The V2 preregistration draft requires at least **0.80 exact agreement** and **Cohen's kappa >= 0.70** on a predeclared calibration subset. If exact agreement misses its threshold, kappa is below threshold, or kappa is undefined, the gate remains blocked. Do not relax thresholds after viewing confirmatory outputs.
+The V2 preregistration draft requires at least **0.80 exact agreement** and **Cohen's kappa >= 0.70** on a predeclared calibration subset. If exact agreement misses its threshold, kappa is below threshold, or kappa is undefined, the gate remains blocked. The tool does not accept command-line threshold overrides; the code enforces the preregistered minimums of 0.80 and 0.70. Do not relax thresholds after viewing confirmatory outputs.
 
 The script `scripts/audit_rater_reliability.py` computes these metrics from actual, paired human ratings. It also outputs the complete 4-by-4 contingency table, rater marginals, expected agreement, thresholds and reasons a gate did not pass. It requires exact one-to-one coverage of the preregistered item IDs, rejects duplicate IDs and invalid labels, and does not include answer text or reviewer identity in the aggregate result.
 
