@@ -1,1 +1,6 @@
-[screening-only] Re-run the isolated held-out lead red-green matrix against main commit 71b317aa9232d548d9a8218afc35e8a89332795a. This workflow validates pinned pre-fix failure and fixed-revision pass only; no model inference, no case admission, and no inference authorization. Run date: 2026-10-14.
+[screening-only] Re-run the six Java candidate red-green checks against the current main workflow configuration.
+
+Trigger request date: 2026-10-18
+Base main commit observed when preparing this trigger: 8d65597ae82dab3852bc5c5e1a43747d31528b2d
+Purpose: technical screening only — each named regression test must fail at its pinned pre-fix revision and pass at its pinned fixed revision.
+Hard limits: no model inference, no training, no case admission, no scoring-calibration completion, and no permission to run the v2 confirmatory study. Human source review and separate adjudication remain pending.
