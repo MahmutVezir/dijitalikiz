@@ -21,10 +21,10 @@ jobs:
       - name: Checkout research repository
         uses: actions/checkout@v4
 
-      - name: Set up the bug's recorded Python version
+      - name: Set up available Python 3.8 patch release for smoke test
         uses: actions/setup-python@v5
         with:
-          python-version: "3.8.1"
+          python-version: "3.8.18"
           cache: "pip"
 
       - name: Install test runner
@@ -104,13 +104,14 @@ jobs:
             "buggy_commit": "e21a31162f4c54be693d8ca8260e42393b39abd3",
             "fixed_commit": "56f22f8ffe1c6b2be4d2cf3ad1987fdb66113da2",
             "test": "tests/test_chinese.py::test_chinese",
-            "python": "3.8.1",
+            "python": "3.8.18",
+            "dataset_recorded_python": "3.8.1",
             "llm_inference_performed": false,
             "confirmatory_eligible": false,
             "human_ground_truth_reviewed": false,
             "project_license_reviewed": false,
             "dataset_contamination_reviewed": false,
-            "note": "CI pass is only a reproduction-pair smoke test; it is not case approval."
+            "note": "Runner images do not provide Python 3.8.1 on Ubuntu 24.04; this smoke uses Python 3.8.18 in the same minor line and is not exact-environment reproduction or case approval."
           }
           JSON
 
