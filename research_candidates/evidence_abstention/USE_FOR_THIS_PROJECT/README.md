@@ -38,7 +38,7 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 - **Aşama 2 — veri fizibilitesi:** kaynak-kümesi fizibilitesi tamamlandı (koşullu); BugsInPy upstream'inde 17 projede 501 ham hata klasörü sayıldı. Bu bir kabul edilmiş örneklem sayısı değildir. En az 60 kabul edilmiş vaka / 8 proje doğrulanmadı.
 - **CI vaka smoke:** [PySnooper denemesi](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39460135014) beklenen buggy-fail koşulunu sağlamadı. [tqdm'un ilk denemesi](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39460540758) fixed tarafta başarısız oldu; import yolu düzeltilince [sonraki smoke](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39461858759) buggy-fail/fixed-pass verdi. Runtime ile metadata Python sürümleri eşleşmediği ve vaka incelenmiş olduğu için hiçbir smoke vakası ana örnekleme alınmaz.
 - **Aşama 3 — deney tasarımı:** tamamlandı belge olarak. Faktörler E1/E2/E3 kanıt seviyesi × P0 zorunlu teşhis/P1 seçici kaçınma politikası; her vaka için altı çıktı. Birincil sonuç E3 altındaki kanıtsız kesin teşhis oranı; eşleştirilmiş karşılaştırma exact McNemar testi, RD ve %95 CI. 80 vaka hedefi, en az 60 ve 8 proje doğrulayıcı alt sınırı.
-- **Araştırma kapsamını ayırma:** [REPO_SCOPE_SPLIT.md](../REPO_SCOPE_SPLIT.md) kullanım sınırını tanımlar. [İzin verilen materyaller manifesti](MANIFEST.json) ve [dışlanan tarihsel materyaller manifesti](../DO_NOT_USE_AS_EVIDENCE/MANIFEST.json) makine tarafından okunabilir kapsam kayıtlarıdır. [Dışlama açıklaması](../DO_NOT_USE_AS_EVIDENCE/README.md) eski verilerin yeni projede kullanılmasını yasaklar.
+- **Araştırma kapsamını ayırma:** [REPO_SCOPE_SPLIT.md](REPO_SCOPE_SPLIT.md) kapsam kuralıdır; [USE_FOR_THIS_PROJECT/MANIFEST.json](USE_FOR_THIS_PROJECT/MANIFEST.json) izin verilen materyalleri ve [DO_NOT_USE_AS_EVIDENCE/MANIFEST.json](DO_NOT_USE_AS_EVIDENCE/MANIFEST.json) yasaklanan tarihsel veri/sonuçları makine tarafından okunabilir biçimde listeler.
 - **Model çıkarımı:** kapalı. Henüz LLM inference veya yeni projenin deneysel sonucu yoktur. Vaka-kabul kapıları, lisans, ground truth, kanıt yeterliliği, sızıntı incelemesi ve runtime/prompt/analiz hash'leri kilitlenmeden inference yapılmayacak.
 
 ## Belgeler
@@ -51,7 +51,10 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 - `OUTPUT_SCHEMA.json` — yapılandırılmış çıktı şeması.
 - `ANALYSIS_PLAN_STAGE3.md` — sonuçlardan önce tanımlanmış analiz planı.
 - `EXPERIMENT_MANIFEST_STAGE3.json` — inference kapısı kapalı manifest.
+- `STAGE3_REVIEW_AND_EXIT.md` — Aşama 3 tasarım kapanış denetimi ve kalan inference kapıları.
 - `PROTOCOL_DRAFT.md` — protokol taslağı.
+- `USE_FOR_THIS_PROJECT/` — yeni proje için kullanılabilir dokümantasyonun kopyaları ve izin manifesti.
+- `DO_NOT_USE_AS_EVIDENCE/` — eski DİJİTALİKİZ verileri/sonuçları için dışlama politikası ve manifest.
 - `USE_FOR_THIS_PROJECT/REUSE_RULES.md` — yeniden kullanım kuralları.
 
 Bu çalışma şu anda planlama aşamasındadır. Herhangi bir deney yürütüldüğü, insan puanlamasının tamamlandığı veya sonuç alındığı iddia edilmemektedir.
