@@ -69,16 +69,43 @@ Sadece cevaplama oranı veya yalnızca modelin kendi bildirdiği güven puanı y
 
 Öncelikli kaynaklar: ACL Anthology, arXiv, ACM Digital Library, IEEE Xplore, Springer ve ilgili çalışmaların atıf ağları. Her kayıt için arama tarihi, sorgu, yayın türü, görev, veri, model, kanıt müdahalesi, abstention politikası, değerlendirme birimi, ölçütler ve sınırlılıklar kaydedilmeli. Tam metne erişilemeyen çalışma “tam metin incelendi” olarak işaretlenmemeli.
 
-## 7. Aşama 1 karar kapısı
+## 7. Doğrudan yakın çalışmalar: hedefli taramanın sonuçları
 
-**Şimdiki karar: DEVAM ET — ancak özgünlük iddiası koşullu.**
+Aşağıdaki çalışmalar, genel abstention literatüründen yazılım mühendisliği alanına doğru kapsamı daraltmak amacıyla 20 Ekim 2026 tarihinde hedefli web taramasında bulundu. Kaynak sayfaları ve erişilebilir özetler incelendi; bu, tüm veri tabanlarında yürütülmüş sistematik bir derleme değildir.
 
-Gerekçe: Genel abstention ve kanıt yeterliliği çalışmaları mevcut; fakat mevcut hedefli tarama, gerçek yazılım kök neden teşhisinde bu tam deney tasarımının önceki çalışmalarla aynı olup olmadığını kesinleştirmiyor. Konuyu terk etmek için erken, özgün kabul etmek için de erken.
+| Çalışma | Görev ve yöntem | Bu projeye etkisi |
+|---|---|---|
+| Rathnasuriya & Yang (ICSE 2026 NIER), [When to Answer and When to Defer: A Decision Framework for Reliable Code Predictions](https://conf.researchr.org/details/icse-2026/icse-2026-nier/47/When-to-Answer-and-Defer-A-Decision-Framework-for-Reliable-Code-Predictions) | Kod modelleri için belirsizlik tahmini, kalibrasyon, seçici kaçınma ve belirsiz çıktılarda araçla doğrulamayı bir araya getiren çerçeve. | **En yakın kavramsal uyarılardan biri.** Kod alanında cevaplama/kaçınma ve doğrulama fikrini tek başına yeni diye sunamayız. Ancak odaklanan görev code prediction / sınıflandırma-üretim; bizim aday görevimiz hata teşhisi için sunulan kanıtın yeterliliği ve iddianın kanıtsal desteği. Bu görev farkı ancak tam yöntem karşılaştırmasıyla doğrulanabilir. |
+| Zhou et al. (2026), [Task Abstention for Large Language Models in Code Generation](https://arxiv.org/abs/2605.17029) | Kod üretiminde görevden kaçınma; üretim tutarlılığını çalıştırma sonuçlarıyla ilişkilendiren kalibreli karar kuralı. | Kod üretiminde abstention için dağılımdan bağımsız garanti iddiası olan bir yaklaşım mevcuttur. Proje kod üretimi güvenilirliğini yeniden icat ettiğini iddia edemez. |
+| Sharma & David (2025), [Assessing Correctness in LLM-Based Code Generation via Uncertainty Estimation](https://arxiv.org/abs/2502.11620) | LiveCodeBench üzerinde belirsizlik ölçülerini kod doğruluğuna bağlayıp yüksek belirsizlikte cevap vermemeyi değerlendirir. | Yalnızca belirsizlik tahmini veya yanlış kod yanıtlarını filtrelemek özgün katkı sayılmaz. |
+| Rakasi et al. (2026), [When Uncertainty Isn't Enough: An Empirical Study of Self-Correction in Code Generation](https://arxiv.org/abs/2608.14659) | Kod üretiminde farklı belirsizlik sinyallerini ve belirsizliğe göre kendi kendini düzeltme politikalarını deneysel olarak karşılaştırır; sonuçlar kullanılan sinyale göre değişir. | Belirsizlik sinyalinin varlığı, daha iyi performansın otomatik kanıtı değildir. Biz de “kaçınma artarsa güvenilirlik kesin artar” varsayımı yapmamalıyız. |
+| Xiao et al. (2025), [Large Language Models for Fault Localization: An Empirical Study](https://arxiv.org/abs/2510.20521) | HumanEval-Java ve Defects4J üzerinde ifade düzeyinde hata yerelleştirmesi; model, istem stratejisi, bağlam, doğruluk, tutarlılık ve maliyet değerlendirmesi. | Yazılım hatasını bulma performansı zaten benchmark'larla inceleniyor. Yalnızca LLM'leri arıza yerelleştirmesinde karşılaştırmak yeterli değil. |
+| Wang et al. (2026), [Exploring the potential and limitations of large language models for novice program fault localization](https://www.sciencedirect.com/science/article/pii/S0164121225004005) | Codeflaws, Condefects ve BugT dâhil veri kümeleriyle farklı LLM'lerin acemi programcıların hata yerelleştirmesindeki performansını inceler. | Yayımlanmış hata yerelleştirme çalışmaları ve veri kaynakları mevcut; ayrıca yeni veri kümesi kurmanın gerekçesi açıklanmalı. Mevcut özet, bizim kanıt yeterliliği/abstention protokolümüzü değerlendirdiğini göstermiyor. |
+| Wen et al. (TACL 2025), [Know Your Limits](https://aclanthology.org/2025.tacl-1.26/) | Genel abstention yöntemleri, benchmarklar ve ölçütleri üzerine derleme. | Genel yöntem düzeyinde katkı iddiasını sınırlar. |
+| Zhang & Wu (2026), [Evidence Sufficiency Benchmark](https://www.techscience.com/cmc/v89n1/68467) | RAG'de beş düzeyli kanıt yeterliliği ve cevap/kaçınma kalibrasyonu. | Kontrollü kanıt seviyesi kullanımı tek başına özgün değildir. |
+| Zhai et al. (Findings of ACL 2026), [Abstain-R1](https://aclanthology.org/2026.findings-acl.985/) | Cevaptan kaçınma ve kaçınma sonrası anlamlı açıklama/eksik bilgi belirtmeyi verifiye edilebilir pekiştirmeli öğrenmeyle ele alır. | Kaçınma sonrası gerekli bilgiyi belirtmek de genel düzeyde daha önce ele alınmıştır. |
+| Madhusudhan et al. (COLING 2025), [Do LLMs Know When to NOT Answer?](https://aclanthology.org/2025.coling-main.627/) | Answerable/unanswerable sorular için Abstain-QA ve black-box abstention değerlendirmesi. | Genel cevaplanabilirlik/kaçınma değerlendirmesi mevcut. |
 
-Aşama 2'ye geçmeden önce:
-1. Bug localization / fault localization / debugging ile abstention kesişimindeki doğrudan yakın çalışmaların taranması;
-2. Bu çalışmalar için tam metin karşılaştırma tablosu;
-3. Vaka kaynağı ve gold root cause fizibilitesinin kanıtlanması;
-4. Ana hipotez, birincil ölçüt ve örneklem planının dondurulması gerekir.
+### Araştırma boşluğu hakkındaki güvenilir ifade
 
-**Deney durumu:** Henüz model inference yapılmadı; sonuç veya başarı iddiası yoktur. Bu belge bir ön literatür denetimidir, sistematik derleme değildir.
+Hedefli tarama, şu bileşenlerin **ayrı ayrı** önceden araştırıldığını gösteriyor: (a) genel LLM abstention, (b) kanıt yeterliliği ve cevap/kaçınma kalibrasyonu, (c) kod üretiminde belirsizlik ve abstention, (d) LLM tabanlı yazılım hata yerelleştirmesi.
+
+Bu taramada, **gerçek yazılım kusurlarında kontrollü kanıt yeterliliği seviyelerini; kök neden ground truth doğruluğu ile sunulan kanıta dayalı destek ölçüsünü ayırarak; uygun kaçınma ve yeterli kanıt varken gereksiz kaçınma maliyetiyle birlikte** değerlendiren tam eşleşmeli bir çalışma tespit edilmedi. Ancak bu ifade yalnızca hedefli tarama için geçerlidir. “Böyle bir çalışma yoktur” veya “ilk çalışma” sonucuna varılamaz; ACM/IEEE/Scopus benzeri indekslerde tam atıf ağı ve tam metin taraması yapılmamıştır.
+
+## 8. Aşama 1 sonuç ve karar kapısı
+
+**Durum: TAMAMLANDI — hedefli literatür taraması ve ön özgünlük denetimi.** Bu etiket, sistematik derlemenin tamamlandığı anlamına gelmez.
+
+**Karar: KOŞULLU DEVAM (conditional go).**
+
+Gerekçe:
+1. Konu bilimsel olarak anlamlı; kanıtsız kesin teşhisin maliyetini incelemek yazılım mühendisliği bağlamında ölçülebilir bir sorudur.
+2. Genel abstention, kodda belirsizlik/kaçınma ve hata yerelleştirmesi alanları zaten aktif araştırma konularıdır.
+3. Aday farklılık, yalnızca “kaçınma politikasını denemek” değil; gerçek hata vakalarında kanıt yeterliliğini kontrollü değiştirmek ve **gerçek kök neden doğruluğu ile kanıtsal desteği ayrı ölçerek** hata azaltımı ile yanıt kapsamı arasındaki değiş tokuşu değerlendirmektir.
+4. Bu farkın özgünlüğü henüz kesin değildir; başvuru metninde “ilk” veya “özgünlüğü kanıtlanmış” denmeyecektir.
+
+### Aşama 2'ye geçiş kararı
+
+Aşama 2'de model çalıştırılmayacak. Önce gerçek kusur vakalarının, pre-fix/fixed revizyonların ve yeniden üretilebilir testlerin toplanabilirliği küçük bir veri-fizibilite denetimiyle değerlendirilecek. Ayrıca tam metin/atıf zincirini de içeren daha geniş bir literatür taraması, inference öncesi zorunlu kontrol olarak kalacak.
+
+**Inference durumu:** Kapalı. Sonuç, başarı, etki büyüklüğü veya finalistlik iddiası yoktur. DİJİTALİKİZ'in eski pilot/confirmatory sonuçları bu yeni araştırmaya aktarılmayacaktır.
