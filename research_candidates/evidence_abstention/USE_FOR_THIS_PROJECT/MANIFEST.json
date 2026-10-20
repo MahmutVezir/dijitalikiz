@@ -56,7 +56,12 @@
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/DATA_FEASIBILITY.md",
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/PROTOCOL_DRAFT.md",
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/FEASIBILITY_FORMAT_SAMPLE.csv",
-    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/REUSE_RULES.md"
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/REUSE_RULES.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/STAGE3_EXPERIMENT_DESIGN.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/PROMPT_CONDITIONS.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/OUTPUT_SCHEMA.json",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/ANALYSIS_PLAN_STAGE3.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/EXPERIMENT_MANIFEST_STAGE3.json"
   ],
   "conditional_external_data_source": {
     "name": "BugsInPy",
@@ -95,5 +100,6 @@
     "two-rater rubric and adjudication protocol frozen",
     "model/tokenizer/runtime/prompt/schema/data/analysis hashes frozen",
     "primary endpoint and exclusion rules frozen before first model output"
-  ]
+  ],
+  "phase_3_design_status": "design_documentation_complete_not_preregistered"
 }
