@@ -73,7 +73,7 @@ Her yanıt için ayrı kaydedilecek boyutlar:
 
 İstatistik planı, bağımsız vaka birimini korumalıdır; aynı vakaya ait tekrarlar bağımsız örnek sayılmaz. Güven aralığı, eşleştirilmiş test/bootstrap yöntemi, çoklu karşılaştırma yaklaşımı ve eksik/bozuk çıktılar için kurallar önceden belirlenmelidir.
 
-Örneklem sayısı henüz seçilmemiştir. Önce bağımsız vaka havuzu fizibilitesi ve puanlama maliyeti ölçülür; pilot vakalar doğrulayıcı örneklemden çıkarılır. DİJİTALİKİZ'de kullanılan örneklem sayısı otomatik olarak aktarılmaz.
+Örneklem ve birincil analiz taslağı Aşama 3 belgelerinde belirlenmiştir: hedef 80 bağımsız vaka; doğrulayıcı alt sınır 60 vaka ve en az 8 upstream proje. Ayrıntı için STAGE3_EXPERIMENT_DESIGN.md, ANALYSIS_PLAN_STAGE3.md ve EXPERIMENT_MANIFEST_STAGE3.json geçerlidir. Bu hedefler, vaka kabul kapıları geçilmeden örneklemin hazır olduğu anlamına gelmez.
 
 ## 8. Model ve yürütme kapıları
 
