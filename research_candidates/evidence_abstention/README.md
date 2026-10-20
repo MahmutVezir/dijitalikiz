@@ -1,6 +1,6 @@
 # Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ
 
-**Durum (20 Ekim 2026):** Aşama 1 — hedefli literatür taraması ve ön özgünlük denetimi tamamlandı. Karar: koşullu devam. Bu, sistematik derlemenin tamamlandığı veya özgünlüğün kanıtlandığı anlamına gelmez. Henüz deney sonucu yoktur; model çıkarımı için izin verilmemiştir.
+**Durum (20 Ekim 2026):** Aşama 1 tamamlandı (hedefli literatür / ön özgünlük denetimi); Aşama 2'nin kaynak fizibilitesi tamamlandı. Karar: koşullu devam. BugsInPy, ana aday havuz olarak seçildi (upstream denetiminde 17 projede 501 ham hata kaydı). Vaka düzeyindeki test tekrar üretilebilirliği, lisans uygunluğu ve kontaminasyon denetimi tamamlanmadı; dolayısıyla doğrulanmış deney kümesi henüz hazır değil. Model çıkarımı için izin verilmemiştir.
 
 **Depo kullanımı:** Bu depo, yeni projenin planlama, sürüm kontrolü, doğrulama ve belgelendirme altyapısı olarak kullanılacaktır. Çalışma ayrı bir dalda yürütülür; DİJİTALİKİZ'in tarihsel TÜBİTAK 2204-A deneyleri, sonuçları, manifestleri ve raporu değiştirilmez.
 
@@ -34,9 +34,12 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 
 ## Aşama durumu
 
-- **Aşama 1 — hedefli literatür ve ön özgünlük denetimi:** tamamlandı; karar **koşullu devam**. Genel abstention, kodda belirsizlik/kaçınma ve LLM fault localization üzerine yakın çalışmalar belgelendi. Aday farklılık, kontrollü kanıt yeterliliği altında gerçek kök neden doğruluğu ile kanıtsal desteği ayrı ölçmektir; özgünlük iddiası kesin değildir.
-- **Aşama 2 — veri fizibilitesi:** sıradaki aşama. Model çıkarımı yapılmayacak; önce açık kaynak kusur vakaları, testlerle yeniden üretim ve pre-fix/fixed kanıt zinciri değerlendirilecek.
-- **Model çıkarımı kapısı:** kapalı kalır. Daha geniş tam metin/atıf ağı taraması, sabit protokol, veri sızıntısı kontrolü ve puanlama planı tamamlanmadan inference yok.
+- **Aşama 1 — hedefli literatür ve ön özgünlük denetimi:** tamamlandı; karar koşullu devam. Genel abstention, kodda belirsizlik/kaçınma ve LLM fault localization üzerine yakın çalışmalar belgelendi. Özgünlük kesinleşmedi.
+- **Aşama 2 — veri kaynağı fizibilitesi:** tamamlandı, koşullu geçiş. Upstream BugsInPy deposunda 17 projede 501 ham bug klasörü sayıldı. Örnek metadata yapısında buggy/fixed revizyonları, patch ve hedefli test betikleri bulundu. Bu sayı kabul koşullarından geçen vaka sayısı değildir; testler uçtan uca yürütülmedi.
+- **Operasyonel vaka doğrulama kapısı:** açık. En az 30 bağımsız vaka ve en az 5 upstream proje hedefi, yalnızca test, kök neden, kanıt yeterliliği, lisans ve sızıntı kapıları geçildikten sonra sayılacak.
+- **Sonraki adım:** Docker/CI ortamında biçim örneklerinden farklı birkaç vaka için buggy sürümde test-fail / fixed sürümde test-pass doğrulaması; sonrasında vaka seçimi ve puanlama protokolünü dondurma.
+- **Model çıkarımı kapısı:** kapalı. Sistematik tam metin taraması, veri/test doğrulaması, puanlama ve analiz planı sonuçlar görülmeden tamamlanmadan inference yok.
+
 
 ## Belgeler
 
