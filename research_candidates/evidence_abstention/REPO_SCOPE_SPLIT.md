@@ -10,7 +10,7 @@ Bu GitHub deposu ilk olarak farklı bir çalışma için oluşturuldu: LLM taban
 
 Bu dosya eski dosyaları taşımadan/silmeden **bilimsel bir kapsam sınırı** kurar. Eski deneyin kayıtları korunur. Klasör ve dosya adları aşağıda açıkça sınıflandırılmıştır. Taşıma/silme yapılmamasının nedeni, eski deneyin CI/artefakt ve teslim bağlantılarını kırmamak; ayrım, iki kontrollü dizin ve bu kapsam manifesti üzerinden uygulanır.
 
-**Aşama durumu:** Aşama 1 hedefli literatür denetimi tamamlandı; Aşama 2 kaynak fizibilitesi tamamlandı ancak operasyonel vaka doğrulama geçmedi; Aşama 3 deney tasarımı tamamlandı. CI smoke denemeleri henüz buggy-fail/fixed-pass kapısını geçmedi. Model çıkarımı kapalıdır.
+**Aşama durumu:** Aşama 1 hedefli literatür denetimi tamamlandı; Aşama 2 kaynak fizibilitesi tamamlandı ancak doğrulayıcı örneklem hazır değil; Aşama 3 deney tasarımı tamamlandı. Bir BugsInPy-tqdm smoke testi CI'da buggy-fail/fixed-pass verdi, ancak Python sürümü dataset metadata'sıyla eşleşmedi ve vaka incelemeye maruz kaldığı için ana örneklemden dışlandı. Model çıkarımı kapalıdır.
 
 ## Bölüm A — Bu proje için kullanılabilecekler
 
@@ -34,7 +34,7 @@ Aşağıdaki dosyalar yeni projenin araştırma planı ve karar kayıtlarıdır:
 - Kaynak kodu veya düzeltme yamasını bu depoya topluca kopyalamak yerine yalnızca gereken metadata, atıf, test günlüklerinin özeti ve içerik hash'leri tutulur.
 - `BugsInPy-black-1`, `BugsInPy-tqdm-1`, `BugsInPy-httpie-1`, `BugsInPy-youtube-dl-1` vakaları patch/metadata inceleme örneği olarak açıldı; doğrulayıcı analizden dışlanır.
 - `BugsInPy-PySnooper-1` CI smoke denemesinde buggy revision testten geçtiği için beklenen hata yeniden üretilemedi; ana örneklemden kalıcı dışlanır.
-- `BugsInPy-tqdm-1` CI smoke denemesinde buggy revision başarısız oldu, ancak fixed revision da `TypeError` ile başarısız oldu; dolayısıyla çift doğrulanmadı ve vaka ana örneklemden kalıcı dışlanır.
+- `BugsInPy-tqdm-1` ilk smoke koşusu import/geçiş sorunu nedeniyle başarısız oldu. Kaynak checkout'u açıkça import edecek şekilde düzeltilen sonraki [CI koşusu](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39461858759) buggy-fail/fixed-pass verdi; ancak runtime Python 3.8.18 iken metadata Python 3.6.9 kaydediyor. Üstelik vaka patch/metadata incelemesine maruz kaldığı için ana örneklemden kalıcı dışlanır.
 
 ### A3. Yalnızca yöntem fikri/şablonu olarak incelenebilecek eski dosyalar
 
