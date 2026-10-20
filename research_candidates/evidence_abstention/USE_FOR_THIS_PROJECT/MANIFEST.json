@@ -48,6 +48,10 @@
     {
       "path": "research_candidates/evidence_abstention/FEASIBILITY_FORMAT_SAMPLE.csv",
       "permission": "metadata_schema_example_only_not_confirmatory_cases"
+    },
+    {
+      "path": "research_candidates/evidence-abstention/STAGE3_REVIEW_AND_EXIT.md",
+      "permission": "stage3_design_closure_review_not_inference_authorization"
     }
   ],
   "mirrored_reference_docs": [
@@ -61,7 +65,8 @@
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/PROMPT_CONDITIONS.md",
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/OUTPUT_SCHEMA.json",
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/ANALYSIS_PLAN_STAGE3.md",
-    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/EXPERIMENT_MANIFEST_STAGE3.json"
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/EXPERIMENT_MANIFEST_STAGE3.json",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/STAGE3_REVIEW_AND_EXIT.md"
   ],
   "conditional_external_data_source": {
     "name": "BugsInPy",
