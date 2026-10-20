@@ -55,12 +55,10 @@
     }
   ],
   "mirrored_reference_docs": [
-    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/README.md",
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/LITERATURE_REVIEW.md",
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/DATA_FEASIBILITY.md",
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/PROTOCOL_DRAFT.md",
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/FEASIBILITY_FORMAT_SAMPLE.csv",
-    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/REUSE_RULES.md",
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/STAGE3_EXPERIMENT_DESIGN.md",
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/PROMPT_CONDITIONS.md",
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/OUTPUT_SCHEMA.json",
@@ -106,5 +104,21 @@
     "model/tokenizer/runtime/prompt/schema/data/analysis hashes frozen",
     "primary endpoint and exclusion rules frozen before first model output"
   ],
-  "phase_3_design_status": "design_documentation_complete_not_preregistered"
+  "phase_3_design_status": "design_documentation_complete_not_preregistered",
+  "partition_index": "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/README.md",
+  "partition_policy": "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/REUSE_RULES.md",
+  "partition_documents": [
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/README.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/REUSE_RULES.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/LITERATURE_REVIEW.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/DATA_FEASIBILITY.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/PROTOCOL_DRAFT.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/FEASIBILITY_FORMAT_SAMPLE.csv",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/STAGE3_EXPERIMENT_DESIGN.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/PROMPT_CONDITIONS.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/OUTPUT_SCHEMA.json",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/ANALYSIS_PLAN_STAGE3.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/EXPERIMENT_MANIFEST_STAGE3.json",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/STAGE3_REVIEW_AND_EXIT.md"
+  ]
 }
