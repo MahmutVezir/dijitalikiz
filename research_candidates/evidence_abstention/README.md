@@ -51,7 +51,10 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 - `OUTPUT_SCHEMA.json` — yapılandırılmış çıktı şeması.
 - `ANALYSIS_PLAN_STAGE3.md` — sonuçlardan önce tanımlanmış analiz planı.
 - `EXPERIMENT_MANIFEST_STAGE3.json` — inference kapısı kapalı manifest.
+- `STAGE3_REVIEW_AND_EXIT.md` — Aşama 3 tasarım kapanış denetimi ve kalan inference kapıları.
 - `PROTOCOL_DRAFT.md` — protokol taslağı.
+- `USE_FOR_THIS_PROJECT/` — yeni proje için kullanılabilir dokümantasyonun kopyaları ve izin manifesti.
+- `DO_NOT_USE_AS_EVIDENCE/` — eski DİJİTALİKİZ verileri/sonuçları için dışlama politikası ve manifest.
 - `USE_FOR_THIS_PROJECT/REUSE_RULES.md` — yeniden kullanım kuralları.
 
 Bu çalışma şu anda planlama aşamasındadır. Herhangi bir deney yürütüldüğü, insan puanlamasının tamamlandığı veya sonuç alındığı iddia edilmemektedir.
