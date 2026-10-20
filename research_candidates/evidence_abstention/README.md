@@ -1,6 +1,6 @@
 # Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ
 
-**Durum:** Yeni araştırma projesi olarak kabul edildi; literatür ve protokol geliştirme aşamasında. Henüz deney sonucu yoktur; model çıkarımı için izin verilmemiştir.
+**Durum (20 Ekim 2026):** Aşama 1 — hedefli literatür taraması ve ön özgünlük denetimi tamamlandı. Karar: koşullu devam. Bu, sistematik derlemenin tamamlandığı veya özgünlüğün kanıtlandığı anlamına gelmez. Henüz deney sonucu yoktur; model çıkarımı için izin verilmemiştir.
 
 **Depo kullanımı:** Bu depo, yeni projenin planlama, sürüm kontrolü, doğrulama ve belgelendirme altyapısı olarak kullanılacaktır. Çalışma ayrı bir dalda yürütülür; DİJİTALİKİZ'in tarihsel TÜBİTAK 2204-A deneyleri, sonuçları, manifestleri ve raporu değiştirilmez.
 
@@ -32,9 +32,15 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 4. Sonuçlar ne olursa olsun değiştirilmeden raporlanır; sonuçlara bakarak hipotez veya birincil ölçüt değiştirilmez.
 5. Bu proje, DİJİTALİKİZ'in önceki sonuçlarını yeniden etiketleyerek veya yeni proje sonucuymuş gibi kullanarak ilerlemeyecektir.
 
+## Aşama durumu
+
+- **Aşama 1 — hedefli literatür ve ön özgünlük denetimi:** tamamlandı; karar **koşullu devam**. Genel abstention, kodda belirsizlik/kaçınma ve LLM fault localization üzerine yakın çalışmalar belgelendi. Aday farklılık, kontrollü kanıt yeterliliği altında gerçek kök neden doğruluğu ile kanıtsal desteği ayrı ölçmektir; özgünlük iddiası kesin değildir.
+- **Aşama 2 — veri fizibilitesi:** sıradaki aşama. Model çıkarımı yapılmayacak; önce açık kaynak kusur vakaları, testlerle yeniden üretim ve pre-fix/fixed kanıt zinciri değerlendirilecek.
+- **Model çıkarımı kapısı:** kapalı kalır. Daha geniş tam metin/atıf ağı taraması, sabit protokol, veri sızıntısı kontrolü ve puanlama planı tamamlanmadan inference yok.
+
 ## Belgeler
 
-- `LITERATURE_REVIEW.md` — ilk literatür taraması ve özgünlük sınırları.
+- `LITERATURE_REVIEW.md` — hedefli literatür taraması, yakın çalışmalar ve aşama 1 kararı.
 - `PROTOCOL_DRAFT.md` — araştırma soruları, aday deney tasarımı, veri ve analiz planı.
 
 Bu çalışma şu anda planlama aşamasındadır. Herhangi bir deney yürütüldüğü, insan puanlamasının tamamlandığı veya sonuç alındığı iddia edilmemektedir.
