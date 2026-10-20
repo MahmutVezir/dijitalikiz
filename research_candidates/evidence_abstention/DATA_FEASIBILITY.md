@@ -77,15 +77,16 @@ Aşama 3 tasarımı, ana araştırma için önceki fizibilite eşiğinden daha k
 
 ## 6. CI smoke kontrolü ve tamamlanmayan doğrulama
 
-CI üzerinde iki adayın test çifti smoke olarak denendi; hiçbiri vaka kabul kapısını geçmedi:
-- **PySnooper-1:** Python 3.8.18 kurulumu sonrasında sözde buggy commit hedef regresyon testini geçti. Bu, beklenen buggy-fail/fixed-pass çiftinin sağlanmadığını gösterir; aday reddedildi.
-- **tqdm-1:** buggy sürümde test beklenen şekilde başarısız oldu; ancak fixed sürümde aynı test `TypeError: 'int' object is not subscriptable` ile başarısız oldu. Ayrıca runtime Python 3.8.18 iken metadata Python 3.6.9 kaydediyor. Bu nedenle aday kabul edilmedi; sabitlenmiş test/ortam eşleşmesi yeniden incelenmeden tekrar denenmiş sayılmaz.
+CI üzerinde iki ayrı aday denendi:
+- **PySnooper-1:** Python 3.8.18 kurulumu sonrasında sözde buggy commit hedef regresyon testini geçti. Beklenen buggy-fail/fixed-pass çifti sağlanmadı; aday reddedildi.
+- **tqdm-1:** ilk denemede fixed tarafı test dosyası geçişinden dolayı başarısız oldu. Hata kaydı, yanlış kaynak dosyasının yüklenmesi olasılığını gösterdi. İş akışına repo checkout'undan kaynak import eden açık `PYTHONPATH` eklendi. Sonraki CI çalışmasında buggy revision'da hedef test başarısız, fixed revision'da aynı test başarılı oldu: [başarılı smoke run](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39461858759). Bu yalnızca bir teknik smoke doğrulamasıdır; kaynak metadata Python 3.6.9 kaydederken CI Python 3.8.18 kullandı. Bu sebeple **tam sürüm ortamında yeniden üretim doğrulanmadı** ve vaka, önceki metadata/patch incelemesi nedeniyle doğrulayıcı örneklemden kalıcı olarak dışlanır.
 
-İlk denemelerde Python 3.8.1, Ubuntu 24.04 runner'ında bulunmadığından setup aşamasında başarısızlık yaşandı; bu da hata yeniden üretimi sayılmaz. Çalıştırma kayıtları:
+İlk denemelerde Python 3.8.1, Ubuntu 24.04 runner'ında bulunmadığından setup aşamasında başarısızlık yaşandı; bu da hata yeniden üretimi sayılmaz. İlgili kayıtlar:
 - https://github.com/MahmutVezir/dijitalikiz/actions/runs/39460135014
 - https://github.com/MahmutVezir/dijitalikiz/actions/runs/39460540758
+- https://github.com/MahmutVezir/dijitalikiz/actions/runs/39461858759
 
-Bu CI sonuçları, BugsInPy kaynağının varlığını değil, bu iki örneğin henüz bu çalışmanın doğrulayıcı vaka şartlarını sağlamadığını gösterir. Her aday için doğru test-revision eşleşmesi, buggy-fail/fixed-pass, exact runtime, lisans ve ground-truth/sızıntı kapısı gerekir.
+Sonuç: **bir vaka çifti smoke koşullarında çalıştı; doğrulayıcı deney için kabul edilmiş vaka sayısı hâlâ sıfır olarak kaydedilir.** En az 60 vaka/8 proje için her vaka özelinde doğru buggy/fixed revizyon, kayıtlı ortam sürümü, lisans, gold root cause, kanıt seviyeleri ve sızıntı incelemesi gerekir.
 
 ## 7. Aşama 2 nihai kararı
 
