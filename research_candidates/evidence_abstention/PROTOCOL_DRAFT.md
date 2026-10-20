@@ -125,3 +125,15 @@ Hedef, en az 40 kabul edilmiş bağımsız hata; asgari uygulanabilirlik eşiği
 Dört kayıt üzerinde yalnızca metadata/format kontrolü yapıldı: BugsInPy black-1, tqdm-1, httpie-1 ve youtube-dl-1. Patch dosyalarına bakıldığı için bu dört vaka doğrulayıcı deneyden kalıcı olarak dışlanır. Hiçbirine runtime testi uygulanmadı. Bu araç ortamında Docker bulunmadığından ve kaynak kayıtlar eski Python sürümleri istediğinden buggy/fixed test çifti burada yürütülemedi.
 
 **Aşama 2 kararı:** Kaynak-kümesi fizibilitesi koşullu olarak geçti; doğrulanmış deney veri kümesi henüz hazır değil. Vaka düzeyindeki tekrarlanabilirlik, lisans ve sızıntı kapıları kapanana kadar model çıkarımı yasaktır.
+
+
+## 13. Aşama 3 — deney tasarımı bağlantıları ve kilit
+
+Aşama 3 tasarımı şu yeni belgelerde yer alır:
+- `STAGE3_EXPERIMENT_DESIGN.md` — E1/E2/E3 × P0/P1 eşleştirilmiş deney tasarımı.
+- `PROMPT_CONDITIONS.md` — politika dışındaki prompt öğelerini sabit tutan P0/P1 istemleri.
+- `OUTPUT_SCHEMA.json` — ham cevap/kaçınma çıktısı için JSON sözleşmesi.
+- `ANALYSIS_PLAN_STAGE3.md` — birincil sonlanım, exact McNemar/RD/CI ve örneklem duyarlılığı.
+- `EXPERIMENT_MANIFEST_STAGE3.json` — hedef 80; en az 60 doğrulanmış vaka, en az 8 proje; `case_ids=[]` ve `inference_allowed=false`.
+
+Aşama 3, **tasarım belgelendirmesi olarak tamamlandı**; bu, ön kayıt veya model çalıştırma izni değildir. BugsInPy-tqdm-1 smoke denemesi Python 3.8.18 ile buggy-fail/fixed-pass verdi fakat veri metadata'sı Python 3.6.9 kaydetti ve vaka ön incelemeye maruz kaldı; bu nedenle ana örnekleme dahil edilmez. Doğrulayıcı veri kümesi onaylanana, E1/E2/E3 paketleri ve puanlama kuralları hash ile dondurulana kadar LLM inference kapalıdır. Repo ayrımı için `REPO_SCOPE_SPLIT.md` ve iki klasördeki `MANIFEST.json` dosyaları yetkilidir.
