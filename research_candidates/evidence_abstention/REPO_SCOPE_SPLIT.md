@@ -8,7 +8,7 @@
 
 Bu GitHub deposu ilk olarak farklı bir çalışma için oluşturuldu: LLM tabanlı çapraz-bileşen hata teşhisi ve TÜBİTAK 2204-A raporlaması. Yeni çalışma farklı bir araştırma sorusuna sahip. Aynı depoyu teknik ve belgelendirme altyapısı olarak kullanabiliriz; ancak eski deneylerin verisini, model çıktılarını, metriklerini ve sonuçlarını yeni projenin kanıtı gibi kullanamayız.
 
-Bu dosya eski dosyaları taşımadan/silmeden **bilimsel bir kapsam sınırı** kurar. Eski deneyin kayıtları korunur. Klasör ve dosya adları aşağıda açıkça sınıflandırılmıştır. Taşıma/silme yapılmamasının nedeni, eski deneyin CI/artefakt ve teslim bağlantılarını kırmamak; ayrım, iki kontrollü dizin ve bu kapsam manifesti üzerinden uygulanır.
+Bu dosya ve iki JSON manifesti, eski dosyaları taşımadan/silmeden **bilimsel bir kapsam sınırı** kurar. Eski deneyin kayıtları korunur. Klasör ve dosya adları aşağıda açıkça sınıflandırılmıştır. Taşıma/silme yapılmamasının nedeni, eski deneyin CI/artefakt ve teslim bağlantılarını kırmamak; ayrım, iki kontrollü dizin ve bu kapsam manifesti üzerinden uygulanır.
 
 **Aşama durumu:** Aşama 1 hedefli literatür denetimi tamamlandı; Aşama 2 kaynak fizibilitesi tamamlandı ancak doğrulayıcı örneklem hazır değil; Aşama 3 deney tasarımı tamamlandı. Bir BugsInPy-tqdm smoke testi CI'da buggy-fail/fixed-pass verdi, ancak Python sürümü dataset metadata'sıyla eşleşmedi ve vaka incelemeye maruz kaldığı için ana örneklemden dışlandı. Model çıkarımı kapalıdır.
 
@@ -24,7 +24,7 @@ Aşağıdaki dosyalar yeni projenin araştırma planı ve karar kayıtlarıdır:
 - `research_candidates/evidence_abstention/FEASIBILITY_FORMAT_SAMPLE.csv` — sadece metadata şeması/format örneği. CSV'deki dört BugsInPy örneği doğrulayıcı veri kümesine alınamaz.
 - Bu dizine eklenen `REPO_SCOPE_SPLIT.md`, `STAGE3_EXPERIMENT_DESIGN.md`, `PROMPT_CONDITIONS.md`, `OUTPUT_SCHEMA.json`, `ANALYSIS_PLAN_STAGE3.md` ve `EXPERIMENT_MANIFEST_STAGE3.json`.
 
-`USE_FOR_THIS_PROJECT/` dizini bu belgelerin erişimi kolaylaştırılmış kopyalarını ve yeniden kullanım politikasını içerir. Çelişki olursa doğrudan üst dizindeki tarihli, yetkili doküman dikkate alınır.
+`USE_FOR_THIS_PROJECT/` dizini yeni araştırmaya ait belgelerin erişimi kolaylaştırılmış kopyalarını, yeniden kullanım politikasını ve [MANIFEST.json](USE_FOR_THIS_PROJECT/MANIFEST.json) izin kaydını içerir. `DO_NOT_USE_AS_EVIDENCE/` ise dışlanan tarihsel materyallerin [MANIFEST.json](DO_NOT_USE_AS_EVIDENCE/MANIFEST.json) kaydını içerir. Çelişki olursa doğrudan üst dizindeki tarihli, yetkili doküman dikkate alınır.
 
 ### A2. Yeni, bağımsız hata vakaları için kaynak
 
