@@ -107,3 +107,21 @@ Yeni proje bu depoda ayrı dalda yürütülür. DİJİTALİKİZ'in ana dalı ve 
 - Zhou et al. (2026), *Task Abstention for Large Language Models in Code Generation*. https://arxiv.org/abs/2605.17029
 - Sharma & David (2025), *Assessing Correctness in LLM-Based Code Generation via Uncertainty Estimation*. https://arxiv.org/abs/2502.11620
 - Torun et al. (2026), *Evaluation of LLM-Based Software Engineering Tools*. https://arxiv.org/abs/2604.24621
+
+## 12. Aşama 2 — veri kaynağı fizibilitesi ve vaka kabul kapısı
+
+20 Ekim 2026 tarihli veri-kaynağı denetimi, birincil aday olarak BugsInPy'yi seçti. Upstream master ref'i 11c5f1eea954a42132cfd06bf257766a7963e0fd sabitlenmişken 17 proje altında 501 ham hata klasörü sayıldı. Bu ham sayı, deney kriterlerini geçen vaka sayısı değildir. Denetimin özeti DATA_FEASIBILITY.md; format örnekleri FEASIBILITY_FORMAT_SAMPLE.csv dosyasındadır.
+
+### Kaynak kararı
+- **Birincil aday:** BugsInPy (Python; 17 proje; 501 ham hata klasörü).
+- **Yedek:** Defects4J (Java; 854 etkin, 10 kullanımdan kaldırılmış hata kaydı bildiriliyor; ortam sürümü ve zaman dilimi dikkat gerektirir).
+- **Birincil kaynak olarak kullanılmayacak:** SWE-bench Verified; issue-to-patch görevine odaklıdır ve 2026 tarihli denetimde kontaminasyon/test kalitesi riskleri bildirilmiştir.
+
+### Vaka kabul kapısı
+Her vaka için buggy ve fixed commit'leri, hedefli test, kaynak proje lisansı, kök neden açıklaması, kanıt seviyeleri ve veri sızıntısı kontrolü kayıt altına alınmadan örnek havuzuna kabul yapılmaz. Test, izole ortamda buggy sürümde beklenen fail sonucunu ve fixed sürümde pass sonucunu göstermelidir. İki revizyonda farklı, ilgisiz çevresel hata varsa vaka kabul edilmez. E1/E2/E3 kanıt paketleri model çıktıları görülmeden hazırlanır ve bağımsız biçimde incelenir.
+
+Hedef, en az 40 kabul edilmiş bağımsız hata; asgari uygulanabilirlik eşiği ise en az 30 vaka ve en az 5 upstream projedir. Bu, istatistiksel güç garantisi değildir. Eşik karşılanmazsa sonuçlar görüldükten sonra kabul kuralları gevşetilmez.
+
+Dört kayıt üzerinde yalnızca metadata/format kontrolü yapıldı: BugsInPy black-1, tqdm-1, httpie-1 ve youtube-dl-1. Patch dosyalarına bakıldığı için bu dört vaka doğrulayıcı deneyden kalıcı olarak dışlanır. Hiçbirine runtime testi uygulanmadı. Bu araç ortamında Docker bulunmadığından ve kaynak kayıtlar eski Python sürümleri istediğinden buggy/fixed test çifti burada yürütülemedi.
+
+**Aşama 2 kararı:** Kaynak-kümesi fizibilitesi koşullu olarak geçti; doğrulanmış deney veri kümesi henüz hazır değil. Vaka düzeyindeki tekrarlanabilirlik, lisans ve sızıntı kapıları kapanana kadar model çıkarımı yasaktır.
