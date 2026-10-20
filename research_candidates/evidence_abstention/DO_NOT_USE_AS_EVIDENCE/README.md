@@ -17,3 +17,8 @@ Bu klasör kasıtlı olarak bir **dışlama politikası** içerir; eski araştı
 Bu öğeler farklı bir araştırma sorusu, eski vaka havuzları, geçmişte incelenmiş/kalibrasyonda kullanılmış kayıtlar ve farklı puanlama varsayımları içerir. Bunları yeni projeye aktarmak vaka bağımsızlığı, veri sızıntısı ve bilimsel izlenebilirlik sorunları doğurabilir.
 
 Bu dışlama, geçmiş deneyin değersiz olduğu veya dosyaların depodan silineceği anlamına gelmez. Sadece yeni çalışmanın kanıtı olarak kullanılamayacakları anlamına gelir. Model çıkarımı, bağımsız yeni vaka listesi ve doğrulama kapıları kapanana kadar kapalıdır.
+
+
+## Machine-readable register
+
+The same exclusion rules are recorded in [MANIFEST.json](MANIFEST.json). It lists old data paths, old result/report paths, inspected feasibility examples, and the reasons historical files remain at their original paths.
