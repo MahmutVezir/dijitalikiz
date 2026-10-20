@@ -1,0 +1,99 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "partition": "USE_FOR_THIS_PROJECT",
+  "manifest_version": "1.0",
+  "date": "2026-10-20",
+  "purpose": "Makine tarafından okunabilir kullanım sınırı. Dosyaları kaynak konumlarından taşımak veya geçmişi değiştirmek yerine kullanım izni/sınırı tanımlar.",
+  "authoritative_project_documents": [
+    {
+      "path": "research_candidates/evidence_abstention/README.md",
+      "permission": "use_for_project_status"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/LITERATURE_REVIEW.md",
+      "permission": "use_as_targeted_literature_note_not_systematic_review"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/DATA_FEASIBILITY.md",
+      "permission": "use_as_source_feasibility_record_only"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/PROTOCOL_DRAFT.md",
+      "permission": "working_protocol_not_preregistration"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/REPO_SCOPE_SPLIT.md",
+      "permission": "authoritative_scope_boundary"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/STAGE3_EXPERIMENT_DESIGN.md",
+      "permission": "design_document_not_executed_experiment"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/PROMPT_CONDITIONS.md",
+      "permission": "draft_prompt_conditions_not_frozen_for_inference"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/OUTPUT_SCHEMA.json",
+      "permission": "draft_output_schema"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/ANALYSIS_PLAN_STAGE3.md",
+      "permission": "pre-result_analysis_plan_draft"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/EXPERIMENT_MANIFEST_STAGE3.json",
+      "permission": "fail_closed_manifest_inference_not_allowed"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/FEASIBILITY_FORMAT_SAMPLE.csv",
+      "permission": "metadata_schema_example_only_not_confirmatory_cases"
+    }
+  ],
+  "mirrored_reference_docs": [
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/README.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/LITERATURE_REVIEW.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/DATA_FEASIBILITY.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/PROTOCOL_DRAFT.md",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/FEASIBILITY_FORMAT_SAMPLE.csv",
+    "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/REUSE_RULES.md"
+  ],
+  "conditional_external_data_source": {
+    "name": "BugsInPy",
+    "repository": "https://github.com/soarsmu/BugsInPy",
+    "pinned_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+    "raw_bug_directory_count": 501,
+    "raw_project_count": 17,
+    "accepted_confirmatory_cases_currently": 0,
+    "eligibility": "New unseen cases only, after project-license review, correct buggy-fail/fixed-pass in recorded environment, independent root-cause adjudication, E1/E2/E3 evidence sufficiency review, leakage review and content hashes."
+  },
+  "permanently_excluded_feasibility_examples": [
+    "BugsInPy-black-1",
+    "BugsInPy-tqdm-1",
+    "BugsInPy-httpie-1",
+    "BugsInPy-youtube-dl-1",
+    "BugsInPy-PySnooper-1"
+  ],
+  "methods_only_not_direct_reuse": [
+    "docs/ANALYSIS_PLAN.md",
+    "docs/SCORING_RUBRIC_CALIBRATION_PROTOCOL.md",
+    "docs/SEMANTIC_SCORING_REVIEW_PROTOCOL.md",
+    "docs/CONTAMINATION_AUDIT.md",
+    "docs/CANDIDATE_SOURCE_AUDIT_2026-10-10.md",
+    "docs/DATA_COLLECTION_PROTOCOL.md",
+    "docs/POWER_PLANNING.md",
+    "schemas/**",
+    "tests/**",
+    "scripts/**",
+    "dijitalikiz/**"
+  ],
+  "model_inference_allowed": false,
+  "pre_inference_gates": [
+    "at least 60 independent accepted cases and at least 8 upstream projects; target 80 cases",
+    "all included cases have verified buggy-fail/fixed-pass logs in documented environments",
+    "licenses, root-cause ground truth, E1/E2/E3 sufficiency and leakage reviews completed",
+    "two-rater rubric and adjudication protocol frozen",
+    "model/tokenizer/runtime/prompt/schema/data/analysis hashes frozen",
+    "primary endpoint and exclusion rules frozen before first model output"
+  ]
+}
