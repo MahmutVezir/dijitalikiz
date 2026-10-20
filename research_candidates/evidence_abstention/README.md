@@ -1,6 +1,6 @@
 # Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ
 
-**Durum (20 Ekim 2026):** Aşama 1 tamamlandı (hedefli literatür / ön özgünlük denetimi); Aşama 2'nin kaynak fizibilitesi tamamlandı. Karar: koşullu devam. BugsInPy, ana aday havuz olarak seçildi (upstream denetiminde 17 projede 501 ham hata kaydı). Vaka düzeyindeki test tekrar üretilebilirliği, lisans uygunluğu ve kontaminasyon denetimi tamamlanmadı; dolayısıyla doğrulanmış deney kümesi henüz hazır değil. Model çıkarımı için izin verilmemiştir.
+**Durum (20 Ekim 2026):** Aşama 1 — hedefli literatür ve ön özgünlük denetimi tamamlandı. Aşama 2 — kaynak fizibilitesi tamamlandı (koşullu); BugsInPy upstream'inde 17 projede 501 ham hata klasörü sayıldı, fakat doğrulanmış örneklem hazır değil. Aşama 3 — eşleştirilmiş deney tasarımı, iki prompt koşulu, JSON çıktı şeması ve analiz planı belgelendi. CI smoke denemeleri henüz buggy-fail/fixed-pass kapısını geçmedi. Karar: tasarım çalışması tamamlandı; uygulamaya/inference'a geçiş izni yok.
 
 **Depo kullanımı:** Bu depo, yeni projenin planlama, sürüm kontrolü, doğrulama ve belgelendirme altyapısı olarak kullanılacaktır. Çalışma ayrı bir dalda yürütülür; DİJİTALİKİZ'in tarihsel TÜBİTAK 2204-A deneyleri, sonuçları, manifestleri ve raporu değiştirilmez.
 
@@ -34,16 +34,24 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 
 ## Aşama durumu
 
-- **Aşama 1 — hedefli literatür ve ön özgünlük denetimi:** tamamlandı; karar koşullu devam. Genel abstention, kodda belirsizlik/kaçınma ve LLM fault localization üzerine yakın çalışmalar belgelendi. Özgünlük kesinleşmedi.
-- **Aşama 2 — veri kaynağı fizibilitesi:** tamamlandı, koşullu geçiş. Upstream BugsInPy deposunda 17 projede 501 ham bug klasörü sayıldı. Örnek metadata yapısında buggy/fixed revizyonları, patch ve hedefli test betikleri bulundu. Bu sayı kabul koşullarından geçen vaka sayısı değildir; testler uçtan uca yürütülmedi.
-- **Operasyonel vaka doğrulama kapısı:** açık. En az 30 bağımsız vaka ve en az 5 upstream proje hedefi, yalnızca test, kök neden, kanıt yeterliliği, lisans ve sızıntı kapıları geçildikten sonra sayılacak.
-- **Sonraki adım:** Docker/CI ortamında biçim örneklerinden farklı birkaç vaka için buggy sürümde test-fail / fixed sürümde test-pass doğrulaması; sonrasında vaka seçimi ve puanlama protokolünü dondurma.
-- **Model çıkarımı kapısı:** kapalı. Sistematik tam metin taraması, veri/test doğrulaması, puanlama ve analiz planı sonuçlar görülmeden tamamlanmadan inference yok.
-
+- **Aşama 1 — literatür ve özgünlük:** hedefli ön tarama tamamlandı. Genel abstention ve kod alanında belirsizlik yönetimi zaten araştırılıyor; bu nedenle özgünlük kesin değil. Tam sistematik derleme yapılmış gibi sunulmayacak.
+- **Aşama 2 — veri fizibilitesi:** kaynak-kümesi fizibilitesi tamamlandı (koşullu); BugsInPy upstream'inde 17 projede 501 ham hata klasörü sayıldı. Bu bir kabul edilmiş örneklem sayısı değildir. En az 60 kabul edilmiş vaka / 8 proje doğrulanmadı.
+- **CI vaka smoke:** [PySnooper denemesi](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39460135014) buggy commit'te beklenen fail koşulunu sağlamadı. [tqdm denemesi](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39460540758) buggy tarafta beklenen hatayı gösterdi ancak fixed tarafta da başarısız oldu. Hiçbiri kabul edilmiş vaka değildir.
+- **Aşama 3 — deney tasarımı:** tamamlandı belge olarak. Faktörler E1/E2/E3 kanıt seviyesi × P0 zorunlu teşhis/P1 seçici kaçınma politikası; her vaka için altı çıktı. Birincil sonuç E3 altındaki kanıtsız kesin teşhis oranı; eşleştirilmiş karşılaştırma exact McNemar testi, RD ve %95 CI. 80 vaka hedefi, en az 60 ve 8 proje doğrulayıcı alt sınırı.
+- **Araştırma kapsamını ayırma:** [REPO_SCOPE_SPLIT.md](REPO_SCOPE_SPLIT.md) kullanılabilir, yalnızca yöntemsel örnek alınabilir ve bilimsel olarak dışlanan dosya/dizinleri tanımlar. [DO_NOT_USE_AS_EVIDENCE/README.md](DO_NOT_USE_AS_EVIDENCE/README.md) tarihsel veri ve sonuçların yeni çalışmada kullanılmasını yasaklar.
+- **Model çıkarımı:** kapalı. Henüz LLM inference veya yeni projenin deneysel sonucu yoktur. Vaka-kabul kapıları, lisans, ground truth, kanıt yeterliliği, sızıntı incelemesi ve runtime/prompt/analiz hash'leri kilitlenmeden inference yapılmayacak.
 
 ## Belgeler
 
-- `LITERATURE_REVIEW.md` — hedefli literatür taraması, yakın çalışmalar ve aşama 1 kararı.
-- `PROTOCOL_DRAFT.md` — araştırma soruları, aday deney tasarımı, veri ve analiz planı.
+- `REPO_SCOPE_SPLIT.md` — repo kullanım kapsamı.
+- `LITERATURE_REVIEW.md` — hedefli literatür taraması ve özgünlük sınırı.
+- `DATA_FEASIBILITY.md` — kaynak-kümesi denetimi ve CI başarısızlıkları.
+- `STAGE3_EXPERIMENT_DESIGN.md` — deney tasarımı.
+- `PROMPT_CONDITIONS.md` — eşleştirilmiş prompt koşulları.
+- `OUTPUT_SCHEMA.json` — yapılandırılmış çıktı şeması.
+- `ANALYSIS_PLAN_STAGE3.md` — sonuçlardan önce tanımlanmış analiz planı.
+- `EXPERIMENT_MANIFEST_STAGE3.json` — inference kapısı kapalı manifest.
+- `PROTOCOL_DRAFT.md` — protokol taslağı.
+- `USE_FOR_THIS_PROJECT/REUSE_RULES.md` — yeniden kullanım kuralları.
 
 Bu çalışma şu anda planlama aşamasındadır. Herhangi bir deney yürütüldüğü, insan puanlamasının tamamlandığı veya sonuç alındığı iddia edilmemektedir.
