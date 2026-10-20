@@ -56,6 +56,7 @@ jobs:
           git -C "$repo" clean -fd
           cp "$RUNNER_TEMP/tests_contrib.py" "$repo/tqdm/tests/tests_contrib.py"
           cd "$repo"
+          export PYTHONPATH="$repo"
           set +e
           python -m pytest -q -s tqdm/tests/tests_contrib.py::test_enumerate > "$RUNNER_TEMP/buggy-test.log" 2>&1
           rc=$?
@@ -78,6 +79,7 @@ jobs:
           repo="$RUNNER_TEMP/tqdm"
           git -C "$repo" reset --hard c0dcf39b046d1b4ff6de14ac99ad9a1b10487512
           cd "$repo"
+          export PYTHONPATH="$repo"
           set +e
           python -m pytest -q -s tqdm/tests/tests_contrib.py::test_enumerate > "$RUNNER_TEMP/fixed-test.log" 2>&1
           rc=$?
