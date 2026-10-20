@@ -69,16 +69,23 @@ Bir vaka ana deney havuzuna ancak tüm zorunlu kapılardan geçerse alınabilir:
 
 ## 5. Örneklem hedefi ve durdurma kuralı
 
-- Vaka taramasında **hedef en az 40 kabul edilmiş bağımsız vaka**, asgari uygulanabilirlik eşiği **30 vaka ve en az 5 ayrı upstream proje** olarak belirlenir. Bunlar güç analizi yerine geçmez.
-- Bu sayılara yalnızca test/ground-truth/lisans/sızıntı kapılarından geçmiş vakalar dâhildir; 501 ham kaydın tamamı dâhil sayılmaz.
-- 30 vaka eşiğine ulaşılamazsa sonuçlar görüldükten sonra gevşek kurallarla örnek doldurulmaz. Kaynak genişletilir (ör. Defects4J) veya araştırma tasarımı yeniden değerlendirilir.
-- Nihai örneklem, birincil ölçüt, tekrar sayısı ve istatistiksel analiz planı model çıktıları görülmeden dondurulur. Asgari 30 vaka kendiliğinden yeterli istatistiksel güç garantisi değildir.
+Aşama 3 tasarımı, ana araştırma için önceki fizibilite eşiğinden daha katı bir hedef belirledi:
+- **Hedef: 80 kabul edilmiş bağımsız vaka; doğrulayıcı alt sınır: 60 vaka ve en az 8 ayrı upstream proje.**
+- Bu sayılara yalnızca buggy-fail/fixed-pass, lisans, gold root cause, E1/E2/E3 kanıt yeterliliği ve sızıntı kontrolünden geçmiş vakalar dâhildir; 501 ham kaydın tamamı dâhil sayılmaz.
+- N<60 veya 8 projeden az durumda çalışma doğrulayıcı kabul edilmeyecek, keşifsel/fizibilite olarak raporlanacak. Sonuç görüldükten sonra gevşek kurallarla örnek doldurulmayacak.
+- N=80 hedefi, Aşama 3 analiz planındaki varsayımsal McNemar güç duyarlılığına dayanır; küçük etkileri saptama garantisi değildir.
 
-## 6. Çalışma ortamı ve tamamlanmayan doğrulama
+## 6. CI smoke kontrolü ve tamamlanmayan doğrulama
 
-Bu denetim ortamında Python 3.13.5 ve Java 21 görüldü; docker çalıştırılabilir dosyası mevcut değildi. Örnek BugsInPy kayıtları Python 3.6–3.8 gibi eski sürümler ve proje özelinde kurulum/test komutları gerektiriyor. Bu nedenle bug/fixed sürümlerindeki test çiftleri burada uçtan uca çalıştırılmadı.
+CI üzerinde iki adayın test çifti smoke olarak denendi; hiçbiri vaka kabul kapısını geçmedi:
+- **PySnooper-1:** Python 3.8.18 kurulumu sonrasında sözde buggy commit hedef regresyon testini geçti. Bu, beklenen buggy-fail/fixed-pass çiftinin sağlanmadığını gösterir; aday reddedildi.
+- **tqdm-1:** buggy sürümde test beklenen şekilde başarısız oldu; ancak fixed sürümde aynı test `TypeError: 'int' object is not subscriptable` ile başarısız oldu. Ayrıca runtime Python 3.8.18 iken metadata Python 3.6.9 kaydediyor. Bu nedenle aday kabul edilmedi; sabitlenmiş test/ortam eşleşmesi yeniden incelenmeden tekrar denenmiş sayılmaz.
 
-Bu, veri havuzunun varlığına ilişkin bulguyu geçersiz kılmaz; fakat **vaka düzeyinde tekrarlanabilirlik doğrulamasını açık kapı** olarak bırakır. Bir sonraki teknik adım, izole bir Docker/CI ortamında önce bu format örnekleri dışındaki birkaç adayı çalıştırmak; her aday için buggy test-fail / fixed test-pass çiftini kanıtlayan logları saklamaktır.
+İlk denemelerde Python 3.8.1, Ubuntu 24.04 runner'ında bulunmadığından setup aşamasında başarısızlık yaşandı; bu da hata yeniden üretimi sayılmaz. Çalıştırma kayıtları:
+- https://github.com/MahmutVezir/dijitalikiz/actions/runs/39460135014
+- https://github.com/MahmutVezir/dijitalikiz/actions/runs/39460540758
+
+Bu CI sonuçları, BugsInPy kaynağının varlığını değil, bu iki örneğin henüz bu çalışmanın doğrulayıcı vaka şartlarını sağlamadığını gösterir. Her aday için doğru test-revision eşleşmesi, buggy-fail/fixed-pass, exact runtime, lisans ve ground-truth/sızıntı kapısı gerekir.
 
 ## 7. Aşama 2 nihai kararı
 
@@ -86,4 +93,4 @@ Bu, veri havuzunun varlığına ilişkin bulguyu geçersiz kılmaz; fakat **vaka
 
 **Doğrulanmış deney veri kümesi: HENÜZ HAZIR DEĞİL.** Bu aşamada 30 veya 40 vakanın kabul koşullarını geçtiği iddia edilemez; testler fiilen yürütülmedi, proje lisansları tek tek doğrulanmadı ve model eğitim verisi kontaminasyonu sıfırlanmadı.
 
-**Aşama 2 kararı: KAYNAK FİZİBİLİTESİ TAMAMLANDI — OPERASYONEL VAKA DOĞRULAMA KAPISI AÇIK.** Model çıkarımı kapalıdır. Önce her vaka buggy sürümde fail, fixed sürümde pass olmalı ve ground truth / kanıt yeterliliği bağımsız şekilde doğrulanmalıdır.
+**Aşama 2 kararı: KAYNAK FİZİBİLİTESİ TAMAMLANDI (KOŞULLU) — OPERASYONEL VAKA DOĞRULAMA KAPISI GEÇİLMEDİ.** Şu ana kadarki smoke adaylarından hiçbiri kabul edilmedi; 60 bağımsız vaka / 8 proje doğrulanmış değildir. Model çıkarımı kapalıdır. Bir sonraki aşama tasarım olarak tamamlanabilir, ancak deney yürütmeye hazır değildir.
