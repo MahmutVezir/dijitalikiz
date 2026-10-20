@@ -8,7 +8,9 @@
 
 Bu GitHub deposu ilk olarak farklı bir çalışma için oluşturuldu: LLM tabanlı çapraz-bileşen hata teşhisi ve TÜBİTAK 2204-A raporlaması. Yeni çalışma farklı bir araştırma sorusuna sahip. Aynı depoyu teknik ve belgelendirme altyapısı olarak kullanabiliriz; ancak eski deneylerin verisini, model çıktılarını, metriklerini ve sonuçlarını yeni projenin kanıtı gibi kullanamayız.
 
-Bu dosya eski dosyaları taşımadan/silmeden **bilimsel bir kapsam sınırı** kurar. Eski deneyin kayıtları korunur. Klasör ve dosya adları aşağıda açıkça sınıflandırılmıştır.
+Bu dosya eski dosyaları taşımadan/silmeden **bilimsel bir kapsam sınırı** kurar. Eski deneyin kayıtları korunur. Klasör ve dosya adları aşağıda açıkça sınıflandırılmıştır. Taşıma/silme yapılmamasının nedeni, eski deneyin CI/artefakt ve teslim bağlantılarını kırmamak; ayrım, iki kontrollü dizin ve bu kapsam manifesti üzerinden uygulanır.
+
+**Aşama durumu:** Aşama 1 hedefli literatür denetimi tamamlandı; Aşama 2 kaynak fizibilitesi tamamlandı ancak operasyonel vaka doğrulama geçmedi; Aşama 3 deney tasarımı tamamlandı. CI smoke denemeleri henüz buggy-fail/fixed-pass kapısını geçmedi. Model çıkarımı kapalıdır.
 
 ## Bölüm A — Bu proje için kullanılabilecekler
 
@@ -20,7 +22,7 @@ Aşağıdaki dosyalar yeni projenin araştırma planı ve karar kayıtlarıdır:
 - `research_candidates/evidence_abstention/DATA_FEASIBILITY.md`
 - `research_candidates/evidence_abstention/PROTOCOL_DRAFT.md`
 - `research_candidates/evidence_abstention/FEASIBILITY_FORMAT_SAMPLE.csv` — sadece metadata şeması/format örneği. CSV'deki dört BugsInPy örneği doğrulayıcı veri kümesine alınamaz.
-- Bu dizine eklenen `REPO_SCOPE_SPLIT.md`, `STAGE3_EXPERIMENT_DESIGN.md`, `PROMPT_CONDITIONS.md`, `OUTPUT_SCHEMA.json` ve `ANALYSIS_PLAN_STAGE3.md`.
+- Bu dizine eklenen `REPO_SCOPE_SPLIT.md`, `STAGE3_EXPERIMENT_DESIGN.md`, `PROMPT_CONDITIONS.md`, `OUTPUT_SCHEMA.json`, `ANALYSIS_PLAN_STAGE3.md` ve `EXPERIMENT_MANIFEST_STAGE3.json`.
 
 `USE_FOR_THIS_PROJECT/` dizini bu belgelerin erişimi kolaylaştırılmış kopyalarını ve yeniden kullanım politikasını içerir. Çelişki olursa doğrudan üst dizindeki tarihli, yetkili doküman dikkate alınır.
 
@@ -31,7 +33,8 @@ Aşağıdaki dosyalar yeni projenin araştırma planı ve karar kayıtlarıdır:
 - Yalnızca kaynağı, lisansı, buggy/fixed revizyonları, tetikleyici testi ve kök nedeni ayrıca doğrulanan yeni vakalar kullanılabilir.
 - Kaynak kodu veya düzeltme yamasını bu depoya topluca kopyalamak yerine yalnızca gereken metadata, atıf, test günlüklerinin özeti ve içerik hash'leri tutulur.
 - `BugsInPy-black-1`, `BugsInPy-tqdm-1`, `BugsInPy-httpie-1`, `BugsInPy-youtube-dl-1` vakaları patch/metadata inceleme örneği olarak açıldı; doğrulayıcı analizden dışlanır.
-- `BugsInPy-PySnooper-1` yalnızca CI smoke test adayıdır; testin tamamlanması, lisans/ground truth/kontaminasyon incelemesi yapılmış olması anlamına gelmez ve bu vaka da ana örneklemden kalıcı olarak dışlanır.
+- `BugsInPy-PySnooper-1` CI smoke denemesinde buggy revision testten geçtiği için beklenen hata yeniden üretilemedi; ana örneklemden kalıcı dışlanır.
+- `BugsInPy-tqdm-1` CI smoke denemesinde buggy revision başarısız oldu, ancak fixed revision da `TypeError` ile başarısız oldu; dolayısıyla çift doğrulanmadı ve vaka ana örneklemden kalıcı dışlanır.
 
 ### A3. Yalnızca yöntem fikri/şablonu olarak incelenebilecek eski dosyalar
 
