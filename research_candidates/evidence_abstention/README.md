@@ -1,38 +1,40 @@
-# Araştırma adayı: Kanıt yetersizliğinde yazılım hata teşhisi ve cevaptan kaçınma
+# Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ
 
-**Durum:** Fikir ve literatür taraması aşamasında. Ön kayıt değildir; deney yürütülmemiştir.
+**Durum:** Yeni araştırma projesi olarak kabul edildi; literatür ve protokol geliştirme aşamasında. Henüz deney sonucu yoktur; model çıkarımı için izin verilmemiştir.
 
-**Önemli ayrım:** Bu klasör, DİJİTALİKİZ'in dondurulmuş TÜBİTAK araştırmasının parçası değildir. Mevcut pilot/confirmatory sonuçlarını, kodu, manifestlerini veya raporunu değiştirmez. Bu klasör ayrı bir Git dalında tutulur; ana dala birleştirilmesi ya da mevcut TÜBİTAK başvurusuna eklenmesi önerilmez.
+**Depo kullanımı:** Bu depo, yeni projenin planlama, sürüm kontrolü, doğrulama ve belgelendirme altyapısı olarak kullanılacaktır. Çalışma ayrı bir dalda yürütülür; DİJİTALİKİZ'in tarihsel TÜBİTAK 2204-A deneyleri, sonuçları, manifestleri ve raporu değiştirilmez.
 
-## Araştırma fikri
+## Resmî proje adı
 
-Gerçek yazılım kusurlarında, teşhis için sunulan kanıt kontrollü olarak azaltılır. Modelden ya her durumda tek bir kök neden önermesi ya da kanıt yetersiz olduğunda cevap vermekten kaçınabilmesi istenir. İnceleme, yalnızca modelin gerçek kök nedeni tahmin edip etmediğini değil, yanıtının sunulan kanıtla desteklenip desteklenmediğini de ayırır.
+**Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ**
 
-**Önerilen çalışma başlığı:** Gerçek Yazılım Hatalarında Kanıt Yetersizliği Altında Büyük Dil Modellerinin Cevaptan Kaçınma Güvenilirliği
+## Çalışmanın kapsamı
 
-## Literatür taramasından ilk sonuç
+Proje, gerçek yazılım hatalarının kök nedenini teşhis eden bir büyük dil modelinin kanıt yeterliliği değiştiğinde nasıl davrandığını inceleyecektir. Amaç, modelin yalnızca doğru cevabı bulup bulmadığını değil, cevabının gördüğü kanıtlarla desteklenip desteklenmediğini ve yetersiz kanıtta uygun biçimde cevap vermekten kaçınıp kaçınmadığını da ölçmektir.
 
-Genel LLM abstention, kanıt yeterliliği ve kod üretiminde görevden kaçınma başlıklarında yakın çalışmalar mevcuttur. Bu nedenle genel “model ne zaman cevap vermemeli?” sorusu özgün katkı olarak sunulamaz. Olası dar katkı, kaynakları ve düzeltilmiş kök nedenleri bağımsız biçimde doğrulanmış gerçek yazılım hatalarında, kanıt eksiltmenin teşhis desteği ve cevap/kaçınma kararına etkisini ölçmektir. Bunun da özgünlüğü henüz kesinleşmiş değildir; daha sistematik bir tarama gerekir.
+### Temel araştırma sorusu
 
-## Planlanan araştırma ayrımı
+Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin verilen bir politika, teşhis vermeyi zorunlu kılan politikaya kıyasla kanıtla desteklenmeyen kesin teşhisleri azaltır mı; bunun yanıt kapsamı ve yeterli kanıt bulunan vakalardaki gereksiz kaçınma üzerindeki maliyeti nedir?
 
-- **Görev:** Kod üretimi değil, gerçek yazılım hatasının kök nedenini teşhis etme.
-- **Müdahale:** Her hata için kanıt paketini önceden belirlenmiş üç düzeyde kontrollü ve kademeli olarak azaltma.
-- **Karşılaştırma:** Zorunlu teşhis istemi ile kanıt yetersizliğinde kaçınmaya izin veren istem.
-- **Değerlendirme:** Teşhis doğruluğu ile verilen yanıtın mevcut kanıt tarafından desteklenmesini ayrı ayrı puanlama.
-- **Ana birim:** Bağımsız yazılım hatası. Aynı hata üzerindeki tekrar üretimleri ayrı bağımsız vakalar sayılmaz.
+### Taslak deney
 
-## Mevcut çalışma için güvenlik sınırları
+- Her vaka için kaynak kodu, test ve düzeltme kayıtlarıyla doğrulanmış bir kök neden belirlenir.
+- Kanıt paketleri önceden tanımlanmış yeterli, kısmi ve yetersiz seviyelere ayrılır.
+- Aynı model ve aynı temel girdiyle, zorunlu teşhis ve seçici cevap/kaçınma politikaları karşılaştırılır.
+- Teşhis doğruluğu, kanıtsal destek, yanıt kapsamı, seçici hata ve gereksiz kaçınma ayrı ölçülür.
+- Vaka başına tekrarlar bağımsız vaka olarak sayılmaz.
 
-1. DİJİTALİKİZ'in TÜBİTAK 2204-A raporu ve mevcut doğrulama işleri önceliklidir. Bu aday yüzünden mevcut projeye yeni deney/özellik eklenmemelidir.
-2. Yeni vaka havuzu; DİJİTALİKİZ'in tarihsel pilot, confirmatory, kalibrasyon ve daha önce teknik olarak incelenmiş adaylarından ayrı olmalıdır.
-3. Bu taslak için model çıkarımı, eğitim, Kaggle/GPU işi veya yeni sonuç üretimi yapılmamıştır.
-4. Örneklem büyüklüğü, model revizyonu, istatistik ve karar eşikleri kaynak taraması, veri fizibilitesi ve ayrı bir pilot planı tamamlanmadan dondurulamaz.
-5. Genel abstention alanında veya yazılım kod üretiminde ilk olma iddiası yapılmayacaktır.
+## Bilimsel sınırlar
 
-## Dosyalar
+1. Genel LLM abstention alanında önceki çalışmalar vardır; projenin özgünlüğü kanıtlanmış değildir.
+2. Yeni veri havuzu, DİJİTALİKİZ'in pilot, confirmatory, kalibrasyon ve önceden incelenmiş vakalarından bağımsız olmalıdır.
+3. Sistematik literatür taraması, veri fizibilitesi, puanlama protokolü ve analiz planı tamamlanmadan model çıkarımı yapılmaz.
+4. Sonuçlar ne olursa olsun değiştirilmeden raporlanır; sonuçlara bakarak hipotez veya birincil ölçüt değiştirilmez.
+5. Bu proje, DİJİTALİKİZ'in önceki sonuçlarını yeniden etiketleyerek veya yeni proje sonucuymuş gibi kullanarak ilerlemeyecektir.
 
-- LITERATURE_REVIEW.md — yakın çalışmalar ve ön özgünlük değerlendirmesi.
-- PROTOCOL_DRAFT.md — aday araştırma sorusu, deney tasarımı, değerlendirme ve ilerleme kapıları.
+## Belgeler
 
-Bu klasörün durumu yalnızca araştırma taslağıdır. Hiçbir deney sonucu, insan hakemliği veya dış akademik onay iddia edilmemektedir.
+- `LITERATURE_REVIEW.md` — ilk literatür taraması ve özgünlük sınırları.
+- `PROTOCOL_DRAFT.md` — araştırma soruları, aday deney tasarımı, veri ve analiz planı.
+
+Bu çalışma şu anda planlama aşamasındadır. Herhangi bir deney yürütüldüğü, insan puanlamasının tamamlandığı veya sonuç alındığı iddia edilmemektedir.
