@@ -22,7 +22,8 @@ Aşağıdaki dosyalar yeni projenin araştırma planı ve karar kayıtlarıdır:
 - `research_candidates/evidence_abstention/DATA_FEASIBILITY.md`
 - `research_candidates/evidence_abstention/PROTOCOL_DRAFT.md`
 - `research_candidates/evidence_abstention/FEASIBILITY_FORMAT_SAMPLE.csv` — sadece metadata şeması/format örneği. CSV'deki dört BugsInPy örneği doğrulayıcı veri kümesine alınamaz.
-- Bu dizine eklenen `REPO_SCOPE_SPLIT.md`, `STAGE3_EXPERIMENT_DESIGN.md`, `PROMPT_CONDITIONS.md`, `OUTPUT_SCHEMA.json`, `ANALYSIS_PLAN_STAGE3.md` ve `EXPERIMENT_MANIFEST_STAGE3.json`.
+- Bu dizine eklenen `REPO_SCOPE_SPLIT.md`, `STAGE3_EXPERIMENT_DESIGN.md`, `PROMPT_CONDITIONS.md`, `OUTPUT_SCHEMA.json`, `ANALYSIS_PLAN_STAGE3.md`, `EXPERIMENT_MANIFEST_STAGE3.json` ve `STAGE3_REVIEW_AND_EXIT.md`.
+- `USE_FOR_THIS_PROJECT/` içinde yeni projenin izinli dokümantasyonunun erişilebilir kopyaları bulunur; `DO_NOT_USE_AS_EVIDENCE/` içinde eski veri/sonuçların bu yeni projede kullanılmasını yasaklayan kapsam kaydı bulunur. Eski kaynak dosyalar tarihsel izlenebilirlik için yerlerinde kalır.
 
 `USE_FOR_THIS_PROJECT/` dizini yeni araştırmaya ait belgelerin erişimi kolaylaştırılmış kopyalarını, yeniden kullanım politikasını ve [MANIFEST.json](USE_FOR_THIS_PROJECT/MANIFEST.json) izin kaydını içerir. `DO_NOT_USE_AS_EVIDENCE/` ise dışlanan tarihsel materyallerin [MANIFEST.json](DO_NOT_USE_AS_EVIDENCE/MANIFEST.json) kaydını içerir. Çelişki olursa doğrudan üst dizindeki tarihli, yetkili doküman dikkate alınır.
 
