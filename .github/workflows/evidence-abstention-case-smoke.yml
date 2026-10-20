@@ -27,10 +27,11 @@ jobs:
           python-version: "3.8.18"
           cache: "pip"
 
-      - name: Install test runner
+      - name: Install pinned test dependencies
         run: |
+          set -euo pipefail
           python -m pip install --upgrade "pip<25.1"
-          python -m pip install "pytest<8.4"
+          python -m pip install "pytest<8.4" "python_toolbox==0.9.3"
 
       - name: Fetch pinned dataset metadata and source repository
         shell: bash
@@ -64,6 +65,10 @@ jobs:
             echo "The pinned buggy revision unexpectedly passed; case fails the expected-reproduction gate."
             exit 1
           fi
+          if ! grep -Eq "FAILED tests/test_chinese.py::test_chinese" "$RUNNER_TEMP/buggy-test.log"; then
+            echo "The buggy run did not show the target test failing; a collection/import/environment error is not accepted as bug reproduction."
+            exit 1
+          fi
 
       - name: Run the same target test on the fixed revision (pass is expected)
         id: fixed
@@ -71,8 +76,8 @@ jobs:
         run: |
           set -euo pipefail
           repo="$RUNNER_TEMP/PySnooper"
-          git -C "$repo" checkout --detach 56f22f8ffe1c6b2be4d2cf3ad1987fdb66113da2
           git -C "$repo" clean -fd
+          git -C "$repo" checkout --detach 56f22f8ffe1c6b2be4d2cf3ad1987fdb66113da2
           mkdir -p "$repo/tests"
           cp "$RUNNER_TEMP/test_chinese.py" "$repo/tests/test_chinese.py"
           cd "$repo"
@@ -84,6 +89,10 @@ jobs:
           echo "exit_code=$rc" >> "$GITHUB_OUTPUT"
           if [ "$rc" -ne 0 ]; then
             echo "The pinned fixed revision did not pass; case fails the expected-reproduction gate."
+            exit 1
+          fi
+          if ! grep -Eq "1 passed" "$RUNNER_TEMP/fixed-test.log"; then
+            echo "The fixed run did not report the target test passing."
             exit 1
           fi
 
