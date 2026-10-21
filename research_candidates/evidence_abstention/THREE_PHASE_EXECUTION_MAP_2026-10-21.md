@@ -21,6 +21,10 @@ Bu belge önceki teknik aşamaları üç ana teslimata birleştirir. Bir dosyan�
 - İlk biten Black-2 artefaktında Python 3.8.3 eşleşti, fakat buggy taraftaki hata eksik `tests/data/fmtonoff4.py` fixture'ından kaynaklandı; bu geçerli reprodüksiyon sayılmadı. Workflow açıkça listelenmiş fixture'ları buggy çalışma ağacına kopyalayacak şekilde düzeltildi.
 - FastAPI-1 ve Scrapy-1 için buggy tarafta hedefe özgü görünen hata, fixed tarafta geçiş çıktı; iç artifact checksum listeleri doğrulandı. Bunlar da workflow-debug vakası oldukları için kalıcı dışlamada; insan root-cause/lisans/kanıt incelemesi yapılmadı.
 
+### Dondurulmuş başlangıç tarama sırası
+
+[İlk 120 adaylık metadata-only cohort](SCREENING_COHORT_120_2026-10-21.json), güncel 487 adaylı kuyrukta kalıcı dışlamalardan sonra ilk 120 sıra numarasını korur. Bu, vaka kabulü veya doğrulayıcı örneklem değildir. Her adayın neden geçtiği/kaldığı kayda alınır; yedekler 121. sıradan aynı sırayla kullanılır, sonuçlara göre seçim yapılmaz.
+
 ### Kapatma kapısı
 Aşağıdakilerin hepsi gerçek kayıt ve bağımsız kanıtla tamamlanmadan Aşama 1 kapanmaz:
 
