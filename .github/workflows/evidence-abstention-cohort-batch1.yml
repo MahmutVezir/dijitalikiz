@@ -254,8 +254,12 @@ jobs:
               echo "SHELLOPTS=${SHELLOPTS-}"
               echo "BASH_ENV=${BASH_ENV-}"
               set -o
-              echo "--- env/bin/activate lines 24-38 ---"
-              nl -ba "$work_dir/env/bin/activate" | sed -n '24,38p'
+              if [ -f "$work_dir/env/bin/activate" ]; then
+                echo "--- env/bin/activate lines 24-38 (already present) ---"
+                nl -ba "$work_dir/env/bin/activate" | sed -n '24,38p' || true
+              else
+                echo "env/bin/activate is not created yet; diagnostics taken before the compile step"
+              fi
             } > "$RUNNER_TEMP/case-artifact/$side-activation-diagnostics.txt"
 
             # BugsInPy's compile script sources legacy env/bin/activate,
