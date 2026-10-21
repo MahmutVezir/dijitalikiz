@@ -73,7 +73,11 @@ Daha önce açılan fizibilite/smoke vakaları ana doğrulayıcı kümeden kalı
 
 N=60 / 8 proje şartı sağlanmazsa çalışma bu protokol altında doğrulayıcı sonuç olarak sunulmaz. Örneklem eşiği geriye dönük gevşetilmez.
 
-## 7. Teknik ve insan değerlendirme kapıları
+## 7. Jüri ölçütlerine göre kalite güvencesi
+
+[TÜBİTAK jüri ölçütleri kontrol listesi](TUBITAK_2204A_JURY_CRITERIA_CHECKLIST_2026-10-21.md) ayrı bir kapı olarak kullanılacaktır. Resmî sayfanın bağladığı ön değerlendirme formunda problem/araştırma sorusu ve yöntem %20'şer; yaratıcılık/etki ve sonuçlar/tartışma %30'ar ağırlıktadır. Bu, kanıtlanmış bir puan veya finalistlik olasılığı değildir. Bugünkü en büyük eksik, %30 ağırlıklı sonuçlar/tartışma kısmı için gerçek deney sonuçlarının henüz bulunmamasıdır.
+
+## 8. Teknik ve insan değerlendirme kapıları
 
 Model çıkarımından önce şu işler kapanmalıdır:
 
@@ -87,7 +91,7 @@ Model çıkarımından önce şu işler kapanmalıdır:
 
 Hazır olma betiği read-only'dir. CI'nın yeşil olması, `ready=true` anlamına gelmez ve tek başına çıkarım izni vermez.
 
-## 8. İş takvimi — karar kapılarıyla
+## 9. İş takvimi — karar kapılarıyla
 
 ### 21 Ekim–4 Kasım: veri fizibilitesini gerçek vakaya dönüştürme
 
@@ -130,7 +134,7 @@ Başvuru formu ve tüm yüklemeler önceden doğrulanır. Son tarih **4 Ocak 202
 
 Bu takvim agresif bir iç plandır; kapıların geçtiğine dair kanıt değildir.
 
-## 9. Başvuruya hazır sayılma kapısı
+## 10. Başvuruya hazır sayılma kapısı
 
 Çalışma, aşağıdakiler olmadan “tamamlandı” kabul edilmeyecektir:
 
@@ -145,13 +149,14 @@ Bu takvim agresif bir iç plandır; kapıların geçtiğine dair kanıt değildi
 
 Herhangi bir kapının başarısız olması saklanmayacak. Gerektiğinde “sonuçsuz/fizibilite” demek, doğrulayıcı başarı iddia etmekten daha doğrudur.
 
-## 10. Kapsam kuralı
+## 11. Kapsam kuralı
 
 Bu tarihten itibaren çalışma önceliği yalnızca bu TÜBİTAK 2204-A projesidir. CERN, IYPT, NASA ve başka proje/yarışma yolları bu çalışma için yürütme gündemine alınmaz. Önceki DİJİTALİKİZ deney kayıtları tarihsel olarak korunur ve bu çalışmanın yeni verisi/sonucu gibi kullanılamaz.
 
-## 11. Ana dosyalar
+## 12. Ana dosyalar
 
 - Araştırma durumu ve dizin: [README.md](README.md)
+- Jüri ölçütleri kontrol listesi: [TUBITAK_2204A_JURY_CRITERIA_CHECKLIST_2026-10-21.md](TUBITAK_2204A_JURY_CRITERIA_CHECKLIST_2026-10-21.md)
 - Literatür: [LITERATURE_REVIEW.md](LITERATURE_REVIEW.md)
 - Veri fizibilitesi: [DATA_FEASIBILITY.md](DATA_FEASIBILITY.md)
 - Deney tasarımı: [STAGE3_EXPERIMENT_DESIGN.md](STAGE3_EXPERIMENT_DESIGN.md)
