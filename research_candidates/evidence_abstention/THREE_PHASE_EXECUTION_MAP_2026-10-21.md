@@ -103,3 +103,8 @@ The V2 cohort freeze passed in [run 39659544932](https://github.com/MahmutVezir/
 
 
 The V3 run also revealed that a strict metadata parser rejected a valid fixed-commit line with whitespace before the equals sign; the parser has been corrected. V4 is the current 120-candidate intake, skipping 24 exposed IDs. Accepted cases remain zero until CI artifacts and the scientific/human validation gates are complete; model inference remains disabled.
+
+
+## V4 dependency finding and V5
+
+Run [39661470039](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39661470039) revealed incomplete test dependencies before assertion execution: Matplotlib-2 could not import NumPy; PySnooper-3 could not import `python_toolbox`. These are not valid regression-test outcomes. Because this batch was used to debug runner/dependency handling, all eight V4 candidates are permanently excluded. The current [V5 intake](SCREENING_COHORT_120_V5_2026-10-21.json) skips 32 exposed IDs; its queue-freeze job succeeded in [run 39663084349](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39663084349). Candidate-level technical review continues; accepted cases remain zero and model inference remains disabled.
