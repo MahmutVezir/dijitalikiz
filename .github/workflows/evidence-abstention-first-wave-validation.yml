@@ -350,9 +350,12 @@ jobs:
           if [ ! -f "$RUNNER_TEMP/case-artifact/summary.json" ]; then
             printf '{"case_id":"%s","setup_state":"failed_before_summary","accepted_for_confirmatory":false,"confirmatory_eligible":false,"llm_inference_performed":false}\n' "$CASE_ID" > "$RUNNER_TEMP/case-artifact/summary.json"
           fi
-          python scripts/audit_evidence_abstention_triage_artifact.py \
-            --root "$RUNNER_TEMP/case-artifact" \
-            --output "$RUNNER_TEMP/case-artifact/artifact-audit.json"
+          cd "$RUNNER_TEMP/case-artifact"
+          rm -f SHA256SUMS
+          find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+          sha256sum -c SHA256SUMS
+          cd "$GITHUB_WORKSPACE"
+          python scripts/audit_evidence_abstention_triage_artifact.py --root "$RUNNER_TEMP/case-artifact" --output "$RUNNER_TEMP/case-artifact/artifact-audit.json"
           cd "$RUNNER_TEMP/case-artifact"
           rm -f SHA256SUMS
           find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
