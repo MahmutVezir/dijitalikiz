@@ -17,11 +17,9 @@ def normalized_entropy_from_logits(logits: Sequence[float]) -> float:
         raise TypeError("logits must be numeric")
     if any(not isfinite(value) for value in logits):
         raise ValueError("logits must be finite")
-
     maximum = max(logits)
     weights = [exp(value - maximum) for value in logits]
-    total = sum(weights)
-    probabilities = [weight / total for weight in weights]
+    probabilities = [weight / sum(weights) for weight in weights]
     entropy = -sum(p * log(p) for p in probabilities if p > 0.0)
     return min(1.0, max(0.0, entropy / log(len(probabilities))))
 
@@ -74,6 +72,8 @@ class EmpiricalConfidenceCalibrator:
         self._correct = [0] * self.bin_count
         count = 0
         for observation in observations:
+            if not isinstance(observation, CalibrationObservation):
+                raise TypeError("observations must be CalibrationObservation instances")
             index = self._bin_index(observation.uncertainty_index)
             self._counts[index] += 1
             self._correct[index] += int(observation.answer_correct_and_evidence_supported)
@@ -89,7 +89,7 @@ class EmpiricalConfidenceCalibrator:
         count = self._counts[index]
         if count < self.min_samples_per_bin:
             return None
-        return self._correct[index] / count
+        return (self._correct[index] + 1) / (count + 2)
 
     def bin_counts(self) -> tuple[int, ...]:
         return tuple(self._counts)
@@ -110,12 +110,10 @@ def expected_calibration_error(probabilities: Sequence[float], outcomes: Sequenc
         raise ValueError("bin_count must be positive")
     for value in probabilities:
         _validate_unit_interval(value, "probability")
-
     buckets = [[] for _ in range(bin_count)]
     for probability, outcome in zip(probabilities, outcomes):
         index = min(int(probability * bin_count), bin_count - 1)
         buckets[index].append((probability, int(outcome)))
-
     total = len(probabilities)
     error = 0.0
     for bucket in buckets:
@@ -138,7 +136,10 @@ class DecisionRequest:
     candidate_answers: tuple[str, ...]
     self_check_conflict: bool | None
     explicit_contradiction: bool | None
-    calibrated_confidence: float | None
+
+
+@dataclass(frozen=True)
+class DecisionPolicy:
     minimum_confidence: float | None
     maximum_uncertainty: float | None
     calibration_id: str | None
@@ -153,14 +154,16 @@ class DecisionResult:
     reasons: tuple[str, ...]
 
 
-def decide(request: DecisionRequest) -> DecisionResult:
+def decide(
+    request: DecisionRequest,
+    calibrator: EmpiricalConfidenceCalibrator,
+    policy: DecisionPolicy,
+) -> DecisionResult:
     reasons = []
-
     if request.evidence_level not in {"E1", "E2", "E3"}:
         reasons.append("evidence_level_unknown")
     elif request.evidence_level == "E3":
         reasons.append("evidence_insufficient")
-
     if request.explicit_contradiction is None:
         reasons.append("contradiction_status_unknown")
     elif request.explicit_contradiction:
@@ -182,13 +185,12 @@ def decide(request: DecisionRequest) -> DecisionResult:
     if request.normalized_token_entropy is None or disagreement is None or request.self_check_conflict is None or request.supported_claim_coverage is None:
         reasons.append("uncertainty_signals_incomplete")
 
-    valid_calibration_id = isinstance(request.calibration_id, str) and re.fullmatch(r"sha256:[0-9a-f]{64}", request.calibration_id) is not None
-    if request.calibrated_confidence is None or request.minimum_confidence is None or request.maximum_uncertainty is None or not valid_calibration_id or not request.calibration_verified:
+    valid_calibration_id = isinstance(policy.calibration_id, str) and re.fullmatch(r"sha256:[0-9a-f]{64}", policy.calibration_id) is not None
+    if policy.minimum_confidence is None or policy.maximum_uncertainty is None or not valid_calibration_id or not policy.calibration_verified or not calibrator.fitted:
         reasons.append("calibration_not_frozen")
     else:
-        _validate_unit_interval(request.calibrated_confidence, "calibrated_confidence")
-        _validate_unit_interval(request.minimum_confidence, "minimum_confidence")
-        _validate_unit_interval(request.maximum_uncertainty, "maximum_uncertainty")
+        _validate_unit_interval(policy.minimum_confidence, "minimum_confidence")
+        _validate_unit_interval(policy.maximum_uncertainty, "maximum_uncertainty")
 
     uncertainty_values = []
     if request.normalized_token_entropy is not None:
@@ -205,15 +207,16 @@ def decide(request: DecisionRequest) -> DecisionResult:
         uncertainty_values.append(0.0)
 
     uncertainty_index = max(uncertainty_values) if len(uncertainty_values) == 4 else None
-
     if reasons:
-        return DecisionResult("abstain", request.calibrated_confidence, uncertainty_index, tuple(dict.fromkeys(reasons)))
+        return DecisionResult("abstain", None, uncertainty_index, tuple(dict.fromkeys(reasons)))
 
-    if uncertainty_index > request.maximum_uncertainty:
+    confidence = calibrator.predict(uncertainty_index)
+    if confidence is None:
+        return DecisionResult("abstain", None, uncertainty_index, ("calibration_bin_insufficient",))
+    if uncertainty_index > policy.maximum_uncertainty:
         reasons.append("uncertainty_threshold_exceeded")
-    if request.calibrated_confidence < request.minimum_confidence:
+    if confidence < policy.minimum_confidence:
         reasons.append("confidence_below_threshold")
-
     if reasons:
-        return DecisionResult("abstain", request.calibrated_confidence, uncertainty_index, tuple(reasons))
-    return DecisionResult("diagnose", request.calibrated_confidence, uncertainty_index, ("all_gates_passed",))
+        return DecisionResult("abstain", confidence, uncertainty_index, tuple(reasons))
+    return DecisionResult("diagnose", confidence, uncertainty_index, ("all_gates_passed",))
