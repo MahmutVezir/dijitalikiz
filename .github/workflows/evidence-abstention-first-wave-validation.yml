@@ -35,6 +35,7 @@ jobs:
             target_test_command: "python -m unittest -q tests.test_black.BlackTestCase.test_fmtonoff4"
             expected_run_test_sha256: 661c7eff06a036821b9e66a3ef8b7c0e46e6a6e815f65db6427aad3f8f6adcec
             install_worktree_package: true
+            regression_test_fixture_paths: "tests/data/fmtonoff4.py"
             python_version: "3.8.3"
             buggy_commit: c8ca6b2b9ff3510bee12129824cebfc2fc51e5b2
             fixed_commit: 892eddacd215d685e136686b7f629ade70adca83
@@ -190,6 +191,7 @@ jobs:
           EXPECTED_RUN_TEST_SHA256: ${{ matrix.expected_run_test_sha256 }}
           TARGET_TEST_COMMAND: ${{ matrix.target_test_command }}
           INSTALL_WORKTREE_PACKAGE: ${{ matrix.install_worktree_package }}
+          REGRESSION_TEST_FIXTURE_PATHS: ${{ matrix.regression_test_fixture_paths }}
         run: |
           set -u
           export PATH="$RUNNER_TEMP/BugsInPy/framework/bin:$PATH"
@@ -211,6 +213,29 @@ jobs:
             if [ "$checkout_rc" -ne 0 ] || [ ! -d "$work_dir" ]; then
               echo "$side checkout did not complete (exit=$checkout_rc)" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
               return 0
+            fi
+
+            # Some regression tests rely on data fixtures introduced with the
+            # fixed commit. Copy only explicitly declared test fixture paths from
+            # the already prepared fixed tree into the buggy tree so the same
+            # test reaches the implementation under test. Never copy patched
+            # implementation files into the buggy tree.
+            if [ "$side" = "buggy" ] && [ -n "${REGRESSION_TEST_FIXTURE_PATHS:-}" ]; then
+              IFS=';' read -r -a fixture_paths <<< "$REGRESSION_TEST_FIXTURE_PATHS"
+              for fixture in "${fixture_paths[@]}"; do
+                source_file="$RUNNER_TEMP/fixed/${{ matrix.project }}/$fixture"
+                target_file="$work_dir/$fixture"
+                if [ ! -f "$source_file" ]; then
+                  echo "Declared test fixture missing from fixed working tree: $fixture" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+                  return 0
+                fi
+                mkdir -p "$(dirname "$target_file")"
+                cp "$source_file" "$target_file"
+                printf '%s source_sha256=%s copied_sha256=%s\n' "$fixture" \
+                  "$(sha256sum "$source_file" | cut -d ' ' -f 1)" \
+                  "$(sha256sum "$target_file" | cut -d ' ' -f 1)" \
+                  >> "$RUNNER_TEMP/case-artifact/regression-fixture-provenance.txt"
+              done
             fi
 
             git -C "$work_dir" rev-parse HEAD > "$RUNNER_TEMP/case-artifact/$side-actual-commit.txt"
@@ -265,8 +290,9 @@ jobs:
             echo "checkout_exit=$checkout_rc compile_exit=$compile_rc target_test_exit=$target_rc test_failure_signature=$signature pass_marker=$pass_marker" >> "$RUNNER_TEMP/case-artifact/$side-status.txt"
           }
 
-          run_side buggy 0 "$RUNNER_TEMP/buggy"
+          # Prepare fixed-tree fixtures first, then reuse only declared test data in the buggy tree.
           run_side fixed 1 "$RUNNER_TEMP/fixed"
+          run_side buggy 0 "$RUNNER_TEMP/buggy"
 
           python - <<'PY'
           import json, os, pathlib, platform
