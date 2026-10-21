@@ -163,4 +163,4 @@ The original 120-case intake file is preserved as a historical record, but eight
 
 - [V3 teknik tanılama kohortu](SCREENING_COHORT_120_V3_2026-10-21.json) — metadata parser/runner debug sırası; ilk sekiz adayı kalıcı dışlandı.
 - [V4 teknik tanılama kohortu](SCREENING_COHORT_120_V4_2026-10-21.json) — test bağımlılıkları ve runner davranışını incelemek için kullanılan tarihsel sıra; ilk sekiz adayı kalıcı dışlandı.
-- [Güncel V5 tarama sırası](SCREENING_COHORT_120_V5_2026-10-21.json) — 32 maruziyet vakası atlanmıştır; 120 aday, 17 proje, 0 kabul edilmiş vaka; doğrulayıcı örneklem değildir.
+- [Tarihsel V5 tarama sırası](SCREENING_COHORT_120_V5_2026-10-21.json) — V6 öncesi sürüm; 32 maruziyet vakası atlanmıştı ve V5'in ilk sekiz vakası workflow doğrulamasında kullanıldığı için artık ana örneklemde kullanılamaz.
