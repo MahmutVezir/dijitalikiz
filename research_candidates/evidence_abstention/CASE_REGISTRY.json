@@ -13,6 +13,8 @@
     "For every accepted case, runtime_python_version must exactly equal metadata_python_version; the runtime fingerprint and both test logs require SHA-256 values and artifact references.",
     "Acceptance also requires test_pair_verified=true and evidence_levels_reviewed=true, in addition to license, leakage, prior-exposure, and two-independent-reviewer gates.",
     "Accepted registry records must carry two unique pseudonymous ground_truth_reviewer_ids and two unique evidence_reviewer_ids; the two panels must be disjoint to protect evidence-blinding.",
-    "All eight first-wave technical-triage candidates (black-2, cookiecutter-1, fastapi-1, luigi-1, sanic-1, scrapy-1, thefuck-1, tornado-1) are permanently excluded from confirmatory sampling because their test setup/targets were inspected while developing the validation pipeline."
+    "All eight first-wave technical-triage candidates (black-2, cookiecutter-1, fastapi-1, luigi-1, sanic-1, scrapy-1, thefuck-1, tornado-1) are permanently excluded from confirmatory sampling because their test setup/targets were inspected while developing the validation pipeline.",
+    "The first cohort runtime/workflow-debug batch (ansible-1, black-3, cookiecutter-2, fastapi-2, httpie-2, keras-1, luigi-2, matplotlib-1) is permanently excluded from confirmatory analysis because it was used while the technical harness/dependencies/artifact pipeline were still being debugged; exclusion is outcome-independent.",
+    "See EXPOSURE_EXCLUSION_LOG_2026-10-21.json for the consolidated case-level exposure log and deterministic re-queue requirement. The current 120-case cohort is historical intake v1 and must not be reused unchanged as the confirmatory queue after these exposures."
   ]
 }
