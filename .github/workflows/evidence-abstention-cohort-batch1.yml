@@ -6,7 +6,7 @@ on:
       - "research/evidence-abstention-draft-2026-10-19"
     paths:
       - ".github/workflows/evidence-abstention-cohort-batch1.yml"
-      - "research_candidates/evidence_abstention/SCREENING_COHORT_120_V3_2026-10-21.json"
+      - "research_candidates/evidence_abstention/SCREENING_COHORT_120_V4_2026-10-21.json"
       - "scripts/inventory_bugsinpy_candidates.py"
       - "scripts/build_evidence_abstention_screening_queue.py"
       - "scripts/build_evidence_abstention_cohort_matrix.py"
@@ -70,7 +70,7 @@ jobs:
             --first-batch-per-project 5
           python scripts/build_evidence_abstention_cohort_matrix.py \
             --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
-            --cohort research_candidates/evidence_abstention/SCREENING_COHORT_120_V3_2026-10-21.json \
+            --cohort research_candidates/evidence_abstention/SCREENING_COHORT_120_V4_2026-10-21.json \
             --matrix-output "$RUNNER_TEMP/cohort-batch1-matrix.json" \
             --summary-output "$RUNNER_TEMP/cohort-batch1-summary.json" \
             --batch-size 8
@@ -202,9 +202,11 @@ jobs:
           test "$(sha256sum "$meta" | cut -d ' ' -f 1)" = "${{ matrix.bug_info_sha256 }}"
           test "$(sha256sum "$project_meta" | cut -d ' ' -f 1)" = "${{ matrix.project_info_sha256 }}"
           test "$(sha256sum "$run_test" | cut -d ' ' -f 1)" = "${{ matrix.run_test_sha256 }}"
-          recorded_python="$(sed -n 's/^python_version="\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
-          recorded_buggy="$(sed -n 's/^buggy_commit_id="\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
-          recorded_fixed="$(sed -n 's/^fixed_commit_id="\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
+          # Metadata uses inconsistent whitespace around assignment operators.
+          # Parse all quoted values with a whitespace-tolerant pattern.
+          recorded_python="$(sed -n 's/^[[:space:]]*python_version[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
+          recorded_buggy="$(sed -n 's/^[[:space:]]*buggy_commit_id[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
+          recorded_fixed="$(sed -n 's/^[[:space:]]*fixed_commit_id[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
           test "$recorded_python" = "${{ matrix.python_version }}"
           test "$recorded_buggy" = "${{ matrix.buggy_commit }}"
           test "$recorded_fixed" = "${{ matrix.fixed_commit }}"
