@@ -61,3 +61,10 @@ Pandas tek başına 169/501 ham kaydı oluşturuyor. Bu nedenle örneklemi sadec
 Bu çalışma metadata envanterini doğrulamış ve yeni vakaların sistematik taranmasını mümkün kılmıştır. Fakat Stage 2'nin operasyonel veri kabulü tamamlanmamıştır. Her aday için lisans, kaynak ve önceki inceleme, aynı hedef testin buggy sürümde başarısız/fixed sürümde başarılı olması, kök neden kanıtı, E1/E2/E3 yeterliliği, veri sızıntısı ve iki bağımsız değerlendirici incelemesi ayrı ayrı gerekir.
 
 Hedef değişmedi: **en az 60 kabul edilmiş bağımsız vaka ve 8 proje; hedef 80 vaka**. Envanter dosyasındaki tüm accepted_for_confirmatory alanları false'tur. Hiçbir kabul koşulu sonradan gevşetilmemelidir. Bu sonuç bir deney sonucu değil, kaynak/metadata taramasının teknik sonucudur.
+
+
+## 5. Tekrar üretilebilirlik uyarısı — dışlanan smoke vakası
+
+BugsInPy-tqdm-1 için önceki olumlu smoke çalışması [run 39461858759](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39461858759), sonraki tekrar [run 39618666531](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618666531) ile yeniden üretilemedi: fixed revizyondaki aynı hedef test TypeError: 'int' object is not subscriptable hatasıyla başarısız oldu. Her iki koşu da metadata'da yazılı Python 3.6.9 yerine Python 3.8.18 kullandı. Bu nedenle ilk olumlu smoke sonucu tekrarlanabilir test kanıtı kabul edilmez ve vaka ana örneklemden kalıcı olarak dışlanır.
+
+Bu uyarı envanter sayımlarını değiştirmez: 501 ham kayıt, 500 temel metadata-kalifiye kayıt, bir metadata tutarsızlığı, sıfır doğrulanmış buggy/fixed test çifti ve sıfır kabul edilmiş doğrulayıcı vaka.

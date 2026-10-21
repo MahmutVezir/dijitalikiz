@@ -81,3 +81,6 @@ Aşama 2 envanter sonucu: [METADATA_INVENTORY_RESULT_2026-10-21.md](METADATA_INV
 - tests/test_inventory_bugsinpy_candidates.py fail-closed ve metadata-only kurallarını sınar.
 - .github/workflows/evidence-abstention-metadata-inventory.yml sadece pinned upstream metadata ağacını indirip envanter artifact'ı üretir; test yürütmez ve model çağırmaz.
 - Envanter otomasyonu tek başına hiçbir vakayı kabul etmez. Operasyonel vaka doğrulama tamamlanana kadar accepted cases = 0 ve inference = false kalır.
+
+
+**Yeni doğrulama notu:** Envanter CI'sı başarılı; fakat dışlanan tqdm smoke testinin yeniden çalıştırması [run 39618666531](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618666531) fixed test tarafında tekrar başarısız oldu. Tek önceki olumlu smoke çalışması tekrarlanabilir kanıt sayılmıyor. Aşama 2 hâlâ 0 kabul edilmiş vaka ve açık operasyonel doğrulama kapısında.

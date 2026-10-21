@@ -59,3 +59,10 @@ Bu CI sonucu yalnızca denetleyicinin kapalı veri durumunda doğru biçimde blo
 ## Aşama 2 envanter güncellemesi — 21 Ekim 2026
 
 [Metadata inventory workflow](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618065599) pinned BugsInPy revizyonunda 501 ham metadata kaydı ve 17 proje saydı. Asgari metadata alanları 500 kayıtta tamam, bir kayıtta buggy/fixed commit kimlikleri aynı. Bu workflow test çalıştırmadı; doğrulayıcı vakalar hâlâ 0. Ayrıntı: METADATA_INVENTORY_RESULT_2026-10-21.md.
+
+
+## 7. Dışlanan smoke vakasının tekrar sonucu
+
+[Run 39618666531](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618666531) esnasında BugsInPy-tqdm-1 için fixed sürüm testi TypeError: 'int' object is not subscriptable nedeniyle başarısız oldu. Aynı vaka için daha önceki olumlu smoke koşusu bu nedenle tekrarlanabilir kabul edilmemelidir. Metadata ile smoke runtime arasındaki Python sürüm farkı sürüyor (3.6.9'a karşı 3.8.18). Bu vaka daha önce açıldığı için kalıcı olarak dışlanmıştır. Smoke iş akışının otomatik push tetiklemesi kaldırıldı; gelecekte yalnızca elle istenirse tanılama amaçlı çalıştırılabilir.
+
+En son no-inference preflight [run 39618666271](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618666271) başarılıydı ancak ready=false, 0 kabul edilmiş vaka/proje ve 16 açık blokaj bildirdi. Bu beklenen sonuçtur ve inference izni değildir.

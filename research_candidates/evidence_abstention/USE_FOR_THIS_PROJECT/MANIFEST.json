@@ -173,5 +173,16 @@
     "accepted_confirmatory_cases": 0,
     "inventory_csv_sha256": "069e649a37a12cd495ad08a82377f76f0b4518b3fd138380321dc53b15663dcb",
     "inference_performed": false
+  },
+  "phase_2_smoke_rerun": {
+    "workflow_run_id": 39618666531,
+    "case_id": "BugsInPy-tqdm-1",
+    "runtime_python": "3.8.18",
+    "dataset_recorded_python": "3.6.9",
+    "result": "fixed_side_failed_on_repeat",
+    "failure": "TypeError: 'int' object is not subscriptable",
+    "prior_successful_smoke_run_id": 39461858759,
+    "interpretation": "The earlier single passing smoke is not reproducible; this case remains permanently excluded.",
+    "automatic_push_trigger_removed": true
   }
 }
