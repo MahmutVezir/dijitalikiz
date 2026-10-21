@@ -30,6 +30,10 @@ KNOWN_PRIOR_EXPOSURE_IDS = {
     "BugsInPy-matplotlib-2", "BugsInPy-pandas-2", "BugsInPy-PySnooper-3",
     "BugsInPy-sanic-3", "BugsInPy-scrapy-3", "BugsInPy-spacy-2",
     "BugsInPy-thefuck-3", "BugsInPy-tornado-3",
+    # V5 first-eight batch used to validate the technical screening workflow.
+    "BugsInPy-tqdm-3", "BugsInPy-youtube-dl-3", "BugsInPy-ansible-3",
+    "BugsInPy-black-5", "BugsInPy-cookiecutter-4", "BugsInPy-fastapi-4",
+    "BugsInPy-httpie-4", "BugsInPy-keras-3",
 }
 COMMIT = re.compile(r"^[0-9a-fA-F]{7,64}$")
 REQUIRED = {
