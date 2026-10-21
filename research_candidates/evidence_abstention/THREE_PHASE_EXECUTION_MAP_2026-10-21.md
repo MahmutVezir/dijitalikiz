@@ -18,6 +18,7 @@ Bu belge önceki teknik aşamaları üç ana teslimata birleştirir. Bir dosyan�
 - Boş vaka sicili, iki panelin ayrılmasını zorunlu tutan kabul kuralları ve manuel vaka inceleme formu/rehberi oluşturuldu.
 - Daha önce açılmış fizibilite/smoke vakaları kalıcı olarak doğrulayıcı örneklem dışına çıkarıldı.
 - Yedi önce açılmamış aday üzerinde yalnızca teknik hedef-test sinyallerini toplamak için bir no-inference iş akışı hazırlandı. Bu adaylar iş akışını doğrulama amacıyla kullanıldığından sonuç ne olursa olsun doğrulayıcı örnekleme girmeyecek.
+- İlk biten Black-2 artefaktında Python 3.8.3 eşleşti, fakat buggy taraftaki hata eksik `tests/data/fmtonoff4.py` fixture'ından kaynaklandı; bu geçerli reprodüksiyon sayılmadı. Workflow açıkça listelenmiş fixture'ları buggy çalışma ağacına kopyalayacak şekilde düzeltildi.
 
 ### Kapatma kapısı
 Aşağıdakilerin hepsi gerçek kayıt ve bağımsız kanıtla tamamlanmadan Aşama 1 kapanmaz:
