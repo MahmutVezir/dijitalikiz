@@ -14,12 +14,13 @@
 | Temel metadata kapısı | 500 kayıt geçti; 1 kayıt buggy/fixed commit tutarsızlığı nedeniyle sorunlu |
 | Gerçek test çifti doğrulaması | 0 |
 | Güncel metadata tarama kuyruğu | 487 aday / 17 proje (78 ilk grup, 409 sonraki grup) |
+| Dondurulmuş ilk tarama sırası | 120 aday; metadata-only, testler henüz çalıştırılmadı |
 | İlk-dalga teknik triage | 4 hedefe özgü görünen sinyal; 1 fixture sorunu; 2 ortam/bağımlılık engeli. Tümü kalıcı dışlama. |
 | Kabul edilmiş bağımsız doğrulayıcı vaka | **0** |
 | Yeni proje için LLM çıkarımı | **Yapılmadı; kapalı** |
 | Teknik ön kontrol | GitHub Actions geçti; rapor yine de `ready=false` diyor |
 
-Ayrıntı: [güncel aday kuyruğu sonucu](research_candidates/evidence_abstention/SCREENING_QUEUE_RESULT_2026-10-21.md), [teknik hazırlık denetimi](research_candidates/evidence_abstention/STAGE4_TECHNICAL_READINESS_2026-10-21.md), [ilk-dalga teknik triage](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39638198482) ve [no-inference test koşusu](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39640796171).
+Ayrıntı: [güncel aday kuyruğu sonucu](research_candidates/evidence_abstention/SCREENING_QUEUE_RESULT_2026-10-21.md), [ilk 120 adaylık sabit sıra](research_candidates/evidence_abstention/SCREENING_COHORT_120_2026-10-21.json), [teknik hazırlık denetimi](research_candidates/evidence_abstention/STAGE4_TECHNICAL_READINESS_2026-10-21.md), [ilk-dalga teknik triage](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39638198482) ve [no-inference test koşusu](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39640796171).
 
 501 kayıt bir deney örneklemi değildir. Doğrulayıcı çalışma için **en az 60 bağımsız vaka ve en az 8 ayrı upstream proje** gereklidir; hedef 80 vakadır. Her vaka için aynı hedef testin buggy sürümde beklenen kusuru göstermesi, fixed sürümde geçmesi, uygun lisans, doğrulanmış kök neden, kanıt seviyeleri, sızıntı ve önceki maruziyet kontrolleri gerekir.
 
