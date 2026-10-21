@@ -66,3 +66,10 @@ Bu CI sonucu yalnızca denetleyicinin kapalı veri durumunda doğru biçimde blo
 [Run 39618666531](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618666531) esnasında BugsInPy-tqdm-1 için fixed sürüm testi TypeError: 'int' object is not subscriptable nedeniyle başarısız oldu. Aynı vaka için daha önceki olumlu smoke koşusu bu nedenle tekrarlanabilir kabul edilmemelidir. Metadata ile smoke runtime arasındaki Python sürüm farkı sürüyor (3.6.9'a karşı 3.8.18). Bu vaka daha önce açıldığı için kalıcı olarak dışlanmıştır. Smoke iş akışının otomatik push tetiklemesi kaldırıldı; gelecekte yalnızca elle istenirse tanılama amaçlı çalıştırılabilir.
 
 En son no-inference preflight [run 39618666271](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618666271) başarılıydı ancak ready=false, 0 kabul edilmiş vaka/proje ve 16 açık blokaj bildirdi. Bu beklenen sonuçtur ve inference izni değildir.
+
+
+## Son durum teyidi — 21 Ekim 2026
+
+Bu belgenin yazıldığı günün en son kaydedilmiş no-inference kontrolü [Actions run 39619057132](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39619057132) başarıyla tamamlanmıştır. Başarılı CI yalnızca test ve salt-okunur preflight raporlamasının çalıştığını gösterir; deney hazır sayılmaz. Run raporundaki karar ready=false olarak kalır; kabul edilmiş doğrulayıcı vaka sayısı 0 ve yeni çalışma için model çıkarımı yapılmış değildir.
+
+Repo giriş sayfası artık bu araştırmayı tek aktif TÜBİTAK 2204-A odağı olarak sunar. Bu belgesel düzenleme hiçbir veri/ön kayıt/runtime kapısını otomatik kapatmaz ve inference izni vermez.
