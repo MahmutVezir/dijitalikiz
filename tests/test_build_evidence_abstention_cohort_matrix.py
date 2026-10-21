@@ -139,5 +139,19 @@ class CohortMatrixTests(unittest.TestCase):
                 MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",2)
 
 
+    def test_historical_cohort_fails_closed_when_it_contains_later_exposed_case(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            rows=[row(1,"ansible"),row(2,"other")]
+            q,c=self.setup_files(root,rows)
+            cohort=json.loads(c.read_text(encoding="utf-8"))
+            cohort["case_ids"][0]="BugsInPy-ansible-1"
+            # Keep queue hash intact; this test is specifically about the known
+            # exposure guard, not a hash mismatch.
+            c.write_text(json.dumps(cohort),encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"permanently excluded after workflow debugging"):
+                MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",1)
+
+
 if __name__=="__main__":
     unittest.main()
