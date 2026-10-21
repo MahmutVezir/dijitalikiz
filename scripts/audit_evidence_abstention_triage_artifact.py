@@ -142,9 +142,19 @@ def audit(root):
         buggy_log,
         re.IGNORECASE | re.DOTALL,
     ))
-    target_signals_present = raw_pair_signals_present and not likely_fixture_or_harness_error
+    likely_environment_or_harness_error = bool(re.search(
+        r"(?:ModuleNotFoundError|No module named|ImportError while loading conftest|Error loading plugin|pytest.*plugin.*error|"
+        r"command not found|could not build wheels?|subprocess-exited-with-error|"
+        r"error: command ['\\\"]?gcc['\\\"]? failed|fatal error:|"
+        r"environment.*(?:not ready|failed|missing)|cannot import name)",
+        buggy_log,
+        re.IGNORECASE | re.DOTALL,
+    ))
+    target_signals_present = raw_pair_signals_present and not likely_fixture_or_harness_error and not likely_environment_or_harness_error
     if likely_fixture_or_harness_error:
         warnings.append("buggy log looks like a missing test fixture or harness file; do not count it as a target bug failure without a separate review")
+    if likely_environment_or_harness_error:
+        warnings.append("buggy log looks like an environment/dependency/plugin error; do not count it as a target bug failure")
     if not raw_pair_signals_present:
         warnings.append("the automated target-test signals do not show a complete buggy-fail/fixed-pass pair; inspect raw logs")
 
@@ -155,6 +165,7 @@ def audit(root):
         "technical_buggy_fail_fixed_pass_signals_present": target_signals_present,
         "raw_buggy_fail_fixed_pass_signals_present": raw_pair_signals_present,
         "likely_fixture_or_harness_error": likely_fixture_or_harness_error,
+        "likely_environment_or_harness_error": likely_environment_or_harness_error,
         "manual_review_required": True,
         "accepted_for_confirmatory": False,
         "confirmatory_eligible": False,
