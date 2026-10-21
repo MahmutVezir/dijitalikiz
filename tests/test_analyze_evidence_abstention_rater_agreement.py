@@ -69,12 +69,10 @@ class RaterAgreementTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"locked independent ratings"):
             MODULE.analyze_rows(rows,minimum_tasks=4,bootstrap_replicates=100)
 
-    def test_rejects_inconsistent_panel_pairing(self):
+    def test_rejects_duplicate_rating_for_same_task_and_rater(self):
         rows=make_rows(4)
-        for row in rows:
-            if row["task_id"]=="opaque-0003" and row["rating_dimension"]=="root_cause_accuracy" and row["rater_id"]=="gt-a":
-                row["rater_id"]="gt-c"
-        with self.assertRaisesRegex(ValueError,"reviewer pair changes"):
+        rows.append(dict(rows[0]))
+        with self.assertRaisesRegex(ValueError,"duplicate rating"):
             MODULE.analyze_rows(rows,minimum_tasks=4,bootstrap_replicates=100)
 
 
