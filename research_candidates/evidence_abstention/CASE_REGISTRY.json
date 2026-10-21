@@ -11,6 +11,8 @@
     "No model inference has been performed for this study.",
     "An accepted case must explicitly document buggy_test_outcome=target_failure_reproduced and fixed_test_outcome=target_test_passed; unrelated environment/setup failures do not qualify.",
     "For every accepted case, runtime_python_version must exactly equal metadata_python_version; the runtime fingerprint and both test logs require SHA-256 values and artifact references.",
-    "Acceptance also requires test_pair_verified=true and evidence_levels_reviewed=true, in addition to license, leakage, prior-exposure, and two-independent-reviewer gates."
+    "Acceptance also requires test_pair_verified=true and evidence_levels_reviewed=true, in addition to license, leakage, prior-exposure, and two-independent-reviewer gates.",
+    "Accepted registry records must carry two unique pseudonymous ground_truth_reviewer_ids and two unique evidence_reviewer_ids; the two panels must be disjoint to protect evidence-blinding.",
+    "All eight first-wave technical-triage candidates (black-2, cookiecutter-1, fastapi-1, luigi-1, sanic-1, scrapy-1, thefuck-1, tornado-1) are permanently excluded from confirmatory sampling because their test setup/targets were inspected while developing the validation pipeline."
   ]
 }

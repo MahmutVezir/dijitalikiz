@@ -1,0 +1,140 @@
+{
+  "template_version": "0.1",
+  "record_type": "manual_case_review_intake_template_not_a_case",
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "case_id": "",
+  "status": "candidate_not_accepted",
+  "accepted_for_confirmatory": false,
+  "dataset_provenance": {
+    "dataset_repository": "https://github.com/soarsmu/BugsInPy",
+    "dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+    "upstream_project": "",
+    "bug_id": "",
+    "source_repository": "",
+    "project_metadata_sha256": "",
+    "bug_metadata_sha256": "",
+    "run_test_sha256": "",
+    "setup_script_sha256": "",
+    "case_metadata_recorded_python": "",
+    "buggy_commit": "",
+    "fixed_commit": "",
+    "test_command_lines": []
+  },
+  "prior_exposure_and_independence": {
+    "prior_exposure_status": "unknown",
+    "reviewer_opened_patch_or_issue_before_case_freeze": "unknown",
+    "previously_used_for_smoke_or_calibration": "unknown",
+    "same_bug_family_or_upstream_pr_as_another_case": "unknown",
+    "duplicate_or_dependence_candidates": [],
+    "independent_case_reviewers": [],
+    "review_status": "not_reviewed",
+    "notes": ""
+  },
+  "license_review": {
+    "review_status": "not_reviewed",
+    "license_name": "",
+    "license_file_path": "",
+    "license_file_revision": "",
+    "license_file_sha256": "",
+    "redistribution_or_derivative_constraints": "",
+    "attribution_required": "",
+    "reviewer_pseudonymous_id": "",
+    "decision": "not_reviewed",
+    "notes": ""
+  },
+  "technical_reproduction": {
+    "runtime_python_observed": "",
+    "runtime_fingerprint_sha256": "",
+    "buggy_test_log_uri": "",
+    "buggy_test_log_sha256": "",
+    "buggy_test_outcome": "not_run",
+    "buggy_failure_is_target_specific": "unknown",
+    "fixed_test_log_uri": "",
+    "fixed_test_log_sha256": "",
+    "fixed_test_outcome": "not_run",
+    "fixed_pass_confirmed_on_same_test": "unknown",
+    "environment_setup_completed": "unknown",
+    "raw_logs_reviewed_by_human": false,
+    "reviewer_pseudonymous_id": "",
+    "decision": "not_reviewed",
+    "notes": ""
+  },
+  "ground_truth_review": {
+    "review_status": "not_reviewed",
+    "root_cause_statement": "",
+    "evidence_references": [],
+    "alternative_root_causes_considered": [],
+    "reviewers": [
+      {"pseudonymous_id": "", "decision": "not_reviewed", "evidence_references": [], "rationale": ""},
+      {"pseudonymous_id": "", "decision": "not_reviewed", "evidence_references": [], "rationale": ""}
+    ],
+    "reviewer_panels_independent": "unknown",
+    "agreement_or_adjudication": "not_started",
+    "adjudicator_pseudonymous_id": "",
+    "adjudication_record_uri": "",
+    "decision": "not_reviewed"
+  },
+  "evidence_sufficiency_review": {
+    "review_status": "not_reviewed",
+    "evidence_reviewers": [
+      {"pseudonymous_id": "", "decision": "not_reviewed", "notes": ""},
+      {"pseudonymous_id": "", "decision": "not_reviewed", "notes": ""}
+    ],
+    "must_be_distinct_from_ground_truth_panel": true,
+    "E1_sufficient": {
+      "packet_sha256": "",
+      "evidence_item_ids": [],
+      "supports_gold_root_cause": "not_reviewed",
+      "plausible_alternatives_ruled_out": [],
+      "reviewer_decisions": []
+    },
+    "E2_partial": {
+      "packet_sha256": "",
+      "evidence_item_ids": [],
+      "evidence_removed_or_withheld": [],
+      "plausible_alternatives_remaining": [],
+      "reviewer_decisions": []
+    },
+    "E3_insufficient": {
+      "packet_sha256": "",
+      "evidence_item_ids": [],
+      "why_no_single_root_cause_is_entailed": "",
+      "plausible_alternatives_remaining": [],
+      "reviewer_decisions": []
+    },
+    "all_packets_prepared_before_model_outputs": "unknown",
+    "decision": "not_reviewed"
+  },
+  "leakage_and_contamination_review": {
+    "review_status": "not_reviewed",
+    "gold_patch_or_fixed_commit_exposed_in_prompt": "unknown",
+    "issue_or_pr_identifiers_removed": "unknown",
+    "test_names_or_metadata_directly_reveal_answer": "unknown",
+    "public_training_contamination_can_be_ruled_out": false,
+    "contamination_limit_statement": "Public pretraining contamination cannot be proven absent; record the audit method and residual risk.",
+    "reviewer_pseudonymous_id": "",
+    "decision": "not_reviewed",
+    "notes": ""
+  },
+  "hashes_and_artifacts": {
+    "runtime_fingerprint_sha256": "",
+    "buggy_test_log_sha256": "",
+    "fixed_test_log_sha256": "",
+    "evidence_packet_sha256": {
+      "E1_sufficient": "",
+      "E2_partial": "",
+      "E3_insufficient": ""
+    },
+    "review_decision_record_sha256": ""
+  },
+  "final_case_decision": {
+    "accepted_for_confirmatory": false,
+    "decision": "not_reviewed",
+    "decision_date": "",
+    "decision_record_uri": "",
+    "blockers": [
+      "This template is not a case record.",
+      "Do not mark accepted until every case-level gate is independently documented and the global readiness preflight passes."
+    ]
+  }
+}

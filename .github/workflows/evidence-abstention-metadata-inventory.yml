@@ -9,6 +9,8 @@ on:
       - "tests/test_inventory_bugsinpy_candidates.py"
       - "scripts/build_evidence_abstention_screening_queue.py"
       - "tests/test_build_evidence_abstention_screening_queue.py"
+      - "scripts/audit_evidence_abstention_triage_artifact.py"
+      - "tests/test_audit_evidence_abstention_triage_artifact.py"
       - "research_candidates/evidence_abstention/DATA_FEASIBILITY.md"
       - ".github/workflows/evidence-abstention-metadata-inventory.yml"
   pull_request:
@@ -41,10 +43,11 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Test metadata inventory and screening queue utilities
+      - name: Test metadata inventory, screening queue and triage audit utilities
         run: |
           python -m unittest discover -s tests -p 'test_inventory_bugsinpy_candidates.py' -v
           python -m unittest discover -s tests -p 'test_build_evidence_abstention_screening_queue.py' -v
+          python -m unittest discover -s tests -p 'test_audit_evidence_abstention_triage_artifact.py' -v
 
       - name: Fetch exact pinned BugsInPy metadata tree
         shell: bash

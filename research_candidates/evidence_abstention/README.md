@@ -2,7 +2,7 @@
 
 **Tek aktif hedef:** 2027 TÜBİTAK 2204-A’da finalistlik düzeyinde, tamamlanmış ve bilimsel olarak savunulabilir bir araştırma sunmak. Finalistlik garanti edilemez; ölçütümüz gerçek kanıt ve dürüst raporlamadır.
 
-**Güncel bilimsel durum (21 Ekim 2026):** Proje tamamlanmadı. Aşama 1 hedefli literatür incelemesi düzeyinde tamamlandı; sistematik derleme değildir. Aşama 2 kaynak metadata envanteri koşullu tamamlandı, ancak kabul edilmiş bağımsız vaka sayısı 0’dır. Aşama 3 tasarım belgeleri hazır, fakat protokol ön kayıtlı/dondurulmuş değildir. Aşama 4 no-inference preflight teknik olarak test edildi, ancak `ready=false`; yeni araştırma için model çıkarımı yapılmadı.
+**Güncel bilimsel durum (21 Ekim 2026):** Proje tamamlanmadı. Aşama 1 hedefli literatür incelemesi düzeyinde tamamlandı; sistematik derleme değildir. Aşama 2 kaynak metadata envanteri koşullu tamamlandı; 487 adaylı güncel kuyruğu ve sırası sabitlenmiş ilk 120 adaylık intake cohort'u var, ancak kabul edilmiş bağımsız vaka sayısı 0’dır. Aşama 3 tasarım belgeleri hazır, fakat protokol ön kayıtlı/dondurulmuş değildir. Aşama 4 no-inference preflight teknik olarak test edildi, ancak `ready=false`; yeni araştırma için model çıkarımı yapılmadı.
 
 **Tek yürütme planı:** [TÜBİTAK 2204-A ana planı](TUBITAK_2204A_MASTER_PLAN_2026-10-21.md). Resmî başvuru son tarihi 4 Ocak 2027, saat 17.30’dur; [TÜBİTAK 2204-A çağrısı](https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi).
 
@@ -47,7 +47,14 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 
 ## Belgeler
 
-- [Aday doğrulama kuyruğu sonucu](SCREENING_QUEUE_RESULT_2026-10-21.md) — 495 metadata adayını 17 proje arasında dengeli tarama sırasına koyar; kabul edilmiş vaka anlamına gelmez.
+- [İlk 120 adayın sabit tarama sırası](SCREENING_COHORT_120_2026-10-21.json) — metadata-only aday listesi, 0 kabul edilmiş vaka.
+
+- [Üç ana aşamalı yürütme haritası](THREE_PHASE_EXECUTION_MAP_2026-10-21.md) — projenin ne kadarının hazır olduğunu ve hangi kanıt kapılarının hâlâ açık kaldığını tek noktada toplar.
+
+- [Manuel vaka inceleme rehberi](CASE_REVIEW_GUIDE.md) — test/lisans/ground truth/kanıt/sızıntı kabul sırası.
+- [Manuel vaka inceleme formu (JSON)](CASE_REVIEW_INTAKE_TEMPLATE.json) — boş şablon; kabul edilmiş vaka değildir.
+
+- [Aday doğrulama kuyruğu sonucu](SCREENING_QUEUE_RESULT_2026-10-21.md) — 487 metadata adayını 17 proje arasında dengeli tarama sırasına koyar; kabul edilmiş vaka anlamına gelmez.
 
 - `TUBITAK_2204A_MASTER_PLAN_2026-10-21.md` — TÜBİTAK 2204-A için tek aktif yürütme planı.
 - `TUBITAK_2204A_JURY_CRITERIA_CHECKLIST_2026-10-21.md` — resmî ön değerlendirme ölçütlerine göre kapı kontrolü.
@@ -98,3 +105,6 @@ Aşama 2 envanter sonucu: [METADATA_INVENTORY_RESULT_2026-10-21.md](METADATA_INV
 ## Tek odak kararı
 
 Bu çalışma için başka yarışma veya ayrı araştırma hattı yürütülmeyecek. Şu an yapılacak iş, vaka kabul kapısını gerçek kanıtlarla kapatmak ve başvuruya hazır tamamlanmış bir bilimsel çalışma üretmektir. 501 ham metadata kaydı, 500 temel metadata-kalifiye kayıt olarak kalır; bunların hiçbiri otomatik kabul edilmiş deney vakası değildir. En az 60 kabul edilmiş bağımsız vaka / 8 proje ve tüm yöntem kapıları sağlanana kadar model çıkarımı kapalı tutulur.
+
+ 
+**Exact-runtime smoke note:** The previously exposed `BugsInPy-tqdm-1` diagnostic now completed under its metadata Python 3.6.9. Buggy target test failed with the target TypeError and a teardown error; fixed target test passed. This case remains permanently excluded. See [the data-feasibility record](DATA_FEASIBILITY.md). The initial diagnostic ZIP's embedded checksum list had runner-absolute paths; a follow-up workflow fix adds portable relative checksums and self-validation, pending its next CI run.

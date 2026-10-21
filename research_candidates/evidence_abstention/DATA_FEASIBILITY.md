@@ -154,3 +154,78 @@ Bu bulgu otomasyon/ortam farkını çözmez. Smoke workflow artık her belge de�
 Bu çıktı sadece inceleme sırasını iyileştirir. İş akışı hiçbir vaka testi çalıştırmadı, lisans/kök neden/kanıt paketi incelemedi ve model çağırmadı. Kuyruktaki her satırın `accepted_for_confirmatory=false`, test pair doğrulaması false ve prior exposure durumu unknown kaldı. Dolayısıyla **kabul edilmiş doğrulayıcı vaka sayısı 0** ve Aşama 2'nin operasyonel kabul kapısı hâlâ açıktır.
 
 Sayımlar, artifact SHA-256'ları ve test kanıtları: [SCREENING_QUEUE_RESULT_2026-10-21.md](SCREENING_QUEUE_RESULT_2026-10-21.md). CSV çıktısının SHA-256'sı `19dbc7cdc00a20614d37a80b62aa567427359100ceb1b5c3a3e8cf9441b61d92`; ZIP artifact SHA-256'sı `6998f8c5141469f028f1ee7cda1708813ee592edd22ca57a0dbeea0cffb9f23c`.
+
+
+### 10.2 Exact-metadata-runtime smoke diagnostic — 21 October 2026
+
+The excluded case `BugsInPy-tqdm-1` was rechecked in [Actions run 39632366228](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39632366228), using the metadata-recorded **Python 3.6.9** rather than the previous Python 3.8.18 runtime. The test pair produced:
+- buggy revision: target test failed with `TypeError: 'int' object is not subscriptable`; teardown also reported a live tqdm instance;
+- fixed revision: the same target test reported `1 passed`;
+- runtime metadata match: true.
+
+This shows the target-specific buggy failure and fixed-side pass under the recorded Python version in this diagnostic run. It does **not** make the case confirmatory-eligible: the patch/metadata had already been opened during feasibility review, and the case remains permanently excluded. This run did not review its root-cause ground truth, license, evidence sufficiency or contamination.
+
+Artifact: `evidence-abstention-tqdm-exact-python-smoke`, ID `12359043643`, ZIP SHA-256 `ab7db5d76ca5cfa7d8a01fe8a93fbc6df0938b768ac5727d7e16aef60e98618a`. Inspection of the uploaded files found that the first version of the internal `SHA256SUMS` used runner-absolute paths; the follow-up workflow now writes relative paths and runs `sha256sum -c` before upload. The previous diagnostic artifact's individual checksum manifest must not be described as portable/verified.
+
+
+## İlk dalga hedef-test artefaktı — Black-2 (run 39638198482)
+
+[Ham artefakt](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39638198482/artifacts/12363477662), ZIP SHA-256: `c64db46812165ba8cfb397f561782a2c573ccfd8d972e6b85338b0a460f3e37e`.
+
+- Python metadata/runtime tam eşleşti: 3.8.3.
+- Buggy hedef testinin exit code'u 1; fixed çalışma ağacındaki testin exit code'u 0.
+- **Ancak buggy hata sinyali hedef kusuru doğrulamıyor:** ham log `tests/data/fmtonoff4.py` dosyasının buggy çalışma ağacında bulunmadığını gösteren `FileNotFoundError`. Fixed çalışma ağacı bu test veri dosyasını içerdi ve test geçti.
+- Bu yüzden vaka, buggy-fail/fixed-pass **geçerli kök-neden reprodüksiyonu sayılmadı**. Vaka zaten workflow doğrulaması için kullanıldığı için doğrulayıcı örneklem dışında kalıcı olarak tutulur.
+- Bu gözlem üzerine workflow, sabit çalışma ağacındaki yalnızca açıkça tanımlanmış test-fixture dosyalarını buggy ağacına kopyalayabilen bir tanılama adımıyla güncellendi. Sonraki koşu bu fixture'ı uygulayıp gerçek formatter davranışını tekrar inceleyecektir; bu yeni koşu tamamlanmadan düzeltilmiş sonuç iddia edilmeyecektir.
+- Raw artifact SHA256 manifesti mevcut koşuda doğrulandı; artifact, otomatik kabul kararı içermez.
+
+Bu, CI işinin başarıyla tamamlanmasının bilimsel doğrulama ile aynı olmadığını gösteren somut örnektir.
+
+
+### FastAPI-1 and Scrapy-1 — run 39638198482
+
+Two more focused target-test artifacts completed in the same no-inference workflow. I downloaded each ZIP and independently checked every entry against its internal `SHA256SUMS`; all listed checksums passed and no unlisted files were found.
+
+| Candidate (permanently excluded) | Runtime | Buggy-side target output | Fixed-side target output | Interpretation |
+|---|---|---|---|---|
+| `BugsInPy-fastapi-1` | Metadata/runtime both 3.8.3 | `TypeError: jsonable_encoder() got an unexpected keyword argument 'exclude_defaults'` | Same target test: `1 passed` | Target-specific signal is consistent with the intended missing-parameter behavior. Still requires manual source/patch review to call it a reproduced ground-truth bug; not accepted. |
+| `BugsInPy-scrapy-1` | Metadata/runtime both 3.8.3 | `TypeError: expected string or bytes-like object` from `url_pattern.match(domain)` in the targeted offsite spider middleware tests | Same two targeted tests: `Ran 2 tests ... OK` | Target-specific signal is consistent with the intended domain-pattern handling behavior. Still requires manual source/patch review; not accepted. |
+
+Artifact references and GitHub ZIP SHA-256:
+
+- FastAPI: artifact ID `12364391592`, SHA-256 `d03ef508e42bd30d3410a9f7e8fc454ec5267fc00650dadc1ded2b2b74380a9c`.
+- Scrapy: artifact ID `12363423446`, SHA-256 `b4ec4122927efdb1cb8d84705d011c2bc1eaf652988b2bdfe5ed729f2cbac97f`.
+
+These two cases were used in the technical workflow-validation wave and remain permanently excluded from the confirmatory dataset regardless of their diagnostic signal. They establish neither license clearance nor ground-truth/evidence-panel agreement. The initial wave used a workflow version that wrote checksums directly; I verified its three completed ZIPs locally. New workflow runs also include the separate `artifact-audit.json` report.
+
+
+## 13. Güncel dışlama uzlaştırması ve ilk-dalga teknik artefaktları — 21 Ekim 2026
+
+Önceki metadata kuyruğu raporundaki 495 sayısı, o anki dışlama kurallarının anlık fotoğrafıydı. Daha sonra ilk-dalga workflow-debug vakalarının da kalıcı dışlamaya eklenmesiyle, en güncel sabit BugsInPy revizyonu üzerindeki tarama kuyruğu **487 aday / 17 upstream proje** oldu. Dağılım: ilk turda **78**, sonraki turda **409**; 13 kalıcı dışlama (5 daha önce açılmış fizibilite/smoke vakası + 8 teknik workflow doğrulama vakası) ve 1 metadata/commit tutarsızlığı nedeniyle hariç tutulan kayıt. [Son başarılı metadata/kuyruk/artefakt denetimi](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39640796171). [Güncel kuyruk raporu](SCREENING_QUEUE_RESULT_2026-10-21.md).
+
+### İlk-dalga test logları — yorum sınırı
+
+[İlk-dalga Actions çalışması](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39638198482) yedi workflow-debug adayı için artefakt üretti. Tüm yedi ZIP'in dahili SHA-256 manifesti açılıp yerel olarak doğrulandı; her birinde listelenen hash'ler eşleşti ve listelenmemiş dosya bulunmadı. Bu doğrulama yalnızca artefakt bütünlüğüdür.
+
+| Vaka (kalıcı dışlama) | Teknik gözlem | Karar |
+|---|---|---|
+| `BugsInPy-fastapi-1` | Python 3.8.3 eşleşti; buggy hedef testi `exclude_defaults` anahtar sözcüğü için `TypeError` verdi; fixed çalışma ağacında aynı test geçti. | Hedef davranışla tutarlı ham sinyal; bağımsız root-cause/lisans/kanıt puanlama yapılmadı. |
+| `BugsInPy-scrapy-1` | Python 3.8.3 eşleşti; buggy hedef testleri `url_pattern.match(domain)` noktasında `TypeError` verdi; fixed çalışma ağacında ikisi de geçti. | Hedef davranışla tutarlı ham sinyal; kabul değil. |
+| `BugsInPy-sanic-1` | Python 3.8.3 eşleşti; buggy test middleware sırasını beklenen `[1,2,3,4,5,6]` yerine `[1,2,3,6,5,4]` gördü; fixed test geçti. İlk otomatik imza yakalayıcısı bu pytest çıktı biçimini algılamadı. | Hedef davranışla tutarlı; imza algılama düzeltildi. Kabul değil. |
+| `BugsInPy-tornado-1` | Python 3.7.0 eşleşti; buggy WebSocket testi stream hazır olmadan `set_nodelay` çağrısıyla başarısız oldu; fixed test geçti. | Hedef davranışla tutarlı ham sinyal; kabul değil. |
+| `BugsInPy-black-2` | Python 3.8.3 eşleşti; buggy test `tests/data/fmtonoff4.py` bulunmadığı için hata verdi; fixed test geçti. | Gerçek bug reprodüksiyonu sayılmaz. Açıkça tanımlı test fixture'ı kopyalanıp hash'lenerek yeniden test edilecek; vaka yine kalıcı dışlama. |
+| `BugsInPy-luigi-1` | Python 3.8.3 eşleşti; her iki tarafta da `pytest_sanic` eklentisi, kurulum başarısızlığı nedeniyle kurulu olmayan `sanic` modülünü import edemedi. | Ortam/bağımlılık hatası; bug sinyali değil. |
+| `BugsInPy-thefuck-1` | Python 3.7.0 eşleşti; her iki tarafta da `psutil==5.7.0` derlemesi/bağlama hatası sonrası test açılışında `ModuleNotFoundError: psutil` oluştu. | Ortam/bağımlılık hatası; bug sinyali değil. |
+
+Bu sekiz workflow-debug vakası ana doğrulayıcı kuyruğundan çıkarılmıştır; cookiecutter-1 de eksik `non_ascii.json` fixture'ı nedeniyle kalıcı dışlamadadır. Yeni kod, pytest `FAILURES` özetini yakalayacak, test exit kodlarını sayısal JSON alanları olarak saklayacak, sabit fixture'ı kopyalamadan önce/sonra provenance hash'leri kaydedecek ve her artefakta `artifact-audit.json` ekleyecektir. Bir sonraki run bu değişikliklerin doğrulama koşusudur; sonuçlar insan incelemesi yerine geçmez.
+
+**Bilimsel durum değişmedi:** 0 kabul edilmiş doğrulayıcı vaka; yeni model çıkarımı yok.
+
+ 
+## 14. Dondurulmuş intake sırası ve yeni v6 artefakt denetimi
+
+İlk 120 metadata adayı [SCREENING_COHORT_120_2026-10-21.json](SCREENING_COHORT_120_2026-10-21.json) içinde sabitlenmiştir. Bu, güncel queue CSV'sinin ilk 120 satır sırasıdır; örnekleme rastgele değildir ve sonuçlara göre değiştirilmeyecektir. Henüz bu cohort vakaları için gerçek test çifti çalıştırılmadı; accepted cases = 0.
+
+[İlk-dalga run 39641682522](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39641682522) yedi workflow-debug vakasını tekrar deniyor. Black-2 ve FastAPI-1 artefaktları (sırasıyla ID `12364903680` ve `12366405628`) indirildi, ZIP SHA-256 doğrulandı ve her iç dosya `SHA256SUMS` ile eşleştirildi. Black-2'de eksik fixture sorunu giderildikten sonra gerçek formatlama testi buggy tarafta başarısız, fixed tarafta geçti; FastAPI-1'de `exclude_defaults` hedef testi buggy tarafta TypeError, fixed tarafta geçti. Her ikisinde de `artifact-audit.json` bütünlük kontrolünü geçti ve `accepted_for_confirmatory=false` kaldı. Bunlar workflow doğrulama amacıyla kullanıldığından kalıcı dışlamadır; bilimsel vaka sayısına girmez.
+
+Diğer ilk-dalga işlerinin bitişi ve artefaktları henüz doğrulanmadı. Bu gözlemler yalnızca teknik iş akışının kalitesini sınamak içindir; hiçbir insan ground-truth, lisans veya E1/E2/E3 kanıt kararı yerine geçmez.

@@ -1,0 +1,115 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "purpose": "First-wave technical triage of previously unopened BugsInPy candidate cases; this manifest is not a confirmatory registry.",
+  "dataset_repository": "https://github.com/soarsmu/BugsInPy",
+  "dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "created_on": "2026-10-21",
+  "model_inference_performed": false,
+  "accepted_confirmatory_cases": 0,
+  "cases": [
+    {
+      "case_id": "BugsInPy-black-2",
+      "project": "black",
+      "bug_id": "2",
+      "python_version": "3.8.3",
+      "buggy_commit_id": "c8ca6b2b9ff3510bee12129824cebfc2fc51e5b2",
+      "fixed_commit_id": "892eddacd215d685e136686b7f629ade70adca83",
+      "run_test_sha256": "661c7eff06a036821b9e66a3ef8b7c0e46e6a6e815f65db6427aad3f8f6adcec",
+      "target_test_command": "python -m unittest -q tests.test_black.BlackTestCase.test_fmtonoff4",
+      "candidate_status": "technical_triage_only_not_accepted"
+    },
+    {
+      "case_id": "BugsInPy-fastapi-1",
+      "project": "fastapi",
+      "bug_id": "1",
+      "python_version": "3.8.3",
+      "buggy_commit_id": "766157bfb4e7dfccba09ab398e8ec444d14e947c",
+      "fixed_commit_id": "3397d4d69a9c2d64c1219fcbf291ea5697a4abb8",
+      "run_test_sha256": "38172a1aa0b625cc3569da9178538e262fd5fd98ff73938fc8f2cecc8e4caaed",
+      "target_test_command": "pytest tests/test_jsonable_encoder.py::test_encode_model_with_default",
+      "candidate_status": "technical_triage_only_not_accepted"
+    },
+    {
+      "case_id": "BugsInPy-luigi-1",
+      "project": "luigi",
+      "bug_id": "1",
+      "python_version": "3.8.3",
+      "buggy_commit_id": "1164eb6b85b8a70f596dbb99452bec513e72c12e",
+      "fixed_commit_id": "aec5dc2ed8db53fc282a0bd24aabe59031b6d1ba",
+      "run_test_sha256": "99ba7b97181c7159e5da4650b579ccd3fb92908fceb63f9924a583353ceccebd",
+      "target_test_command": "pytest test/server_test.py::MetricsHandlerTest::test_get",
+      "candidate_status": "technical_triage_only_not_accepted"
+    },
+    {
+      "case_id": "BugsInPy-sanic-1",
+      "project": "sanic",
+      "bug_id": "1",
+      "python_version": "3.8.3",
+      "buggy_commit_id": "e7001b00747b659f7042b0534802b936ee8a53e0",
+      "fixed_commit_id": "44973125c15304b4262c51c78b5a86bd1daafa86",
+      "run_test_sha256": "52aea225714646f8ddf3f59ebb82a536c0927d2d553b32fca2c1450638fd38a4",
+      "target_test_command": "pytest tests/test_blueprints.py::test_bp_middleware_order",
+      "candidate_status": "technical_triage_only_not_accepted"
+    },
+    {
+      "case_id": "BugsInPy-scrapy-1",
+      "project": "scrapy",
+      "bug_id": "1",
+      "python_version": "3.8.3",
+      "buggy_commit_id": "c57512fa669e6f6b1b766a7639206a380f0d10ce",
+      "fixed_commit_id": "9d9dea0d69709ef0f7aef67ddba1bd7bda25d273",
+      "run_test_sha256": "fcdb910c48de6fa7d66c991091fb1895e6da9a6033e3b79bc7ba5d81d339ff10",
+      "target_test_command": "python -m unittest -q tests.test_spidermiddleware_offsite.TestOffsiteMiddleware4._get_spiderargs tests.test_spidermiddleware_offsite.TestOffsiteMiddleware4.test_process_spider_output",
+      "candidate_status": "technical_triage_only_not_accepted"
+    },
+    {
+      "case_id": "BugsInPy-thefuck-1",
+      "project": "thefuck",
+      "bug_id": "1",
+      "python_version": "3.7.0",
+      "buggy_commit_id": "2ced7a7f33ae0bec3ffc7a43ce95330bdf6cfcb9",
+      "fixed_commit_id": "444908ce1c17767ef4aaf9e0b4950497914f7f63",
+      "run_test_sha256": "b0331f8719b3c079bff315beb778d1b31c4311cb84c228e0bcfbeb97c160d741",
+      "target_test_command": "pytest tests/rules/test_pip_unknown_command.py::test_get_new_command",
+      "candidate_status": "technical_triage_only_not_accepted"
+    },
+    {
+      "case_id": "BugsInPy-tornado-1",
+      "project": "tornado",
+      "bug_id": "1",
+      "python_version": "3.7.0",
+      "buggy_commit_id": "6a5a0bfa370b6c0d3dbbf9589a560a98202d2baa",
+      "fixed_commit_id": "4677c54cc18bbfbdf0f4dadf11610fab6203fd63",
+      "run_test_sha256": "824b5decbe6517adcba0b9c8e773f810f1490c510b7cec960278d6f46eca777b",
+      "target_test_command": "python -m unittest -q tornado.test.websocket_test.WebSocketTest.test_nodelay",
+      "candidate_status": "technical_triage_only_not_accepted"
+    }
+  ],
+  "case_acceptance": "none; every case must pass separate manual review and the strict registry gates",
+  "screening_iteration": "isolated_target_test_v6_fixture-signature-numeric-exitcodes-artifact-audit",
+  "workflow_behavior": {
+    "trigger": "push to research branch only when this manifest changes, or workflow_dispatch",
+    "test_execution": "Run the focused target test command on each BugsInPy synthetic buggy/fixed working tree; for the cookiecutter tox case run only py36 to avoid unrelated unavailable py37/py38/pypy envs.",
+    "fixed_tree_semantics": "Upstream BugsInPy assembles the fixed working tree by applying changed files from the fixed commit on top of the buggy base; HEAD may remain the buggy commit. Preserve fixed-tree diff hashes/stats rather than requiring HEAD to equal fixed_commit_id.",
+    "automated_output": "Raw exit codes/signatures/logs and SHA256Sums for human review only",
+    "auto_accept": false,
+    "model_inference_performed": false,
+    "last_code_fix": "Explicit fixed-tree test fixture provenance for Black-2; detect pytest failure summaries; store target test exit codes as JSON numbers; verify artifact files before and after generating artifact-audit.json."
+  },
+  "notes": [
+    "Run 39636098825 did not validate any target test for completed cases: missing BugsInPy CLI PATH caused checkout exit 127. This run is classified as workflow setup failure, not a bug reproduction result.",
+    "All eight cases in this technical validation manifest are used only to debug/validate the workflow and inspect raw target-test signals; they are permanently excluded from confirmatory analysis. Do not re-add them to the manual screening queue or case registry.",
+    "Cookiecutter-1 is not run in the next workflow attempt: the prior raw log showed FileNotFoundError for tests/test-generate-context/non_ascii.json on buggy and pass on fixed, so it cannot be counted as an intended bug reproduction. The case remains permanently excluded from confirmatory analysis.",
+    "Run 39638198482 completed seven diagnostic jobs. FastAPI-1, Scrapy-1, Sanic-1 and Tornado-1 showed target-test failures consistent with the intended issue in the buggy working tree and passed the same target test in the fixed working tree. Black-2 was a missing-fixture failure, not a valid reproduction signal. Luigi-1 and TheFuck-1 were blocked by dependency/setup issues. All these workflow-validation cases remain permanently excluded from confirmatory analysis; accepted case count is unchanged at zero. No LLM inference was performed."
+  ],
+  "confirmatory_exclusions": [
+    "BugsInPy-black-2",
+    "BugsInPy-cookiecutter-1",
+    "BugsInPy-fastapi-1",
+    "BugsInPy-luigi-1",
+    "BugsInPy-sanic-1",
+    "BugsInPy-scrapy-1",
+    "BugsInPy-thefuck-1",
+    "BugsInPy-tornado-1"
+  ]
+}

@@ -80,3 +80,12 @@ Repo giriş sayfası artık bu araştırmayı tek aktif TÜBİTAK 2204-A odağı
 Ön kontrol betiği, accepted_for_confirmatory=true olarak işaretlenen her vaka için şu alanları da zorunlu tutacak şekilde sıkılaştırıldı: vaka kaynağındaki Python sürümü ile gerçekten çalışan runtime sürümünün tam eşleşmesi; buggy tarafında hedef hatanın yeniden üretildiğini belirten açık sonuç; fixed tarafında aynı hedef testin geçtiğini belirten açık sonuç; doğrulanmış test çifti; E1/E2/E3 incelemesi; her iki test günlükü için artifact referansı ve SHA-256; runtime fingerprint SHA-256; kök-neden kanıt referansı. Setup veya ortam hatası, buggy-fail kanıtı kabul edilmeyecektir.
 
 Bu değişiklik mevcut vaka sayısını artırmaz ve hiçbir vaka kabul etmez. Birim testleri özellikle runtime uyumsuzluğu ve buggy tarafta hedef hatanın yeniden üretilememesi durumlarında sicilin fail-closed kalmasını sınayacak şekilde genişletildi. Yeni CI sonucu görülene kadar bu kod değişikliğinin doğrulaması “bekliyor” kabul edilmelidir; yeni çalışma için inference hâlâ kapalıdır.
+
+
+## 8. Exact-runtime smoke result — 21 October 2026
+
+Run [39632366228](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39632366228) successfully executed the already-exposed `BugsInPy-tqdm-1` diagnostic under the metadata-recorded Python **3.6.9**. The buggy revision's target test failed with `TypeError: 'int' object is not subscriptable` and an associated post-test live-instance teardown error; the fixed revision's same target test passed (`1 passed`). Runtime Python matched metadata.
+
+This is better evidence than the earlier Python 3.8.18 smoke. It remains a **diagnostic on a permanently excluded case**, because the case's patch/metadata had been opened during feasibility review. It was not accepted into the confirmatory registry, and this run does not establish root-cause review, license clearance, evidence-level agreement or contamination clearance. LLM inference was not performed.
+
+Artifact ID `12359043643`, ZIP SHA-256 `ab7db5d76ca5cfa7d8a01fe8a93fbc6df0938b768ac5727d7e16aef60e98618a`. Inspection found the first artifact's embedded `SHA256SUMS` had absolute runner paths and was not portable. A follow-up commit corrected the workflow to generate relative-path checksums and validate them before upload; do not report the original embedded checksum file as successfully verified.

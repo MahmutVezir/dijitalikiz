@@ -6,6 +6,10 @@
 **Bilimsel rapor başlığı (öneri):** Yazılım Hata Teşhisinde Kanıt Yeterliliğinin Büyük Dil Modellerinin Cevap Vermekten Kaçınma Davranışına Etkisi  
 **Durum:** DEVAM EDİYOR — yeni çalışma için henüz deneysel sonuç yoktur.
 
+## Üç ana aşamalı karar haritası
+
+Ayrıntılı tarih/sorumluluk görünümü için [üç ana aşamalı yürütme haritasına](THREE_PHASE_EXECUTION_MAP_2026-10-21.md) bak. Proje üç ana teslimata ayrılır: (1) veri/protokol/runtime kapılarını kapat, (2) yalnızca izin sonrası dondurulmuş deneyi yürüt, (3) kör puanlama/istatistik/rapor/başvuruyu tamamla. Şu an 1. aşamadayız ve henüz tamamlanmadı.
+
 ## 1. Başarı ölçütümüz
 
 Amaç sadece bir dosya veya çalışan demo üretmek değildir. Başvuruya, jüri sorularına dayanabilecek araştırma sorusu, adil karşılaştırma, bağımsız vaka kanıtı, önceden tanımlanmış analiz, gerçek sonuçlar, tekrarlanabilirlik ve dürüst sınırlılıklar içeren tamamlanmış bir çalışma sunmaktır.
@@ -32,6 +36,10 @@ TÜBİTAK’ın [2026–2027 2204-A çağrı sayfasında](https://tubitak.gov.tr
 
 Modelin tesadüfen doğru tahmin etmesi, tahminin elindeki kanıtlarla desteklendiğini tek başına kanıtlamaz. Bu iki ölçüm birbirinden ayrılacaktır.
 
+### 3.1 Yakın literatür ve katkı sınırı
+
+Bu alanda doğrudan önceki çalışmalar vardır: [ICSE-NIER 2026 “When to Answer and When to Defer”](https://conf.researchr.org/details/icse-2026/icse-2026-nier/47/When-to-Answer-and-When-to-Defer-A-Decision-Framework-for-Reliable-Code-Predictions) kod modellerinde belirsizlik/kalibrasyon/abstention çerçevesini; [Zhang & Wu (2026)](https://www.techscience.com/cmc/v89n1/68467) RAG için kanıt yeterliliği seviyeleri altında answer-abstention davranışını ele alır. Bu nedenle genel abstention davranışı veya kanıt seviyesine göre cevap oranı değişimi özgün iddia olamaz. Çalışmanın **aday** ayrımı, gerçek kusur kök neden vakalarında aynı kanıt gradyanı üzerinde doğru kök neden ile görülen kanıtın desteklediği teşhisi ayrı puanlamak ve E3'te kanıtsız kesin teşhisi, E1'de gereksiz kaçınmayla birlikte ölçmektir. Bunun özgünlüğü kanıtlanmış değildir; [hedefli literatür karşılaştırması](LITERATURE_REVIEW.md) bunu açıkça kaydeder ve sistematik tarama yerine geçmez.
+
 ## 4. Mevcut kanıt ve açık kapılar
 
 21 Ekim 2026 itibarıyla sabitlenmiş BugsInPy metadata envanterinde 17 projede 501 kayıt vardır; 500 kayıt temel metadata kapısını geçmiş, bir kayıtta buggy ve fixed commit aynı görünmüştür. Bu envanter testleri çalıştırmamış, kök nedenleri insan tarafından doğrulamamış ve kanıt paketlerini değerlendirmemiştir.
@@ -46,6 +54,8 @@ Modelin tesadüfen doğru tahmin etmesi, tahminin elindeki kanıtlarla desteklen
 Bu, modelin kötü performans gösterdiği anlamına gelmez; yeni deney henüz yürütülmemiştir.
 
 ## 5. Vaka kabul kapısı
+
+İlk 120 tarama adayı [SCREENING_COHORT_120_2026-10-21.json](SCREENING_COHORT_120_2026-10-21.json) içinde sabitlendi; yedek adaylar kuyruk sırasına göre ilerler. Her aday için [Manuel vaka inceleme rehberi](CASE_REVIEW_GUIDE.md) ve [boş JSON formu](CASE_REVIEW_INTAKE_TEMPLATE.json) kullanılacaktır. Bu formun doldurulması yalnızca kaynak/karar kayıtlarını düzenler; reviewer kararı ve gerçek artefaktlar olmadan bir vakayı kabul etmez.
 
 Her vaka, model çıktısı üretilmeden önce şu koşulların hepsini geçmelidir:
 
