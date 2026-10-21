@@ -116,3 +116,10 @@ Bu çalışma için başka yarışma veya ayrı araştırma hattı yürütülmey
 - Analiz yardımcısının sentetik veriye dayalı 9 testi geçti: [run 39647152364](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39647152364). Bu, analiz kodunun matematik/şema kapılarını test eder; gerçek model verisi değildir.
 - [İlk sekiz önceden sıralanmış adayın teknik taraması](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39647103338) hâlen yürütülüyor. İlk turda upstream BugsInPy derleme betiğinin GitHub runner'ında bulunmayan `~/.bashrc` nedeniyle hata verdiği gözlendi; hiçbir hedef test sonucu üretilmedi. Workflow'a boş `~/.bashrc` oluşturma düzeltmesi eklendi; yeni koşu bu düzeltmeyi sınayacak.
 - Sekiz adayın hiçbiri kabul edilmiş sayılmaz; çalışma kayıtları `accepted_for_confirmatory=false`, `llm_inference_performed=false` olarak kalır. Teknik tarama sonuçları insanın kök neden, lisans, kanıt yeterliliği veya maruziyet onayı yerine geçmez.
+
+
+## Kör puanlayıcı güvenilirliği
+
+- [Kör puanlayıcılar arası uyum protokolü](RATER_AGREEMENT_PROTOCOL.md) ve boş [ham puanlama şablonu](BLINDED_RATER_SCORES_TEMPLATE.csv) eklendi.
+- [Uyum analiz betiği](../../scripts/analyze_evidence_abstention_rater_agreement.py) her görevi iki bağımsız puanlayıcı ile, kök neden ve kanıtsal destek panellerini birbirinden ayırarak değerlendirir; ham anlaşma, Cohen kappa, kategori sayıları ve bootstrap %95 aralığını raporlar.
+- [Analiz CI'sı](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39649070365) sonuç analizi için 10/10 ve puanlayıcı uyumu için 7/7 sentetik testi geçti. Bu rapor gerçek insan puanları değildir; doğrulanmış kabul edilen vaka sayısını değiştirmez.
