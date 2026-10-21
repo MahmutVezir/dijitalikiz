@@ -34,6 +34,10 @@ KNOWN_PRIOR_EXPOSURE_IDS = {
     "BugsInPy-tqdm-3", "BugsInPy-youtube-dl-3", "BugsInPy-ansible-3",
     "BugsInPy-black-5", "BugsInPy-cookiecutter-4", "BugsInPy-fastapi-4",
     "BugsInPy-httpie-4", "BugsInPy-keras-3",
+    # V6 first-eight batch exposed a pytest-runner detector defect.
+    "BugsInPy-luigi-4", "BugsInPy-matplotlib-3", "BugsInPy-pandas-3",
+    "BugsInPy-sanic-4", "BugsInPy-scrapy-4", "BugsInPy-spacy-3",
+    "BugsInPy-thefuck-4", "BugsInPy-tornado-4",
 }
 COMMIT = re.compile(r"^[0-9a-fA-F]{7,64}$")
 REQUIRED = {
