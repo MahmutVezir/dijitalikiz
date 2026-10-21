@@ -8,6 +8,9 @@
     "An empty registry is not evidence of zero observed model errors or zero eligible upstream bugs.",
     "Only independently validated, unexposed cases may be marked accepted_for_confirmatory=true.",
     "Previously opened feasibility/smoke cases are permanently excluded.",
-    "No model inference has been performed for this study."
+    "No model inference has been performed for this study.",
+    "An accepted case must explicitly document buggy_test_outcome=target_failure_reproduced and fixed_test_outcome=target_test_passed; unrelated environment/setup failures do not qualify.",
+    "For every accepted case, runtime_python_version must exactly equal metadata_python_version; the runtime fingerprint and both test logs require SHA-256 values and artifact references.",
+    "Acceptance also requires test_pair_verified=true and evidence_levels_reviewed=true, in addition to license, leakage, prior-exposure, and two-independent-reviewer gates."
   ]
 }
