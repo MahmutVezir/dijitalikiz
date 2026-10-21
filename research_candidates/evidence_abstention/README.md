@@ -47,6 +47,8 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 
 ## Belgeler
 
+- [Aday doğrulama kuyruğu sonucu](SCREENING_QUEUE_RESULT_2026-10-21.md) — 495 metadata adayını 17 proje arasında dengeli tarama sırasına koyar; kabul edilmiş vaka anlamına gelmez.
+
 - `TUBITAK_2204A_MASTER_PLAN_2026-10-21.md` — TÜBİTAK 2204-A için tek aktif yürütme planı.
 - `TUBITAK_2204A_JURY_CRITERIA_CHECKLIST_2026-10-21.md` — resmî ön değerlendirme ölçütlerine göre kapı kontrolü.
 

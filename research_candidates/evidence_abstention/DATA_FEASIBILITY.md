@@ -145,3 +145,12 @@ Envanter CSV'sinin SHA-256 değeri 069e649a37a12cd495ad08a82377f76f0b4518b3fd138
 Daha önceki [run 39461858759](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39461858759) bir kez buggy-fail/fixed-pass verdiği için olumlu tek koşu olarak kaydedilmişti. Ancak 21 Ekim'deki yeniden çalıştırma [run 39618666531](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618666531), buggy revizyonda beklenen hata gözlendikten sonra fixed revizyondaki hedef testi **başarısız** buldu: TypeError: 'int' object is not subscriptable (tqdm/tests/tests_contrib.py::test_enumerate). Dolayısıyla bu smoke sonucu tekrarlanabilir değildir; önceki tek olumlu çalıştırma bir kabul ölçütü olarak kullanılamaz. Metadata Python 3.6.9 kaydederken her iki smoke koşusu da Python 3.8.18 kullandı. Vaka zaten incelenmiş olduğu için doğrulayıcı örneklemden kalıcı olarak dışlanmaya devam eder.
 
 Bu bulgu otomasyon/ortam farkını çözmez. Smoke workflow artık her belge değişikliğinde otomatik çalışmayacak; yalnızca elle dispatch edildiğinde çalıştırılabilir. Eski denemelerin kayıtları saklanır.
+
+
+## 11. Dengeli aday doğrulama kuyruğu — 21 Ekim 2026
+
+[Metadata + queue workflow run](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39631244221) başarıyla tamamlandı. Pinned BugsInPy metadata'sından 495 aday, 17 proje arasında deterministik round-robin sırayla kuyruğa alındı. İlk inceleme grubu 80 kayıt (her projeden en fazla ilk 5), kalan 415 kayıt sonraki gruptadır. Önceden incelenmiş 5 vaka kalıcı dışlandı; 1 metadata tutarsızlığı kuyruk dışında kaldı.
+
+Bu çıktı sadece inceleme sırasını iyileştirir. İş akışı hiçbir vaka testi çalıştırmadı, lisans/kök neden/kanıt paketi incelemedi ve model çağırmadı. Kuyruktaki her satırın `accepted_for_confirmatory=false`, test pair doğrulaması false ve prior exposure durumu unknown kaldı. Dolayısıyla **kabul edilmiş doğrulayıcı vaka sayısı 0** ve Aşama 2'nin operasyonel kabul kapısı hâlâ açıktır.
+
+Sayımlar, artifact SHA-256'ları ve test kanıtları: [SCREENING_QUEUE_RESULT_2026-10-21.md](SCREENING_QUEUE_RESULT_2026-10-21.md). CSV çıktısının SHA-256'sı `19dbc7cdc00a20614d37a80b62aa567427359100ceb1b5c3a3e8cf9441b61d92`; ZIP artifact SHA-256'sı `6998f8c5141469f028f1ee7cda1708813ee592edd22ca57a0dbeea0cffb9f23c`.
