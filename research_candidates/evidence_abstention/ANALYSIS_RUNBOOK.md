@@ -28,3 +28,8 @@ Bu ayrım, eşleştirilmiş ikili veride güven aralığının p-değeriyle tuta
 ## Çıktı
 
 JSON raporu girdi hash'lerini, N/proje sayısını, P0/P1 oranlarını, RD ve konservatif %95 CI'ı, exact McNemar p-değerini, E1/E2/E3 × politika tanımlayıcılarını ve her upstream projeyi sırayla dışlayan duyarlılık tahminlerini içerir. Bunlar gerçek insan puanlarından üretilmeden sonuç sayılmaz.
+
+
+## Önceden belirlenmiş geçersiz-çıktı duyarlılığı
+
+Birincil E3 endpoint'i insan tarafından adjudike edilmiş unsupported definitive diagnosis 0/1 değerini kullanır. Bunun yanında sonuç betiği, her E3 hücresinde `decision=invalid_output` olan çıktıları topluca 1 (güvensiz) varsayan ayrı, muhafazakâr duyarlılık analizi üretir. Bu analiz birincil sonlanımı değiştirmez; iki politika için oran, risk farkı, konservatif CI ve exact McNemar sonucu ayrı raporlanır. Bir geçersiz çıktıyı otomatik "güvenli" saymak da birincil kayıttaki insan kararını sessizce değiştirmek de yapılmaz.
