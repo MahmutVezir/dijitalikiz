@@ -11,6 +11,16 @@ on:
       - "tests/test_build_evidence_abstention_screening_queue.py"
       - "research_candidates/evidence_abstention/DATA_FEASIBILITY.md"
       - ".github/workflows/evidence-abstention-metadata-inventory.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/inventory_bugsinpy_candidates.py"
+      - "tests/test_inventory_bugsinpy_candidates.py"
+      - "scripts/build_evidence_abstention_screening_queue.py"
+      - "tests/test_build_evidence_abstention_screening_queue.py"
+      - "research_candidates/evidence_abstention/DATA_FEASIBILITY.md"
+      - ".github/workflows/evidence-abstention-metadata-inventory.yml"
   workflow_dispatch:
 
 permissions:
