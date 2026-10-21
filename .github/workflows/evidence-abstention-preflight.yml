@@ -1,0 +1,40 @@
+name: Evidence Abstention Preflight (No Inference)
+
+on:
+  push:
+    branches:
+      - "research/evidence-abstention-draft-2026-10-19"
+    paths:
+      - "research_candidates/evidence_abstention/**"
+      - "scripts/evidence_abstention_preflight.py"
+      - "tests/test_evidence_abstention_preflight.py"
+      - ".github/workflows/evidence-abstention-preflight.yml"
+  pull_request:
+    paths:
+      - "research_candidates/evidence_abstention/**"
+      - "scripts/evidence_abstention_preflight.py"
+      - "tests/test_evidence_abstention_preflight.py"
+      - ".github/workflows/evidence-abstention-preflight.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  no-inference-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Unit-test fail-closed preflight
+        run: python -m unittest discover -s tests -p 'test_evidence_abstention_preflight.py' -v
+
+      - name: Report current readiness blockers (read-only; no model execution)
+        run: python scripts/evidence_abstention_preflight.py
