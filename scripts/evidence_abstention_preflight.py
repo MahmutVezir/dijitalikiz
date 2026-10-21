@@ -127,7 +127,9 @@ def evaluate(root):
                         blockers.append(cid + ": reviewer IDs must be non-empty pseudonymous strings.")
                     elif len(set(reviewer_ids)) != len(reviewer_ids):
                         blockers.append(cid + ": duplicate IDs within the " + label + " review panel.")
-                if isinstance(gt_ids, list) and isinstance(evidence_ids, list) and set(gt_ids) & set(evidence_ids):
+                gt_ids_valid = isinstance(gt_ids, list) and all(isinstance(item, str) and item.strip() for item in gt_ids)
+                evidence_ids_valid = isinstance(evidence_ids, list) and all(isinstance(item, str) and item.strip() for item in evidence_ids)
+                if gt_ids_valid and evidence_ids_valid and set(gt_ids) & set(evidence_ids):
                     blockers.append(cid + ": reviewer IDs must be distinct between ground-truth and evidence review panels.")
                 for field in ("buggy_test_log_sha256", "fixed_test_log_sha256", "runtime_fingerprint_sha256"):
                     if not isinstance(record.get(field), str) or not HEX64.fullmatch(record[field]):
