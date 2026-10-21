@@ -2,7 +2,7 @@
 
 **Tek aktif hedef:** 2027 TÜBİTAK 2204-A’da finalistlik düzeyinde, tamamlanmış ve bilimsel olarak savunulabilir bir araştırma sunmak. Finalistlik garanti edilemez; ölçütümüz gerçek kanıt ve dürüst raporlamadır.
 
-**Güncel bilimsel durum (21 Ekim 2026):** Proje tamamlanmadı. Aşama 1 hedefli literatür ve araştırma sorusu taslağı bakımından ilerledi; sistematik derleme, protokol dondurma ve ön kayıt tamamlanmadı. Aşama 2 metadata envanteri koşullu tamamlandı: BugsInPy revizyonunda 501 ham kayıt/17 proje, 500 temel metadata-kalifiye kayıt ve 1 commit tutarsızlığı bulundu. 487 satırlı tarama kuyruğundan V4 alım sırası ilk 24 maruziyet/teknik hata vakasını atlayarak 120 aday belirler; bu adaylar test/lisans/kök neden/kanıt incelemesi tamamlanmadan kabul edilmiş sayılmaz. Kabul edilmiş bağımsız vaka sayısı hâlâ 0'dır; model çıkarımı kapalıdır.
+**Güncel bilimsel durum (21 Ekim 2026):** Proje tamamlanmadı. Aşama 1 hedefli literatür ve araştırma sorusu taslağı bakımından ilerledi; sistematik derleme, protokol dondurma ve ön kayıt tamamlanmadı. Aşama 2 metadata envanteri koşullu tamamlandı: BugsInPy revizyonunda 501 ham kayıt/17 proje, 500 temel metadata-kalifiye kayıt ve 1 commit tutarsızlığı bulundu. 487 satırlı tarama kuyruğundan V5 alım sırası ilk 32 maruziyet/teknik hata vakasını atlayarak 120 aday belirler; bu adaylar test/lisans/kök neden/kanıt incelemesi tamamlanmadan kabul edilmiş sayılmaz. Kabul edilmiş bağımsız vaka sayısı hâlâ 0'dır; model çıkarımı kapalıdır.
 
 **Tek yürütme planı:** [TÜBİTAK 2204-A ana planı](TUBITAK_2204A_MASTER_PLAN_2026-10-21.md). Resmî başvuru son tarihi 4 Ocak 2027, saat 17.30’dur; [TÜBİTAK 2204-A çağrısı](https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi).
 
@@ -155,3 +155,8 @@ The original 120-case intake file is preserved as a historical record, but eight
 
 - [V3 teknik tanılama kohortu](SCREENING_COHORT_120_V3_2026-10-21.json) — araç/kurulum hatalarını ayıklarken kullanılan 120 adaylık tarihsel sıra; ilk 8’i doğrulayıcı örneklemden kalıcı dışlandı.
 - [Güncel V4 tarama sırası](SCREENING_COHORT_120_V4_2026-10-21.json) — 24 maruziyet vakası atlanmıştır; 120 aday, 17 proje, 0 kabul edilmiş vaka; doğrulayıcı örneklem değildir.
+
+
+- [V3 teknik tanılama kohortu](SCREENING_COHORT_120_V3_2026-10-21.json) — metadata parser/runner debug sırası; ilk sekiz adayı kalıcı dışlandı.
+- [V4 teknik tanılama kohortu](SCREENING_COHORT_120_V4_2026-10-21.json) — test bağımlılıkları ve runner davranışını incelemek için kullanılan tarihsel sıra; ilk sekiz adayı kalıcı dışlandı.
+- [Güncel V5 tarama sırası](SCREENING_COHORT_120_V5_2026-10-21.json) — 32 maruziyet vakası atlanmıştır; 120 aday, 17 proje, 0 kabul edilmiş vaka; doğrulayıcı örneklem değildir.
