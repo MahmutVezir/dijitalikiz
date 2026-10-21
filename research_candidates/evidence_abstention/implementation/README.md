@@ -1,15 +1,15 @@
 # Belirsizlik / abstention prototipi
 
-Bu klasörde sadece saf Python karar mantığı ve birim testleri vardır. Model indirilmez, inference yapılmaz, hiçbir deney verisi oluşturulmaz.
+Bu klasörde saf Python karar mantığı ve birim testleri bulunur. Model indirmez, inference yapmaz, deney verisi oluşturmaz.
 
-Test komutu:
+Test:
 
     python -m unittest discover -s research_candidates/evidence_abstention/implementation -p 'test_*.py' -v
 
 Ana API:
-- normalized_entropy_from_logits(logits): sözlük logits dağılımından normalize entropi.
-- lexical_disagreement(answers): çoklu yanıtlar arasında sözcüksel Jaccard ayrışması.
-- EmpiricalConfidenceCalibrator: bağımsız kalibrasyon örneklerinden ampirik destekli-doğruluk oranı; aralık örnek sayısı yetersizse None.
-- decide(DecisionRequest(...)): eksik/çelişkili kanıt, geçersiz referans, eksik belirsizlik sinyali veya kalibrasyon yokluğunda kaçınma.
+- normalized_entropy_from_logits ve mean_normalized_token_entropy: üretilen tokenların logit dağılımlarından normalize entropi.
+- lexical_disagreement: çoklu yanıtlar arasında sözcüksel Jaccard ayrışması.
+- EmpiricalConfidenceCalibrator: ayrı ve etiketlenmiş kalibrasyon setindeki gözlenen doğruluk + kanıt desteği oranından, yeterli örnek bulunan aralıklarda Laplace-yumuşatılmış ampirik olasılık üretir.
+- decide(request, calibrator, policy): belirsizlik endeksini kendisi hesaplar ve aynı endeksi kalibratöre vererek güven puanını türetir; çağıran tarafın endeksle ilgisiz bir güven puanını içeri vermesini önler.
 
-Güven kalibrasyonu yalnızca aynı görev/model/kanıt dağılımına uygun, ayrı ve etiketlenmiş kalibrasyon verileriyle anlamlıdır. Varsayılan eşik yoktur; eşikler araştırmacı tarafından test sonuçları görülmeden önceden dondurulmalıdır. Uygulama şu an araştırma protokolüne bağlanmamıştır.
+policy.calibration_id doğrulanmış kalibrasyon artefaktının SHA-256 kimliği olmalı; calibration_verified ancak artefakt ve eşikler gerçekten doğrulandıktan sonra true olabilir. Aralık örnek sayısı yetmiyorsa None döner ve motor kaçınır. Bu prototipte eşiklerin kendisi önceden dondurulmuş bir artefaktla yüklenmiş değildir.
