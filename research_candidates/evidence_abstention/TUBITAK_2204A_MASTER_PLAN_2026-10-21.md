@@ -6,6 +6,10 @@
 **Bilimsel rapor başlığı (öneri):** Yazılım Hata Teşhisinde Kanıt Yeterliliğinin Büyük Dil Modellerinin Cevap Vermekten Kaçınma Davranışına Etkisi  
 **Durum:** DEVAM EDİYOR — yeni çalışma için henüz deneysel sonuç yoktur.
 
+## Üç ana aşamalı karar haritası
+
+Ayrıntılı tarih/sorumluluk görünümü için [üç ana aşamalı yürütme haritasına](THREE_PHASE_EXECUTION_MAP_2026-10-21.md) bak. Proje üç ana teslimata ayrılır: (1) veri/protokol/runtime kapılarını kapat, (2) yalnızca izin sonrası dondurulmuş deneyi yürüt, (3) kör puanlama/istatistik/rapor/başvuruyu tamamla. Şu an 1. aşamadayız ve henüz tamamlanmadı.
+
 ## 1. Başarı ölçütümüz
 
 Amaç sadece bir dosya veya çalışan demo üretmek değildir. Başvuruya, jüri sorularına dayanabilecek araştırma sorusu, adil karşılaştırma, bağımsız vaka kanıtı, önceden tanımlanmış analiz, gerçek sonuçlar, tekrarlanabilirlik ve dürüst sınırlılıklar içeren tamamlanmış bir çalışma sunmaktır.
