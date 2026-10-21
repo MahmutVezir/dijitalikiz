@@ -197,3 +197,26 @@ Artifact references and GitHub ZIP SHA-256:
 - Scrapy: artifact ID `12363423446`, SHA-256 `b4ec4122927efdb1cb8d84705d011c2bc1eaf652988b2bdfe5ed729f2cbac97f`.
 
 These two cases were used in the technical workflow-validation wave and remain permanently excluded from the confirmatory dataset regardless of their diagnostic signal. They establish neither license clearance nor ground-truth/evidence-panel agreement. The initial wave used a workflow version that wrote checksums directly; I verified its three completed ZIPs locally. New workflow runs also include the separate `artifact-audit.json` report.
+
+
+## 13. Güncel dışlama uzlaştırması ve ilk-dalga teknik artefaktları — 21 Ekim 2026
+
+Önceki metadata kuyruğu raporundaki 495 sayısı, o anki dışlama kurallarının anlık fotoğrafıydı. Daha sonra ilk-dalga workflow-debug vakalarının da kalıcı dışlamaya eklenmesiyle, en güncel sabit BugsInPy revizyonu üzerindeki tarama kuyruğu **487 aday / 17 upstream proje** oldu. Dağılım: ilk turda **78**, sonraki turda **409**; 13 kalıcı dışlama (5 daha önce açılmış fizibilite/smoke vakası + 8 teknik workflow doğrulama vakası) ve 1 metadata/commit tutarsızlığı nedeniyle hariç tutulan kayıt. [Son başarılı metadata/kuyruk/artefakt denetimi](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39640796171). [Güncel kuyruk raporu](SCREENING_QUEUE_RESULT_2026-10-21.md).
+
+### İlk-dalga test logları — yorum sınırı
+
+[İlk-dalga Actions çalışması](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39638198482) yedi workflow-debug adayı için artefakt üretti. Tüm yedi ZIP'in dahili SHA-256 manifesti açılıp yerel olarak doğrulandı; her birinde listelenen hash'ler eşleşti ve listelenmemiş dosya bulunmadı. Bu doğrulama yalnızca artefakt bütünlüğüdür.
+
+| Vaka (kalıcı dışlama) | Teknik gözlem | Karar |
+|---|---|---|
+| `BugsInPy-fastapi-1` | Python 3.8.3 eşleşti; buggy hedef testi `exclude_defaults` anahtar sözcüğü için `TypeError` verdi; fixed çalışma ağacında aynı test geçti. | Hedef davranışla tutarlı ham sinyal; bağımsız root-cause/lisans/kanıt puanlama yapılmadı. |
+| `BugsInPy-scrapy-1` | Python 3.8.3 eşleşti; buggy hedef testleri `url_pattern.match(domain)` noktasında `TypeError` verdi; fixed çalışma ağacında ikisi de geçti. | Hedef davranışla tutarlı ham sinyal; kabul değil. |
+| `BugsInPy-sanic-1` | Python 3.8.3 eşleşti; buggy test middleware sırasını beklenen `[1,2,3,4,5,6]` yerine `[1,2,3,6,5,4]` gördü; fixed test geçti. İlk otomatik imza yakalayıcısı bu pytest çıktı biçimini algılamadı. | Hedef davranışla tutarlı; imza algılama düzeltildi. Kabul değil. |
+| `BugsInPy-tornado-1` | Python 3.7.0 eşleşti; buggy WebSocket testi stream hazır olmadan `set_nodelay` çağrısıyla başarısız oldu; fixed test geçti. | Hedef davranışla tutarlı ham sinyal; kabul değil. |
+| `BugsInPy-black-2` | Python 3.8.3 eşleşti; buggy test `tests/data/fmtonoff4.py` bulunmadığı için hata verdi; fixed test geçti. | Gerçek bug reprodüksiyonu sayılmaz. Açıkça tanımlı test fixture'ı kopyalanıp hash'lenerek yeniden test edilecek; vaka yine kalıcı dışlama. |
+| `BugsInPy-luigi-1` | Python 3.8.3 eşleşti; her iki tarafta da `pytest_sanic` eklentisi, kurulum başarısızlığı nedeniyle kurulu olmayan `sanic` modülünü import edemedi. | Ortam/bağımlılık hatası; bug sinyali değil. |
+| `BugsInPy-thefuck-1` | Python 3.7.0 eşleşti; her iki tarafta da `psutil==5.7.0` derlemesi/bağlama hatası sonrası test açılışında `ModuleNotFoundError: psutil` oluştu. | Ortam/bağımlılık hatası; bug sinyali değil. |
+
+Bu sekiz workflow-debug vakası ana doğrulayıcı kuyruğundan çıkarılmıştır; cookiecutter-1 de eksik `non_ascii.json` fixture'ı nedeniyle kalıcı dışlamadadır. Yeni kod, pytest `FAILURES` özetini yakalayacak, test exit kodlarını sayısal JSON alanları olarak saklayacak, sabit fixture'ı kopyalamadan önce/sonra provenance hash'leri kaydedecek ve her artefakta `artifact-audit.json` ekleyecektir. Bir sonraki run bu değişikliklerin doğrulama koşusudur; sonuçlar insan incelemesi yerine geçmez.
+
+**Bilimsel durum değişmedi:** 0 kabul edilmiş doğrulayıcı vaka; yeni model çıkarımı yok.
