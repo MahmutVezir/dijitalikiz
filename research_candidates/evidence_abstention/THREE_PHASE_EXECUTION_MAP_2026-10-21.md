@@ -105,6 +105,12 @@ The V2 cohort freeze passed in [run 39659544932](https://github.com/MahmutVezir/
 The V3 run also revealed that a strict metadata parser rejected a valid fixed-commit line with whitespace before the equals sign; the parser has been corrected. V4 is the current 120-candidate intake, skipping 24 exposed IDs. Accepted cases remain zero until CI artifacts and the scientific/human validation gates are complete; model inference remains disabled.
 
 
-## V4 dependency finding and V5
+## V4 dependency finding, V5 technical screen and V6 intake
 
-Run [39661470039](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39661470039) revealed incomplete test dependencies before assertion execution: Matplotlib-2 could not import NumPy; PySnooper-3 could not import `python_toolbox`. These are not valid regression-test outcomes. Because this batch was used to debug runner/dependency handling, all eight V4 candidates are permanently excluded. The current [V5 intake](SCREENING_COHORT_120_V5_2026-10-21.json) skips 32 exposed IDs; its queue-freeze job succeeded in [run 39663084349](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39663084349). Candidate-level technical review continues; accepted cases remain zero and model inference remains disabled.
+Run [39661470039](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39661470039) revealed incomplete test dependencies before assertion execution: Matplotlib-2 could not import NumPy; PySnooper-3 could not import `python_toolbox`. These are not valid regression-test outcomes. All eight V4 candidates were permanently excluded.
+
+The V5 first-eight technical batch completed in [run 39663084349](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39663084349). All eight case environments matched the metadata Python version; seven cases showed automated buggy-fail/fixed-pass signals, while Httpie-4 failed on both sides. Because the batch was used to validate the workflow and its raw results were inspected, all eight V5 cases are permanently excluded regardless of outcomes. The [Stage 2 report](STAGE2_V5_TECHNICAL_SCREEN_AND_V6_HANDOFF_2026-10-21.md) records artifact hashes and limitations.
+
+The active [V6 intake](SCREENING_COHORT_120_V6_2026-10-21.json) skips 40 prior-exposure/debug IDs and takes the next 120 candidates in deterministic queue order. The workflow now points to V6; its freeze and candidate-screen CI run must complete and its raw artifacts must be audited. Accepted cases remain **0**; inference remains disabled.
+
+The targeted literature search and protocol audit are recorded in [STAGE1_SEARCH_LOG_AND_PROTOCOL_AUDIT_2026-10-21.md](STAGE1_SEARCH_LOG_AND_PROTOCOL_AUDIT_2026-10-21.md). Stage 1 still requires a systematic search archive and independent advisor review; Stage 2 still requires license/ground-truth/evidence review and at least 60 accepted cases across at least 8 projects.
