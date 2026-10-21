@@ -14,9 +14,14 @@ from pathlib import Path
 
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 KNOWN_PRIOR_EXPOSURE_IDS = {
+    # First historical cohort used during workflow debugging.
     "BugsInPy-ansible-1", "BugsInPy-black-3", "BugsInPy-cookiecutter-2",
     "BugsInPy-fastapi-2", "BugsInPy-httpie-2", "BugsInPy-keras-1",
     "BugsInPy-luigi-2", "BugsInPy-matplotlib-1",
+    # V2 batch used to diagnose missing pytest / setup-state issues.
+    "BugsInPy-pandas-1", "BugsInPy-PySnooper-2", "BugsInPy-sanic-2",
+    "BugsInPy-scrapy-2", "BugsInPy-spacy-1", "BugsInPy-thefuck-2",
+    "BugsInPy-tornado-2", "BugsInPy-tqdm-2",
 }
 COMMIT = re.compile(r"^[0-9a-fA-F]{7,64}$")
 REQUIRED = {
