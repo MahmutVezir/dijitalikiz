@@ -138,9 +138,9 @@ def audit(root):
     buggy_log_path = root / "buggy-test.log"
     buggy_log = buggy_log_path.read_text(encoding="utf-8", errors="replace") if buggy_log_path.is_file() else ""
     likely_fixture_or_harness_error = bool(re.search(
-        r"FileNotFoundError:[\\s\\S]{0,700}(?:tests[/\\\\]data[/\\\\]|non_ascii\\.json|test[-_]fixture|fixture.*not found)",
+        r"FileNotFoundError:.*(?:tests[/\\]data[/\\]|non_ascii\.json|test[-_]fixture|fixture.*not found)",
         buggy_log,
-        re.IGNORECASE,
+        re.IGNORECASE | re.DOTALL,
     ))
     target_signals_present = raw_pair_signals_present and not likely_fixture_or_harness_error
     if likely_fixture_or_harness_error:
