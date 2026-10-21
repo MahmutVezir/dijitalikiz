@@ -7,6 +7,10 @@ on:
     paths:
       - "scripts/analyze_evidence_abstention_results.py"
       - "tests/test_analyze_evidence_abstention_results.py"
+      - "scripts/analyze_evidence_abstention_rater_agreement.py"
+      - "tests/test_analyze_evidence_abstention_rater_agreement.py"
+      - "research_candidates/evidence_abstention/BLINDED_RATER_SCORES_TEMPLATE.csv"
+      - "research_candidates/evidence_abstention/RATER_AGREEMENT_PROTOCOL.md"
       - ".github/workflows/evidence-abstention-analysis-helper-tests.yml"
   pull_request:
     branches:
@@ -33,8 +37,12 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Compile analyzer without executing a model
-        run: python -m py_compile scripts/analyze_evidence_abstention_results.py
+      - name: Compile analysis helpers without executing a model
+        run: |
+          python -m py_compile scripts/analyze_evidence_abstention_results.py
+          python -m py_compile scripts/analyze_evidence_abstention_rater_agreement.py
 
-      - name: Run synthetic analysis helper tests only
-        run: python -m unittest discover -s tests -p 'test_analyze_evidence_abstention_results.py' -v
+      - name: Run synthetic analysis and agreement helper tests only
+        run: |
+          python -m unittest discover -s tests -p 'test_analyze_evidence_abstention_results.py' -v
+          python -m unittest discover -s tests -p 'test_analyze_evidence_abstention_rater_agreement.py' -v
