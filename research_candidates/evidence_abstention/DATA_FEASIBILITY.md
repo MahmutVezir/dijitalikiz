@@ -154,3 +154,15 @@ Bu bulgu otomasyon/ortam farkını çözmez. Smoke workflow artık her belge de�
 Bu çıktı sadece inceleme sırasını iyileştirir. İş akışı hiçbir vaka testi çalıştırmadı, lisans/kök neden/kanıt paketi incelemedi ve model çağırmadı. Kuyruktaki her satırın `accepted_for_confirmatory=false`, test pair doğrulaması false ve prior exposure durumu unknown kaldı. Dolayısıyla **kabul edilmiş doğrulayıcı vaka sayısı 0** ve Aşama 2'nin operasyonel kabul kapısı hâlâ açıktır.
 
 Sayımlar, artifact SHA-256'ları ve test kanıtları: [SCREENING_QUEUE_RESULT_2026-10-21.md](SCREENING_QUEUE_RESULT_2026-10-21.md). CSV çıktısının SHA-256'sı `19dbc7cdc00a20614d37a80b62aa567427359100ceb1b5c3a3e8cf9441b61d92`; ZIP artifact SHA-256'sı `6998f8c5141469f028f1ee7cda1708813ee592edd22ca57a0dbeea0cffb9f23c`.
+
+
+### 10.2 Exact-metadata-runtime smoke diagnostic — 21 October 2026
+
+The excluded case `BugsInPy-tqdm-1` was rechecked in [Actions run 39632366228](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39632366228), using the metadata-recorded **Python 3.6.9** rather than the previous Python 3.8.18 runtime. The test pair produced:
+- buggy revision: target test failed with `TypeError: 'int' object is not subscriptable`; teardown also reported a live tqdm instance;
+- fixed revision: the same target test reported `1 passed`;
+- runtime metadata match: true.
+
+This shows the target-specific buggy failure and fixed-side pass under the recorded Python version in this diagnostic run. It does **not** make the case confirmatory-eligible: the patch/metadata had already been opened during feasibility review, and the case remains permanently excluded. This run did not review its root-cause ground truth, license, evidence sufficiency or contamination.
+
+Artifact: `evidence-abstention-tqdm-exact-python-smoke`, ID `12359043643`, ZIP SHA-256 `ab7db5d76ca5cfa7d8a01fe8a93fbc6df0938b768ac5727d7e16aef60e98618a`. Inspection of the uploaded files found that the first version of the internal `SHA256SUMS` used runner-absolute paths; the follow-up workflow now writes relative paths and runs `sha256sum -c` before upload. The previous diagnostic artifact's individual checksum manifest must not be described as portable/verified.
