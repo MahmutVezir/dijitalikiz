@@ -6,7 +6,7 @@ on:
       - "research/evidence-abstention-draft-2026-10-19"
     paths:
       - ".github/workflows/evidence-abstention-cohort-batch1.yml"
-      - "research_candidates/evidence_abstention/SCREENING_COHORT_120_V2_2026-10-21.json"
+      - "research_candidates/evidence_abstention/SCREENING_COHORT_120_V3_2026-10-21.json"
       - "scripts/inventory_bugsinpy_candidates.py"
       - "scripts/build_evidence_abstention_screening_queue.py"
       - "scripts/build_evidence_abstention_cohort_matrix.py"
@@ -70,7 +70,7 @@ jobs:
             --first-batch-per-project 5
           python scripts/build_evidence_abstention_cohort_matrix.py \
             --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
-            --cohort research_candidates/evidence_abstention/SCREENING_COHORT_120_V2_2026-10-21.json \
+            --cohort research_candidates/evidence_abstention/SCREENING_COHORT_120_V3_2026-10-21.json \
             --matrix-output "$RUNNER_TEMP/cohort-batch1-matrix.json" \
             --summary-output "$RUNNER_TEMP/cohort-batch1-summary.json" \
             --batch-size 8
@@ -286,6 +286,30 @@ jobs:
               cp "$RUNNER_TEMP/$side-install.log" "$RUNNER_TEMP/case-artifact/$side-install.log"
               if [ "$install_rc" -ne 0 ]; then
                 echo "$side package install failed (exit=$install_rc); no target test result" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+                return 0
+              fi
+            fi
+
+            # Some BugsInPy compile configurations omit pytest even though
+            # the recorded target command requires it. Install the same pinned
+            # runner in both buggy/fixed virtualenvs; never count a missing
+            # test executable as an application failure. The post-install
+            # runtime fingerprint records the resolved dependencies.
+            if python -c 'import json,os; commands=json.loads(os.environ["TARGET_COMMANDS_JSON"]); raise SystemExit(0 if any(cmd.split() and cmd.split()[0] == "pytest" for cmd in commands) else 1)'; then
+              set +e
+              (
+                cd "$work_dir"
+                set +u
+                source env/bin/activate nondestructive
+                set -u
+                python -m pip install --disable-pip-version-check "pytest==6.2.5"
+                python -m pytest --version
+              ) > "$RUNNER_TEMP/$side-pytest-bootstrap.log" 2>&1
+              pytest_setup_rc=$?
+              set -e
+              cp "$RUNNER_TEMP/$side-pytest-bootstrap.log" "$RUNNER_TEMP/case-artifact/$side-pytest-bootstrap.log"
+              if [ "$pytest_setup_rc" -ne 0 ]; then
+                echo "$side pinned pytest installation failed (exit=$pytest_setup_rc); no target test result" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
                 return 0
               fi
             fi
