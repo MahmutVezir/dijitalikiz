@@ -47,6 +47,8 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 
 ## Belgeler
 
+- [Üç ana aşamalı yürütme haritası](THREE_PHASE_EXECUTION_MAP_2026-10-21.md) — projenin ne kadarının hazır olduğunu ve hangi kanıt kapılarının hâlâ açık kaldığını tek noktada toplar.
+
 - [Manuel vaka inceleme rehberi](CASE_REVIEW_GUIDE.md) — test/lisans/ground truth/kanıt/sızıntı kabul sırası.
 - [Manuel vaka inceleme formu (JSON)](CASE_REVIEW_INTAKE_TEMPLATE.json) — boş şablon; kabul edilmiş vaka değildir.
 
