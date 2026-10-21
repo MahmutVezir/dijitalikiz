@@ -73,3 +73,12 @@ Metadata envanteri ve triage-artifact testleri: [run 39639138266](https://github
 - [Veri fizibilitesi](DATA_FEASIBILITY.md)
 - [Teknik readiness](STAGE4_TECHNICAL_READINESS_2026-10-21.md)
 - [Jüri ölçütleri kontrol listesi](TUBITAK_2204A_JURY_CRITERIA_CHECKLIST_2026-10-21.md)
+
+
+## Güncel CI ve analiz yardımcıları — 21 Ekim 2026
+
+**Analiz kodu:** `scripts/analyze_evidence_abstention_results.py` ve `ANALYSIS_RUNBOOK.md` eklendi. Bu araç, ancak manifestin inference izni açıkça verilmiş, veri kapısı CLOSED, ön kayıt URI'si doğrulanabilir, iki değerlendiricili protokol ve kalibrasyon tamam, model/runtime doğrulanmış ve hash'ler dondurulmuşsa sonuç analizi yapabilir. CSV her kabul edilmiş vaka için tam altı nihai/adjudike hücre içermelidir. İçerik sentetik testlerle sınanmıştır; gerçek araştırma sonucu değildir.
+
+**Yeni kohort testinin ilk CI bulgusu:** [run 39647103338](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39647103338) ilk sekiz seçimin dondurulmuş matrisini başarıyla yeniden oluşturdu; ancak vaka ortamı kurulumunda upstream BugsInPy aracı `~/.bashrc` bulunmadığı için durdu. Bu, bug/fix test çifti sonucu değildir. Runner hazırlığına boş `~/.bashrc` oluşturma adımı eklendi; bunu izleyen koşunun geçmesi beklenmeden hiçbir vaka kabul edilmeyecek.
+
+**Bilimsel durum değişmedi:** Kabul edilmiş vaka 0; gerçek model çıkarımı 0; ön kayıt ve insan puanlaması henüz tamam değil.
