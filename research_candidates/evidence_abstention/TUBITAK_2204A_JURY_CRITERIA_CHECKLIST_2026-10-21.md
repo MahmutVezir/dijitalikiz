@@ -1,10 +1,10 @@
-# TÜBİTAK 2204-A jüri ön değerlendirme kontrol listesi
+# TÜBİTAK 2204-A ön değerlendirme ve bölge/final kontrol listesi
 
 **Kontrol tarihi:** 21 Ekim 2026  
 **Tek hedef:** 2027 TÜBİTAK 2204-A’da finalistlik düzeyinde tamamlanmış araştırma sunmak.  
 **Resmî referans:** [TÜBİTAK 2204-A yarışma sayfası](https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi) — bu sayfanın bağladığı [ön değerlendirme formu PDF'si](https://tubitak.gov.tr/sites/default/files/2025-11/on_degerlendirme_kriterleri_2025_web.pdf).
 
-Formun gösterdiği önem ağırlıkları: problem/araştırma sorusu %20, yöntem %20, yaratıcılık/etki %30, sonuçlar/tartışma %30. Bu sayılar başarı tahmini değildir; çalışmayı denetlemek için kontrol yapısıdır.
+**Ön değerlendirme formu** ağırlıkları: problem/araştırma sorusu %20, yöntem %20, yaratıcılık/etki %30, sonuçlar/tartışma %30. **Bölge/final aşaması formunda** ağırlıklar farklıdır: problem/araştırma sorusu %15, yöntem %10, yaratıcılık/etki %15, sonuçlar/tartışma %20, sunum ve projeye hâkimiyet %40. Bu sayılar başarı tahmini değildir; her aşamanın gerekliliklerini ayrı denetlemek için kullanılır.
 
 ## 1. Problem / ihtiyaç ve araştırma sorusu — %20
 
@@ -66,3 +66,44 @@ Formun gösterdiği önem ağırlıkları: problem/araştırma sorusu %20, yönt
 ## Bugünkü karar
 
 **Proje jüriye hazır değil.** Özellikle %30 ağırlıklı sonuçlar/tartışma bölümü gerçek verisiz tamamlanamaz. Öncelik, doküman görünümünü güzelleştirmek değil; vaka kapısını, değerlendirme kalitesini ve gerçek deney sonuçlarını kanıtla kapatmaktır. Başvurunun tamamlanmış proje gerektirdiğini belirten güncel [TÜBİTAK çağrı sayfası](https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi) takip edilmelidir.
+
+
+## 6. Bölge / final değerlendirmesi — ayrı ölçütler
+
+Resmî [Bölge/Final Aşaması Değerlendirme Formu](https://tubitak.gov.tr/sites/default/files/2025-11/sergi_kriterleri_2025_web.pdf), sunum ve projeye hâkimiyet bölümüne toplam ağırlığın **%40'ını** verir. Finalistlik hedefinde yazılı rapor tek başına yeterli bir hazırlık planı değildir.
+
+### Problem / ihtiyaç ve araştırma sorusu — %15
+- [ ] Araştırma sorusu, amaç ve ölçülebilir hedefler kısa ve tutarlı biçimde açıklanabiliyor.
+- [ ] Çalışmanın ana alanı ve problem seçimi gerekçelendirilebiliyor.
+
+### Yöntem — %10
+- [ ] E1/E2/E3 ve P0/P1 koşulları, vaka seçimi ve bağımsızlık birimi örneksiz değil, somut bir vaka üzerinden açıklanabiliyor.
+- [ ] Birincil ölçütün neden “kanıtla desteklenmeyen kesin teşhis” olduğu ve gerçek kök neden doğruluğundan neden ayrı tutulduğu savunulabiliyor.
+
+### Yaratıcılık ve etki — %15
+- [ ] Yakın literatürdeki çalışmalar ile bu araştırmanın farkı, kaynaklarla birlikte ve abartısız biçimde savunulabiliyor.
+- [ ] Olası etki, yalnızca ölçülmüş bulgulara ve makul uygulamalara dayandırılıyor.
+
+### Sonuçlar ve tartışma — %20
+- [ ] Ana sonuç ve belirsizlik/CI, gerçek veriden hesaplanıp tekrar üretilebiliyor.
+- [ ] Çelişkili, olumsuz veya istatistiksel olarak belirsiz bulgular saklanmıyor.
+- [ ] Sonuçların hangi bağlamlara genellenemeyeceği açıklanabiliyor.
+
+### Sunum ve projeye hâkimiyet — %40
+- [ ] Öğrencinin projeyi gerçekten kendisinin şekillendirdiği ve gerçekleştirdiği, karar kayıtları ve açıklamayla gösterilebiliyor.
+- [ ] Model, veri kaynağı, kanıt paketleri, puanlama, istatistik ve temel kodun işleyişi jüriye sözlü olarak anlatılabiliyor.
+- [ ] Neden bu model/veri/ölçüt seçildiği; alternatiflerin ve başarısız denemelerin neden dışlandığı açıklanabiliyor.
+- [ ] Sunum/poster, rapordaki yöntem ve gerçek sonuçlarla birebir uyumlu.
+- [ ] Jüri sorularına cevap verirken ölçülmemiş iddia, yanlış kesinlik veya sonuçları olduğundan büyük gösterme yapılmıyor.
+
+## 7. Etik ve bilimsel bütünlük — eleme riski
+
+Resmî formlar veri bütünlüğü ihlali (uydurma/çarpıtma), kaynak göstermeme, gerekli izin belgelerinin eksikliği, kişisel veri gizliliği ihlali ve projenin öğrenci tarafından geliştirilmediğinin tespiti gibi durumlarda elenme riskini açıkça belirtir. Bu nedenle:
+- [ ] Kullanılan her kaynak uygun biçimde atıflandırıldı.
+- [ ] Her veri/çıktı için köken ve bütünlük kayıtları tutuldu.
+- [ ] Öğrencinin katkısı, öğretmen/danışman desteğinden ayrıştırılarak açıklandı.
+- [ ] Gerekli olabilecek izinler ve rapor şablonu başvuru öncesi güncel rehberden doğrulandı.
+
+## Güncel karar
+
+Ön değerlendirme kontrolünün yanında, bölge/final aşamasında sunum ve projeye hâkimiyet hazırlığı da baştan plana dâhil edilmiştir. Bununla birlikte, gerçek vaka kümesi ve deney sonucu bulunmadığı için bu kutuların sonuçlar/tekrarlanabilirlik kısmı bugün kapatılamaz.
