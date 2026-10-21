@@ -1,7 +1,7 @@
 {
   "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
   "record_type": "researcher_exposure_exclusion_log",
-  "version": "1.3-draft",
+  "version": "1.4-draft",
   "date": "2026-10-21",
   "rule": "Any candidate used to develop/debug the technical validation pipeline, where source/test/patch behavior or raw test results were inspected, is permanently excluded from the confirmatory sample irrespective of outcome. The exclusion is methodological, not a judgment that the upstream bug is invalid.",
   "no_inference_performed": true,
@@ -92,9 +92,24 @@
         "BugsInPy-tornado-3"
       ],
       "evidence": "This batch was used to diagnose missing project test dependencies and runner bootstrap behavior. The inspected Matplotlib-2 log shows numpy is missing before test collection; the PySnooper-3 log shows python_toolbox is missing before test collection. Neither is a valid bug-specific test pair. Exclude the entire batch independent of any other outcome."
+    },
+    {
+      "category": "V5 first-eight technical workflow validation",
+      "workflow_run": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39663084349",
+      "cases": [
+        "BugsInPy-tqdm-3",
+        "BugsInPy-youtube-dl-3",
+        "BugsInPy-ansible-3",
+        "BugsInPy-black-5",
+        "BugsInPy-cookiecutter-4",
+        "BugsInPy-fastapi-4",
+        "BugsInPy-httpie-4",
+        "BugsInPy-keras-3"
+      ],
+      "evidence": "This batch was used to validate the pinned runtime, target-test execution, paired raw logs and artifact audit. Seven artifacts show buggy-fail/fixed-pass signals; Httpie-4 fails on both sides. All eight are permanently excluded from confirmatory use because the batch was used to validate the technical screening workflow, independent of outcomes."
     }
   ],
-  "next_action": "V5 is the current metadata-only intake, skipping 32 debug-exposure cases. Audit all eight V5 raw artifacts. No case can be accepted until runtime/test-pair, source/license, root-cause, evidence-sufficiency, leakage and independent reviewer gates pass.",
+  "next_action": "V6 is the active metadata-only intake, skipping 40 prior-exposure/debug cases. Use its frozen queue order for normal technical case screening; review raw artifacts, then require source/license, root-cause ground truth, evidence-sufficiency, leakage and independent human-review gates. No case is auto-accepted; no model inference is authorized.",
   "rationale": "Do not reuse these candidates as confirmatory evidence; do not silently reinsert them into the queue. Technical pass/fail is not case acceptance.",
   "confirmatory_eligibility": false
 }
