@@ -142,14 +142,30 @@ def audit(root):
         buggy_log,
         re.IGNORECASE | re.DOTALL,
     ))
-    likely_environment_or_harness_error = bool(re.search(
-        r"(?:ModuleNotFoundError|No module named|ImportError while loading conftest|Error loading plugin|pytest.*plugin.*error|"
-        r"command not found|could not build wheels?|subprocess-exited-with-error|"
-        r"error: command ['\\\"]?gcc['\\\"]? failed|fatal error:|"
-        r"environment.*(?:not ready|failed|missing)|cannot import name)",
-        buggy_log,
-        re.IGNORECASE | re.DOTALL,
-    ))
+    # Match infrastructure/dependency diagnostics line-by-line. The previous
+    # DOTALL expression could start at an early "pytest"/"environment" token
+    # and span unrelated later test failures, falsely labelling a real
+    # AssertionError as an environment problem (e.g. tox's InvocationError).
+    environment_error_patterns = (
+        r"\\bModuleNotFoundError\\b",
+        r"\\bNo module named\\b",
+        r"ImportError while loading conftest",
+        r"Error loading plugin",
+        r"(^|\\s)command not found(:|$)",
+        r"Could not find a version that satisfies the requirement",
+        r"No matching distribution found",
+        r"Could not build wheels?",
+        r"subprocess-exited-with-error",
+        r"error: command ['\\\"]?gcc['\\\"]? failed",
+        r"fatal error:",
+        r"cannot import name",
+        r"environment (?:is )?(?:not ready|failed|missing)",
+    )
+    likely_environment_or_harness_error = any(
+        re.search(pattern, line, re.IGNORECASE)
+        for line in buggy_log.splitlines()
+        for pattern in environment_error_patterns
+    )
     target_signals_present = raw_pair_signals_present and not likely_fixture_or_harness_error and not likely_environment_or_harness_error
     if likely_fixture_or_harness_error:
         warnings.append("buggy log looks like a missing test fixture or harness file; do not count it as a target bug failure without a separate review")
