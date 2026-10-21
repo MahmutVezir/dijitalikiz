@@ -108,6 +108,22 @@
     {
       "path": ".github/workflows/evidence-abstention-analysis-helper-tests.yml",
       "permission": "synthetic analysis-code tests only; no inference"
+    },
+    {
+      "path": "scripts/analyze_evidence_abstention_rater_agreement.py",
+      "permission": "fail-closed blinded rater agreement analysis; no case acceptance"
+    },
+    {
+      "path": "tests/test_analyze_evidence_abstention_rater_agreement.py",
+      "permission": "synthetic-only tests for panel separation and agreement calculations"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/RATER_AGREEMENT_PROTOCOL.md",
+      "permission": "draft blind scoring and inter-rater agreement protocol; not yet frozen"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/BLINDED_RATER_SCORES_TEMPLATE.csv",
+      "permission": "empty locked-independent-ratings schema; no human scoring data"
     }
   ],
   "mirrored_reference_docs": [
