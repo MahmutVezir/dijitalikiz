@@ -73,3 +73,10 @@ En son no-inference preflight [run 39618666271](https://github.com/MahmutVezir/d
 Bu belgenin yazıldığı günün en son kaydedilmiş no-inference kontrolü [Actions run 39619057132](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39619057132) başarıyla tamamlanmıştır. Başarılı CI yalnızca test ve salt-okunur preflight raporlamasının çalıştığını gösterir; deney hazır sayılmaz. Run raporundaki karar ready=false olarak kalır; kabul edilmiş doğrulayıcı vaka sayısı 0 ve yeni çalışma için model çıkarımı yapılmış değildir.
 
 Repo giriş sayfası artık bu araştırmayı tek aktif TÜBİTAK 2204-A odağı olarak sunar. Bu belgesel düzenleme hiçbir veri/ön kayıt/runtime kapısını otomatik kapatmaz ve inference izni vermez.
+
+
+## Sıkılaştırılmış vaka-kabul kapısı — 21 Ekim 2026
+
+Ön kontrol betiği, accepted_for_confirmatory=true olarak işaretlenen her vaka için şu alanları da zorunlu tutacak şekilde sıkılaştırıldı: vaka kaynağındaki Python sürümü ile gerçekten çalışan runtime sürümünün tam eşleşmesi; buggy tarafında hedef hatanın yeniden üretildiğini belirten açık sonuç; fixed tarafında aynı hedef testin geçtiğini belirten açık sonuç; doğrulanmış test çifti; E1/E2/E3 incelemesi; her iki test günlükü için artifact referansı ve SHA-256; runtime fingerprint SHA-256; kök-neden kanıt referansı. Setup veya ortam hatası, buggy-fail kanıtı kabul edilmeyecektir.
+
+Bu değişiklik mevcut vaka sayısını artırmaz ve hiçbir vaka kabul etmez. Birim testleri özellikle runtime uyumsuzluğu ve buggy tarafta hedef hatanın yeniden üretilememesi durumlarında sicilin fail-closed kalmasını sınayacak şekilde genişletildi. Yeni CI sonucu görülene kadar bu kod değişikliğinin doğrulaması “bekliyor” kabul edilmelidir; yeni çalışma için inference hâlâ kapalıdır.
