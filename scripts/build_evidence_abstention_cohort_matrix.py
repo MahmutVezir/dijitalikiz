@@ -13,6 +13,11 @@ from collections import Counter
 from pathlib import Path
 
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
+KNOWN_PRIOR_EXPOSURE_IDS = {
+    "BugsInPy-ansible-1", "BugsInPy-black-3", "BugsInPy-cookiecutter-2",
+    "BugsInPy-fastapi-2", "BugsInPy-httpie-2", "BugsInPy-keras-1",
+    "BugsInPy-luigi-2", "BugsInPy-matplotlib-1",
+}
 COMMIT = re.compile(r"^[0-9a-fA-F]{7,64}$")
 REQUIRED = {
     "queue_rank", "project_round", "screening_batch", "case_id", "project",
@@ -58,6 +63,11 @@ def prepare(queue_path, cohort_path, matrix_path, summary_path, batch_size=8):
         raise ValueError("Frozen cohort IDs are missing, duplicated, or smaller than requested batch")
     if cohort.get("cohort_size") != len(ids):
         raise ValueError("Frozen cohort_size does not match case_ids length")
+
+    if cohort.get("record_type") == "metadata_only_predeclared_case_screening_order_not_confirmatory_dataset":
+        exposed_in_historical = sorted(set(ids) & KNOWN_PRIOR_EXPOSURE_IDS)
+        if exposed_in_historical:
+            raise ValueError("Historical cohort contains cases permanently excluded after workflow debugging; use the exposure-clean v2 cohort: " + ", ".join(exposed_in_historical))
 
     # Cohort v1 is the exact queue prefix. Cohort v2 may skip only IDs
     # explicitly documented as permanently exposed before model inference.
