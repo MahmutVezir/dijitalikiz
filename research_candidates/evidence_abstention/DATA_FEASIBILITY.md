@@ -229,3 +229,10 @@ Bu sekiz workflow-debug vakası ana doğrulayıcı kuyruğundan çıkarılmışt
 [İlk-dalga run 39641682522](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39641682522) yedi workflow-debug vakasını tekrar deniyor. Black-2 ve FastAPI-1 artefaktları (sırasıyla ID `12364903680` ve `12366405628`) indirildi, ZIP SHA-256 doğrulandı ve her iç dosya `SHA256SUMS` ile eşleştirildi. Black-2'de eksik fixture sorunu giderildikten sonra gerçek formatlama testi buggy tarafta başarısız, fixed tarafta geçti; FastAPI-1'de `exclude_defaults` hedef testi buggy tarafta TypeError, fixed tarafta geçti. Her ikisinde de `artifact-audit.json` bütünlük kontrolünü geçti ve `accepted_for_confirmatory=false` kaldı. Bunlar workflow doğrulama amacıyla kullanıldığından kalıcı dışlamadır; bilimsel vaka sayısına girmez.
 
 Diğer ilk-dalga işlerinin bitişi ve artefaktları henüz doğrulanmadı. Bu gözlemler yalnızca teknik iş akışının kalitesini sınamak içindir; hiçbir insan ground-truth, lisans veya E1/E2/E3 kanıt kararı yerine geçmez.
+
+
+## Technical cohort batch v2 — no accepted pairs (21 October 2026)
+
+The predeclared workflow run [39659544932](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39659544932) had a valid cohort-freeze artifact but exposed runner-level errors. The fully inspected PySnooper-2 artifact shows `pytest: command not found` on both the buggy and fixed side despite matching metadata Python 3.8.1; therefore both exit code 1 values are **not** a valid test pair. The inspected spaCy-1 artifact contains only a fail-closed setup record: no observed Python, no checkout commits and no test exit codes. No inference occurred.
+
+A fixed pytest bootstrap is added to the case workflow using `pytest==6.2.5` for commands that start with `pytest`; V3 skips all eight V2-batch candidate IDs so this pipeline debugging is not mixed into a later confirmatory sample. This is a methods/exposure correction, not a statement about the scientific validity of the upstream bugs. Wait for the new workflow's completed logs and audit each raw artifact. At present accepted cases = 0, accepted projects = 0, and inference remains prohibited.
