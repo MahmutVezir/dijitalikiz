@@ -201,7 +201,7 @@ jobs:
             fi
             git -C "$work_dir" rev-parse HEAD > "$RUNNER_TEMP/case-artifact/$side-actual-commit.txt"
             set +e
-            bugsinpy-compile -w "$work_dir" > "$RUNNER_TEMP/$side-compile.log" 2>&1
+            ( cd "$work_dir" && bugsinpy-compile ) > "$RUNNER_TEMP/$side-compile.log" 2>&1
             compile_rc=$?
             set -e
             cp "$RUNNER_TEMP/$side-compile.log" "$RUNNER_TEMP/case-artifact/$side-compile.log"
@@ -210,7 +210,7 @@ jobs:
               return 0
             fi
             set +e
-            bugsinpy-test -w "$work_dir" > "$RUNNER_TEMP/$side-test.log" 2>&1
+            ( cd "$work_dir" && bugsinpy-test ) > "$RUNNER_TEMP/$side-test.log" 2>&1
             test_cli_rc=$?
             set -e
             cp "$RUNNER_TEMP/$side-test.log" "$RUNNER_TEMP/case-artifact/$side-test.log"
