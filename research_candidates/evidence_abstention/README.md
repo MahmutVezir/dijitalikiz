@@ -74,6 +74,9 @@ Bu çalışma şu anda planlama aşamasındadır. Herhangi bir deney yürütüld
 
 ## Aşama 2 — metadata envanterini otomatikleştirme
 
+Aşama 2 envanter sonucu: [METADATA_INVENTORY_RESULT_2026-10-21.md](METADATA_INVENTORY_RESULT_2026-10-21.md). Sabitlenmiş BugsInPy revizyonunda 501 ham kayıt/17 proje, 500 temel metadata-kalifiye kayıt ve bir metadata sorunu bulundu; 0 test çifti doğrulandı, 0 vaka kabul edildi.
+
+
 - scripts/inventory_bugsinpy_candidates.py sabitlenmiş BugsInPy revizyonundaki metadata kayıtlarını CSV'ye dönüştürür.
 - tests/test_inventory_bugsinpy_candidates.py fail-closed ve metadata-only kurallarını sınar.
 - .github/workflows/evidence-abstention-metadata-inventory.yml sadece pinned upstream metadata ağacını indirip envanter artifact'ı üretir; test yürütmez ve model çağırmaz.

@@ -54,3 +54,8 @@ Bu CI sonucu yalnızca denetleyicinin kapalı veri durumunda doğru biçimde blo
 ## 6. Aşama geçiş kararı
 
 **Aşama 4 teknik scaffolding ve CI testi tamamlandı. Pilot inference yapılmadı ve yapılmamalı.** Şu an sıfır kabul edilmiş vaka bulunduğundan model pilotu çalıştırmak, önceden belirlenmiş veri ve yöntem kapılarını ihlal eder. Teknik hazırlık ile pilotun tamamlanmasını ayrı raporluyoruz. Aşama 4'ün pilot kısmı kabul edilmiş veri havuzu, dondurma ve onay koşulları tamamlanana kadar açık kalır. Bu durum deney başarısı veya başarısızlığı değildir.
+
+
+## Aşama 2 envanter güncellemesi — 21 Ekim 2026
+
+[Metadata inventory workflow](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618065599) pinned BugsInPy revizyonunda 501 ham metadata kaydı ve 17 proje saydı. Asgari metadata alanları 500 kayıtta tamam, bir kayıtta buggy/fixed commit kimlikleri aynı. Bu workflow test çalıştırmadı; doğrulayıcı vakalar hâlâ 0. Ayrıntı: METADATA_INVENTORY_RESULT_2026-10-21.md.

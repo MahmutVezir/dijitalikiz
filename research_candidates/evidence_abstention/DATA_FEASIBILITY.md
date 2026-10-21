@@ -118,3 +118,23 @@ Bu otomasyon yalnızca metadata envanteri üretir:
 - daha önce maruz kalınan beş fizibilite örneğini kalıcı dışlama olarak işaretler.
 
 Başarılı envanter üretimi, 501 ham metadata kaydının listelenebildiğini gösterebilir; 501'in de, herhangi bir alt kümenin de doğrulayıcı deney için uygun olduğunu göstermez. CI artifact'ı geldiğinde ilk kullanım amacı metadata eksikliği ve kaynak/proje dağılımını tarayarak insan ve ortam doğrulaması için yeni, önceden incelenmemiş adayları seçmektir. Aşama 2'nin operasyonel kabul kapısı 60 bağımsız vaka ve 8 proje doğrulanana kadar açık kalır.
+
+
+## 10. Gerçek metadata envanteri sonucu — 21 Ekim 2026
+
+[GitHub Actions envanter çalışması](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618065599) pinned BugsInPy revizyonunda başarıyla envanter ve artifact üretti. Sonuç raporu: [METADATA_INVENTORY_RESULT_2026-10-21.md](METADATA_INVENTORY_RESULT_2026-10-21.md).
+
+| Çıktı | Sonuç |
+|---|---:|
+| Ham metadata vaka kaydı | 501 |
+| Upstream proje | 17 |
+| Temel metadata kapısı geçen | 500 |
+| Temel metadata kapısı geçmeyen | 1 |
+| Test çifti fiilen doğrulanan | 0 |
+| Kabul edilmiş doğrulayıcı vaka | 0 |
+
+Metadata kapısını geçemeyen tek kayıt **BugsInPy-keras-12**: kaynak metadata aynı Git commit'ini buggy ve fixed olarak göstermektedir. Kayıt sessizce kabul edilmedi; dışlama/inceleme gerektiren metadata sorunu olarak tutuldu. İş akışı beş önceden incelenmiş örneği de kalıcı dışlama olarak etiketledi.
+
+Envanter CSV'sinin SHA-256 değeri 069e649a37a12cd495ad08a82377f76f0b4518b3fd138380321dc53b15663dcb olarak kaydedildi. CSV metadata ve dosya hash'leri içerir; patch/source code kopyası, insan kök-neden kararı veya test sonuçları içermez.
+
+**Aşama 2 kararı değişmedi:** metadata kaynak envanteri tamamlandı; operasyonel vaka doğrulama kapısı hâlâ açık. 501 ham kayıt, 500 metadata-kalifiye aday, 60 doğrulanmış vaka veya deney örneklemi olarak raporlanamaz.

@@ -34,6 +34,10 @@ Aşama 4'te yalnızca model çalıştırmayan preflight doğrulaması ve testler
 - Aşama 2 (21 Ekim güncellemesi): pinned BugsInPy metadata envanterini üretmek için salt metadata otomasyonu ve CI iş akışı eklendi. Envanter, test/ground-truth/lisans incelemesi değildir; kabul edilmiş vaka sayısı envanter çalışması tamamlanmadan da 0 olarak kalır.
 - Envanter için script, testler ve no-test/no-inference workflow bu dalda yer alır.
 
+## Aşama 2 metadata envanteri sonucu
+
+[Envanter denetim raporu](../METADATA_INVENTORY_RESULT_2026-10-21.md) kaydına göre 501 ham metadata kaydı ve 17 proje listelendi; 500 kayıtta asgari metadata tamam, bir kayıt buggy/fixed commit eşitliği nedeniyle geçmedi. Bu otomasyon hiçbir testi çalıştırmadı; doğrulayıcı vaka sayısı 0 olarak kalır.
+
 ## Depo kapsamı
 
 - [Yetkili kapsam ayrımı](../REPO_SCOPE_SPLIT.md)

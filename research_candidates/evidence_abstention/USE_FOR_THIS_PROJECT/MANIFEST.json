@@ -160,5 +160,18 @@
     ".github/workflows/evidence-abstention-preflight.yml"
   ],
   "phase_1_extended_targeted_review": "completed_not_systematic_review",
-  "phase_2_metadata_inventory_automation": "added_not_yet_run_by_this_update"
+  "phase_2_metadata_inventory_automation": "added_not_yet_run_by_this_update",
+  "phase_2_metadata_inventory_result": {
+    "workflow_run_id": 39618065599,
+    "artifact_id": 12352753722,
+    "source_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+    "raw_metadata_cases": 501,
+    "source_projects": 17,
+    "metadata_complete_minimum_fields": 500,
+    "metadata_incomplete": 1,
+    "buggy_fixed_test_pairs_verified": 0,
+    "accepted_confirmatory_cases": 0,
+    "inventory_csv_sha256": "069e649a37a12cd495ad08a82377f76f0b4518b3fd138380321dc53b15663dcb",
+    "inference_performed": false
+  }
 }
