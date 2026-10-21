@@ -1,0 +1,29 @@
+name: Evidence abstention uncertainty unit tests
+
+on:
+  push:
+    branches:
+      - research/evidence-abstention-confidence-v0.1
+    paths:
+      - "research_candidates/evidence_abstention/implementation/**"
+      - "research_candidates/evidence_abstention/STAGE3_CONFIDENCE_ARCHITECTURE_2026-10-21.md"
+      - ".github/workflows/evidence-abstention-uncertainty.yml"
+  pull_request:
+    paths:
+      - "research_candidates/evidence_abstention/implementation/**"
+      - "research_candidates/evidence_abstention/STAGE3_CONFIDENCE_ARCHITECTURE_2026-10-21.md"
+      - ".github/workflows/evidence-abstention-uncertainty.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m unittest discover -s research_candidates/evidence_abstention/implementation -p 'test_*.py' -v
