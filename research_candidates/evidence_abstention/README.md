@@ -98,3 +98,6 @@ Aşama 2 envanter sonucu: [METADATA_INVENTORY_RESULT_2026-10-21.md](METADATA_INV
 ## Tek odak kararı
 
 Bu çalışma için başka yarışma veya ayrı araştırma hattı yürütülmeyecek. Şu an yapılacak iş, vaka kabul kapısını gerçek kanıtlarla kapatmak ve başvuruya hazır tamamlanmış bir bilimsel çalışma üretmektir. 501 ham metadata kaydı, 500 temel metadata-kalifiye kayıt olarak kalır; bunların hiçbiri otomatik kabul edilmiş deney vakası değildir. En az 60 kabul edilmiş bağımsız vaka / 8 proje ve tüm yöntem kapıları sağlanana kadar model çıkarımı kapalı tutulur.
+
+ 
+**Exact-runtime smoke note:** The previously exposed `BugsInPy-tqdm-1` diagnostic now completed under its metadata Python 3.6.9. Buggy target test failed with the target TypeError and a teardown error; fixed target test passed. This case remains permanently excluded. See [the data-feasibility record](DATA_FEASIBILITY.md). The initial diagnostic ZIP's embedded checksum list had runner-absolute paths; a follow-up workflow fix adds portable relative checksums and self-validation, pending its next CI run.
