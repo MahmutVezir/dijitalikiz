@@ -312,7 +312,11 @@ jobs:
               python -m pip freeze
             } > "$RUNNER_TEMP/$side-runtime-fingerprint.txt"
             cp "$RUNNER_TEMP/$side-runtime-fingerprint.txt" "$RUNNER_TEMP/case-artifact/$side-runtime-fingerprint.txt"
+            # Virtualenv deactivate may reference unset state under nounset.
+            # Disable nounset for cleanup only, then restore strict mode.
+            set +u
             deactivate || true
+            set -u
             cd "$original_pwd"
             cp "$aggregate" "$RUNNER_TEMP/case-artifact/$side-test.log"
             target_rc=0
@@ -351,7 +355,16 @@ jobs:
               return "test_failure_signature=true" in v or ("test-failure signature" in v and "human review" in v)
           def passed(side):
               return "pass_marker=true" in text(side+"-status.txt")
-          runtime=platform.python_version()
+          import re
+          def runtime_version(name):
+              value=text(name)
+              match=re.search(r"^Python (\\d+\\.\\d+\\.\\d+)$",value,re.MULTILINE)
+              return match.group(1) if match else None
+          buggy_runtime=runtime_version("buggy-runtime-fingerprint.txt")
+          fixed_runtime=runtime_version("fixed-runtime-fingerprint.txt")
+          # Runner Python is not necessarily the project venv Python; check both sides.
+          runtime=buggy_runtime if buggy_runtime and buggy_runtime==fixed_runtime else None
+          runtime_matches=bool(runtime and runtime==os.environ["EXPECTED_PYTHON"])
           def sha(name):
               p=root/name
               return hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else None
@@ -362,6 +375,8 @@ jobs:
             "buggy_test_log_relative_path":"buggy-test.log",
             "fixed_test_log_relative_path":"fixed-test.log",
             "runner_runtime_fingerprint_sha256":sha("runner-runtime-fingerprint.txt"),
+            "buggy_runtime_python_observed":buggy_runtime,
+            "fixed_runtime_python_observed":fixed_runtime,
             "buggy_runtime_fingerprint_sha256":sha("buggy-runtime-fingerprint.txt"),
             "fixed_runtime_fingerprint_sha256":sha("fixed-runtime-fingerprint.txt"),
             "dataset_commit":os.environ["BUGSINPY_COMMIT"],
@@ -369,7 +384,7 @@ jobs:
             "expected_run_test_sha256":os.environ["EXPECTED_RUN_TEST_SHA256"],
             "dataset_recorded_python":os.environ["EXPECTED_PYTHON"],
             "runtime_python_observed":runtime,
-            "runtime_matches_metadata":runtime==os.environ["EXPECTED_PYTHON"],
+            "runtime_matches_metadata":runtime_matches,
             "expected_buggy_commit":os.environ["EXPECTED_BUGGY"],
             "observed_buggy_base_commit":commit("buggy-actual-commit.txt"),
             "expected_fixed_commit_reference":os.environ["EXPECTED_FIXED"],
