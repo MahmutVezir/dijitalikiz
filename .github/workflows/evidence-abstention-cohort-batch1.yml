@@ -208,7 +208,7 @@ jobs:
           sha256sum "$meta" "$project_meta" "$run_test" > "$RUNNER_TEMP/source-metadata-hashes.txt"
           cp "$RUNNER_TEMP/source-metadata-hashes.txt" "$RUNNER_TEMP/case-artifact/"
           cp "$meta" "$RUNNER_TEMP/case-artifact/bug.info"
-          printf '%s\n' "${{ matrix.execution_test_commands[0] }}" > "$RUNNER_TEMP/case-artifact/first-test-command.txt"
+          printf '%s\n' "$FIRST_TEST_COMMAND" > "$RUNNER_TEMP/case-artifact/first-test-command.txt"
 
       - name: Capture pre-test Python runtime
         run: |
@@ -227,11 +227,7 @@ jobs:
         run: |
           set -u
           export PATH="$RUNNER_TEMP/BugsInPy/framework/bin:$PATH"
-          export PROJECT="${{ matrix.project }}"
-          export BUG_ID="${{ matrix.bug_id }}"
-          export CASE_ID="${{ matrix.case_id }}"
-          export TARGET_COMMANDS_JSON='${{ toJSON(matrix.execution_test_commands) }}'
-          export INSTALL_WORKTREE_PACKAGE="${{ matrix.install_worktree_package }}"
+          export PATH="$RUNNER_TEMP/BugsInPy/framework/bin:$PATH"
           mkdir -p "$RUNNER_TEMP/fixed-root" "$RUNNER_TEMP/buggy-root"
           printf '%s\n' "$TARGET_COMMANDS_JSON" > "$RUNNER_TEMP/case-artifact/target-commands.json"
 
@@ -282,24 +278,30 @@ jobs:
             all_passed=true
             any_test_failure=false
             mapfile -t commands < <(python -c 'import json,os; print("\n".join(json.loads(os.environ["TARGET_COMMANDS_JSON"])))')
-            (
-              cd "$work_dir"
-              source env/bin/activate
-              for command in "${commands[@]}"; do
-                command_index=$((command_index+1))
-                printf '\n### command_%s: %s\n' "$command_index" "$command" >> "$aggregate"
-                set +e
-                bash -c "$command" >> "$aggregate" 2>&1
-                rc=$?
-                set -e
-                printf '%s\n' "$rc" >> "$codes"
-                if [ "$rc" -ne 0 ]; then all_passed=false; fi
-                if grep -Eiq '(^FAIL: |^ERROR: |FAILED \(.+\)|FAILED .+::|=+ FAILURES =+|[0-9]+ failed([,[:space:]]|$))' "$aggregate"; then
-                  any_test_failure=true
-                fi
-              done
-              exit 0
-            )
+            original_pwd="$PWD"
+            cd "$work_dir"
+            source env/bin/activate
+            for command in "${commands[@]}"; do
+              command_index=$((command_index+1))
+              printf '\n### command_%s: %s\n' "$command_index" "$command" >> "$aggregate"
+              set +e
+              bash -c "$command" >> "$aggregate" 2>&1
+              rc=$?
+              set -e
+              printf '%s\n' "$rc" >> "$codes"
+              if [ "$rc" -ne 0 ]; then all_passed=false; fi
+              if grep -Eiq '(^FAIL: |^ERROR: |FAILED \(.+\)|FAILED .+::|=+ FAILURES =+|[0-9]+ failed([,[:space:]]|$))' "$aggregate"; then
+                any_test_failure=true
+              fi
+            done
+            {
+              python --version
+              python -c 'import sys,platform; print("executable="+sys.executable); print("platform="+platform.platform())'
+              python -m pip freeze
+            } > "$RUNNER_TEMP/$side-runtime-fingerprint.txt"
+            cp "$RUNNER_TEMP/$side-runtime-fingerprint.txt" "$RUNNER_TEMP/case-artifact/$side-runtime-fingerprint.txt"
+            deactivate || true
+            cd "$original_pwd"
             cp "$aggregate" "$RUNNER_TEMP/case-artifact/$side-test.log"
             target_rc=0
             if grep -Eq '[1-9]' "$codes"; then target_rc=1; fi
@@ -320,7 +322,7 @@ jobs:
           run_side buggy 0 "$RUNNER_TEMP/buggy-root"
 
           python - <<'PY'
-          import json,os,pathlib,platform
+          import hashlib,json,os,pathlib,platform
           root=pathlib.Path(os.environ["RUNNER_TEMP"])/"case-artifact"
           def text(name):
               p=root/name
@@ -338,8 +340,18 @@ jobs:
           def passed(side):
               return "pass_marker=true" in text(side+"-status.txt")
           runtime=platform.python_version()
+          def sha(name):
+              p=root/name
+              return hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else None
+          run_url="https://github.com/"+os.environ["GITHUB_REPOSITORY"]+"/actions/runs/"+os.environ["GITHUB_RUN_ID"]
           summary={
             "case_id":os.environ["CASE_ID"],
+            "workflow_run_url":run_url,
+            "buggy_test_log_relative_path":"buggy-test.log",
+            "fixed_test_log_relative_path":"fixed-test.log",
+            "runner_runtime_fingerprint_sha256":sha("runner-runtime-fingerprint.txt"),
+            "buggy_runtime_fingerprint_sha256":sha("buggy-runtime-fingerprint.txt"),
+            "fixed_runtime_fingerprint_sha256":sha("fixed-runtime-fingerprint.txt"),
             "dataset_commit":os.environ["BUGSINPY_COMMIT"],
             "target_test_commands":json.loads(os.environ["TARGET_COMMANDS_JSON"]),
             "expected_run_test_sha256":os.environ["EXPECTED_RUN_TEST_SHA256"],
@@ -369,6 +381,11 @@ jobs:
           (root/"summary.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
           PY
         env:
+          PROJECT: ${{ matrix.project }}
+          BUG_ID: ${{ matrix.bug_id }}
+          CASE_ID: ${{ matrix.case_id }}
+          TARGET_COMMANDS_JSON: ${{ toJSON(matrix.execution_test_commands) }}
+          INSTALL_WORKTREE_PACKAGE: ${{ matrix.install_worktree_package }}
           EXPECTED_PYTHON: ${{ matrix.python_version }}
           EXPECTED_BUGGY: ${{ matrix.buggy_commit }}
           EXPECTED_FIXED: ${{ matrix.fixed_commit }}
@@ -389,12 +406,12 @@ jobs:
           PY
           fi
           cd "$RUNNER_TEMP/case-artifact"
-          rm -f SHA256SUMS artifact-audit.json
+          rm -f SHA256SUMS artifact-audit.json artifact-audit.sha256 SHA256SUMS.copy
           find . -maxdepth 1 -type f ! -name SHA256SUMS ! -name artifact-audit.json -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
           sha256sum -c SHA256SUMS
           python3 "$GITHUB_WORKSPACE/scripts/audit_evidence_abstention_triage_artifact.py" --root "$RUNNER_TEMP/case-artifact" --output "$RUNNER_TEMP/case-artifact/artifact-audit.json"
-          sha256sum "$RUNNER_TEMP/case-artifact/artifact-audit.json" > "$RUNNER_TEMP/case-artifact/artifact-audit.sha256"
-          cp "$RUNNER_TEMP/case-artifact/SHA256SUMS" "$RUNNER_TEMP/case-artifact/SHA256SUMS.copy" || true
+          printf '%s  ./artifact-audit.json\n' "$(sha256sum artifact-audit.json | cut -d ' ' -f 1)" >> SHA256SUMS
+          sha256sum -c SHA256SUMS
         env:
           CASE_ID: ${{ matrix.case_id }}
 
