@@ -47,6 +47,9 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 
 ## Belgeler
 
+- [Manuel vaka inceleme rehberi](CASE_REVIEW_GUIDE.md) — test/lisans/ground truth/kanıt/sızıntı kabul sırası.
+- [Manuel vaka inceleme formu (JSON)](CASE_REVIEW_INTAKE_TEMPLATE.json) — boş şablon; kabul edilmiş vaka değildir.
+
 - [Aday doğrulama kuyruğu sonucu](SCREENING_QUEUE_RESULT_2026-10-21.md) — 495 metadata adayını 17 proje arasında dengeli tarama sırasına koyar; kabul edilmiş vaka anlamına gelmez.
 
 - `TUBITAK_2204A_MASTER_PLAN_2026-10-21.md` — TÜBİTAK 2204-A için tek aktif yürütme planı.
