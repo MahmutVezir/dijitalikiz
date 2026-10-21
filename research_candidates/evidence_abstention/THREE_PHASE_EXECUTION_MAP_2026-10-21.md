@@ -82,3 +82,16 @@ Metadata envanteri ve triage-artifact testleri: [run 39639138266](https://github
 **Yeni kohort testinin ilk CI bulgusu:** [run 39647103338](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39647103338) ilk sekiz seçimin dondurulmuş matrisini başarıyla yeniden oluşturdu; ancak vaka ortamı kurulumunda upstream BugsInPy aracı `~/.bashrc` bulunmadığı için durdu. Bu, bug/fix test çifti sonucu değildir. Runner hazırlığına boş `~/.bashrc` oluşturma adımı eklendi; bunu izleyen koşunun geçmesi beklenmeden hiçbir vaka kabul edilmeyecek.
 
 **Bilimsel durum değişmedi:** Kabul edilmiş vaka 0; gerçek model çıkarımı 0; ön kayıt ve insan puanlaması henüz tamam değil.
+
+
+## Sonraki denetim güncellemesi — 21 Ekim 2026
+
+Yeni tamamlanan [ilk-dalga no-inference koşusu](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39644280706) yedi teknik tarama işinin tamamını ve artefakt hash denetimlerini başarıyla bitirdi. Sonuçlar [FIRST_WAVE_TRIAGE_RESULTS_2026-10-21.md](FIRST_WAVE_TRIAGE_RESULTS_2026-10-21.md) dosyasına kaydedildi.
+
+Bu daha yeni koşuda:
+- Black-2, Scrapy-1 ve Tornado-1 için otomatik denetimde hedef bug-reprodüksiyonuyla uyumlu ham buggy-fail/fixed-pass sinyali görüldü; insan incelemesi hâlâ zorunlu.
+- FastAPI-1 ve Sanic-1 için benzer ham sinyal olsa da otomatik artefakt denetimi buggy günlüklerinde ortam/bağımlılık riski uyarısı verdi. Bunlar hedef kusurun kanıtı sayılmıyor.
+- Luigi-1 ve TheFuck-1 için eksiksiz buggy-fail/fixed-pass çifti işareti oluşmadı; ortam/bağımlılık uyarıları mevcut.
+- Bu yedi kayıt workflow geliştirme/teknik triage amacıyla incelendiği için doğrulayıcı analizden kalıcı dışlanmıştır. Önceki beş maruziyet vakasıyla birlikte kuyruğun dışında kalırlar.
+
+**Aşama durumu değişmedi:** Doğrulayıcı vaka sayısı 0; doğrulanmış proje sayısı 0; LLM çıkarımı yapılmadı; analiz istatistiği hesaplanmadı. Koşunun başarı sonucu yalnızca otomasyon ve artefakt kontrollerini gösterir. Ana Aşama 1, en az 60 vaka/8 proje, iki ayrı insan değerlendirici paneli, kanıt paketleri, kaynak/lisans/sızıntı incelemesi, kesin runtime doğrulaması, hash dondurma ve denetlenebilir ön kayıt kapıları tamamlanana kadar açık kalır.
