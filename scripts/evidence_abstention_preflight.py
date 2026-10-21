@@ -118,8 +118,17 @@ def evaluate(root):
                     blockers.append(cid + ": the buggy-side target failure was not reproduced; environment/setup errors do not qualify.")
                 if record.get("fixed_test_outcome") != "target_test_passed":
                     blockers.append(cid + ": the fixed-side target test did not pass.")
-                if record.get("ground_truth_reviewers", 0) < 2 or record.get("evidence_reviewers", 0) < 2:
-                    blockers.append(cid + ": at least two independent reviewers are required for ground truth and evidence sufficiency.")
+                gt_ids = record.get("ground_truth_reviewer_ids")
+                evidence_ids = record.get("evidence_reviewer_ids")
+                for label, reviewer_ids in (("ground-truth", gt_ids), ("evidence", evidence_ids)):
+                    if not isinstance(reviewer_ids, list) or len(reviewer_ids) < 2:
+                        blockers.append(cid + ": at least two pseudonymous independent " + label + " reviewer IDs are required.")
+                    elif any(not isinstance(item, str) or not item.strip() for item in reviewer_ids):
+                        blockers.append(cid + ": reviewer IDs must be non-empty pseudonymous strings.")
+                    elif len(set(reviewer_ids)) != len(reviewer_ids):
+                        blockers.append(cid + ": duplicate IDs within the " + label + " review panel.")
+                if isinstance(gt_ids, list) and isinstance(evidence_ids, list) and set(gt_ids) & set(evidence_ids):
+                    blockers.append(cid + ": reviewer IDs must be distinct between ground-truth and evidence review panels.")
                 for field in ("buggy_test_log_sha256", "fixed_test_log_sha256", "runtime_fingerprint_sha256"):
                     if not isinstance(record.get(field), str) or not HEX64.fullmatch(record[field]):
                         blockers.append(cid + ": missing/invalid " + field)
