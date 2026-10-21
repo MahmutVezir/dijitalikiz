@@ -220,3 +220,12 @@ These two cases were used in the technical workflow-validation wave and remain p
 Bu sekiz workflow-debug vakası ana doğrulayıcı kuyruğundan çıkarılmıştır; cookiecutter-1 de eksik `non_ascii.json` fixture'ı nedeniyle kalıcı dışlamadadır. Yeni kod, pytest `FAILURES` özetini yakalayacak, test exit kodlarını sayısal JSON alanları olarak saklayacak, sabit fixture'ı kopyalamadan önce/sonra provenance hash'leri kaydedecek ve her artefakta `artifact-audit.json` ekleyecektir. Bir sonraki run bu değişikliklerin doğrulama koşusudur; sonuçlar insan incelemesi yerine geçmez.
 
 **Bilimsel durum değişmedi:** 0 kabul edilmiş doğrulayıcı vaka; yeni model çıkarımı yok.
+
+ 
+## 14. Dondurulmuş intake sırası ve yeni v6 artefakt denetimi
+
+İlk 120 metadata adayı [SCREENING_COHORT_120_2026-10-21.json](SCREENING_COHORT_120_2026-10-21.json) içinde sabitlenmiştir. Bu, güncel queue CSV'sinin ilk 120 satır sırasıdır; örnekleme rastgele değildir ve sonuçlara göre değiştirilmeyecektir. Henüz bu cohort vakaları için gerçek test çifti çalıştırılmadı; accepted cases = 0.
+
+[İlk-dalga run 39641682522](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39641682522) yedi workflow-debug vakasını tekrar deniyor. Black-2 ve FastAPI-1 artefaktları (sırasıyla ID `12364903680` ve `12366405628`) indirildi, ZIP SHA-256 doğrulandı ve her iç dosya `SHA256SUMS` ile eşleştirildi. Black-2'de eksik fixture sorunu giderildikten sonra gerçek formatlama testi buggy tarafta başarısız, fixed tarafta geçti; FastAPI-1'de `exclude_defaults` hedef testi buggy tarafta TypeError, fixed tarafta geçti. Her ikisinde de `artifact-audit.json` bütünlük kontrolünü geçti ve `accepted_for_confirmatory=false` kaldı. Bunlar workflow doğrulama amacıyla kullanıldığından kalıcı dışlamadır; bilimsel vaka sayısına girmez.
+
+Diğer ilk-dalga işlerinin bitişi ve artefaktları henüz doğrulanmadı. Bu gözlemler yalnızca teknik iş akışının kalitesini sınamak içindir; hiçbir insan ground-truth, lisans veya E1/E2/E3 kanıt kararı yerine geçmez.
