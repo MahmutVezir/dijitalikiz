@@ -48,3 +48,10 @@ Birim testlerinin geçmesi, BugsInPy hata vakalarının test çiftlerinin doğru
 Kuyrukta ilk grup 80 adaydır; hepsi manuel incelemeye alınmaya hazır metadata adaylarıdır ama henüz hiçbiri test/ground-truth/lisans/kanıt kapısını geçmemiştir. Her birinde belirtilen Python sürümünün ve bağımlılıkların tekrarlanabilir ortamı kurulmalı; buggy tarafındaki hedef hata ve fixed tarafındaki geçiş ayrı günlük ve fingerprint ile doğrulanmalıdır. Kurulum hatası, hedef hata olarak sayılmamalıdır.
 
 Kabul hedefi aynı: **en az 60 bağımsız vaka ve en az 8 proje; hedef 80 vaka**. Bu rapor kaynak taramasını ileri götürür, fakat deney hazır olma statüsünü değiştirmez.
+
+
+## Exact-runtime diagnostic update — run 39632366228
+
+The already-exposed `BugsInPy-tqdm-1` case was run under the metadata-recorded Python 3.6.9. The buggy-side target test failed with the expected `TypeError: 'int' object is not subscriptable` (and reported a live-instance teardown error); the fixed-side target test passed. The case remains permanently excluded from confirmatory analysis and does not increase the accepted-case count.
+
+The smoke artifact ZIP checksum from the GitHub artifact service is recorded, but its initial internal `SHA256SUMS` used runner-absolute paths and is not portable. A follow-up workflow change now creates relative checksums and validates them before uploading future artifacts. This note does not claim that those amended workflow steps have already completed successfully; their validation is pending the next run.
