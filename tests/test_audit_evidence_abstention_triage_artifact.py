@@ -101,5 +101,22 @@ class TriageArtifactAuditTests(unittest.TestCase):
             self.assertTrue(result["likely_fixture_or_harness_error"])
             self.assertTrue(any("fixture or harness" in w for w in result["warnings"]))
 
+    def test_missing_dependency_is_not_a_bug_failure_signal(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make_artifact(root)
+            (root / "buggy-test.log").write_text(
+                "ImportError while loading conftest\\nModuleNotFoundError: No module named 'sanic'\\n",
+                encoding="utf-8",
+            )
+            files = sorted(p for p in root.iterdir() if p.is_file() and p.name != "SHA256SUMS")
+            (root / "SHA256SUMS").write_text("".join(f"{digest(p)}  ./{p.name}\\n" for p in files), encoding="utf-8")
+            result = MODULE.audit(root)
+            self.assertTrue(result["integrity_pass"], result["blockers"])
+            self.assertTrue(result["raw_buggy_fail_fixed_pass_signals_present"])
+            self.assertFalse(result["technical_buggy_fail_fixed_pass_signals_present"])
+            self.assertTrue(result["likely_environment_or_harness_error"])
+            self.assertTrue(any("environment/dependency/plugin error" in w for w in result["warnings"]))
+
 if __name__ == "__main__":
     unittest.main()
