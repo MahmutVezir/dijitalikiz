@@ -108,6 +108,17 @@
     "last_code_fix": "The target-test step explicitly adds $RUNNER_TEMP/BugsInPy/framework/bin to PATH; previous focused-test run had exit 127 before either revision was checked out, so no candidate test result was produced."
   },
   "notes": [
-    "Run 39636098825 did not validate any target test for completed cases: missing BugsInPy CLI PATH caused checkout exit 127. This run is classified as workflow setup failure, not a bug reproduction result."
+    "Run 39636098825 did not validate any target test for completed cases: missing BugsInPy CLI PATH caused checkout exit 127. This run is classified as workflow setup failure, not a bug reproduction result.",
+    "All eight cases in this technical validation manifest are used only to debug/validate the workflow and inspect raw target-test signals; they are permanently excluded from confirmatory analysis. Do not re-add them to the manual screening queue or case registry."
+  ],
+  "confirmatory_exclusions": [
+    "BugsInPy-black-2",
+    "BugsInPy-cookiecutter-1",
+    "BugsInPy-fastapi-1",
+    "BugsInPy-luigi-1",
+    "BugsInPy-sanic-1",
+    "BugsInPy-scrapy-1",
+    "BugsInPy-thefuck-1",
+    "BugsInPy-tornado-1"
   ]
 }
