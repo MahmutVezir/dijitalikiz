@@ -5,15 +5,12 @@ on:
     branches:
       - "research/evidence-abstention-draft-2026-10-19"
     paths:
-      - ".github/workflows/evidence-abstention-first-wave-validation.yml"
-      - "research_candidates/evidence_abstention/FIRST_WAVE_TECHNICAL_SCREEN_2026-10-21.json"
-  pull_request:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/evidence-abstention-first-wave-validation.yml"
       - "research_candidates/evidence_abstention/FIRST_WAVE_TECHNICAL_SCREEN_2026-10-21.json"
   workflow_dispatch:
+
+concurrency:
+  group: evidence-abstention-first-wave-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -35,6 +32,7 @@ jobs:
           - case_id: BugsInPy-black-2
             project: black
             bug_id: "2"
+            target_test_command: "python -m unittest -q tests.test_black.BlackTestCase.test_fmtonoff4"
             expected_run_test_sha256: 661c7eff06a036821b9e66a3ef8b7c0e46e6a6e815f65db6427aad3f8f6adcec
             python_version: "3.8.3"
             buggy_commit: c8ca6b2b9ff3510bee12129824cebfc2fc51e5b2
@@ -42,6 +40,7 @@ jobs:
           - case_id: BugsInPy-cookiecutter-1
             project: cookiecutter
             bug_id: "1"
+            target_test_command: "tox -e py36 -- tests/test_generate_context.py::test_generate_context_decodes_non_ascii_chars"
             expected_run_test_sha256: 8fa48fdd88c886fbdf244124c952d919743b1c4ca407a0b4d50d091d9fab4b34
             python_version: "3.6.9"
             buggy_commit: c15633745df6abdb24e02746b82aadb20b8cdf8c
@@ -49,6 +48,7 @@ jobs:
           - case_id: BugsInPy-fastapi-1
             project: fastapi
             bug_id: "1"
+            target_test_command: "pytest tests/test_jsonable_encoder.py::test_encode_model_with_default"
             expected_run_test_sha256: 38172a1aa0b625cc3569da9178538e262fd5fd98ff73938fc8f2cecc8e4caaed
             python_version: "3.8.3"
             buggy_commit: 766157bfb4e7dfccba09ab398e8ec444d14e947c
@@ -56,6 +56,7 @@ jobs:
           - case_id: BugsInPy-luigi-1
             project: luigi
             bug_id: "1"
+            target_test_command: "pytest test/server_test.py::MetricsHandlerTest::test_get"
             expected_run_test_sha256: 99ba7b97181c7159e5da4650b579ccd3fb92908fceb63f9924a583353ceccebd
             python_version: "3.8.3"
             buggy_commit: 1164eb6b85b8a70f596dbb99452bec513e72c12e
@@ -63,6 +64,7 @@ jobs:
           - case_id: BugsInPy-sanic-1
             project: sanic
             bug_id: "1"
+            target_test_command: "pytest tests/test_blueprints.py::test_bp_middleware_order"
             expected_run_test_sha256: 52aea225714646f8ddf3f59ebb82a536c0927d2d553b32fca2c1450638fd38a4
             python_version: "3.8.3"
             buggy_commit: e7001b00747b659f7042b0534802b936ee8a53e0
@@ -70,6 +72,7 @@ jobs:
           - case_id: BugsInPy-scrapy-1
             project: scrapy
             bug_id: "1"
+            target_test_command: "python -m unittest -q tests.test_spidermiddleware_offsite.TestOffsiteMiddleware4._get_spiderargs tests.test_spidermiddleware_offsite.TestOffsiteMiddleware4.test_process_spider_output"
             expected_run_test_sha256: fcdb910c48de6fa7d66c991091fb1895e6da9a6033e3b79bc7ba5d81d339ff10
             python_version: "3.8.3"
             buggy_commit: c57512fa669e6f6b1b766a7639206a380f0d10ce
@@ -77,6 +80,7 @@ jobs:
           - case_id: BugsInPy-thefuck-1
             project: thefuck
             bug_id: "1"
+            target_test_command: "pytest tests/rules/test_pip_unknown_command.py::test_get_new_command"
             expected_run_test_sha256: b0331f8719b3c079bff315beb778d1b31c4311cb84c228e0bcfbeb97c160d741
             python_version: "3.7.0"
             buggy_commit: 2ced7a7f33ae0bec3ffc7a43ce95330bdf6cfcb9
@@ -84,6 +88,7 @@ jobs:
           - case_id: BugsInPy-tornado-1
             project: tornado
             bug_id: "1"
+            target_test_command: "python -m unittest -q tornado.test.websocket_test.WebSocketTest.test_nodelay"
             expected_run_test_sha256: 824b5decbe6517adcba0b9c8e773f810f1490c510b7cec960278d6f46eca777b
             python_version: "3.7.0"
             buggy_commit: 6a5a0bfa370b6c0d3dbbf9589a560a98202d2baa
@@ -174,17 +179,24 @@ jobs:
           } > "$RUNNER_TEMP/runtime-fingerprint.txt"
           cat "$RUNNER_TEMP/runtime-fingerprint.txt"
 
-      - name: Run buggy and fixed revisions with upstream BugsInPy tooling
+      - name: Run only the pinned target test on buggy and synthetic fixed working trees
         id: pair
         continue-on-error: true
         shell: bash -el {0}
+        env:
+          CASE_ID: ${{ matrix.case_id }}
+          EXPECTED_PYTHON: ${{ matrix.python_version }}
+          EXPECTED_BUGGY: ${{ matrix.buggy_commit }}
+          EXPECTED_FIXED: ${{ matrix.fixed_commit }}
+          EXPECTED_RUN_TEST_SHA256: ${{ matrix.expected_run_test_sha256 }}
+          TARGET_TEST_COMMAND: ${{ matrix.target_test_command }}
         run: |
           set -u
-          export PATH="$RUNNER_TEMP/BugsInPy/framework/bin:$PATH"
-          mkdir -p "$RUNNER_TEMP/buggy" "$RUNNER_TEMP/fixed" "$RUNNER_TEMP/case-artifact"
+          mkdir -p "$RUNNER_TEMP/case-artifact"
           cp "$RUNNER_TEMP/runtime-fingerprint.txt" "$RUNNER_TEMP/case-artifact/runtime-fingerprint.txt"
           cp "$RUNNER_TEMP/source-metadata-hashes.txt" "$RUNNER_TEMP/case-artifact/source-metadata-hashes.txt"
           cp "$RUNNER_TEMP/BugsInPy/projects/${{ matrix.project }}/bugs/${{ matrix.bug_id }}/bug.info" "$RUNNER_TEMP/case-artifact/bug.info"
+          printf '%s\n' "$TARGET_TEST_COMMAND" > "$RUNNER_TEMP/case-artifact/target-test-command.txt"
 
           run_side() {
             side="$1"; version="$2"; work_root="$3"
@@ -199,57 +211,84 @@ jobs:
               echo "$side checkout did not complete (exit=$checkout_rc)" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
               return 0
             fi
+
             git -C "$work_dir" rev-parse HEAD > "$RUNNER_TEMP/case-artifact/$side-actual-commit.txt"
+            git -C "$work_dir" diff --stat > "$RUNNER_TEMP/case-artifact/$side-worktree-diff-stat.txt"
+            git -C "$work_dir" diff --binary | sha256sum | cut -d ' ' -f 1 > "$RUNNER_TEMP/case-artifact/$side-worktree-diff-sha256.txt"
+            git -C "$work_dir" status --short > "$RUNNER_TEMP/case-artifact/$side-worktree-status.txt"
+
             set +e
             ( cd "$work_dir" && bugsinpy-compile ) > "$RUNNER_TEMP/$side-compile.log" 2>&1
             compile_rc=$?
             set -e
             cp "$RUNNER_TEMP/$side-compile.log" "$RUNNER_TEMP/case-artifact/$side-compile.log"
-            if [ ! -f "$work_dir/bugsinpy_compile_flag" ]; then
-              echo "$side environment not marked compiled (cli_exit=$compile_rc)" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+            if [ ! -f "$work_dir/bugsinpy_compile_flag" ] || [ ! -f "$work_dir/env/bin/activate" ]; then
+              echo "$side environment setup did not finish (compile_exit=$compile_rc); no target test result" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
               return 0
             fi
+
             set +e
-            ( cd "$work_dir" && bugsinpy-test ) > "$RUNNER_TEMP/$side-test.log" 2>&1
-            test_cli_rc=$?
+            ( cd "$work_dir" && source env/bin/activate && bash -c "$TARGET_TEST_COMMAND" ) > "$RUNNER_TEMP/$side-test.log" 2>&1
+            target_rc=$?
             set -e
             cp "$RUNNER_TEMP/$side-test.log" "$RUNNER_TEMP/case-artifact/$side-test.log"
-            if [ -f "$work_dir/bugsinpy_fail.txt" ]; then
-              cp "$work_dir/bugsinpy_fail.txt" "$RUNNER_TEMP/case-artifact/$side-fail-details.txt"
-              echo "$side upstream test wrapper recorded one or more failed/noncanonical test commands; inspect raw log" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
-            else
-              echo "$side upstream test wrapper recorded no failed/noncanonical commands; inspect raw log" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+            printf '%s\n' "$target_rc" > "$RUNNER_TEMP/case-artifact/$side-target-test-exit-code.txt"
+
+            signature=false
+            if grep -Eq 'FAILED .+::|^FAIL: |^ERROR: ' "$RUNNER_TEMP/$side-test.log"; then
+              signature=true
             fi
-            echo "checkout_exit=$checkout_rc compile_exit=$compile_rc test_cli_exit=$test_cli_rc" >> "$RUNNER_TEMP/case-artifact/$side-status.txt"
-            return 0
+            pass_marker=false
+            if [ "$target_rc" -eq 0 ] && grep -Eq '([0-9]+ passed|^OK$|Ran [0-9]+ tests? in)' "$RUNNER_TEMP/$side-test.log"; then
+              pass_marker=true
+            fi
+            if [ "$target_rc" -eq 0 ] && [ "$pass_marker" = true ]; then
+              echo "$side target test command passed; human review of raw log still required" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+            elif [ "$target_rc" -ne 0 ] && [ "$signature" = true ]; then
+              echo "$side command has a test-failure signature; this is not automatic proof of a bug-specific failure" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+            else
+              echo "$side command did not produce a classified target-test result; treat as environment/runner uncertainty" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+            fi
+            echo "checkout_exit=$checkout_rc compile_exit=$compile_rc target_test_exit=$target_rc test_failure_signature=$signature pass_marker=$pass_marker" >> "$RUNNER_TEMP/case-artifact/$side-status.txt"
           }
 
           run_side buggy 0 "$RUNNER_TEMP/buggy"
           run_side fixed 1 "$RUNNER_TEMP/fixed"
 
           python - <<'PY'
-          import json, os, pathlib, platform, subprocess
+          import json, os, pathlib, platform
           out = pathlib.Path(os.environ["RUNNER_TEMP"]) / "case-artifact" / "summary.json"
           def read(name):
               p = out.parent / name
               return p.read_text(encoding="utf-8", errors="replace").strip() if p.exists() else ""
           def commit(name):
-              value=read(name)
+              value = read(name)
               return value.splitlines()[0] if value else ""
+          def code(name):
+              value = read(name)
+              return value.splitlines()[0] if value else ""
+          def failure_signature(side):
+              return "test_failure_signature=true" in read(side + "-status.txt")
+          def pass_marker(side):
+              return "pass_marker=true" in read(side + "-status.txt")
           summary = {
               "case_id": os.environ["CASE_ID"],
               "dataset_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
-              "dataset_recorded_python": os.environ["EXPECTED_PYTHON"],
+              "target_test_command": os.environ["TARGET_TEST_COMMAND"],
               "expected_run_test_sha256": os.environ["EXPECTED_RUN_TEST_SHA256"],
+              "dataset_recorded_python": os.environ["EXPECTED_PYTHON"],
               "runtime_python_observed": platform.python_version(),
               "runtime_matches_metadata": platform.python_version() == os.environ["EXPECTED_PYTHON"],
               "expected_buggy_commit": os.environ["EXPECTED_BUGGY"],
-              "observed_buggy_commit": commit("buggy-actual-commit.txt"),
-              "expected_fixed_commit": os.environ["EXPECTED_FIXED"],
-              "observed_fixed_commit": commit("fixed-actual-commit.txt"),
-              "buggy_status": read("buggy-status.txt"),
-              "fixed_status": read("fixed-status.txt"),
-              "interpretation": "technical triage only; raw logs need target-specific manual review",
+              "observed_buggy_base_commit": commit("buggy-actual-commit.txt"),
+              "expected_fixed_commit_reference": os.environ["EXPECTED_FIXED"],
+              "observed_fixed_base_commit": commit("fixed-actual-commit.txt"),
+              "fixed_tree_representation": "BugsInPy constructs the fixed version by applying fixed-commit changes to the buggy base worktree; HEAD remains the buggy commit. Review worktree diff hash/stat and raw logs; do not equate observed HEAD with the fixed commit reference.",
+              "buggy_target_test_exit_code": code("buggy-target-test-exit-code.txt") or None,
+              "fixed_target_test_exit_code": code("fixed-target-test-exit-code.txt") or None,
+              "buggy_failure_signature_present": failure_signature("buggy"),
+              "fixed_pass_marker_present": pass_marker("fixed"),
+              "target_pair_automation_status": "raw-signals-only-human-review-required",
               "confirmatory_eligible": False,
               "accepted_for_confirmatory": False,
               "license_reviewed": False,
@@ -261,16 +300,21 @@ jobs:
           out.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           PY
 
-          cd "$RUNNER_TEMP/case-artifact"
-          find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
-          sha256sum -c SHA256SUMS
-
+      - name: Finalize and verify artifact hashes (always)
+        if: always()
+        shell: bash {0}
         env:
           CASE_ID: ${{ matrix.case_id }}
-          EXPECTED_PYTHON: ${{ matrix.python_version }}
-          EXPECTED_BUGGY: ${{ matrix.buggy_commit }}
-          EXPECTED_FIXED: ${{ matrix.fixed_commit }}
-          EXPECTED_RUN_TEST_SHA256: ${{ matrix.expected_run_test_sha256 }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/case-artifact"
+          if [ ! -f "$RUNNER_TEMP/case-artifact/summary.json" ]; then
+            printf '{"case_id":"%s","setup_state":"failed_before_summary","accepted_for_confirmatory":false,"llm_inference_performed":false}\n' "$CASE_ID" > "$RUNNER_TEMP/case-artifact/summary.json"
+          fi
+          cd "$RUNNER_TEMP/case-artifact"
+          rm -f SHA256SUMS
+          find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+          sha256sum -c SHA256SUMS
 
       - name: Upload raw validation logs and summary (never auto-accept)
         if: always()
