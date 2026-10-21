@@ -250,9 +250,14 @@ jobs:
             git -C "$work_dir" diff --binary | sha256sum | cut -d ' ' -f 1 > "$RUNNER_TEMP/case-artifact/$side-worktree-diff-sha256.txt"
             git -C "$work_dir" status --short > "$RUNNER_TEMP/case-artifact/$side-worktree-status.txt"
 
+            # BugsInPy's compile script sources legacy env/bin/activate,
+            # which references $1. Disable nounset around the upstream script,
+            # otherwise the shell aborts before any target test executes.
             set +e
+            set +u
             ( cd "$work_dir" && bugsinpy-compile ) > "$RUNNER_TEMP/$side-compile.log" 2>&1
             compile_rc=$?
+            set -u
             set -e
             cp "$RUNNER_TEMP/$side-compile.log" "$RUNNER_TEMP/case-artifact/$side-compile.log"
             if [ "$compile_rc" -ne 0 ] || [ ! -f "$work_dir/bugsinpy_compile_flag" ] || [ ! -f "$work_dir/env/bin/activate" ]; then
