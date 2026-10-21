@@ -52,13 +52,13 @@ def audit(root):
                 blockers.append("SHA256SUMS line " + str(number) + " is malformed")
                 continue
             rel = parts[1]
-            path = PurePosixPath(rel)
-            if path.is_absolute() or ".." in path.parts or rel.startswith("./") is False:
-                # The workflow uses "./filename" relative paths deliberately.
+            if not rel.startswith("./"):
                 blockers.append("SHA256SUMS path must be safe and relative ('./name'): " + rel)
                 continue
-            if len(path.parts) != 2 or path.parts[0] != ".":
-                blockers.append("SHA256SUMS must list only top-level files: " + rel)
+            normalized = rel[2:]
+            path = PurePosixPath(normalized)
+            if path.is_absolute() or ".." in path.parts or len(path.parts) != 1 or path.name in ("", ".", ".."):
+                blockers.append("SHA256SUMS must list only safe top-level relative files: " + rel)
                 continue
             name = path.name
             if name == "SHA256SUMS":
