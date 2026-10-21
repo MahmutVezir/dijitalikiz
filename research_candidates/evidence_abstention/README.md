@@ -61,6 +61,7 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 
 - `REPO_SCOPE_SPLIT.md` — repo kullanım kapsamı.
 - `LITERATURE_REVIEW.md` — hedefli literatür taraması ve özgünlük sınırı.
+- [`LITERATURE_SWEEP_SUPPLEMENT_2026-10-21.md`](LITERATURE_SWEEP_SUPPLEMENT_2026-10-21.md) — 2025–2026 yakın çalışmaların ek taraması ve daraltılmış özgünlük kararı; sistematik derleme değildir.
 - `DATA_FEASIBILITY.md` — kaynak-kümesi denetimi ve CI başarısızlıkları.
 - `STAGE3_EXPERIMENT_DESIGN.md` — deney tasarımı.
 - `PROMPT_CONDITIONS.md` — eşleştirilmiş prompt koşulları.
