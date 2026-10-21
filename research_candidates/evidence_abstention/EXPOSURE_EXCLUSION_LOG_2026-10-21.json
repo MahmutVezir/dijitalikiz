@@ -1,7 +1,7 @@
 {
   "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
   "record_type": "researcher_exposure_exclusion_log",
-  "version": "1.4-draft",
+  "version": "1.5-draft",
   "date": "2026-10-21",
   "rule": "Any candidate used to develop/debug the technical validation pipeline, where source/test/patch behavior or raw test results were inspected, is permanently excluded from the confirmatory sample irrespective of outcome. The exclusion is methodological, not a judgment that the upstream bug is invalid.",
   "no_inference_performed": true,
@@ -107,9 +107,24 @@
         "BugsInPy-keras-3"
       ],
       "evidence": "This batch was used to validate the pinned runtime, target-test execution, paired raw logs and artifact audit. Seven artifacts show buggy-fail/fixed-pass signals; Httpie-4 fails on both sides. All eight are permanently excluded from confirmatory use because the batch was used to validate the technical screening workflow, independent of outcomes."
+    },
+    {
+      "category": "V6 pytest-detector workflow-debug batch",
+      "workflow_run": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39664581005",
+      "cases": [
+        "BugsInPy-luigi-4",
+        "BugsInPy-matplotlib-3",
+        "BugsInPy-pandas-3",
+        "BugsInPy-sanic-4",
+        "BugsInPy-scrapy-4",
+        "BugsInPy-spacy-3",
+        "BugsInPy-thefuck-4",
+        "BugsInPy-tornado-4"
+      ],
+      "evidence": "Inspection of the Matplotlib-3 artifact found `pytest: command not found` on both sides despite the workflow's intended bootstrap. The command-detection regex was over-escaped and returned false for commands with arguments. Because this batch is now used to debug the detector, all eight V6 first-batch cases are permanently excluded regardless of outcome."
     }
   ],
-  "next_action": "V6 is the active metadata-only intake, skipping 40 prior-exposure/debug cases. Use its frozen queue order for normal technical case screening; review raw artifacts, then require source/license, root-cause ground truth, evidence-sufficiency, leakage and independent human-review gates. No case is auto-accepted; no model inference is authorized.",
+  "next_action": "V7 is the active metadata-only intake, skipping 48 prior-exposure/debug cases. The pytest command detector is moved into a unit-tested helper; the cohort workflow now runs its regression tests and points at V7. Wait for the new freeze/test run and inspect raw artifacts. No case is auto-accepted; no model inference is authorized.",
   "rationale": "Do not reuse these candidates as confirmatory evidence; do not silently reinsert them into the queue. Technical pass/fail is not case acceptance.",
   "confirmatory_eligibility": false
 }
