@@ -1,0 +1,234 @@
+name: Evidence Abstention First-Wave Case Validation (No Inference)
+
+on:
+  push:
+    branches:
+      - "research/evidence-abstention-draft-2026-10-19"
+    paths:
+      - ".github/workflows/evidence-abstention-first-wave-validation.yml"
+      - "research_candidates/evidence_abstention/FIRST_WAVE_TECHNICAL_SCREEN_2026-10-21.json"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/evidence-abstention-first-wave-validation.yml"
+      - "research_candidates/evidence_abstention/FIRST_WAVE_TECHNICAL_SCREEN_2026-10-21.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  buggy-fixed-test-pair:
+    name: ${{ matrix.case_id }} (Python ${{ matrix.python_version }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include:
+          - case_id: BugsInPy-black-2
+            project: black
+            bug_id: "2"
+            python_version: "3.8.3"
+            buggy_commit: c8ca6b2b9ff3510bee12129824cebfc2fc51e5b2
+            fixed_commit: 892eddacd215d685e136686b7f629ade70adca83
+          - case_id: BugsInPy-cookiecutter-1
+            project: cookiecutter
+            bug_id: "1"
+            python_version: "3.6.9"
+            buggy_commit: c15633745df6abdb24e02746b82aadb20b8cdf8c
+            fixed_commit: 7f6804c4953a18386809f11faf4d86898570debc
+          - case_id: BugsInPy-fastapi-1
+            project: fastapi
+            bug_id: "1"
+            python_version: "3.8.3"
+            buggy_commit: 766157bfb4e7dfccba09ab398e8ec444d14e947c
+            fixed_commit: 3397d4d69a9c2d64c1219fcbf291ea5697a4abb8
+          - case_id: BugsInPy-luigi-1
+            project: luigi
+            bug_id: "1"
+            python_version: "3.8.3"
+            buggy_commit: 1164eb6b85b8a70f596dbb99452bec513e72c12e
+            fixed_commit: aec5dc2ed8db53fc282a0bd24aabe59031b6d1ba
+          - case_id: BugsInPy-sanic-1
+            project: sanic
+            bug_id: "1"
+            python_version: "3.8.3"
+            buggy_commit: e7001b00747b659f7042b0534802b936ee8a53e0
+            fixed_commit: 44973125c15304b4262c51c78b5a86bd1daafa86
+          - case_id: BugsInPy-scrapy-1
+            project: scrapy
+            bug_id: "1"
+            python_version: "3.8.3"
+            buggy_commit: c57512fa669e6f6b1b766a7639206a380f0d10ce
+            fixed_commit: 9d9dea0d69709ef0f7aef67ddba1bd7bda25d273
+          - case_id: BugsInPy-thefuck-1
+            project: thefuck
+            bug_id: "1"
+            python_version: "3.7.0"
+            buggy_commit: 2ced7a7f33ae0bec3ffc7a43ce95330bdf6cfcb9
+            fixed_commit: 444908ce1c17767ef4aaf9e0b4950497914f7f63
+          - case_id: BugsInPy-tornado-1
+            project: tornado
+            bug_id: "1"
+            python_version: "3.7.0"
+            buggy_commit: 6a5a0bfa370b6c0d3dbbf9589a560a98202d2baa
+            fixed_commit: 4677c54cc18bbfbdf0f4dadf11610fab6203fd63
+
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up exact metadata Python
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: false
+          activate-environment: case-smoke
+          python-version: "${{ matrix.python_version }}"
+          channels: conda-forge
+          channel-priority: strict
+          use-only-tar-bz2: true
+
+      - name: Install OS-level build tools
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y git dos2unix build-essential
+          python --version
+          test "$(python -c 'import platform; print(platform.python_version())')" = "${{ matrix.python_version }}"
+          python -m pip install --upgrade "pip<22" "setuptools<60" "wheel<0.38"
+
+      - name: Checkout pinned BugsInPy and verify case metadata
+        shell: bash -el {0}
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/soarsmu/BugsInPy.git "$RUNNER_TEMP/BugsInPy"
+          git -C "$RUNNER_TEMP/BugsInPy" checkout --detach 11c5f1eea954a42132cfd06bf257766a7963e0fd
+          test "$(git -C "$RUNNER_TEMP/BugsInPy" rev-parse HEAD)" = "11c5f1eea954a42132cfd06bf257766a7963e0fd"
+          meta="$RUNNER_TEMP/BugsInPy/projects/${{ matrix.project }}/bugs/${{ matrix.bug_id }}/bug.info"
+          recorded_python="$(sed -n 's/^python_version="\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
+          recorded_buggy="$(sed -n 's/^buggy_commit_id="\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
+          recorded_fixed="$(sed -n 's/^fixed_commit_id="\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
+          test "$recorded_python" = "${{ matrix.python_version }}"
+          test "$recorded_buggy" = "${{ matrix.buggy_commit }}"
+          test "$recorded_fixed" = "${{ matrix.fixed_commit }}"
+          sha256sum "$meta" "$RUNNER_TEMP/BugsInPy/projects/${{ matrix.project }}/bugs/${{ matrix.bug_id }}/run_test.sh" "$RUNNER_TEMP/BugsInPy/projects/${{ matrix.project }}/project.info" > "$RUNNER_TEMP/source-metadata-hashes.txt"
+
+      - name: Capture pre-test runtime fingerprint
+        shell: bash -el {0}
+        run: |
+          set -euo pipefail
+          {
+            python --version
+            python -c 'import sys, platform; print("executable=" + sys.executable); print("platform=" + platform.platform()); print("implementation=" + platform.python_implementation())'
+            conda list
+            python -m pip freeze
+          } > "$RUNNER_TEMP/runtime-fingerprint.txt"
+          cat "$RUNNER_TEMP/runtime-fingerprint.txt"
+
+      - name: Run buggy and fixed revisions with upstream BugsInPy tooling
+        id: pair
+        continue-on-error: true
+        shell: bash -el {0}
+        run: |
+          set -u
+          export PATH="$RUNNER_TEMP/BugsInPy/framework/bin:$PATH"
+          mkdir -p "$RUNNER_TEMP/buggy" "$RUNNER_TEMP/fixed" "$RUNNER_TEMP/case-artifact"
+          cp "$RUNNER_TEMP/runtime-fingerprint.txt" "$RUNNER_TEMP/case-artifact/runtime-fingerprint.txt"
+          cp "$RUNNER_TEMP/source-metadata-hashes.txt" "$RUNNER_TEMP/case-artifact/source-metadata-hashes.txt"
+          cp "$RUNNER_TEMP/BugsInPy/projects/${{ matrix.project }}/bugs/${{ matrix.bug_id }}/bug.info" "$RUNNER_TEMP/case-artifact/bug.info"
+
+          run_side() {
+            side="$1"; version="$2"; work_root="$3"
+            work_dir="$work_root/${{ matrix.project }}"
+            mkdir -p "$work_root"
+            set +e
+            bugsinpy-checkout -p "${{ matrix.project }}" -i "${{ matrix.bug_id }}" -v "$version" -w "$work_root" > "$RUNNER_TEMP/$side-checkout.log" 2>&1
+            checkout_rc=$?
+            set -e
+            cp "$RUNNER_TEMP/$side-checkout.log" "$RUNNER_TEMP/case-artifact/$side-checkout.log"
+            if [ "$checkout_rc" -ne 0 ] || [ ! -d "$work_dir" ]; then
+              echo "$side checkout did not complete (exit=$checkout_rc)" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+              return 0
+            fi
+            git -C "$work_dir" rev-parse HEAD > "$RUNNER_TEMP/case-artifact/$side-actual-commit.txt"
+            set +e
+            bugsinpy-compile -w "$work_dir" > "$RUNNER_TEMP/$side-compile.log" 2>&1
+            compile_rc=$?
+            set -e
+            cp "$RUNNER_TEMP/$side-compile.log" "$RUNNER_TEMP/case-artifact/$side-compile.log"
+            if [ ! -f "$work_dir/bugsinpy_compile_flag" ]; then
+              echo "$side environment not marked compiled (cli_exit=$compile_rc)" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+              return 0
+            fi
+            set +e
+            bugsinpy-test -w "$work_dir" > "$RUNNER_TEMP/$side-test.log" 2>&1
+            test_cli_rc=$?
+            set -e
+            cp "$RUNNER_TEMP/$side-test.log" "$RUNNER_TEMP/case-artifact/$side-test.log"
+            if [ -f "$work_dir/bugsinpy_fail.txt" ]; then
+              cp "$work_dir/bugsinpy_fail.txt" "$RUNNER_TEMP/case-artifact/$side-fail-details.txt"
+              echo "$side upstream test wrapper recorded one or more failed/noncanonical test commands; inspect raw log" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+            else
+              echo "$side upstream test wrapper recorded no failed/noncanonical commands; inspect raw log" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+            fi
+            echo "checkout_exit=$checkout_rc compile_exit=$compile_rc test_cli_exit=$test_cli_rc" >> "$RUNNER_TEMP/case-artifact/$side-status.txt"
+            return 0
+          }
+
+          run_side buggy 0 "$RUNNER_TEMP/buggy"
+          run_side fixed 1 "$RUNNER_TEMP/fixed"
+
+          python - <<'PY'
+          import json, os, pathlib, platform, subprocess
+          out = pathlib.Path(os.environ["RUNNER_TEMP"]) / "case-artifact" / "summary.json"
+          def read(name):
+              p = out.parent / name
+              return p.read_text(encoding="utf-8", errors="replace").strip() if p.exists() else ""
+          def commit(name):
+              value=read(name)
+              return value.splitlines()[0] if value else ""
+          summary = {
+              "case_id": os.environ["CASE_ID"],
+              "dataset_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+              "dataset_recorded_python": os.environ["EXPECTED_PYTHON"],
+              "runtime_python_observed": platform.python_version(),
+              "runtime_matches_metadata": platform.python_version() == os.environ["EXPECTED_PYTHON"],
+              "expected_buggy_commit": os.environ["EXPECTED_BUGGY"],
+              "observed_buggy_commit": commit("buggy-actual-commit.txt"),
+              "expected_fixed_commit": os.environ["EXPECTED_FIXED"],
+              "observed_fixed_commit": commit("fixed-actual-commit.txt"),
+              "buggy_status": read("buggy-status.txt"),
+              "fixed_status": read("fixed-status.txt"),
+              "interpretation": "technical triage only; raw logs need target-specific manual review",
+              "confirmatory_eligible": False,
+              "accepted_for_confirmatory": False,
+              "license_reviewed": False,
+              "ground_truth_reviewed_by_two": False,
+              "evidence_levels_reviewed_by_two": False,
+              "leakage_and_prior_exposure_reviewed": False,
+              "llm_inference_performed": False
+          }
+          out.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+
+          cd "$RUNNER_TEMP/case-artifact"
+          find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+          sha256sum -c SHA256SUMS
+
+        env:
+          CASE_ID: ${{ matrix.case_id }}
+          EXPECTED_PYTHON: ${{ matrix.python_version }}
+          EXPECTED_BUGGY: ${{ matrix.buggy_commit }}
+          EXPECTED_FIXED: ${{ matrix.fixed_commit }}
+
+      - name: Upload raw validation logs and summary (never auto-accept)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-abstention-${{ matrix.case_id }}-technical-triage
+          path: ${{ runner.temp }}/case-artifact/
+          if-no-files-found: warn
+          retention-days: 30
