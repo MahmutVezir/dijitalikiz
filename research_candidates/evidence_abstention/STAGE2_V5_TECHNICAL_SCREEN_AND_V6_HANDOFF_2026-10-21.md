@@ -54,3 +54,9 @@ Her ZIP içindeki `summary.json`, ham test günlükleri, runtime fingerprint'ler
 | Model çıkarımı | Kapalı; yapılmadı |
 
 **Sonuç:** Aşama 2'nin metadata envanteri ve ekranlama altyapısı ilerletildi; bilimsel vaka kümesi henüz kurulmadı. V6 ilk sekiz adayın ham artefaktları incelendikten sonra uygun görülenler insan değerlendirmesine gönderilmeli; aday sırası sonuçlara göre değiştirilmemelidir. 60/8 eşiğine ulaşılmazsa veri fizibilitesi başarısız/keşifsel olarak raporlanmalı, eşik geriye dönük düşürülmemelidir.
+
+
+
+## Sonraki düzeltme — V6 pytest detector bulgusu
+
+V6 ilk vaka artefaktı Matplotlib-3'te pytest tespit regex'inin fazla kaçışlanması nedeniyle pytest bootstrap adımının çalışmadığı görüldü. Her iki test tarafı da `pytest: command not found` verdi; bu nedenle vaka çifti geçerli değil. Bu inceleme sırasında V6 ilk sekizli batch workflow-debug amacıyla kullanıldığı için sekizinin tamamı kalıcı dışlamaya alındı. Aktif intake V7'dir; ayrıntı ve ZIP hash'i [V6 koşucu hatası ve V7 devri](STAGE2_V6_RUNNER_DEFECT_AND_V7_HANDOFF_2026-10-21.md) belgesindedir. Yukarıdaki V6 koşu durumu artık tarihsel durum kaydı olarak okunmalıdır.
