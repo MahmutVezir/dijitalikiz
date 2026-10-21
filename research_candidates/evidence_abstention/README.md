@@ -123,3 +123,11 @@ Bu çalışma için başka yarışma veya ayrı araştırma hattı yürütülmey
 - [Kör puanlayıcılar arası uyum protokolü](RATER_AGREEMENT_PROTOCOL.md) ve boş [ham puanlama şablonu](BLINDED_RATER_SCORES_TEMPLATE.csv) eklendi.
 - [Uyum analiz betiği](../../scripts/analyze_evidence_abstention_rater_agreement.py) her görevi iki bağımsız puanlayıcı ile, kök neden ve kanıtsal destek panellerini birbirinden ayırarak değerlendirir; ham anlaşma, Cohen kappa, kategori sayıları ve bootstrap %95 aralığını raporlar.
 - [Analiz CI'sı](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39649070365) sonuç analizi için 10/10 ve puanlayıcı uyumu için 7/7 sentetik testi geçti. Bu rapor gerçek insan puanları değildir; doğrulanmış kabul edilen vaka sayısını değiştirmez.
+
+
+## Yeni doğrulama kayıtları — 21 Ekim 2026
+
+- [İlk-dalga teknik tarama sonuçları](FIRST_WAVE_TRIAGE_RESULTS_2026-10-21.md): run [39644280706](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39644280706) tamamlandı; 7/7 teknik işler/artefakt denetimleri geçti, ancak tüm vakalar triage amaçlı ve ana doğrulayıcı örneklem dışı.
+- [Yürütme haritası](THREE_PHASE_EXECUTION_MAP_2026-10-21.md): son triage kararı ve inference kapılarının güncel durumu.
+- [Literatür ve özgünlük sınırı](LITERATURE_REVIEW.md): 21 Ekim güncellemesinde 2026 fault-localization ve hallucination azaltma çalışmaları eklendi. Sistematik tarama ve özgünlük kanıtı hâlâ tamamlanmış sayılmıyor.
+- Güncel Aşama 1 kararları, 60 vaka/8 proje alt sınırı, panel ayrımı, runtime/hash/pre-registration kapıları tamamlanmadan model çıkarımı yapılmasına izin vermiyor.
