@@ -26,6 +26,12 @@ def normalized_entropy_from_logits(logits: Sequence[float]) -> float:
     return min(1.0, max(0.0, entropy / log(len(probabilities))))
 
 
+def mean_normalized_token_entropy(logits_by_step: Sequence[Sequence[float]]) -> float:
+    if not logits_by_step:
+        raise ValueError("at least one generated-token logit vector is required")
+    return sum(normalized_entropy_from_logits(logits) for logits in logits_by_step) / len(logits_by_step)
+
+
 def lexical_disagreement(answers: Sequence[str]) -> float | None:
     if len(answers) < 2:
         return None
@@ -131,11 +137,12 @@ class DecisionRequest:
     normalized_token_entropy: float | None
     candidate_answers: tuple[str, ...]
     self_check_conflict: bool | None
-    explicit_contradiction: bool
+    explicit_contradiction: bool | None
     calibrated_confidence: float | None
     minimum_confidence: float | None
     maximum_uncertainty: float | None
     calibration_id: str | None
+    calibration_verified: bool
 
 
 @dataclass(frozen=True)
@@ -154,7 +161,9 @@ def decide(request: DecisionRequest) -> DecisionResult:
     elif request.evidence_level == "E3":
         reasons.append("evidence_insufficient")
 
-    if request.explicit_contradiction:
+    if request.explicit_contradiction is None:
+        reasons.append("contradiction_status_unknown")
+    elif request.explicit_contradiction:
         reasons.append("evidence_contradiction")
     if not request.answer.strip():
         reasons.append("empty_answer")
@@ -173,7 +182,8 @@ def decide(request: DecisionRequest) -> DecisionResult:
     if request.normalized_token_entropy is None or disagreement is None or request.self_check_conflict is None or request.supported_claim_coverage is None:
         reasons.append("uncertainty_signals_incomplete")
 
-    if request.calibrated_confidence is None or request.minimum_confidence is None or request.maximum_uncertainty is None or not request.calibration_id:
+    valid_calibration_id = isinstance(request.calibration_id, str) and re.fullmatch(r"sha256:[0-9a-f]{64}", request.calibration_id) is not None
+    if request.calibrated_confidence is None or request.minimum_confidence is None or request.maximum_uncertainty is None or not valid_calibration_id or not request.calibration_verified:
         reasons.append("calibration_not_frozen")
     else:
         _validate_unit_interval(request.calibrated_confidence, "calibrated_confidence")
