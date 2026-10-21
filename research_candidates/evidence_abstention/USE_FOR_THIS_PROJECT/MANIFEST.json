@@ -2,7 +2,7 @@
   "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
   "partition": "USE_FOR_THIS_PROJECT",
   "manifest_version": "1.0",
-  "date": "2026-10-20",
+  "date": "2026-10-21",
   "purpose": "Makine tarafından okunabilir kullanım sınırı. Dosyaları kaynak konumlarından taşımak veya geçmişi değiştirmek yerine kullanım izni/sınırı tanımlar.",
   "authoritative_project_documents": [
     {
@@ -52,6 +52,22 @@
     {
       "path": "research_candidates/evidence-abstention/STAGE3_REVIEW_AND_EXIT.md",
       "permission": "stage3_design_closure_review_not_inference_authorization"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
+      "permission": "empty_confirmatory_case_registry"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/RUNTIME_LOCK.json",
+      "permission": "provisional_model_runtime_candidate_not_verified"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/RUBRIC_AND_ADJUDICATION.md",
+      "permission": "draft_not_frozen_human_scoring_protocol"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/STAGE4_TECHNICAL_READINESS_2026-10-21.md",
+      "permission": "stage4_technical_status_not_inference_authorization"
     }
   ],
   "mirrored_reference_docs": [
@@ -120,5 +136,15 @@
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/ANALYSIS_PLAN_STAGE3.md",
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/EXPERIMENT_MANIFEST_STAGE3.json",
     "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/STAGE3_REVIEW_AND_EXIT.md"
+  ],
+  "phase_4_technical_status": "scaffolding_added_no_inference",
+  "technical_scaffolding_documents": [
+    "research_candidates/evidence_abstention/CASE_REGISTRY.json",
+    "research_candidates/evidence_abstention/RUNTIME_LOCK.json",
+    "research_candidates/evidence_abstention/RUBRIC_AND_ADJUDICATION.md",
+    "research_candidates/evidence_abstention/STAGE4_TECHNICAL_READINESS_2026-10-21.md",
+    "scripts/evidence_abstention_preflight.py",
+    "tests/test_evidence_abstention_preflight.py",
+    ".github/workflows/evidence-abstention-preflight.yml"
   ]
 }
