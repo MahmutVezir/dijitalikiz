@@ -18,6 +18,10 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: bash -el {0}
+
 jobs:
   buggy-fixed-test-pair:
     name: ${{ matrix.case_id }} (Python ${{ matrix.python_version }})
@@ -31,48 +35,56 @@ jobs:
           - case_id: BugsInPy-black-2
             project: black
             bug_id: "2"
+            expected_run_test_sha256: 661c7eff06a036821b9e66a3ef8b7c0e46e6a6e815f65db6427aad3f8f6adcec
             python_version: "3.8.3"
             buggy_commit: c8ca6b2b9ff3510bee12129824cebfc2fc51e5b2
             fixed_commit: 892eddacd215d685e136686b7f629ade70adca83
           - case_id: BugsInPy-cookiecutter-1
             project: cookiecutter
             bug_id: "1"
+            expected_run_test_sha256: 8fa48fdd88c886fbdf244124c952d919743b1c4ca407a0b4d50d091d9fab4b34
             python_version: "3.6.9"
             buggy_commit: c15633745df6abdb24e02746b82aadb20b8cdf8c
             fixed_commit: 7f6804c4953a18386809f11faf4d86898570debc
           - case_id: BugsInPy-fastapi-1
             project: fastapi
             bug_id: "1"
+            expected_run_test_sha256: 38172a1aa0b625cc3569da9178538e262fd5fd98ff73938fc8f2cecc8e4caaed
             python_version: "3.8.3"
             buggy_commit: 766157bfb4e7dfccba09ab398e8ec444d14e947c
             fixed_commit: 3397d4d69a9c2d64c1219fcbf291ea5697a4abb8
           - case_id: BugsInPy-luigi-1
             project: luigi
             bug_id: "1"
+            expected_run_test_sha256: 99ba7b97181c7159e5da4650b579ccd3fb92908fceb63f9924a583353ceccebd
             python_version: "3.8.3"
             buggy_commit: 1164eb6b85b8a70f596dbb99452bec513e72c12e
             fixed_commit: aec5dc2ed8db53fc282a0bd24aabe59031b6d1ba
           - case_id: BugsInPy-sanic-1
             project: sanic
             bug_id: "1"
+            expected_run_test_sha256: 52aea225714646f8ddf3f59ebb82a536c0927d2d553b32fca2c1450638fd38a4
             python_version: "3.8.3"
             buggy_commit: e7001b00747b659f7042b0534802b936ee8a53e0
             fixed_commit: 44973125c15304b4262c51c78b5a86bd1daafa86
           - case_id: BugsInPy-scrapy-1
             project: scrapy
             bug_id: "1"
+            expected_run_test_sha256: fcdb910c48de6fa7d66c991091fb1895e6da9a6033e3b79bc7ba5d81d339ff10
             python_version: "3.8.3"
             buggy_commit: c57512fa669e6f6b1b766a7639206a380f0d10ce
             fixed_commit: 9d9dea0d69709ef0f7aef67ddba1bd7bda25d273
           - case_id: BugsInPy-thefuck-1
             project: thefuck
             bug_id: "1"
+            expected_run_test_sha256: b0331f8719b3c079bff315beb778d1b31c4311cb84c228e0bcfbeb97c160d741
             python_version: "3.7.0"
             buggy_commit: 2ced7a7f33ae0bec3ffc7a43ce95330bdf6cfcb9
             fixed_commit: 444908ce1c17767ef4aaf9e0b4950497914f7f63
           - case_id: BugsInPy-tornado-1
             project: tornado
             bug_id: "1"
+            expected_run_test_sha256: 824b5decbe6517adcba0b9c8e773f810f1490c510b7cec960278d6f46eca777b
             python_version: "3.7.0"
             buggy_commit: 6a5a0bfa370b6c0d3dbbf9589a560a98202d2baa
             fixed_commit: 4677c54cc18bbfbdf0f4dadf11610fab6203fd63
@@ -80,6 +92,37 @@ jobs:
     steps:
       - name: Checkout research repository
         uses: actions/checkout@v4
+
+      - name: Initialize a fail-closed artifact record before environment setup
+        shell: bash {0}
+        env:
+          CASE_ID: ${{ matrix.case_id }}
+          EXPECTED_PYTHON: ${{ matrix.python_version }}
+          EXPECTED_BUGGY: ${{ matrix.buggy_commit }}
+          EXPECTED_FIXED: ${{ matrix.fixed_commit }}
+          EXPECTED_RUN_TEST_SHA256: ${{ matrix.expected_run_test_sha256 }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/case-artifact"
+          python - <<'PY'
+          import json, os, pathlib
+          p = pathlib.Path(os.environ["RUNNER_TEMP"]) / "case-artifact" / "summary.json"
+          p.write_text(json.dumps({
+              "case_id": os.environ["CASE_ID"],
+              "dataset_recorded_python": os.environ["EXPECTED_PYTHON"],
+              "expected_buggy_commit": os.environ["EXPECTED_BUGGY"],
+              "expected_fixed_commit": os.environ["EXPECTED_FIXED"],
+              "expected_run_test_sha256": os.environ["EXPECTED_RUN_TEST_SHA256"],
+              "setup_state": "not_started",
+              "confirmatory_eligible": False,
+              "accepted_for_confirmatory": False,
+              "license_reviewed": False,
+              "ground_truth_reviewed_by_two": False,
+              "evidence_levels_reviewed_by_two": False,
+              "leakage_and_prior_exposure_reviewed": False,
+              "llm_inference_performed": False
+          }, indent=2) + "\\n", encoding="utf-8")
+          PY
 
       - name: Set up exact metadata Python
         uses: conda-incubator/setup-miniconda@v3
@@ -114,7 +157,10 @@ jobs:
           test "$recorded_python" = "${{ matrix.python_version }}"
           test "$recorded_buggy" = "${{ matrix.buggy_commit }}"
           test "$recorded_fixed" = "${{ matrix.fixed_commit }}"
-          sha256sum "$meta" "$RUNNER_TEMP/BugsInPy/projects/${{ matrix.project }}/bugs/${{ matrix.bug_id }}/run_test.sh" "$RUNNER_TEMP/BugsInPy/projects/${{ matrix.project }}/project.info" > "$RUNNER_TEMP/source-metadata-hashes.txt"
+          run_test_file="$RUNNER_TEMP/BugsInPy/projects/${{ matrix.project }}/bugs/${{ matrix.bug_id }}/run_test.sh"
+          actual_run_test_sha="$(sha256sum "$run_test_file" | cut -d ' ' -f 1)"
+          test "$actual_run_test_sha" = "${{ matrix.expected_run_test_sha256 }}"
+          sha256sum "$meta" "$run_test_file" "$RUNNER_TEMP/BugsInPy/projects/${{ matrix.project }}/project.info" > "$RUNNER_TEMP/source-metadata-hashes.txt"
 
       - name: Capture pre-test runtime fingerprint
         shell: bash -el {0}
@@ -194,6 +240,7 @@ jobs:
               "case_id": os.environ["CASE_ID"],
               "dataset_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
               "dataset_recorded_python": os.environ["EXPECTED_PYTHON"],
+              "expected_run_test_sha256": os.environ["EXPECTED_RUN_TEST_SHA256"],
               "runtime_python_observed": platform.python_version(),
               "runtime_matches_metadata": platform.python_version() == os.environ["EXPECTED_PYTHON"],
               "expected_buggy_commit": os.environ["EXPECTED_BUGGY"],
