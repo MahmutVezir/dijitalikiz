@@ -124,6 +124,10 @@
     {
       "path": "research_candidates/evidence_abstention/BLINDED_RATER_SCORES_TEMPLATE.csv",
       "permission": "empty locked-independent-ratings schema; no human scoring data"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/COHORT_TECHNICAL_FINDINGS_2026-10-21.md",
+      "permission": "traceable no-acceptance technical findings for predeclared cohort, including the black-3 artifact review; not a final human gate decision"
     }
   ],
   "mirrored_reference_docs": [
