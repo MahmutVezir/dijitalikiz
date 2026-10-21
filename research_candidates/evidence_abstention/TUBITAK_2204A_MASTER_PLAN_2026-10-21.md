@@ -32,6 +32,10 @@ TÜBİTAK’ın [2026–2027 2204-A çağrı sayfasında](https://tubitak.gov.tr
 
 Modelin tesadüfen doğru tahmin etmesi, tahminin elindeki kanıtlarla desteklendiğini tek başına kanıtlamaz. Bu iki ölçüm birbirinden ayrılacaktır.
 
+### 3.1 Yakın literatür ve katkı sınırı
+
+Bu alanda doğrudan önceki çalışmalar vardır: [ICSE-NIER 2026 “When to Answer and When to Defer”](https://conf.researchr.org/details/icse-2026/icse-2026-nier/47/When-to-Answer-and-When-to-Defer-A-Decision-Framework-for-Reliable-Code-Predictions) kod modellerinde belirsizlik/kalibrasyon/abstention çerçevesini; [Zhang & Wu (2026)](https://www.techscience.com/cmc/v89n1/68467) RAG için kanıt yeterliliği seviyeleri altında answer-abstention davranışını ele alır. Bu nedenle genel abstention davranışı veya kanıt seviyesine göre cevap oranı değişimi özgün iddia olamaz. Çalışmanın **aday** ayrımı, gerçek kusur kök neden vakalarında aynı kanıt gradyanı üzerinde doğru kök neden ile görülen kanıtın desteklediği teşhisi ayrı puanlamak ve E3'te kanıtsız kesin teşhisi, E1'de gereksiz kaçınmayla birlikte ölçmektir. Bunun özgünlüğü kanıtlanmış değildir; [hedefli literatür karşılaştırması](LITERATURE_REVIEW.md) bunu açıkça kaydeder ve sistematik tarama yerine geçmez.
+
 ## 4. Mevcut kanıt ve açık kapılar
 
 21 Ekim 2026 itibarıyla sabitlenmiş BugsInPy metadata envanterinde 17 projede 501 kayıt vardır; 500 kayıt temel metadata kapısını geçmiş, bir kayıtta buggy ve fixed commit aynı görünmüştür. Bu envanter testleri çalıştırmamış, kök nedenleri insan tarafından doğrulamamış ve kanıt paketlerini değerlendirmemiştir.
