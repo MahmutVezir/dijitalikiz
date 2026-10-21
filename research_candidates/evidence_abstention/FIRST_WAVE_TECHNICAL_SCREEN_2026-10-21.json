@@ -97,13 +97,17 @@
     }
   ],
   "case_acceptance": "none; every case must pass separate manual review and the strict registry gates",
-  "screening_iteration": "isolated_target_test_v2",
+  "screening_iteration": "isolated_target_test_v3_pathfix",
   "workflow_behavior": {
     "trigger": "push to research branch only when this manifest changes, or workflow_dispatch",
     "test_execution": "Run the focused target test command on each BugsInPy synthetic buggy/fixed working tree; for the cookiecutter tox case run only py36 to avoid unrelated unavailable py37/py38/pypy envs.",
     "fixed_tree_semantics": "Upstream BugsInPy assembles the fixed working tree by applying changed files from the fixed commit on top of the buggy base; HEAD may remain the buggy commit. Preserve fixed-tree diff hashes/stats rather than requiring HEAD to equal fixed_commit_id.",
     "automated_output": "Raw exit codes/signatures/logs and SHA256Sums for human review only",
     "auto_accept": false,
-    "model_inference_performed": false
-  }
+    "model_inference_performed": false,
+    "last_code_fix": "The target-test step explicitly adds $RUNNER_TEMP/BugsInPy/framework/bin to PATH; previous focused-test run had exit 127 before either revision was checked out, so no candidate test result was produced."
+  },
+  "notes": [
+    "Run 39636098825 did not validate any target test for completed cases: missing BugsInPy CLI PATH caused checkout exit 127. This run is classified as workflow setup failure, not a bug reproduction result."
+  ]
 }
