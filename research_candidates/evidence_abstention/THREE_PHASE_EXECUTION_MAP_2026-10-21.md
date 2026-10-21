@@ -13,7 +13,7 @@ Bu belge önceki teknik aşamaları üç ana teslimata birleştirir. Bir dosyan�
 ### Tamamlanan hazırlık parçaları
 - Hedefli literatür taraması ve aday katkı tanımı yazıldı; bu sistematik derleme veya özgünlüğün kanıtı değildir.
 - Sabit BugsInPy revizyonu `11c5f1eea954a42132cfd06bf257766a7963e0fd` üzerinde metadata envanteri oluşturuldu: 501 ham kayıt / 17 proje; 500 kayıt asgari alan kapısını geçti, 1 kayıtta buggy ve fixed commit kimlikleri aynı.
-- 495 metadata adayı için proje-dengeli manuel tarama kuyruğu üretildi; ilk triage partisi kabul edilmiş deney örneklemi değildir.
+- Güncellenmiş, dışlamalarla uzlaştırılmış kuyrukta 487 metadata adayı / 17 proje var; B1 = 78, B2+ = 409. Beş önceki maruziyet ve sekiz workflow-debug vakası kalıcı dışlandı. İlk triage partisi kabul edilmiş deney örneklemi değildir.
 - Fail-closed readiness betiği ve birim testleri oluşturuldu. Son tamamlanmış kontroller `ready=false`, 0 kabul edilmiş vaka/proje ve açık bilimsel engelleri raporladı.
 - Boş vaka sicili, iki panelin ayrılmasını zorunlu tutan kabul kuralları ve manuel vaka inceleme formu/rehberi oluşturuldu.
 - Daha önce açılmış fizibilite/smoke vakaları kalıcı olarak doğrulayıcı örneklem dışına çıkarıldı.
