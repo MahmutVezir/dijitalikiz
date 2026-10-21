@@ -47,6 +47,8 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 
 ## Belgeler
 
+- [İlk 120 adayın sabit tarama sırası](SCREENING_COHORT_120_2026-10-21.json) — metadata-only aday listesi, 0 kabul edilmiş vaka.
+
 - [Üç ana aşamalı yürütme haritası](THREE_PHASE_EXECUTION_MAP_2026-10-21.md) — projenin ne kadarının hazır olduğunu ve hangi kanıt kapılarının hâlâ açık kaldığını tek noktada toplar.
 
 - [Manuel vaka inceleme rehberi](CASE_REVIEW_GUIDE.md) — test/lisans/ground truth/kanıt/sızıntı kabul sırası.
