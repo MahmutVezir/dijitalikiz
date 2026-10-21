@@ -5,6 +5,7 @@ on:
     branches:
       - "research/evidence-abstention-draft-2026-10-19"
     paths:
+      - ".github/workflows/evidence-abstention-first-wave-validation.yml"
       - "research_candidates/evidence_abstention/FIRST_WAVE_TECHNICAL_SCREEN_2026-10-21.json"
   workflow_dispatch:
 
