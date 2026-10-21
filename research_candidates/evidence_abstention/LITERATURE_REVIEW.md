@@ -139,3 +139,33 @@ Bu ek, ilk ön taramayı güncellemek için 21 Ekim 2026 tarihinde yayıncı/kon
 ### 9.3 Aşama 1 için kapatma tanımı
 
 **Hedefli literatür taraması ve ön özgünlük sentezi: tamamlandı (21 Ekim 2026).** Bu, sistematik derleme değildir. Kaynak başlığı/özeti veya erişilebilir yayın sayfasından daha ileri yöntem iddiası çıkarılmayacaktır. Preregistration ya da resmi yarışma raporundan önce, danışmanla tam metin ve atıf zinciri kontrolü hâlâ yapılmalıdır; bu sonraki kalite kapısı olarak korunur.
+
+
+
+## 10. Yakın çalışmalarla karşılaştırma ve özgünlük sınırı — 21 Ekim 2026
+
+Bu bölüm, proje katkısını daha dar ve savunulabilir biçimde tanımlar. Kaynak sayfaları ve erişilebilir özetler kontrol edilmiştir; tüm çalışmaların tam metni ve atıf ağları üzerinden sistematik tarama yapılmış değildir.
+
+| Çalışma | Kaynaktan doğrulanabilen kapsam | Bizim tasarımla örtüşen taraf | Proje için sonuç |
+|---|---|---|---|
+| [Wen et al., *Know Your Limits* (TACL, 2025)](https://aclanthology.org/2025.tacl-1.26/) | LLM abstention yöntemleri, benchmark’ları ve ölçütlerini query/model/human-values bakışlarıyla sınıflayan derleme. | Kaçınma için genel kavramlar ve değerlendirme ölçütleri. | Genel “LLM cevap vermekten kaçınmalı” fikri özgünlük iddiası olamaz. |
+| [Rathnasuriya & Yang, *When to Answer and When to Defer* (ICSE-NIER, 2026)](https://conf.researchr.org/details/icse-2026/icse-2026-nier/47/When-to-Answer-and-When-to-Defer-A-Decision-Framework-for-Reliable-Code-Predictions) ([arXiv ön baskısı](https://arxiv.org/abs/2605.19369)) | Kod modelleri için belirsizlik tahmini, kalibrasyon, seçici abstention ve kaçınılan örnekleri araçla ele almayı birleştiren çerçeve. | Alan doğrudan yazılım/kod ve answer-vs-defer davranışı. | Bu, en yakın yazılım mühendisliği çalışmasıdır. Proje yeni bir genel abstention çerçevesi veya kalibrasyon algoritması sunduğunu iddia etmemeli. Tasarımımızın ayırıcı sorusu, gerçek kusur kök neden teşhislerinde kontrollü kanıt eksiltme ile “gold root cause ile örtüşme” ve “modelin gördüğü kanıtın iddiayı desteklemesi” ölçümlerini ayrı tutmaktır. Bu farkın literatürde eşsiz olduğu henüz kanıtlanmış değildir. |
+| [Zhou et al., *Task Abstention for Large Language Models in Code Generation* (arXiv, 16 Mayıs 2026)](https://arxiv.org/abs/2605.17029) | Kod üretiminde görevden kaçınma; birden çok hipotez sınamasına dayalı kalibre kural ve üretim tutarlılığını kod yürütme sonuçlarıyla değerlendirme. | Kod alanında abstention ve işlevsel yanlışlık riski. | Görevimiz kod üretmek değil; mevcut yazılım hatasına tanı koymak ve sunulan kanıtla tanının desteklenip desteklenmediğini değerlendirmektir. Yine de kod alanındaki abstention araştırması olduğu için doğrudan ilgili çalışma olarak atıflanmalı. |
+| [Zhang & Wu, *Do LLMs Know When Evidence is Insufficient?* (Computers, Materials & Continua, 2026)](https://www.techscience.com/cmc/v89n1/68467) | RAG için beş kanıt yeterlilik seviyesi, yedi model/beş aile, üç istem stratejisi ve 200 örnekte insan doğrulaması; özet, çelişkili kanıtta yüksek over-answer oranları raporlar. | Kanıt yeterliliği gradyanı ve cevap vermeme ölçümü, yeni projemize çok yakındır. | “Kanıt seviyesini düşürüp abstention’ı ölçmek” tek başına özgün katkı değildir. Projemiz, retrieval/RAG sorularından farklı olarak gerçek hata düzeltme geçmişine dayalı yazılım kök neden vakalarında, gerçek kök neden doğruluğu ile sadece görülen kanıta dayalı destek ayrımına odaklanmalıdır. |
+| [Madhusudhan et al., *Do LLMs Know When to NOT Answer?* (COLING 2025)](https://aclanthology.org/2025.coling-main.627/) | LLM’lerin cevap vermemesi gerektiği durumları tanıması konusunda abstention araştırması. | Genel abstention kararının güvenilirliği. | İlgili çalışma literatür karşılaştırmasında kalmalı; yalnızca başlık/özetinden daha ileri yöntem ayrıntısı varsayılmamalı. |
+| [*Abstain-R1* (Findings of ACL, 2026)](https://aclanthology.org/2026.findings-acl.985/) | Abstention odaklı bir LLM yöntem çalışması. | Modelin gerektiğinde cevap vermemesi. | Bu çalışma yöntem/öğrenme yaklaşımı yönünden incelenmeli; proje şu an yeni model eğitimi veya RL algoritması önermiyor. |
+| [Xiao et al., LLM tabanlı yazılım fault localization ampirik çalışması](https://arxiv.org/abs/2510.20521) ve [LLM-based software fault localization review (IEEE)](https://ieeexplore.ieee.org/document/11320391/) | Yazılım kusuru/hata yerelleştirmesinde LLM performansı ve önceki yöntemler. | Kusur teşhisi bağlamı, kök neden/konum tahmini. | Salt teşhis doğruluğu yerine kanıt desteği ve uygun kaçınma maliyetini ayrı ölçmek gerekir. Tam metin ve atıf karşılaştırması kapanış öncesi yapılmalı. |
+
+### 10.1 Bu araştırmanın savunulabilecek katkı cümlesi
+
+> “Bu çalışma, gerçek ve kaynak kodu/test/düzeltme geçmişiyle doğrulanmış yazılım hata vakalarında, aynı temel vaka için yeterli, kısmi ve yetersiz kanıt paketlerini karşılaştırır. Zorunlu teşhis ile seçici kaçınma politikalarını eşleştirerek, gizli gerçek kök nedenle örtüşmeyi ve yalnızca modelin gördüğü kanıtla desteklenmeyi ayrı puanlar; E3'te kanıtsız kesin teşhisleri ve E1'de gereksiz kaçınmayı birlikte ölçer.”
+
+Bu cümle **aday katkı tanımıdır**, kanıtlanmış özgünlük beyanı değildir. Sonuçlar alınmadan önce başka bir çalışmanın bu tasarımın tüm ana unsurlarını zaten birleştirdiği bulunursa, farklılık açıkça yeniden değerlendirilmelidir. Yakın tam metinler ve referans zincirleri danışmanla kontrol edilmeden “ilk”, “benzersiz” veya “literatürde yapılmamış” ifadeleri kullanılmayacaktır.
+
+### 10.2 Tasarım için zorunlu sınırlar
+
+1. Yeni çalışmanın birincil sonucu bir modelin genel abstention kalitesi veya kod üretme başarısı değildir; E3 koşulunda desteklenmeyen kesin kök neden teşhisi oranındaki P0-P1 farkıdır.
+2. Kök neden doğruluğu ile kanıtsal destek aynı etikette birleştirilmeyecektir. Model tesadüfen doğruyu tahmin etmiş olsa da kanıt paketi alternatiflerden ayrım yapmıyorsa bu destekli teşhis olarak puanlanamaz.
+3. E1 gereksiz kaçınma, yanıt kapsamı ve eksik kanıt isteğinin ayırt ediciliği raporlanır; birincil sonuç yerine geçirilmez.
+4. Tasarım modeli fine-tune etmeyi, yeni abstention algoritması önermeyi veya genel uncertainty calibration yöntemini ICSE 2026 çalışmasının yerine koymayı hedeflememektedir.
+5. Mevcut tarama hedeflidir; sistematik derleme olarak sunulamaz. Nihai ön kayıt öncesi yakın yayınların tam metinleri, kaynakları ve atıf ağları izlenerek tekrar denetlenmelidir.
