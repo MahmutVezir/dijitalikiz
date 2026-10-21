@@ -208,7 +208,6 @@ jobs:
           sha256sum "$meta" "$project_meta" "$run_test" > "$RUNNER_TEMP/source-metadata-hashes.txt"
           cp "$RUNNER_TEMP/source-metadata-hashes.txt" "$RUNNER_TEMP/case-artifact/"
           cp "$meta" "$RUNNER_TEMP/case-artifact/bug.info"
-          printf '%s\n' "$FIRST_TEST_COMMAND" > "$RUNNER_TEMP/case-artifact/first-test-command.txt"
 
       - name: Capture pre-test Python runtime
         run: |
