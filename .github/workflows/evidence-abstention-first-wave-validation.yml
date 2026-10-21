@@ -192,6 +192,7 @@ jobs:
           TARGET_TEST_COMMAND: ${{ matrix.target_test_command }}
         run: |
           set -u
+          export PATH="$RUNNER_TEMP/BugsInPy/framework/bin:$PATH"
           mkdir -p "$RUNNER_TEMP/case-artifact"
           cp "$RUNNER_TEMP/runtime-fingerprint.txt" "$RUNNER_TEMP/case-artifact/runtime-fingerprint.txt"
           cp "$RUNNER_TEMP/source-metadata-hashes.txt" "$RUNNER_TEMP/case-artifact/source-metadata-hashes.txt"
