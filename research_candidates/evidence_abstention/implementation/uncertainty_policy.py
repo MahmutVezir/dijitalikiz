@@ -19,7 +19,8 @@ def normalized_entropy_from_logits(logits: Sequence[float]) -> float:
         raise ValueError("logits must be finite")
     maximum = max(logits)
     weights = [exp(value - maximum) for value in logits]
-    probabilities = [weight / sum(weights) for weight in weights]
+    total = sum(weights)
+    probabilities = [weight / total for weight in weights]
     entropy = -sum(p * log(p) for p in probabilities if p > 0.0)
     return min(1.0, max(0.0, entropy / log(len(probabilities))))
 
