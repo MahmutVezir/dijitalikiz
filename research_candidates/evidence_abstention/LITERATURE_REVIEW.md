@@ -211,3 +211,23 @@ Başlık, gerçek bir yakın çalışma olarak önceki özgünlük değerlendirm
 5. vaka ve değerlendirici birimi, körleme ve raporlanan ölçütler.
 
 **Karar etkisi:** Bu yayın, tam metin incelemesi yapılana kadar özgünlük iddiasını daha da koşullu tutmayı gerektirir. Konu terk edilmez; ancak projenin asıl farklılığı, doğrulanmış gerçek yazılım kusurlarında kontrollü kanıt yeterliliği, desteklenmeyen kesin teşhis ve yeterli kanıt varken gereksiz kaçınmayı eşleştirilmiş deney içinde ayrı ölçmenin değerli ve daha önceki çalışmalardan yeterince farklı olduğunun savunulabilmesine bağlıdır. Bu fark için şu an nihai hüküm yoktur.
+
+## 10. Dated addendum — answer selection paper posted 9 October 2026
+
+**Why this addendum exists:** A fresh search on 21 October 2026 surfaced a recent preprint that should be represented in the project's related-work boundary before any protocol freeze.
+
+| Work | What the source says | Consequence for this project |
+|---|---|---|
+| Terven et al. (arXiv, 9 Oct 2026), [Can Language Models Learn When to Abstain? Policy Learning and Calibrated Answer Selection](https://arxiv.org/abs/2610.13821) | Studies factual QA answer selection on TriviaQA and NQ-Open using Qwen3-14B; compares a learned selector with a calibrated confidence filter. The abstract reports improved threshold-averaged utility in some settings, but not consistent gains across datasets and a result worse than always-abstaining on NQ-Open. | Selective answer/abstention policies and learned answer selectors are active work, not a novel general mechanism. This paper is not, based on the accessible abstract, a study of root-cause diagnosis over controlled evidence levels from real software bugs. That task difference is a possible boundary—not proof of originality. |
+
+Source: https://arxiv.org/abs/2610.13821 (abstract and metadata checked on 21 October 2026). The source is a preprint; its claims are recorded as the authors' reported findings, not independently reproduced results.
+
+### Updated originality decision
+
+The closest confirmed overlaps now include (1) general abstention benchmarks and surveys, (2) controlled evidence-sufficiency benchmarking, (3) selective answer policies/answer selectors for factual QA, (4) code-generation abstention and uncertainty filtering, (5) code-prediction answer/defer frameworks, and (6) LLM fault-localization studies.
+
+The only defensible candidate contribution remains narrow and empirical: **on real software defect root-cause cases, measure separately whether a diagnosis is actually correct and whether the evidence shown to the model supports that diagnosis, while varying evidence sufficiency under a predeclared answer-or-abstain policy and reporting the coverage cost.** No claim that this combination is unprecedented is justified yet.
+
+Before protocol freeze, the remaining systematic-search work is still required: search multiple indexed databases with dated queries; deduplicate records; screen title/abstract and full text with documented inclusion/exclusion reasons; follow backward/forward citations from the closest six work clusters; and report what could not be accessed. Until then, use the phrase “candidate contribution identified in a targeted search,” not “novel method” or “first study.”
+
+**Gate status:** This addendum updates the related-work boundary only. It does not change the hypothesis, primary outcome, case count, or inference gate. Model inference remains prohibited until the existing data, human-review, runtime, hash-freeze, and preregistration gates pass.
