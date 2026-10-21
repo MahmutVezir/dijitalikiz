@@ -55,6 +55,7 @@ class ScreeningQueueTests(unittest.TestCase):
             rows = [
                 row("zeta", 1), row("zeta", 2), row("alpha", 1), row("alpha", 2),
                 row("black", 1, case_id="BugsInPy-black-1"),
+                row("fastapi", 1, case_id="BugsInPy-fastapi-1"),
                 row("bad", 1, buggy_commit_id="c" * 40, fixed_commit_id="c" * 40),
             ]
             with source.open("w", newline="", encoding="utf-8") as f:
@@ -74,7 +75,7 @@ class ScreeningQueueTests(unittest.TestCase):
             self.assertEqual(summary["queue_rows"], 4)
             self.assertEqual(summary["projects_in_queue"], 2)
             self.assertEqual(summary["accepted_confirmatory_cases"], 0)
-            self.assertEqual(summary["exclusions_by_reason"]["previously_exposed_permanent_exclusion"], 1)
+            self.assertEqual(summary["exclusions_by_reason"]["previously_exposed_permanent_exclusion"], 2)
             self.assertEqual(summary["exclusions_by_reason"]["invalid_or_identical_commit_ids"], 1)
 
     def test_missing_columns_fail_closed(self):
