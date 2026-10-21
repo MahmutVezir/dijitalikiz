@@ -55,7 +55,7 @@ jobs:
           git clone --filter=blob:none https://github.com/soarsmu/BugsInPy.git "$RUNNER_TEMP/BugsInPy"
           git -C "$RUNNER_TEMP/BugsInPy" checkout --detach 11c5f1eea954a42132cfd06bf257766a7963e0fd
           test -f "$RUNNER_TEMP/BugsInPy/projects/tqdm/bugs/1/bug.info"
-          recorded_python="$(sed -n 's/^python_version=["\x27]\(.*\)["\x27]$/\1/p' "$RUNNER_TEMP/BugsInPy/projects/tqdm/bugs/1/bug.info" | head -n 1)"
+          recorded_python="$(sed -n 's/^python_version="\([^"]*\)".*/\1/p' "$RUNNER_TEMP/BugsInPy/projects/tqdm/bugs/1/bug.info" | head -n 1)"
           test "$recorded_python" = "3.6.9"
           git clone https://github.com/tqdm/tqdm.git "$RUNNER_TEMP/tqdm"
           git -C "$RUNNER_TEMP/tqdm" checkout --detach c0dcf39b046d1b4ff6de14ac99ad9a1b10487512
