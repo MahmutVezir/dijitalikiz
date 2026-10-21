@@ -253,11 +253,12 @@ jobs:
             # BugsInPy's compile script sources legacy env/bin/activate,
             # which references $1. Disable nounset around the upstream script,
             # otherwise the shell aborts before any target test executes.
+            # Run the legacy upstream compile script in a fresh, non-strict
+            # Bash process. Some runner environments export SHELLOPTS=nounset;
+            # its virtualenv activate script reads $1 and aborts before tests.
             set +e
-            set +u
-            ( cd "$work_dir" && bugsinpy-compile ) > "$RUNNER_TEMP/$side-compile.log" 2>&1
+            ( cd "$work_dir" && env -u SHELLOPTS bash --noprofile --norc "$RUNNER_TEMP/BugsInPy/framework/bin/bugsinpy-compile" ) > "$RUNNER_TEMP/$side-compile.log" 2>&1
             compile_rc=$?
-            set -u
             set -e
             cp "$RUNNER_TEMP/$side-compile.log" "$RUNNER_TEMP/case-artifact/$side-compile.log"
             if [ "$compile_rc" -ne 0 ] || [ ! -f "$work_dir/bugsinpy_compile_flag" ] || [ ! -f "$work_dir/env/bin/activate" ]; then
