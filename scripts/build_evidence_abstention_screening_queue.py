@@ -12,12 +12,22 @@ import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
+# Any candidate used to test the validation workflow or inspect raw test results
+# is kept out of the confirmatory queue to prevent researcher/pipeline-debug exposure.
 EXCLUDED_CASES = {
     "BugsInPy-black-1",
     "BugsInPy-tqdm-1",
     "BugsInPy-httpie-1",
     "BugsInPy-youtube-dl-1",
     "BugsInPy-PySnooper-1",
+    "BugsInPy-black-2",
+    "BugsInPy-cookiecutter-1",
+    "BugsInPy-fastapi-1",
+    "BugsInPy-luigi-1",
+    "BugsInPy-sanic-1",
+    "BugsInPy-scrapy-1",
+    "BugsInPy-thefuck-1",
+    "BugsInPy-tornado-1",
 }
 REQUIRED_COLUMNS = {
     "case_id", "project", "bug_id", "source_repository", "python_version",
