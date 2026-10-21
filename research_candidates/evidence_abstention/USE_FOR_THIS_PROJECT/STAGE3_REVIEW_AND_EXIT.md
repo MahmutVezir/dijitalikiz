@@ -19,7 +19,7 @@ Bu kapanış **ön kayıt (preregistration), veri kümesi onayı veya model çal
 - **İstatistik:** İki taraflı exact McNemar, risk farkı RD = P1 − P0 ve %95 güven aralığı. Upstream proje kümelenmesi ayrıca duyarlılık analiziyle raporlanır.
 - **Örneklem:** Hedef 80 bağımsız vaka; doğrulayıcı alt sınır 60 vaka ve 8 ayrı upstream proje. N=60 altına veya 8 projenin altına düşen çalışma doğrulayıcı iddia olarak sunulmaz.
 - **Çıktı sayısı:** Hedefte 80 × 3 × 2 = 480 ham çıktı; asgari eşikte 60 × 3 × 2 = 360 ham çıktı. Çıktı sayısı vaka sayısı değildir.
-- **Model adayı:** Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4, revision `68c4276063d1496cdf13d0b8e8221f899bfa77f`; tek model sonuçları başka modellere genellenmez.
+- **Model adayı:** Qwen/Qwen2.5-3B-Instruct, revision `aa8e72537993ba99e69dfaafa59ed015b17504d1`; tek model sonuçları başka modellere genellenmez.
 - **Çıkarım durumu:** Kapalı. Manifestte `case_ids=[]`, `inference_allowed=false`.
 
 ## 3. Denetim bulguları
@@ -58,3 +58,10 @@ Aşama 3'ün tasarım dokümantasyonu tamamlandı; şu işler sonraki veri doğr
 **Aşama 1:** hedefli literatür/ön özgünlük taraması tamamlandı; özgünlük kesinleşmedi ve sistematik derleme değildir.  
 **Aşama 2:** kaynak fizibilitesi koşullu geçti; doğrulanmış veri kümesi hazır değildir.  
 **Model inference:** KAPALI. Yeni proje için doğrulanmış deneysel sonuç yoktur.
+
+
+## Model adayı güncellemesi — 21 Ekim 2026
+
+Daha önce yazılmış GPTQ-Int4 adayının yerine resmi, kuantize edilmemiş [Qwen/Qwen2.5-3B-Instruct](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct) checkpoint'inin `aa8e72537993ba99e69dfaafa59ed015b17504d1` revizyonu, FP16 ve quantization yok ayarlarıyla **yalnızca aday** olarak kaydedildi. Depodaki tarihsel README, önceki GPTQ yüklemesinde başlatılmış parametreler ve geçersiz örnekleme olasılıkları görüldüğünü belirtir. Bu nedenle eski tercihi yeni çalışmaya doğrulanmış kabul ederek taşımadık.
+
+Bu düzeltme önceden çıktı üretilmeden yapılan bir yöntem kaydıdır; exact model/tokenizer yüklemesi, lisans incelemesi, runtime fingerprint ve dosya hash'leri henüz doğrulanmamıştır. Bu dosya bir ön kayıt değildir ve inference izni vermez. Yetkili güncel runtime adayı `RUNTIME_LOCK.json` ve manifestteki kayıttır.

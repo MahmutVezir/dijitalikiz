@@ -24,8 +24,13 @@
     "commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd"
   },
   "model": {
-    "id": "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4",
-    "revision": "68c4276063d1496cdf13d0b8e8221f899bfa77f",
+    "id": "Qwen/Qwen2.5-3B-Instruct",
+    "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "tokenizer_id": "Qwen/Qwen2.5-3B-Instruct",
+    "tokenizer_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "dtype": "float16",
+    "quantization": "none",
+    "runtime_verification": "not_run",
     "do_sample": false,
     "temperature": 0,
     "max_new_tokens": 512
@@ -42,5 +47,12 @@
     ]
   },
   "primary_endpoint": "case-level unsupported definitive diagnosis rate under E3; paired P0 vs P1; RD=P1-P0; exact two-sided McNemar plus confidence intervals",
-  "no_inference_reason": "Need at least 60 validated independent cases across at least 8 projects, buggy-fail/fixed-pass test logs, license/ground-truth/evidence-level/leakage review, frozen prompts/schema/scoring rubric and verified runtime."
+  "no_inference_reason": "Inference remains prohibited until at least 60 independently accepted cases across at least 8 upstream projects (target 80), case-level buggy-fail/fixed-pass logs in recorded environments, licensing/ground-truth/evidence-sufficiency/leakage/prior-exposure reviews, frozen two-rater protocol and calibration, exact model/tokenizer/runtime verification, verified SHA-256 hashes, and auditable preregistration are complete. The non-quantized model/revision is a candidate, not a verified runtime.",
+  "phase_4_technical_status": "scaffolding_added_no_inference",
+  "preregistration_status": "draft",
+  "preregistration_uri": "",
+  "two_rater_protocol_frozen": false,
+  "reviewer_calibration_complete": false,
+  "frozen_hashes": {},
+  "case_registry_path": "research_candidates/evidence_abstention/CASE_REGISTRY.json"
 }

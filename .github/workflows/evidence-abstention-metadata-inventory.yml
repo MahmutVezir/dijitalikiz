@@ -1,0 +1,60 @@
+name: Evidence Abstention Metadata Inventory (No Tests, No Inference)
+
+on:
+  push:
+    branches:
+      - "research/evidence-abstention-draft-2026-10-19"
+    paths:
+      - "scripts/inventory_bugsinpy_candidates.py"
+      - "tests/test_inventory_bugsinpy_candidates.py"
+      - "research_candidates/evidence_abstention/DATA_FEASIBILITY.md"
+      - ".github/workflows/evidence-abstention-metadata-inventory.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  metadata-inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      BUGSINPY_COMMIT: "11c5f1eea954a42132cfd06bf257766a7963e0fd"
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Test metadata inventory utility
+        run: python -m unittest discover -s tests -p 'test_inventory_bugsinpy_candidates.py' -v
+
+      - name: Fetch exact pinned BugsInPy metadata tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/soarsmu/BugsInPy.git "$RUNNER_TEMP/BugsInPy"
+          git -C "$RUNNER_TEMP/BugsInPy" checkout --detach "$BUGSINPY_COMMIT"
+          test "$(git -C "$RUNNER_TEMP/BugsInPy" rev-parse HEAD)" = "$BUGSINPY_COMMIT"
+
+      - name: Build metadata-only case inventory
+        run: |
+          python scripts/inventory_bugsinpy_candidates.py \
+            --root "$RUNNER_TEMP/BugsInPy" \
+            --output "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" \
+            --summary "$RUNNER_TEMP/bugsinpy-metadata-inventory-summary.json" \
+            --expected-commit "$BUGSINPY_COMMIT" \
+            --expected-count 501
+
+      - name: Upload metadata inventory (not accepted experiment data)
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-abstention-bugsinpy-metadata-inventory
+          path: |
+            ${{ runner.temp }}/bugsinpy-metadata-inventory.csv
+            ${{ runner.temp }}/bugsinpy-metadata-inventory-summary.json
+          if-no-files-found: error
+          retention-days: 14

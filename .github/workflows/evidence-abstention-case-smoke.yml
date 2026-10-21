@@ -1,13 +1,6 @@
 name: Evidence Abstention Dataset Case Smoke Test
 
 on:
-  push:
-    branches:
-      - "research/evidence-abstention-draft-2026-10-19"
-    paths:
-      - ".github/workflows/evidence-abstention-case-smoke.yml"
-      - "research_candidates/evidence_abstention/DATA_FEASIBILITY.md"
-      - "research_candidates/evidence_abstention/FEASIBILITY_FORMAT_SAMPLE.csv"
   workflow_dispatch:
 
 permissions:

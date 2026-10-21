@@ -48,8 +48,8 @@ Her vaka başına 3 × 2 = 6 çıktı üretilir. Aynı hatanın üç kanıt sevi
 
 Önceden bilinen açık checkpoint, tekrar üretilebilir tek-model değerlendirmesi için aday birincil model olarak sabitlenir:
 
-- Model: Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4
-- Revision: 68c4276063d1496cdf13d0b8e8221f899bfa77f
+- Model: Qwen/Qwen2.5-3B-Instruct
+- Revision: aa8e72537993ba99e69dfaafa59ed015b17504d1
 - do_sample=false, temperature=0.0, max_new_tokens=512
 - Harici arama, retrieval, kod çalıştırma veya araç çağrısı yoktur.
 - Tokenizer ve chat template model revision'ıyla birlikte pinlenir; Transformers ve ilgili runtime sürümleri, donanım bilgisi ve model dosyalarının hash'leri inference öncesi manifestte dondurulur.
@@ -108,3 +108,10 @@ Bu tasarım, Aşama 3'ün yöntem dokümanı olarak tamamlanmıştır. Ancak mod
 6. proje/dataset ayrımının REPO_SCOPE_SPLIT.md ile uyumlu olduğu denetlenmiş.
 
 **Aşama 3 sonucu:** Deney tasarımı yazılı ve kararları açık; veri ve runtime kapıları kapalı olduğu için çalışma henüz yürütmeye hazır değil. Hiçbir deney sonucu elde edilmiş gibi raporlanamaz.
+
+
+## 10. 21 Ekim 2026 ön-çıkarım model adayı düzeltmesi
+
+Daha önce yazılmış GPTQ-Int4 adayının yerine resmi, kuantize edilmemiş [Qwen/Qwen2.5-3B-Instruct](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct) checkpoint'inin `aa8e72537993ba99e69dfaafa59ed015b17504d1` revizyonu, FP16 ve quantization yok ayarlarıyla **yalnızca aday** olarak kaydedildi. Depodaki tarihsel README, önceki GPTQ yüklemesinde başlatılmış parametreler ve geçersiz örnekleme olasılıkları görüldüğünü belirtir. Bu nedenle eski tercihi yeni çalışmaya doğrulanmış kabul ederek taşımadık.
+
+Bu düzeltme önceden çıktı üretilmeden yapılan bir yöntem kaydıdır; exact model/tokenizer yüklemesi, lisans incelemesi, runtime fingerprint ve dosya hash'leri henüz doğrulanmamıştır. Bu dosya bir ön kayıt değildir ve inference izni vermez. Yetkili güncel runtime adayı `RUNTIME_LOCK.json` ve manifestteki kayıttır.

@@ -45,6 +45,24 @@ Komutlar:
 
 İkinci komut blokajları raporlar. Üçüncü komut kapılardan herhangi biri açıksa sıfır dışı kodla durur. Hiçbiri inference yapmaz.
 
-## 5. Aşama geçiş kararı
+## 5. Otomatik doğrulama kanıtı
 
-**Aşama 4 teknik scaffolding başlatıldı. Pilot inference yapılmadı ve yapılmamalı.** Şu an sıfır kabul edilmiş vaka bulunduğundan model pilotu çalıştırmak, önceden belirlenmiş veri ve yöntem kapılarını ihlal eder. Teknik hazırlık ile pilotun tamamlanmasını ayrı raporluyoruz. Aşama 4'ün pilot kısmı kabul edilmiş veri havuzu, dondurma ve onay koşulları tamamlanana kadar açık kalır. Bu durum deney başarısı veya başarısızlığı değildir.
+GitHub Actions [run 39615830978](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39615830978) branch head commit `2f558aa2e69eed57a51dce4373918224f6807179` üzerinde başarıyla tamamlandı. Üç fail-closed preflight birim testi geçti. Rapor modu **ready=false**, **0 kabul edilmiş vaka**, **0 proje** ve **16 açık blokaj** kaydetti. Başlıca blokajlar: 60 vaka/8 proje eşiği, doğrulanmış protokol ön kaydı, iki değerlendiricili kalibrasyon, exact model/tokenizer/runtime kontrolü ve yedi SHA-256 dondurma girdisi. Workflow rapor modunda çalıştığı için bu beklenen blokajlar CI'ı kırmadı; inference yapılmadı.
+
+Bu CI sonucu yalnızca denetleyicinin kapalı veri durumunda doğru biçimde blokaj raporladığını gösterir. Veri veya model davranışının doğrulandığı anlamına gelmez.
+
+## 6. Aşama geçiş kararı
+
+**Aşama 4 teknik scaffolding ve CI testi tamamlandı. Pilot inference yapılmadı ve yapılmamalı.** Şu an sıfır kabul edilmiş vaka bulunduğundan model pilotu çalıştırmak, önceden belirlenmiş veri ve yöntem kapılarını ihlal eder. Teknik hazırlık ile pilotun tamamlanmasını ayrı raporluyoruz. Aşama 4'ün pilot kısmı kabul edilmiş veri havuzu, dondurma ve onay koşulları tamamlanana kadar açık kalır. Bu durum deney başarısı veya başarısızlığı değildir.
+
+
+## Aşama 2 envanter güncellemesi — 21 Ekim 2026
+
+[Metadata inventory workflow](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618065599) pinned BugsInPy revizyonunda 501 ham metadata kaydı ve 17 proje saydı. Asgari metadata alanları 500 kayıtta tamam, bir kayıtta buggy/fixed commit kimlikleri aynı. Bu workflow test çalıştırmadı; doğrulayıcı vakalar hâlâ 0. Ayrıntı: METADATA_INVENTORY_RESULT_2026-10-21.md.
+
+
+## 7. Dışlanan smoke vakasının tekrar sonucu
+
+[Run 39618666531](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618666531) esnasında BugsInPy-tqdm-1 için fixed sürüm testi TypeError: 'int' object is not subscriptable nedeniyle başarısız oldu. Aynı vaka için daha önceki olumlu smoke koşusu bu nedenle tekrarlanabilir kabul edilmemelidir. Metadata ile smoke runtime arasındaki Python sürüm farkı sürüyor (3.6.9'a karşı 3.8.18). Bu vaka daha önce açıldığı için kalıcı olarak dışlanmıştır. Smoke iş akışının otomatik push tetiklemesi kaldırıldı; gelecekte yalnızca elle istenirse tanılama amaçlı çalıştırılabilir.
+
+En son no-inference preflight [run 39618666271](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618666271) başarılıydı ancak ready=false, 0 kabul edilmiş vaka/proje ve 16 açık blokaj bildirdi. Bu beklenen sonuçtur ve inference izni değildir.

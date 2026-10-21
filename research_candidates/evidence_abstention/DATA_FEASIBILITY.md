@@ -95,3 +95,53 @@ Sonuç: **bir vaka çifti smoke koşullarında çalıştı; doğrulayıcı deney
 **Doğrulanmış deney veri kümesi: HENÜZ HAZIR DEĞİL.** Bu aşamada 60 bağımsız vakanın ve 8 ayrı projenin kabul koşullarını geçtiği iddia edilemez; smoke dışında vakaların test çiftleri fiilen doğrulanmadı, proje lisansları tek tek doğrulanmadı ve model eğitim verisi kontaminasyonu sıfırlanmadı.
 
 **Aşama 2 kararı: KAYNAK FİZİBİLİTESİ TAMAMLANDI (KOŞULLU) — OPERASYONEL VAKA DOĞRULAMA KAPISI GEÇİLMEDİ.** Şu ana kadarki smoke adaylarından hiçbiri kabul edilmedi; 60 bağımsız vaka / 8 proje doğrulanmış değildir. Model çıkarımı kapalıdır. Bir sonraki aşama tasarım olarak tamamlanabilir, ancak deney yürütmeye hazır değildir.
+
+
+## 8. Sonraki operasyonel doğrulama yolu
+
+Kaynak dokümantasyonu, BugsInPy'nin kontrollü hata yeniden üretimi için `bugsinpy-checkout`, `bugsinpy-compile` ve `bugsinpy-test` komutlarını ve ortamı sabitlemek için Docker kullanımını tarif eder ([resmî upstream README](https://github.com/soarsmu/BugsInPy/blob/11c5f1eea954a42132cfd06bf257766a7963e0fd/README.md)). Bu nedenle önceki smoke'ta görülen Python 3.6.9/3.8.18 farkı kabul edilebilir standart değildir.
+
+Her yeni aday için: (1) metadata ve kaynak/lisans kaydı, (2) belirtilen ortamı kurma veya farkı gerekçeli ve açıkça raporlama, (3) aynı hedef testin buggy sürümde beklenen kusuru göstermesi ve fixed sürümde geçmesi, (4) günlüklerin hash'lenmesi, (5) kök neden ile E1/E2/E3 kanıt paketlerinin en az iki bağımsız inceleyici tarafından model çıktısından önce doğrulanması, (6) sızıntı ve maruziyet kontrolü uygulanır. Başarısızlık ortam/kurulum kaynaklıysa “buggy fail” olarak sayılmaz; aday reddedilir veya araştırma örnekleminden ayrı, açık bir teknik sorun olarak tutulur.
+
+Ölçek hedefi değişmedi: **en az 60 kabul edilmiş vaka ve 8 upstream proje, hedef 80**. Bu belge yayınlı upstream komutlarını kaydedip doğrulama planını netleştirir; 60 vakanın çalıştırıldığını iddia etmez. Örneklem eşiği sağlanana kadar Aşama 2'nin veri-kabul kapısı açık kalır ve Aşama 4 LLM çıkarım kapısı kapalı tutulur.
+
+
+## 9. Metadata envanteri otomasyonu — 21 Ekim 2026
+
+Ham havuzun tamamını tutarlı biçimde taranabilir hale getirmek amacıyla scripts/inventory_bugsinpy_candidates.py ve birim testleri eklendi. .github/workflows/evidence-abstention-metadata-inventory.yml, BugsInPy revizyonu 11c5f1eea954a42132cfd06bf257766a7963e0fd üzerinde bug.info, project.info, bug_patch.txt, run_test.sh ve setup.sh dosyalarına ilişkin SHA-256 bütünlük özetlerini ve temel metadata alanlarını CSV envanterine çıkarır.
+
+Bu otomasyon yalnızca metadata envanteri üretir:
+- buggy/fixed testlerini çalıştırmaz;
+- kök neden veya kanıt seviyelerini değerlendirmez;
+- lisans, eğitim verisi kontaminasyonu veya sızıntı incelemesi yapmaz;
+- LLM çağırmaz ve hiçbir vakayı kabul edilmiş deney verisi olarak işaretlemez;
+- daha önce maruz kalınan beş fizibilite örneğini kalıcı dışlama olarak işaretler.
+
+Başarılı envanter üretimi, 501 ham metadata kaydının listelenebildiğini gösterebilir; 501'in de, herhangi bir alt kümenin de doğrulayıcı deney için uygun olduğunu göstermez. CI artifact'ı geldiğinde ilk kullanım amacı metadata eksikliği ve kaynak/proje dağılımını tarayarak insan ve ortam doğrulaması için yeni, önceden incelenmemiş adayları seçmektir. Aşama 2'nin operasyonel kabul kapısı 60 bağımsız vaka ve 8 proje doğrulanana kadar açık kalır.
+
+
+## 10. Gerçek metadata envanteri sonucu — 21 Ekim 2026
+
+[GitHub Actions envanter çalışması](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618065599) pinned BugsInPy revizyonunda başarıyla envanter ve artifact üretti. Sonuç raporu: [METADATA_INVENTORY_RESULT_2026-10-21.md](METADATA_INVENTORY_RESULT_2026-10-21.md).
+
+| Çıktı | Sonuç |
+|---|---:|
+| Ham metadata vaka kaydı | 501 |
+| Upstream proje | 17 |
+| Temel metadata kapısı geçen | 500 |
+| Temel metadata kapısı geçmeyen | 1 |
+| Test çifti fiilen doğrulanan | 0 |
+| Kabul edilmiş doğrulayıcı vaka | 0 |
+
+Metadata kapısını geçemeyen tek kayıt **BugsInPy-keras-12**: kaynak metadata aynı Git commit'ini buggy ve fixed olarak göstermektedir. Kayıt sessizce kabul edilmedi; dışlama/inceleme gerektiren metadata sorunu olarak tutuldu. İş akışı beş önceden incelenmiş örneği de kalıcı dışlama olarak etiketledi.
+
+Envanter CSV'sinin SHA-256 değeri 069e649a37a12cd495ad08a82377f76f0b4518b3fd138380321dc53b15663dcb olarak kaydedildi. CSV metadata ve dosya hash'leri içerir; patch/source code kopyası, insan kök-neden kararı veya test sonuçları içermez.
+
+**Aşama 2 kararı değişmedi:** metadata kaynak envanteri tamamlandı; operasyonel vaka doğrulama kapısı hâlâ açık. 501 ham kayıt, 500 metadata-kalifiye aday, 60 doğrulanmış vaka veya deney örneklemi olarak raporlanamaz.
+
+
+### 10.1 Smoke tekrar denetimi uyarısı
+
+Daha önceki [run 39461858759](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39461858759) bir kez buggy-fail/fixed-pass verdiği için olumlu tek koşu olarak kaydedilmişti. Ancak 21 Ekim'deki yeniden çalıştırma [run 39618666531](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618666531), buggy revizyonda beklenen hata gözlendikten sonra fixed revizyondaki hedef testi **başarısız** buldu: TypeError: 'int' object is not subscriptable (tqdm/tests/tests_contrib.py::test_enumerate). Dolayısıyla bu smoke sonucu tekrarlanabilir değildir; önceki tek olumlu çalıştırma bir kabul ölçütü olarak kullanılamaz. Metadata Python 3.6.9 kaydederken her iki smoke koşusu da Python 3.8.18 kullandı. Vaka zaten incelenmiş olduğu için doğrulayıcı örneklemden kalıcı olarak dışlanmaya devam eder.
+
+Bu bulgu otomasyon/ortam farkını çözmez. Smoke workflow artık her belge değişikliğinde otomatik çalışmayacak; yalnızca elle dispatch edildiğinde çalıştırılabilir. Eski denemelerin kayıtları saklanır.
