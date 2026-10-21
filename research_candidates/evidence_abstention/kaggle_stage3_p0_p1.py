@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pandas as pd
 import torch
+from IPython.display import display
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
@@ -12,6 +13,7 @@ MODEL_ID = "Qwen/Qwen2.5-3B-Instruct"
 MODEL_REVISION = "aa8e72537993ba99e69dfaafa59ed015b17504d1"
 CASES_PATH = Path(os.getenv("EVIDENCE_CASES_PATH", "/kaggle/input/evidence-abstention/cases.json"))
 OUTPUT_PATH = Path(os.getenv("EVIDENCE_OUTPUT_PATH", "/kaggle/working/p0_p1_outputs.csv"))
+ANSWER_KEY_PATH = Path(os.getenv("EVIDENCE_ANSWER_KEY_PATH", "/kaggle/working/restricted_answer_key.csv"))
 MIN_CASES = 60
 MIN_PROJECTS = 8
 POLICIES = {
@@ -190,7 +192,6 @@ def main():
                     "policy": policy,
                     "raw_output": raw,
                     **parsed,
-                    "reference_root_cause": case["reference_root_cause"],
                     "model_id": MODEL_ID,
                     "model_revision": MODEL_REVISION,
                     "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
@@ -199,6 +200,12 @@ def main():
     results = pd.DataFrame(rows)
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     results.to_csv(OUTPUT_PATH, index=False)
+    answer_key = pd.DataFrame([
+        {"case_id": case["case_id"], "reference_root_cause": case["reference_root_cause"]}
+        for case in cases
+    ])
+    ANSWER_KEY_PATH.parent.mkdir(parents=True, exist_ok=True)
+    answer_key.to_csv(ANSWER_KEY_PATH, index=False)
     display(results.head(12))
 
     summary = (
@@ -212,7 +219,8 @@ def main():
         .reset_index()
     )
     display(summary)
-    print(f"Outputs: {OUTPUT_PATH}")
+    print(f"Blind model outputs: {OUTPUT_PATH}")
+    print(f"RESTRICTED answer key (do not share with reviewers): {ANSWER_KEY_PATH}")
     print("Not: Öz-bildirilen güven kalibre edilmiş olasılık değildir.")
     print("Not: Desteksiz teşhis oranı, kör insan kanıtsal-destek etiketleri olmadan hesaplanmaz.")
 
