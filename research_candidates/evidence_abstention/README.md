@@ -1,6 +1,6 @@
 # Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ
 
-**Durum (20 Ekim 2026):** Aşama 1 — hedefli literatür ve ön özgünlük denetimi tamamlandı. Aşama 2 — kaynak fizibilitesi tamamlandı (koşullu); BugsInPy upstream'inde 17 projede 501 ham hata klasörü sayıldı, fakat doğrulanmış örneklem hazır değil. Aşama 3 — eşleştirilmiş deney tasarımı, iki prompt koşulu, JSON çıktı şeması ve analiz planı belgelendi. Bir BugsInPy-tqdm smoke koşusu CI'da buggy-fail/fixed-pass verdi; ancak metadata Python 3.6.9, smoke runtime Python 3.8.18 olduğundan bu tam ortam tekrarı ve kabul edilmiş vaka değildir. Karar: tasarım çalışması tamamlandı; uygulamaya/inference'a geçiş izni yok.
+**Durum (21 Ekim 2026):** Aşama 1 — hedefli literatür/ön özgünlük denetimi tamamlandı; sistematik derleme değildir. Aşama 2 — kaynak fizibilitesi koşullu tamamlandı, ancak doğrulanmış bağımsız örneklem hazır değil (kabul edilmiş vaka: 0; hedef 80, doğrulayıcı alt sınır 60 vaka / 8 proje). Aşama 3 — tasarım belgeleri tamamlandı, fakat protokol ön kayıtlı veya inference için dondurulmuş değil. Aşama 4 — fail-closed teknik preflight, boş vaka sicili ve puanlama protokolü taslağı eklendi. **Model çıkarımı kapalıdır; yeni araştırmadan henüz deney sonucu yoktur.**
 
 **Depo kullanımı:** Bu depo, yeni projenin planlama, sürüm kontrolü, doğrulama ve belgelendirme altyapısı olarak kullanılacaktır. Çalışma ayrı bir dalda yürütülür; DİJİTALİKİZ'in tarihsel TÜBİTAK 2204-A deneyleri, sonuçları, manifestleri ve raporu değiştirilmez.
 
@@ -58,3 +58,15 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 - `USE_FOR_THIS_PROJECT/REUSE_RULES.md` — yeniden kullanım kuralları.
 
 Bu çalışma şu anda planlama aşamasındadır. Herhangi bir deney yürütüldüğü, insan puanlamasının tamamlandığı veya sonuç alındığı iddia edilmemektedir.
+
+
+## Aşama 4 — teknik hazırlık durumu (21 Ekim 2026)
+
+- [Teknik hazırlık ve açık kapılar](STAGE4_TECHNICAL_READINESS_2026-10-21.md)
+- [Boş vaka sicili](CASE_REGISTRY.json): bilerek boş; hiçbir vaka doğrulayıcı olarak kabul edilmedi.
+- [Runtime adayı](RUNTIME_LOCK.json): resmi, kuantize edilmemiş Qwen2.5-3B-Instruct revizyonu aday olarak belgelendi; henüz yükleme doğrulaması yok.
+- [İnsan puanlama rubriği ve adjudication taslağı](RUBRIC_AND_ADJUDICATION.md): iki bağımsız değerlendirici ve körleme kuralları taslaklandı; kalibrasyon/dondurma tamamlanmadı.
+- `scripts/evidence_abstention_preflight.py` ve `tests/test_evidence_abstention_preflight.py`: yalnızca read-only kapı denetimi ve birim testleri; model çağırmaz.
+- `.github/workflows/evidence-abstention-preflight.yml`: no-inference CI doğrulaması; inference veya dış veri indirmesi yok.
+
+**Geçiş kararı:** Teknik altyapı hazırlanıyor. Doğrulanmış vaka sayısı sıfır olduğu için Stage 4 pilot LLM çıkarımı başlatılmayacak. En az 60 vaka/8 proje, tüm vaka/kanıt/lisans/sızıntı kapıları, iki değerlendiricili kalibrasyon, model/tokenizer/runtime denetimi, dosya hash'leri ve denetlenebilir ön kayıt tamamlanmadan inference yasaktır. Bu bir başarısız deney sonucu değil, henüz deney yürütülmediği anlamına gelir.
