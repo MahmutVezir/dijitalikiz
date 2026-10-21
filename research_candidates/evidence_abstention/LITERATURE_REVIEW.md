@@ -109,3 +109,33 @@ Gerekçe:
 Aşama 2'de model çalıştırılmayacak. Önce gerçek kusur vakalarının, pre-fix/fixed revizyonların ve yeniden üretilebilir testlerin toplanabilirliği küçük bir veri-fizibilite denetimiyle değerlendirilecek. Ayrıca tam metin/atıf zincirini de içeren daha geniş bir literatür taraması, inference öncesi zorunlu kontrol olarak kalacak.
 
 **Inference durumu:** Kapalı. Sonuç, başarı, etki büyüklüğü veya finalistlik iddiası yoktur. DİJİTALİKİZ'in eski pilot/confirmatory sonuçları bu yeni araştırmaya aktarılmayacaktır.
+
+
+## 9. Genişletilmiş hedefli literatür taraması — 21 Ekim 2026
+
+Bu ek, ilk ön taramayı güncellemek için 21 Ekim 2026 tarihinde yayıncı/konferans sayfaları ve erişilebilir özetler üzerinden yapılan yeni aramaları kaydeder. Tarama sorguları; LLM abstention/answerability, evidence sufficiency, answer-or-defer in code predictions, task abstention in code generation ve LLM software fault localization terimlerini kapsadı.
+
+### 9.1 Ek teyit edilen çalışmalar
+
+| Çalışma | Kaynakta doğrulanan kapsam | Araştırma tasarımına etkisi |
+|---|---|---|
+| Wen et al. (2025), [Know Your Limits: A Survey of Abstention in Large Language Models](https://aclanthology.org/2025.tacl-1.26/) | TACL derlemesi; yöntemler, benchmarklar ve ölçütleri query/model/human-values çerçevesiyle sınıflandırıyor. | Genel cevap vermeme fikri veya ölçütleri yeni katkı olarak ileri sürülemez. |
+| Madhusudhan et al. (COLING 2025), [Do LLMs Know When to NOT Answer?](https://aclanthology.org/2025.coling-main.627/) | Cevaplanabilir/cevaplanamaz sorular, Abstain-QA, black-box değerlendirme ve prompt stratejileri. | Yalnızca zorunlu yanıt ile kaçınma iznini karşılaştırmak yeterli özgünlük değildir. |
+| Rathnasuriya & Yang (ICSE 2026 NIER), [When to Answer and When to Defer: A Decision Framework for Reliable Code Predictions](https://conf.researchr.org/details/icse-2026/icse-2026-nier/47/When-to-Answer-and-When-to-Defer-A-Decision-Framework-for-Reliable-Code-Predictions) | Kod tahminleri için ne zaman cevaplanacağı/ne zaman erteleneceği üzerine karar çerçevesi; ICSE 2026 NIER programında. | Yazılım/kod görevlerinde cevaplama–erteleme kararı yakın alandır. Görev farkı, yalnızca başlık benzerliğine değil tam yöntem ve ölçüt karşılaştırmasına dayanmalıdır. |
+| Zhou et al. (2026), [Task Abstention for Large Language Models in Code Generation](https://arxiv.org/abs/2605.17029) | Kod üretiminde güvenilir olmayan görevlerden kaçınmak için kalibreli abstention kuralı ve kod çalıştırma tutarlılığı. | Kod alanında abstention ve hata azaltma konuları zaten doğrudan ele alınıyor; “yazılımda ilk” iddiası kurulamaz. |
+| Zhai et al. (Findings of ACL 2026), [Abstain-R1: Calibrated Abstention and Post-Refusal Clarification via Verifiable RL](https://aclanthology.org/2026.findings-acl.985/) | Kaçınma kararının yanı sıra cevap verilemeyen sorularda neyin eksik olduğunu açıklamayı da optimize ediyor. | Eksik kanıt talebi tek başına yeni katkı değildir; bizim çalışmada bu talep bağımsız bir ayırt edicilik ölçütü olmalıdır. |
+| Zhang & Wu (2026), [Do LLMs Know When Evidence is Insufficient?](https://www.techscience.com/cmc/v89n1/68467) | RAG için kanıt yeterliliği seviyeleriyle cevap/kaçınma kalibrasyonu benchmarkı. | Kanıt seviyelerini kademelendirmek genel olarak yeni değildir. |
+| Xiao et al. (2025), [Large Language Models for Fault Localization: An Empirical Study](https://arxiv.org/abs/2510.20521) | HumanEval-Java ve Defects4J üzerinde LLM'lerin ifade düzeyinde hata yerelleştirme performansını ve istem etkilerini inceleyen ampirik çalışma. | Hata yerelleştirmesi için benchmark ve model karşılaştırması mevcut; yeni katkı kanıt yeterliliği ile iddia desteğini ayırmalıdır. |
+| [Review of Large Language Model-Based Software Fault Localization Techniques](https://ieeexplore.ieee.org/document/11320391/) (IEEE DSA 2025; IEEE Xplore kaydı 12 Ocak 2026'da eklenmiş) | 21 LLM tabanlı fault-localization çalışmasını beş yaklaşım sınıfında derleyen inceleme. | Bu alan için geniş bir önceki çalışma haritası bulunduğundan, tam metin atıf takibi başvuru öncesi önemlidir. |
+
+### 9.2 Bu taramadan çıkarılabilecek ve çıkarılamayacak sonuçlar
+
+**Desteklenen sonuç:** Genel abstention, kanıt yeterliliği, kod üretiminde görevden kaçınma ve LLM tabanlı fault localization ayrı ayrı önceden araştırılmıştır. Bu nedenle araştırmamızın katkısı “model bazen cevap vermesin” veya “kanıtı azalttığımızda cevap oranı değişiyor mu?” şeklinde tanımlanamaz.
+
+**Şimdilik savunulabilecek aday ayrım:** Gerçek kusurlar üzerinde aynı vaka için kanıt paketlerini önceden tanımlı biçimde E1/E2/E3 seviyelerine dönüştürmek; gerçek kök nedenle örtüşmeyi ve yalnızca paketin desteklediği teşhisi ayrı puanlamak; E3'te kanıtsız kesin teşhis oranını, E1'de gereksiz kaçınma ve yanıt kapsamıyla birlikte raporlamak.
+
+**Kanıtlanmamış nokta:** Bu taramada tam olarak bu üç unsuru aynı deneyde birleştiren birebir eşleşen çalışma tespit edilmedi; ancak bu, böyle bir çalışma bulunmadığının kanıtı değildir. Tüm ACM/IEEE/Scopus kayıtlarının tam metinleri ve atıf ağları sistematik olarak incelenmiş değildir. Bu sebeple proje “ilk çalışma” veya “özgünlüğü kanıtlanmış” olarak tanımlanmayacaktır.
+
+### 9.3 Aşama 1 için kapatma tanımı
+
+**Hedefli literatür taraması ve ön özgünlük sentezi: tamamlandı (21 Ekim 2026).** Bu, sistematik derleme değildir. Kaynak başlığı/özeti veya erişilebilir yayın sayfasından daha ileri yöntem iddiası çıkarılmayacaktır. Preregistration ya da resmi yarışma raporundan önce, danışmanla tam metin ve atıf zinciri kontrolü hâlâ yapılmalıdır; bu sonraki kalite kapısı olarak korunur.

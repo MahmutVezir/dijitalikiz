@@ -104,3 +104,17 @@ Kaynak dokümantasyonu, BugsInPy'nin kontrollü hata yeniden üretimi için `bug
 Her yeni aday için: (1) metadata ve kaynak/lisans kaydı, (2) belirtilen ortamı kurma veya farkı gerekçeli ve açıkça raporlama, (3) aynı hedef testin buggy sürümde beklenen kusuru göstermesi ve fixed sürümde geçmesi, (4) günlüklerin hash'lenmesi, (5) kök neden ile E1/E2/E3 kanıt paketlerinin en az iki bağımsız inceleyici tarafından model çıktısından önce doğrulanması, (6) sızıntı ve maruziyet kontrolü uygulanır. Başarısızlık ortam/kurulum kaynaklıysa “buggy fail” olarak sayılmaz; aday reddedilir veya araştırma örnekleminden ayrı, açık bir teknik sorun olarak tutulur.
 
 Ölçek hedefi değişmedi: **en az 60 kabul edilmiş vaka ve 8 upstream proje, hedef 80**. Bu belge yayınlı upstream komutlarını kaydedip doğrulama planını netleştirir; 60 vakanın çalıştırıldığını iddia etmez. Örneklem eşiği sağlanana kadar Aşama 2'nin veri-kabul kapısı açık kalır ve Aşama 4 LLM çıkarım kapısı kapalı tutulur.
+
+
+## 9. Metadata envanteri otomasyonu — 21 Ekim 2026
+
+Ham havuzun tamamını tutarlı biçimde taranabilir hale getirmek amacıyla scripts/inventory_bugsinpy_candidates.py ve birim testleri eklendi. .github/workflows/evidence-abstention-metadata-inventory.yml, BugsInPy revizyonu 11c5f1eea954a42132cfd06bf257766a7963e0fd üzerinde bug.info, project.info, bug_patch.txt, run_test.sh ve setup.sh dosyalarına ilişkin SHA-256 bütünlük özetlerini ve temel metadata alanlarını CSV envanterine çıkarır.
+
+Bu otomasyon yalnızca metadata envanteri üretir:
+- buggy/fixed testlerini çalıştırmaz;
+- kök neden veya kanıt seviyelerini değerlendirmez;
+- lisans, eğitim verisi kontaminasyonu veya sızıntı incelemesi yapmaz;
+- LLM çağırmaz ve hiçbir vakayı kabul edilmiş deney verisi olarak işaretlemez;
+- daha önce maruz kalınan beş fizibilite örneğini kalıcı dışlama olarak işaretler.
+
+Başarılı envanter üretimi, 501 ham metadata kaydının listelenebildiğini gösterebilir; 501'in de, herhangi bir alt kümenin de doğrulayıcı deney için uygun olduğunu göstermez. CI artifact'ı geldiğinde ilk kullanım amacı metadata eksikliği ve kaynak/proje dağılımını tarayarak insan ve ortam doğrulaması için yeni, önceden incelenmemiş adayları seçmektir. Aşama 2'nin operasyonel kabul kapısı 60 bağımsız vaka ve 8 proje doğrulanana kadar açık kalır.

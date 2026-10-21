@@ -101,3 +101,8 @@ Eski çalışmanın 160 kayıtlık confirmatory sonucu ve diğer ölçümleri ye
 Bir dosyanın “kullanılabilir” olması, doğrudan deneyde kullanılması anlamına gelmez. Yeni veri olarak kullanılacak her vaka için veri kökeni, lisans, buggy/fixed test, kök neden, E1/E2/E3 kanıt paketi, kontaminasyon riski ve dosya hash'leri ayrıca doğrulanmalıdır. Bu kapılar kapanana kadar **LLM inference kapalıdır**.
 
 **Koruma ilkesi:** Bu ayrım eski depoyu silmez, geçmiş sonuçları düzeltmez ve `main` dalını değiştirmez; yalnızca yeni araştırmada neyin kullanılabileceğini açıklar.
+
+
+## Aşama 2 metadata envanteri otomasyonu
+
+21 Ekim 2026'da eklendi: scripts/inventory_bugsinpy_candidates.py, onun birim testleri ve .github/workflows/evidence-abstention-metadata-inventory.yml. Bu iş akışı yalnızca pinned BugsInPy metadata alanlarını ve hash'lerini envantere çıkarır; bug/fixed testlerini çalıştırmaz ve vaka kabul etmez. Kapsam sınırı aynı kalır: yeni araştırmada tarihsel DİJİTALİKİZ verileri/sonuçları kullanılmaz; kabul edilmiş vaka sayısı henüz 0'dır.

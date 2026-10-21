@@ -1,6 +1,6 @@
 # Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ
 
-**Durum (21 Ekim 2026):** Aşama 1 — hedefli literatür/ön özgünlük denetimi tamamlandı; sistematik derleme değildir. Aşama 2 — kaynak fizibilitesi koşullu tamamlandı, ancak doğrulanmış bağımsız örneklem hazır değil (kabul edilmiş vaka: 0; hedef 80, doğrulayıcı alt sınır 60 vaka / 8 proje). Aşama 3 — tasarım belgeleri tamamlandı, fakat protokol ön kayıtlı veya inference için dondurulmuş değil. Aşama 4 — fail-closed teknik preflight, boş vaka sicili ve puanlama protokolü taslağı eklendi. **Model çıkarımı kapalıdır; yeni araştırmadan henüz deney sonucu yoktur.**
+**Durum (21 Ekim 2026, güncelleme 2):** Aşama 1 — genişletilmiş hedefli literatür sentezi tamamlandı; sistematik derleme değildir. Aşama 2 — kaynak fizibilitesi koşullu tamamlandı, ancak doğrulanmış bağımsız örneklem hazır değil (kabul edilmiş vaka: 0; hedef 80, doğrulayıcı alt sınır 60 vaka / 8 proje). Aşama 3 — tasarım belgeleri tamamlandı, fakat protokol ön kayıtlı veya inference için dondurulmuş değil. Aşama 4 — fail-closed teknik preflight, boş vaka sicili ve puanlama protokolü taslağı eklendi. **Model çıkarımı kapalıdır; yeni araştırmadan henüz deney sonucu yoktur.**
 
 **Depo kullanımı:** Bu depo, yeni projenin planlama, sürüm kontrolü, doğrulama ve belgelendirme altyapısı olarak kullanılacaktır. Çalışma ayrı bir dalda yürütülür; DİJİTALİKİZ'in tarihsel TÜBİTAK 2204-A deneyleri, sonuçları, manifestleri ve raporu değiştirilmez.
 
@@ -70,3 +70,11 @@ Bu çalışma şu anda planlama aşamasındadır. Herhangi bir deney yürütüld
 - `.github/workflows/evidence-abstention-preflight.yml`: no-inference CI doğrulaması; inference veya dış veri indirmesi yok. [İlk doğrulama çalışması başarılı](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39615830978): üç birim test geçti; rapor 0 kabul edilmiş vaka ve 16 açık inference blokajı gösterdi.
 
 **Geçiş kararı:** Teknik altyapı hazırlanıyor. Doğrulanmış vaka sayısı sıfır olduğu için Stage 4 pilot LLM çıkarımı başlatılmayacak. En az 60 vaka/8 proje, tüm vaka/kanıt/lisans/sızıntı kapıları, iki değerlendiricili kalibrasyon, model/tokenizer/runtime denetimi, dosya hash'leri ve denetlenebilir ön kayıt tamamlanmadan inference yasaktır. Bu bir başarısız deney sonucu değil, henüz deney yürütülmediği anlamına gelir.
+
+
+## Aşama 2 — metadata envanterini otomatikleştirme
+
+- scripts/inventory_bugsinpy_candidates.py sabitlenmiş BugsInPy revizyonundaki metadata kayıtlarını CSV'ye dönüştürür.
+- tests/test_inventory_bugsinpy_candidates.py fail-closed ve metadata-only kurallarını sınar.
+- .github/workflows/evidence-abstention-metadata-inventory.yml sadece pinned upstream metadata ağacını indirip envanter artifact'ı üretir; test yürütmez ve model çağırmaz.
+- Envanter otomasyonu tek başına hiçbir vakayı kabul etmez. Operasyonel vaka doğrulama tamamlanana kadar accepted cases = 0 ve inference = false kalır.

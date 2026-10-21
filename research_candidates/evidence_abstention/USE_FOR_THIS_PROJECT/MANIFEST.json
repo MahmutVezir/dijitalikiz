@@ -68,6 +68,18 @@
     {
       "path": "research_candidates/evidence_abstention/STAGE4_TECHNICAL_READINESS_2026-10-21.md",
       "permission": "stage4_technical_status_not_inference_authorization"
+    },
+    {
+      "path": "scripts/inventory_bugsinpy_candidates.py",
+      "permission": "metadata_only_inventory_no_tests_no_inference"
+    },
+    {
+      "path": "tests/test_inventory_bugsinpy_candidates.py",
+      "permission": "unit_tests_for_metadata_inventory"
+    },
+    {
+      "path": ".github/workflows/evidence-abstention-metadata-inventory.yml",
+      "permission": "pinned_metadata_inventory_artifact_only_no_test_execution"
     }
   ],
   "mirrored_reference_docs": [
@@ -146,5 +158,7 @@
     "scripts/evidence_abstention_preflight.py",
     "tests/test_evidence_abstention_preflight.py",
     ".github/workflows/evidence-abstention-preflight.yml"
-  ]
+  ],
+  "phase_1_extended_targeted_review": "completed_not_systematic_review",
+  "phase_2_metadata_inventory_automation": "added_not_yet_run_by_this_update"
 }

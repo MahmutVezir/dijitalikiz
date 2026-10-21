@@ -29,6 +29,11 @@ Bu klasör, yeni araştırmanın tasarım belgelerini ve yeniden kullanım kural
 
 Aşama 4'te yalnızca model çalıştırmayan preflight doğrulaması ve testler eklenmiştir. 60 kabul edilmiş vaka / 8 proje ve diğer metodolojik kapılar sağlanmadığı için LLM inference yapılmamıştır.
 
+
+- Aşama 1 (21 Ekim güncellemesi): hedefli literatür sentezi güncellendi; genel abstention, kanıt yeterliliği, kod üretiminde abstention ve LLM fault-localization için yakın çalışmaların karşılaştırması genişletildi. Tam sistematik derleme veya kesin özgünlük iddiası yapılmıyor.
+- Aşama 2 (21 Ekim güncellemesi): pinned BugsInPy metadata envanterini üretmek için salt metadata otomasyonu ve CI iş akışı eklendi. Envanter, test/ground-truth/lisans incelemesi değildir; kabul edilmiş vaka sayısı envanter çalışması tamamlanmadan da 0 olarak kalır.
+- Envanter için script, testler ve no-test/no-inference workflow bu dalda yer alır.
+
 ## Depo kapsamı
 
 - [Yetkili kapsam ayrımı](../REPO_SCOPE_SPLIT.md)
