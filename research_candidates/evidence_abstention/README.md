@@ -2,7 +2,7 @@
 
 **Tek aktif hedef:** 2027 TÜBİTAK 2204-A’da finalistlik düzeyinde, tamamlanmış ve bilimsel olarak savunulabilir bir araştırma sunmak. Finalistlik garanti edilemez; ölçütümüz gerçek kanıt ve dürüst raporlamadır.
 
-**Güncel bilimsel durum (21 Ekim 2026):** Proje tamamlanmadı. Aşama 1 hedefli literatür incelemesi düzeyinde tamamlandı; sistematik derleme değildir. Aşama 2 kaynak metadata envanteri koşullu tamamlandı; 487 adaylı güncel kuyruğu var, ancak kabul edilmiş bağımsız vaka sayısı 0’dır. Aşama 3 tasarım belgeleri hazır, fakat protokol ön kayıtlı/dondurulmuş değildir. Aşama 4 no-inference preflight teknik olarak test edildi, ancak `ready=false`; yeni araştırma için model çıkarımı yapılmadı.
+**Güncel bilimsel durum (21 Ekim 2026):** Proje tamamlanmadı. Aşama 1 hedefli literatür incelemesi düzeyinde tamamlandı; sistematik derleme değildir. Aşama 2 kaynak metadata envanteri koşullu tamamlandı; 487 adaylı güncel kuyruğu ve sırası sabitlenmiş ilk 120 adaylık intake cohort'u var, ancak kabul edilmiş bağımsız vaka sayısı 0’dır. Aşama 3 tasarım belgeleri hazır, fakat protokol ön kayıtlı/dondurulmuş değildir. Aşama 4 no-inference preflight teknik olarak test edildi, ancak `ready=false`; yeni araştırma için model çıkarımı yapılmadı.
 
 **Tek yürütme planı:** [TÜBİTAK 2204-A ana planı](TUBITAK_2204A_MASTER_PLAN_2026-10-21.md). Resmî başvuru son tarihi 4 Ocak 2027, saat 17.30’dur; [TÜBİTAK 2204-A çağrısı](https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi).
 
