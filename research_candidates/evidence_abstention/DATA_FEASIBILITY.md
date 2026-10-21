@@ -166,3 +166,17 @@ The excluded case `BugsInPy-tqdm-1` was rechecked in [Actions run 39632366228](h
 This shows the target-specific buggy failure and fixed-side pass under the recorded Python version in this diagnostic run. It does **not** make the case confirmatory-eligible: the patch/metadata had already been opened during feasibility review, and the case remains permanently excluded. This run did not review its root-cause ground truth, license, evidence sufficiency or contamination.
 
 Artifact: `evidence-abstention-tqdm-exact-python-smoke`, ID `12359043643`, ZIP SHA-256 `ab7db5d76ca5cfa7d8a01fe8a93fbc6df0938b768ac5727d7e16aef60e98618a`. Inspection of the uploaded files found that the first version of the internal `SHA256SUMS` used runner-absolute paths; the follow-up workflow now writes relative paths and runs `sha256sum -c` before upload. The previous diagnostic artifact's individual checksum manifest must not be described as portable/verified.
+
+
+## İlk dalga hedef-test artefaktı — Black-2 (run 39638198482)
+
+[Ham artefakt](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39638198482/artifacts/12363477662), ZIP SHA-256: `c64db46812165ba8cfb397f561782a2c573ccfd8d972e6b85338b0a460f3e37e`.
+
+- Python metadata/runtime tam eşleşti: 3.8.3.
+- Buggy hedef testinin exit code'u 1; fixed çalışma ağacındaki testin exit code'u 0.
+- **Ancak buggy hata sinyali hedef kusuru doğrulamıyor:** ham log `tests/data/fmtonoff4.py` dosyasının buggy çalışma ağacında bulunmadığını gösteren `FileNotFoundError`. Fixed çalışma ağacı bu test veri dosyasını içerdi ve test geçti.
+- Bu yüzden vaka, buggy-fail/fixed-pass **geçerli kök-neden reprodüksiyonu sayılmadı**. Vaka zaten workflow doğrulaması için kullanıldığı için doğrulayıcı örneklem dışında kalıcı olarak tutulur.
+- Bu gözlem üzerine workflow, sabit çalışma ağacındaki yalnızca açıkça tanımlanmış test-fixture dosyalarını buggy ağacına kopyalayabilen bir tanılama adımıyla güncellendi. Sonraki koşu bu fixture'ı uygulayıp gerçek formatter davranışını tekrar inceleyecektir; bu yeni koşu tamamlanmadan düzeltilmiş sonuç iddia edilmeyecektir.
+- Raw artifact SHA256 manifesti mevcut koşuda doğrulandı; artifact, otomatik kabul kararı içermez.
+
+Bu, CI işinin başarıyla tamamlanmasının bilimsel doğrulama ile aynı olmadığını gösteren somut örnektir.
