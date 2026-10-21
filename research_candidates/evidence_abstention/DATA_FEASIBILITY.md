@@ -180,3 +180,20 @@ Artifact: `evidence-abstention-tqdm-exact-python-smoke`, ID `12359043643`, ZIP S
 - Raw artifact SHA256 manifesti mevcut koşuda doğrulandı; artifact, otomatik kabul kararı içermez.
 
 Bu, CI işinin başarıyla tamamlanmasının bilimsel doğrulama ile aynı olmadığını gösteren somut örnektir.
+
+
+### FastAPI-1 and Scrapy-1 — run 39638198482
+
+Two more focused target-test artifacts completed in the same no-inference workflow. I downloaded each ZIP and independently checked every entry against its internal `SHA256SUMS`; all listed checksums passed and no unlisted files were found.
+
+| Candidate (permanently excluded) | Runtime | Buggy-side target output | Fixed-side target output | Interpretation |
+|---|---|---|---|---|
+| `BugsInPy-fastapi-1` | Metadata/runtime both 3.8.3 | `TypeError: jsonable_encoder() got an unexpected keyword argument 'exclude_defaults'` | Same target test: `1 passed` | Target-specific signal is consistent with the intended missing-parameter behavior. Still requires manual source/patch review to call it a reproduced ground-truth bug; not accepted. |
+| `BugsInPy-scrapy-1` | Metadata/runtime both 3.8.3 | `TypeError: expected string or bytes-like object` from `url_pattern.match(domain)` in the targeted offsite spider middleware tests | Same two targeted tests: `Ran 2 tests ... OK` | Target-specific signal is consistent with the intended domain-pattern handling behavior. Still requires manual source/patch review; not accepted. |
+
+Artifact references and GitHub ZIP SHA-256:
+
+- FastAPI: artifact ID `12364391592`, SHA-256 `d03ef508e42bd30d3410a9f7e8fc454ec5267fc00650dadc1ded2b2b74380a9c`.
+- Scrapy: artifact ID `12363423446`, SHA-256 `b4ec4122927efdb1cb8d84705d011c2bc1eaf652988b2bdfe5ed729f2cbac97f`.
+
+These two cases were used in the technical workflow-validation wave and remain permanently excluded from the confirmatory dataset regardless of their diagnostic signal. They establish neither license clearance nor ground-truth/evidence-panel agreement. The initial wave used a workflow version that wrote checksums directly; I verified its three completed ZIPs locally. New workflow runs also include the separate `artifact-audit.json` report.
