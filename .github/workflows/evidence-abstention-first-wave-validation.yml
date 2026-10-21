@@ -121,7 +121,7 @@ jobs:
               "evidence_levels_reviewed_by_two": False,
               "leakage_and_prior_exposure_reviewed": False,
               "llm_inference_performed": False
-          }, indent=2) + "\\n", encoding="utf-8")
+          }, indent=2) + "\n", encoding="utf-8")
           PY
 
       - name: Set up exact metadata Python
@@ -270,6 +270,7 @@ jobs:
           EXPECTED_PYTHON: ${{ matrix.python_version }}
           EXPECTED_BUGGY: ${{ matrix.buggy_commit }}
           EXPECTED_FIXED: ${{ matrix.fixed_commit }}
+          EXPECTED_RUN_TEST_SHA256: ${{ matrix.expected_run_test_sha256 }}
 
       - name: Upload raw validation logs and summary (never auto-accept)
         if: always()
