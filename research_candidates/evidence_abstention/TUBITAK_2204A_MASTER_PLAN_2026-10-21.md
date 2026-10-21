@@ -55,7 +55,7 @@ Bu, modelin kötü performans gösterdiği anlamına gelmez; yeni deney henüz y
 
 ## 5. Vaka kabul kapısı
 
-Her aday için [Manuel vaka inceleme rehberi](CASE_REVIEW_GUIDE.md) ve [boş JSON formu](CASE_REVIEW_INTAKE_TEMPLATE.json) kullanılacaktır. Bu formun doldurulması yalnızca kaynak/karar kayıtlarını düzenler; reviewer kararı ve gerçek artefaktlar olmadan bir vakayı kabul etmez.
+İlk 120 tarama adayı [SCREENING_COHORT_120_2026-10-21.json](SCREENING_COHORT_120_2026-10-21.json) içinde sabitlendi; yedek adaylar kuyruk sırasına göre ilerler. Her aday için [Manuel vaka inceleme rehberi](CASE_REVIEW_GUIDE.md) ve [boş JSON formu](CASE_REVIEW_INTAKE_TEMPLATE.json) kullanılacaktır. Bu formun doldurulması yalnızca kaynak/karar kayıtlarını düzenler; reviewer kararı ve gerçek artefaktlar olmadan bir vakayı kabul etmez.
 
 Her vaka, model çıktısı üretilmeden önce şu koşulların hepsini geçmelidir:
 
