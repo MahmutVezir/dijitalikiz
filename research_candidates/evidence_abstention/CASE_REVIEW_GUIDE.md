@@ -2,6 +2,10 @@
 
 **Amaç:** BugsInPy adayını deney siciline almadan önce gerekli kanıtı aynı sırada, denetlenebilir biçimde toplamak. Bu belge ve [JSON form şablonu](CASE_REVIEW_INTAKE_TEMPLATE.json) bir vakayı kabul etmez.
 
+## Başlangıç aday sırası
+
+Önceden açılmış beş fizibilite vakası ve workflow doğrulamasında kullanılan sekiz vaka, güncel tarama kuyruğundan kalıcı çıkarıldı. İlk 120 metadata adayı [sabit cohort dosyasında](SCREENING_COHORT_120_2026-10-21.json) yer alır; inceleme sırası deterministiktir, rastgele örneklem değildir. Kaynak queue CSV hash'i dosyada yazılıdır. Bu listedeki hiçbir aday otomatik kabul edilmez. İlk 120 yeterli sayıda kabul edilen vaka sağlamazsa, sıradaki rezervler 121. sıradan aynı predeclared kuralla eklenir.
+
 ## İnceleme sırası
 
 1. **Maruziyet ve bağımsızlık:** Vakanın patch/issue/test bilgilerini önceden açıp açmadığımızı, başka bir vaka/PR ile aynı kök nedene bağlı olup olmadığını kaydet. Önceden incelenmiş fizibilite/smoke vakaları ana doğrulayıcı örnekleme geri alınmaz.
