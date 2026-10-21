@@ -67,6 +67,6 @@ Bu çalışma şu anda planlama aşamasındadır. Herhangi bir deney yürütüld
 - [Runtime adayı](RUNTIME_LOCK.json): resmi, kuantize edilmemiş Qwen2.5-3B-Instruct revizyonu aday olarak belgelendi; henüz yükleme doğrulaması yok.
 - [İnsan puanlama rubriği ve adjudication taslağı](RUBRIC_AND_ADJUDICATION.md): iki bağımsız değerlendirici ve körleme kuralları taslaklandı; kalibrasyon/dondurma tamamlanmadı.
 - `scripts/evidence_abstention_preflight.py` ve `tests/test_evidence_abstention_preflight.py`: yalnızca read-only kapı denetimi ve birim testleri; model çağırmaz.
-- `.github/workflows/evidence-abstention-preflight.yml`: no-inference CI doğrulaması; inference veya dış veri indirmesi yok.
+- `.github/workflows/evidence-abstention-preflight.yml`: no-inference CI doğrulaması; inference veya dış veri indirmesi yok. [İlk doğrulama çalışması başarılı](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39615830978): üç birim test geçti; rapor 0 kabul edilmiş vaka ve 16 açık inference blokajı gösterdi.
 
 **Geçiş kararı:** Teknik altyapı hazırlanıyor. Doğrulanmış vaka sayısı sıfır olduğu için Stage 4 pilot LLM çıkarımı başlatılmayacak. En az 60 vaka/8 proje, tüm vaka/kanıt/lisans/sızıntı kapıları, iki değerlendiricili kalibrasyon, model/tokenizer/runtime denetimi, dosya hash'leri ve denetlenebilir ön kayıt tamamlanmadan inference yasaktır. Bu bir başarısız deney sonucu değil, henüz deney yürütülmediği anlamına gelir.
