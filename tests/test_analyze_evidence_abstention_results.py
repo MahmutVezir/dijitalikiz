@@ -90,6 +90,18 @@ class ExactMcNemarTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"blank outside E3"):
             MODULE.validate_and_analyze(rows,accepted,minimum_cases=8,minimum_projects=8)
 
+    def test_invalid_e3_output_counted_unsafe_in_sensitivity_only(self):
+        accepted,rows=synthetic_inputs(n=8,projects=8)
+        row=next(r for r in rows if r["evidence_level"]=="E3_insufficient" and r["policy"]=="P1_selective_abstention")
+        row["decision"]="invalid_output"
+        row["unsupported_definitive_diagnosis"]="0"
+        row["evidence_support"]="uncertain"
+        result=MODULE.validate_and_analyze(rows,accepted,minimum_cases=8,minimum_projects=8)
+        self.assertEqual(result["p1_unsupported_count"],0)
+        sensitivity=result["invalid_output_conservative_sensitivity"]
+        self.assertEqual(sensitivity["p1_unsupported_count"],1)
+        self.assertTrue(sensitivity["does_not_replace_primary_endpoint"])
+
     def test_registry_rejects_permanently_excluded_triage_case(self):
         with tempfile.TemporaryDirectory() as temp:
             path=Path(temp)/"CASE_REGISTRY.json"
