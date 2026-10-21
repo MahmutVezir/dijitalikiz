@@ -163,7 +163,11 @@ jobs:
             "note": "This previously exposed case is permanently excluded regardless of smoke outcome. Only a target-specific buggy failure plus the same fixed test passing under exact metadata Python may count as a reproduced test pair."
           }
           JSON
-          find "$RUNNER_TEMP/evidence-abstention-case-smoke" -type f -print0 | sort -z | xargs -0 sha256sum > "$RUNNER_TEMP/evidence-abstention-case-smoke/SHA256SUMS"
+          (
+            cd "$RUNNER_TEMP/evidence-abstention-case-smoke"
+            find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+            sha256sum -c SHA256SUMS
+          )
 
       - name: Upload exact-runtime smoke logs (excluded case only)
         if: always()
