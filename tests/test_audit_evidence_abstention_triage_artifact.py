@@ -84,5 +84,22 @@ class TriageArtifactAuditTests(unittest.TestCase):
             self.assertFalse(result["accepted_for_confirmatory"])
 
 
+    def test_missing_regression_fixture_is_not_a_bug_failure_signal(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make_artifact(root)
+            (root / "buggy-test.log").write_text(
+                "ERROR: test_demo.py::test_bug\\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/buggy/tests/data/fixture.json'\\n",
+                encoding="utf-8",
+            )
+            files = sorted(p for p in root.iterdir() if p.is_file() and p.name != "SHA256SUMS")
+            (root / "SHA256SUMS").write_text("".join(f"{digest(p)}  ./{p.name}\\n" for p in files), encoding="utf-8")
+            result = MODULE.audit(root)
+            self.assertTrue(result["integrity_pass"])
+            self.assertTrue(result["raw_buggy_fail_fixed_pass_signals_present"])
+            self.assertFalse(result["technical_buggy_fail_fixed_pass_signals_present"])
+            self.assertTrue(result["likely_fixture_or_harness_error"])
+            self.assertTrue(any("fixture or harness" in w for w in result["warnings"]))
+
 if __name__ == "__main__":
     unittest.main()
