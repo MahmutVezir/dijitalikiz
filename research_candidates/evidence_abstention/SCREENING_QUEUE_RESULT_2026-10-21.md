@@ -61,3 +61,17 @@ Bu testler kodun ve artefakt bütünlüğü araçlarının davranışını sına
 Kuyruktaki adaylar için sabit metadata sürümü, exact Python runtime, aynı hedef testte buggy-fail/fixed-pass, lisans, patch/kök neden ground truth'u, E1/E2/E3 paketleri, önceki maruziyet ve sızıntı kontrolleri gerçek artefaktlarla doğrulanmalı. Kaynak kurulum/eklenti hatası, buggy sürümde hedef hata sayılmaz. Vaka kabul kararı insan incelemeleri bitince, kapalı sicile ayrı kayıt olarak girilir.
 
 Hedef değişmedi: **en az 60 bağımsız kabul edilmiş vaka ve en az 8 upstream proje; hedef 80 vaka**. Bu rapor metadata kuyruğunu günceller fakat araştırma hazır olma kapısını kapatmaz.
+
+
+## Dondurulmuş ilk 120 adaylık cohort
+
+[SCREENING_COHORT_120_2026-10-21.json](SCREENING_COHORT_120_2026-10-21.json) güncel 487 adaylı kuyruğun ilk 120 sıra numarasını sabitler. Toplam 17 proje, **0 çalıştırılmış test çifti / 0 kabul edilmiş vaka / 0 LLM çıkarımı**. Bu intake sırası rastgele örneklem değildir; vakalar reddedilirse sıradaki yedek adaylar 121. kuyruk sırasından aynı kural ile incelenecektir. Bu cohort'un hiçbir üyesi henüz kabul edilmiş veri olarak kullanılmıyor.
+
+## İlk-dalga teknik doğrulama v6 — devam eden
+
+[Actions run 39641682522](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39641682522) workflow aracını doğrulamak için kullanılan ve ana örnekleme kalıcı olarak alınmayacak vakaları yeniden çalıştırıyor. İki tamamlanmış artefakt indirildi ve yerelde SHA-256 doğrulandı:
+
+- Black-2: artifact ID `12364903680`, ZIP SHA-256 `11b5765f3b9b948d03b166aee0037c643c151f560e9126a492a1c6e44139972f`. Python 3.8.3 eşleşti; explicit `tests/data/fmtonoff4.py` fixture'ının kaynağı ve kopyası aynı SHA-256 verdi; buggy hedef test formatlama farkında başarısız, fixed hedef testi geçti. `artifact-audit.json`: integrity pass, bug-specific automated signal present, manual review required, accepted=false.
+- FastAPI-1: artifact ID `12366405628`, ZIP SHA-256 `ddb400a073cc718b442e150701f3728d3375863d55c1cd73b2a8da51da9bfb45`. Python 3.8.3 eşleşti; buggy hedef test `exclude_defaults` parametresinde TypeError verdi, fixed hedef testi geçti. `artifact-audit.json`: integrity pass, signal present, manual review required, accepted=false.
+
+Bu ikisi de workflow-debug vakaları olduğundan **kalıcı dışlama** statüsündedir; gerçek örneklem sayısını artırmaz. Diğer beş matris işinin tamamlanması bekleniyor; tamamlanmış artefaktlar geldikçe aynı hash/log denetimi uygulanacaktır. Run'ın yeşil olması veya hedef testi geçmesi tek başına lisans, kök neden, kanıt yeterliliği, sızıntı veya bağımsız insan puanlaması kapılarını geçmez.
