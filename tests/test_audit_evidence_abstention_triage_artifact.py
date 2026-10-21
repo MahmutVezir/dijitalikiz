@@ -106,11 +106,11 @@ class TriageArtifactAuditTests(unittest.TestCase):
             root = Path(tmp)
             make_artifact(root)
             (root / "buggy-test.log").write_text(
-                "ImportError while loading conftest\\nModuleNotFoundError: No module named 'sanic'\\n",
+                "ImportError while loading conftest\nModuleNotFoundError: No module named 'sanic'\n",
                 encoding="utf-8",
             )
             files = sorted(p for p in root.iterdir() if p.is_file() and p.name != "SHA256SUMS")
-            (root / "SHA256SUMS").write_text("".join(f"{digest(p)}  ./{p.name}\\n" for p in files), encoding="utf-8")
+            (root / "SHA256SUMS").write_text("".join(f"{digest(p)}  ./{p.name}\n" for p in files), encoding="utf-8")
             result = MODULE.audit(root)
             self.assertTrue(result["integrity_pass"], result["blockers"])
             self.assertTrue(result["raw_buggy_fail_fixed_pass_signals_present"])
