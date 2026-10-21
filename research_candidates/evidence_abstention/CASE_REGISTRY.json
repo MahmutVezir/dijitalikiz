@@ -17,8 +17,10 @@
     "The first cohort runtime/workflow-debug batch (ansible-1, black-3, cookiecutter-2, fastapi-2, httpie-2, keras-1, luigi-2, matplotlib-1) is permanently excluded from confirmatory analysis because it was used while the technical harness/dependencies/artifact pipeline were still being debugged; exclusion is outcome-independent.",
     "The V2 technical screen batch (pandas-1, PySnooper-2, sanic-2, scrapy-2, spacy-1, thefuck-2, tornado-2, tqdm-2) is permanently excluded as a pipeline-debugging batch; see EXPOSURE_EXCLUSION_LOG_2026-10-21.json.",
     "The V3 runner-debug batch (youtube-dl-2, ansible-2, black-4, cookiecutter-3, fastapi-3, httpie-3, keras-2, luigi-3) is permanently excluded as a whole, independent of target-test outcome.",
-    "The current technical intake is SCREENING_COHORT_120_V4_2026-10-21.json. It is metadata-only and not the confirmatory sample; 24 queued exposure/debug IDs are skipped, while 13 earlier exposed cases are already absent from the source queue. The registry remains empty until all acceptance gates pass."
+    "The current technical intake is SCREENING_COHORT_120_V4_2026-10-21.json. It is metadata-only and not the confirmatory sample; 24 queued exposure/debug IDs are skipped, while 13 earlier exposed cases are already absent from the source queue. The registry remains empty until all acceptance gates pass.",
+    "The V4 technical batch (matplotlib-2, pandas-2, PySnooper-3, sanic-3, scrapy-3, spacy-2, thefuck-3, tornado-3) is permanently excluded because it was used to debug runner/test-dependency behavior; see EXPOSURE_EXCLUSION_LOG_2026-10-21.json.",
+    "The current metadata-only technical intake is SCREENING_COHORT_120_V5_2026-10-21.json. It skips 32 queue-ranked debug-exposure IDs and is not itself a confirmatory sample; the accepted case registry remains empty."
   ],
   "exposure_exclusion_log_path": "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_LOG_2026-10-21.json",
-  "current_screening_intake_path": "research_candidates/evidence_abstention/SCREENING_COHORT_120_V4_2026-10-21.json"
+  "current_screening_intake_path": "research_candidates/evidence_abstention/SCREENING_COHORT_120_V5_2026-10-21.json"
 }
