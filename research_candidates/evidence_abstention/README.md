@@ -138,3 +138,5 @@ Bu çalışma için başka yarışma veya ayrı araştırma hattı yürütülmey
 - [İlk dondurulmuş kohortun teknik bulguları](COHORT_TECHNICAL_FINDINGS_2026-10-21.md) içinde black-3 hedef testinin ham buggy-fail/fixed-pass sinyali, patch ile test arasındaki bağlantı, artefakt hash'leri ve eksik insan değerlendirme kapıları kaydedildi.
 - Aynı belge, ilk koşudaki kurulum/aktivasyon hatalarını gerçek hata üretimi saymadığımızı ve diğer adayları test çifti doğrulanmadan kabul etmediğimizi açıkça ayırır.
 - Güncel runner düzeltmesini denetleyen [kohort batch 1 Actions koşusu](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39651002472) halen incelenmelidir; yalnızca o koşunun biten artefaktları teknik durum raporuna eklenir.
+
+- [Black-3 ön teknik inceleme kaydı](PRELIMINARY_CASE_SCREEN_BugsInPy-black-3_2026-10-21.md): ham teknik test çifti ve MIT lisansı ilk kontrolü belgelenmiştir; bağımsız insan panelleri tamamlanmadığı için vaka kabul edilmemiştir.
