@@ -91,5 +91,82 @@ class CohortMatrixTests(unittest.TestCase):
                 MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",2)
 
 
+    def test_v2_skips_only_documented_prior_exposure_ids(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            rows=[row(i,p) for i,p in enumerate(["a","b","c","d","e"],1)]
+            q=root/"queue.csv"
+            with q.open("w",newline="",encoding="utf-8") as f:
+                w=csv.DictWriter(f,fieldnames=FIELDS);w.writeheader();w.writerows(rows)
+            excluded=["BugsInPy-a-1","BugsInPy-b-2"]
+            ids=[x["case_id"] for x in rows if x["case_id"] not in excluded]
+            cohort={
+                "record_type":"metadata_only_screening_intake_not_confirmatory_dataset",
+                "cohort_size":len(ids),
+                "case_ids":ids,
+                "excluded_prior_exposure":excluded,
+                "source_queue_sha256":hashlib.sha256(q.read_bytes()).hexdigest(),
+                "accepted_confirmatory_cases":0,
+                "llm_inference_performed":False
+            }
+            c=root/"cohort.json";c.write_text(json.dumps(cohort),encoding="utf-8")
+            out=MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",2)
+            self.assertEqual([x["case_id"] for x in out["matrix"]["include"]],
+                             ["BugsInPy-c-3","BugsInPy-d-4"])
+            self.assertEqual(out["summary"]["accepted_confirmatory_cases"],0)
+            self.assertFalse(out["summary"]["llm_inference_performed"])
+
+    def test_v2_fails_if_excluded_id_is_reintroduced(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            rows=[row(i,p) for i,p in enumerate(["a","b","c","d"],1)]
+            q=root/"queue.csv"
+            with q.open("w",newline="",encoding="utf-8") as f:
+                w=csv.DictWriter(f,fieldnames=FIELDS);w.writeheader();w.writerows(rows)
+            excluded=["BugsInPy-a-1"]
+            ids=[x["case_id"] for x in rows]
+            cohort={
+                "record_type":"metadata_only_screening_intake_not_confirmatory_dataset",
+                "cohort_size":len(ids),
+                "case_ids":ids,
+                "excluded_prior_exposure":excluded,
+                "source_queue_sha256":hashlib.sha256(q.read_bytes()).hexdigest(),
+                "accepted_confirmatory_cases":0,
+                "llm_inference_performed":False
+            }
+            c=root/"cohort.json";c.write_text(json.dumps(cohort),encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"prior-exposed ID appears"):
+                MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",2)
+
+
+    def test_historical_cohort_fails_closed_when_it_contains_later_exposed_case(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            rows=[row(1,"ansible"),row(2,"other")]
+            q,c=self.setup_files(root,rows)
+            cohort=json.loads(c.read_text(encoding="utf-8"))
+            cohort["case_ids"][0]="BugsInPy-ansible-1"
+            # Keep queue hash intact; this test is specifically about the known
+            # exposure guard, not a hash mismatch.
+            c.write_text(json.dumps(cohort),encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"permanently excluded after workflow debugging"):
+                MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",1)
+
+    def test_historical_cohort_rejects_all_permanently_exposed_ids(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            rows=[row(1,"a"),row(2,"b")]
+            q,c=self.setup_files(root,rows)
+            base=json.loads(c.read_text(encoding="utf-8"))
+            for exposed_id in sorted(MODULE.KNOWN_PRIOR_EXPOSURE_IDS):
+                cohort=dict(base)
+                cohort["case_ids"]=[exposed_id,"BugsInPy-b-2"]
+                cohort["cohort_size"]=2
+                c.write_text(json.dumps(cohort),encoding="utf-8")
+                with self.subTest(case_id=exposed_id):
+                    with self.assertRaisesRegex(ValueError,"permanently excluded after workflow debugging"):
+                        MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",1)
+
+
 if __name__=="__main__":
     unittest.main()

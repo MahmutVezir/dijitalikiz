@@ -1,0 +1,164 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "ledger_version": "0.1",
+  "as_of": "2026-10-21",
+  "purpose": "Append-only provenance ledger of candidates exposed during reproducibility/workflow validation; all entries are permanently excluded from confirmatory sampling.",
+  "rule": "Any candidate whose patch/test, bug-specific behavior, or technical reproduction result was opened while building/debugging the validation pipeline is not reused as a confirmatory case. Do not alter the frozen original cohort order; apply this ledger as an exclusion filter and select future candidates in the unchanged queue order.",
+  "accepted_confirmatory_cases_added": 0,
+  "llm_inference_performed": false,
+  "exclusions": [
+    {
+      "case_id": "BugsInPy-black-1",
+      "stage": "earlier_feasibility",
+      "decision": "permanently_excluded",
+      "reason": "Earlier feasibility/smoke work; target/patch previously opened.",
+      "evidence_uri": ""
+    },
+    {
+      "case_id": "BugsInPy-tqdm-1",
+      "stage": "earlier_feasibility",
+      "decision": "permanently_excluded",
+      "reason": "Earlier feasibility/smoke; exact-Python diagnostic run 39632366228; target/patch previously opened.",
+      "evidence_uri": ""
+    },
+    {
+      "case_id": "BugsInPy-httpie-1",
+      "stage": "earlier_feasibility",
+      "decision": "permanently_excluded",
+      "reason": "Earlier feasibility/smoke; target/patch previously opened.",
+      "evidence_uri": ""
+    },
+    {
+      "case_id": "BugsInPy-youtube-dl-1",
+      "stage": "earlier_feasibility",
+      "decision": "permanently_excluded",
+      "reason": "Earlier feasibility/smoke; target/patch previously opened.",
+      "evidence_uri": ""
+    },
+    {
+      "case_id": "BugsInPy-PySnooper-1",
+      "stage": "earlier_feasibility",
+      "decision": "permanently_excluded",
+      "reason": "Earlier feasibility/smoke; target/patch previously opened.",
+      "evidence_uri": ""
+    },
+    {
+      "case_id": "BugsInPy-black-2",
+      "stage": "workflow_debug_batch",
+      "decision": "permanently_excluded",
+      "reason": "First workflow-debug batch; test/runner implementation inspected.",
+      "evidence_uri": ""
+    },
+    {
+      "case_id": "BugsInPy-cookiecutter-1",
+      "stage": "workflow_debug_batch",
+      "decision": "permanently_excluded",
+      "reason": "First workflow-debug batch; test/runner implementation inspected.",
+      "evidence_uri": ""
+    },
+    {
+      "case_id": "BugsInPy-fastapi-1",
+      "stage": "workflow_debug_batch",
+      "decision": "permanently_excluded",
+      "reason": "First workflow-debug batch; test/runner implementation inspected.",
+      "evidence_uri": ""
+    },
+    {
+      "case_id": "BugsInPy-luigi-1",
+      "stage": "workflow_debug_batch",
+      "decision": "permanently_excluded",
+      "reason": "First workflow-debug batch; test/runner implementation inspected.",
+      "evidence_uri": ""
+    },
+    {
+      "case_id": "BugsInPy-sanic-1",
+      "stage": "workflow_debug_batch",
+      "decision": "permanently_excluded",
+      "reason": "First workflow-debug batch; test/runner implementation inspected.",
+      "evidence_uri": ""
+    },
+    {
+      "case_id": "BugsInPy-scrapy-1",
+      "stage": "workflow_debug_batch",
+      "decision": "permanently_excluded",
+      "reason": "First workflow-debug batch; test/runner implementation inspected.",
+      "evidence_uri": ""
+    },
+    {
+      "case_id": "BugsInPy-thefuck-1",
+      "stage": "workflow_debug_batch",
+      "decision": "permanently_excluded",
+      "reason": "First workflow-debug batch; test/runner implementation inspected.",
+      "evidence_uri": ""
+    },
+    {
+      "case_id": "BugsInPy-tornado-1",
+      "stage": "workflow_debug_batch",
+      "decision": "permanently_excluded",
+      "reason": "First workflow-debug batch; test/runner implementation inspected.",
+      "evidence_uri": ""
+    },
+    {
+      "case_id": "BugsInPy-ansible-1",
+      "stage": "predeclared_cohort_technical_pipeline_validation",
+      "decision": "permanently_excluded",
+      "reason": "Predeclared first-eight cohort; run 39653012017; technical reproduction workflow validation.",
+      "evidence_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39653012017"
+    },
+    {
+      "case_id": "BugsInPy-black-3",
+      "stage": "predeclared_cohort_technical_pipeline_validation",
+      "decision": "permanently_excluded",
+      "reason": "Predeclared first-eight cohort; run 39653012017; target test/patch behavior inspected.",
+      "evidence_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39653012017"
+    },
+    {
+      "case_id": "BugsInPy-cookiecutter-2",
+      "stage": "predeclared_cohort_technical_pipeline_validation",
+      "decision": "permanently_excluded",
+      "reason": "Predeclared first-eight cohort; run 39653012017; target test/patch behavior inspected.",
+      "evidence_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39653012017"
+    },
+    {
+      "case_id": "BugsInPy-fastapi-2",
+      "stage": "predeclared_cohort_technical_pipeline_validation",
+      "decision": "permanently_excluded",
+      "reason": "Predeclared first-eight cohort; run 39653012017; target test/patch behavior inspected.",
+      "evidence_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39653012017"
+    },
+    {
+      "case_id": "BugsInPy-httpie-2",
+      "stage": "predeclared_cohort_technical_pipeline_validation",
+      "decision": "permanently_excluded",
+      "reason": "Predeclared first-eight cohort; run 39653012017; target test/patch behavior inspected; imports failed before target test.",
+      "evidence_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39653012017"
+    },
+    {
+      "case_id": "BugsInPy-keras-1",
+      "stage": "predeclared_cohort_technical_pipeline_validation",
+      "decision": "permanently_excluded",
+      "reason": "Predeclared first-eight cohort; run 39653012017; technical test output inspected; package-origin check still not implemented.",
+      "evidence_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39653012017"
+    },
+    {
+      "case_id": "BugsInPy-luigi-2",
+      "stage": "predeclared_cohort_technical_pipeline_validation",
+      "decision": "permanently_excluded",
+      "reason": "Predeclared first-eight cohort; run 39653012017; technical reproduction workflow validation.",
+      "evidence_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39653012017"
+    },
+    {
+      "case_id": "BugsInPy-matplotlib-1",
+      "stage": "predeclared_cohort_technical_pipeline_validation",
+      "decision": "permanently_excluded",
+      "reason": "Predeclared first-eight cohort; run 39653012017; pytest executable unavailable before target test.",
+      "evidence_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39653012017"
+    }
+  ],
+  "notes": [
+    "The frozen SCREENING_COHORT_120_2026-10-21.json remains unchanged as a historical predeclared selection record.",
+    "This exclusion ledger is a separate append-only provenance record; future screening must skip these IDs and preserve the original queue order for remaining candidates.",
+    "Technical test-pair signals do not create confirmatory acceptance; none of the listed IDs may be accepted into the confirmatory registry.",
+    "Do not claim that all eight targets reproduced. Some cases failed before the target test or lack a complete valid pair; their exclusion stems from exposure during pipeline validation, not from a confirmed application defect."
+  ]
+}

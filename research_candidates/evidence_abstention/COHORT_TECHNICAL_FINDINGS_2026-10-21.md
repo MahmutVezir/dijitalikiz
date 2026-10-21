@@ -7,7 +7,7 @@
 - Cohort batch workflow: [run 39648272888](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39648272888)
 - Dataset repository: `https://github.com/soarsmu/BugsInPy`
 - BugsInPy revision: `11c5f1eea954a42132cfd06bf257766a7963e0fd`
-- Metadata path: `projects/black/bugs/3/bug.info`; metadata SHA-256: `09ac24b9d2f0224396efec8d9ef288d4d4605acda48494400b908dfb8c4790cc`
+- Metadata path: `projects/black/bugs/3/bug.info`; metadata SHA-256: `09ac24b9d2f0224396ef78dd9ef288d4d4605acda48494400b908dfb8c4790cc`
 - Recorded/runtime Python: `3.8.3` / `3.8.3` (match)
 - Buggy base commit: `8126b4f6a9342290de4655e6a8a78cd288ce7daa`
 - Fixed reference: `7a14a37981862ef418f3cdb4a7e2375856f97529`
@@ -42,3 +42,14 @@ The follow-up cohort run is [run 39649913996](https://github.com/MahmutVezir/dij
 - License, leakage, prior-exposure, calibration and preregistration gates: **open**
 
 Even for `black-3`, the report does not mark `accepted_for_confirmatory=true`. Keep raw logs and hashes intact, then request the documented independent human review, license check, prior-exposure check and evidence-packet construction before any acceptance decision.
+
+
+## 4. Follow-up technical audit — 21 October 2026, 18:29 UTC
+
+A further diagnostic run, [run 39652580084](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39652580084), was cancelled after it produced setup-only artifacts for several cases. Its artifacts included a `*-activation-diagnostics.txt` file but no test logs/exit codes; the file showed that shell options included `nounset` while inspecting `env/bin/activate` **before** the compile step had created that file. A pre-compile diagnostic that attempts to read a not-yet-created file can itself terminate a strict `errexit/pipefail` shell. Therefore those setup-only artifacts remain non-evidence for buggy/fixed test behavior, even when artifact checksums passed.
+
+The workflow was then adjusted in commit `cb35f4aa91ab936b4413e974626850268c211a85` so the pre-compile diagnostic checks whether the activation file exists before inspecting it; the earlier changes also wrap environment deactivation against `nounset` and derive Python version matching from both side-specific virtual-environment fingerprints, not the runner's outer Python. No confirmatory case is auto-accepted by these changes.
+
+The new validation run is [run 39653012017](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39653012017), using commit `cb35f4aa91ab936b4413e974626850268c211a85`. Its metadata/cohort freeze job has passed; the case jobs were still running/queued at the last check. **Do not state that the batch passed until that run and the raw case artifacts are inspected.**
+
+The Black-3 preliminary note is maintained separately at [PRELIMINARY_CASE_SCREEN_BugsInPy-black-3_2026-10-21.md](PRELIMINARY_CASE_SCREEN_BugsInPy-black-3_2026-10-21.md). Its documented run `39651002472` produced raw target-test signals with matching Python runtime and no automated environment warning. This remains a preliminary technical finding; two independent ground-truth reviewers, a disjoint evidence-sufficiency panel, E1/E2/E3 packet hashes, leakage/prior-exposure review and final case decision remain open. All aggregate accepted-case counts remain **0**.

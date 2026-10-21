@@ -89,3 +89,12 @@ Run [39632366228](https://github.com/MahmutVezir/dijitalikiz/actions/runs/396323
 This is better evidence than the earlier Python 3.8.18 smoke. It remains a **diagnostic on a permanently excluded case**, because the case's patch/metadata had been opened during feasibility review. It was not accepted into the confirmatory registry, and this run does not establish root-cause review, license clearance, evidence-level agreement or contamination clearance. LLM inference was not performed.
 
 Artifact ID `12359043643`, ZIP SHA-256 `ab7db5d76ca5cfa7d8a01fe8a93fbc6df0938b768ac5727d7e16aef60e98618a`. Inspection found the first artifact's embedded `SHA256SUMS` had absolute runner paths and was not portable. A follow-up commit corrected the workflow to generate relative-path checksums and validate them before upload; do not report the original embedded checksum file as successfully verified.
+
+## 9. First-wave technical triage — 21 October 2026
+
+Workflow [run 39644280706](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39644280706) has now completed all seven matrix jobs. The detailed outcome and conservative interpretation are recorded in [FIRST_WAVE_TECHNICAL_TRIAGE_RESULT_2026-10-21.md](FIRST_WAVE_TECHNICAL_TRIAGE_RESULT_2026-10-21.md).
+
+Three exposed feasibility candidates (`black-2`, `tornado-1`, `scrapy-1`) emitted paired raw test signals without an automated environment/harness warning. Four candidates emitted incomplete signals and/or environment warnings (`luigi-1`, `fastapi-1`, `sanic-1`, `thefuck-1`). FastAPI had raw pair markers but also an environment warning, so it is not treated as a clean pair. These are automated diagnostic signals, not manually verified bug-specific evidence.
+
+All seven remain permanently outside the blinded confirmatory pool due to prior exposure. None is accepted. The accepted confirmatory count remains **0** and inference remains **prohibited**. Successful job completion confirms artifact collection/audit workflow completion, not research readiness.
+

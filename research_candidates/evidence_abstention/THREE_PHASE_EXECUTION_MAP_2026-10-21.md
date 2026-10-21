@@ -95,3 +95,11 @@ Bu daha yeni koşuda:
 - Bu yedi kayıt workflow geliştirme/teknik triage amacıyla incelendiği için doğrulayıcı analizden kalıcı dışlanmıştır. Önceki beş maruziyet vakasıyla birlikte kuyruğun dışında kalırlar.
 
 **Aşama durumu değişmedi:** Doğrulayıcı vaka sayısı 0; doğrulanmış proje sayısı 0; LLM çıkarımı yapılmadı; analiz istatistiği hesaplanmadı. Koşunun başarı sonucu yalnızca otomasyon ve artefakt kontrollerini gösterir. Ana Aşama 1, en az 60 vaka/8 proje, iki ayrı insan değerlendirici paneli, kanıt paketleri, kaynak/lisans/sızıntı incelemesi, kesin runtime doğrulaması, hash dondurma ve denetlenebilir ön kayıt kapıları tamamlanana kadar açık kalır.
+
+
+## Batch v2 runner finding and V3 queue decision — 21 October 2026
+
+The V2 cohort freeze passed in [run 39659544932](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39659544932), but technical-screen output is not accepted: the inspected PySnooper-2 artifact shows `pytest: command not found` on both sides, and the spaCy-1 artifact never reached test execution. The fail-closed audit is therefore retained. A pinned `pytest==6.2.5` bootstrap is now in the workflow, and [V4 intake](SCREENING_COHORT_120_V4_2026-10-21.json) skips 24 IDs exposed across previous runner-debug batches. The intake remains 120 candidates / 17 projects and 0 accepted cases. The next completed CI run and all raw artifacts require inspection; inference stays off.
+
+
+The V3 run also revealed that a strict metadata parser rejected a valid fixed-commit line with whitespace before the equals sign; the parser has been corrected. V4 is the current 120-candidate intake, skipping 24 exposed IDs. Accepted cases remain zero until CI artifacts and the scientific/human validation gates are complete; model inference remains disabled.

@@ -211,3 +211,43 @@ Başlık, gerçek bir yakın çalışma olarak önceki özgünlük değerlendirm
 5. vaka ve değerlendirici birimi, körleme ve raporlanan ölçütler.
 
 **Karar etkisi:** Bu yayın, tam metin incelemesi yapılana kadar özgünlük iddiasını daha da koşullu tutmayı gerektirir. Konu terk edilmez; ancak projenin asıl farklılığı, doğrulanmış gerçek yazılım kusurlarında kontrollü kanıt yeterliliği, desteklenmeyen kesin teşhis ve yeterli kanıt varken gereksiz kaçınmayı eşleştirilmiş deney içinde ayrı ölçmenin değerli ve daha önceki çalışmalardan yeterince farklı olduğunun savunulabilmesine bağlıdır. Bu fark için şu an nihai hüküm yoktur.
+
+## 10. Dated addendum — answer selection paper posted 9 October 2026
+
+**Why this addendum exists:** A fresh search on 21 October 2026 surfaced a recent preprint that should be represented in the project's related-work boundary before any protocol freeze.
+
+| Work | What the source says | Consequence for this project |
+|---|---|---|
+| Terven et al. (arXiv, 9 Oct 2026), [Can Language Models Learn When to Abstain? Policy Learning and Calibrated Answer Selection](https://arxiv.org/abs/2610.13821) | Studies factual QA answer selection on TriviaQA and NQ-Open using Qwen3-14B; compares a learned selector with a calibrated confidence filter. The abstract reports improved threshold-averaged utility in some settings, but not consistent gains across datasets and a result worse than always-abstaining on NQ-Open. | Selective answer/abstention policies and learned answer selectors are active work, not a novel general mechanism. This paper is not, based on the accessible abstract, a study of root-cause diagnosis over controlled evidence levels from real software bugs. That task difference is a possible boundary—not proof of originality. |
+
+Source: https://arxiv.org/abs/2610.13821 (abstract and metadata checked on 21 October 2026). The source is a preprint; its claims are recorded as the authors' reported findings, not independently reproduced results.
+
+### Updated originality decision
+
+The closest confirmed overlaps now include (1) general abstention benchmarks and surveys, (2) controlled evidence-sufficiency benchmarking, (3) selective answer policies/answer selectors for factual QA, (4) code-generation abstention and uncertainty filtering, (5) code-prediction answer/defer frameworks, and (6) LLM fault-localization studies.
+
+The only defensible candidate contribution remains narrow and empirical: **on real software defect root-cause cases, measure separately whether a diagnosis is actually correct and whether the evidence shown to the model supports that diagnosis, while varying evidence sufficiency under a predeclared answer-or-abstain policy and reporting the coverage cost.** No claim that this combination is unprecedented is justified yet.
+
+Before protocol freeze, the remaining systematic-search work is still required: search multiple indexed databases with dated queries; deduplicate records; screen title/abstract and full text with documented inclusion/exclusion reasons; follow backward/forward citations from the closest six work clusters; and report what could not be accessed. Until then, use the phrase “candidate contribution identified in a targeted search,” not “novel method” or “first study.”
+
+**Gate status:** This addendum updates the related-work boundary only. It does not change the hypothesis, primary outcome, case count, or inference gate. Model inference remains prohibited until the existing data, human-review, runtime, hash-freeze, and preregistration gates pass.
+
+
+## 13. Ek çapraz kontrol: abstention benchmark'ı ve cevaplama teşvikleri — 21 Ekim 2026
+
+Bu ek, hedefli web aramasında çıkan iki yakın kaydı araştırma sınırına ekler. Arama turu sistematik veri tabanı taraması değildir; yalnızca kaynakların yayıncı/araştırma sayfaları ve erişilebilir özetleri kontrol edilmiştir.
+
+| Çalışma | Doğrulanabilen kapsam | Bu proje için sonucu |
+|---|---|---|
+| [AbstentionBench — A Holistic Benchmark for LLM Abstention](https://github.com/facebookresearch/AbstentionBench) | Genel LLM abstention davranışını 20 veri kümesi ve altı senaryo üzerinden değerlendiren benchmark deposu; answer correctness ve abstention davranışını insan doğrulamalı değerlendirmelerle ele aldığını bildiriyor. | Genel abstention benchmark'ı üretmek tek başına özgün katkı değildir. Bizim iddiamız, varsa, gerçek yazılım kusurlarındaki kök neden teşhisinde kanıt desteği ve kanıt yeterliliği koşullarına özgü bir uygulamalı değerlendirme olmalıdır. |
+| Kalai et al., [Evaluating large language models for accuracy incentivizes hallucinations](https://doi.org/10.1038/s41586-026-10549-w), *Nature* (2026) | Makale, yalnızca accuracy/pass rate üzerinden puanlamanın uygun kaçınmayı cezalandırıp tahmini/uydurmayı teşvik edebildiğini tartışıyor ve abstention'ı değerlendirme kuralına açıkça dahil ediyor. | Araştırmanın puanlama mantığı kritik: yalnızca teşhis doğruluğunu raporlamak yetersizdir. Kanıtsız kesin teşhis, yeterli kanıt varken doğru cevap ve gereksiz kaçınma ayrı sonuçlar olarak önceden tanımlanmalıdır. |
+| Rathnasuriya & Yang, [When to Answer and When to Defer](https://conf.researchr.org/details/icse-2026/icse-2026-nier/47/When-to-Answer-and-When-to-Defer-A-Decision-Framework-for-Reliable-Code-Predictions), ICSE 2026 NIER | Kod modeli tahminlerinde doğruluk olasılığı, abstention ve defer sonrası doğrulama/onarım akışını bir araya getiren çerçeve. | Kod alanında answer/defer kararı açıkça çalışılıyor. Bu yüzden “yazılımda ilk abstention projesi” denemez; olası katkı daha dar deneysel görev ve ölçüm tasarımında aranmalıdır. |
+| Zhang & Wu, [Do LLMs Know When Evidence is Insufficient?](https://www.techscience.com/cmc/v89n1/68467), *Computers, Materials & Continua* 89(1), 2026 | RAG için L1–L5 kanıt yeterliliği seviyeleri, over-answer ölçütü ve insan doğrulaması kullanıyor. | E1/E2/E3 kanıt seviyesi yaklaşımı kendi başına özgün değildir. Bizim seviyelerimiz yazılım hata kök-neden teşhisine özgü şekilde tanımlanmalı ve bu çalışmayla tam metin üzerinden karşılaştırılmalıdır. |
+
+### Güncellenmiş özgünlük kararı
+
+Bu çapraz kontrol, projenin genel fikrinin zaten etkin bir araştırma alanında olduğunu doğruluyor. **Genel “belirsizlikte cevap vermeme” mekanizmasını yeni diye sunmayacağız.** Aday katkı yalnızca şu birleşik ve sınanabilir sorudur: gerçek yazılım kusurlarında, aynı modelin gördüğü kanıt yeterliliği sistematik olarak değiştirildiğinde, cevap vermeye izin veren politika kanıtsız kesin kök-neden teşhislerini azaltıyor mu; bu azalmanın yeterli kanıtlı vakalarda doğruluk ve cevap kapsamı maliyeti nedir?
+
+Bu dar katkının da literatürde benzersiz olduğu henüz kanıtlanmış değildir. Ön kayıt öncesinde en azından bu dört kaynağın tam metinleri, geriye/ileriye atıf zincirleri ve daha geniş çoklu veri tabanı sorguları taranmalı; dahil/dışla kararları kaydedilmelidir. Erişilebilir özetler tek başına “ilk çalışma” veya “özgün yöntem” iddiasını desteklemez.
+
+**Gate status:** Bu ek literatür sınırını günceller; hipotezi, birincil sonucu veya örneklem ölçütlerini değiştirmez ve inference izni vermez.

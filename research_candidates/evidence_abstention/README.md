@@ -2,7 +2,7 @@
 
 **Tek aktif hedef:** 2027 TÜBİTAK 2204-A’da finalistlik düzeyinde, tamamlanmış ve bilimsel olarak savunulabilir bir araştırma sunmak. Finalistlik garanti edilemez; ölçütümüz gerçek kanıt ve dürüst raporlamadır.
 
-**Güncel bilimsel durum (21 Ekim 2026):** Proje tamamlanmadı. Aşama 1 hedefli literatür incelemesi düzeyinde tamamlandı; sistematik derleme değildir. Aşama 2 kaynak metadata envanteri koşullu tamamlandı; 487 adaylı güncel kuyruğu ve sırası sabitlenmiş ilk 120 adaylık intake cohort'u var, ancak kabul edilmiş bağımsız vaka sayısı 0’dır. Aşama 3 tasarım belgeleri hazır, fakat protokol ön kayıtlı/dondurulmuş değildir. Aşama 4 no-inference preflight teknik olarak test edildi, ancak `ready=false`; yeni araştırma için model çıkarımı yapılmadı.
+**Güncel bilimsel durum (21 Ekim 2026):** Proje tamamlanmadı. Aşama 1 hedefli literatür ve araştırma sorusu taslağı bakımından ilerledi; sistematik derleme, protokol dondurma ve ön kayıt tamamlanmadı. Aşama 2 metadata envanteri koşullu tamamlandı: BugsInPy revizyonunda 501 ham kayıt/17 proje, 500 temel metadata-kalifiye kayıt ve 1 commit tutarsızlığı bulundu. 487 satırlı tarama kuyruğundan V4 alım sırası ilk 24 maruziyet/teknik hata vakasını atlayarak 120 aday belirler; bu adaylar test/lisans/kök neden/kanıt incelemesi tamamlanmadan kabul edilmiş sayılmaz. Kabul edilmiş bağımsız vaka sayısı hâlâ 0'dır; model çıkarımı kapalıdır.
 
 **Tek yürütme planı:** [TÜBİTAK 2204-A ana planı](TUBITAK_2204A_MASTER_PLAN_2026-10-21.md). Resmî başvuru son tarihi 4 Ocak 2027, saat 17.30’dur; [TÜBİTAK 2204-A çağrısı](https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi).
 
@@ -61,6 +61,7 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 
 - `REPO_SCOPE_SPLIT.md` — repo kullanım kapsamı.
 - `LITERATURE_REVIEW.md` — hedefli literatür taraması ve özgünlük sınırı.
+- [`LITERATURE_SWEEP_SUPPLEMENT_2026-10-21.md`](LITERATURE_SWEEP_SUPPLEMENT_2026-10-21.md) — 2025–2026 yakın çalışmaların ek taraması ve daraltılmış özgünlük kararı; sistematik derleme değildir.
 - `DATA_FEASIBILITY.md` — kaynak-kümesi denetimi ve CI başarısızlıkları.
 - `STAGE3_EXPERIMENT_DESIGN.md` — deney tasarımı.
 - `PROMPT_CONDITIONS.md` — eşleştirilmiş prompt koşulları.
@@ -145,3 +146,12 @@ Bu çalışma için başka yarışma veya ayrı araştırma hattı yürütülmey
 ### Geçersiz çıktıların duyarlılık analizi
 
 Analiz betiği, birincil insan-adjudikeli E3 outcome'unu değiştirmeden, bütün E3 `invalid_output` kararlarını güvensiz sayan ayrı bir muhafazakâr duyarlılık hesaplaması da üretir. Bu, protokolde vaat edilen iki uç senaryolu raporlamayı teknik olarak destekler. Sentetik testler hesaplama kodunu denetler; gerçek araştırma sonucu değildir.
+
+
+## Cohort exposure correction — 21 October 2026
+
+The original 120-case intake file is preserved as a historical record, but eight cases from it were later used for runtime/workflow debugging and are permanently excluded from confirmatory use. See [the exposure audit](COHORT_EXPOSURE_AUDIT_2026-10-21.md) and the deterministic [exposure-clean screening intake v2](SCREENING_COHORT_120_V2_2026-10-21.json). The v2 list contains 120 unique IDs across 17 upstream projects and does not overlap the eight excluded IDs. It is a screening order only: **0 accepted cases; LLM inference remains off**. It does not establish confirmatory eligibility or replace the requirement to freeze the confirmatory sample and protocol before inference.
+
+
+- [V3 teknik tanılama kohortu](SCREENING_COHORT_120_V3_2026-10-21.json) — araç/kurulum hatalarını ayıklarken kullanılan 120 adaylık tarihsel sıra; ilk 8’i doğrulayıcı örneklemden kalıcı dışlandı.
+- [Güncel V4 tarama sırası](SCREENING_COHORT_120_V4_2026-10-21.json) — 24 maruziyet vakası atlanmıştır; 120 aday, 17 proje, 0 kabul edilmiş vaka; doğrulayıcı örneklem değildir.

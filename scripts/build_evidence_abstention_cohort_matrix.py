@@ -13,6 +13,20 @@ from collections import Counter
 from pathlib import Path
 
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
+KNOWN_PRIOR_EXPOSURE_IDS = {
+    # First historical cohort used during workflow debugging.
+    "BugsInPy-ansible-1", "BugsInPy-black-3", "BugsInPy-cookiecutter-2",
+    "BugsInPy-fastapi-2", "BugsInPy-httpie-2", "BugsInPy-keras-1",
+    "BugsInPy-luigi-2", "BugsInPy-matplotlib-1",
+    # V2 batch used to diagnose missing pytest / setup-state issues.
+    "BugsInPy-pandas-1", "BugsInPy-PySnooper-2", "BugsInPy-sanic-2",
+    "BugsInPy-scrapy-2", "BugsInPy-spacy-1", "BugsInPy-thefuck-2",
+    "BugsInPy-tornado-2", "BugsInPy-tqdm-2",
+    # V3 batch used to diagnose metadata parsing and runner bootstrap.
+    "BugsInPy-youtube-dl-2", "BugsInPy-ansible-2", "BugsInPy-black-4",
+    "BugsInPy-cookiecutter-3", "BugsInPy-fastapi-3", "BugsInPy-httpie-3",
+    "BugsInPy-keras-2", "BugsInPy-luigi-3",
+}
 COMMIT = re.compile(r"^[0-9a-fA-F]{7,64}$")
 REQUIRED = {
     "queue_rank", "project_round", "screening_batch", "case_id", "project",
@@ -42,12 +56,19 @@ def prepare(queue_path, cohort_path, matrix_path, summary_path, batch_size=8):
             raise ValueError("Queue missing required columns: "+", ".join(missing))
         queue=list(reader)
     cohort=json.loads(cohort_path.read_text(encoding="utf-8"))
-    if cohort.get("record_type") != "metadata_only_predeclared_case_screening_order_not_confirmatory_dataset":
-        raise ValueError("Cohort is not declared as a metadata-only predeclared screening order")
+    allowed_record_types = {
+        "metadata_only_predeclared_case_screening_order_not_confirmatory_dataset",
+        "metadata_only_screening_intake_not_confirmatory_dataset",
+    }
+    if cohort.get("record_type") not in allowed_record_types:
+        raise ValueError("Cohort is not declared as a metadata-only screening order")
     if cohort.get("accepted_confirmatory_cases") != 0 or cohort.get("llm_inference_performed") is not False:
         raise ValueError("Cohort acceptance/inference flags are not fail-closed")
     actual_queue_sha=sha256_file(queue_path)
-    if actual_queue_sha != cohort.get("source_queue_csv_sha256"):
+    # Cohort v1 and v2 used different field names. Support both while always
+    # checking the actual file digest against the recorded value.
+    expected_queue_sha = cohort.get("source_queue_csv_sha256") or cohort.get("source_queue_sha256")
+    if actual_queue_sha != expected_queue_sha:
         raise ValueError("Queue CSV hash does not match the frozen cohort provenance")
     ids=cohort.get("case_ids")
     if not isinstance(ids,list) or len(ids) < batch_size or len(ids) != len(set(ids)):
@@ -55,11 +76,27 @@ def prepare(queue_path, cohort_path, matrix_path, summary_path, batch_size=8):
     if cohort.get("cohort_size") != len(ids):
         raise ValueError("Frozen cohort_size does not match case_ids length")
 
-    # Ensure the cohort order is exactly the prefix of the deterministic queue.
+    if cohort.get("record_type") == "metadata_only_predeclared_case_screening_order_not_confirmatory_dataset":
+        exposed_in_historical = sorted(set(ids) & KNOWN_PRIOR_EXPOSURE_IDS)
+        if exposed_in_historical:
+            raise ValueError("Historical cohort contains cases permanently excluded after workflow debugging; use the exposure-clean v2 cohort: " + ", ".join(exposed_in_historical))
+
+    # Cohort v1 is the exact queue prefix. Cohort v2 may skip only IDs
+    # explicitly documented as permanently exposed before model inference.
     queue_ids=[r["case_id"] for r in queue]
-    if queue_ids[:len(ids)] != ids:
-        raise ValueError("Frozen cohort IDs do not match the top of the verified queue in order")
-    selected=queue[:batch_size]
+    excluded=cohort.get("excluded_prior_exposure", [])
+    if not isinstance(excluded, list) or len(excluded) != len(set(excluded)):
+        raise ValueError("Prior-exposure exclusion list is malformed or duplicated")
+    if set(ids) & set(excluded):
+        raise ValueError("A prior-exposed ID appears in the active screening cohort")
+    missing_excluded=set(excluded)-set(queue_ids)
+    if missing_excluded:
+        raise ValueError("Excluded prior-exposure IDs are absent from the source queue: "+", ".join(sorted(missing_excluded)))
+    eligible_queue=[r for r in queue if r["case_id"] not in set(excluded)]
+    eligible_ids=[r["case_id"] for r in eligible_queue]
+    if eligible_ids[:len(ids)] != ids:
+        raise ValueError("Frozen cohort IDs do not match the deterministic queue after documented exposure exclusions")
+    selected=eligible_queue[:batch_size]
     if len({r["project"] for r in selected}) != batch_size:
         raise ValueError("The initial screening batch must cover one distinct upstream project per case")
 
