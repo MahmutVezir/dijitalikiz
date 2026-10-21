@@ -47,6 +47,8 @@ Bu, modelin kötü performans gösterdiği anlamına gelmez; yeni deney henüz y
 
 ## 5. Vaka kabul kapısı
 
+Her aday için [Manuel vaka inceleme rehberi](CASE_REVIEW_GUIDE.md) ve [boş JSON formu](CASE_REVIEW_INTAKE_TEMPLATE.json) kullanılacaktır. Bu formun doldurulması yalnızca kaynak/karar kayıtlarını düzenler; reviewer kararı ve gerçek artefaktlar olmadan bir vakayı kabul etmez.
+
 Her vaka, model çıktısı üretilmeden önce şu koşulların hepsini geçmelidir:
 
 1. Sabitlenmiş kaynak/metadata revizyonu, upstream repository ve izin/lisans bilgisi kayıtlı.
