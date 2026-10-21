@@ -273,7 +273,7 @@ jobs:
             printf '%s\n' "$target_rc" > "$RUNNER_TEMP/case-artifact/$side-target-test-exit-code.txt"
 
             signature=false
-            if grep -Eq 'FAILED .+::|^FAIL: |^ERROR: ' "$RUNNER_TEMP/$side-test.log"; then
+            if grep -Eq 'FAILED .+::|^FAIL: |^ERROR: |^=+ FAILURES =+|^[[:space:]]*[0-9]+ failed([,[:space:]]|$)' "$RUNNER_TEMP/$side-test.log"; then
               signature=true
             fi
             pass_marker=false
@@ -305,7 +305,12 @@ jobs:
               return value.splitlines()[0] if value else ""
           def code(name):
               value = read(name)
-              return value.splitlines()[0] if value else ""
+              if not value:
+                  return None
+              try:
+                  return int(value.splitlines()[0])
+              except ValueError:
+                  return None
           def failure_signature(side):
               return "test_failure_signature=true" in read(side + "-status.txt")
           def pass_marker(side):
@@ -323,8 +328,8 @@ jobs:
               "expected_fixed_commit_reference": os.environ["EXPECTED_FIXED"],
               "observed_fixed_base_commit": commit("fixed-actual-commit.txt"),
               "fixed_tree_representation": "BugsInPy constructs the fixed version by applying fixed-commit changes to the buggy base worktree; HEAD remains the buggy commit. Review worktree diff hash/stat and raw logs; do not equate observed HEAD with the fixed commit reference.",
-              "buggy_target_test_exit_code": code("buggy-target-test-exit-code.txt") or None,
-              "fixed_target_test_exit_code": code("fixed-target-test-exit-code.txt") or None,
+              "buggy_target_test_exit_code": code("buggy-target-test-exit-code.txt"),
+              "fixed_target_test_exit_code": code("fixed-target-test-exit-code.txt"),
               "buggy_failure_signature_present": failure_signature("buggy"),
               "fixed_pass_marker_present": pass_marker("fixed"),
               "target_pair_automation_status": "raw-signals-only-human-review-required",
