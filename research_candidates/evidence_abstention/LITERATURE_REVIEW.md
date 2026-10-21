@@ -197,3 +197,17 @@ Bu sorgular public search sonuçları, yayıncı/konferans sayfaları ve erişil
 ### 11.2 Güncellenmiş özgünlük kararı
 
 **Karar hâlâ koşullu devamdır.** Özellikle 2026 tarihli fault-localization ve hallucination azaltma çalışmalarının varlığı, projenin özgünlüğünü daha dar tanımlamayı gerektiriyor. Aday ayrım şu üç birleşik unsurla sınanacaktır: gerçek kusur kök nedeninin kaynak/test/düzeltme üzerinden doğrulanması; modelin teşhisinin gizli kök nedenle örtüşmesi ile sunulan kanıt tarafından desteklenmesinin ayrı puanlanması; kanıt yeterliliği kontrollü değişirken E3'te kanıtsız kesin teşhis ve E1'de gereksiz kaçınmanın birlikte değerlendirilmesi. Bu kombinasyonun literatürde benzersiz olduğu henüz kanıtlanmış değildir.
+
+
+## 12. Ek yakın çalışma: hata yerelleştirmede halüsinasyon azaltımı — 21 Ekim 2026
+
+Arama sonuçlarında ayrıca Chen et al.'ın *Measure Twice, Locate Once: Mitigating Hallucinations in LLM-based Agents for Repository-Scale Fault Localization* başlıklı 2026 çalışması bulundu (kayıtta DOI: [10.1145/3831589](https://doi.org/10.1145/3831589), *ACM Transactions on Software Engineering and Methodology*). Bu turda tam metne/ACM yayıncı sayfasına doğrudan erişim doğrulanamadı; erişilebilen ikincil bibliyografik sayfa yalnızca ön bulgu olarak kullanıldı: https://www.researchgate.net/publication/410527290_Measure_Twice_Locate_Once_Mitigating_Hallucinations_in_LLM-based_Agents_for_Repository-Scale_Fault_Localization
+
+Başlık, gerçek bir yakın çalışma olarak önceki özgünlük değerlendirmesine girmelidir; “hata yerelleştirmede halüsinasyon” temasının yalnızca bizim tarafımızdan ele alındığını söylemek doğru olmaz. Bununla birlikte, erişilebilir kayıt bizimkiyle aynı deneysel soruyu çözdüğünü tek başına kanıtlamaz. Tam metin kontrol edilene kadar karşılaştırılacak sorular şunlardır:
+1. Kök nedenin gerçek kaynak/test/düzeltme üzerinden gold truth olarak nasıl belirlendiği;
+2. sunulan kanıt yetersizliği deneysel bir faktör olarak değiştirilip değiştirilmediği;
+3. teşhisin ground truth ile doğruluğunun ve görülen kanıt tarafından desteklenmesinin ayrı ölçülüp ölçülmediği;
+4. abstention politikası / defer kararı ana bağımsız değişken mi, yoksa halüsinasyon azaltan ajan mimarisinin bir unsuru mu;
+5. vaka ve değerlendirici birimi, körleme ve raporlanan ölçütler.
+
+**Karar etkisi:** Bu yayın, tam metin incelemesi yapılana kadar özgünlük iddiasını daha da koşullu tutmayı gerektirir. Konu terk edilmez; ancak projenin asıl farklılığı, doğrulanmış gerçek yazılım kusurlarında kontrollü kanıt yeterliliği, desteklenmeyen kesin teşhis ve yeterli kanıt varken gereksiz kaçınmayı eşleştirilmiş deney içinde ayrı ölçmenin değerli ve daha önceki çalışmalardan yeterince farklı olduğunun savunulabilmesine bağlıdır. Bu fark için şu an nihai hüküm yoktur.
