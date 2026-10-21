@@ -129,13 +129,23 @@ def audit(root):
 
     buggy_code = summary.get("buggy_target_test_exit_code")
     fixed_code = summary.get("fixed_target_test_exit_code")
-    target_signals_present = (
+    raw_pair_signals_present = (
         isinstance(buggy_code, int) and buggy_code != 0
         and summary.get("buggy_failure_signature_present") is True
         and isinstance(fixed_code, int) and fixed_code == 0
         and summary.get("fixed_pass_marker_present") is True
     )
-    if not target_signals_present:
+    buggy_log_path = root / "buggy-test.log"
+    buggy_log = buggy_log_path.read_text(encoding="utf-8", errors="replace") if buggy_log_path.is_file() else ""
+    likely_fixture_or_harness_error = bool(re.search(
+        r"FileNotFoundError:[\\s\\S]{0,700}(?:tests[/\\\\]data[/\\\\]|non_ascii\\.json|test[-_]fixture|fixture.*not found)",
+        buggy_log,
+        re.IGNORECASE,
+    ))
+    target_signals_present = raw_pair_signals_present and not likely_fixture_or_harness_error
+    if likely_fixture_or_harness_error:
+        warnings.append("buggy log looks like a missing test fixture or harness file; do not count it as a target bug failure without a separate review")
+    if not raw_pair_signals_present:
         warnings.append("the automated target-test signals do not show a complete buggy-fail/fixed-pass pair; inspect raw logs")
 
     report = {
@@ -143,6 +153,8 @@ def audit(root):
         "audit_scope": "technical-triage artifact integrity and raw target-test signals only",
         "integrity_pass": not blockers,
         "technical_buggy_fail_fixed_pass_signals_present": target_signals_present,
+        "raw_buggy_fail_fixed_pass_signals_present": raw_pair_signals_present,
+        "likely_fixture_or_harness_error": likely_fixture_or_harness_error,
         "manual_review_required": True,
         "accepted_for_confirmatory": False,
         "confirmatory_eligible": False,
