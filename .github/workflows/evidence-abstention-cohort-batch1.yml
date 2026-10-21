@@ -358,7 +358,7 @@ jobs:
           import re
           def runtime_version(name):
               value=text(name)
-              match=re.search(r"^Python (\\d+\\.\\d+\\.\\d+)$",value,re.MULTILINE)
+              match=re.search(r"^Python (\d+\.\d+\.\d+)$",value,re.MULTILINE)
               return match.group(1) if match else None
           buggy_runtime=runtime_version("buggy-runtime-fingerprint.txt")
           fixed_runtime=runtime_version("fixed-runtime-fingerprint.txt")
