@@ -45,6 +45,12 @@ Komutlar:
 
 İkinci komut blokajları raporlar. Üçüncü komut kapılardan herhangi biri açıksa sıfır dışı kodla durur. Hiçbiri inference yapmaz.
 
-## 5. Aşama geçiş kararı
+## 5. Otomatik doğrulama kanıtı
 
-**Aşama 4 teknik scaffolding başlatıldı. Pilot inference yapılmadı ve yapılmamalı.** Şu an sıfır kabul edilmiş vaka bulunduğundan model pilotu çalıştırmak, önceden belirlenmiş veri ve yöntem kapılarını ihlal eder. Teknik hazırlık ile pilotun tamamlanmasını ayrı raporluyoruz. Aşama 4'ün pilot kısmı kabul edilmiş veri havuzu, dondurma ve onay koşulları tamamlanana kadar açık kalır. Bu durum deney başarısı veya başarısızlığı değildir.
+GitHub Actions [run 39615830978](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39615830978) branch head commit `2f558aa2e69eed57a51dce4373918224f6807179` üzerinde başarıyla tamamlandı. Üç fail-closed preflight birim testi geçti. Rapor modu **ready=false**, **0 kabul edilmiş vaka**, **0 proje** ve **16 açık blokaj** kaydetti. Başlıca blokajlar: 60 vaka/8 proje eşiği, doğrulanmış protokol ön kaydı, iki değerlendiricili kalibrasyon, exact model/tokenizer/runtime kontrolü ve yedi SHA-256 dondurma girdisi. Workflow rapor modunda çalıştığı için bu beklenen blokajlar CI'ı kırmadı; inference yapılmadı.
+
+Bu CI sonucu yalnızca denetleyicinin kapalı veri durumunda doğru biçimde blokaj raporladığını gösterir. Veri veya model davranışının doğrulandığı anlamına gelmez.
+
+## 6. Aşama geçiş kararı
+
+**Aşama 4 teknik scaffolding ve CI testi tamamlandı. Pilot inference yapılmadı ve yapılmamalı.** Şu an sıfır kabul edilmiş vaka bulunduğundan model pilotu çalıştırmak, önceden belirlenmiş veri ve yöntem kapılarını ihlal eder. Teknik hazırlık ile pilotun tamamlanmasını ayrı raporluyoruz. Aşama 4'ün pilot kısmı kabul edilmiş veri havuzu, dondurma ve onay koşulları tamamlanana kadar açık kalır. Bu durum deney başarısı veya başarısızlığı değildir.
