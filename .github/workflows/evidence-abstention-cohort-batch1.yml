@@ -249,6 +249,14 @@ jobs:
             git -C "$work_dir" diff --stat > "$RUNNER_TEMP/case-artifact/$side-worktree-diff-stat.txt"
             git -C "$work_dir" diff --binary | sha256sum | cut -d ' ' -f 1 > "$RUNNER_TEMP/case-artifact/$side-worktree-diff-sha256.txt"
             git -C "$work_dir" status --short > "$RUNNER_TEMP/case-artifact/$side-worktree-status.txt"
+            {
+              echo "bash_flags=$-"
+              echo "SHELLOPTS=${SHELLOPTS-}"
+              echo "BASH_ENV=${BASH_ENV-}"
+              set -o
+              echo "--- env/bin/activate lines 24-38 ---"
+              nl -ba "$work_dir/env/bin/activate" | sed -n '24,38p'
+            } > "$RUNNER_TEMP/case-artifact/$side-activation-diagnostics.txt"
 
             # BugsInPy's compile script sources legacy env/bin/activate,
             # which references $1. Disable nounset around the upstream script,
