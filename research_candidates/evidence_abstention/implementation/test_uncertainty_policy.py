@@ -8,6 +8,7 @@ from uncertainty_policy import (
     decide,
     expected_calibration_error,
     lexical_disagreement,
+    mean_normalized_token_entropy,
     normalized_entropy_from_logits,
 )
 
@@ -27,7 +28,8 @@ class UncertaintyPolicyTests(unittest.TestCase):
             "calibrated_confidence": 0.95,
             "minimum_confidence": 0.8,
             "maximum_uncertainty": 0.25,
-            "calibration_id": "calibration-v1-sha256:abc",
+            "calibration_id": "sha256:" + "a" * 64,
+            "calibration_verified": True,
         }
         values.update(overrides)
         return DecisionRequest(**values)
@@ -41,6 +43,11 @@ class UncertaintyPolicyTests(unittest.TestCase):
             normalized_entropy_from_logits([1.0])
         with self.assertRaises(ValueError):
             normalized_entropy_from_logits([float("nan"), 0.0])
+
+    def test_mean_token_entropy_requires_generated_tokens(self):
+        with self.assertRaises(ValueError):
+            mean_normalized_token_entropy([])
+        self.assertAlmostEqual(mean_normalized_token_entropy([[0.0, 0.0], [10.0, -10.0]]), 0.5, places=5)
 
     def test_lexical_disagreement_is_none_for_one_sample(self):
         self.assertIsNone(lexical_disagreement(["one answer"]))
@@ -65,12 +72,20 @@ class UncertaintyPolicyTests(unittest.TestCase):
         result = decide(self.request(explicit_contradiction=True))
         self.assertIn("evidence_contradiction", result.reasons)
 
+    def test_unknown_contradiction_status_abstains(self):
+        result = decide(self.request(explicit_contradiction=None))
+        self.assertIn("contradiction_status_unknown", result.reasons)
+
+    def test_unverified_calibration_abstains(self):
+        result = decide(self.request(calibration_verified=False))
+        self.assertIn("calibration_not_frozen", result.reasons)
+
     def test_unknown_citation_abstains(self):
         result = decide(self.request(cited_evidence_ids=("E99",)))
         self.assertIn("unknown_evidence_reference", result.reasons)
 
     def test_missing_calibration_abstains(self):
-        result = decide(self.request(calibrated_confidence=None, calibration_id=None))
+        result = decide(self.request(calibrated_confidence=None, calibration_id=None, calibration_verified=False))
         self.assertIn("calibration_not_frozen", result.reasons)
 
     def test_missing_signal_abstains(self):
