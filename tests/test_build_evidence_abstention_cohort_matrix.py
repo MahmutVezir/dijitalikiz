@@ -152,6 +152,21 @@ class CohortMatrixTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,"permanently excluded after workflow debugging"):
                 MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",1)
 
+    def test_historical_cohort_rejects_all_permanently_exposed_ids(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            rows=[row(1,"a"),row(2,"b")]
+            q,c=self.setup_files(root,rows)
+            base=json.loads(c.read_text(encoding="utf-8"))
+            for exposed_id in sorted(MODULE.KNOWN_PRIOR_EXPOSURE_IDS):
+                cohort=dict(base)
+                cohort["case_ids"]=[exposed_id,"BugsInPy-b-2"]
+                cohort["cohort_size"]=2
+                c.write_text(json.dumps(cohort),encoding="utf-8")
+                with self.subTest(case_id=exposed_id):
+                    with self.assertRaisesRegex(ValueError,"permanently excluded after workflow debugging"):
+                        MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",1)
+
 
 if __name__=="__main__":
     unittest.main()
