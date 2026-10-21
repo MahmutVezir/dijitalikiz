@@ -37,6 +37,7 @@ Her ZIP içindeki `summary.json`, ham test günlükleri, runtime fingerprint'ler
 - V6 seçim kuralı: sabit queue sırasını koru; önceki 32 ve V5 teknik batch'inde kullanılan 8 vaka dahil toplam 40 maruziyet ID'sini atla; sıradaki 120 adayı al.
 - V6 adayları 15 upstream projeye dağılmıştır; proje başına sayılar eşit değildir ve bu sıra rastgele örneklem değildir.
 - Workflow `.github/workflows/evidence-abstention-cohort-batch1.yml` V6 dosyasını doğrular ve ilk sekiz adayı teknik olarak tarar. Metadata/test sonucu otomatik kabul yaratmaz.
+- V6 batch CI: [run 39664581005](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39664581005). Freeze job başarılı; son kontrolde Luigi-4, Pandas-3, Sanic-4 ve Matplotlib-3 çalışıyor; Scrapy-4, spaCy-3, TheFuck-4 ve Tornado-4 kuyrukta. Bu aşamada V6 için vaka sonucu veya kabul kararı yok.
 
 ## Aşama 2 çıkış kapısı
 
