@@ -41,7 +41,7 @@ def make_artifact(root, accepted=False, inference=False, valid_pair=True):
     }
     (root / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     files = sorted(p for p in root.iterdir() if p.is_file() and p.name != "SHA256SUMS")
-            (root / "SHA256SUMS").write_text("".join(f"{digest(p)}  ./{p.name}\n" for p in files), encoding="utf-8")
+    (root / "SHA256SUMS").write_text("".join(f"{digest(p)}  ./{p.name}\n" for p in files), encoding="utf-8")
 
 
 class TriageArtifactAuditTests(unittest.TestCase):
