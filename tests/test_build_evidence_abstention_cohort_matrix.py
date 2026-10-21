@@ -91,5 +91,53 @@ class CohortMatrixTests(unittest.TestCase):
                 MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",2)
 
 
+    def test_v2_skips_only_documented_prior_exposure_ids(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            rows=[row(i,p) for i,p in enumerate(["a","b","c","d","e"],1)]
+            q=root/"queue.csv"
+            with q.open("w",newline="",encoding="utf-8") as f:
+                w=csv.DictWriter(f,fieldnames=FIELDS);w.writeheader();w.writerows(rows)
+            excluded=["BugsInPy-a-1","BugsInPy-b-2"]
+            ids=[x["case_id"] for x in rows if x["case_id"] not in excluded]
+            cohort={
+                "record_type":"metadata_only_screening_intake_not_confirmatory_dataset",
+                "cohort_size":len(ids),
+                "case_ids":ids,
+                "excluded_prior_exposure":excluded,
+                "source_queue_csv_sha256":hashlib.sha256(q.read_bytes()).hexdigest(),
+                "accepted_confirmatory_cases":0,
+                "llm_inference_performed":False
+            }
+            c=root/"cohort.json";c.write_text(json.dumps(cohort),encoding="utf-8")
+            out=MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",2)
+            self.assertEqual([x["case_id"] for x in out["matrix"]["include"]],
+                             ["BugsInPy-c-3","BugsInPy-d-4"])
+            self.assertEqual(out["summary"]["accepted_confirmatory_cases"],0)
+            self.assertFalse(out["summary"]["llm_inference_performed"])
+
+    def test_v2_fails_if_excluded_id_is_reintroduced(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            rows=[row(i,p) for i,p in enumerate(["a","b","c","d"],1)]
+            q=root/"queue.csv"
+            with q.open("w",newline="",encoding="utf-8") as f:
+                w=csv.DictWriter(f,fieldnames=FIELDS);w.writeheader();w.writerows(rows)
+            excluded=["BugsInPy-a-1"]
+            ids=[x["case_id"] for x in rows]
+            cohort={
+                "record_type":"metadata_only_screening_intake_not_confirmatory_dataset",
+                "cohort_size":len(ids),
+                "case_ids":ids,
+                "excluded_prior_exposure":excluded,
+                "source_queue_csv_sha256":hashlib.sha256(q.read_bytes()).hexdigest(),
+                "accepted_confirmatory_cases":0,
+                "llm_inference_performed":False
+            }
+            c=root/"cohort.json";c.write_text(json.dumps(cohort),encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"prior-exposed ID appears"):
+                MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",2)
+
+
 if __name__=="__main__":
     unittest.main()
