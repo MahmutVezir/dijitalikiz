@@ -2,7 +2,7 @@
 
 **Tek aktif hedef:** 2027 TÜBİTAK 2204-A’da finalistlik düzeyinde, tamamlanmış ve bilimsel olarak savunulabilir bir araştırma sunmak. Finalistlik garanti edilemez; ölçütümüz gerçek kanıt ve dürüst raporlamadır.
 
-**Güncel bilimsel durum (21 Ekim 2026):** Proje tamamlanmadı. Aşama 1 hedefli literatür ve araştırma sorusu taslağı bakımından ilerledi; sistematik derleme, protokol dondurma ve ön kayıt tamamlanmadı. Aşama 2 metadata envanteri koşullu tamamlandı: BugsInPy revizyonunda 501 ham kayıt/17 proje, 500 temel metadata-kalifiye kayıt ve 1 commit tutarsızlığı bulundu. 487 satırlı tarama kuyruğundan V6 alım sırası ilk 40 maruziyet/teknik hata vakasını atlayarak 120 aday belirler; bu adaylar test/lisans/kök neden/kanıt incelemesi tamamlanmadan kabul edilmiş sayılmaz. Kabul edilmiş bağımsız vaka sayısı hâlâ 0'dır; model çıkarımı kapalıdır.
+**Güncel bilimsel durum (21 Ekim 2026):** Proje tamamlanmadı. Aşama 1 hedefli literatür ve araştırma sorusu taslağı bakımından ilerledi; sistematik derleme, protokol dondurma ve ön kayıt tamamlanmadı. Aşama 2 metadata envanteri koşullu tamamlandı: BugsInPy revizyonunda 501 ham kayıt/17 proje, 500 temel metadata-kalifiye kayıt ve 1 commit tutarsızlığı bulundu. 487 satırlı tarama kuyruğundan V7 alım sırası ilk 48 maruziyet/teknik hata vakasını atlayarak 120 aday belirler; bu adaylar test/lisans/kök neden/kanıt incelemesi tamamlanmadan kabul edilmiş sayılmaz. Kabul edilmiş bağımsız vaka sayısı hâlâ 0'dır; model çıkarımı kapalıdır.
 
 **Tek yürütme planı:** [TÜBİTAK 2204-A ana planı](TUBITAK_2204A_MASTER_PLAN_2026-10-21.md). Resmî başvuru son tarihi 4 Ocak 2027, saat 17.30’dur; [TÜBİTAK 2204-A çağrısı](https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi).
 
@@ -52,8 +52,10 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 - [Üç ana aşamalı yürütme haritası](THREE_PHASE_EXECUTION_MAP_2026-10-21.md) — projenin ne kadarının hazır olduğunu ve hangi kanıt kapılarının hâlâ açık kaldığını tek noktada toplar.
 
 - [Aşama 1 literatür arama günlüğü ve protokol denetimi](STAGE1_SEARCH_LOG_AND_PROTOCOL_AUDIT_2026-10-21.md) — hedefli arama sorguları, yakın çalışmalar, özgünlük sınırı ve kapanış kapıları.
-- [Aşama 2 V5 teknik ekranlama sonuçları ve V6 devri](STAGE2_V5_TECHNICAL_SCREEN_AND_V6_HANDOFF_2026-10-21.md) — sekiz ham artefaktın özeti, kalıcı maruziyet dışlamaları ve yeni 120 adaylık V6 sırası.
-- [V6 metadata-only cohort](SCREENING_COHORT_120_V6_2026-10-21.json) — önceki 40 maruziyet vakasını atlayan sabit aday sırası; 0 kabul edilmiş vaka.
+- [Aşama 2 V5 teknik ekranlama sonuçları](STAGE2_V5_TECHNICAL_SCREEN_AND_V6_HANDOFF_2026-10-21.md) — V5 batch'inin ham artefaktları ve dışlama kararı.
+- [Aşama 2 V6 koşucu hatası ve V7 devri](STAGE2_V6_RUNNER_DEFECT_AND_V7_HANDOFF_2026-10-21.md) — pytest tespit kusuru, test düzeltmesi ve yeni intake.
+- [V7 metadata-only cohort](SCREENING_COHORT_120_V7_2026-10-21.json) — önceki 48 maruziyet vakasını atlayan sabit aday sırası; 0 kabul edilmiş vaka.
+- [Tarihsel V6 cohort](SCREENING_COHORT_120_V6_2026-10-21.json) — koşucu tespit kusurunu ayıklamak için kullanılan, artık ana örneklemde kullanılamayan sürüm.
 
 - [Manuel vaka inceleme rehberi](CASE_REVIEW_GUIDE.md) — test/lisans/ground truth/kanıt/sızıntı kabul sırası.
 - [Manuel vaka inceleme formu (JSON)](CASE_REVIEW_INTAKE_TEMPLATE.json) — boş şablon; kabul edilmiş vaka değildir.
