@@ -1,0 +1,13 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "registry_version": "0.1-draft",
+  "status": "empty_no_confirmatory_cases_accepted",
+  "as_of": "2026-10-21",
+  "records": [],
+  "notes": [
+    "An empty registry is not evidence of zero observed model errors or zero eligible upstream bugs.",
+    "Only independently validated, unexposed cases may be marked accepted_for_confirmatory=true.",
+    "Previously opened feasibility/smoke cases are permanently excluded.",
+    "No model inference has been performed for this study."
+  ]
+}

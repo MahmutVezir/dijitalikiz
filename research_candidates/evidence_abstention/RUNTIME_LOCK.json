@@ -1,0 +1,37 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "lock_version": "0.1-candidate",
+  "status": "candidate_not_verified",
+  "inference_performed": false,
+  "model": {
+    "id": "Qwen/Qwen2.5-3B-Instruct",
+    "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "tokenizer_id": "Qwen/Qwen2.5-3B-Instruct",
+    "tokenizer_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "dtype": "float16",
+    "quantization": "none",
+    "runtime_verification": "not_run"
+  },
+  "proposed_environment": {
+    "python": "3.11.9",
+    "torch": "2.2.1",
+    "transformers": "4.43.2",
+    "accelerate": "0.33.0",
+    "device_requirement": "CUDA-capable GPU; exact device and CUDA versions must be captured in a future no-output model-load preflight"
+  },
+  "generation": {
+    "do_sample": false,
+    "max_new_tokens": 512,
+    "history_between_requests": false,
+    "automatic_retries": false,
+    "automatic_json_repair": false
+  },
+  "gates": {
+    "model_card_and_license_review": "open",
+    "exact_revision_load_test": "not_run",
+    "tokenizer_and_chat_template_fingerprint": "not_frozen",
+    "runtime_fingerprint": "not_frozen",
+    "model_output_generated": false
+  },
+  "reason": "Historical repository documentation reports a GPTQ load/sampling failure and later switch to the official non-quantized checkpoint. This replacement is a candidate only; it has not been verified or authorized for this study."
+}

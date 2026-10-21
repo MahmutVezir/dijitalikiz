@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evidence Abstention Output v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision",
+    "root_cause",
+    "evidence_refs",
+    "rationale",
+    "alternative_hypotheses",
+    "missing_evidence"
+  ],
+  "properties": {
+    "decision": {
+      "type": "string",
+      "enum": [
+        "diagnose",
+        "abstain"
+      ]
+    },
+    "root_cause": {
+      "type": "string"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9_-]*$"
+      },
+      "uniqueItems": true,
+      "maxItems": 8
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "alternative_hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8
+    },
+    "missing_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "const": "diagnose"
+          }
+        },
+        "required": [
+          "decision"
+        ]
+      },
+      "then": {
+        "properties": {
+          "root_cause": {
+            "minLength": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "const": "abstain"
+          }
+        },
+        "required": [
+          "decision"
+        ]
+      },
+      "then": {
+        "properties": {
+          "root_cause": {
+            "const": ""
+          }
+        }
+      }
+    }
+  ]
+}

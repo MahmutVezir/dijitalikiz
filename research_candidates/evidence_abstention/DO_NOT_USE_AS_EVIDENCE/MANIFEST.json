@@ -1,0 +1,76 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "partition": "DO_NOT_USE_AS_EVIDENCE",
+  "manifest_version": "1.0",
+  "date": "2026-10-20",
+  "purpose": "Yeni araştırmanın veri kümesi, puanlaması, sonuçları veya bilimsel iddiaları olarak kullanılamayan tarihsel materyallerin makine tarafından okunabilir dışlama listesi.",
+  "excluded_data_paths": [
+    "data/benchmark/**",
+    "data/calibration/**",
+    "data/candidates/**",
+    "data/candidate_case_drafts/**",
+    "data/pilot/**",
+    "data/followup_v2/**",
+    "data/incident_audits/**",
+    "RSC-Bench-pilot-v1.0-stage4-gated/**",
+    "RSC-Bench-pilot-v1.0-stage4-gated.zip",
+    "rsc-bench-v0.1.zip",
+    "kaggle/confirmatory_kernel.py"
+  ],
+  "excluded_as_direct_experiment_runtime_or_scoring": [
+    "dijitalikiz/**",
+    "scripts/run_pilot.py",
+    "scripts/run_confirmatory.py",
+    "scripts/evaluate_pilot.py",
+    "scripts/evaluate_confirmatory.py",
+    "scripts/finalize_pilot.py",
+    "scripts/finalize_confirmatory.py",
+    "scripts/build_pilot_*.py",
+    "scripts/build_confirmatory_*.py",
+    "scripts/analyze_followup_v2.py",
+    "schemas/benchmark_manifest.schema.json",
+    "schemas/research_case.schema.json"
+  ],
+  "excluded_historical_results_and_reports": [
+    "docs/CONFIRMATORY_RESULTS_2026-10-09.md",
+    "docs/HISTORICAL_EXPERIMENT_SCIENTIFIC_AUDIT_2026-10-15.md",
+    "docs/PILOT_*.md",
+    "docs/FINAL_*.md",
+    "docs/TUBITAK_*.md",
+    "docs/RESEARCH_PATH_DECISION_2026-10-15.md",
+    "data/benchmark/confirmatory_result_summary.json",
+    "historical Kaggle and GitHub Actions inference outputs/artifacts"
+  ],
+  "excluded_cases_due_to_review_exposure_or_failed_smoke": [
+    {
+      "case_id": "BugsInPy-black-1",
+      "reason": "metadata and patch inspected during feasibility review"
+    },
+    {
+      "case_id": "BugsInPy-tqdm-1",
+      "reason": "metadata and patch inspected during feasibility review; smoke pair only verified under Python 3.8.18 while dataset records Python 3.6.9"
+    },
+    {
+      "case_id": "BugsInPy-httpie-1",
+      "reason": "metadata and patch inspected during feasibility review"
+    },
+    {
+      "case_id": "BugsInPy-youtube-dl-1",
+      "reason": "metadata and patch inspected during feasibility review"
+    },
+    {
+      "case_id": "BugsInPy-PySnooper-1",
+      "reason": "buggy commit unexpectedly passed regression smoke; expected buggy-fail/fixed-pass pair not reproduced"
+    }
+  ],
+  "forbidden_uses": [
+    "Do not combine old pilot or confirmatory records with the new study.",
+    "Do not present historical DİJİTALİKİZ results as evidence for the new research question.",
+    "Do not relabel old cases as new cases.",
+    "Do not carry old condition labels or scoring decisions into this study without independent redesign and preregistration.",
+    "Do not infer that a candidate is fully eligible merely because its folder or patch exists."
+  ],
+  "preserve_source_paths": true,
+  "reason_not_moved_or_deleted": "Moving or deleting historical files may break provenance, CI workflows, archive verification and the original TÜBİTAK deliverables. This manifest sets a scientific use boundary without rewriting the historical record.",
+  "model_inference_allowed": false
+}

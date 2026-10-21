@@ -1,0 +1,133 @@
+name: Evidence Abstention Dataset Case Smoke Test
+
+on:
+  push:
+    branches:
+      - "research/evidence-abstention-draft-2026-10-19"
+    paths:
+      - ".github/workflows/evidence-abstention-case-smoke.yml"
+      - "research_candidates/evidence_abstention/DATA_FEASIBILITY.md"
+      - "research_candidates/evidence_abstention/FEASIBILITY_FORMAT_SAMPLE.csv"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tqdm_bug_1:
+    name: Verify pinned buggy/fixed test pair (smoke only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.8 patch release for legacy smoke
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.8.18"
+          cache: "pip"
+
+      - name: Install pinned test dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade "pip<25.1"
+          python -m pip install "pytest<8.4" "nose==1.3.7"
+
+      - name: Fetch pinned dataset metadata and source repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/soarsmu/BugsInPy.git "$RUNNER_TEMP/BugsInPy"
+          git -C "$RUNNER_TEMP/BugsInPy" checkout --detach 11c5f1eea954a42132cfd06bf257766a7963e0fd
+          test -f "$RUNNER_TEMP/BugsInPy/projects/tqdm/bugs/1/bug.info"
+          git clone https://github.com/tqdm/tqdm.git "$RUNNER_TEMP/tqdm"
+          git -C "$RUNNER_TEMP/tqdm" checkout --detach c0dcf39b046d1b4ff6de14ac99ad9a1b10487512
+          test -f "$RUNNER_TEMP/tqdm/tqdm/tests/tests_contrib.py"
+          git -C "$RUNNER_TEMP/tqdm" show c0dcf39b046d1b4ff6de14ac99ad9a1b10487512:tqdm/tests/tests_contrib.py > "$RUNNER_TEMP/tests_contrib.py"
+          test -s "$RUNNER_TEMP/tests_contrib.py"
+
+      - name: Run target test on the buggy revision (failure is expected)
+        shell: bash
+        run: |
+          set -euo pipefail
+          repo="$RUNNER_TEMP/tqdm"
+          git -C "$repo" checkout --detach 8cc777fe8401a05d07f2c97e65d15e4460feab88
+          git -C "$repo" clean -fd
+          cp "$RUNNER_TEMP/tests_contrib.py" "$repo/tqdm/tests/tests_contrib.py"
+          cd "$repo"
+          export PYTHONPATH="$repo"
+          set +e
+          python -m pytest -q -s tqdm/tests/tests_contrib.py::test_enumerate > "$RUNNER_TEMP/buggy-test.log" 2>&1
+          rc=$?
+          set -e
+          cat "$RUNNER_TEMP/buggy-test.log"
+          echo "exit_code=$rc" >> "$GITHUB_OUTPUT"
+          if [ "$rc" -eq 0 ]; then
+            echo "The pinned buggy revision unexpectedly passed; case fails the expected-reproduction gate."
+            exit 1
+          fi
+          if ! grep -Eq "FAILED tqdm/tests/tests_contrib.py::test_enumerate" "$RUNNER_TEMP/buggy-test.log"; then
+            echo "The buggy run did not show the target test failing; collection/import/environment errors are not accepted as bug reproduction."
+            exit 1
+          fi
+
+      - name: Run the same target test on the fixed revision (pass is expected)
+        shell: bash
+        run: |
+          set -euo pipefail
+          repo="$RUNNER_TEMP/tqdm"
+          git -C "$repo" reset --hard c0dcf39b046d1b4ff6de14ac99ad9a1b10487512
+          cd "$repo"
+          export PYTHONPATH="$repo"
+          set +e
+          python -m pytest -q -s tqdm/tests/tests_contrib.py::test_enumerate > "$RUNNER_TEMP/fixed-test.log" 2>&1
+          rc=$?
+          set -e
+          cat "$RUNNER_TEMP/fixed-test.log"
+          echo "exit_code=$rc" >> "$GITHUB_OUTPUT"
+          if [ "$rc" -ne 0 ]; then
+            echo "The pinned fixed revision did not pass; case fails the expected-reproduction gate."
+            exit 1
+          fi
+          if ! grep -Eq "1 passed" "$RUNNER_TEMP/fixed-test.log"; then
+            echo "The fixed run did not report the target test passing."
+            exit 1
+          fi
+
+      - name: Prepare audit record
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/evidence-abstention-case-smoke"
+          cp "$RUNNER_TEMP/buggy-test.log" "$RUNNER_TEMP/evidence-abstention-case-smoke/buggy-test.log" 2>/dev/null || true
+          cp "$RUNNER_TEMP/fixed-test.log" "$RUNNER_TEMP/evidence-abstention-case-smoke/fixed-test.log" 2>/dev/null || true
+          cat > "$RUNNER_TEMP/evidence-abstention-case-smoke/summary.json" <<'JSON'
+          {
+            "case_id": "BugsInPy-tqdm-1",
+            "purpose": "operational smoke test only; permanently excluded from confirmatory data because its metadata/patch was opened during feasibility review",
+            "dataset_repository": "https://github.com/soarsmu/BugsInPy",
+            "dataset_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+            "source_repository": "https://github.com/tqdm/tqdm",
+            "buggy_commit": "8cc777fe8401a05d07f2c97e65d15e4460feab88",
+            "fixed_commit": "c0dcf39b046d1b4ff6de14ac99ad9a1b10487512",
+            "test": "tqdm/tests/tests_contrib.py::test_enumerate",
+            "runtime_python": "3.8.18",
+            "dataset_recorded_python": "3.6.9",
+            "llm_inference_performed": false,
+            "confirmatory_eligible": false,
+            "human_ground_truth_reviewed": false,
+            "project_license_reviewed": false,
+            "dataset_contamination_reviewed": false,
+            "note": "Runtime differs from the recorded Python 3.6.9; this only tests the reproduction logic under Python 3.8.18 and cannot establish exact-environment reproducibility or case approval."
+          }
+          JSON
+
+      - name: Upload smoke test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-abstention-tqdm-smoke
+          path: ${{ runner.temp }}/evidence-abstention-case-smoke/
+          if-no-files-found: warn
+          retention-days: 14

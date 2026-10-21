@@ -1,0 +1,46 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "protocol_version": "0.1",
+  "phase_3_design_status": "documented_not_yet_preregistered",
+  "design_date": "2026-10-20",
+  "inference_allowed": false,
+  "dataset_validation_gate": "OPEN",
+  "target_independent_cases": 80,
+  "minimum_confirmatory_cases": 60,
+  "minimum_upstream_projects": 8,
+  "cells_per_case": 6,
+  "planned_model_outputs_at_target": 480,
+  "case_ids": [],
+  "excluded_feasibility_cases": [
+    "BugsInPy-black-1",
+    "BugsInPy-tqdm-1",
+    "BugsInPy-httpie-1",
+    "BugsInPy-youtube-dl-1",
+    "BugsInPy-PySnooper-1"
+  ],
+  "dataset": {
+    "name": "BugsInPy",
+    "repository": "https://github.com/soarsmu/BugsInPy",
+    "commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd"
+  },
+  "model": {
+    "id": "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4",
+    "revision": "68c4276063d1496cdf13d0b8e8221f899bfa77f",
+    "do_sample": false,
+    "temperature": 0,
+    "max_new_tokens": 512
+  },
+  "factors": {
+    "evidence_levels": [
+      "E1_sufficient",
+      "E2_partial",
+      "E3_insufficient"
+    ],
+    "policies": [
+      "P0_required_diagnosis",
+      "P1_selective_abstention"
+    ]
+  },
+  "primary_endpoint": "case-level unsupported definitive diagnosis rate under E3; paired P0 vs P1; RD=P1-P0; exact two-sided McNemar plus confidence intervals",
+  "no_inference_reason": "Need at least 60 validated independent cases across at least 8 projects, buggy-fail/fixed-pass test logs, license/ground-truth/evidence-level/leakage review, frozen prompts/schema/scoring rubric and verified runtime."
+}
