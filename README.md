@@ -57,6 +57,8 @@ TÜBİTAK’ın resmî 2026–2027 sayfasına göre başvuru aralığı 23 Eylü
 
 ## Araştırma belgeleri
 
+- [İlk 120 adayın sabit metadata-tarama sırası](research_candidates/evidence_abstention/SCREENING_COHORT_120_2026-10-21.json) — kabul edilmiş veri değil; test sonuçları görülmeden dondurulmuş intake sırası.
+
 - [Üç ana aşamalı yürütme haritası](research_candidates/evidence_abstention/THREE_PHASE_EXECUTION_MAP_2026-10-21.md)
 - [TÜBİTAK jüri ölçütleri kontrol listesi](research_candidates/evidence_abstention/TUBITAK_2204A_JURY_CRITERIA_CHECKLIST_2026-10-21.md)
 
