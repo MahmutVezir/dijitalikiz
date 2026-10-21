@@ -86,7 +86,7 @@
     }
   ],
   "case_acceptance": "none; every case must pass separate manual review and the strict registry gates",
-  "screening_iteration": "isolated_target_test_v5_black-install-cookiecutter-removed",
+  "screening_iteration": "isolated_target_test_v6_fixture-signature-numeric-exitcodes-artifact-audit",
   "workflow_behavior": {
     "trigger": "push to research branch only when this manifest changes, or workflow_dispatch",
     "test_execution": "Run the focused target test command on each BugsInPy synthetic buggy/fixed working tree; for the cookiecutter tox case run only py36 to avoid unrelated unavailable py37/py38/pypy envs.",
@@ -94,12 +94,13 @@
     "automated_output": "Raw exit codes/signatures/logs and SHA256Sums for human review only",
     "auto_accept": false,
     "model_inference_performed": false,
-    "last_code_fix": "Black candidate requires editable installation of the checked-out worktree to generate the local _black_version.py module imported by tests; the validation workflow now performs this only for black-2. Cookiecutter-1 was removed from the matrix because its buggy-side failure was a missing non_ascii.json fixture (FileNotFoundError), while the fixed-side pass depended on that fixture being present; this did not isolate the intended encoding behavior and it is not valid reproduction evidence."
+    "last_code_fix": "Explicit fixed-tree test fixture provenance for Black-2; detect pytest failure summaries; store target test exit codes as JSON numbers; verify artifact files before and after generating artifact-audit.json."
   },
   "notes": [
     "Run 39636098825 did not validate any target test for completed cases: missing BugsInPy CLI PATH caused checkout exit 127. This run is classified as workflow setup failure, not a bug reproduction result.",
     "All eight cases in this technical validation manifest are used only to debug/validate the workflow and inspect raw target-test signals; they are permanently excluded from confirmatory analysis. Do not re-add them to the manual screening queue or case registry.",
-    "Cookiecutter-1 is not run in the next workflow attempt: the prior raw log showed FileNotFoundError for tests/test-generate-context/non_ascii.json on buggy and pass on fixed, so it cannot be counted as an intended bug reproduction. The case remains permanently excluded from confirmatory analysis."
+    "Cookiecutter-1 is not run in the next workflow attempt: the prior raw log showed FileNotFoundError for tests/test-generate-context/non_ascii.json on buggy and pass on fixed, so it cannot be counted as an intended bug reproduction. The case remains permanently excluded from confirmatory analysis.",
+    "Run 39638198482 completed seven diagnostic jobs. FastAPI-1, Scrapy-1, Sanic-1 and Tornado-1 showed target-test failures consistent with the intended issue in the buggy working tree and passed the same target test in the fixed working tree. Black-2 was a missing-fixture failure, not a valid reproduction signal. Luigi-1 and TheFuck-1 were blocked by dependency/setup issues. All these workflow-validation cases remain permanently excluded from confirmatory analysis; accepted case count is unchanged at zero. No LLM inference was performed."
   ],
   "confirmatory_exclusions": [
     "BugsInPy-black-2",
