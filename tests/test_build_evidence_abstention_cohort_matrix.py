@@ -105,7 +105,7 @@ class CohortMatrixTests(unittest.TestCase):
                 "cohort_size":len(ids),
                 "case_ids":ids,
                 "excluded_prior_exposure":excluded,
-                "source_queue_csv_sha256":hashlib.sha256(q.read_bytes()).hexdigest(),
+                "source_queue_sha256":hashlib.sha256(q.read_bytes()).hexdigest(),
                 "accepted_confirmatory_cases":0,
                 "llm_inference_performed":False
             }
@@ -130,7 +130,7 @@ class CohortMatrixTests(unittest.TestCase):
                 "cohort_size":len(ids),
                 "case_ids":ids,
                 "excluded_prior_exposure":excluded,
-                "source_queue_csv_sha256":hashlib.sha256(q.read_bytes()).hexdigest(),
+                "source_queue_sha256":hashlib.sha256(q.read_bytes()).hexdigest(),
                 "accepted_confirmatory_cases":0,
                 "llm_inference_performed":False
             }
