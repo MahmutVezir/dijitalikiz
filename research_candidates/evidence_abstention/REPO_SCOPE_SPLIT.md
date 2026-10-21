@@ -106,3 +106,14 @@ Bir dosyanın “kullanılabilir” olması, doğrudan deneyde kullanılması an
 ## Aşama 2 metadata envanteri otomasyonu
 
 21 Ekim 2026'da eklendi: scripts/inventory_bugsinpy_candidates.py, onun birim testleri ve .github/workflows/evidence-abstention-metadata-inventory.yml. Bu iş akışı yalnızca pinned BugsInPy metadata alanlarını ve hash'lerini envantere çıkarır; bug/fixed testlerini çalıştırmaz ve vaka kabul etmez. Kapsam sınırı aynı kalır: yeni araştırmada tarihsel DİJİTALİKİZ verileri/sonuçları kullanılmaz; kabul edilmiş vaka sayısı henüz 0'dır.
+
+
+## Tek aktif hedef kararı — 21 Ekim 2026
+
+Bu araştırma dalının tek aktif hedefi **2027 TÜBİTAK 2204-A'da finalistlik düzeyinde, tamamlanmış ve bilimsel olarak savunulabilir bir proje sunmaktır**. Başka yarışma veya ayrı araştırma hattı bu çalışmanın yürütme gündeminde değildir. Uygulama planı: [TUBITAK_2204A_MASTER_PLAN_2026-10-21.md](TUBITAK_2204A_MASTER_PLAN_2026-10-21.md).
+
+TÜBİTAK'ın [resmî 2026–2027 çağrı sayfası](https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi), başvuru kapanışını 4 Ocak 2027 saat 17.30 olarak belirtir ve fikir aşamasındaki veya devam etmekte olan projelerle başvuru yapılmaması gerektiğini söyler. Bu nedenle araştırma planı hazır olması tamamlanma sayılmaz.
+
+Bu karar eski DİJİTALİKİZ deney kayıtlarının silinmesini, değiştirilmesini veya yeni çalışmanın kanıtı olarak yeniden kullanılmasını gerektirmez. Tarihsel deney kaynakları değişmeden korunur; yeni çalışma için yalnızca bağımsız doğrulaması yapılan vakalar kullanılabilir. Ana dalın eski araştırma durumu korunur; bu düzenlemeler yalnızca araştırma dalında yapılmıştır.
+
+2026-10-21 itibarıyla accepted confirmatory cases = 0 ve yeni çalışma için LLM inference = false. Model deneyi, veri ve değerlendirme kapıları kapanana kadar başlatılmayacaktır.

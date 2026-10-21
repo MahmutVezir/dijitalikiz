@@ -5,6 +5,11 @@
 
 Bu klasör, yeni araştırmanın tasarım belgelerini ve yeniden kullanım kurallarını tek yerde toplar. Burada bulunmak, bir belgenin nihai ön kayıt olduğu veya bir veri vakasının deney için kabul edildiği anlamına gelmez.
 
+## Tek yürütme planı
+
+- [TÜBİTAK 2204-A ana yürütme planı](../TUBITAK_2204A_MASTER_PLAN_2026-10-21.md)
+- [Resmî jüri ölçütleri kontrol listesi](../TUBITAK_2204A_JURY_CRITERIA_CHECKLIST_2026-10-21.md)
+
 ## Tasarım ve yöntem
 
 - [Aşama 3 tasarım kapanış denetimi](STAGE3_REVIEW_AND_EXIT.md)

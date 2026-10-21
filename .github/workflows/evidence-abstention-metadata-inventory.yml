@@ -7,6 +7,18 @@ on:
     paths:
       - "scripts/inventory_bugsinpy_candidates.py"
       - "tests/test_inventory_bugsinpy_candidates.py"
+      - "scripts/build_evidence_abstention_screening_queue.py"
+      - "tests/test_build_evidence_abstention_screening_queue.py"
+      - "research_candidates/evidence_abstention/DATA_FEASIBILITY.md"
+      - ".github/workflows/evidence-abstention-metadata-inventory.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/inventory_bugsinpy_candidates.py"
+      - "tests/test_inventory_bugsinpy_candidates.py"
+      - "scripts/build_evidence_abstention_screening_queue.py"
+      - "tests/test_build_evidence_abstention_screening_queue.py"
       - "research_candidates/evidence_abstention/DATA_FEASIBILITY.md"
       - ".github/workflows/evidence-abstention-metadata-inventory.yml"
   workflow_dispatch:
@@ -29,8 +41,10 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Test metadata inventory utility
-        run: python -m unittest discover -s tests -p 'test_inventory_bugsinpy_candidates.py' -v
+      - name: Test metadata inventory and screening queue utilities
+        run: |
+          python -m unittest discover -s tests -p 'test_inventory_bugsinpy_candidates.py' -v
+          python -m unittest discover -s tests -p 'test_build_evidence_abstention_screening_queue.py' -v
 
       - name: Fetch exact pinned BugsInPy metadata tree
         shell: bash
@@ -49,12 +63,22 @@ jobs:
             --expected-commit "$BUGSINPY_COMMIT" \
             --expected-count 501
 
-      - name: Upload metadata inventory (not accepted experiment data)
+      - name: Build balanced manual screening queue (still no tests and no inference)
+        run: |
+          python scripts/build_evidence_abstention_screening_queue.py \
+            --input "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" \
+            --output "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
+            --summary "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" \
+            --first-batch-per-project 5
+
+      - name: Upload metadata inventory and manual screening queue (not accepted experiment data)
         uses: actions/upload-artifact@v4
         with:
-          name: evidence-abstention-bugsinpy-metadata-inventory
+          name: evidence-abstention-bugsinpy-screening-queue
           path: |
             ${{ runner.temp }}/bugsinpy-metadata-inventory.csv
             ${{ runner.temp }}/bugsinpy-metadata-inventory-summary.json
+            ${{ runner.temp }}/bugsinpy-screening-queue.csv
+            ${{ runner.temp }}/bugsinpy-screening-queue-summary.json
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 30

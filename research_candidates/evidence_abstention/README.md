@@ -1,6 +1,10 @@
 # Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ
 
-**Durum (21 Ekim 2026, güncelleme 2):** Aşama 1 — genişletilmiş hedefli literatür sentezi tamamlandı; sistematik derleme değildir. Aşama 2 — kaynak fizibilitesi koşullu tamamlandı, ancak doğrulanmış bağımsız örneklem hazır değil (kabul edilmiş vaka: 0; hedef 80, doğrulayıcı alt sınır 60 vaka / 8 proje). Aşama 3 — tasarım belgeleri tamamlandı, fakat protokol ön kayıtlı veya inference için dondurulmuş değil. Aşama 4 — fail-closed teknik preflight, boş vaka sicili ve puanlama protokolü taslağı eklendi. **Model çıkarımı kapalıdır; yeni araştırmadan henüz deney sonucu yoktur.**
+**Tek aktif hedef:** 2027 TÜBİTAK 2204-A’da finalistlik düzeyinde, tamamlanmış ve bilimsel olarak savunulabilir bir araştırma sunmak. Finalistlik garanti edilemez; ölçütümüz gerçek kanıt ve dürüst raporlamadır.
+
+**Güncel bilimsel durum (21 Ekim 2026):** Proje tamamlanmadı. Aşama 1 hedefli literatür incelemesi düzeyinde tamamlandı; sistematik derleme değildir. Aşama 2 kaynak metadata envanteri koşullu tamamlandı, ancak kabul edilmiş bağımsız vaka sayısı 0’dır. Aşama 3 tasarım belgeleri hazır, fakat protokol ön kayıtlı/dondurulmuş değildir. Aşama 4 no-inference preflight teknik olarak test edildi, ancak `ready=false`; yeni araştırma için model çıkarımı yapılmadı.
+
+**Tek yürütme planı:** [TÜBİTAK 2204-A ana planı](TUBITAK_2204A_MASTER_PLAN_2026-10-21.md). Resmî başvuru son tarihi 4 Ocak 2027, saat 17.30’dur; [TÜBİTAK 2204-A çağrısı](https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi).
 
 **Depo kullanımı:** Bu depo, yeni projenin planlama, sürüm kontrolü, doğrulama ve belgelendirme altyapısı olarak kullanılacaktır. Çalışma ayrı bir dalda yürütülür; DİJİTALİKİZ'in tarihsel TÜBİTAK 2204-A deneyleri, sonuçları, manifestleri ve raporu değiştirilmez.
 
@@ -43,6 +47,9 @@ Kanıt yetersiz yazılım hata vakalarında, cevap vermekten kaçınmaya izin ve
 
 ## Belgeler
 
+- `TUBITAK_2204A_MASTER_PLAN_2026-10-21.md` — TÜBİTAK 2204-A için tek aktif yürütme planı.
+- `TUBITAK_2204A_JURY_CRITERIA_CHECKLIST_2026-10-21.md` — resmî ön değerlendirme ölçütlerine göre kapı kontrolü.
+
 - `REPO_SCOPE_SPLIT.md` — repo kullanım kapsamı.
 - `LITERATURE_REVIEW.md` — hedefli literatür taraması ve özgünlük sınırı.
 - `DATA_FEASIBILITY.md` — kaynak-kümesi denetimi ve CI başarısızlıkları.
@@ -84,3 +91,8 @@ Aşama 2 envanter sonucu: [METADATA_INVENTORY_RESULT_2026-10-21.md](METADATA_INV
 
 
 **Yeni doğrulama notu:** Envanter CI'sı başarılı; fakat dışlanan tqdm smoke testinin yeniden çalıştırması [run 39618666531](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39618666531) fixed test tarafında tekrar başarısız oldu. Tek önceki olumlu smoke çalışması tekrarlanabilir kanıt sayılmıyor. Aşama 2 hâlâ 0 kabul edilmiş vaka ve açık operasyonel doğrulama kapısında.
+
+
+## Tek odak kararı
+
+Bu çalışma için başka yarışma veya ayrı araştırma hattı yürütülmeyecek. Şu an yapılacak iş, vaka kabul kapısını gerçek kanıtlarla kapatmak ve başvuruya hazır tamamlanmış bir bilimsel çalışma üretmektir. 501 ham metadata kaydı, 500 temel metadata-kalifiye kayıt olarak kalır; bunların hiçbiri otomatik kabul edilmiş deney vakası değildir. En az 60 kabul edilmiş bağımsız vaka / 8 proje ve tüm yöntem kapıları sağlanana kadar model çıkarımı kapalı tutulur.

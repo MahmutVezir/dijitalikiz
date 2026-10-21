@@ -95,19 +95,32 @@ def evaluate(root):
             seen.add(cid)
             if record.get("accepted_for_confirmatory") is True:
                 accepted.append(record)
-                required = ("upstream_project", "source_repository", "license_reference", "buggy_commit",
-                            "fixed_commit", "test_command", "runtime_fingerprint")
+                required = (
+                    "upstream_project", "source_repository", "license_reference",
+                    "buggy_commit", "fixed_commit", "test_command", "runtime_fingerprint",
+                    "root_cause_reference", "metadata_python_version", "runtime_python_version",
+                    "buggy_test_log_uri", "fixed_test_log_uri",
+                )
                 for field in required:
                     if not record.get(field):
                         blockers.append(cid + ": required field missing: " + field)
-                for field in ("license_reviewed", "leakage_reviewed", "prior_exposure_clearance"):
+                for field in (
+                    "license_reviewed", "leakage_reviewed", "prior_exposure_clearance",
+                    "evidence_levels_reviewed", "test_pair_verified",
+                ):
                     if record.get(field) is not True:
                         blockers.append(cid + ": gate not passed: " + field)
                 if record.get("buggy_commit") == record.get("fixed_commit"):
                     blockers.append(cid + ": buggy and fixed commits must differ.")
+                if record.get("metadata_python_version") != record.get("runtime_python_version"):
+                    blockers.append(cid + ": runtime Python does not match the dataset-recorded Python version.")
+                if record.get("buggy_test_outcome") != "target_failure_reproduced":
+                    blockers.append(cid + ": the buggy-side target failure was not reproduced; environment/setup errors do not qualify.")
+                if record.get("fixed_test_outcome") != "target_test_passed":
+                    blockers.append(cid + ": the fixed-side target test did not pass.")
                 if record.get("ground_truth_reviewers", 0) < 2 or record.get("evidence_reviewers", 0) < 2:
                     blockers.append(cid + ": at least two independent reviewers are required for ground truth and evidence sufficiency.")
-                for field in ("buggy_test_log_sha256", "fixed_test_log_sha256"):
+                for field in ("buggy_test_log_sha256", "fixed_test_log_sha256", "runtime_fingerprint_sha256"):
                     if not isinstance(record.get(field), str) or not HEX64.fullmatch(record[field]):
                         blockers.append(cid + ": missing/invalid " + field)
                 packets = record.get("evidence_packet_sha256", {})
