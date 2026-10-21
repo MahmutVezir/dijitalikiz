@@ -239,3 +239,10 @@ A fixed pytest bootstrap is added to the case workflow using `pytest==6.2.5` for
 
 
 The V3 intake was used to debug the test runner and metadata parser; its first eight selected candidates are permanently excluded from confirmatory use. The current V4 manifest skips 24 exposed IDs and retains a metadata-only intake of 120 candidates across 17 projects. Accepted cases remain zero until actual test pairs and all scientific and human-review gates are verified.
+
+
+## V4 dependency finding and V5 state — 21 October 2026
+
+The V4 run [39661470039](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39661470039) did not accept any case. The inspected Matplotlib-2 artifact stops before collection because `numpy` is missing; the inspected PySnooper-3 artifact stops because `python_toolbox` is missing. Both have empty BugsInPy case `requirements.txt`; the pinned PySnooper upstream revision has a separate `test_requirements.txt` naming `python_toolbox>=0.9.3` and `pytest>=4.4.1`, not installed by the case-level compile flow. These are incomplete test-environment signals, not target bug outcomes.
+
+All eight V4 first-batch candidates are permanently excluded from confirmatory use because their outputs guided runner/dependency diagnostics. V5 is the current metadata-only intake; it skips 32 queue candidates used in earlier feasibility/runner debugging and contains 120 candidates across 17 upstream projects. The V5 freeze/selection job succeeded in run [39663084349](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39663084349). The case jobs are not yet audited and accepted case count remains zero. The workflow now detects `pytest`, `py.test`, and `python -m pytest` command forms while preserving a pytest version already pinned by case setup. No LLM inference was performed.
