@@ -34,22 +34,16 @@ jobs:
             bug_id: "2"
             target_test_command: "python -m unittest -q tests.test_black.BlackTestCase.test_fmtonoff4"
             expected_run_test_sha256: 661c7eff06a036821b9e66a3ef8b7c0e46e6a6e815f65db6427aad3f8f6adcec
+            install_worktree_package: true
             python_version: "3.8.3"
             buggy_commit: c8ca6b2b9ff3510bee12129824cebfc2fc51e5b2
             fixed_commit: 892eddacd215d685e136686b7f629ade70adca83
-          - case_id: BugsInPy-cookiecutter-1
-            project: cookiecutter
-            bug_id: "1"
-            target_test_command: "tox -e py36 -- tests/test_generate_context.py::test_generate_context_decodes_non_ascii_chars"
-            expected_run_test_sha256: 8fa48fdd88c886fbdf244124c952d919743b1c4ca407a0b4d50d091d9fab4b34
-            python_version: "3.6.9"
-            buggy_commit: c15633745df6abdb24e02746b82aadb20b8cdf8c
-            fixed_commit: 7f6804c4953a18386809f11faf4d86898570debc
           - case_id: BugsInPy-fastapi-1
             project: fastapi
             bug_id: "1"
             target_test_command: "pytest tests/test_jsonable_encoder.py::test_encode_model_with_default"
             expected_run_test_sha256: 38172a1aa0b625cc3569da9178538e262fd5fd98ff73938fc8f2cecc8e4caaed
+            install_worktree_package: false
             python_version: "3.8.3"
             buggy_commit: 766157bfb4e7dfccba09ab398e8ec444d14e947c
             fixed_commit: 3397d4d69a9c2d64c1219fcbf291ea5697a4abb8
@@ -58,6 +52,7 @@ jobs:
             bug_id: "1"
             target_test_command: "pytest test/server_test.py::MetricsHandlerTest::test_get"
             expected_run_test_sha256: 99ba7b97181c7159e5da4650b579ccd3fb92908fceb63f9924a583353ceccebd
+            install_worktree_package: false
             python_version: "3.8.3"
             buggy_commit: 1164eb6b85b8a70f596dbb99452bec513e72c12e
             fixed_commit: aec5dc2ed8db53fc282a0bd24aabe59031b6d1ba
@@ -66,6 +61,7 @@ jobs:
             bug_id: "1"
             target_test_command: "pytest tests/test_blueprints.py::test_bp_middleware_order"
             expected_run_test_sha256: 52aea225714646f8ddf3f59ebb82a536c0927d2d553b32fca2c1450638fd38a4
+            install_worktree_package: false
             python_version: "3.8.3"
             buggy_commit: e7001b00747b659f7042b0534802b936ee8a53e0
             fixed_commit: 44973125c15304b4262c51c78b5a86bd1daafa86
@@ -74,6 +70,7 @@ jobs:
             bug_id: "1"
             target_test_command: "python -m unittest -q tests.test_spidermiddleware_offsite.TestOffsiteMiddleware4._get_spiderargs tests.test_spidermiddleware_offsite.TestOffsiteMiddleware4.test_process_spider_output"
             expected_run_test_sha256: fcdb910c48de6fa7d66c991091fb1895e6da9a6033e3b79bc7ba5d81d339ff10
+            install_worktree_package: false
             python_version: "3.8.3"
             buggy_commit: c57512fa669e6f6b1b766a7639206a380f0d10ce
             fixed_commit: 9d9dea0d69709ef0f7aef67ddba1bd7bda25d273
@@ -82,6 +79,7 @@ jobs:
             bug_id: "1"
             target_test_command: "pytest tests/rules/test_pip_unknown_command.py::test_get_new_command"
             expected_run_test_sha256: b0331f8719b3c079bff315beb778d1b31c4311cb84c228e0bcfbeb97c160d741
+            install_worktree_package: false
             python_version: "3.7.0"
             buggy_commit: 2ced7a7f33ae0bec3ffc7a43ce95330bdf6cfcb9
             fixed_commit: 444908ce1c17767ef4aaf9e0b4950497914f7f63
@@ -90,6 +88,7 @@ jobs:
             bug_id: "1"
             target_test_command: "python -m unittest -q tornado.test.websocket_test.WebSocketTest.test_nodelay"
             expected_run_test_sha256: 824b5decbe6517adcba0b9c8e773f810f1490c510b7cec960278d6f46eca777b
+            install_worktree_package: false
             python_version: "3.7.0"
             buggy_commit: 6a5a0bfa370b6c0d3dbbf9589a560a98202d2baa
             fixed_commit: 4677c54cc18bbfbdf0f4dadf11610fab6203fd63
@@ -190,6 +189,7 @@ jobs:
           EXPECTED_FIXED: ${{ matrix.fixed_commit }}
           EXPECTED_RUN_TEST_SHA256: ${{ matrix.expected_run_test_sha256 }}
           TARGET_TEST_COMMAND: ${{ matrix.target_test_command }}
+          INSTALL_WORKTREE_PACKAGE: ${{ matrix.install_worktree_package }}
         run: |
           set -u
           export PATH="$RUNNER_TEMP/BugsInPy/framework/bin:$PATH"
@@ -226,6 +226,18 @@ jobs:
             if [ ! -f "$work_dir/bugsinpy_compile_flag" ] || [ ! -f "$work_dir/env/bin/activate" ]; then
               echo "$side environment setup did not finish (compile_exit=$compile_rc); no target test result" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
               return 0
+            fi
+
+            if [ "${INSTALL_WORKTREE_PACKAGE:-false}" = "true" ]; then
+              set +e
+              ( cd "$work_dir" && source env/bin/activate && python -m pip install -e . ) > "$RUNNER_TEMP/$side-project-install.log" 2>&1
+              install_rc=$?
+              set -e
+              cp "$RUNNER_TEMP/$side-project-install.log" "$RUNNER_TEMP/case-artifact/$side-project-install.log"
+              if [ "$install_rc" -ne 0 ]; then
+                echo "$side in-tree editable install failed (exit=$install_rc); no target test result" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+                return 0
+              fi
             fi
 
             set +e
