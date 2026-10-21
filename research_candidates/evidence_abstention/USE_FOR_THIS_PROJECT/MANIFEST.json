@@ -91,7 +91,7 @@
     },
     {
       "path": "scripts/analyze_evidence_abstention_results.py",
-      "permission": "fail-closed analysis helper for final adjudicated results; never a source of data"
+      "permission": "predeclared primary analysis plus separately reported invalid-output conservative sensitivity; fail-closed readiness prerequisites"
     },
     {
       "path": "tests/test_analyze_evidence_abstention_results.py",
