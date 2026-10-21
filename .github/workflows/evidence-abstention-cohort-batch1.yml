@@ -1,0 +1,464 @@
+name: Evidence Abstention Cohort Batch 1 (Predeclared, No Inference)
+
+on:
+  push:
+    branches:
+      - "research/evidence-abstention-draft-2026-10-19"
+    paths:
+      - ".github/workflows/evidence-abstention-cohort-batch1.yml"
+      - "research_candidates/evidence_abstention/SCREENING_COHORT_120_2026-10-21.json"
+      - "scripts/inventory_bugsinpy_candidates.py"
+      - "scripts/build_evidence_abstention_screening_queue.py"
+      - "scripts/build_evidence_abstention_cohort_matrix.py"
+      - "tests/test_inventory_bugsinpy_candidates.py"
+      - "tests/test_build_evidence_abstention_screening_queue.py"
+      - "tests/test_build_evidence_abstention_cohort_matrix.py"
+  workflow_dispatch:
+
+concurrency:
+  group: evidence-abstention-cohort-batch1-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  freeze_batch:
+    name: Rebuild and verify frozen first-eight cohort intake
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      matrix: ${{ steps.export.outputs.matrix }}
+    env:
+      BUGSINPY_COMMIT: "11c5f1eea954a42132cfd06bf257766a7963e0fd"
+    steps:
+      - name: Checkout the research branch
+        uses: actions/checkout@v4
+
+      - name: Set up builder Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Test metadata-only builders
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_inventory_bugsinpy_candidates.py' -v
+          python -m unittest discover -s tests -p 'test_build_evidence_abstention_screening_queue.py' -v
+          python -m unittest discover -s tests -p 'test_build_evidence_abstention_cohort_matrix.py' -v
+
+      - name: Fetch and verify the pinned BugsInPy source
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/soarsmu/BugsInPy.git "$RUNNER_TEMP/BugsInPy"
+          git -C "$RUNNER_TEMP/BugsInPy" checkout --detach "$BUGSINPY_COMMIT"
+          test "$(git -C "$RUNNER_TEMP/BugsInPy" rev-parse HEAD)" = "$BUGSINPY_COMMIT"
+
+      - name: Rebuild exact inventory, queue and frozen first-eight matrix
+        run: |
+          set -euo pipefail
+          python scripts/inventory_bugsinpy_candidates.py \
+            --root "$RUNNER_TEMP/BugsInPy" \
+            --output "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" \
+            --summary "$RUNNER_TEMP/bugsinpy-metadata-inventory-summary.json" \
+            --expected-commit "$BUGSINPY_COMMIT" \
+            --expected-count 501
+          python scripts/build_evidence_abstention_screening_queue.py \
+            --input "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" \
+            --output "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
+            --summary "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" \
+            --first-batch-per-project 5
+          python scripts/build_evidence_abstention_cohort_matrix.py \
+            --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
+            --cohort research_candidates/evidence_abstention/SCREENING_COHORT_120_2026-10-21.json \
+            --matrix-output "$RUNNER_TEMP/cohort-batch1-matrix.json" \
+            --summary-output "$RUNNER_TEMP/cohort-batch1-summary.json" \
+            --batch-size 8
+
+      - name: Publish matrix and provenance
+        id: export
+        run: |
+          set -euo pipefail
+          matrix="$(jq -c '.include' "$RUNNER_TEMP/cohort-batch1-matrix.json")"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          mkdir -p "$RUNNER_TEMP/cohort-batch1-preflight"
+          cp "$RUNNER_TEMP/cohort-batch1-matrix.json" "$RUNNER_TEMP/cohort-batch1-preflight/"
+          cp "$RUNNER_TEMP/cohort-batch1-summary.json" "$RUNNER_TEMP/cohort-batch1-preflight/"
+          cp "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" "$RUNNER_TEMP/cohort-batch1-preflight/"
+          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory-summary.json" "$RUNNER_TEMP/cohort-batch1-preflight/"
+          cp "$RUNNER_TEMP/bugsinpy-screening-queue.csv" "$RUNNER_TEMP/cohort-batch1-preflight/"
+          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" "$RUNNER_TEMP/cohort-batch1-preflight/"
+          cd "$RUNNER_TEMP/cohort-batch1-preflight"
+          find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+          sha256sum -c SHA256SUMS
+
+      - name: Upload selection freeze evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-abstention-predeclared-cohort-batch1-freeze
+          path: ${{ runner.temp }}/cohort-batch1-preflight/
+          if-no-files-found: error
+          retention-days: 30
+
+  technical_case_screen:
+    name: ${{ matrix.case_id }} (Python ${{ matrix.python_version }})
+    needs: freeze_batch
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include: ${{ fromJSON(needs.freeze_batch.outputs.matrix) }}
+    defaults:
+      run:
+        shell: bash -el {0}
+    env:
+      BUGSINPY_COMMIT: "11c5f1eea954a42132cfd06bf257766a7963e0fd"
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Initialize fail-closed case record
+        shell: bash {0}
+        env:
+          CASE_ID: ${{ matrix.case_id }}
+          EXPECTED_PYTHON: ${{ matrix.python_version }}
+          EXPECTED_BUGGY: ${{ matrix.buggy_commit }}
+          EXPECTED_FIXED: ${{ matrix.fixed_commit }}
+          EXPECTED_RUN_TEST_SHA256: ${{ matrix.run_test_sha256 }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/case-artifact"
+          python3 - <<'PY'
+          import json, os, pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"case-artifact"/"summary.json"
+          p.write_text(json.dumps({
+            "case_id":os.environ["CASE_ID"],
+            "dataset_recorded_python":os.environ["EXPECTED_PYTHON"],
+            "runtime_python_observed":None,
+            "runtime_matches_metadata":False,
+            "expected_buggy_commit":os.environ["EXPECTED_BUGGY"],
+            "observed_buggy_base_commit":None,
+            "expected_fixed_commit_reference":os.environ["EXPECTED_FIXED"],
+            "observed_fixed_base_commit":None,
+            "expected_run_test_sha256":os.environ["EXPECTED_RUN_TEST_SHA256"],
+            "buggy_target_test_exit_code":None,
+            "fixed_target_test_exit_code":None,
+            "buggy_failure_signature_present":False,
+            "fixed_pass_marker_present":False,
+            "setup_status":"not_started",
+            "confirmatory_eligible":False,
+            "accepted_for_confirmatory":False,
+            "license_reviewed":False,
+            "ground_truth_reviewed_by_two":False,
+            "evidence_levels_reviewed_by_two":False,
+            "leakage_and_prior_exposure_reviewed":False,
+            "llm_inference_performed":False
+          },indent=2)+"\n",encoding="utf-8")
+          PY
+          printf '%s\n' "${{ matrix.case_id }}" > "$RUNNER_TEMP/case-artifact/case-id.txt"
+
+      - name: Set up exact dataset-recorded Python
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: false
+          activate-environment: case-screen
+          python-version: "${{ matrix.python_version }}"
+          channels: conda-forge
+          channel-priority: strict
+          use-only-tar-bz2: true
+
+      - name: Install minimal operating-system test prerequisites
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y dos2unix build-essential
+          # Upstream BugsInPy tooling edits and sources ~/.bashrc during compile.
+          # The GitHub runner's home may not have this file by default.
+          touch "$HOME/.bashrc"
+          python - <<'PY'
+          import os, platform, sys
+          expected=os.environ["EXPECTED_PYTHON"]
+          actual=platform.python_version()
+          print("expected_python="+expected)
+          print("actual_python="+actual)
+          print("executable="+sys.executable)
+          if actual != expected:
+              raise SystemExit("runtime Python does not exactly match pinned BugsInPy metadata")
+          PY
+        env:
+          EXPECTED_PYTHON: ${{ matrix.python_version }}
+
+      - name: Verify pinned metadata, test command and source hashes
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/soarsmu/BugsInPy.git "$RUNNER_TEMP/BugsInPy"
+          git -C "$RUNNER_TEMP/BugsInPy" checkout --detach "$BUGSINPY_COMMIT"
+          test "$(git -C "$RUNNER_TEMP/BugsInPy" rev-parse HEAD)" = "$BUGSINPY_COMMIT"
+          meta="$RUNNER_TEMP/BugsInPy/projects/${{ matrix.project }}/bugs/${{ matrix.bug_id }}/bug.info"
+          project_meta="$RUNNER_TEMP/BugsInPy/projects/${{ matrix.project }}/project.info"
+          run_test="$RUNNER_TEMP/BugsInPy/projects/${{ matrix.project }}/bugs/${{ matrix.bug_id }}/run_test.sh"
+          test "$(sha256sum "$meta" | cut -d ' ' -f 1)" = "${{ matrix.bug_info_sha256 }}"
+          test "$(sha256sum "$project_meta" | cut -d ' ' -f 1)" = "${{ matrix.project_info_sha256 }}"
+          test "$(sha256sum "$run_test" | cut -d ' ' -f 1)" = "${{ matrix.run_test_sha256 }}"
+          recorded_python="$(sed -n 's/^python_version="\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
+          recorded_buggy="$(sed -n 's/^buggy_commit_id="\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
+          recorded_fixed="$(sed -n 's/^fixed_commit_id="\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
+          test "$recorded_python" = "${{ matrix.python_version }}"
+          test "$recorded_buggy" = "${{ matrix.buggy_commit }}"
+          test "$recorded_fixed" = "${{ matrix.fixed_commit }}"
+          sha256sum "$meta" "$project_meta" "$run_test" > "$RUNNER_TEMP/source-metadata-hashes.txt"
+          cp "$RUNNER_TEMP/source-metadata-hashes.txt" "$RUNNER_TEMP/case-artifact/"
+          cp "$meta" "$RUNNER_TEMP/case-artifact/bug.info"
+
+      - name: Capture pre-test Python runtime
+        run: |
+          set -euo pipefail
+          {
+            python --version
+            python -c 'import sys,platform; print("executable="+sys.executable); print("platform="+platform.platform()); print("implementation="+platform.python_implementation())'
+            conda list
+            python -m pip freeze
+          } > "$RUNNER_TEMP/case-artifact/runner-runtime-fingerprint.txt"
+          sha256sum "$RUNNER_TEMP/case-artifact/runner-runtime-fingerprint.txt" > "$RUNNER_TEMP/case-artifact/runner-runtime-fingerprint.sha256"
+
+      - name: Run fixed and buggy test commands using pinned BugsInPy checkout
+        id: execute
+        continue-on-error: true
+        run: |
+          set -u
+          export PATH="$RUNNER_TEMP/BugsInPy/framework/bin:$PATH"
+          export PATH="$RUNNER_TEMP/BugsInPy/framework/bin:$PATH"
+          mkdir -p "$RUNNER_TEMP/fixed-root" "$RUNNER_TEMP/buggy-root"
+          printf '%s\n' "$TARGET_COMMANDS_JSON" > "$RUNNER_TEMP/case-artifact/target-commands.json"
+
+          run_side() {
+            side="$1"; version="$2"; work_root="$3"
+            work_dir="$work_root/$PROJECT"
+            set +e
+            bugsinpy-checkout -p "$PROJECT" -i "$BUG_ID" -v "$version" -w "$work_root" > "$RUNNER_TEMP/$side-checkout.log" 2>&1
+            checkout_rc=$?
+            set -e
+            cp "$RUNNER_TEMP/$side-checkout.log" "$RUNNER_TEMP/case-artifact/$side-checkout.log"
+            if [ "$checkout_rc" -ne 0 ] || [ ! -d "$work_dir" ]; then
+              echo "$side checkout failed or project directory missing (exit=$checkout_rc); no target test result" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+              return 0
+            fi
+            git -C "$work_dir" rev-parse HEAD > "$RUNNER_TEMP/case-artifact/$side-actual-commit.txt"
+            git -C "$work_dir" diff --stat > "$RUNNER_TEMP/case-artifact/$side-worktree-diff-stat.txt"
+            git -C "$work_dir" diff --binary | sha256sum | cut -d ' ' -f 1 > "$RUNNER_TEMP/case-artifact/$side-worktree-diff-sha256.txt"
+            git -C "$work_dir" status --short > "$RUNNER_TEMP/case-artifact/$side-worktree-status.txt"
+            {
+              echo "bash_flags=$-"
+              echo "SHELLOPTS=${SHELLOPTS-}"
+              echo "BASH_ENV=${BASH_ENV-}"
+              set -o
+              if [ -f "$work_dir/env/bin/activate" ]; then
+                echo "--- env/bin/activate lines 24-38 (already present) ---"
+                nl -ba "$work_dir/env/bin/activate" | sed -n '24,38p' || true
+              else
+                echo "env/bin/activate is not created yet; diagnostics taken before the compile step"
+              fi
+            } > "$RUNNER_TEMP/case-artifact/$side-activation-diagnostics.txt"
+
+            # BugsInPy's compile script sources legacy env/bin/activate,
+            # which references $1. Disable nounset around the upstream script,
+            # otherwise the shell aborts before any target test executes.
+            # Run the legacy upstream compile script in a fresh, non-strict
+            # Bash process. Some runner environments export SHELLOPTS=nounset;
+            # its virtualenv activate script reads $1 and aborts before tests.
+            set +e
+            ( cd "$work_dir" && env -u SHELLOPTS -u BASH_ENV bash --noprofile --norc "$RUNNER_TEMP/BugsInPy/framework/bin/bugsinpy-compile" ) > "$RUNNER_TEMP/$side-compile.log" 2>&1
+            compile_rc=$?
+            set -e
+            cp "$RUNNER_TEMP/$side-compile.log" "$RUNNER_TEMP/case-artifact/$side-compile.log"
+            if [ "$compile_rc" -ne 0 ] || [ ! -f "$work_dir/bugsinpy_compile_flag" ] || [ ! -f "$work_dir/env/bin/activate" ]; then
+              echo "$side environment setup did not finish (compile exit=$compile_rc); no target test result" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+              return 0
+            fi
+
+            if [ "$INSTALL_WORKTREE_PACKAGE" = "true" ]; then
+              set +e
+              ( cd "$work_dir" && source env/bin/activate nondestructive && python -m pip install -e . ) > "$RUNNER_TEMP/$side-install.log" 2>&1
+              install_rc=$?
+              set -e
+              cp "$RUNNER_TEMP/$side-install.log" "$RUNNER_TEMP/case-artifact/$side-install.log"
+              if [ "$install_rc" -ne 0 ]; then
+                echo "$side package install failed (exit=$install_rc); no target test result" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+                return 0
+              fi
+            fi
+
+            aggregate="$RUNNER_TEMP/$side-test.log"
+            : > "$aggregate"
+            codes="$RUNNER_TEMP/case-artifact/$side-command-exit-codes.txt"
+            : > "$codes"
+            command_index=0
+            all_passed=true
+            any_test_failure=false
+            mapfile -t commands < <(python -c 'import json,os; print("\n".join(json.loads(os.environ["TARGET_COMMANDS_JSON"])))')
+            original_pwd="$PWD"
+            cd "$work_dir"
+            # Legacy BugsInPy virtualenv activation references $1; with
+            # nounset enabled Bash aborts before the target test can run.
+            set +u
+            source env/bin/activate nondestructive
+            set -u
+            for command in "${commands[@]}"; do
+              command_index=$((command_index+1))
+              printf '\n### command_%s: %s\n' "$command_index" "$command" >> "$aggregate"
+              set +e
+              bash -c "$command" >> "$aggregate" 2>&1
+              rc=$?
+              set -e
+              printf '%s\n' "$rc" >> "$codes"
+              if [ "$rc" -ne 0 ]; then all_passed=false; fi
+              if grep -Eiq '(^FAIL: |^ERROR: |FAILED \(.+\)|FAILED .+::|=+ FAILURES =+|[0-9]+ failed([,[:space:]]|$))' "$aggregate"; then
+                any_test_failure=true
+              fi
+            done
+            {
+              python --version
+              python -c 'import sys,platform; print("executable="+sys.executable); print("platform="+platform.platform())'
+              python -m pip freeze
+            } > "$RUNNER_TEMP/$side-runtime-fingerprint.txt"
+            cp "$RUNNER_TEMP/$side-runtime-fingerprint.txt" "$RUNNER_TEMP/case-artifact/$side-runtime-fingerprint.txt"
+            # Virtualenv deactivate may reference unset state under nounset.
+            # Disable nounset for cleanup only, then restore strict mode.
+            set +u
+            deactivate || true
+            set -u
+            cd "$original_pwd"
+            cp "$aggregate" "$RUNNER_TEMP/case-artifact/$side-test.log"
+            target_rc=0
+            if grep -Eq '[1-9]' "$codes"; then target_rc=1; fi
+            printf '%s\n' "$target_rc" > "$RUNNER_TEMP/case-artifact/$side-target-test-exit-code.txt"
+            pass_marker=false
+            if [ "$all_passed" = true ] && grep -Eiq '([0-9]+ passed|^OK$|Ran [0-9]+ tests? in)' "$aggregate"; then pass_marker=true; fi
+            if [ "$target_rc" -eq 0 ] && [ "$pass_marker" = true ]; then
+              echo "$side target command set passed; raw output still requires human review" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+            elif [ "$target_rc" -ne 0 ] && [ "$any_test_failure" = true ]; then
+              echo "$side has test-failure signature; human review must determine whether the intended root-cause test failed" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+            else
+              echo "$side target command set did not yield a valid pass/fail classification; treat as environment/harness uncertainty" > "$RUNNER_TEMP/case-artifact/$side-status.txt"
+            fi
+            echo "checkout_exit=$checkout_rc compile_exit=$compile_rc target_set_exit=$target_rc all_commands_passed=$all_passed test_failure_signature=$any_test_failure pass_marker=$pass_marker" >> "$RUNNER_TEMP/case-artifact/$side-status.txt"
+          }
+
+          run_side fixed 1 "$RUNNER_TEMP/fixed-root"
+          run_side buggy 0 "$RUNNER_TEMP/buggy-root"
+
+          python - <<'PY'
+          import hashlib,json,os,pathlib,platform
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"case-artifact"
+          def text(name):
+              p=root/name
+              return p.read_text(encoding="utf-8",errors="replace").strip() if p.exists() else ""
+          def integer(name):
+              v=text(name)
+              try:return int(v.splitlines()[0]) if v else None
+              except ValueError:return None
+          def commit(name):
+              v=text(name)
+              return v.splitlines()[0] if v else None
+          def failure(side):
+              v=text(side+"-status.txt")
+              return "test_failure_signature=true" in v or ("test-failure signature" in v and "human review" in v)
+          def passed(side):
+              return "pass_marker=true" in text(side+"-status.txt")
+          import re
+          def runtime_version(name):
+              value=text(name)
+              match=re.search(r"^Python (\d+\.\d+\.\d+)$",value,re.MULTILINE)
+              return match.group(1) if match else None
+          buggy_runtime=runtime_version("buggy-runtime-fingerprint.txt")
+          fixed_runtime=runtime_version("fixed-runtime-fingerprint.txt")
+          # Runner Python is not necessarily the project venv Python; check both sides.
+          runtime=buggy_runtime if buggy_runtime and buggy_runtime==fixed_runtime else None
+          runtime_matches=bool(runtime and runtime==os.environ["EXPECTED_PYTHON"])
+          def sha(name):
+              p=root/name
+              return hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else None
+          run_url="https://github.com/"+os.environ["GITHUB_REPOSITORY"]+"/actions/runs/"+os.environ["GITHUB_RUN_ID"]
+          summary={
+            "case_id":os.environ["CASE_ID"],
+            "workflow_run_url":run_url,
+            "buggy_test_log_relative_path":"buggy-test.log",
+            "fixed_test_log_relative_path":"fixed-test.log",
+            "runner_runtime_fingerprint_sha256":sha("runner-runtime-fingerprint.txt"),
+            "buggy_runtime_python_observed":buggy_runtime,
+            "fixed_runtime_python_observed":fixed_runtime,
+            "buggy_runtime_fingerprint_sha256":sha("buggy-runtime-fingerprint.txt"),
+            "fixed_runtime_fingerprint_sha256":sha("fixed-runtime-fingerprint.txt"),
+            "dataset_commit":os.environ["BUGSINPY_COMMIT"],
+            "target_test_commands":json.loads(os.environ["TARGET_COMMANDS_JSON"]),
+            "expected_run_test_sha256":os.environ["EXPECTED_RUN_TEST_SHA256"],
+            "dataset_recorded_python":os.environ["EXPECTED_PYTHON"],
+            "runtime_python_observed":runtime,
+            "runtime_matches_metadata":runtime_matches,
+            "expected_buggy_commit":os.environ["EXPECTED_BUGGY"],
+            "observed_buggy_base_commit":commit("buggy-actual-commit.txt"),
+            "expected_fixed_commit_reference":os.environ["EXPECTED_FIXED"],
+            "observed_fixed_base_commit":commit("fixed-actual-commit.txt"),
+            "fixed_tree_representation":"BugsInPy may apply changed files from the fixed commit to a worktree whose HEAD remains the buggy base; review base HEAD, diff, statuses and raw logs.",
+            "buggy_target_test_exit_code":integer("buggy-target-test-exit-code.txt"),
+            "fixed_target_test_exit_code":integer("fixed-target-test-exit-code.txt"),
+            "buggy_failure_signature_present":failure("buggy"),
+            "fixed_pass_marker_present":passed("fixed"),
+            "buggy_status":text("buggy-status.txt"),
+            "fixed_status":text("fixed-status.txt"),
+            "technical_pair_automation_status":"signals-only-human-review-required",
+            "accepted_for_confirmatory":False,
+            "confirmatory_eligible":False,
+            "license_reviewed":False,
+            "ground_truth_reviewed_by_two":False,
+            "evidence_levels_reviewed_by_two":False,
+            "leakage_and_prior_exposure_reviewed":False,
+            "llm_inference_performed":False
+          }
+          (root/"summary.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          PY
+        env:
+          PROJECT: ${{ matrix.project }}
+          BUG_ID: ${{ matrix.bug_id }}
+          CASE_ID: ${{ matrix.case_id }}
+          TARGET_COMMANDS_JSON: ${{ toJSON(matrix.execution_test_commands) }}
+          INSTALL_WORKTREE_PACKAGE: ${{ matrix.install_worktree_package }}
+          EXPECTED_PYTHON: ${{ matrix.python_version }}
+          EXPECTED_BUGGY: ${{ matrix.buggy_commit }}
+          EXPECTED_FIXED: ${{ matrix.fixed_commit }}
+          EXPECTED_RUN_TEST_SHA256: ${{ matrix.run_test_sha256 }}
+
+      - name: Finalize portable checksums and triage audit record
+        if: always()
+        shell: bash {0}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/case-artifact"
+          if [ ! -f "$RUNNER_TEMP/case-artifact/summary.json" ]; then
+            python3 - <<'PY'
+          import json,os,pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"case-artifact"
+          p=root/"summary.json"
+          p.write_text(json.dumps({"case_id":os.environ["CASE_ID"],"setup_state":"failed_before_summary","accepted_for_confirmatory":False,"confirmatory_eligible":False,"llm_inference_performed":False},indent=2)+"\n",encoding="utf-8")
+          PY
+          fi
+          cd "$RUNNER_TEMP/case-artifact"
+          rm -f SHA256SUMS artifact-audit.json artifact-audit.sha256 SHA256SUMS.copy
+          find . -maxdepth 1 -type f ! -name SHA256SUMS ! -name artifact-audit.json -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+          sha256sum -c SHA256SUMS
+          python3 "$GITHUB_WORKSPACE/scripts/audit_evidence_abstention_triage_artifact.py" --root "$RUNNER_TEMP/case-artifact" --output "$RUNNER_TEMP/case-artifact/artifact-audit.json"
+          printf '%s  ./artifact-audit.json\n' "$(sha256sum artifact-audit.json | cut -d ' ' -f 1)" >> SHA256SUMS
+          sha256sum -c SHA256SUMS
+        env:
+          CASE_ID: ${{ matrix.case_id }}
+
+      - name: Upload raw case-level technical screening package (never auto-accept)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-abstention-cohort-${{ matrix.case_id }}-technical-screen
+          path: ${{ runner.temp }}/case-artifact/
+          if-no-files-found: warn
+          retention-days: 30

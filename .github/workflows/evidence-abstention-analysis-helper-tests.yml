@@ -1,0 +1,48 @@
+name: Evidence Abstention Analysis Helper Tests (Synthetic Data Only)
+
+on:
+  push:
+    branches:
+      - "research/evidence-abstention-draft-2026-10-19"
+    paths:
+      - "scripts/analyze_evidence_abstention_results.py"
+      - "tests/test_analyze_evidence_abstention_results.py"
+      - "scripts/analyze_evidence_abstention_rater_agreement.py"
+      - "tests/test_analyze_evidence_abstention_rater_agreement.py"
+      - "research_candidates/evidence_abstention/BLINDED_RATER_SCORES_TEMPLATE.csv"
+      - "research_candidates/evidence_abstention/RATER_AGREEMENT_PROTOCOL.md"
+      - ".github/workflows/evidence-abstention-analysis-helper-tests.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/analyze_evidence_abstention_results.py"
+      - "tests/test_analyze_evidence_abstention_results.py"
+      - ".github/workflows/evidence-abstention-analysis-helper-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile analysis helpers without executing a model
+        run: |
+          python -m py_compile scripts/analyze_evidence_abstention_results.py
+          python -m py_compile scripts/analyze_evidence_abstention_rater_agreement.py
+
+      - name: Run synthetic analysis and agreement helper tests only
+        run: |
+          python -m unittest discover -s tests -p 'test_analyze_evidence_abstention_results.py' -v
+          python -m unittest discover -s tests -p 'test_analyze_evidence_abstention_rater_agreement.py' -v

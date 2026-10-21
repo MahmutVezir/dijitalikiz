@@ -88,6 +88,46 @@
     {
       "path": "research_candidates/evidence_abstention/TUBITAK_2204A_JURY_CRITERIA_CHECKLIST_2026-10-21.md",
       "permission": "use_as_submission_quality_checklist"
+    },
+    {
+      "path": "scripts/analyze_evidence_abstention_results.py",
+      "permission": "predeclared primary analysis plus separately reported invalid-output conservative sensitivity; fail-closed readiness prerequisites"
+    },
+    {
+      "path": "tests/test_analyze_evidence_abstention_results.py",
+      "permission": "synthetic-only tests for analysis math and preregistration gates"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/ANALYSIS_RUNBOOK.md",
+      "permission": "predeclared analysis execution and confidence-interval method"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/ADJUDICATED_RESULTS_TEMPLATE.csv",
+      "permission": "empty output-rating schema template; contains no experiment data"
+    },
+    {
+      "path": ".github/workflows/evidence-abstention-analysis-helper-tests.yml",
+      "permission": "synthetic analysis-code tests only; no inference"
+    },
+    {
+      "path": "scripts/analyze_evidence_abstention_rater_agreement.py",
+      "permission": "fail-closed blinded rater agreement analysis; no case acceptance"
+    },
+    {
+      "path": "tests/test_analyze_evidence_abstention_rater_agreement.py",
+      "permission": "synthetic-only tests for panel separation and agreement calculations"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/RATER_AGREEMENT_PROTOCOL.md",
+      "permission": "draft blind scoring and inter-rater agreement protocol; not yet frozen"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/BLINDED_RATER_SCORES_TEMPLATE.csv",
+      "permission": "empty locked-independent-ratings schema; no human scoring data"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/COHORT_TECHNICAL_FINDINGS_2026-10-21.md",
+      "permission": "traceable no-acceptance technical findings for predeclared cohort, including the black-3 artifact review; not a final human gate decision"
     }
   ],
   "mirrored_reference_docs": [

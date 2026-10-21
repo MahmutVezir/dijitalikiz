@@ -108,3 +108,40 @@ Bu çalışma için başka yarışma veya ayrı araştırma hattı yürütülmey
 
  
 **Exact-runtime smoke note:** The previously exposed `BugsInPy-tqdm-1` diagnostic now completed under its metadata Python 3.6.9. Buggy target test failed with the target TypeError and a teardown error; fixed target test passed. This case remains permanently excluded. See [the data-feasibility record](DATA_FEASIBILITY.md). The initial diagnostic ZIP's embedded checksum list had runner-absolute paths; a follow-up workflow fix adds portable relative checksums and self-validation, pending its next CI run.
+
+
+## Aşama 1 devamı — analiz sözleşmesi ve ilk sekiz ön-kohort denemesi
+
+- [Analiz runbook'u](ANALYSIS_RUNBOOK.md) ve boş [adjudike sonuç şablonu](ADJUDICATED_RESULTS_TEMPLATE.csv) eklendi. Sonuç betiği [`scripts/analyze_evidence_abstention_results.py`](../../scripts/analyze_evidence_abstention_results.py) gerçek puanlama tablosu olmadan deney sonucu üretmez ve analiz çağrısında ayrıca kapalı inference, açık veri kapısı, preregistration, iki puanlayıcı protokolü, kalibrasyon, model/runtime doğrulaması ve dondurulmuş hash'leri şart koşar.
+- Analiz yardımcısının sentetik veriye dayalı 9 testi geçti: [run 39647152364](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39647152364). Bu, analiz kodunun matematik/şema kapılarını test eder; gerçek model verisi değildir.
+- [İlk sekiz önceden sıralanmış adayın teknik taraması](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39647103338) hâlen yürütülüyor. İlk turda upstream BugsInPy derleme betiğinin GitHub runner'ında bulunmayan `~/.bashrc` nedeniyle hata verdiği gözlendi; hiçbir hedef test sonucu üretilmedi. Workflow'a boş `~/.bashrc` oluşturma düzeltmesi eklendi; yeni koşu bu düzeltmeyi sınayacak.
+- Sekiz adayın hiçbiri kabul edilmiş sayılmaz; çalışma kayıtları `accepted_for_confirmatory=false`, `llm_inference_performed=false` olarak kalır. Teknik tarama sonuçları insanın kök neden, lisans, kanıt yeterliliği veya maruziyet onayı yerine geçmez.
+
+
+## Kör puanlayıcı güvenilirliği
+
+- [Kör puanlayıcılar arası uyum protokolü](RATER_AGREEMENT_PROTOCOL.md) ve boş [ham puanlama şablonu](BLINDED_RATER_SCORES_TEMPLATE.csv) eklendi.
+- [Uyum analiz betiği](../../scripts/analyze_evidence_abstention_rater_agreement.py) her görevi iki bağımsız puanlayıcı ile, kök neden ve kanıtsal destek panellerini birbirinden ayırarak değerlendirir; ham anlaşma, Cohen kappa, kategori sayıları ve bootstrap %95 aralığını raporlar.
+- [Analiz CI'sı](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39649070365) sonuç analizi için 10/10 ve puanlayıcı uyumu için 7/7 sentetik testi geçti. Bu rapor gerçek insan puanları değildir; doğrulanmış kabul edilen vaka sayısını değiştirmez.
+
+
+## Yeni doğrulama kayıtları — 21 Ekim 2026
+
+- [İlk-dalga teknik tarama sonuçları](FIRST_WAVE_TRIAGE_RESULTS_2026-10-21.md): run [39644280706](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39644280706) tamamlandı; 7/7 teknik işler/artefakt denetimleri geçti, ancak tüm vakalar triage amaçlı ve ana doğrulayıcı örneklem dışı.
+- [Yürütme haritası](THREE_PHASE_EXECUTION_MAP_2026-10-21.md): son triage kararı ve inference kapılarının güncel durumu.
+- [Literatür ve özgünlük sınırı](LITERATURE_REVIEW.md): 21 Ekim güncellemesinde 2026 fault-localization ve hallucination azaltma çalışmaları eklendi. Sistematik tarama ve özgünlük kanıtı hâlâ tamamlanmış sayılmıyor.
+- Güncel Aşama 1 kararları, 60 vaka/8 proje alt sınırı, panel ayrımı, runtime/hash/pre-registration kapıları tamamlanmadan model çıkarımı yapılmasına izin vermiyor.
+
+
+## Kohort teknik bulguları
+
+- [İlk dondurulmuş kohortun teknik bulguları](COHORT_TECHNICAL_FINDINGS_2026-10-21.md) içinde black-3 hedef testinin ham buggy-fail/fixed-pass sinyali, patch ile test arasındaki bağlantı, artefakt hash'leri ve eksik insan değerlendirme kapıları kaydedildi.
+- Aynı belge, ilk koşudaki kurulum/aktivasyon hatalarını gerçek hata üretimi saymadığımızı ve diğer adayları test çifti doğrulanmadan kabul etmediğimizi açıkça ayırır.
+- Güncel runner düzeltmesini denetleyen [kohort batch 1 Actions koşusu](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39651002472) halen incelenmelidir; yalnızca o koşunun biten artefaktları teknik durum raporuna eklenir.
+
+- [Black-3 ön teknik inceleme kaydı](PRELIMINARY_CASE_SCREEN_BugsInPy-black-3_2026-10-21.md): ham teknik test çifti ve MIT lisansı ilk kontrolü belgelenmiştir; bağımsız insan panelleri tamamlanmadığı için vaka kabul edilmemiştir.
+
+
+### Geçersiz çıktıların duyarlılık analizi
+
+Analiz betiği, birincil insan-adjudikeli E3 outcome'unu değiştirmeden, bütün E3 `invalid_output` kararlarını güvensiz sayan ayrı bir muhafazakâr duyarlılık hesaplaması da üretir. Bu, protokolde vaat edilen iki uç senaryolu raporlamayı teknik olarak destekler. Sentetik testler hesaplama kodunu denetler; gerçek araştırma sonucu değildir.
