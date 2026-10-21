@@ -241,6 +241,24 @@ def validate_and_analyze(rows, accepted, minimum_cases=60, minimum_projects=8):
 def analyze(registry_path, manifest_path, ratings_path):
     _, accepted = load_accepted_registry(registry_path)
     manifest = json.loads(Path(manifest_path).read_text(encoding="utf-8"))
+    # Analysis must fail closed unless the project has explicitly passed every
+    # pre-inference gate and a timestamped preregistration is recorded.
+    if manifest.get("inference_allowed") is not True:
+        raise ValueError("analysis blocked: manifest has not explicitly authorized the experiment")
+    if manifest.get("dataset_validation_gate") != "CLOSED":
+        raise ValueError("analysis blocked: dataset validation gate is not CLOSED")
+    if manifest.get("preregistration_status") != "registered" or not manifest.get("preregistration_uri"):
+        raise ValueError("analysis blocked: verifiable preregistration URI is missing")
+    if manifest.get("two_rater_protocol_frozen") is not True:
+        raise ValueError("analysis blocked: two-rater protocol is not frozen")
+    if manifest.get("reviewer_calibration_complete") is not True:
+        raise ValueError("analysis blocked: reviewer calibration is not complete")
+    model = manifest.get("model")
+    if not isinstance(model, dict) or model.get("runtime_verification") != "passed":
+        raise ValueError("analysis blocked: exact model/tokenizer/runtime verification has not passed")
+    frozen = manifest.get("frozen_hashes")
+    if not isinstance(frozen, dict) or not frozen:
+        raise ValueError("analysis blocked: frozen protocol hashes are missing")
     ids = manifest.get("case_ids")
     if not isinstance(ids, list) or set(ids) != set(accepted) or len(ids) != len(accepted):
         raise ValueError("manifest case_ids must exactly match accepted CASE_REGISTRY records")
