@@ -1,7 +1,7 @@
 {
   "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
   "record_type": "researcher_exposure_exclusion_log",
-  "version": "1.2-draft",
+  "version": "1.3-draft",
   "date": "2026-10-21",
   "rule": "Any candidate used to develop/debug the technical validation pipeline, where source/test/patch behavior or raw test results were inspected, is permanently excluded from the confirmatory sample irrespective of outcome. The exclusion is methodological, not a judgment that the upstream bug is invalid.",
   "no_inference_performed": true,
@@ -77,9 +77,24 @@
         "BugsInPy-luigi-3"
       ],
       "evidence": "This batch was used to validate the pytest bootstrap and diagnose a parser that rejected whitespace in a fixed-commit metadata line. The parser has since been corrected. Exclude the batch independent of any test outcome."
+    },
+    {
+      "category": "V4 test-dependency and runner debugging",
+      "workflow_run": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39661470039",
+      "cases": [
+        "BugsInPy-matplotlib-2",
+        "BugsInPy-pandas-2",
+        "BugsInPy-PySnooper-3",
+        "BugsInPy-sanic-3",
+        "BugsInPy-scrapy-3",
+        "BugsInPy-spacy-2",
+        "BugsInPy-thefuck-3",
+        "BugsInPy-tornado-3"
+      ],
+      "evidence": "This batch was used to diagnose missing project test dependencies and runner bootstrap behavior. The inspected Matplotlib-2 log shows numpy is missing before test collection; the PySnooper-3 log shows python_toolbox is missing before test collection. Neither is a valid bug-specific test pair. Exclude the entire batch independent of any other outcome."
     }
   ],
-  "next_action": "The current V4 intake skips 24 queued debugging cases; the 13 earlier feasibility/first-wave cases are already absent from the 487-row source queue. Wait for the V4 workflow to finish and inspect each raw artifact. Accept no case until runtime/test-pair, license, root-cause, evidence-sufficiency, leakage and independent reviewer gates pass.",
+  "next_action": "V5 is the current metadata-only intake, skipping 32 debug-exposure cases. Audit all eight V5 raw artifacts. No case can be accepted until runtime/test-pair, source/license, root-cause, evidence-sufficiency, leakage and independent reviewer gates pass.",
   "rationale": "Do not reuse these candidates as confirmatory evidence; do not silently reinsert them into the queue. Technical pass/fail is not case acceptance.",
   "confirmatory_eligibility": false
 }
