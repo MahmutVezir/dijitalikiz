@@ -100,5 +100,29 @@ class ExactMcNemarTests(unittest.TestCase):
                 MODULE.load_accepted_registry(path)
 
 
+
+    def test_full_analysis_refuses_unopened_scientific_gates(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            registry = root / "CASE_REGISTRY.json"
+            manifest = root / "EXPERIMENT_MANIFEST_STAGE3.json"
+            ratings = root / "ratings.csv"
+            registry.write_text(json.dumps({"records": []}), encoding="utf-8")
+            manifest.write_text(json.dumps({
+                "inference_allowed": False,
+                "dataset_validation_gate": "OPEN",
+                "preregistration_status": "draft",
+                "preregistration_uri": "",
+                "two_rater_protocol_frozen": False,
+                "reviewer_calibration_complete": False,
+                "case_ids": [],
+                "minimum_confirmatory_cases": 60,
+                "minimum_upstream_projects": 8,
+                "model": {"runtime_verification": "not_run"},
+                "frozen_hashes": {}
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "has not explicitly authorized"):
+                MODULE.analyze(registry, manifest, ratings)
+
 if __name__ == "__main__":
     unittest.main()
