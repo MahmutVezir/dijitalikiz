@@ -101,6 +101,42 @@ class TriageArtifactAuditTests(unittest.TestCase):
             self.assertTrue(result["likely_fixture_or_harness_error"])
             self.assertTrue(any("fixture or harness" in w for w in result["warnings"]))
 
+    def test_tox_invocation_wrapper_does_not_mask_target_assertion_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make_artifact(root)
+            (root / "buggy-test.log").write_text(
+                "plugins: cov-4.0.0, mock-3.6.1\\n"
+                "E AssertionError: expected_pre == actual_hook_path[0]\\n"
+                "FAILED tests/test_hooks.py::TestFindHooks::test_find_hook - AssertionError\\n"
+                "ERROR: InvocationError for command pytest (exited with code 1)\\n",
+                encoding="utf-8",
+            )
+            files = sorted(p for p in root.iterdir() if p.is_file() and p.name != "SHA256SUMS")
+            (root / "SHA256SUMS").write_text("".join(f"{digest(p)}  ./{p.name}\\n" for p in files), encoding="utf-8")
+            result = MODULE.audit(root)
+            self.assertTrue(result["integrity_pass"], result["blockers"])
+            self.assertTrue(result["raw_buggy_fail_fixed_pass_signals_present"])
+            self.assertTrue(result["technical_buggy_fail_fixed_pass_signals_present"])
+            self.assertFalse(result["likely_environment_or_harness_error"])
+
+    def test_cuda_driver_warning_does_not_mask_target_assertion_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make_artifact(root)
+            (root / "buggy-test.log").write_text(
+                "E tensorflow/stream_executor/cuda/cuda_driver.cc:318] failed call to cuInit: UNKNOWN ERROR (303)\\n"
+                "E AssertionError: assert 0.0 > 0.0\\n"
+                "FAILED tests/keras/initializers_test.py::test_statefulness[normal] - AssertionError\\n",
+                encoding="utf-8",
+            )
+            files = sorted(p for p in root.iterdir() if p.is_file() and p.name != "SHA256SUMS")
+            (root / "SHA256SUMS").write_text("".join(f"{digest(p)}  ./{p.name}\\n" for p in files), encoding="utf-8")
+            result = MODULE.audit(root)
+            self.assertTrue(result["integrity_pass"], result["blockers"])
+            self.assertTrue(result["technical_buggy_fail_fixed_pass_signals_present"])
+            self.assertFalse(result["likely_environment_or_harness_error"])
+
     def test_missing_dependency_is_not_a_bug_failure_signal(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
