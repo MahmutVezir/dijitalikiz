@@ -140,3 +140,8 @@ Bu çalışma için başka yarışma veya ayrı araştırma hattı yürütülmey
 - Güncel runner düzeltmesini denetleyen [kohort batch 1 Actions koşusu](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39651002472) halen incelenmelidir; yalnızca o koşunun biten artefaktları teknik durum raporuna eklenir.
 
 - [Black-3 ön teknik inceleme kaydı](PRELIMINARY_CASE_SCREEN_BugsInPy-black-3_2026-10-21.md): ham teknik test çifti ve MIT lisansı ilk kontrolü belgelenmiştir; bağımsız insan panelleri tamamlanmadığı için vaka kabul edilmemiştir.
+
+
+### Geçersiz çıktıların duyarlılık analizi
+
+Analiz betiği, birincil insan-adjudikeli E3 outcome'unu değiştirmeden, bütün E3 `invalid_output` kararlarını güvensiz sayan ayrı bir muhafazakâr duyarlılık hesaplaması da üretir. Bu, protokolde vaat edilen iki uç senaryolu raporlamayı teknik olarak destekler. Sentetik testler hesaplama kodunu denetler; gerçek araştırma sonucu değildir.
