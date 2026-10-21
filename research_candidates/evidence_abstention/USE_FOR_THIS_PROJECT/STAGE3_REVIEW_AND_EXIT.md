@@ -60,7 +60,7 @@ Aşama 3'ün tasarım dokümantasyonu tamamlandı; şu işler sonraki veri doğr
 **Model inference:** KAPALI. Yeni proje için doğrulanmış deneysel sonuç yoktur.
 
 
-## 10. 21 Ekim 2026 ön-çıkarım model adayı düzeltmesi
+## Model adayı güncellemesi — 21 Ekim 2026
 
 Daha önce yazılmış GPTQ-Int4 adayının yerine resmi, kuantize edilmemiş [Qwen/Qwen2.5-3B-Instruct](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct) checkpoint'inin `aa8e72537993ba99e69dfaafa59ed015b17504d1` revizyonu, FP16 ve quantization yok ayarlarıyla **yalnızca aday** olarak kaydedildi. Depodaki tarihsel README, önceki GPTQ yüklemesinde başlatılmış parametreler ve geçersiz örnekleme olasılıkları görüldüğünü belirtir. Bu nedenle eski tercihi yeni çalışmaya doğrulanmış kabul ederek taşımadık.
 
