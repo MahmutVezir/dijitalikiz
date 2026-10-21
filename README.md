@@ -55,6 +55,8 @@ TÜBİTAK’ın resmî 2026–2027 sayfasına göre başvuru aralığı 23 Eylü
 
 ## Araştırma belgeleri
 
+- [TÜBİTAK jüri ölçütleri kontrol listesi](research_candidates/evidence_abstention/TUBITAK_2204A_JURY_CRITERIA_CHECKLIST_2026-10-21.md)
+
 - [Ana yürütme planı](research_candidates/evidence_abstention/TUBITAK_2204A_MASTER_PLAN_2026-10-21.md)
 - [Araştırma özeti ve durum panosu](research_candidates/evidence_abstention/README.md)
 - [Hedefli literatür incelemesi](research_candidates/evidence_abstention/LITERATURE_REVIEW.md)
