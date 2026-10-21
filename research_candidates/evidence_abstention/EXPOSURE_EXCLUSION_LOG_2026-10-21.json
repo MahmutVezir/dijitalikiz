@@ -1,0 +1,55 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "researcher_exposure_exclusion_log",
+  "version": "1.0-draft",
+  "date": "2026-10-21",
+  "rule": "Any candidate used to develop/debug the technical validation pipeline, where source/test/patch behavior or raw test results were inspected, is permanently excluded from the confirmatory sample irrespective of outcome. The exclusion is methodological, not a judgment that the upstream bug is invalid.",
+  "no_inference_performed": true,
+  "accepted_confirmatory_cases_after_exclusions": 0,
+  "categories": [
+    {
+      "category": "earlier feasibility/smoke exposure",
+      "cases": [
+        "BugsInPy-black-1",
+        "BugsInPy-tqdm-1",
+        "BugsInPy-httpie-1",
+        "BugsInPy-youtube-dl-1",
+        "BugsInPy-PySnooper-1"
+      ],
+      "evidence": "Earlier metadata/test/patch feasibility and smoke work recorded in the research branch; see DATA_FEASIBILITY.md."
+    },
+    {
+      "category": "first-wave workflow debugging",
+      "workflow_run": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39644280706",
+      "cases": [
+        "BugsInPy-black-2",
+        "BugsInPy-cookiecutter-1",
+        "BugsInPy-fastapi-1",
+        "BugsInPy-luigi-1",
+        "BugsInPy-sanic-1",
+        "BugsInPy-scrapy-1",
+        "BugsInPy-thefuck-1",
+        "BugsInPy-tornado-1"
+      ],
+      "evidence": "Targets and raw test signals were used while developing and auditing the first no-inference technical triage workflow."
+    },
+    {
+      "category": "first cohort workflow/runtime debugging",
+      "workflow_run": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39653012017",
+      "cases": [
+        "BugsInPy-ansible-1",
+        "BugsInPy-black-3",
+        "BugsInPy-cookiecutter-2",
+        "BugsInPy-fastapi-2",
+        "BugsInPy-httpie-2",
+        "BugsInPy-keras-1",
+        "BugsInPy-luigi-2",
+        "BugsInPy-matplotlib-1"
+      ],
+      "evidence": "This batch exposed source/test behavior while the runner, shell activation, dependency setup and artifact checks were still being debugged. Exclude this entire batch even if a later artefact shows a technically promising pair."
+    }
+  ],
+  "next_action": "Before any further cohort screen, create a new metadata queue/cohort version that removes all exposure-listed cases while preserving the old queue, cohort and run artefacts as immutable historical records. Resume with the next deterministic queue ranks only after the workflow is frozen and tests pass.",
+  "rationale": "Do not reuse these candidates as confirmatory evidence; do not silently reinsert them into the queue. Technical pass/fail is not case acceptance.",
+  "confirmatory_eligibility": false
+}
