@@ -282,7 +282,11 @@ jobs:
             mapfile -t commands < <(python -c 'import json,os; print("\n".join(json.loads(os.environ["TARGET_COMMANDS_JSON"])))')
             original_pwd="$PWD"
             cd "$work_dir"
+            # Legacy BugsInPy virtualenv activation references $1; with
+            # nounset enabled Bash aborts before the target test can run.
+            set +u
             source env/bin/activate
+            set -u
             for command in "${commands[@]}"; do
               command_index=$((command_index+1))
               printf '\n### command_%s: %s\n' "$command_index" "$command" >> "$aggregate"
