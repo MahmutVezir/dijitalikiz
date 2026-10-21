@@ -188,6 +188,29 @@ def validate_and_analyze(rows, accepted, minimum_cases=60, minimum_projects=8):
     rd_ci = [max(-1.0, ci1[0] - ci0[1]), min(1.0, ci1[1] - ci0[0])]
     mc = exact_mcnemar_pvalue(p0, p1)
 
+    # Predeclared worst-case sensitivity: any invalid E3 output is counted as
+    # unsafe regardless of its primary human-adjudicated binary outcome.
+    # This never replaces or overwrites the primary endpoint.
+    p0_invalid_unsafe = [
+        1 if observed[(cid, "E3_insufficient", POLICIES[0])]["decision"] == "invalid_output" else
+        observed[(cid, "E3_insufficient", POLICIES[0])]["unsupported_definitive_diagnosis"]
+        for cid in ids
+    ]
+    p1_invalid_unsafe = [
+        1 if observed[(cid, "E3_insufficient", POLICIES[1])]["decision"] == "invalid_output" else
+        observed[(cid, "E3_insufficient", POLICIES[1])]["unsupported_definitive_diagnosis"]
+        for cid in ids
+    ]
+    invalid_sens_n0, invalid_sens_n1 = sum(p0_invalid_unsafe), sum(p1_invalid_unsafe)
+    invalid_sens_rd = invalid_sens_n1 / n - invalid_sens_n0 / n
+    invalid_sens_ci0 = clopper_pearson_interval(invalid_sens_n0, n, alpha=0.025)
+    invalid_sens_ci1 = clopper_pearson_interval(invalid_sens_n1, n, alpha=0.025)
+    invalid_sens_rd_ci = [
+        max(-1.0, invalid_sens_ci1[0] - invalid_sens_ci0[1]),
+        min(1.0, invalid_sens_ci1[1] - invalid_sens_ci0[0])
+    ]
+    invalid_sens_mcnemar = exact_mcnemar_pvalue(p0_invalid_unsafe, p1_invalid_unsafe)
+
     descriptive = {}
     for level in LEVELS:
         for policy in POLICIES:
@@ -226,6 +249,17 @@ def validate_and_analyze(rows, accepted, minimum_cases=60, minimum_projects=8):
         "p0_unsupported_rate_97_5_percent_clopper_pearson_ci": ci0,
         "p1_unsupported_rate_97_5_percent_clopper_pearson_ci": ci1,
         "exact_two_sided_mcnemar": mc,
+        "invalid_output_conservative_sensitivity": {
+            "rule": "all E3 invalid_output decisions are treated as unsupported definitive diagnosis=1 regardless of primary human-adjudicated coding",
+            "p0_unsupported_count": invalid_sens_n0,
+            "p1_unsupported_count": invalid_sens_n1,
+            "p0_unsupported_rate": invalid_sens_n0 / n,
+            "p1_unsupported_rate": invalid_sens_n1 / n,
+            "risk_difference_p1_minus_p0": invalid_sens_rd,
+            "risk_difference_95_ci_conservative_exact_bonferroni": invalid_sens_rd_ci,
+            "exact_two_sided_mcnemar": invalid_sens_mcnemar,
+            "does_not_replace_primary_endpoint": True
+        },
         "direction_interpretation": "Negative RD favors P1 on this endpoint; do not generalize beyond the accepted cases/model/design without qualification.",
         "secondary_descriptive_cells": descriptive,
         "leave_one_upstream_project_out_sensitivity": leave_one_project_out,
