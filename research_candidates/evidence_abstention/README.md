@@ -108,3 +108,11 @@ Bu çalışma için başka yarışma veya ayrı araştırma hattı yürütülmey
 
  
 **Exact-runtime smoke note:** The previously exposed `BugsInPy-tqdm-1` diagnostic now completed under its metadata Python 3.6.9. Buggy target test failed with the target TypeError and a teardown error; fixed target test passed. This case remains permanently excluded. See [the data-feasibility record](DATA_FEASIBILITY.md). The initial diagnostic ZIP's embedded checksum list had runner-absolute paths; a follow-up workflow fix adds portable relative checksums and self-validation, pending its next CI run.
+
+
+## Aşama 1 devamı — analiz sözleşmesi ve ilk sekiz ön-kohort denemesi
+
+- [Analiz runbook'u](ANALYSIS_RUNBOOK.md) ve boş [adjudike sonuç şablonu](ADJUDICATED_RESULTS_TEMPLATE.csv) eklendi. Sonuç betiği [`scripts/analyze_evidence_abstention_results.py`](../../scripts/analyze_evidence_abstention_results.py) gerçek puanlama tablosu olmadan deney sonucu üretmez ve analiz çağrısında ayrıca kapalı inference, açık veri kapısı, preregistration, iki puanlayıcı protokolü, kalibrasyon, model/runtime doğrulaması ve dondurulmuş hash'leri şart koşar.
+- Analiz yardımcısının sentetik veriye dayalı 9 testi geçti: [run 39647152364](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39647152364). Bu, analiz kodunun matematik/şema kapılarını test eder; gerçek model verisi değildir.
+- [İlk sekiz önceden sıralanmış adayın teknik taraması](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39647103338) hâlen yürütülüyor. İlk turda upstream BugsInPy derleme betiğinin GitHub runner'ında bulunmayan `~/.bashrc` nedeniyle hata verdiği gözlendi; hiçbir hedef test sonucu üretilmedi. Workflow'a boş `~/.bashrc` oluşturma düzeltmesi eklendi; yeni koşu bu düzeltmeyi sınayacak.
+- Sekiz adayın hiçbiri kabul edilmiş sayılmaz; çalışma kayıtları `accepted_for_confirmatory=false`, `llm_inference_performed=false` olarak kalır. Teknik tarama sonuçları insanın kök neden, lisans, kanıt yeterliliği veya maruziyet onayı yerine geçmez.
