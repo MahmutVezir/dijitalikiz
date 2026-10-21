@@ -257,7 +257,7 @@ jobs:
             # Bash process. Some runner environments export SHELLOPTS=nounset;
             # its virtualenv activate script reads $1 and aborts before tests.
             set +e
-            ( cd "$work_dir" && env -u SHELLOPTS bash --noprofile --norc "$RUNNER_TEMP/BugsInPy/framework/bin/bugsinpy-compile" ) > "$RUNNER_TEMP/$side-compile.log" 2>&1
+            ( cd "$work_dir" && env -u SHELLOPTS -u BASH_ENV bash --noprofile --norc "$RUNNER_TEMP/BugsInPy/framework/bin/bugsinpy-compile" ) > "$RUNNER_TEMP/$side-compile.log" 2>&1
             compile_rc=$?
             set -e
             cp "$RUNNER_TEMP/$side-compile.log" "$RUNNER_TEMP/case-artifact/$side-compile.log"
@@ -268,7 +268,7 @@ jobs:
 
             if [ "$INSTALL_WORKTREE_PACKAGE" = "true" ]; then
               set +e
-              ( cd "$work_dir" && source env/bin/activate && python -m pip install -e . ) > "$RUNNER_TEMP/$side-install.log" 2>&1
+              ( cd "$work_dir" && source env/bin/activate nondestructive && python -m pip install -e . ) > "$RUNNER_TEMP/$side-install.log" 2>&1
               install_rc=$?
               set -e
               cp "$RUNNER_TEMP/$side-install.log" "$RUNNER_TEMP/case-artifact/$side-install.log"
@@ -291,7 +291,7 @@ jobs:
             # Legacy BugsInPy virtualenv activation references $1; with
             # nounset enabled Bash aborts before the target test can run.
             set +u
-            source env/bin/activate
+            source env/bin/activate nondestructive
             set -u
             for command in "${commands[@]}"; do
               command_index=$((command_index+1))
