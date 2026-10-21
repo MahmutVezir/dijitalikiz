@@ -57,5 +57,59 @@ class PreflightTests(unittest.TestCase):
             self.assertIs(report["model_inference_performed"], False)
 
 
+    def test_rejects_accepted_case_with_unreproduced_bug_or_runtime_mismatch(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fixture(root)
+            project = root / "research_candidates" / "evidence_abstention"
+            manifest_path = project / "EXPERIMENT_MANIFEST_STAGE3.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["case_ids"] = ["BugsInPy-demo-1"]
+            manifest["minimum_confirmatory_cases"] = 1
+            manifest["minimum_upstream_projects"] = 1
+            manifest["target_independent_cases"] = 1
+            manifest["planned_model_outputs_at_target"] = 6
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            registry_path = project / "CASE_REGISTRY.json"
+            record = {
+                "case_id": "BugsInPy-demo-1",
+                "accepted_for_confirmatory": True,
+                "upstream_project": "demo",
+                "source_repository": "https://example.invalid/demo",
+                "license_reference": "LICENSE",
+                "buggy_commit": "a" * 40,
+                "fixed_commit": "b" * 40,
+                "test_command": "pytest tests/test_demo.py",
+                "runtime_fingerprint": "python 3.8.18; pinned dependencies",
+                "root_cause_reference": "internal blind ground-truth record",
+                "metadata_python_version": "3.6.9",
+                "runtime_python_version": "3.8.18",
+                "buggy_test_log_uri": "artifact://buggy.log",
+                "fixed_test_log_uri": "artifact://fixed.log",
+                "license_reviewed": True,
+                "leakage_reviewed": True,
+                "prior_exposure_clearance": True,
+                "evidence_levels_reviewed": True,
+                "test_pair_verified": True,
+                "buggy_test_outcome": "environment_error",
+                "fixed_test_outcome": "target_test_passed",
+                "ground_truth_reviewers": 2,
+                "evidence_reviewers": 2,
+                "buggy_test_log_sha256": "c" * 64,
+                "fixed_test_log_sha256": "d" * 64,
+                "runtime_fingerprint_sha256": "e" * 64,
+                "evidence_packet_sha256": {
+                    "E1_sufficient": "1" * 64,
+                    "E2_partial": "2" * 64,
+                    "E3_insufficient": "3" * 64,
+                },
+            }
+            registry_path.write_text(json.dumps({"records": [record]}), encoding="utf-8")
+            report = MODULE.evaluate(root)
+            self.assertFalse(report["ready"])
+            self.assertTrue(any("runtime Python does not match" in b for b in report["blockers"]))
+            self.assertTrue(any("buggy-side target failure was not reproduced" in b for b in report["blockers"]))
+
 if __name__ == "__main__":
     unittest.main()
