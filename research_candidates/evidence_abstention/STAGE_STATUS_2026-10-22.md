@@ -120,3 +120,13 @@ This run is **not** an official or confirmatory result and does not contradict t
 PR [#91](https://github.com/MahmutVezir/dijitalikiz/pull/91) merged the Qwen adapter fix to pass an explicit attention mask and fail closed on candidate prompt/seed integrity defects. The CI run at the time caught two stale test assertions in the wider suite; repairs are being submitted separately. The registered study's inference manifest remains closed and the accepted case registry remains empty.
 
 The two one-off Kaggle smoke workflow definitions used for engineering checks have now been preserved as inactive historical files outside `.github/workflows/`. This addresses the repository's single-canonical-Kaggle-workflow validation without deleting the historical run or its outputs. The official inference manifest remains closed.
+
+## Son güncelleme — V9 offset-8 tarama ve maruziyet koruması
+
+**Workflow:** [39841744307](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39841744307). Sekiz vaka için dondurulmuş seçim artefaktı doğrulandı. Altı hedefte buggy-fail/fixed-pass teknik sinyali var: Tqdm-6, YouTube-dl-6, Ansible-6, Black-8, FastAPI-7 ve Keras-6. Bunlar kabul edilmiş vakalar değildir; patch/test diff'leri, lisans ve kök neden bağımsız insan incelemesi bekliyor. Luigi-7'de pinli pytest kurulumu iki tarafta da başarısız oldu; Matplotlib-6 matrix işi vaka artefaktı üretmeden başarısız oldu. Hiçbir model çıkarımı yapılmadı.
+
+Ayrıntılı handoff: [STAGE1_V9_OFFSET8_REVIEW_HANDOFF_2026-10-22.md](STAGE1_V9_OFFSET8_REVIEW_HANDOFF_2026-10-22.md). Ham vaka ve hash bilgileri: [EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json](EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json). Bu grubun sekiz ID'sinin tamamı, sonuçlarından bağımsız olarak doğrulayıcı örneklemden kalıcı şekilde dışlandı; toplam exposure ledger 32 ID içeriyor ve CASE_REGISTRY boş.
+
+## Kuyruk koruması ve CI durumu
+
+Erişim/örneklem maruziyetini önleyen kuyruk oluşturucu ana dala alındı. Oluşturucu tarihli exposure ledger'ı okuyor, bütün kaydedilmiş ID'leri atlıyor, ledger SHA-256'sını özet kaydına yazıyor ve ledger bozuk/tutarsızsa fail-closed davranıyor. Ancak bu değişikliklerden sonra metadata-builder ve genel Research Validation CI işlerinde başarısızlık görüldü. GitHub Actions günlükleri mevcut erişim yolunda alınamadığından neden henüz doğrulanmadı; bu nedenle son genel doğrulamanın geçtiği iddia edilmiyor. Sonraki mühendislik önceliği bu regresyonu tanılamak ve tüm CI kontrollerini yeşile çevirmek. Bilimsel inference kapısı açık değil.
