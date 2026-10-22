@@ -11,7 +11,7 @@ This supplemental note was prepared after examining source metadata, original fi
 
 | Candidate | Downloaded artifact | Archive SHA-256 | Inner `SHA256SUMS` |
 |---|---:|---|---|
-| BugsInPy-Keras-5 | `12450001876` | `66e5daa97b9e80b42c5f468c9dbb1eaf027cb21c3c1011644f345a07d38ace9` | All entries verified locally |
+| BugsInPy-Keras-5 | `12450001876` | `66e5daa97b9e80b42c5f468bbeeff1eaf027cb21c3c1011644f345a07d38ace9` | All entries verified locally |
 | BugsInPy-Tornado-6 | `12450860559` | `c73063caf15958f297a7cfa8ec0a29355ba888b35d6178c10b0001e2e93dad26` | All entries verified locally |
 
 The artifact archives' digests match the stored candidate digests. The machine-readable summaries themselves explicitly report `manual_review_required=true`, `accepted_for_confirmatory=false`, and all human review gates still open.
