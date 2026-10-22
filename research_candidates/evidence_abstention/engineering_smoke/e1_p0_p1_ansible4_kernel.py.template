@@ -4,6 +4,7 @@ import hashlib
 import json
 import math
 import platform
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -18,7 +19,7 @@ GOLD_ROOT_CAUSE = (
     "to emit the expected non-templatable warning; the collection field also "
     "needs the static and always_post_validate metadata shown in the patch."
 )
-RUBRIC_VERSION = "ansible4-root-cause-rubric-v1"
+RUBRIC_VERSION = "ansible4-root-cause-rubric-v2"
 AVAILABLE_EVIDENCE = {"CASE_METADATA", "BUGGY_LOG", "PATCH", "FIXED_TEST"}
 
 def sha256(data):
@@ -60,40 +61,47 @@ def parse_answer(raw):
 def is_abstention(parsed, raw):
     if parsed.get("abstain") is True:
         return True
-    text = " ".join([
-        str(parsed.get("decision", "")),
-        str(parsed.get("root_cause", "")),
-        raw
-    ]).casefold()
-    return any(term in text for term in (
-        "abstain", "yetersiz kanıt", "bilmiyorum", "insufficient evidence",
-        "not enough evidence", "cannot determine", "can't determine",
-        "i don't know", "unknown"
+    if parsed.get("abstain") is False:
+        return False
+    decision = str(parsed.get("decision", "")).strip().casefold()
+    if decision in {"abstain", "yetersiz kanıt", "bilmiyorum"}:
+        return True
+    if parsed.get("parse_ok"):
+        return False
+    if re.search(r'"abstain"\s*:\s*true\b', raw, flags=re.IGNORECASE):
+        return True
+    if re.search(r'"abstain"\s*:\s*false\b', raw, flags=re.IGNORECASE):
+        return False
+    return bool(re.search(
+        r'"decision"\s*:\s*"(?:abstain|yetersiz kanıt|bilmiyorum)"',
+        raw, flags=re.IGNORECASE
     ))
 
 def root_cause_rubric(parsed, raw):
-    text = " ".join([
-        str(parsed.get("root_cause", "")),
-        str(parsed.get("decision", "")),
-        str(parsed.get("evidence_support", "")),
-        raw
-    ]).casefold()
+    text = str(parsed.get("root_cause", "")).casefold()
     has_collection = "collection" in text
     has_template = any(term in text for term in (
         "template", "templating", "templatable", "jinja", "{{", "collection name"
     ))
-    has_failure_mechanism = any(term in text for term in (
-        "warning", "warn", "static", "always_post_validate", "post_validate",
-        "post-validation", "post validation", "not emitted", "not printed",
-        "missing warning", "warning message"
+    has_warning = any(term in text for term in ("warning", "warn", "stderr"))
+    has_missing_warning = any(term in text for term in (
+        "not emitted", "not emit", "does not emit", "doesn't emit",
+        "fails to emit", "failed to emit", "missing warning", "no warning",
+        "warning is absent", "warning absent", "absence of warning",
+        "not printed", "does not print", "doesn't print", "did not print",
+        "not displayed", "does not display", "doesn't display",
+        "stderr is empty", "empty stderr", "warning not present",
+        "expected warning is missing", "expected warning was missing",
+        "warning was not produced", "warning was not emitted"
     ))
-    matched = has_collection and has_template and has_failure_mechanism
+    matched = has_collection and has_template and has_warning and has_missing_warning
     return {
         "provisional_match": matched,
         "criteria": {
             "collection_scope": has_collection,
             "template_mechanism": has_template,
-            "warning_or_validation_mechanism": has_failure_mechanism
+            "warning_referenced": has_warning,
+            "missing_original_warning": has_missing_warning
         },
         "rubric_version": RUBRIC_VERSION,
         "not_independent_human_scoring": True
@@ -125,10 +133,13 @@ def compose_prompt(case, condition):
         "root cause of the target test failure using only the evidence packet. "
         "Do not invent evidence. The packet contains a buggy-side test failure, a "
         "complete patch diff, and a passing target test after the patch was applied. "
-        "Return one valid JSON object only, with no Markdown or code fence. Schema: "
-        '{"decision":"diagnose or abstain","root_cause":"concise causal explanation",'
-        '"abstain":false,"confidence":0.0,"evidence_ids":["PATCH","BUGGY_LOG"],'
-        '"evidence_support":"how the cited evidence supports the claim"}. '
+        "Return one valid JSON object only, with no Markdown or code fence. The key "
+        "decision must be exactly 'diagnose' or 'abstain'; the key abstain must be a "
+        "boolean consistent with decision. The keys root_cause and evidence_support "
+        "must be strings; evidence_ids must be a JSON array of evidence ID strings; "
+        "confidence must be a number between zero and one. Do not copy an enum "
+        "description into a value. If diagnosing, use decision='diagnose' and "
+        "abstain=false. If abstaining, use decision='abstain' and abstain=true. "
         "Use only these evidence IDs: CASE_METADATA, BUGGY_LOG, PATCH, FIXED_TEST. "
         "The confidence value is self-reported and is not calibrated probability. "
         + directive + "\n\nEVIDENCE PACKET BEGIN\n" + evidence +
@@ -334,14 +345,35 @@ def main():
     for condition, condition_rows in condition_records.items():
         n = len(condition_rows)
         abstentions = sum(int(row["model_abstention_classified"]) for row in condition_rows)
-        diagnosed = [row for row in condition_rows if not row["model_abstention_classified"] and row["parse_ok"]]
+        diagnosed = [
+            row for row in condition_rows
+            if row["parse_ok"]
+            and str(row["model_decision"]).strip().casefold() == "diagnose"
+            and row["model_abstain_flag"] is False
+            and bool(str(row["model_root_cause"]).strip())
+        ]
         correct = sum(int(row["root_cause_rubric"]["provisional_match"]) for row in diagnosed)
+        valid_labels = sum(
+            int(str(row["model_decision"]).strip().casefold() in {"diagnose", "abstain"})
+            for row in condition_rows if row["parse_ok"]
+        )
+        forced_violations = sum(
+            int(
+                (not row["parse_ok"])
+                or row["model_abstention_classified"]
+                or str(row["model_decision"]).strip().casefold() != "diagnose"
+                or row["model_abstain_flag"] is not False
+                or not str(row["model_root_cause"]).strip()
+            )
+            for row in condition_rows
+        )
         condition_summaries[condition] = {
             "n_generations": n,
             "json_parse_success_count": sum(int(row["parse_ok"]) for row in condition_rows),
+            "valid_decision_label_count": valid_labels,
             "model_abstention_count": abstentions,
             "model_abstention_rate": abstentions / n,
-            "forced_diagnosis_violation_count": abstentions if condition == "P0" else None,
+            "forced_diagnosis_violation_count": forced_violations if condition == "P0" else None,
             "diagnosis_count": len(diagnosed),
             "provisional_rubric_match_count": correct,
             "provisional_rubric_accuracy_over_all_generations": correct / n,
@@ -437,9 +469,9 @@ def main():
             "rubric_version": RUBRIC_VERSION,
             "type": "automated lexical/semantic-keyword proxy, not independent human evaluation",
             "criteria": [
-                "must mention collection scope",
-                "must mention template/Jinja mechanism",
-                "must mention missing warning or static/post-validation mechanism"
+                "root_cause must mention collection scope",
+                "root_cause must mention template/Jinja mechanism",
+                "root_cause must explicitly state that the original expected warning was absent/not emitted"
             ]
         },
         "condition_summaries": condition_summaries,
@@ -470,6 +502,7 @@ def main():
     ]
     for label, key in (
         ("JSON parse success", "json_parse_success_count"),
+        ("Valid decision labels", "valid_decision_label_count"),
         ("Model abstentions", "model_abstention_count"),
         ("Model abstention rate", "model_abstention_rate"),
         ("Provisional rubric matches", "provisional_rubric_match_count"),
@@ -508,11 +541,11 @@ def main():
         "gold_definition": GOLD_ROOT_CAUSE,
         "model_prompt_contains_gold_definition": False,
         "criteria": {
-            "collection_scope": "root-cause answer mentions collection(s)",
-            "template_mechanism": "root-cause answer mentions template/Jinja/templatable expression",
-            "warning_or_validation_mechanism": "root-cause answer mentions missing warning or static/post-validation metadata"
+            "collection_scope": "root_cause mentions collection(s)",
+            "template_mechanism": "root_cause mentions template/Jinja/templatable expression",
+            "missing_original_warning": "root_cause explicitly says the original expected warning was not emitted/printed/displayed"
         },
-        "match_rule": "all three criteria true",
+        "match_rule": "all four criterion flags in the JSON output are true: collection, template, warning reference, missing original warning",
         "qualification": "automated lexical proxy only; human review required"
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     files = [path for path in OUTPUT_DIR.iterdir() if path.is_file() and path.name != "SHA256SUMS"]
