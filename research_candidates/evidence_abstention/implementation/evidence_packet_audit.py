@@ -181,7 +181,7 @@ def audit_response(packet_audit: PacketAudit, response: Any) -> ResponseAudit:
     if not isinstance(response, Mapping):
         return ResponseAudit("invalid", (), tuple(errors + ["response must be a JSON object"]))
     decision = response.get("decision")
-    if decision not in {"diagnose", "abstain"}:
+    if not isinstance(decision, str) or decision not in {"diagnose", "abstain"}:
         errors.append("decision must be diagnose or abstain")
     refs = response.get("evidence_refs")
     if not isinstance(refs, list) or any(
