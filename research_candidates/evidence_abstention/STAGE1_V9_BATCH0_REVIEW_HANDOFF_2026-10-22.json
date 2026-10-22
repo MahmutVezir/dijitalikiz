@@ -9,7 +9,7 @@
   "workflow": {
     "run_id": 39832920370,
     "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39832920370",
-    "status_at_snapshot": "7 completed case artifacts, Pandas-5 still in progress"
+    "status_at_snapshot": "completed; all 8 case artifacts audited"
   },
   "policy": "technical_triage_only_no_auto_accept",
   "accepted_for_confirmatory_count": 0,
@@ -107,11 +107,15 @@
     },
     {
       "case_id": "BugsInPy-pandas-5",
-      "disposition": "pending_at_snapshot",
+      "disposition": "pinned_pytest_bootstrap_failed_before_target_test",
       "accepted_for_confirmatory": false,
-      "artifact_id": null,
-      "artifact_digest": null
+      "artifact_id": 12450841813,
+      "artifact_digest": "sha256:40a9a744cbbc94ac93f3961b70b10410d77a757a5eed18c019cfedca0e12da0d",
+      "raw_hashes": {
+        "summary": "2fb54c268d3bd81736211b42a035746f2af497d29c3c3ab44797fdd1905e727a",
+        "artifact_audit": "d57e5bfb7356d3e20502c57c8a78b04d5baaa222acaf73a9db835a174ed48823"
+      }
     }
   ],
-  "note": "This queue is a reviewer handoff, not the accepted case registry. Candidate status must not be promoted automatically. Verify the final Pandas-5 artifact before publishing a final batch classification."
+  "note": "All eight V9 batch-zero case artifacts are now complete. Only Keras-5 and Tornado-6 have clean automated buggy-fail/fixed-pass signals; neither is accepted. No LLM inference was performed."
 }
