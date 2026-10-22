@@ -46,7 +46,7 @@ class StructuredAnswer:
 
 @dataclass(frozen=True)
 class EvidenceAudit:
-    operational_evidence_status: str | None
+    packet_validation_status: str | None
     available_evidence_ids: frozenset[str]
     supported_claim_coverage: float | None
     self_check_conflict: bool | None
@@ -119,7 +119,7 @@ def assess_candidates(
         for item in parsed
     )
     request = DecisionRequest(
-        operational_evidence_status=audit.operational_evidence_status,
+        packet_validation_status=audit.packet_validation_status,
         answer=selected.root_cause if selected.decision == "diagnose" else "",
         available_evidence_ids=audit.available_evidence_ids,
         cited_evidence_ids=selected.evidence_refs,
