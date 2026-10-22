@@ -43,9 +43,31 @@ jobs:
         with:
           python-version: "3.11"
       - name: Run metadata-only and batch-offset regression tests
+        shell: bash
         run: |
-          set -euo pipefail
-          python -m unittest discover -s tests -p 'test_inventory_bugsinpy_candidates.py' -v
-          python -m unittest discover -s tests -p 'test_build_evidence_abstention_screening_queue.py' -v
-          python -m unittest discover -s tests -p 'test_build_evidence_abstention_cohort_matrix.py' -v
-          python -m unittest discover -s tests -p 'test_evidence_abstention_requires_pytest.py' -v
+          set +e
+          log_dir="$RUNNER_TEMP/metadata-builder-test-logs"
+          mkdir -p "$log_dir"
+          failed=0
+          for spec in \
+            "test_inventory_bugsinpy_candidates.py" \
+            "test_build_evidence_abstention_screening_queue.py" \
+            "test_build_evidence_abstention_cohort_matrix.py" \
+            "test_evidence_abstention_requires_pytest.py"; do
+            log="$log_dir/$spec.log"
+            python -m unittest discover -s tests -p "$spec" -v >"$log" 2>&1
+            rc=$?
+            cat "$log"
+            printf '%s\n' "$rc" > "$log_dir/$spec.exit-code"
+            if [ "$rc" -ne 0 ]; then failed=1; fi
+          done
+          exit "$failed"
+
+      - name: Upload metadata test diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: metadata-builder-test-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/metadata-builder-test-logs/
+          if-no-files-found: warn
+          retention-days: 14
