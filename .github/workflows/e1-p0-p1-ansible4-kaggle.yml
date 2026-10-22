@@ -1,4 +1,4 @@
-name: E1 P0 vs P1 Ansible-4 engineering smoke on Kaggle
+name: E1 P0 vs P1 Ansible-4 isolated bypass capability smoke on Kaggle
 
 on:
   push:
@@ -145,7 +145,7 @@ jobs:
           }, indent=2))
           PY
 
-      - name: Build corrected P0/P1 kernel with rubric v2 and strict abstention parsing
+      - name: Build E1 capability-probe kernel with temporary policy-engine bypass
         shell: bash
         run: |
           set -euo pipefail
