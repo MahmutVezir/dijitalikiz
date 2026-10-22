@@ -74,10 +74,12 @@ def parse_structured_answer(raw: str) -> StructuredAnswer:
     if not isinstance(value["root_cause"], str) or not isinstance(value["rationale"], str):
         raise ValueError("root_cause and rationale must be strings")
     refs = value["evidence_refs"]
-    if not isinstance(refs, list) or len(refs) > 8 or len(refs) != len(set(refs)):
-        raise ValueError("evidence_refs must be a unique list with at most eight items")
+    if not isinstance(refs, list) or len(refs) > 8:
+        raise ValueError("evidence_refs must be a list with at most eight items")
     if any(not isinstance(ref, str) or re.fullmatch(r"[A-Z][A-Z0-9_-]*", ref) is None for ref in refs):
         raise ValueError("evidence_refs contains an invalid identifier")
+    if len(refs) != len(set(refs)):
+        raise ValueError("evidence_refs must contain unique identifiers")
     for key in ("alternative_hypotheses", "missing_evidence"):
         if not isinstance(value[key], list) or len(value[key]) > 8 or any(not isinstance(item, str) for item in value[key]):
             raise ValueError(key + " must be a list of at most eight strings")
@@ -104,6 +106,12 @@ def assess_candidates(
 ) -> DecisionResult:
     if len(samples) < 2:
         return DecisionResult("abstain", None, None, ("uncertainty_samples_insufficient",))
+    if any(re.fullmatch(r"[0-9a-f]{64}", sample.prompt_sha256) is None for sample in samples):
+        return DecisionResult("abstain", None, None, ("invalid_candidate_prompt_hash",))
+    if len({sample.prompt_sha256 for sample in samples}) != 1:
+        return DecisionResult("abstain", None, None, ("candidate_prompt_hash_mismatch",))
+    if len({sample.seed for sample in samples}) != len(samples):
+        return DecisionResult("abstain", None, None, ("candidate_seeds_not_unique",))
 
     try:
         parsed = [parse_structured_answer(sample.text) for sample in samples]
@@ -182,14 +190,25 @@ def generate_candidates(
     prompt_digest = hashlib.sha256(
         json.dumps(list(messages), ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
     ).hexdigest()
-    input_ids = tokenizer.apply_chat_template(
+    encoded = tokenizer.apply_chat_template(
         list(messages),
         tokenize=True,
         add_generation_prompt=True,
         return_tensors="pt",
-    ).to(model.device)
+        return_dict=True,
+    )
+    if not isinstance(encoded, Mapping) or "input_ids" not in encoded:
+        raise ValueError("chat template must return input_ids and attention_mask")
+    input_ids = encoded["input_ids"].to(model.device)
+    attention_mask = encoded.get("attention_mask")
+    if attention_mask is None:
+        attention_mask = torch.ones_like(input_ids)
+    else:
+        attention_mask = attention_mask.to(model.device)
     if input_ids.ndim != 2 or input_ids.shape[0] != 1:
         raise ValueError("each candidate requires an independent single-prompt session")
+    if attention_mask.shape != input_ids.shape:
+        raise ValueError("attention_mask shape must match input_ids")
 
     device = getattr(model, "device", torch.device("cpu"))
     devices = []
@@ -206,6 +225,7 @@ def generate_candidates(
                 torch.cuda.manual_seed_all(seed)
             output = model.generate(
                 input_ids,
+                attention_mask=attention_mask,
                 max_new_tokens=max_new_tokens,
                 do_sample=True,
                 temperature=temperature,
