@@ -8,6 +8,7 @@ on:
       - "research_candidates/evidence_abstention/**"
       - "scripts/evidence_abstention_preflight.py"
       - "tests/test_evidence_abstention_preflight.py"
+      - "tests/test_evidence_packet_audit.py"
       - ".github/workflows/evidence-abstention-preflight.yml"
   pull_request:
     paths:
@@ -35,6 +36,9 @@ jobs:
 
       - name: Unit-test fail-closed preflight
         run: python -m unittest discover -s tests -p 'test_evidence_abstention_preflight.py' -v
+
+      - name: Unit-test evidence packet and citation integrity auditor
+        run: python -m unittest discover -s tests -p 'test_evidence_packet_audit.py' -v
 
       - name: Report current readiness blockers (read-only; no model execution)
         run: python scripts/evidence_abstention_preflight.py
