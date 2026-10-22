@@ -7,6 +7,8 @@ from typing import Mapping
 
 
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
+EXPECTED_MODEL_ID = "Qwen/Qwen2.5-3B-Instruct"
+EXPECTED_MODEL_REVISION = "aa8e72537993ba99e69dfaafa59ed015b17504d1"
 REQUIRED_ARTIFACTS = (
     "case_registry",
     "output_schema",
@@ -52,10 +54,15 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
     blockers.extend(message for passed, message in checks if not passed)
 
     model = manifest.get("model")
-    if not isinstance(model, dict) or not model.get("id") or not model.get("revision"):
-        blockers.append("Immutable model ID and revision are missing.")
-    elif model.get("runtime_verification") != "passed":
-        blockers.append("Exact model/tokenizer/runtime preflight has not passed.")
+    if not isinstance(model, dict):
+        blockers.append("Immutable model configuration is missing.")
+    else:
+        if model.get("id") != EXPECTED_MODEL_ID or model.get("revision") != EXPECTED_MODEL_REVISION:
+            blockers.append("Model ID/revision differs from the reviewed immutable checkpoint.")
+        if model.get("tokenizer_id") != EXPECTED_MODEL_ID or model.get("tokenizer_revision") != EXPECTED_MODEL_REVISION:
+            blockers.append("Tokenizer ID/revision differs from the reviewed immutable checkpoint.")
+        if model.get("runtime_verification") != "passed":
+            blockers.append("Exact model/tokenizer/runtime preflight has not passed.")
 
     case_ids = manifest.get("case_ids")
     if not isinstance(case_ids, list) or len(case_ids) != len(set(case_ids)):
