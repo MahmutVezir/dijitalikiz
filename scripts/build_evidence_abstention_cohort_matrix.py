@@ -26,6 +26,18 @@ KNOWN_PRIOR_EXPOSURE_IDS = {
     "BugsInPy-youtube-dl-2", "BugsInPy-ansible-2", "BugsInPy-black-4",
     "BugsInPy-cookiecutter-3", "BugsInPy-fastapi-3", "BugsInPy-httpie-3",
     "BugsInPy-keras-2", "BugsInPy-luigi-3",
+    # V4 batch used to inspect test dependency / runner behavior.
+    "BugsInPy-matplotlib-2", "BugsInPy-pandas-2", "BugsInPy-PySnooper-3",
+    "BugsInPy-sanic-3", "BugsInPy-scrapy-3", "BugsInPy-spacy-2",
+    "BugsInPy-thefuck-3", "BugsInPy-tornado-3",
+    # V5 first-eight batch used to validate the technical screening workflow.
+    "BugsInPy-tqdm-3", "BugsInPy-youtube-dl-3", "BugsInPy-ansible-3",
+    "BugsInPy-black-5", "BugsInPy-cookiecutter-4", "BugsInPy-fastapi-4",
+    "BugsInPy-httpie-4", "BugsInPy-keras-3",
+    # V6 first-eight batch exposed a pytest-runner detector defect.
+    "BugsInPy-luigi-4", "BugsInPy-matplotlib-3", "BugsInPy-pandas-3",
+    "BugsInPy-sanic-4", "BugsInPy-scrapy-4", "BugsInPy-spacy-3",
+    "BugsInPy-thefuck-4", "BugsInPy-tornado-4",
 }
 COMMIT = re.compile(r"^[0-9a-fA-F]{7,64}$")
 REQUIRED = {

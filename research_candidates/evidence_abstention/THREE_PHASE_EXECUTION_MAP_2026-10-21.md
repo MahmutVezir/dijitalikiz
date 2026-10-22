@@ -103,3 +103,14 @@ The V2 cohort freeze passed in [run 39659544932](https://github.com/MahmutVezir/
 
 
 The V3 run also revealed that a strict metadata parser rejected a valid fixed-commit line with whitespace before the equals sign; the parser has been corrected. V4 is the current 120-candidate intake, skipping 24 exposed IDs. Accepted cases remain zero until CI artifacts and the scientific/human validation gates are complete; model inference remains disabled.
+
+
+## V5/V6 technical findings and V7 intake
+
+Run [39663084349](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39663084349) screened the V5 first-eight batch: seven cases showed automated buggy-fail/fixed-pass signals and Httpie-4 failed on both sides. All eight were permanently excluded because the batch was used to validate the workflow.
+
+The V6 run [39664581005](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39664581005) exposed a second runner defect: the over-escaped pytest detector did not bootstrap pytest for Matplotlib-3, and both test logs reported "pytest: command not found". This is an environment/harness issue, not an upstream bug result. All eight V6 first-batch candidates are now permanently excluded because their results were inspected while debugging the detector. Details and the ZIP hash are in [the V6 defect audit](STAGE2_V6_RUNNER_DEFECT_AND_V7_HANDOFF_2026-10-21.md).
+
+The detector has been moved to a unit-tested helper, and the workflow runs its regression tests before the case matrix. The active [V7 intake](SCREENING_COHORT_120_V7_2026-10-21.json) skips 48 exposed/debug IDs and takes the next 120 candidates in deterministic queue order. The new CI run must validate the detector and all raw artifacts before any case is considered for human scientific review.
+
+**Scientific status remains:** accepted cases 0; accepted upstream projects 0; model inference 0. Stage 1 still requires systematic search archiving, independent advisor review and preregistration. Stage 2 still requires at least 60 accepted independent cases across at least 8 projects, licensing/provenance, two independent ground-truth reviewers, a separate two-person evidence-sufficiency panel, E1/E2/E3 packets and leakage/exposure checks.
