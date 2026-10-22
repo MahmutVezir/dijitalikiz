@@ -7,10 +7,14 @@ cases for confirmatory analysis.
 """
 import argparse
 import csv
+import hashlib
 import json
 import re
 from collections import Counter, defaultdict
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_EXPOSURE_ADDENDUM = ROOT / "research_candidates" / "evidence_abstention" / "EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json"
 
 # Any candidate used to test the validation workflow or inspect raw test results
 # is kept out of the confirmatory queue to prevent researcher/pipeline-debug exposure.
@@ -46,10 +50,51 @@ def sort_bug_id(row):
     return (0, int(value)) if value.isdigit() else (1, value.casefold())
 
 
-def build_queue(input_path, output_path, summary_path, first_batch_per_project=5):
+def load_exposure_exclusions(path):
+    path = Path(path)
+    try:
+        raw = path.read_bytes()
+        document = json.loads(raw.decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError("Exposure exclusion addendum is missing or invalid: " + str(exc)) from exc
+    if not isinstance(document, dict):
+        raise ValueError("Exposure exclusion addendum must contain a JSON object")
+
+    case_ids = document.get("excluded_case_ids")
+    if not isinstance(case_ids, list) or any(not isinstance(item, str) or not item.strip() for item in case_ids):
+        raise ValueError("Exposure exclusion addendum must provide non-empty excluded_case_ids")
+    if len(case_ids) != len(set(case_ids)):
+        raise ValueError("Exposure exclusion addendum contains duplicate excluded_case_ids")
+
+    recorded_ids = set()
+    records = document.get("additional_batch_records", [])
+    if not isinstance(records, list):
+        raise ValueError("Exposure addendum additional_batch_records must be a list")
+    for record in records:
+        if not isinstance(record, dict):
+            raise ValueError("Exposure addendum batch records must be objects")
+        cases = record.get("cases", [])
+        if not isinstance(cases, list):
+            raise ValueError("Exposure addendum batch record cases must be a list")
+        for case in cases:
+            case_id = case if isinstance(case, str) else case.get("case_id") if isinstance(case, dict) else None
+            if not isinstance(case_id, str) or not case_id.strip():
+                raise ValueError("Exposure addendum contains a malformed case record")
+            recorded_ids.add(case_id)
+    missing_from_index = recorded_ids - set(case_ids)
+    if missing_from_index:
+        raise ValueError("Exposure addendum batch records missing from excluded_case_ids: " + ", ".join(sorted(missing_from_index)))
+
+    return set(case_ids), hashlib.sha256(raw).hexdigest()
+
+
+def build_queue(input_path, output_path, summary_path, first_batch_per_project=5, exposure_addendum_path=None):
     input_path = Path(input_path)
     output_path = Path(output_path)
     summary_path = Path(summary_path)
+    exposure_path = Path(exposure_addendum_path) if exposure_addendum_path else DEFAULT_EXPOSURE_ADDENDUM
+    dynamic_exclusions, exposure_sha256 = load_exposure_exclusions(exposure_path)
+    excluded_cases = EXCLUDED_CASES | dynamic_exclusions
     with input_path.open("r", newline="", encoding="utf-8-sig") as handle:
         reader = csv.DictReader(handle)
         fields = reader.fieldnames or []
@@ -62,7 +107,7 @@ def build_queue(input_path, output_path, summary_path, first_batch_per_project=5
     by_project = defaultdict(list)
     for row in rows:
         case_id = row.get("case_id", "").strip()
-        if case_id in EXCLUDED_CASES or row.get("permanently_excluded_feasibility_case", "").lower() == "true":
+        if case_id in excluded_cases or row.get("permanently_excluded_feasibility_case", "").lower() == "true":
             exclusions["previously_exposed_permanent_exclusion"] += 1
             continue
         if row.get("metadata_complete", "").lower() != "true":
@@ -132,6 +177,9 @@ def build_queue(input_path, output_path, summary_path, first_batch_per_project=5
         "queue_rows_by_project": dict(sorted(project_counts.items())),
         "queue_rows_by_batch": dict(sorted(batch_counts.items())),
         "first_batch_per_project_ordinal": first_batch_per_project,
+        "exposure_addendum_sha256": exposure_sha256,
+        "documented_exposure_exclusion_count": len(dynamic_exclusions),
+        "documented_exposure_exclusion_ids": sorted(dynamic_exclusions),
         "exclusions_by_reason": dict(sorted(exclusions.items())),
         "test_pairs_run_by_this_script": 0,
         "licenses_reviewed_by_this_script": 0,
@@ -156,10 +204,11 @@ def main(argv=None):
     parser.add_argument("--output", type=Path, required=True, help="screening queue CSV")
     parser.add_argument("--summary", type=Path, required=True, help="JSON queue summary")
     parser.add_argument("--first-batch-per-project", type=int, default=5)
+    parser.add_argument("--exposure-addendum", type=Path, default=DEFAULT_EXPOSURE_ADDENDUM)
     args = parser.parse_args(argv)
     if args.first_batch_per_project < 1:
         parser.error("--first-batch-per-project must be at least 1")
-    summary = build_queue(args.input, args.output, args.summary, args.first_batch_per_project)
+    summary = build_queue(args.input, args.output, args.summary, args.first_batch_per_project, args.exposure_addendum)
     print(json.dumps(summary, ensure_ascii=False, indent=2))
     return 0
 
