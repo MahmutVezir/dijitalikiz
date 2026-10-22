@@ -1,0 +1,181 @@
+name: Evidence Abstention Targeted BugsInPy Technical Triage
+
+on:
+  push:
+    branches:
+      - "research/evidence-abstention-case-validation-2026-10-22"
+    paths:
+      - "research_candidates/evidence_abstention/TECHNICAL_TRIAGE_CASES_2026-10-22.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Validate frozen technical-triage manifest
+        id: matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          p = Path("research_candidates/evidence_abstention/TECHNICAL_TRIAGE_CASES_2026-10-22.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+          assert data["dataset_revision"] == "11c5f1eea954a42132cfd06bf257766a7963e0fd"
+          assert data["automatic_acceptance"] is False
+          assert data["accepted_confirmatory_cases"] == 0
+          cases = data["cases"]
+          assert len(cases) == 5
+          assert len(set(c["case_id"] for c in cases)) == 5
+          required = ("project", "bug_id", "python_version", "buggy_commit", "fixed_commit",
+                      "bug_info_sha256", "project_info_sha256", "run_test_sha256", "patch_sha256")
+          for case in cases:
+              assert all(case.get(key) for key in required), case["case_id"]
+              for key in ("bug_info_sha256", "project_info_sha256", "run_test_sha256", "patch_sha256"):
+                  assert len(case[key]) == 64 and all(x in "0123456789abcdef" for x in case[key])
+              assert case["buggy_commit"] != case["fixed_commit"]
+          print("matrix=" + json.dumps(cases, separators=(",", ":")))
+          print("manifest_cases=" + str(len(cases)))
+          PY
+
+  validate-case-pair:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include: ${{ fromJSON(needs.preflight.outputs.matrix) }
+    defaults:
+      run:
+        shell: bash -el {0}
+    env:
+      BUGSINPY_COMMIT: "11c5f1eea954a42132cfd06bf257766a7963e0fd"
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Create exact metadata-matched isolated Python environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: false
+          activate-environment: case-screen
+          python-version: "${{ matrix.python_version }"
+          channels: conda-forge
+          channel-priority: strict
+          use-only-tar-bz2: true
+
+      - name: Install minimal build prerequisites and confirm Python version
+        env:
+          EXPECTED_PYTHON: ${{ matrix.python_version }
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y build-essential dos2unix
+          python - <<'PY'
+          import os, platform, sys
+          expected = os.environ["EXPECTED_PYTHON"]
+          actual = platform.python_version()
+          print("expected_python=" + expected)
+          print("actual_python=" + actual)
+          print("python_executable=" + sys.executable)
+          if actual != expected:
+              raise SystemExit("Python does not exactly match pinned BugsInPy metadata")
+          PY
+
+      - name: Checkout frozen BugsInPy source
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/soarsmu/BugsInPy.git "$RUNNER_TEMP/BugsInPy"
+          git -C "$RUNNER_TEMP/BugsInPy" checkout --detach "$BUGSINPY_COMMIT"
+          test "$(git -C "$RUNNER_TEMP/BugsInPy" rev-parse HEAD)" = "$BUGSINPY_COMMIT"
+
+      - name: Run same target test against buggy and fixed trees
+        id: validation
+        continue-on-error: true
+        env:
+          CASE_ID: ${{ matrix.case_id }
+          PROJECT: ${{ matrix.project }
+          BUG_ID: ${{ matrix.bug_id }
+          EXPECTED_PYTHON: ${{ matrix.python_version }
+          EXPECTED_BUGGY: ${{ matrix.buggy_commit }
+          EXPECTED_FIXED: ${{ matrix.fixed_commit }
+          BUG_INFO_SHA256: ${{ matrix.bug_info_sha256 }
+          PROJECT_INFO_SHA256: ${{ matrix.project_info_sha256 }
+          RUN_TEST_SHA256: ${{ matrix.run_test_sha256 }
+          PATCH_SHA256: ${{ matrix.patch_sha256 }
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/case-artifact" "$RUNNER_TEMP/case-worktrees"
+          export PATH="$RUNNER_TEMP/BugsInPy/framework/bin:$PATH"
+          python scripts/run_bugsinpy_pair_validation.py \
+            --dataset-root "$RUNNER_TEMP/BugsInPy" \
+            --artifact-dir "$RUNNER_TEMP/case-artifact" \
+            --work-root "$RUNNER_TEMP/case-worktrees"
+
+      - name: Finalize checksum manifest and integrity audit
+        if: always()
+        shell: bash {0}
+        env:
+          CASE_ID: ${{ matrix.case_id }
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/case-artifact"
+          mkdir -p "$root"
+          if [ ! -f "$root/summary.json" ]; then
+            python3 - <<'PY'
+          import json, os, pathlib
+          root = pathlib.Path(os.environ["RUNNER_TEMP"]) / "case-artifact"
+          (root / "summary.json").write_text(json.dumps({
+            "case_id": os.environ.get("CASE_ID", "unknown"),
+            "technical_triage_only": True,
+            "accepted_for_confirmatory": False,
+            "confirmatory_eligible": False,
+            "llm_inference_performed": False,
+            "technical_pair_status": "NOT_VALIDATED",
+            "fatal_workflow_error": "validation script did not produce a summary"
+          }, indent=2) + "\n", encoding="utf-8")
+          (root / "minimum-validation-report.md").write_text(
+            "# Minimum Technical Validation Report\n\nNo complete summary was produced; inspect workflow logs.\n",
+            encoding="utf-8")
+          PY
+          fi
+          cd "$root"
+          rm -f SHA256SUMS
+          find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+          sha256sum -c SHA256SUMS
+          python3 - <<'PY'
+          import hashlib, json, pathlib
+          root = pathlib.Path(".")
+          entries = {}
+          for line in (root / "SHA256SUMS").read_text(encoding="utf-8").splitlines():
+              expected, name = line.split("  ", 1)
+              path = root / name[2:]
+              observed = hashlib.sha256(path.read_bytes()).hexdigest()
+              entries[name[2:]] = {"expected": expected, "observed": observed, "matches": observed == expected}
+          (root / "checksum-audit.json").write_text(
+              json.dumps({"files_checked": len(entries), "all_match": all(x["matches"] for x in entries.values()), "files": entries}, indent=2) + "\n",
+              encoding="utf-8")
+          PY
+          rm -f SHA256SUMS
+          find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+          sha256sum -c SHA256SUMS
+
+      - name: Upload raw technical-triage artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-abstention-${{ matrix.case_id }-technical-triage
+          path: ${{ runner.temp }/case-artifact/
+          if-no-files-found: warn
+          retention-days: 30
