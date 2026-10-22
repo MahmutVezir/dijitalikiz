@@ -44,7 +44,7 @@ class QwenAdapterTests(unittest.TestCase):
     def test_parse_requires_exact_output_schema(self):
         parsed = parse_structured_answer(answer())
         self.assertEqual(parsed.decision, "diagnose")
-        self.assertEqual(parsed.evidence_refs, ("E1",))
+        self.assertEqual(parsed.evidence_refs, ("TRACE_A",))
 
     def test_parse_rejects_extra_fields(self):
         value = json.loads(answer())
