@@ -14,10 +14,12 @@ from uncertainty_policy import (
 )
 
 
-def answer(decision="diagnose", root_cause="Cache invalidation is inconsistent.", refs=None):
+def answer(decision="diagnose", root_cause=None, refs=None):
+    if root_cause is None:
+        root_cause = "Cache invalidation is inconsistent." if decision == "diagnose" else ""
     return json.dumps({
         "decision": decision,
-        "root_cause": root_cause if decision == "diagnose" else "",
+        "root_cause": root_cause,
         "evidence_refs": ["E1"] if refs is None else refs,
         "rationale": "The supplied test evidence supports this assessment.",
         "alternative_hypotheses": [],
