@@ -1,9 +1,9 @@
-name: E1 P0 vs P1 Ansible-4 engineering smoke on Kaggle
+name: E1 P0 vs P1 Ansible-4 isolated bypass capability smoke on Kaggle
 
 on:
   push:
     branches:
-      - research/e1-p0-p1-ansible4-smoke-2026-10-22
+      - research/e1-p0-p1-ansible4-bypass-2026-10-22
     paths:
       - ".github/workflows/e1-p0-p1-ansible4-kaggle.yml"
 
@@ -12,12 +12,12 @@ permissions:
   actions: read
 
 concurrency:
-  group: e1-p0-p1-ansible4-smoke-2026-10-22
+  group: e1-p0-p1-ansible4-bypass-2026-10-22
   cancel-in-progress: false
 
 jobs:
   run-isolated-e1-smoke:
-    if: github.ref == 'refs/heads/research/e1-p0-p1-ansible4-smoke-2026-10-22' && contains(github.event.head_commit.message, '[e1-p0-p1]')
+    if: github.ref == 'refs/heads/research/e1-p0-p1-ansible4-bypass-2026-10-22' && contains(github.event.head_commit.message, '[e1-p0-p1]')
     runs-on: ubuntu-24.04
     timeout-minutes: 300
     env:
