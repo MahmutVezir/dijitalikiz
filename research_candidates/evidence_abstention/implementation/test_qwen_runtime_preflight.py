@@ -40,7 +40,7 @@ def configuration():
     lock = {
         "model": {**model, "trust_remote_code": False},
         "generation": {**generation, "generation_performed_during_preflight": False},
-        "proposed_environment": VERSIONS,
+        "proposed_environment": {**VERSIONS},
     }
     return manifest, lock
 
