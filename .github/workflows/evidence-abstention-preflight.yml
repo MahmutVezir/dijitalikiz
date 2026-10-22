@@ -15,6 +15,7 @@ on:
       - "research_candidates/evidence_abstention/**"
       - "scripts/evidence_abstention_preflight.py"
       - "tests/test_evidence_abstention_preflight.py"
+      - "tests/test_evidence_packet_audit.py"
       - ".github/workflows/evidence-abstention-preflight.yml"
   workflow_dispatch:
 
