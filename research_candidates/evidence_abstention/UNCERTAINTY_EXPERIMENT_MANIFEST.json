@@ -51,7 +51,7 @@
       "sha256": ""
     },
     "runtime_lock": {
-      "path": "research_candidates/evidence_abstention/RUNTIME_LOCK.json",
+      "path": "research_candidates/evidence_abstention/UNCERTAINTY_RUNTIME_LOCK.json",
       "sha256": ""
     },
     "calibration_data": {
@@ -68,6 +68,7 @@
     "This manifest is intentionally closed and contains no accepted cases.",
     "It is not a preregistration and does not authorize model loading or generation.",
     "Do not replace or edit the original confirmatory experiment manifest to route this prototype into P0/P1.",
-    "Repeated sampling and generation-score entropy require this separate experiment to be reviewed, preregistered, frozen, and separately authorized."
+    "Repeated sampling and generation-score entropy require this separate experiment to be reviewed, preregistered, frozen, and separately authorized.",
+    "The candidate runtime lock is separate from the historical deterministic-generation runtime lock. A no-output checkpoint load may be verified independently, but it does not authorize any response generation."
   ]
 }
