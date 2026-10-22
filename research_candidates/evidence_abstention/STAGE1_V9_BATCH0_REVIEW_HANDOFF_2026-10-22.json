@@ -1,0 +1,117 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "version": "0.1-draft",
+  "created_on": "2026-10-22",
+  "source_dataset": {
+    "name": "BugsInPy",
+    "revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd"
+  },
+  "workflow": {
+    "run_id": 39832920370,
+    "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39832920370",
+    "status_at_snapshot": "7 completed case artifacts, Pandas-5 still in progress"
+  },
+  "policy": "technical_triage_only_no_auto_accept",
+  "accepted_for_confirmatory_count": 0,
+  "llm_inference_performed": false,
+  "candidates": [
+    {
+      "case_id": "BugsInPy-keras-5",
+      "disposition": "panel_a_review_required",
+      "accepted_for_confirmatory": false,
+      "metadata_python": "3.7.3",
+      "buggy_runtime_python": "3.7.3",
+      "fixed_runtime_python": "3.7.3",
+      "buggy_commit": "b847b4601d608050bab6eccd049fce28b7bf1b1f",
+      "fixed_commit_reference": "e11c48d9ce3ee47bb8a966549b14cbd5b10ee70d",
+      "target_commands": [
+        "pytest tests/keras/utils/data_utils_test.py::test_data_utils"
+      ],
+      "artifact_id": 12450001876,
+      "artifact_digest": "sha256:66e5daa97b9e80b42c5f468bbeeff1eaf027cb21c3c1011644f345a07d38ace9",
+      "raw_hashes": {
+        "buggy_test_log": "0cdbf3efe9d0f387dbab4c6459cb8cf79c9941b98ed952b07d33f984c57ef525",
+        "fixed_test_log": "fc207b40653b51e27c88b7ea913bd022bf9093e66b51a4b8cff2e71c34f8c356",
+        "artifact_audit": "9a03fea142e5159a8312fa66c7f00184062d0db5522037586284766173eb1dc6"
+      },
+      "gates": {
+        "license_reviewed": false,
+        "ground_truth_reviewed_by_two": false,
+        "evidence_levels_reviewed_by_two": false,
+        "leakage_reviewed": false,
+        "prior_exposure_clearance": false
+      }
+    },
+    {
+      "case_id": "BugsInPy-tornado-6",
+      "disposition": "panel_a_review_required",
+      "accepted_for_confirmatory": false,
+      "metadata_python": "3.7.0",
+      "buggy_runtime_python": "3.7.0",
+      "fixed_runtime_python": "3.7.0",
+      "buggy_commit": "fb74e4816ccfa7fc6a7abd8c8aab1f415cfc1b13",
+      "fixed_commit_reference": "2905ee4fb3c283d40b10f609359e189c83a0dc06",
+      "target_commands": [
+        "python -m unittest -q tornado.test.asyncio_test.LeakTest.test_ioloop_close_leak",
+        "python -m unittest -q tornado.test.asyncio_test.LeakTest.test_asyncio_close_leak"
+      ],
+      "artifact_id": 12450860559,
+      "artifact_digest": "sha256:c73063caf15958f297a7cfa8ec0a29355ba888b35d6178c10b0001e2e93dad26",
+      "raw_hashes": {
+        "buggy_test_log": "306ef13984be2ce474750fd4746a4f5180f9ff42e175bc55eb15bd5ad2e3c63f",
+        "fixed_test_log": "4984db83f3cb2e3d3ffdb52fc0f1b61fcd905ddb549e0ea07faeab8c5a2c3d5c",
+        "artifact_audit": "44aced57b463d14f7e450ae417110c8016e0382b31c39e3dcb70b00a9af9d1fb"
+      },
+      "gates": {
+        "license_reviewed": false,
+        "ground_truth_reviewed_by_two": false,
+        "evidence_levels_reviewed_by_two": false,
+        "leakage_reviewed": false,
+        "prior_exposure_clearance": false
+      }
+    },
+    {
+      "case_id": "BugsInPy-scrapy-6",
+      "disposition": "no_valid_buggy_fail_fixed_pass_pair_signal",
+      "accepted_for_confirmatory": false,
+      "artifact_id": 12448824345,
+      "artifact_digest": "sha256:ef126eb54534e93bd8bc2692da93d829ad89c541776c8f24dcc9f61744dc55b7"
+    },
+    {
+      "case_id": "BugsInPy-matplotlib-5",
+      "disposition": "environment_or_harness_uncertainty",
+      "accepted_for_confirmatory": false,
+      "artifact_id": 12448943816,
+      "artifact_digest": "sha256:d75bac5b93d421f39e9fcdd189583f9749a8a584c5de49f2c4e8233e6f988b36"
+    },
+    {
+      "case_id": "BugsInPy-thefuck-6",
+      "disposition": "environment_or_harness_uncertainty",
+      "accepted_for_confirmatory": false,
+      "artifact_id": 12450940185,
+      "artifact_digest": "sha256:8be5cc7fe1c4c8c6eb3710bab621162266f67603e2c54ee0f7b54a7e3abf371b"
+    },
+    {
+      "case_id": "BugsInPy-luigi-6",
+      "disposition": "runtime_not_recorded_consistently",
+      "accepted_for_confirmatory": false,
+      "artifact_id": 12451130044,
+      "artifact_digest": "sha256:8cd052830069a527d10afa03b3c2fa66cf9ba501a79bf62adea14e02e3f083df"
+    },
+    {
+      "case_id": "BugsInPy-spacy-5",
+      "disposition": "environment_setup_failed_before_target_test",
+      "accepted_for_confirmatory": false,
+      "artifact_id": 12448778966,
+      "artifact_digest": "sha256:ae3797f3745361e5fc55eaa7b1641df9bc121b9a98708b528998884f66b0038a"
+    },
+    {
+      "case_id": "BugsInPy-pandas-5",
+      "disposition": "pending_at_snapshot",
+      "accepted_for_confirmatory": false,
+      "artifact_id": null,
+      "artifact_digest": null
+    }
+  ],
+  "note": "This queue is a reviewer handoff, not the accepted case registry. Candidate status must not be promoted automatically. Verify the final Pandas-5 artifact before publishing a final batch classification."
+}
