@@ -57,7 +57,11 @@ def sha256_file(path):
     return h.hexdigest()
 
 
-def prepare(queue_path, cohort_path, matrix_path, summary_path, batch_size=8):
+def prepare(queue_path, cohort_path, matrix_path, summary_path, batch_size=8, batch_offset=0):
+    if batch_size < 1:
+        raise ValueError("batch_size must be positive")
+    if batch_offset < 0 or batch_offset % batch_size != 0:
+        raise ValueError("batch_offset must be a non-negative multiple of batch_size")
     queue_path=Path(queue_path)
     cohort_path=Path(cohort_path)
     with queue_path.open("r",newline="",encoding="utf-8-sig") as f:
@@ -83,8 +87,8 @@ def prepare(queue_path, cohort_path, matrix_path, summary_path, batch_size=8):
     if actual_queue_sha != expected_queue_sha:
         raise ValueError("Queue CSV hash does not match the frozen cohort provenance")
     ids=cohort.get("case_ids")
-    if not isinstance(ids,list) or len(ids) < batch_size or len(ids) != len(set(ids)):
-        raise ValueError("Frozen cohort IDs are missing, duplicated, or smaller than requested batch")
+    if not isinstance(ids,list) or len(ids) < batch_offset + batch_size or len(ids) != len(set(ids)):
+        raise ValueError("Frozen cohort IDs are missing, duplicated, or smaller than requested batch offset/size")
     if cohort.get("cohort_size") != len(ids):
         raise ValueError("Frozen cohort_size does not match case_ids length")
 
@@ -108,9 +112,11 @@ def prepare(queue_path, cohort_path, matrix_path, summary_path, batch_size=8):
     eligible_ids=[r["case_id"] for r in eligible_queue]
     if eligible_ids[:len(ids)] != ids:
         raise ValueError("Frozen cohort IDs do not match the deterministic queue after documented exposure exclusions")
-    selected=eligible_queue[:batch_size]
+    selected=eligible_queue[batch_offset:batch_offset + batch_size]
+    if len(selected) != batch_size:
+        raise ValueError("Requested screening batch exceeds the frozen eligible queue")
     if len({r["project"] for r in selected}) != batch_size:
-        raise ValueError("The initial screening batch must cover one distinct upstream project per case")
+        raise ValueError("Each technical screening batch must cover one distinct upstream project per case")
 
     matrix=[]
     for row in selected:
@@ -161,7 +167,8 @@ def prepare(queue_path, cohort_path, matrix_path, summary_path, batch_size=8):
         })
 
     summary={
-        "purpose":"first fixed technical-screening batch from a predeclared 120-case queue; metadata only",
+        "purpose":"fixed technical-screening batch from a predeclared cohort; metadata only",
+        "batch_offset":batch_offset,
         "source_queue_sha256":actual_queue_sha,
         "source_cohort_sha256":sha256_file(cohort_path),
         "cohort_size":len(ids),
@@ -191,10 +198,13 @@ def main(argv=None):
     p.add_argument("--matrix-output",required=True,type=Path)
     p.add_argument("--summary-output",required=True,type=Path)
     p.add_argument("--batch-size",type=int,default=8)
+    p.add_argument("--batch-offset",type=int,default=0)
     a=p.parse_args(argv)
     if a.batch_size < 1:
         p.error("--batch-size must be at least one")
-    result=prepare(a.queue,a.cohort,a.matrix_output,a.summary_output,a.batch_size)
+    if a.batch_offset < 0 or a.batch_offset % a.batch_size != 0:
+        p.error("--batch-offset must be a non-negative multiple of --batch-size")
+    result=prepare(a.queue,a.cohort,a.matrix_output,a.summary_output,a.batch_size,a.batch_offset)
     print(json.dumps(result["summary"],ensure_ascii=False,indent=2))
     return 0
 
