@@ -5,7 +5,7 @@ on:
     paths:
       - ".github/workflows/evidence-abstention-cohort-batch1.yml"
       - ".github/workflows/evidence-abstention-cohort-unit-tests.yml"
-      - "research_candidates/evidence_abstention/SCREENING_COHORT_116_V8_2026-10-22.json"
+      - "research_candidates/evidence_abstention/SCREENING_COHORT_100_V9_2026-10-22.json"
       - "scripts/inventory_bugsinpy_candidates.py"
       - "scripts/build_evidence_abstention_screening_queue.py"
       - "scripts/build_evidence_abstention_cohort_matrix.py"
@@ -20,7 +20,7 @@ on:
     paths:
       - ".github/workflows/evidence-abstention-cohort-batch1.yml"
       - ".github/workflows/evidence-abstention-cohort-unit-tests.yml"
-      - "research_candidates/evidence_abstention/SCREENING_COHORT_116_V8_2026-10-22.json"
+      - "research_candidates/evidence_abstention/SCREENING_COHORT_100_V9_2026-10-22.json"
       - "scripts/inventory_bugsinpy_candidates.py"
       - "scripts/build_evidence_abstention_screening_queue.py"
       - "scripts/build_evidence_abstention_cohort_matrix.py"
