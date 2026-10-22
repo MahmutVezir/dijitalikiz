@@ -25,7 +25,7 @@ permissions:
 jobs:
   no-inference-preflight:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -36,10 +36,45 @@ jobs:
           python-version: "3.11"
 
       - name: Unit-test fail-closed preflight
-        run: python -m unittest discover -s tests -p 'test_evidence_abstention_preflight.py' -v
+        shell: bash
+        run: |
+          set +e
+          python -m unittest discover -s tests -p 'test_evidence_abstention_preflight.py' -v > preflight-tests.log 2>&1
+          test_status=$?
+          cat preflight-tests.log
+          echo "Readiness preflight-test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
 
       - name: Unit-test evidence packet and citation integrity auditor
-        run: python -m unittest discover -s tests -p 'test_evidence_packet_audit.py' -v
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          python -m unittest discover -s tests -p 'test_evidence_packet_audit.py' -v > packet-audit-tests.log 2>&1
+          test_status=$?
+          cat packet-audit-tests.log
+          echo "Packet audit-test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
 
-      - name: Report current readiness blockers (read-only; no model execution)
-        run: python scripts/evidence_abstention_preflight.py
+      - name: Report current readiness blockers without model execution
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          python scripts/evidence_abstention_preflight.py > readiness-report.json 2>&1
+          report_status=$?
+          cat readiness-report.json
+          echo "Readiness report command exit code: ${report_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$report_status"
+
+      - name: Upload no-inference preflight logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-abstention-preflight-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            preflight-tests.log
+            packet-audit-tests.log
+            readiness-report.json
+          if-no-files-found: warn
+          retention-days: 14
