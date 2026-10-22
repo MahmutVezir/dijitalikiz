@@ -38,7 +38,7 @@ class QwenAdapterTests(unittest.TestCase):
         self.audit = EvidenceAudit(packet_validation_status="valid", available_evidence_ids=frozenset({"TRACE_A", "TEST_B"}), supported_claim_coverage=1.0, self_check_conflict=False, explicit_contradiction=False)
         self.samples = (
             GenerationSample(answer(), (0.05, 0.1), 10, "a" * 64),
-            GenerationSample(answer(), (0.1, 0.1), 11, "b" * 64),
+            GenerationSample(answer(), (0.1, 0.1), 11, "a" * 64),
         )
 
     def test_parse_requires_exact_output_schema(self):
@@ -59,6 +59,10 @@ class QwenAdapterTests(unittest.TestCase):
     def test_parse_enforces_abstention_schema(self):
         with self.assertRaises(ValueError):
             parse_structured_answer(answer(decision="abstain", root_cause="a cause"))
+
+    def test_parse_rejects_non_string_evidence_ids_without_type_error(self):
+        with self.assertRaises(ValueError):
+            parse_structured_answer(answer(refs=[{"unexpected": "object"}]))
 
     def test_identical_supported_candidates_can_diagnose(self):
         result = assess_candidates(self.samples, self.audit, self.calibrator, self.policy)
@@ -109,6 +113,24 @@ class QwenAdapterTests(unittest.TestCase):
         result = assess_candidates(self.samples[:1], self.audit, self.calibrator, self.policy)
         self.assertEqual(result.decision, "abstain")
         self.assertIn("uncertainty_samples_insufficient", result.reasons)
+
+    def test_candidate_prompt_hash_mismatch_fails_closed(self):
+        samples = (self.samples[0], GenerationSample(answer(), (0.1,), 11, "b" * 64))
+        result = assess_candidates(samples, self.audit, self.calibrator, self.policy)
+        self.assertEqual(result.decision, "abstain")
+        self.assertIn("candidate_prompt_hash_mismatch", result.reasons)
+
+    def test_duplicate_candidate_seed_fails_closed(self):
+        samples = (self.samples[0], GenerationSample(answer(), (0.1,), 10, "a" * 64))
+        result = assess_candidates(samples, self.audit, self.calibrator, self.policy)
+        self.assertEqual(result.decision, "abstain")
+        self.assertIn("candidate_seeds_not_unique", result.reasons)
+
+    def test_malformed_candidate_prompt_hash_fails_closed(self):
+        samples = (self.samples[0], GenerationSample(answer(), (0.1,), 11, "not-a-hash"))
+        result = assess_candidates(samples, self.audit, self.calibrator, self.policy)
+        self.assertEqual(result.decision, "abstain")
+        self.assertIn("invalid_candidate_prompt_hash", result.reasons)
 
 
 if __name__ == "__main__":
