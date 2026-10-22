@@ -150,3 +150,17 @@ This update supersedes the older test-count/runtime notes above where they diffe
 - [Tornado-6 independent review form](review_forms/PANEL_A_TORNADO_6_FORM.md)
 
 These forms deliberately do not mark any gate as passed. Two independent Panel A reviews are required per candidate; a disjoint Panel B must separately review blinded evidence packets and outputs.
+
+
+## Son ek denetim — V9 iki adayın ham artefaktları (22 Ekim 2026)
+
+Keras-5 ve Tornado-6 için Actions artifact ZIP'leri tekrar indirildi ve arşiv düzeyinde SHA-256 ile her arşivin içindeki `SHA256SUMS` dosyası bağımsız olarak kontrol edildi; iki arşiv ve tüm listelenen iç dosya hash'leri geçti. Kaynak commitleri karşılaştırıldı ve upstream düzeltme farkları incelendi. Ayrıntılı, yalnızca teknik bulgular içeren devir notu: [STAGE1_V9_CANDIDATE_PRELIMINARY_AUDIT_2026-10-22.md](STAGE1_V9_CANDIDATE_PRELIMINARY_AUDIT_2026-10-22.md).
+
+- **Keras-5:** buggy hedef testte `KERAS_HOME` tanımlandıktan sonra önbellek yolunun backend yapılandırmasıyla eşleşmediğine ilişkin assertion görülüyor; fixed target test geçiyor. Upstream düzeltme [commit e11c48d](https://github.com/keras-team/keras/commit/e11c48d9ce3ee47bb8a966549b14cbd5b10ee70d) varsayılan `get_file()` dizinini `KERAS_HOME` değerine bağlar. Kaynak projenin LICENSE dosyası MIT lisansını bildiriyor.
+- **Tornado-6:** buggy testler kapatılmış asyncio loop'ları için IOLoop eşleme sözlüğünün büyümeye devam ettiğini sayım assertion'larıyla gösteriyor; iki fixed target test de geçiyor. Upstream düzeltme [commit 2905ee4](https://github.com/tornadoweb/tornado/commit/2905ee4fb3c283d40b10f609359e189c83a0dc06) kapatma/temizleme davranışını değiştirir. Kaynak projenin LICENSE dosyası Apache-2.0 lisansını bildiriyor.
+
+Bu teknik inceleme **kör ve bağımsız Panel A/Panel B değerlendirmesi değildir**; hiçbir kabul kararı üretmez. BugsInPy veri kümesinin kendi lisans/yeniden dağıtım şartları, maruziyet ve vaka bağımsızlığı ayrıca doğrulanmalıdır. İki vaka için de kabul sicili değişmedi; kabul edilmiş vaka sayısı **0**.
+
+## CI yürütücü erişimi — güncel blokaj
+
+Son Qwen adapter ve no-inference CI koşularının job kayıtları tamamlandı durumunda görünse de `runner_id=0`, boş `runner_name` ve sıfır step bildiriyor; log indirme çağrısı `BlobNotFound` döndürüyor. Dolayısıyla son koşular kod adımlarını çalıştırıp başarısız mı oldu, yoksa hosted runner atanamadığı için mi durdu, günlük kanıtı olmadan kesinleştirilemiyor. [PR #108](https://github.com/MahmutVezir/dijitalikiz/pull/108) başarısız test günlüklerini artifact olarak saklayacak bir iyileştirme hazırlıyor; ancak job runner'a hiç atanmazsa bu da çalışamaz. Repo/Actions billing ve hosted-runner erişimi sahibi tarafından kontrol edilmeden CI'ın yeşil olduğu iddia edilmemelidir.
