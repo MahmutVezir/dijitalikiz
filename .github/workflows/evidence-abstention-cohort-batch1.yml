@@ -6,13 +6,13 @@ on:
   workflow_dispatch:
     inputs:
       batch_offset:
-        description: "Frozen cohort row offset; use multiples of 8. Offset 8 is the next unprocessed batch."
+        description: "Frozen V9 cohort row offset; use multiples of 8. Offset 0 is the first clean batch."
         required: true
         type: number
-        default: 8
+        default: 0
 
 concurrency:
-  group: evidence-abstention-cohort-screen-${{ github.ref }}-${{ github.event.inputs.batch_offset || '8' }}
+  group: evidence-abstention-cohort-screen-${{ github.ref }}-${{ github.event.inputs.batch_offset || '0' }}
   cancel-in-progress: true
 
 permissions:
@@ -27,7 +27,7 @@ jobs:
       matrix: ${{ steps.export.outputs.matrix }}
     env:
       BUGSINPY_COMMIT: "11c5f1eea954a42132cfd06bf257766a7963e0fd"
-      BATCH_OFFSET: ${{ github.event.inputs.batch_offset || '8' }}
+      BATCH_OFFSET: ${{ github.event.inputs.batch_offset || '0' }}
     steps:
       - name: Checkout the research branch
         uses: actions/checkout@v4
@@ -68,7 +68,7 @@ jobs:
             --first-batch-per-project 5
           python scripts/build_evidence_abstention_cohort_matrix.py \
             --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
-            --cohort research_candidates/evidence_abstention/SCREENING_COHORT_116_V8_2026-10-22.json \
+            --cohort research_candidates/evidence_abstention/SCREENING_COHORT_100_V9_2026-10-22.json \
             --matrix-output "$RUNNER_TEMP/cohort-screen-matrix.json" \
             --summary-output "$RUNNER_TEMP/cohort-screen-summary.json" \
             --batch-size 8 \
@@ -94,7 +94,7 @@ jobs:
       - name: Upload selection freeze evidence
         uses: actions/upload-artifact@v4
         with:
-          name: evidence-abstention-predeclared-cohort-batch-${{ github.event.inputs.batch_offset || '8' }}-freeze
+          name: evidence-abstention-predeclared-cohort-batch-${{ github.event.inputs.batch_offset || '0' }}-freeze
           path: ${{ runner.temp }}/cohort-screen-preflight/
           if-no-files-found: error
           retention-days: 30
