@@ -15,7 +15,7 @@ jobs:
   preflight:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.matrix.outputs.matrix }
+      matrix: ${{ steps.matrix.outputs.matrix }}
     steps:
       - name: Checkout research repository
         uses: actions/checkout@v4
@@ -55,7 +55,7 @@ jobs:
       fail-fast: false
       max-parallel: 3
       matrix:
-        include: ${{ fromJSON(needs.preflight.outputs.matrix) }
+        include: ${{ fromJSON(needs.preflight.outputs.matrix) }}
     defaults:
       run:
         shell: bash -el {0}
@@ -70,14 +70,14 @@ jobs:
         with:
           auto-activate-base: false
           activate-environment: case-screen
-          python-version: "${{ matrix.python_version }"
+          python-version: "${{ matrix.python_version }}"
           channels: conda-forge
           channel-priority: strict
           use-only-tar-bz2: true
 
       - name: Install minimal build prerequisites and confirm Python version
         env:
-          EXPECTED_PYTHON: ${{ matrix.python_version }
+          EXPECTED_PYTHON: ${{ matrix.python_version }}
         run: |
           set -euo pipefail
           sudo apt-get update
@@ -104,16 +104,16 @@ jobs:
         id: validation
         continue-on-error: true
         env:
-          CASE_ID: ${{ matrix.case_id }
-          PROJECT: ${{ matrix.project }
-          BUG_ID: ${{ matrix.bug_id }
-          EXPECTED_PYTHON: ${{ matrix.python_version }
-          EXPECTED_BUGGY: ${{ matrix.buggy_commit }
-          EXPECTED_FIXED: ${{ matrix.fixed_commit }
-          BUG_INFO_SHA256: ${{ matrix.bug_info_sha256 }
-          PROJECT_INFO_SHA256: ${{ matrix.project_info_sha256 }
-          RUN_TEST_SHA256: ${{ matrix.run_test_sha256 }
-          PATCH_SHA256: ${{ matrix.patch_sha256 }
+          CASE_ID: ${{ matrix.case_id }}
+          PROJECT: ${{ matrix.project }}
+          BUG_ID: ${{ matrix.bug_id }}
+          EXPECTED_PYTHON: ${{ matrix.python_version }}
+          EXPECTED_BUGGY: ${{ matrix.buggy_commit }}
+          EXPECTED_FIXED: ${{ matrix.fixed_commit }}
+          BUG_INFO_SHA256: ${{ matrix.bug_info_sha256 }}
+          PROJECT_INFO_SHA256: ${{ matrix.project_info_sha256 }}
+          RUN_TEST_SHA256: ${{ matrix.run_test_sha256 }}
+          PATCH_SHA256: ${{ matrix.patch_sha256 }}
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/case-artifact" "$RUNNER_TEMP/case-worktrees"
@@ -127,7 +127,7 @@ jobs:
         if: always()
         shell: bash {0}
         env:
-          CASE_ID: ${{ matrix.case_id }
+          CASE_ID: ${{ matrix.case_id }}
         run: |
           set -euo pipefail
           root="$RUNNER_TEMP/case-artifact"
@@ -175,7 +175,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: evidence-abstention-${{ matrix.case_id }-technical-triage
-          path: ${{ runner.temp }/case-artifact/
+          name: evidence-abstention-${{ matrix.case_id }}-technical-triage
+          path: ${{ runner.temp }}/case-artifact/
           if-no-files-found: warn
           retention-days: 30
