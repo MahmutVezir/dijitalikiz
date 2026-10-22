@@ -25,7 +25,7 @@ class UncertaintyPolicyTests(unittest.TestCase):
 
     def request(self, **overrides):
         values = {
-            "operational_evidence_status": "sufficient",
+            "packet_validation_status": "valid",
             "answer": "Cache invalidation caused the defect.",
             "available_evidence_ids": frozenset({"E1", "E2"}),
             "cited_evidence_ids": ("E1",),
@@ -68,20 +68,20 @@ class UncertaintyPolicyTests(unittest.TestCase):
         self.assertEqual(result.decision, "diagnose")
         self.assertEqual(result.confidence_probability, 11 / 12)
 
-    def test_unknown_operational_evidence_status_abstains(self):
-        result = self.decide(self.request(operational_evidence_status=None))
+    def test_unknown_packet_validation_abstains(self):
+        result = self.decide(self.request(packet_validation_status=None))
         self.assertEqual(result.decision, "abstain")
-        self.assertIn("operational_evidence_status_unknown", result.reasons)
+        self.assertIn("packet_validation_unknown", result.reasons)
 
-    def test_insufficient_operational_evidence_abstains(self):
-        result = self.decide(self.request(operational_evidence_status="insufficient"))
+    def test_invalid_packet_abstains(self):
+        result = self.decide(self.request(packet_validation_status="invalid"))
         self.assertEqual(result.decision, "abstain")
-        self.assertIn("operational_evidence_insufficient", result.reasons)
+        self.assertIn("packet_validation_failed", result.reasons)
 
-    def test_gold_evidence_level_label_is_not_a_valid_runtime_status(self):
-        result = self.decide(self.request(operational_evidence_status="E3"))
+    def test_gold_evidence_level_label_is_not_a_valid_packet_status(self):
+        result = self.decide(self.request(packet_validation_status="E3"))
         self.assertEqual(result.decision, "abstain")
-        self.assertIn("operational_evidence_status_unknown", result.reasons)
+        self.assertIn("packet_validation_unknown", result.reasons)
 
     def test_model_requested_abstention_is_never_overridden(self):
         result = self.decide(self.request(model_requested_abstention=True))
