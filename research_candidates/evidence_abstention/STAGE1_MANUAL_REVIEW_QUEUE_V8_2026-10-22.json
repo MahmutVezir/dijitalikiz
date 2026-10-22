@@ -170,5 +170,43 @@
     "The technical signal does not establish accepted ground-truth labels or E1/E2/E3 evidence labels.",
     "Do not add any of these cases to CASE_REGISTRY.json as accepted until all case-level and global gates pass.",
     "This queue is for the independent ground-truth panel. Build a separate evidence-sufficiency packet without patches, fixed commits, issue or PR identifiers, or answers."
-  ]
+  ],
+  "technical_batch_disposition": {
+    "workflow_run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39818472947",
+    "matrix_jobs_completed": true,
+    "note": "All nine jobs shown in the latest job listing have completed, although the top-level Actions run was still reported as in_progress during the last refresh.",
+    "clear_technical_pairs": 4,
+    "candidates_handed_to_ground_truth_review": 4,
+    "accepted_confirmatory_case_count": 0,
+    "other_cases": [
+      {
+        "case_id": "BugsInPy-black-6",
+        "artifact_id": 12443317522,
+        "artifact_sha256": "8c6e347c4a579fd8903777b17046da00121d86216e65eb3e316e9afae2b03dda",
+        "status": "blocked_missing_test_fixture_or_harness_error",
+        "warning": "Automated artifact audit says the buggy log resembles a missing fixture or harness file."
+      },
+      {
+        "case_id": "BugsInPy-matplotlib-4",
+        "artifact_id": 12443133384,
+        "artifact_sha256": "1ae5404d057ac8dc1ce8b05b733bde394f97cb79e8eae5fba3486847748f0528",
+        "status": "blocked_environment_or_dependency_error",
+        "warning": "Both target-test commands exited 1; no valid target bug failure or fixed pass signal."
+      },
+      {
+        "case_id": "BugsInPy-luigi-5",
+        "artifact_id": 12443723364,
+        "artifact_sha256": "3c645942b5c21bd7b3d412bc9272c47330d42b29d4d7be65a968ab967593ff35",
+        "status": "blocked_runtime_not_recorded_consistently",
+        "warning": "Observed runtime Python did not explicitly match the metadata; no valid paired outcome."
+      },
+      {
+        "case_id": "BugsInPy-pandas-4",
+        "artifact_id": 12444737299,
+        "artifact_sha256": "1eaa5a64f8e14564542512bce0a3cb52809772039168e3204c4a2002131bc1a7",
+        "status": "blocked_pinned_pytest_installation_failed",
+        "warning": "Pytest installation failed before the target test ran on either revision; no outcome can be inferred."
+      }
+    ]
+  }
 }
