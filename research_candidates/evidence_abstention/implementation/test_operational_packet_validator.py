@@ -69,7 +69,7 @@ class OperationalPacketValidatorTests(unittest.TestCase):
         packet["packet_sha256"] = packet_digest(packet)
         result = validate_packet(packet)
         self.assertEqual(result["status"], "invalid")
-        self.assertTrue(any("gold/condition metadata" in item for item in result["blockers"]))
+        self.assertTrue(any("Unexpected top-level fields" in item and "gold_evidence_level" in item for item in result["blockers"]))
 
     def test_case_identity_is_not_allowed_as_packet_id(self):
         packet = valid_packet()
