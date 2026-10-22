@@ -421,10 +421,10 @@
           "review_notes": "Pinned pytest installation failed with exit 1 on both sides. Target test did not run. Runtime version was not captured; not a qualifying pair.",
           "raw_artifact_hashes": {
             "summary_sha256": "b2fa627a7bab881801945b03c15e809641c6a886237cbf688d9891d98dd47a9b",
-            "audit_sha256": "413dc7ab810829dc3a164b3909ae71e9e4564d628ebc4878421d2f22be160",
+            "audit_sha256": "413dc7ab810829dc3a164b3909ae71e9e4564d628476ebc4878421d2f22be160",
             "runner_runtime_fingerprint_sha256": "fc387035302af8776c8b34a23692035ef6c4b24bebc46a6d4e1a1d8381f56daa",
-            "buggy_pytest_bootstrap_sha256": "",
-            "fixed_pytest_bootstrap_sha256": ""
+            "buggy_pytest_bootstrap_sha256": "45cdcf6268b7354e1fe74e9d834c14ef084fec6bc8787c95002584cdc5d08569",
+            "fixed_pytest_bootstrap_sha256": "a899be70233cec0aff3bdef4f4f7f385593d1a236e1371f13688dcdfead1e480"
           }
         },
         {
