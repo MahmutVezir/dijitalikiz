@@ -21,3 +21,16 @@ The selected answer is candidate zero from a predeclared seed policy. Outputs ar
 ## Gold-label separation
 
 The adapter field named runtime_evidence_level must come from a separately designed operational evidence-sufficiency checker. Never copy the dataset's gold E1/E2/E3 condition label into this field: doing so would leak the answerability condition to the decision policy and make E3 abstention results tautological. The operational checker has not been implemented or validated in this scaffold. If its runtime assessment is unavailable, the adapter must receive null and abstain; do not substitute the gold label to make the system appear to work.
+
+
+## Manual preflight command
+
+From the repository root, run:
+
+    python research_candidates/evidence_abstention/implementation/uncertainty_inference_gate.py
+
+To make an open gate fail the shell command:
+
+    python research_candidates/evidence_abstention/implementation/uncertainty_inference_gate.py --require-ready
+
+The report-only form prints every blocker and exits successfully without importing PyTorch or Transformers. The require-ready form exits non-zero when any blocker remains. Neither command loads the model or runs inference.
