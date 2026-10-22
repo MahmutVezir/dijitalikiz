@@ -74,6 +74,7 @@ def validate_versions(actual: Mapping[str, str | None], expected: Mapping[str, s
 
 
 def run_no_output_preflight(manifest_path: Path, runtime_lock_path: Path, output_path: Path) -> dict:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     manifest_bytes = manifest_path.read_bytes()
     lock_bytes = runtime_lock_path.read_bytes()
     manifest = json.loads(manifest_bytes)
@@ -234,7 +235,20 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
     if not args.load_pinned_model_no_output:
         parser.error("No model download/load will occur unless --load-pinned-model-no-output is supplied.")
-    report = run_no_output_preflight(args.manifest, args.runtime_lock, args.output)
+    try:
+        report = run_no_output_preflight(args.manifest, args.runtime_lock, args.output)
+    except Exception as exc:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        report = {
+            "record_type": "no_output_runtime_preflight",
+            "status": "failed_runtime_load",
+            "blockers": [f"{type(exc).__name__}: {exc}"],
+            "model_generation_called": False,
+            "model_output_generated": False,
+            "model_inference_performed": False,
+            "note": "A failed load must remain a failed preflight; no output generation is attempted.",
+        }
+        args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0 if report["status"] == "passed" else 2
 
