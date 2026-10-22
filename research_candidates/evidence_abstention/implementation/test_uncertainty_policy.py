@@ -34,6 +34,7 @@ class UncertaintyPolicyTests(unittest.TestCase):
             "candidate_answers": ("Cache invalidation caused the defect.", "Cache invalidation caused the defect."),
             "self_check_conflict": False,
             "explicit_contradiction": False,
+            "model_requested_abstention": False,
         }
         values.update(overrides)
         return DecisionRequest(**values)
@@ -76,6 +77,11 @@ class UncertaintyPolicyTests(unittest.TestCase):
         result = self.decide(self.request(evidence_level="E3"))
         self.assertEqual(result.decision, "abstain")
         self.assertIn("evidence_insufficient", result.reasons)
+
+    def test_model_requested_abstention_is_never_overridden(self):
+        result = self.decide(self.request(model_requested_abstention=True))
+        self.assertEqual(result.decision, "abstain")
+        self.assertIn("model_requested_abstention", result.reasons)
 
     def test_contradiction_abstains(self):
         result = self.decide(self.request(explicit_contradiction=True))
