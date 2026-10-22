@@ -107,6 +107,22 @@ class EvidencePacketAuditTests(unittest.TestCase):
         self.assertEqual(result.status, "invalid")
         self.assertTrue(any("unique" in error for error in result.errors))
 
+    def test_non_string_decision_fails_without_raising(self):
+        result = MODULE.audit_response(
+            MODULE.audit_packet(packet()),
+            {"decision": [], "root_cause": "", "evidence_refs": []},
+        )
+        self.assertEqual(result.status, "invalid")
+        self.assertTrue(any("decision must be" in error for error in result.errors))
+
+    def test_diagnosis_requires_non_empty_root_cause(self):
+        result = MODULE.audit_response(
+            MODULE.audit_packet(packet()),
+            {"decision": "diagnose", "root_cause": " ", "evidence_refs": ["TRACE_A"]},
+        )
+        self.assertEqual(result.status, "invalid")
+        self.assertTrue(any("non-empty root_cause" in error for error in result.errors))
+
     def test_invalid_packet_causes_response_audit_failure(self):
         invalid = MODULE.audit_packet({"schema_version": "1.0", "items": []})
         result = MODULE.audit_response(

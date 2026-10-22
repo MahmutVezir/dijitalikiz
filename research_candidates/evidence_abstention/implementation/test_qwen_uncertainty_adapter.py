@@ -9,8 +9,10 @@ from qwen_uncertainty_adapter import (
     EvidenceAudit,
     GenerationSample,
     assess_candidates,
+    evidence_audit_from_structural_report,
     parse_structured_answer,
 )
+from evidence_packet_audit import audit_packet, create_packet
 from uncertainty_policy import (
     CalibrationObservation,
     DecisionPolicy,
@@ -86,6 +88,34 @@ class QwenAdapterTests(unittest.TestCase):
         audit = EvidenceAudit(packet_validation_status=None, available_evidence_ids=frozenset({"TRACE_A"}), supported_claim_coverage=None, self_check_conflict=None, explicit_contradiction=None)
         result = assess_candidates(self.samples, audit, self.calibrator, self.policy)
         self.assertEqual(result.decision, "abstain")
+
+    def test_structural_packet_report_never_fabricates_semantic_signals(self):
+        packet = create_packet([{
+            "id": "TRACE_A",
+            "kind": "test_log",
+            "content": "FAILED test_example",
+            "source_uri": "artifact://test-example",
+        }])
+        report = audit_packet(packet)
+        audit = evidence_audit_from_structural_report(report)
+        self.assertEqual(audit.packet_validation_status, "valid")
+        self.assertEqual(audit.available_evidence_ids, frozenset({"TRACE_A"}))
+        self.assertIsNone(audit.supported_claim_coverage)
+        self.assertIsNone(audit.self_check_conflict)
+        self.assertIsNone(audit.explicit_contradiction)
+        result = assess_candidates(self.samples, audit, self.calibrator, self.policy)
+        self.assertEqual(result.decision, "abstain")
+        self.assertIn("claim_support_unavailable", result.reasons)
+
+    def test_malformed_structural_report_fails_closed(self):
+        class InvalidReport:
+            status = "valid"
+            errors = ("hash mismatch",)
+            available_evidence_ids = ("TRACE_A",)
+
+        audit = evidence_audit_from_structural_report(InvalidReport())
+        self.assertEqual(audit.packet_validation_status, "invalid")
+        self.assertEqual(audit.available_evidence_ids, frozenset())
 
     def test_gold_evidence_level_label_cannot_be_used_as_packet_status(self):
         from dataclasses import replace
