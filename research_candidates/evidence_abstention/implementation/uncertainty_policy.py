@@ -137,6 +137,7 @@ class DecisionRequest:
     candidate_answers: tuple[str, ...]
     self_check_conflict: bool | None
     explicit_contradiction: bool | None
+    model_requested_abstention: bool
 
 
 @dataclass(frozen=True)
@@ -165,6 +166,8 @@ def decide(
         reasons.append("evidence_level_unknown")
     elif request.evidence_level == "E3":
         reasons.append("evidence_insufficient")
+    if request.model_requested_abstention:
+        reasons.append("model_requested_abstention")
     if request.explicit_contradiction is None:
         reasons.append("contradiction_status_unknown")
     elif request.explicit_contradiction:
