@@ -1,0 +1,104 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "audit_version": "1.0-draft",
+  "audited_at": "2026-10-22",
+  "status": "exploratory_engineering_smoke_only",
+  "confirmed_for_research": false,
+  "confirmatory_eligible": false,
+  "calibration_eligible": false,
+  "eligible_for_case_registry": false,
+  "model_inference_was_performed": true,
+  "study_manifest_modified": false,
+  "run": {
+    "github_actions_run_id": 39837255019,
+    "github_actions_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39837255019",
+    "source_commit": "ddc46f9e35da71ebd16e220b229e882b5e4423e4",
+    "kaggle_kernel_ref": "mahmutvezir/qwen-e1-p0-p1-ansible4-ddc46f9e-39837255019-1",
+    "kaggle_kernel_status": "KernelWorkerStatus.COMPLETE",
+    "artifact_id": 12452505143,
+    "artifact_zip_sha256": "f35f33029b0a42610e2d2ad2bfb6cedc90f2f9d7e0b14e632787872ae2a2e10d"
+  },
+  "case": {
+    "case_id": "BugsInPy-ansible-4",
+    "exposure_status": "previously_exposed",
+    "frozen_case_id_must_be_excluded": true,
+    "evidence_level": "E1",
+    "protocol_match": false,
+    "protocol_deviation": "The smoke prompt included the complete patch diff and successful fixed-tree test output, which are disallowed by the frozen prompt protocol."
+  },
+  "model": {
+    "id": "Qwen/Qwen2.5-3B-Instruct",
+    "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "gpu": "Tesla T4",
+    "dtype": "float16",
+    "observed_runtime": {
+      "python": "3.13.15",
+      "torch": "2.11.0+cu128",
+      "transformers": "4.48.3"
+    },
+    "locked_candidate_runtime": {
+      "python": "3.11.9",
+      "torch": "2.2.1",
+      "transformers": "4.43.2",
+      "accelerate": "0.33.0"
+    },
+    "exact_runtime_lock_verified": false
+  },
+  "design": {
+    "repeats_per_condition": 5,
+    "total_generations": 10,
+    "token_score_steps": 955,
+    "condition_policies": [
+      "P0",
+      "P1"
+    ],
+    "scoring_type": "automated provisional lexical/semantic-keyword proxy",
+    "independent_human_adjudication": false
+  },
+  "outcomes": {
+    "P0": {
+      "n": 5,
+      "json_parse_success": 5,
+      "diagnose": 5,
+      "model_abstentions": 0,
+      "provisional_rubric_matches": 0,
+      "mean_normalized_token_entropy": 0.04420725724013787
+    },
+    "P1": {
+      "n": 5,
+      "json_parse_success": 5,
+      "diagnose": 5,
+      "model_abstentions": 0,
+      "provisional_rubric_matches": 0,
+      "mean_normalized_token_entropy": 0.038142752621779644
+    },
+    "model_self_reported_confidence_values": [
+      0.95
+    ],
+    "self_reported_confidence_is_calibrated": false,
+    "population_inference_supported": false,
+    "abstention_efficacy_established": false
+  },
+  "guarded_engine": {
+    "P0": "abstain",
+    "P1": "abstain",
+    "reasons": [
+      "claim_support_unavailable",
+      "uncertainty_signals_incomplete",
+      "calibration_not_frozen"
+    ],
+    "these_are_model_outputs": false
+  },
+  "checksum_verification": {
+    "artifact_zip_sha256": "f35f33029b0a42610e2d2ad2bfb6cedc90f2f9d7e0b14e632787872ae2a2e10d",
+    "inner_files": {
+      "E1_P0_P1_REPORT.md": "57afe87e986e7f276086c89fff602921261ed274c220e3eb4e25a0647d3f4355",
+      "decision_matrix.json": "d6dbb169121bf3c55fb32596f57bf0ed6669bd2882964c234a1b5792ed6a51b9",
+      "raw_model_outputs.jsonl": "112ac27f05296c2e1a246b5e6503730e17d7aee24e8fd5b60ec9afeb0dce5173",
+      "scoring_rubric.json": "92967005472e28f07c5a4f48d02f36970761d04861698eec181b1571f928d7f2",
+      "token_logits_top5.jsonl": "a66bfc9242d98c5a2db55aa5a0d44c2602ac1f3a8493ebc18af0bbac724b8f7c"
+    },
+    "all_inner_file_hashes_passed": true
+  },
+  "interpretation": "This run verifies access and the historic engineering lane, not the frozen uncertainty experiment. Its ten outputs must remain excluded from the calibration set and accepted case registry."
+}

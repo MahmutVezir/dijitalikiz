@@ -110,3 +110,13 @@ Tüm sekiz aday hâlâ `accepted_for_confirmatory=false`. **Teknik sinyal veren 
 4. **Aşama 4 — başlatılmadı:** Gerçek model çıkarımı, ön kayıt, kalibrasyon, kabul edilmiş vaka sicili ve açık yürütme izni olmadan çalıştırılmamalıdır.
 
 Bu aşamada otomatik olarak tamamlanabilecek dosya/CI işleri büyük ölçüde hazırdır. Kalan kritik işler bağımsız insan değerlendirmesi, erişim kontrollü kör paketlerin hazırlanması, kalibrasyon etiketleri, gerçek Kaggle/CUDA no-output runtime doğrulaması ve dışarıdan doğrulanabilir ön kayıttır. Bunları yapmış gibi göstermek bilimsel olarak yanlış olacağından inference kapısı kapalı kalır.
+
+## Additional clarification — Kaggle exploratory smoke audit
+
+On 22 October 2026, a **separate engineering smoke** completed on Kaggle: [GitHub Actions run 39837255019](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39837255019), kernel `mahmutvezir/qwen-e1-p0-p1-ansible4-ddc46f9e-39837255019-1`, artifact SHA-256 `f35f33029b0a42610e2d2ad2bfb6cedc90f2f9d7e0b14e632787872ae2a2e10d`. It produced 10 outputs on the previously exposed Ansible-4 case (five per policy); both policies produced 5/5 diagnoses, 0/5 model abstentions and 0/5 matches under a provisional automated rubric. The included file checksums passed.
+
+This run is **not** an official or confirmatory result and does not contradict the “Stage 4 not started” status for the registered uncertainty experiment. The smoke used a separate prompt template that showed the full patch and successful fixed-test output to the model, contrary to the frozen study prompt protocol. It also used Python 3.13.15 / torch 2.11.0+cu128 / transformers 4.48.3 rather than the dedicated study runtime lock. Confidence values were model self-reports, not calibrated probabilities. See [full smoke audit](../docs/EVIDENCE_ABSTENTION_KAGGLE_SMOKE_AUDIT_2026-10-22.md).
+
+PR [#91](https://github.com/MahmutVezir/dijitalikiz/pull/91) merged the Qwen adapter fix to pass an explicit attention mask and fail closed on candidate prompt/seed integrity defects. The CI run at the time caught two stale test assertions in the wider suite; repairs are being submitted separately. The registered study's inference manifest remains closed and the accepted case registry remains empty.
+
+The two one-off Kaggle smoke workflow definitions used for engineering checks have now been preserved as inactive historical files outside `.github/workflows/`. This addresses the repository's single-canonical-Kaggle-workflow validation without deleting the historical run or its outputs. The official inference manifest remains closed.
