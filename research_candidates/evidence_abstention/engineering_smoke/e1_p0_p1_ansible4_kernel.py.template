@@ -74,28 +74,37 @@ def is_abstention(parsed, raw):
     ))
 
 def root_cause_rubric(parsed, raw):
-    text = " ".join([
-        str(parsed.get("root_cause", "")),
-        str(parsed.get("decision", "")),
-        str(parsed.get("evidence_support", "")),
-        raw
-    ]).casefold()
+    text = str(parsed.get("root_cause", "")).casefold()
     has_collection = "collection" in text
     has_template = any(term in text for term in (
         "template", "templating", "templatable", "jinja", "{{", "collection name"
     ))
-    has_failure_mechanism = any(term in text for term in (
-        "warning", "warn", "static", "always_post_validate", "post_validate",
-        "post-validation", "post validation", "not emitted", "not printed",
-        "missing warning", "warning message"
+    has_warning = any(term in text for term in ("warning", "warn", "stderr"))
+    has_missing_warning = any(term in text for term in (
+        "not emitted", "not emit", "does not emit", "doesn't emit",
+        "fails to emit", "failed to emit", "missing warning", "no warning",
+        "warning absent", "warning is absent", "absence of warning",
+        "not printed", "did not print", "stderr is empty", "empty stderr",
+        "expected warning is missing", "expected warning was missing"
     ))
-    matched = has_collection and has_template and has_failure_mechanism
+    has_static_metadata = "static" in text
+    has_post_validation_metadata = any(term in text for term in (
+        "always_post_validate", "always post validate", "post-validation",
+        "post validation", "post_validate"
+    ))
+    matched = all((
+        has_collection, has_template, has_warning, has_missing_warning,
+        has_static_metadata, has_post_validation_metadata
+    ))
     return {
         "provisional_match": matched,
         "criteria": {
             "collection_scope": has_collection,
             "template_mechanism": has_template,
-            "warning_or_validation_mechanism": has_failure_mechanism
+            "warning_referenced": has_warning,
+            "missing_original_warning": has_missing_warning,
+            "static_metadata": has_static_metadata,
+            "always_post_validate_metadata": has_post_validation_metadata
         },
         "rubric_version": RUBRIC_VERSION,
         "not_independent_human_scoring": True
@@ -460,7 +469,9 @@ def main():
             "criteria": [
                 "must mention collection scope",
                 "must mention template/Jinja mechanism",
-                "must mention missing warning or static/post-validation mechanism"
+                "must explicitly identify the missing warning in the buggy revision",
+                "must identify static metadata",
+                "must identify always_post_validate metadata"
             ]
         },
         "condition_summaries": condition_summaries,
@@ -534,9 +545,12 @@ def main():
         "criteria": {
             "collection_scope": "root-cause answer mentions collection(s)",
             "template_mechanism": "root-cause answer mentions template/Jinja/templatable expression",
-            "warning_or_validation_mechanism": "root-cause answer mentions missing warning or static/post-validation metadata"
+            "warning_referenced": "root-cause answer mentions warning/warn/stderr",
+            "missing_original_warning": "root-cause answer explicitly states the expected warning was absent/not emitted",
+            "static_metadata": "root-cause answer identifies static metadata",
+            "always_post_validate_metadata": "root-cause answer identifies always_post_validate metadata"
         },
-        "match_rule": "all three criteria true",
+        "match_rule": "all six criteria true",
         "qualification": "automated lexical proxy only; human review required"
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     files = [path for path in OUTPUT_DIR.iterdir() if path.is_file() and path.name != "SHA256SUMS"]
