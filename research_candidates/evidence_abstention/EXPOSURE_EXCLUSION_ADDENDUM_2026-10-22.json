@@ -278,7 +278,15 @@
           "artifact_id": 12454021042,
           "artifact_sha256": "3db0c54a8d6060fb75be2945d0783a1352247b8061ae0d99b53b10a5909dac00",
           "accepted_for_confirmatory": false,
-          "review_notes": "The test file is modified by the patch; compare the test diff and assess distinctness from previously exposed tqdm-5."
+          "review_notes": "The test file is modified by the patch; compare the test diff and assess distinctness from previously exposed tqdm-5.",
+          "raw_artifact_hashes": {
+            "buggy_log_sha256": "ccb96cee1fac9a45f4f9d92afa9ae76f7c527d499963bfd6063b423c72f1ab37",
+            "fixed_log_sha256": "8d792a6b1f5616006ff3e0dc9ddbcfc5b4b98ac364a5fef05c810274639c0eab",
+            "summary_sha256": "d1ebdb603287c5677c2d78001d298f12cb6f6551c4135d23af5f8379fb964bac",
+            "audit_sha256": "573d6e8a903353a3fb160e991c1038b774e7474fc91c462b3db5f68aab7f43a1",
+            "buggy_runtime_fingerprint_sha256": "b71a1a8ac5613aa7b92b5dc80ed12a8d5eefa5b250490b76b0e32035c7cde6b5",
+            "fixed_runtime_fingerprint_sha256": "69c243ddc9eea79cd2d8950c9b09b580500330ee2af9f0f1612dfa9cf93a861a"
+          }
         },
         {
           "case_id": "BugsInPy-youtube-dl-6",
@@ -293,7 +301,15 @@
           "artifact_id": 12453876171,
           "artifact_sha256": "d4b85e44845b9157664783284bab490b4ebbe414ddb55eac7756e86d615c3f0a",
           "accepted_for_confirmatory": false,
-          "review_notes": "Buggy output is 0.0 where None is expected. Patch also changes the test file; assess patch/test dependence and possible relation to prior youtube-dl-5 exposure."
+          "review_notes": "Buggy output is 0.0 where None is expected. Patch also changes the test file; assess patch/test dependence and possible relation to prior youtube-dl-5 exposure.",
+          "raw_artifact_hashes": {
+            "buggy_log_sha256": "fb9eccaacd45d59ae048e881503b44fef0c79dc293389adab527d567de74de81",
+            "fixed_log_sha256": "5bc3625a64c587d788ca5b6a43f2c136cf2070c5b360854ac01f5d19c28970d6",
+            "summary_sha256": "3a6c637de7eb2adcf171a9c00833aaadfde8bf5b8c50d34bc5952bbc173dbffa",
+            "audit_sha256": "98640955b4435ed02b0de6f2851fc058819087ba3fbeffc66a5613946e70355f",
+            "buggy_runtime_fingerprint_sha256": "54ec735620c24cf9e207d3cd1da22750bdbb385174b8c1f9ed5cecbf36d1de1d",
+            "fixed_runtime_fingerprint_sha256": "9f2b769b17bb4e4850a5fcc518d4bcb52656796ff88b6b380bf900661062eb49"
+          }
         },
         {
           "case_id": "BugsInPy-ansible-6",
@@ -310,7 +326,15 @@
           "artifact_id": 12454255246,
           "artifact_sha256": "5c7d43834ebd7b03c92acec7a3bd3e9b41014471455498f18bd3b826b13f9d9c",
           "accepted_for_confirmatory": false,
-          "review_notes": "One target command's failure is an already-installed unknown-version error; panel A must verify that each failure is causally relevant. Test patch is present."
+          "review_notes": "One target command's failure is an already-installed unknown-version error; panel A must verify that each failure is causally relevant. Test patch is present.",
+          "raw_artifact_hashes": {
+            "buggy_log_sha256": "20fd32e6dcef16c90c695aa41568e3112126e2b18c7908c6b534cb8334ac2b01",
+            "fixed_log_sha256": "93106c9dfcbfffe7f583a1dedba128aa4a886926b62d3f32d12eba9f313c6977",
+            "summary_sha256": "c3f2a7598b9a1f4fcca8cfa871b3a729d49f1b1d2b4cc1e11b92e2527bce2d83",
+            "audit_sha256": "44218a48381f25dd33fb2d58f82b8fb38e408b1ab17a30c8ac9282e8fa976503",
+            "buggy_runtime_fingerprint_sha256": "ab1734f054dad874035b2902e1c2fce930a44d05a7df88aa0e5012a30a385064",
+            "fixed_runtime_fingerprint_sha256": "677b94963038b0e3c12f99eda6ebe9976b2ebea75113a1994ab35ce929dbf411"
+          }
         },
         {
           "case_id": "BugsInPy-black-8",
@@ -325,7 +349,15 @@
           "artifact_id": 12453591492,
           "artifact_sha256": "e20d36087a9acda02b4953da1404abf4d6d0ebb334af1f5da0d42b79c2b8d6ad",
           "accepted_for_confirmatory": false,
-          "review_notes": "Both source and test files change; verify test correctness and that the patch does not simply change expected formatting to match the implementation."
+          "review_notes": "Both source and test files change; verify test correctness and that the patch does not simply change expected formatting to match the implementation.",
+          "raw_artifact_hashes": {
+            "buggy_log_sha256": "6f109a9be30402f7db50042239fc022b89d1245f99c019796b8baeddc0cabbe0",
+            "fixed_log_sha256": "64633ae2d6230bd2ae1dffdac5e041b537a0eccac114ebf0e455868985c48292",
+            "summary_sha256": "9ca93f4a12491d36285c95e496e2aee4ac52a026fd160716566cb086a15cdb30",
+            "audit_sha256": "9ca235b9458084cb5a2a4da740c9dd66896187ec2efb3e6e6b154d963605d050",
+            "buggy_runtime_fingerprint_sha256": "2680bf5e1d33e93892d6dff447959647559822b4135138db4778c6f91750fd5d",
+            "fixed_runtime_fingerprint_sha256": "642c20810b132b91249d12a3cde75c4d0b369850c876df5480ef1f9a75b604c5"
+          }
         },
         {
           "case_id": "BugsInPy-fastapi-7",
@@ -340,7 +372,15 @@
           "artifact_id": 12454376785,
           "artifact_sha256": "a6e50cc6a82d383cd1282b855870551a59317c9662811de604a71df5431dff57",
           "accepted_for_confirmatory": false,
-          "review_notes": "Buggy side raises TypeError because Decimal is not JSON serializable; fixed target passes. Both source and test files change; compare the test expectations before human acceptance."
+          "review_notes": "Buggy side raises TypeError because Decimal is not JSON serializable; fixed target passes. Both source and test files change; compare the test expectations before human acceptance.",
+          "raw_artifact_hashes": {
+            "buggy_log_sha256": "4c443c81d065033e0d76e189220a6d43e62e2dc1419f82d2627b85b484ea2abb",
+            "fixed_log_sha256": "e4a6a28b810aa2ea3b47dcaff11a56288bbffa16a77df3f90dbbe326b8f66b9d",
+            "summary_sha256": "1a72328269105ffce162c6af054b0cd4166d2c2509661486442261e704de1b83",
+            "audit_sha256": "d1f193b956183625063ab4329e1fafc208ce3206eebf612f729badbfddd3de70",
+            "buggy_runtime_fingerprint_sha256": "b6631c8dd636c74e9d75c88e623005fd24d3f58d42fcd83baf58958a65d88dd2",
+            "fixed_runtime_fingerprint_sha256": "8646690ec4f9df9cc025470ae5b6bdfa2533cc6863634f548b4c3da695312faa"
+          }
         },
         {
           "case_id": "BugsInPy-keras-6",
@@ -355,7 +395,15 @@
           "artifact_id": 12453811486,
           "artifact_sha256": "6a7c74b4f8fc6d41477ec89aab72210f3092e460d1f5a6d08b1d058bb20ad4da",
           "accepted_for_confirmatory": false,
-          "review_notes": "The test file is modified by the patch; verify that the test still directly establishes the metadata root cause."
+          "review_notes": "The test file is modified by the patch; verify that the test still directly establishes the metadata root cause.",
+          "raw_artifact_hashes": {
+            "buggy_log_sha256": "ed199166c93d71e8bd6fd896daa6a69281e1851794602c124d83cc72364764b0",
+            "fixed_log_sha256": "0cbfb1a02e477abf80d99f20880a853f74ac376faeb3e79abc5f641e44273fe5",
+            "summary_sha256": "24cc71766befceb600fe6c884d0d4aef049bd100dfc68ed7a9261bace3cf7f1f",
+            "audit_sha256": "50e284c6312179bfb4be776c6144877268fb3339525f8630b9cb35a088a978ee",
+            "buggy_runtime_fingerprint_sha256": "5186dd11d3aec567a787224ddb42a6e47375ff61fa70d92c06aede6361928777",
+            "fixed_runtime_fingerprint_sha256": "4cf83500d04b87413207a39b14bc385d4f6d1af047024e32740f62d8c78b54d4"
+          }
         },
         {
           "case_id": "BugsInPy-luigi-7",
@@ -370,7 +418,14 @@
           "artifact_id": 12454496788,
           "artifact_sha256": "065165fa1bdab07e5c4dd05050047414e4d91f2d18cdd13cf98bef8d37481a68",
           "accepted_for_confirmatory": false,
-          "review_notes": "Pinned pytest installation failed with exit 1 on both sides. Target test did not run. Runtime version was not captured; not a qualifying pair."
+          "review_notes": "Pinned pytest installation failed with exit 1 on both sides. Target test did not run. Runtime version was not captured; not a qualifying pair.",
+          "raw_artifact_hashes": {
+            "summary_sha256": "b2fa627a7bab881801945b03c15e809641c6a886237cbf688d9891d98dd47a9b",
+            "audit_sha256": "413dc7ab810829dc3a164b3909ae71e9e4564d628ebc4878421d2f22be160",
+            "runner_runtime_fingerprint_sha256": "fc387035302af8776c8b34a23692035ef6c4b24bebc46a6d4e1a1d8381f56daa",
+            "buggy_pytest_bootstrap_sha256": "",
+            "fixed_pytest_bootstrap_sha256": ""
+          }
         },
         {
           "case_id": "BugsInPy-matplotlib-6",
@@ -383,7 +438,8 @@
           "artifact_id": null,
           "artifact_sha256": null,
           "accepted_for_confirmatory": false,
-          "review_notes": "Matrix job failed without a saved case artefact. Technical classification is unavailable; do not re-run or accept without review of the job failure reason."
+          "review_notes": "Matrix job failed without a saved case artefact. Technical classification is unavailable; do not re-run or accept without review of the job failure reason.",
+          "raw_artifact_hashes": {}
         }
       ],
       "confirmatory_eligible": false
