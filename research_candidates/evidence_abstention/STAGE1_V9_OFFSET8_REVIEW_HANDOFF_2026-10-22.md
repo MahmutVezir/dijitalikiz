@@ -20,7 +20,7 @@ All eight cases are permanently excluded from the confirmatory sample because th
 | **BugsInPy-fastapi-7** | Python 3.8.3; `pytest tests/test_multi_body_errors.py::test_jsonable_encoder_requiring_error` | `TypeError: Object of type Decimal is not JSON serializable` | Test passes | [Artifact 12454376785](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39841744307/artifacts/12454376785), ZIP SHA-256 `a6e50cc6a82d383cd1282b855870551a59317c9662811de604a71df5431dff57` |
 | **BugsInPy-keras-6** | Python 3.7.3; `pytest tests/test_loss_masking.py::test_masking_is_all_zeros` | `assert nan == 0` fails | Test passes | [Artifact 12453811486](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39841744307/artifacts/12453811486), ZIP SHA-256 `6a7c74b4f8fc6d41477ec89aab72210f3092e460d1f5a6d08b1d058bb20ad4da` |
 
-The per-case ZIP digests above match the downloaded artifacts; all listed inner `SHA256SUMS` checks passed. Full target log, summary, runtime fingerprint and audit-file hashes are recorded in the [dated exposure ledger](./EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json).
+Independent local verification confirmed that the seven available case ZIPs (six technical-signal cases plus Luigi-7) and the cohort-selection freeze ZIP all match their recorded outer SHA-256 digests: 8/8. Each of those eight archives also passed its inner `SHA256SUMS` manifest. Matplotlib-6 produced no case artifact and is not counted as an available case ZIP. Full target log, summary, runtime fingerprint and audit-file hashes are recorded in the [dated exposure ledger](./EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json).
 
 ## Non-qualifying outcomes
 
