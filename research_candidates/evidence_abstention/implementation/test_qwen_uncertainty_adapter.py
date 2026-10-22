@@ -35,7 +35,7 @@ class QwenAdapterTests(unittest.TestCase):
             + [CalibrationObservation(0.9, False) for _ in range(10)]
         )
         self.policy = DecisionPolicy(0.8, 0.25, "sha256:" + "a" * 64, True)
-        self.audit = EvidenceAudit(runtime_evidence_level="E1", available_evidence_ids=frozenset({"E1", "E2"}), supported_claim_coverage=1.0, self_check_conflict=False, explicit_contradiction=False)
+        self.audit = EvidenceAudit(operational_evidence_status="sufficient", available_evidence_ids=frozenset({"E1", "E2"}), supported_claim_coverage=1.0, self_check_conflict=False, explicit_contradiction=False)
         self.samples = (
             GenerationSample(answer(), (0.05, 0.1), 10, "a" * 64),
             GenerationSample(answer(), (0.1, 0.1), 11, "b" * 64),
@@ -75,9 +75,17 @@ class QwenAdapterTests(unittest.TestCase):
         self.assertIn("model_requested_abstention", result.reasons)
 
     def test_missing_audit_fails_closed(self):
-        audit = EvidenceAudit(runtime_evidence_level=None, available_evidence_ids=frozenset({"E1"}), supported_claim_coverage=None, self_check_conflict=None, explicit_contradiction=None)
+        audit = EvidenceAudit(operational_evidence_status=None, available_evidence_ids=frozenset({"E1"}), supported_claim_coverage=None, self_check_conflict=None, explicit_contradiction=None)
         result = assess_candidates(self.samples, audit, self.calibrator, self.policy)
         self.assertEqual(result.decision, "abstain")
+
+    def test_gold_evidence_level_label_cannot_be_used_as_operational_status(self):
+        from dataclasses import replace
+
+        audit = replace(self.audit, operational_evidence_status="E1")
+        result = assess_candidates(self.samples, audit, self.calibrator, self.policy)
+        self.assertEqual(result.decision, "abstain")
+        self.assertIn("operational_evidence_status_unknown", result.reasons)
 
     def test_evidence_reference_not_in_packet_fails_closed(self):
         samples = (
