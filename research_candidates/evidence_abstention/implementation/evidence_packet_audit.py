@@ -195,8 +195,12 @@ def audit_response(packet_audit: PacketAudit, response: Any) -> ResponseAudit:
     unknown = sorted(set(refs) - available)
     if unknown:
         errors.append("unknown evidence references: " + ", ".join(unknown))
-    if decision == "diagnose" and not refs:
-        errors.append("diagnose response must cite at least one evidence item")
+    if decision == "diagnose":
+        if not refs:
+            errors.append("diagnose response must cite at least one evidence item")
+        root_cause = response.get("root_cause")
+        if not isinstance(root_cause, str) or not root_cause.strip():
+            errors.append("diagnose response must have a non-empty root_cause")
     if decision == "abstain" and response.get("root_cause") != "":
         errors.append("abstain response must leave root_cause empty")
     return ResponseAudit(
