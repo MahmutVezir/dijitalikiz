@@ -23,3 +23,17 @@ The raw artifacts contain test logs, observed runtime fingerprints, source metad
 Patch links in the JSON are for the ground-truth panel only. Do not provide this file or those links to the evidence-sufficiency panel or to the model as an answer key.
 
 Full commit identifiers, SHA-256 values, artifact IDs, and source references are in STAGE1_MANUAL_REVIEW_QUEUE_V8_2026-10-22.json. All four cases retain accepted_for_confirmatory=false; licensing, root-cause review, E1/E2/E3 review, leakage review, and the evidence packets remain open.
+
+
+## Completed V8 batch disposition
+
+The V8 selection-freeze job and all eight case jobs have now returned. Four cases are handed off above for independent ground-truth review. Four others are not review candidates from this run:
+
+| Case | Why it is not a technical candidate |
+|---|---|
+| Black-6 | The buggy log indicates a missing test fixture or harness-file issue. |
+| Matplotlib-4 | Environment/dependency/plugin failure signatures; the fixed test also failed. |
+| Luigi-5 | Runtime Python was not recorded consistently and did not establish a metadata-matched test pair. |
+| Pandas-4 | Pinned pytest installation failed before either target test ran. |
+
+The raw artifacts for these four cases are retained in the same workflow run and their IDs/SHA-256 values are recorded in the JSON handoff. Do not reinterpret these failures as target bugs. This V8 batch did not result in a case being accepted; the case registry remains unchanged and model inference remains disabled.
