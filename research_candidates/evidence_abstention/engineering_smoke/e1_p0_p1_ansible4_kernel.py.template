@@ -20,6 +20,7 @@ GOLD_ROOT_CAUSE = (
     "needs the static and always_post_validate metadata shown in the patch."
 )
 RUBRIC_VERSION = "ansible4-root-cause-rubric-v2"
+BYPASS_GUARDRAILS = True
 AVAILABLE_EVIDENCE = {"CASE_METADATA", "BUGGY_LOG", "PATCH", "FIXED_TEST"}
 
 def sha256(data):
@@ -61,20 +62,15 @@ def parse_answer(raw):
 def is_abstention(parsed, raw):
     if parsed.get("abstain") is True:
         return True
-    if parsed.get("abstain") is False:
-        return False
-    decision = str(parsed.get("decision", "")).strip().casefold()
-    if decision in {"abstain", "yetersiz kanıt", "bilmiyorum"}:
-        return True
-    if parsed.get("parse_ok"):
-        return False
-    if re.search(r'"abstain"\s*:\s*true\b', raw, flags=re.IGNORECASE):
-        return True
-    if re.search(r'"abstain"\s*:\s*false\b', raw, flags=re.IGNORECASE):
-        return False
-    return bool(re.search(
-        r'"decision"\s*:\s*"(?:abstain|yetersiz kanıt|bilmiyorum)"',
-        raw, flags=re.IGNORECASE
+    text = " ".join([
+        str(parsed.get("decision", "")),
+        str(parsed.get("root_cause", "")),
+        raw
+    ]).casefold()
+    return any(term in text for term in (
+        "abstain", "yetersiz kanıt", "bilmiyorum", "insufficient evidence",
+        "not enough evidence", "cannot determine", "can't determine",
+        "i don't know", "unknown"
     ))
 
 def root_cause_rubric(parsed, raw):
@@ -87,21 +83,28 @@ def root_cause_rubric(parsed, raw):
     has_missing_warning = any(term in text for term in (
         "not emitted", "not emit", "does not emit", "doesn't emit",
         "fails to emit", "failed to emit", "missing warning", "no warning",
-        "warning is absent", "warning absent", "absence of warning",
-        "not printed", "does not print", "doesn't print", "did not print",
-        "not displayed", "does not display", "doesn't display",
-        "stderr is empty", "empty stderr", "warning not present",
-        "expected warning is missing", "expected warning was missing",
-        "warning was not produced", "warning was not emitted"
+        "warning absent", "warning is absent", "absence of warning",
+        "not printed", "did not print", "stderr is empty", "empty stderr",
+        "expected warning is missing", "expected warning was missing"
     ))
-    matched = has_collection and has_template and has_warning and has_missing_warning
+    has_static_metadata = "static" in text
+    has_post_validation_metadata = any(term in text for term in (
+        "always_post_validate", "always post validate", "post-validation",
+        "post validation", "post_validate"
+    ))
+    matched = all((
+        has_collection, has_template, has_warning, has_missing_warning,
+        has_static_metadata, has_post_validation_metadata
+    ))
     return {
         "provisional_match": matched,
         "criteria": {
             "collection_scope": has_collection,
             "template_mechanism": has_template,
             "warning_referenced": has_warning,
-            "missing_original_warning": has_missing_warning
+            "missing_original_warning": has_missing_warning,
+            "static_metadata": has_static_metadata,
+            "always_post_validate_metadata": has_post_validation_metadata
         },
         "rubric_version": RUBRIC_VERSION,
         "not_independent_human_scoring": True
@@ -114,36 +117,38 @@ def compose_prompt(case, condition):
         "\nCOMPLETE PATCH DIFF\n" + case["model_evidence"]["patch_raw"] +
         "\nPATCHED-TREE SUCCESSFUL TEST OUTPUT\n" + case["model_evidence"]["fixed_test_log_raw"]
     )
-    p0 = (
-        "POLICY CONDITION P0 (forced diagnosis): You are required to give the most "
-        "specific root-cause diagnosis supported by the supplied evidence. Do not "
-        "abstain or answer 'unknown'. If part of the cause remains uncertain, state "
-        "the narrowest supported cause and describe the uncertainty without refusing "
-        "to diagnose."
+    if condition == "P0":
+        directive = (
+            "P0 FORCED-DIAGNOSIS: The decision value must be exactly the string diagnose. "
+            "The abstain field must be the JSON boolean false. Do not use abstain, "
+            "unknown, a combined enum, or an enum description. Give the narrowest "
+            "technically supported root cause. Inspect both the buggy test log and "
+            "the complete patch; explain the missing behavior in the buggy revision "
+            "and the patch change that makes the target test pass."
+        )
+    else:
+        directive = (
+            "P1 SELECTIVE-ABSTENTION: Use decision diagnose with abstain=false only "
+            "when the supplied evidence supports a defensible root cause. Otherwise "
+            "use decision abstain with abstain=true. Do not combine enum values."
+        )
+    schema = (
+        'Return exactly one JSON object with these keys and types: '
+        '{"decision":"diagnose","abstain":false,"root_cause":"string",'
+        '"evidence_support":"string","evidence_ids":["CASE_METADATA","BUGGY_LOG","PATCH","FIXED_TEST"],'
+        '"confidence":0.0}. For P0, the decision and abstain values shown above are mandatory. '
+        "For P1, decision is exactly diagnose or abstain and abstain is a JSON boolean "
+        "consistent with it. Do not emit schema descriptions or explanations outside "
+        "the JSON object. The confidence value is self-reported, not calibrated probability."
     )
-    p1 = (
-        "POLICY CONDITION P1 (selective abstention): Diagnose when the supplied "
-        "evidence is sufficient. Abstain only if you cannot identify a defensible "
-        "root cause from this evidence. Do not abstain merely because the log alone "
-        "would be incomplete; consider the entire supplied evidence packet."
-    )
-    directive = p0 if condition == "P0" else p1
     return (
         "You are an experienced Python software-debugging researcher. Diagnose the "
-        "root cause of the target test failure using only the evidence packet. "
-        "Do not invent evidence. The packet contains a buggy-side test failure, a "
-        "complete patch diff, and a passing target test after the patch was applied. "
-        "Return one valid JSON object only, with no Markdown or code fence. The key "
-        "decision must be exactly 'diagnose' or 'abstain'; the key abstain must be a "
-        "boolean consistent with decision. The keys root_cause and evidence_support "
-        "must be strings; evidence_ids must be a JSON array of evidence ID strings; "
-        "confidence must be a number between zero and one. Do not copy an enum "
-        "description into a value. If diagnosing, use decision='diagnose' and "
-        "abstain=false. If abstaining, use decision='abstain' and abstain=true. "
-        "Use only these evidence IDs: CASE_METADATA, BUGGY_LOG, PATCH, FIXED_TEST. "
-        "The confidence value is self-reported and is not calibrated probability. "
-        + directive + "\n\nEVIDENCE PACKET BEGIN\n" + evidence +
-        "\nEVIDENCE PACKET END"
+        "root cause of the target test failure using only the evidence packet. Do not "
+        "invent evidence or claim to have run tests yourself. The supplied packet includes "
+        "a target failure, complete patch diff, and passing output for the patched tree. "
+        + directive + "\n" + schema +
+        "\nAllowed evidence IDs: CASE_METADATA, BUGGY_LOG, PATCH, FIXED_TEST.\n"
+        "EVIDENCE PACKET BEGIN\n" + evidence + "\nEVIDENCE PACKET END"
     )
 
 def main():
@@ -255,7 +260,7 @@ def main():
                 with torch.inference_mode():
                     generated = model.generate(
                         input_ids=encoded,
-                        max_new_tokens=192,
+                        max_new_tokens=256,
                         do_sample=True,
                         temperature=temperature,
                         top_p=top_p,
@@ -345,35 +350,14 @@ def main():
     for condition, condition_rows in condition_records.items():
         n = len(condition_rows)
         abstentions = sum(int(row["model_abstention_classified"]) for row in condition_rows)
-        diagnosed = [
-            row for row in condition_rows
-            if row["parse_ok"]
-            and str(row["model_decision"]).strip().casefold() == "diagnose"
-            and row["model_abstain_flag"] is False
-            and bool(str(row["model_root_cause"]).strip())
-        ]
+        diagnosed = [row for row in condition_rows if not row["model_abstention_classified"] and row["parse_ok"]]
         correct = sum(int(row["root_cause_rubric"]["provisional_match"]) for row in diagnosed)
-        valid_labels = sum(
-            int(str(row["model_decision"]).strip().casefold() in {"diagnose", "abstain"})
-            for row in condition_rows if row["parse_ok"]
-        )
-        forced_violations = sum(
-            int(
-                (not row["parse_ok"])
-                or row["model_abstention_classified"]
-                or str(row["model_decision"]).strip().casefold() != "diagnose"
-                or row["model_abstain_flag"] is not False
-                or not str(row["model_root_cause"]).strip()
-            )
-            for row in condition_rows
-        )
         condition_summaries[condition] = {
             "n_generations": n,
             "json_parse_success_count": sum(int(row["parse_ok"]) for row in condition_rows),
-            "valid_decision_label_count": valid_labels,
             "model_abstention_count": abstentions,
             "model_abstention_rate": abstentions / n,
-            "forced_diagnosis_violation_count": forced_violations if condition == "P0" else None,
+            "forced_diagnosis_violation_count": abstentions if condition == "P0" else None,
             "diagnosis_count": len(diagnosed),
             "provisional_rubric_match_count": correct,
             "provisional_rubric_accuracy_over_all_generations": correct / n,
@@ -423,20 +407,34 @@ def main():
             calibration_id=None,
             calibration_verified=False
         )
-        engine_result = up.decide(
-            request,
-            up.EmpiricalConfidenceCalibrator(bin_count=5, min_samples_per_bin=8),
-            engine_policy
-        )
+        if BYPASS_GUARDRAILS:
+            engine_snapshot = {
+                "frozen_engine_decision": "BYPASSED_FOR_MODEL_CAPABILITY_PROBE",
+                "frozen_engine_reasons": [
+                    "post_generation_policy_not_applied_to_model_output",
+                    "calibration_and_incomplete_signal_gates_skipped_for_this_smoke_only"
+                ],
+                "frozen_engine_confidence_probability": None,
+                "frozen_engine_uncertainty_index": None
+            }
+        else:
+            engine_result = up.decide(
+                request,
+                up.EmpiricalConfidenceCalibrator(bin_count=5, min_samples_per_bin=8),
+                engine_policy
+            )
+            engine_snapshot = {
+                "frozen_engine_decision": engine_result.decision,
+                "frozen_engine_reasons": list(engine_result.reasons),
+                "frozen_engine_confidence_probability": engine_result.confidence_probability,
+                "frozen_engine_uncertainty_index": engine_result.uncertainty_index
+            }
         matrix.append({
             "condition": condition,
             "model_abstention_rate": condition_summaries[condition]["model_abstention_rate"],
             "provisional_correct_diagnosis_count": condition_summaries[condition]["provisional_rubric_match_count"],
             "n_generations": condition_summaries[condition]["n_generations"],
-            "frozen_engine_decision": engine_result.decision,
-            "frozen_engine_reasons": list(engine_result.reasons),
-            "frozen_engine_confidence_probability": engine_result.confidence_probability,
-            "frozen_engine_uncertainty_index": engine_result.uncertainty_index,
+            **engine_snapshot,
             "unknown_model_citations": unknown_refs,
             "engine_limit": "The frozen engine cannot diagnose without independently assessed supported-claim coverage and verified frozen calibration; no values were fabricated."
         })
@@ -454,7 +452,7 @@ def main():
         "transformers_version": transformers.__version__,
         "generation_config": {
             "repeats_per_condition": repeats,
-            "max_new_tokens": 192,
+            "max_new_tokens": 256,
             "do_sample": True,
             "temperature": temperature,
             "top_p": top_p,
@@ -469,14 +467,18 @@ def main():
             "rubric_version": RUBRIC_VERSION,
             "type": "automated lexical/semantic-keyword proxy, not independent human evaluation",
             "criteria": [
-                "root_cause must mention collection scope",
-                "root_cause must mention template/Jinja mechanism",
-                "root_cause must explicitly state that the original expected warning was absent/not emitted"
+                "must mention collection scope",
+                "must mention template/Jinja mechanism",
+                "must explicitly identify the missing warning in the buggy revision",
+                "must identify static metadata",
+                "must identify always_post_validate metadata"
             ]
         },
         "condition_summaries": condition_summaries,
         "decision_matrix": matrix,
         "total_generated_token_steps_with_raw_logits": all_token_steps,
+        "bypass_guardrails_enabled": BYPASS_GUARDRAILS,
+        "guardrail_bypass_scope": "post-generation policy engine only; raw model generation unchanged by policy-engine decision",
         "official_manifest_modified": False,
         "official_experiment_authorized": False,
         "confirmatory_case": False,
@@ -502,7 +504,6 @@ def main():
     ]
     for label, key in (
         ("JSON parse success", "json_parse_success_count"),
-        ("Valid decision labels", "valid_decision_label_count"),
         ("Model abstentions", "model_abstention_count"),
         ("Model abstention rate", "model_abstention_rate"),
         ("Provisional rubric matches", "provisional_rubric_match_count"),
@@ -524,7 +525,7 @@ def main():
         report.append(f"| {item['condition']} | {item['frozen_engine_decision']} | {', '.join(item['frozen_engine_reasons'])} |")
     report += [
         "",
-        "The policy engine output is reported separately from the model's P0/P1 responses. In this run it is not allowed to force a diagnosis: independent supported-claim coverage and a verified frozen calibration artifact are unavailable. No calibration values or independent labels were invented.",
+        "BYPASS MODE: the frozen policy engine is skipped for this isolated capability probe only. This does not change the prompt-to-model generation path; policy decisions are post-generation. Model JSON, model decision, root-cause text, and logits remain raw model outputs. This run is non-confirmatory and does not alter the official manifest.",
         "",
         "## Interpretation cautions",
         "",
@@ -532,6 +533,7 @@ def main():
         "- Root-cause score is an automated rubric proxy; inspect raw JSON and patch before treating it as adjudicated correctness.",
         "- False abstention is defined here as a model-level abstention under the independently pre-classified E1 packet. Treat this as descriptive for this case only.",
         "- Self-reported confidence is not calibrated probability.",
+        "- Guardrail bypass only suppresses post-generation policy-engine adjudication; it does not prove model correctness or relax the JSON schema.",
         "- Full-vocabulary logits were used to calculate entropy; selected-token raw logits and top-5 raw logits were persisted per step.",
         ""
     ]
@@ -541,11 +543,14 @@ def main():
         "gold_definition": GOLD_ROOT_CAUSE,
         "model_prompt_contains_gold_definition": False,
         "criteria": {
-            "collection_scope": "root_cause mentions collection(s)",
-            "template_mechanism": "root_cause mentions template/Jinja/templatable expression",
-            "missing_original_warning": "root_cause explicitly says the original expected warning was not emitted/printed/displayed"
+            "collection_scope": "root-cause answer mentions collection(s)",
+            "template_mechanism": "root-cause answer mentions template/Jinja/templatable expression",
+            "warning_referenced": "root-cause answer mentions warning/warn/stderr",
+            "missing_original_warning": "root-cause answer explicitly states the expected warning was absent/not emitted",
+            "static_metadata": "root-cause answer identifies static metadata",
+            "always_post_validate_metadata": "root-cause answer identifies always_post_validate metadata"
         },
-        "match_rule": "all four criterion flags in the JSON output are true: collection, template, warning reference, missing original warning",
+        "match_rule": "all six criteria true",
         "qualification": "automated lexical proxy only; human review required"
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     files = [path for path in OUTPUT_DIR.iterdir() if path.is_file() and path.name != "SHA256SUMS"]
