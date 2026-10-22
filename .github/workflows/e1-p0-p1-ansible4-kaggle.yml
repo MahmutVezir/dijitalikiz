@@ -145,7 +145,7 @@ jobs:
           }, indent=2))
           PY
 
-      - name: Build the private Kaggle kernel source
+      - name: Build corrected P0/P1 kernel with rubric v2 and strict abstention parsing
         shell: bash
         run: |
           set -euo pipefail
@@ -196,6 +196,8 @@ jobs:
           }
           EOF
           python -m json.tool .kaggle-e1-p0-p1/kernel-metadata.json >/dev/null
+          echo "scoring_rubric=ansible4-root-cause-rubric-v2"
+          echo "abstention_parser=explicit_boolean_or_exact_decision_label"
           sha256sum .kaggle-e1-p0-p1/kernel.py .kaggle-e1-p0-p1/kernel-metadata.json
 
       - name: Submit private Kaggle GPU kernel
