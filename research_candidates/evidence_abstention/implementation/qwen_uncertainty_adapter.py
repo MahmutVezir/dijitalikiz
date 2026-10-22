@@ -53,6 +53,29 @@ class EvidenceAudit:
     explicit_contradiction: bool | None
 
 
+def evidence_audit_from_structural_report(report: Any) -> EvidenceAudit:
+    """Bridge structural packet checks without fabricating semantic judgments."""
+    status = getattr(report, "status", None)
+    errors = getattr(report, "errors", None)
+    if not isinstance(status, str) or status not in {"valid", "invalid"}:
+        return EvidenceAudit(None, frozenset(), None, None, None)
+    if status == "invalid" or not isinstance(errors, (tuple, list)) or errors:
+        return EvidenceAudit("invalid", frozenset(), None, None, None)
+
+    raw_ids = getattr(report, "available_evidence_ids", None)
+    if not isinstance(raw_ids, (tuple, list, set, frozenset)):
+        return EvidenceAudit("invalid", frozenset(), None, None, None)
+    evidence_ids = tuple(raw_ids)
+    if any(
+        not isinstance(item, str)
+        or re.fullmatch(r"[A-Z][A-Z0-9_-]{0,63}", item) is None
+        for item in evidence_ids
+    ) or len(evidence_ids) != len(set(evidence_ids)):
+        return EvidenceAudit("invalid", frozenset(), None, None, None)
+
+    return EvidenceAudit("valid", frozenset(evidence_ids), None, None, None)
+
+
 def parse_structured_answer(raw: str) -> StructuredAnswer:
     try:
         value = json.loads(raw)
