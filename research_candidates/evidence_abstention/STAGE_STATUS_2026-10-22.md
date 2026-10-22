@@ -8,7 +8,7 @@
 
 | Aşama | Bugünkü durum | Kanıt |
 |---|---|---|
-| 1 — Veri, protokol ve bağımsız doğrulama | Açık | 501 ham metadata kaydı / 17 proje; kabul edilmiş doğrulayıcı vaka sayısı 0. V8'in ilk 8 teknik adayı tarandı; 4'ü insan incelemesine yönlendirildi, hiçbiri kabul edilmedi. Sabit sıradaki sonraki 8 vakayı seçme kodu ve testleri hazır; sonraki aday çalıştırma henüz doğrulanmadı. |
+| 1 — Veri, protokol ve bağımsız doğrulama | Açık | 501 ham metadata kaydı / 17 proje; kabul edilmiş doğrulayıcı vaka sayısı 0. V8'in ilk 8 adayı ile workflow doğrulaması sırasında çalıştırılan offset-8 grubu kalıcı olarak dışlandı (16 ID). V9 intake: 100 aday / 13 proje. V9 offset-0 taraması çalışıyor; sonuçlar artefakt denetimine kadar geçici. |
 | 2 — Model ve çalıştırma hattı | Kısmen uygulandı | Qwen adapter'ı, ayrı inference kapısı ve sabit model/tokenizer yüklemesi için çıktısız ön kontrol kodu var. CPU CI testleri geçti; gerçek CUDA yükleme denetimi yapılmadı. Runtime manifestinde doğrulama hâlâ `not_run`. |
 | 3 — Belirsizlik, kalibrasyon ve kaçınma | Yazılım prototipi test edildi; model davranışı doğrulanmadı | Normalize token entropisi, çoklu yanıt ayrışması, ampirik kalibrasyon, Brier/ECE, fail-closed karar katmanı ve katı JSON parser mevcut. Son Qwen prototip CI çalışmasında 42 test geçti; bunlar sentetik/CPU yazılım testleridir, model performansı sonucu değildir. |
 | 4 — Önceden kaydedilmiş gerçek deney | Başlamadı | Kabul edilmiş veri, gerçek GPU runtime doğrulaması, dolu bağımsız kalibrasyon kümesi, dondurulmuş artefakt hash'leri, doğrulanabilir ön kayıt, operasyonel kanıt-yeterliliği değerlendiricisi ve ayrı yürütme izni yok. |
@@ -29,7 +29,7 @@ Ham artefaktlar ve SHA-256 değerleri [V8 insan inceleme kuyruğunda](STAGE1_MAN
 
 - Deterministik tarama matrisine `--batch-offset` eklendi; 8'li gruplar sabit sıra korunarak seçiliyor. Negatif/uyumsuz offset, eksik grup, kaynak hash değişimi, prior-exposure yeniden eklenmesi ve tek grupta yinelenen upstream proje testlerde reddediliyor.
 - Metadata-only cohort builder için 4 test paketi — toplam 19 test — geçti: [Actions run 39831836486](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39831836486). Bu, adayların buggy/fixed testlerini çalıştırdığı anlamına gelmez.
-- Teknik vaka tarama iş akışı artık `workflow_dispatch` ile elle çalıştırılacak şekilde ayarlandı; normal push/PR değişikliklerinin aynı vakaları yanlışlıkla tekrar çalıştırıp maruziyet yaratması önleniyor. Offset 8 sonraki grubu seçer. Bu sonraki grup için sonuç/artefakt henüz raporlanmıyor.
+- Teknik vaka tarama iş akışı artık `workflow_dispatch` ile elle çalıştırılacak şekilde ayarlandı; normal push/PR değişikliklerinin aynı vakaları yanlışlıkla tekrar çalıştırıp maruziyet yaratması önleniyor. V8 offset 8 grubunun testleri tamamlandı; grubun tamamı doğrulayıcı örneklemden dışlandı. Yeni V9 offset-0 koşusu ayrı tek-seferlik dalda başlatıldı.
 - Çıktı üretmeyen Qwen çalışma-zamanı ön kontrolü eklendi. En son CPU testleri: [Actions run 39831582614](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39831582614) ve [Actions run 39831583513](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39831583513), ikisi de başarılı. Ön kontrol kodunun CI testleri geçti; gerçek Qwen ağırlıkları bu testlerde yüklenmedi.
 - Yeni inceleme PR'leri: [PR #82 — çıktısız Qwen runtime ön kontrolü](https://github.com/MahmutVezir/dijitalikiz/pull/82) ve [PR #83 — deterministik grup taraması](https://github.com/MahmutVezir/dijitalikiz/pull/83). İkisi de taslak; ana dala merge edilmiş sayılmıyor.
 
@@ -70,3 +70,13 @@ Mevcut ayrı manifest bu koşulları karşılamıyor ve bilerek inference_allowe
 - [PR #80 — V8 teknik tarama ve bağımsız insan inceleme kuyruğu](https://github.com/MahmutVezir/dijitalikiz/pull/80)
 
 Her iki PR da taslak durumundadır; ana dalın bilimsel vaka sicili değiştirilmemiştir.
+
+## V8 maruziyet kararı ve V9 başlangıcı — 22 Ekim 2026
+
+- Offset-8 koşusu [39830777415](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39830777415) tamamlandı: 6/8 teknik buggy-fail/fixed-pass sinyali; 2/8 vaka her iki sürümde test-harness/bağımlılık hatasına düştü. İki grubun tamamı maruziyet nedeniyle doğrulayıcı örneklemden outcome-independent olarak çıkarıldı.
+- Önceki deneme [39830674411](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39830674411) selection artifact publish aşamasında başarısız oldu; bu koşuda vaka testleri başlatılmadı.
+- On altı dışlama `EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json` dosyasına yazıldı; önceki 21 Ekim logu değiştirilmedi. Dört eski ve altı yeni teknik sinyal, [keşifsel kök-neden inceleme devir dosyasında](STAGE1_EXPLORATORY_REVIEW_HANDOFF_2026-10-22.md) birleştirildi. Bu 10 kayıt doğrulayıcı örnekleme uygun değildir.
+- Yeni intake `SCREENING_COHORT_100_V9_2026-10-22.json`: 100 kalan metadata ID'si, 13 upstream proje; ilk 16 V8 ID'si dışlama listesine alındı. `CASE_REGISTRY.json` güncellendi ama `records` hâlâ boş ve kabul sayısı 0.
+- V9 ilk sekiz vaka tek seferlik dalda taranıyor: [Actions run 39832920370](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39832920370). Matrix freeze başarılı oldu; bu raporun son güncellemesinde tüm vaka artefaktları henüz tamamlanmadığından hiçbir V9 teknik sonucu sınıflandırılmadı.
+- Metadata-only seçim testleri [39831836486](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39831836486) başarılıdır (toplam 19 test). Bu testler veri seçme kodunu doğrular; gerçek buggy/fixed vaka testlerini veya model davranışını doğrulamaz.
+
