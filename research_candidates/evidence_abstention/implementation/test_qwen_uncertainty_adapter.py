@@ -1,5 +1,9 @@
 import json
+import sys
 import unittest
+from contextlib import nullcontext
+from types import SimpleNamespace
+from unittest.mock import patch
 
 from qwen_uncertainty_adapter import (
     EvidenceAudit,
@@ -38,7 +42,7 @@ class QwenAdapterTests(unittest.TestCase):
         self.audit = EvidenceAudit(packet_validation_status="valid", available_evidence_ids=frozenset({"TRACE_A", "TEST_B"}), supported_claim_coverage=1.0, self_check_conflict=False, explicit_contradiction=False)
         self.samples = (
             GenerationSample(answer(), (0.05, 0.1), 10, "a" * 64),
-            GenerationSample(answer(), (0.1, 0.1), 11, "b" * 64),
+            GenerationSample(answer(), (0.1, 0.1), 11, "a" * 64),
         )
 
     def test_parse_requires_exact_output_schema(self):
@@ -59,6 +63,10 @@ class QwenAdapterTests(unittest.TestCase):
     def test_parse_enforces_abstention_schema(self):
         with self.assertRaises(ValueError):
             parse_structured_answer(answer(decision="abstain", root_cause="a cause"))
+
+    def test_parse_rejects_non_string_evidence_ids_without_type_error(self):
+        with self.assertRaises(ValueError):
+            parse_structured_answer(answer(refs=[{"unexpected": "object"}]))
 
     def test_identical_supported_candidates_can_diagnose(self):
         result = assess_candidates(self.samples, self.audit, self.calibrator, self.policy)
@@ -109,6 +117,104 @@ class QwenAdapterTests(unittest.TestCase):
         result = assess_candidates(self.samples[:1], self.audit, self.calibrator, self.policy)
         self.assertEqual(result.decision, "abstain")
         self.assertIn("uncertainty_samples_insufficient", result.reasons)
+
+    def test_candidate_prompt_hash_mismatch_fails_closed(self):
+        samples = (self.samples[0], GenerationSample(answer(), (0.1,), 11, "b" * 64))
+        result = assess_candidates(samples, self.audit, self.calibrator, self.policy)
+        self.assertEqual(result.decision, "abstain")
+        self.assertIn("candidate_prompt_hash_mismatch", result.reasons)
+
+    def test_duplicate_candidate_seed_fails_closed(self):
+        samples = (self.samples[0], GenerationSample(answer(), (0.1,), 10, "a" * 64))
+        result = assess_candidates(samples, self.audit, self.calibrator, self.policy)
+        self.assertEqual(result.decision, "abstain")
+        self.assertIn("candidate_seeds_not_unique", result.reasons)
+
+    def test_malformed_candidate_prompt_hash_fails_closed(self):
+        samples = (self.samples[0], GenerationSample(answer(), (0.1,), 11, "not-a-hash"))
+        result = assess_candidates(samples, self.audit, self.calibrator, self.policy)
+        self.assertEqual(result.decision, "abstain")
+        self.assertIn("invalid_candidate_prompt_hash", result.reasons)
+
+    def test_generation_requests_and_passes_attention_mask(self):
+        class FakeIds:
+            ndim = 2
+            shape = (1, 3)
+
+            def to(self, device):
+                return self
+
+            def __getitem__(self, key):
+                return FakeGeneratedIds()
+
+        class FakeGeneratedIds:
+            def numel(self):
+                return 2
+
+        class FakeMask:
+            shape = (1, 3)
+
+            def to(self, device):
+                return self
+
+        class FakeSequences:
+            def __getitem__(self, key):
+                return FakeGeneratedIds()
+
+        class FakeScore:
+            def __getitem__(self, index):
+                return self
+
+        class FakeTokenizer:
+            eos_token_id = 2
+
+            def __init__(self):
+                self.template_kwargs = None
+
+            def apply_chat_template(self, messages, **kwargs):
+                self.template_kwargs = kwargs
+                return {"input_ids": FakeIds(), "attention_mask": mask}
+
+            def decode(self, generated_ids, skip_special_tokens=True):
+                return answer()
+
+        class FakeModel:
+            device = SimpleNamespace(type="cpu", index=None)
+
+            def __init__(self):
+                self.calls = []
+
+            def generate(self, input_ids, **kwargs):
+                self.calls.append((input_ids, kwargs))
+                return SimpleNamespace(sequences=FakeSequences(), scores=[FakeScore(), FakeScore()])
+
+        fake_torch = SimpleNamespace(
+            device=lambda name: SimpleNamespace(type=name, index=None),
+            random=SimpleNamespace(fork_rng=lambda devices: nullcontext()),
+            manual_seed=lambda seed: None,
+            cuda=SimpleNamespace(current_device=lambda: 0, manual_seed_all=lambda seed: None),
+        )
+        mask = FakeMask()
+        tokenizer = FakeTokenizer()
+        model = FakeModel()
+        with patch.dict(sys.modules, {"torch": fake_torch}), patch(
+            "qwen_uncertainty_adapter._normalized_entropy_from_tensor", return_value=0.2
+        ):
+            from qwen_uncertainty_adapter import generate_candidates
+            samples = generate_candidates(
+                tokenizer,
+                model,
+                [{"role": "user", "content": "test"}],
+                candidate_count=2,
+                base_seed=90,
+            )
+
+        self.assertTrue(tokenizer.template_kwargs["return_dict"])
+        self.assertEqual(len(samples), 2)
+        self.assertIs(model.calls[0][1]["attention_mask"], mask)
+        self.assertIs(model.calls[1][1]["attention_mask"], mask)
+        self.assertEqual([sample.seed for sample in samples], [90, 91])
+        self.assertEqual(samples[0].prompt_sha256, samples[1].prompt_sha256)
 
 
 if __name__ == "__main__":
