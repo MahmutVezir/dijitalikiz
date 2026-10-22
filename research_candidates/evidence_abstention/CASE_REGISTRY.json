@@ -2,7 +2,7 @@
   "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
   "registry_version": "0.1-draft",
   "status": "empty_no_confirmatory_cases_accepted",
-  "as_of": "2026-10-21",
+  "as_of": "2026-10-22",
   "records": [],
   "notes": [
     "An empty registry is not evidence of zero observed model errors or zero eligible upstream bugs.",
@@ -19,8 +19,14 @@
     "The V3 runner-debug batch (youtube-dl-2, ansible-2, black-4, cookiecutter-3, fastapi-3, httpie-3, keras-2, luigi-3) is permanently excluded as a whole, independent of target-test outcome.",
     "The current technical intake is SCREENING_COHORT_120_V4_2026-10-21.json. It is metadata-only and not the confirmatory sample; 24 queued exposure/debug IDs are skipped, while 13 earlier exposed cases are already absent from the source queue. The registry remains empty until all acceptance gates pass.",
     "The V4 technical batch (matplotlib-2, pandas-2, PySnooper-3, sanic-3, scrapy-3, spacy-2, thefuck-3, tornado-3) is permanently excluded because it was used to debug runner/test-dependency behavior; see EXPOSURE_EXCLUSION_LOG_2026-10-21.json.",
-    "The current metadata-only technical intake is SCREENING_COHORT_120_V5_2026-10-21.json. It skips 32 queue-ranked debug-exposure IDs and is not itself a confirmatory sample; the accepted case registry remains empty."
+    "The current metadata-only technical intake is SCREENING_COHORT_120_V5_2026-10-21.json. It skips 32 queue-ranked debug-exposure IDs and is not itself a confirmatory sample; the accepted case registry remains empty.",
+    "Exposure addendum dated 2026-10-22 permanently excludes the first eight V8 technical-screen candidates and the second eight candidates run in workflow 39830777415. The second batch was executed during workflow verification; all eight are excluded independent of technical outcome. V8 remains historical provenance; V9 is the current metadata-only intake.",
+    "Exploratory human-review leads from both exposed V8 batches are recorded in STAGE1_EXPLORATORY_REVIEW_HANDOFF_2026-10-22.json. They must not be promoted into the confirmatory registry.",
+    "The current V9 intake has 100 remaining IDs across 13 upstream projects after the 16 newly documented exclusions plus earlier recorded exposure exclusions. It is metadata-only; accepted confirmatory cases remain zero."
   ],
   "exposure_exclusion_log_path": "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_LOG_2026-10-21.json",
-  "current_screening_intake_path": "research_candidates/evidence_abstention/SCREENING_COHORT_120_V5_2026-10-21.json"
+  "current_screening_intake_path": "research_candidates/evidence_abstention/SCREENING_COHORT_100_V9_2026-10-22.json",
+  "exposure_exclusion_addenda": [
+    "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json"
+  ]
 }

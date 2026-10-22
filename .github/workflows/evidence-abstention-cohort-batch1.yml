@@ -1,28 +1,18 @@
 name: Evidence Abstention Cohort Screening (Predeclared, No Inference)
 
+# Technical case execution is manual-only. A push or PR update must not silently
+# rerun the same frozen candidate batch and contaminate later confirmatory use.
 on:
-  push:
-    branches:
-      - "research/evidence-abstention-*"
-    paths:
-      - ".github/workflows/evidence-abstention-cohort-batch1.yml"
-      - "research_candidates/evidence_abstention/SCREENING_COHORT_116_V8_2026-10-22.json"
-      - "scripts/inventory_bugsinpy_candidates.py"
-      - "scripts/build_evidence_abstention_screening_queue.py"
-      - "scripts/build_evidence_abstention_cohort_matrix.py"
-      - "tests/test_inventory_bugsinpy_candidates.py"
-      - "tests/test_build_evidence_abstention_screening_queue.py"
-      - "tests/test_build_evidence_abstention_cohort_matrix.py"
   workflow_dispatch:
     inputs:
       batch_offset:
-        description: "Frozen cohort row offset; use multiples of 8. Offset 8 is the next unprocessed batch."
+        description: "Frozen V9 cohort row offset; use multiples of 8. Offset 0 is the first clean batch."
         required: true
         type: number
-        default: 8
+        default: 0
 
 concurrency:
-  group: evidence-abstention-cohort-screen-${{ github.ref }}-${{ github.event.inputs.batch_offset || '8' }}
+  group: evidence-abstention-cohort-screen-${{ github.ref }}-${{ github.event.inputs.batch_offset || '0' }}
   cancel-in-progress: true
 
 permissions:
@@ -37,7 +27,7 @@ jobs:
       matrix: ${{ steps.export.outputs.matrix }}
     env:
       BUGSINPY_COMMIT: "11c5f1eea954a42132cfd06bf257766a7963e0fd"
-      BATCH_OFFSET: ${{ github.event.inputs.batch_offset || '8' }}
+      BATCH_OFFSET: ${{ github.event.inputs.batch_offset || '0' }}
     steps:
       - name: Checkout the research branch
         uses: actions/checkout@v4
@@ -62,7 +52,7 @@ jobs:
           git -C "$RUNNER_TEMP/BugsInPy" checkout --detach "$BUGSINPY_COMMIT"
           test "$(git -C "$RUNNER_TEMP/BugsInPy" rev-parse HEAD)" = "$BUGSINPY_COMMIT"
 
-      - name: Rebuild exact inventory, queue and frozen first-eight matrix
+      - name: Rebuild exact inventory, queue and selected frozen matrix
         run: |
           set -euo pipefail
           python scripts/inventory_bugsinpy_candidates.py \
@@ -78,7 +68,7 @@ jobs:
             --first-batch-per-project 5
           python scripts/build_evidence_abstention_cohort_matrix.py \
             --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
-            --cohort research_candidates/evidence_abstention/SCREENING_COHORT_116_V8_2026-10-22.json \
+            --cohort research_candidates/evidence_abstention/SCREENING_COHORT_100_V9_2026-10-22.json \
             --matrix-output "$RUNNER_TEMP/cohort-screen-matrix.json" \
             --summary-output "$RUNNER_TEMP/cohort-screen-summary.json" \
             --batch-size 8 \
@@ -93,10 +83,10 @@ jobs:
           mkdir -p "$RUNNER_TEMP/cohort-screen-preflight"
           cp "$RUNNER_TEMP/cohort-screen-matrix.json" "$RUNNER_TEMP/cohort-screen-preflight/"
           cp "$RUNNER_TEMP/cohort-screen-summary.json" "$RUNNER_TEMP/cohort-screen-preflight/"
-          cp "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" "$RUNNER_TEMP/cohort-batch1-preflight/"
-          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory-summary.json" "$RUNNER_TEMP/cohort-batch1-preflight/"
-          cp "$RUNNER_TEMP/bugsinpy-screening-queue.csv" "$RUNNER_TEMP/cohort-batch1-preflight/"
-          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" "$RUNNER_TEMP/cohort-batch1-preflight/"
+          cp "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" "$RUNNER_TEMP/cohort-screen-preflight/"
+          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory-summary.json" "$RUNNER_TEMP/cohort-screen-preflight/"
+          cp "$RUNNER_TEMP/bugsinpy-screening-queue.csv" "$RUNNER_TEMP/cohort-screen-preflight/"
+          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" "$RUNNER_TEMP/cohort-screen-preflight/"
           cd "$RUNNER_TEMP/cohort-screen-preflight"
           find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
           sha256sum -c SHA256SUMS
@@ -104,7 +94,7 @@ jobs:
       - name: Upload selection freeze evidence
         uses: actions/upload-artifact@v4
         with:
-          name: evidence-abstention-predeclared-cohort-batch-${{ github.event.inputs.batch_offset || '8' }}-freeze
+          name: evidence-abstention-predeclared-cohort-batch-${{ github.event.inputs.batch_offset || '0' }}-freeze
           path: ${{ runner.temp }}/cohort-screen-preflight/
           if-no-files-found: error
           retention-days: 30
