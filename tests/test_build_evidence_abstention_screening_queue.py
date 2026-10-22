@@ -1,4 +1,5 @@
 import csv
+import hashlib
 import importlib.util
 import json
 import tempfile
@@ -131,7 +132,7 @@ class ScreeningQueueTests(unittest.TestCase):
                 queued = list(csv.DictReader(f))
             self.assertEqual([item["case_id"] for item in queued], ["BugsInPy-newproject-1"])
             self.assertEqual(summary["documented_exposure_exclusion_count"], 1)
-            self.assertEqual(summary["exposure_addendum_sha256"], __import__("hashlib").sha256(addendum.read_bytes()).hexdigest())
+            self.assertEqual(summary["exposure_addendum_sha256"], hashlib.sha256(addendum.read_bytes()).hexdigest())
 
     def test_inconsistent_exposure_addendum_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:
