@@ -130,3 +130,23 @@ Ayrıntılı handoff: [STAGE1_V9_OFFSET8_REVIEW_HANDOFF_2026-10-22.md](STAGE1_V9
 ## Kuyruk koruması ve CI durumu
 
 Erişim/örneklem maruziyetini önleyen kuyruk oluşturucu ana dala alındı. Oluşturucu tarihli exposure ledger'ı okuyor, bütün kaydedilmiş ID'leri atlıyor, ledger SHA-256'sını özet kaydına yazıyor ve ledger bozuk/tutarsızsa fail-closed davranıyor. Ancak bu değişikliklerden sonra metadata-builder ve genel Research Validation CI işlerinde başarısızlık görüldü. GitHub Actions günlükleri mevcut erişim yolunda alınamadığından neden henüz doğrulanmadı; bu nedenle son genel doğrulamanın geçtiği iddia edilmiyor. Sonraki mühendislik önceliği bu regresyonu tanılamak ve tüm CI kontrollerini yeşile çevirmek. Bilimsel inference kapısı açık değil.
+
+
+## Continuation update — 22 October 2026, 23:xx Türkiye time
+
+This update supersedes the older test-count/runtime notes above where they differ.
+
+- **Current no-inference repository validation:** [run 39840976782](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39840976782) passed. Repository/configuration validation and historical artifact-integrity audit both completed successfully; the earlier single-canonical-Kaggle-workflow issue is resolved.
+- **Current Qwen/decision-policy unit tests:** [run 39840829312](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39840829312) passed, with 59 tests reported by the run log. These are software tests and do not demonstrate GPU model efficacy.
+- **Kaggle smoke remains excluded:** [run 39837255019](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39837255019) is an engineering-only run on previously exposed Ansible-4 with a prompt-protocol deviation; see the separate smoke audit. It is not part of the registered study.
+- **Independent review preparation improved:** reviewer-ready blank Panel A forms are now prepared for Keras-5 and Tornado-6 under `review_forms/`. They include exact commit/runtime/test/artifact references, mandatory evidence checks and explicit ACCEPT/HOLD/REJECT criteria. They are blank templates only: no human review is claimed complete, and neither case is accepted.
+- **Current accepted-case count remains zero.** The operational packet checker only verifies structure and hashes; it does not determine semantic sufficiency. The separate semantic evidence auditor, independent adjudicated calibration data, exact study runtime preflight, verifiable preregistration and explicit authorization remain blockers.
+- **Inference state remains closed:** do not run the formal E1/E2/E3 × P0/P1 study until every gate in `UNCERTAINTY_EXPERIMENT_MANIFEST.json` and `UNCERTAINTY_INFERENCE_GATE.md` is satisfied.
+
+### Ready-to-use independent review forms
+
+- [Panel A review instructions](review_forms/PANEL_A_REVIEW_README.md)
+- [Keras-5 independent review form](review_forms/PANEL_A_KERAS_5_FORM.md)
+- [Tornado-6 independent review form](review_forms/PANEL_A_TORNADO_6_FORM.md)
+
+These forms deliberately do not mark any gate as passed. Two independent Panel A reviews are required per candidate; a disjoint Panel B must separately review blinded evidence packets and outputs.
