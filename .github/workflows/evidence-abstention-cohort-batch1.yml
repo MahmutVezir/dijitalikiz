@@ -62,7 +62,7 @@ jobs:
           git -C "$RUNNER_TEMP/BugsInPy" checkout --detach "$BUGSINPY_COMMIT"
           test "$(git -C "$RUNNER_TEMP/BugsInPy" rev-parse HEAD)" = "$BUGSINPY_COMMIT"
 
-      - name: Rebuild exact inventory, queue and frozen first-eight matrix
+      - name: Rebuild exact inventory, queue and selected frozen matrix
         run: |
           set -euo pipefail
           python scripts/inventory_bugsinpy_candidates.py \
@@ -93,10 +93,10 @@ jobs:
           mkdir -p "$RUNNER_TEMP/cohort-screen-preflight"
           cp "$RUNNER_TEMP/cohort-screen-matrix.json" "$RUNNER_TEMP/cohort-screen-preflight/"
           cp "$RUNNER_TEMP/cohort-screen-summary.json" "$RUNNER_TEMP/cohort-screen-preflight/"
-          cp "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" "$RUNNER_TEMP/cohort-batch1-preflight/"
-          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory-summary.json" "$RUNNER_TEMP/cohort-batch1-preflight/"
-          cp "$RUNNER_TEMP/bugsinpy-screening-queue.csv" "$RUNNER_TEMP/cohort-batch1-preflight/"
-          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" "$RUNNER_TEMP/cohort-batch1-preflight/"
+          cp "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" "$RUNNER_TEMP/cohort-screen-preflight/"
+          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory-summary.json" "$RUNNER_TEMP/cohort-screen-preflight/"
+          cp "$RUNNER_TEMP/bugsinpy-screening-queue.csv" "$RUNNER_TEMP/cohort-screen-preflight/"
+          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" "$RUNNER_TEMP/cohort-screen-preflight/"
           cd "$RUNNER_TEMP/cohort-screen-preflight"
           find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
           sha256sum -c SHA256SUMS
