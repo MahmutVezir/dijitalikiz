@@ -1,18 +1,8 @@
 name: Evidence Abstention Cohort Screening (Predeclared, No Inference)
 
+# Technical case execution is manual-only. A push or PR update must not silently
+# rerun the same frozen candidate batch and contaminate later confirmatory use.
 on:
-  push:
-    branches:
-      - "research/evidence-abstention-*"
-    paths:
-      - ".github/workflows/evidence-abstention-cohort-batch1.yml"
-      - "research_candidates/evidence_abstention/SCREENING_COHORT_116_V8_2026-10-22.json"
-      - "scripts/inventory_bugsinpy_candidates.py"
-      - "scripts/build_evidence_abstention_screening_queue.py"
-      - "scripts/build_evidence_abstention_cohort_matrix.py"
-      - "tests/test_inventory_bugsinpy_candidates.py"
-      - "tests/test_build_evidence_abstention_screening_queue.py"
-      - "tests/test_build_evidence_abstention_cohort_matrix.py"
   workflow_dispatch:
     inputs:
       batch_offset:
