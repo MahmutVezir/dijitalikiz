@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from uncertainty_inference_gate import evaluate_gate
+from uncertainty_inference_gate import evaluate_gate, load_authorized_qwen
 
 
 class InferenceGateTests(unittest.TestCase):
@@ -17,6 +17,11 @@ class InferenceGateTests(unittest.TestCase):
         self.assertFalse(report["ready"])
         self.assertFalse(report["model_inference_performed"])
         self.assertTrue(any("does not explicitly authorize" in item for item in report["blockers"]))
+
+    def test_current_manifest_blocks_model_loading_before_import(self):
+        root = Path(__file__).resolve().parents[3]
+        with self.assertRaisesRegex(RuntimeError, "Inference blocked"):
+            load_authorized_qwen(root, Path("research_candidates/evidence_abstention/UNCERTAINTY_EXPERIMENT_MANIFEST.json"))
 
     def test_empty_or_malformed_manifest_fails_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -50,6 +55,8 @@ class InferenceGateTests(unittest.TestCase):
             self.assertFalse(report["ready"])
             self.assertTrue(any("Case registry" in item for item in report["blockers"]))
             self.assertTrue(any("Frozen artifact entry missing" in item for item in report["blockers"]))
+            self.assertTrue(any("Model ID/revision differs" in item for item in report["blockers"]))
+            self.assertTrue(any("Tokenizer ID/revision differs" in item for item in report["blockers"]))
 
     def test_artifact_hash_mismatch_blocks_inference(self):
         with tempfile.TemporaryDirectory() as tmp:
