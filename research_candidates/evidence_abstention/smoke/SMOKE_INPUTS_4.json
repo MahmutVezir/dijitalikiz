@@ -1,0 +1,60 @@
+{
+  "record_type": "engineering_smoke_test_inputs_not_research_data",
+  "model_inference_performed": false,
+  "source_workflow_run": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39815552452",
+  "selection_note": "These four records were previously opened for technical triage and must never be treated as blinded confirmatory data. Only buggy-side raw target-test logs and non-answer metadata are included. Fixed-side logs, patch hunks, and reference root causes are deliberately withheld from the model.",
+  "cases": [
+    {
+      "case_id": "BugsInPy-ansible-4",
+      "project": "ansible",
+      "bug_id": "4",
+      "python_version": "3.6.9",
+      "buggy_commit": "d91658ec0c8434c82c3ef98bfe9eb4e1027a43a3",
+      "source_repository": "https://github.com/ansible/ansible",
+      "target_test_file": "test/units/playbook/test_collectionsearch.py",
+      "target_test_command": "pytest test/units/playbook/test_collectionsearch.py::test_collection_static_warning",
+      "modified_source_path_from_patch_header": "lib/ansible/playbook/collectionsearch.py",
+      "buggy_test_log_sha256": "6da14a39e2da36bf83d08808686d58c26caae944578e52bad4588e1b33987c1e",
+      "buggy_test_log_raw": "============================= test session starts ==============================\nplatform linux -- Python 3.6.9, pytest-3.10.1, py-1.11.0, pluggy-1.0.0\nrootdir: /home/runner/work/_temp/case-worktrees/buggy/ansible, inifile:\ncollected 1 item\n\ntest/units/playbook/test_collectionsearch.py F                           [100%]\n\n=================================== FAILURES ===================================\n________________________ test_collection_static_warning ________________________\n\ncapsys = <_pytest.capture.CaptureFixture object at 0x7f6952ccec88>\n\n    def test_collection_static_warning(capsys):\n        \"\"\"Test that collection name is not templated.\n\n        Also, make sure that users see the warning message for the referenced name.\n        \"\"\"\n\n        collection_name = 'foo.{{bar}}'\n        cs = CollectionSearch()\n        assert collection_name in cs._load_collections(None, [collection_name])\n\n        std_out, std_err = capsys.readouterr()\n>       assert '[WARNING]: \"collections\" is not templatable, but we found: %s' % collection_name in std_err\nE       assert ('[WARNING]: \"collections\" is not templatable, but we found: %s' % 'foo.{{bar}}') in ''\n\ntest/units/playbook/test_collectionsearch.py:37: AssertionError\n=========================== 1 failed in 0.22 seconds ==========================="
+    },
+    {
+      "case_id": "BugsInPy-tqdm-4",
+      "project": "tqdm",
+      "bug_id": "4",
+      "python_version": "3.6.9",
+      "buggy_commit": "03b347646492131d889871939b40457d29147216",
+      "source_repository": "https://github.com/tqdm/tqdm",
+      "target_test_file": "tqdm/tests/tests_tqdm.py",
+      "target_test_command": "python3 -m pytest tqdm/tests/tests_tqdm.py::test_nototal",
+      "modified_source_path_from_patch_header": "tqdm/_tqdm.py",
+      "buggy_test_log_sha256": "b6fd1b004a44a81702e5a2776d0ef7c3b4b42b18b13b45a69823f253c25424e0",
+      "buggy_test_log_raw": "============================= test session starts ==============================\nplatform linux -- Python 3.6.9, pytest-5.4.3, py-1.8.1, pluggy-0.13.1\nrootdir: /home/runner/work/_temp/case-worktrees/buggy/tqdm\ncollected 1 item\n\ntqdm/tests/tests_tqdm.py FE                                              [100%]\n\n==================================== ERRORS ====================================\n______________________ ERROR at teardown of test_nototal _______________________\n\n    def posttest():\n        if getattr(tqdm, \"_instances\", False):\n            n = len(tqdm._instances)\n            if n:\n                tqdm._instances.clear()\n                raise EnvironmentError(\n>                   \"{0} `tqdm` instances still in existence POST-test\".format(n))\nE               OSError: 1 `tqdm` instances still in existence POST-test\n\ntqdm/tests/tests_tqdm.py:132: OSError\n=================================== FAILURES ===================================\n_________________________________ test_nototal ________________________________\n\n    @with_setup(pretest, posttest)\n    def test_nototal():\n        \"\"\"Test unknown total length\"\"\"\n        with closing(StringIO()) as our_file:\n>           for i in tqdm((i for i in range(10)), file=our_file, unit_scale=10):\n\ntqdm/tests/tests_tqdm.py:779:\n\ntqdm/_tqdm.py:927: in __init__\n    self.display()\ntqdm/_tqdm.py:1297: in display\n    self.sp(self.__repr__() if msg is None else msg)\ntqdm/_tqdm.py:966: in __repr__\n    return self.format_meter(**self.format_dict)\ntqdm/_tqdm.py:323: in format_meter\n    total *= unit_scale\nE           TypeError: unsupported operand type(s) for *=: 'NoneType' and 'int'\ntqdm/_tqdm.py:323: TypeError\n\n=============================== warnings summary ===============================\nenv/lib/python3.6/site-packages/nose/importer.py:12\n  /home/runner/work/_temp/case-worktrees/buggy/tqdm/env/lib/python3.6/site-packages/nose/importer.py:12: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses\n    from imp import find_module, load_module, acquire_lock, release_lock\n\n=========================== short test summary info ============================\nFAILED tqdm/tests/tests_tqdm.py::test_nototal - TypeError: unsupported operan...\nERROR tqdm/tests/tests_tqdm.py::test_nototal - OSError: 1 `tqdm` instances still in existence POST-test\n==================== 1 failed, 1 warning, 1 error in 0.22s ===================="
+    },
+    {
+      "case_id": "BugsInPy-httpie-5",
+      "project": "httpie",
+      "bug_id": "5",
+      "python_version": "3.7.3",
+      "buggy_commit": "16df8848e81eefac830f407e4b985f42b52970da",
+      "source_repository": "https://github.com/jakubroztocil/httpie/",
+      "target_test_file": "tests/tests.py",
+      "target_test_command": "pytest tests/tests.py::TestItemParsing::test_escape_longsep",
+      "modified_source_path_from_patch_header": "httpie/cli.py",
+      "buggy_test_log_sha256": "faffe66a78d0138741b960ec36ad6657a35b76daa58ecd2ce172bee042061472",
+      "buggy_test_log_raw": "============================= test session starts ==============================\nplatform linux -- Python 3.7.3, pytest-5.4.2, py-1.8.1, pluggy-0.13.1\nrootdir: /home/runner/work/_temp/case-worktrees/buggy/httpie\nplugins: httpbin-1.0.0\ncollected 1 item\n\ntests/tests.py F                                                         [100%]\n\n=================================== FAILURES ===================================\n_____________________ TestItemParsing.test_escape_longsep _______________________\n\nself = <tests.TestItemParsing testMethod=test_escape_longsep>\n\n    def test_escape_longsep(self):\n        headers, data, files = cli.parse_items([\n            self.kv('bob\\\\:==foo'),\n        ])\n        self.assertDictEqual(data, {\n>           'bob:=': 'foo',\n        })\nE       AssertionError: {'bob:': '=foo'} != {'bob:=': 'foo'}\nE       - {'bob:': '=foo'}\nE       ?           -\nE\nE       + {'bob:=': 'foo'}\nE       ?       +\n\ntests/tests.py:84: AssertionError\n=========================== short test summary info ============================\nFAILED tests/tests.py::TestItemParsing::test_escape_longsep - AssertionError:...\n============================== 1 failed in 0.07s ==============================="
+    },
+    {
+      "case_id": "BugsInPy-youtube-dl-4",
+      "project": "youtube-dl",
+      "bug_id": "4",
+      "python_version": "3.7.0",
+      "buggy_commit": "bc40b3a5ba44006c23daf7fe0ed872af5e33bdc5",
+      "source_repository": "https://github.com/ytdl-org/youtube-dl",
+      "target_test_file": "test/test_jsinterp.py",
+      "target_test_command": "python -m unittest -q test.test_jsinterp.TestJSInterpreter.test_call",
+      "modified_source_path_from_patch_header": "youtube_dl/jsinterp.py",
+      "buggy_test_log_sha256": "66b3096da19e282c2cdbeba7f3da94ca83fbf1b1bc766e2ae981664dcf8c4b34",
+      "buggy_test_log_raw": "======================================================================\nERROR: test_call (test.test_jsinterp.TestJSInterpreter)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/home/runner/work/_temp/case-worktrees/buggy/youtube-dl/test/test_jsinterp.py\", line 113, in test_call\n    self.assertEqual(jsi.call_function('z'), 5)\n  File \"/home/runner/work/_temp/case-worktrees/buggy/youtube-dl/youtube_dl/jsinterp.py\", line 248, in call_function\n    return f(args)\n  File \"/home/runner/work/_temp/case-worktrees/buggy/youtube-dl/youtube_dl/jsinterp.py\", line 254, in resf\n    res, abort = self.interpret_statement(stmt, local_vars)\n  File \"/home/runner/work/_temp/case-worktrees/buggy/youtube-dl/youtube_dl/jsinterp.py\", line 55, in interpret_statement\n    v = self.interpret_expression(expr, local_vars, allow_recursion)\n  File \"/home/runner/work/_temp/case-worktrees/buggy/youtube-dl/youtube_dl/jsinterp.py\", line 209, in interpret_expression\n    return self._functions[fname](argvals)\n  File \"/home/runner/work/_temp/case-worktrees/buggy/youtube-dl/youtube_dl/jsinterp.py\", line 254, in resf\n    res, abort = self.interpret_statement(stmt, local_vars)\n  File \"/home/runner/work/_temp/case-worktrees/buggy/youtube-dl/youtube_dl/jsinterp.py\", line 55, in interpret_statement\n    v = self.interpret_expression(expr, local_vars, allow_recursion)\n  File \"/home/runner/work/_temp/case-worktrees/buggy/youtube-dl/youtube_dl/jsinterp.py\", line 189, in interpret_expression\n    m.group('x'), local_vars, allow_recursion - 1)\n  File \"/home/runner/work/_temp/case-worktrees/buggy/youtube-dl/youtube_dl/jsinterp.py\", line 55, in interpret_expression\n    v = self.interpret_expression(expr, local_vars, allow_recursion)\n  File \"/home/runner/work/_temp/case-worktrees/buggy/youtube-dl/youtube_dl/jsinterp.py\", line 211, in interpret_expression\n    raise ExtractorError('Unsupported JS expression %r' % expr)\nyoutube_dl.utils.ExtractorError: Unsupported JS expression 'x()'; please report this issue on https://yt-dl.org/bug . Make sure you are using the latest version; see  https://yt-dl.org/update  on how to update. Be sure to call youtube-dl with the --verbose flag and include its complete output.\n\n----------------------------------------------------------------------\nRan 1 test in 0.002s\n\nFAILED (errors=1)"
+    }
+  ]
+}
