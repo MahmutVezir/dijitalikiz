@@ -252,9 +252,141 @@
         "BugsInPy-matplotlib-6"
       ],
       "outcome_independent_exclusion": true,
-      "technical_summary": "All eight frozen candidates entered technical screening. Exclude this batch regardless of outcome; the run artifacts are for candidate triage only.",
+      "technical_summary": "Eight IDs were screened under a frozen metadata-only cohort. Six technical buggy-fail/fixed-pass signals were retained only for independent manual review; Luigi-7 did not run target tests because pinned pytest bootstrap failed on both sides; Matplotlib-6 failed before producing a case artifact. All eight candidates remain permanently excluded from confirmatory sampling regardless of outcome. No model inference was performed.",
       "accepted_for_confirmatory": false,
-      "llm_inference_performed": false
+      "llm_inference_performed": false,
+      "workflow_run_status": "completed_with_matrix_failure",
+      "workflow_run_updated_at": "2026-10-22T19:53:50Z",
+      "selection_freeze_artifact": {
+        "artifact_id": 12453223251,
+        "name": "evidence-abstention-predeclared-cohort-batch-8-freeze",
+        "zip_sha256": "5a2b5c053b4a138cd31efc4771be2f438dee22cee461f98f091e31472a2c5dca",
+        "inner_sha256_manifest_verified": true,
+        "zip_crc_verified": true
+      },
+      "case_screen_results": [
+        {
+          "case_id": "BugsInPy-tqdm-6",
+          "python": "3.6.9",
+          "runtime_matches_metadata": true,
+          "target_commands": [
+            "python3 -m pytest tqdm/tests/tests_synchronisation.py::test_imap"
+          ],
+          "buggy_exit": 1,
+          "fixed_exit": 0,
+          "signal": "buggy_fail_fixed_pass",
+          "artifact_id": 12454021042,
+          "artifact_sha256": "3db0c54a8d6060fb75be2945d0783a1352247b8061ae0d99b53b10a5909dac00",
+          "accepted_for_confirmatory": false,
+          "review_notes": "The test file is modified by the patch; compare the test diff and assess distinctness from previously exposed tqdm-5."
+        },
+        {
+          "case_id": "BugsInPy-youtube-dl-6",
+          "python": "3.7.0",
+          "runtime_matches_metadata": true,
+          "target_commands": [
+            "python -m unittest -q test.test_utils.TestUtil.test_parse_dfxp_time_expr"
+          ],
+          "buggy_exit": 1,
+          "fixed_exit": 0,
+          "signal": "buggy_fail_fixed_pass",
+          "artifact_id": 12453876171,
+          "artifact_sha256": "d4b85e44845b9157664783284bab490b4ebbe414ddb55eac7756e86d615c3f0a",
+          "accepted_for_confirmatory": false,
+          "review_notes": "Buggy output is 0.0 where None is expected. Patch also changes the test file; assess patch/test dependence and possible relation to prior youtube-dl-5 exposure."
+        },
+        {
+          "case_id": "BugsInPy-ansible-6",
+          "python": "3.6.9",
+          "runtime_matches_metadata": true,
+          "target_commands": [
+            "pytest test/units/galaxy/test_collection_install.py::test_build_requirement_from_path_with_manifest",
+            "pytest test/units/galaxy/test_collection_install.py::test_build_requirement_from_path_no_version",
+            "pytest test/units/galaxy/test_collection_install.py::test_add_collection_requirement_to_unknown_installed_version"
+          ],
+          "buggy_exit": 1,
+          "fixed_exit": 0,
+          "signal": "buggy_fail_fixed_pass",
+          "artifact_id": 12454255246,
+          "artifact_sha256": "5c7d43834ebd7b03c92acec7a3bd3e9b41014471455498f18bd3b826b13f9d9c",
+          "accepted_for_confirmatory": false,
+          "review_notes": "One target command's failure is an already-installed unknown-version error; panel A must verify that each failure is causally relevant. Test patch is present."
+        },
+        {
+          "case_id": "BugsInPy-black-8",
+          "python": "3.8.3",
+          "runtime_matches_metadata": true,
+          "target_commands": [
+            "python -m unittest -q tests.test_black.BlackTestCase.test_comments7"
+          ],
+          "buggy_exit": 1,
+          "fixed_exit": 0,
+          "signal": "buggy_fail_fixed_pass",
+          "artifact_id": 12453591492,
+          "artifact_sha256": "e20d36087a9acda02b4953da1404abf4d6d0ebb334af1f5da0d42b79c2b8d6ad",
+          "accepted_for_confirmatory": false,
+          "review_notes": "Both source and test files change; verify test correctness and that the patch does not simply change expected formatting to match the implementation."
+        },
+        {
+          "case_id": "BugsInPy-fastapi-7",
+          "python": "3.8.3",
+          "runtime_matches_metadata": true,
+          "target_commands": [
+            "pytest tests/test_multi_body_errors.py::test_jsonable_encoder_requiring_error"
+          ],
+          "buggy_exit": 1,
+          "fixed_exit": 0,
+          "signal": "buggy_fail_fixed_pass",
+          "artifact_id": 12454376785,
+          "artifact_sha256": "a6e50cc6a82d383cd1282b855870551a59317c9662811de604a71df5431dff57",
+          "accepted_for_confirmatory": false,
+          "review_notes": "Buggy side raises TypeError because Decimal is not JSON serializable; fixed target passes. Both source and test files change; compare the test expectations before human acceptance."
+        },
+        {
+          "case_id": "BugsInPy-keras-6",
+          "python": "3.7.3",
+          "runtime_matches_metadata": true,
+          "target_commands": [
+            "pytest tests/test_loss_masking.py::test_masking_is_all_zeros"
+          ],
+          "buggy_exit": 1,
+          "fixed_exit": 0,
+          "signal": "buggy_fail_fixed_pass",
+          "artifact_id": 12453811486,
+          "artifact_sha256": "6a7c74b4f8fc6d41477ec89aab72210f3092e460d1f5a6d08b1d058bb20ad4da",
+          "accepted_for_confirmatory": false,
+          "review_notes": "The test file is modified by the patch; verify that the test still directly establishes the metadata root cause."
+        },
+        {
+          "case_id": "BugsInPy-luigi-7",
+          "python": "3.8.3",
+          "runtime_matches_metadata": false,
+          "target_commands": [
+            "pytest test/scheduler_api_test.py::SchedulerApiTest::test_status_wont_override"
+          ],
+          "buggy_exit": null,
+          "fixed_exit": null,
+          "signal": "no_target_test_result_pytest_bootstrap_failed_both_sides",
+          "artifact_id": 12454496788,
+          "artifact_sha256": "065165fa1bdab07e5c4dd05050047414e4d91f2d18cdd13cf98bef8d37481a68",
+          "accepted_for_confirmatory": false,
+          "review_notes": "Pinned pytest installation failed with exit 1 on both sides. Target test did not run. Runtime version was not captured; not a qualifying pair."
+        },
+        {
+          "case_id": "BugsInPy-matplotlib-6",
+          "python": "3.8.1",
+          "runtime_matches_metadata": null,
+          "target_commands": [],
+          "buggy_exit": null,
+          "fixed_exit": null,
+          "signal": "workflow_job_failed_no_case_artifact",
+          "artifact_id": null,
+          "artifact_sha256": null,
+          "accepted_for_confirmatory": false,
+          "review_notes": "Matrix job failed without a saved case artefact. Technical classification is unavailable; do not re-run or accept without review of the job failure reason."
+        }
+      ],
+      "confirmatory_eligible": false
     }
   ],
   "excluded_case_ids": [
