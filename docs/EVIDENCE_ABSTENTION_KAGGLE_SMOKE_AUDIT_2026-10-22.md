@@ -58,3 +58,7 @@ It does **not** test the official confirmatory protocol and does not show that t
 3. **Registered experiment:** publish a verifiable preregistration, close every gate, obtain explicit authorization, then run the frozen E1/E2/E3 × P0/P1 design and analyze the prespecified endpoints.
 
 Until all three are satisfied, no confirmatory inference should be run.
+
+## Workflow containment
+
+After the captured smoke artifacts were audited, both one-off GPU smoke workflow definitions were moved out of `.github/workflows/` to `research_candidates/evidence_abstention/archived_smoke_workflows/` with the suffix `.yml.disabled`. Their source is preserved for traceability but is no longer a GitHub Actions workflow. This brings the repository back to its single-canonical-Kaggle-workflow rule; it does not delete the completed historical run or its artifact.
