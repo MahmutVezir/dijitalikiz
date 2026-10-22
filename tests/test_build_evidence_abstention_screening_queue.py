@@ -87,7 +87,7 @@ class ScreeningQueueTests(unittest.TestCase):
             summary_path = root / "summary.json"
             rows = [
                 row("tqdm", 6),
-                row("youtube-dl", 7),
+                row("youtube-dl", 6),
                 row("newproject", 1),
             ]
             with source.open("w", newline="", encoding="utf-8") as f:
