@@ -18,9 +18,14 @@ The current manifest deliberately fails these gates: no accepted case IDs, open 
 The selected answer is candidate zero from a predeclared seed policy. Outputs are not cherry-picked based on self-reported confidence. Missing independent evidence-support or contradiction audits cause abstention. This prototype does not estimate pure epistemic uncertainty: generation-score entropy and response dispersion can also reflect decoding variability.
 
 
-## Gold-label separation
+## Gold-label separation and runtime audit signals
 
-The adapter field named runtime_evidence_level must come from a separately designed operational evidence-sufficiency checker. Never copy the dataset's gold E1/E2/E3 condition label into this field: doing so would leak the answerability condition to the decision policy and make E3 abstention results tautological. The operational checker has not been implemented or validated in this scaffold. If its runtime assessment is unavailable, the adapter must receive null and abstain; do not substitute the gold label to make the system appear to work.
+The current `EvidenceAudit` object does **not** carry an E1/E2/E3 condition label or a `runtime_evidence_level` field. It carries a structural `packet_validation_status` plus semantic audit inputs: `supported_claim_coverage`, `self_check_conflict`, and `explicit_contradiction`.
+
+- `packet_validation_status` may only be the output of the structural packet/hash validator. It is not an E-level label or a semantic sufficiency rating.
+- The three semantic signals must come from a separately designed and independently validated operational evidence auditor. The current scaffold does not yet provide that auditor.
+- Never derive those runtime signals from gold E1/E2/E3 labels, the hidden root cause, the patch, or post-hoc outcome scores. Doing so would leak the answerability condition and make E3 abstention results tautological.
+- If any required signal is unavailable, pass `None`; the decision policy must abstain. Do not substitute gold labels or synthetic values to make a decision look calibrated.
 
 
 ## Manual preflight command
