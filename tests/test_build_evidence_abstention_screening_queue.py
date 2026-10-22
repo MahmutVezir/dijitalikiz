@@ -78,6 +78,99 @@ class ScreeningQueueTests(unittest.TestCase):
             self.assertEqual(summary["exclusions_by_reason"]["previously_exposed_permanent_exclusion"], 2)
             self.assertEqual(summary["exclusions_by_reason"]["invalid_or_identical_commit_ids"], 1)
 
+    def test_current_exposure_ledger_excludes_recent_v9_screened_cases(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "inventory.csv"
+            output = root / "queue.csv"
+            summary_path = root / "summary.json"
+            rows = [
+                row("tqdm", 6),
+                row("youtube-dl", 7),
+                row("newproject", 1),
+            ]
+            with source.open("w", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=FIELDS)
+                writer.writeheader()
+                writer.writerows(rows)
+
+            summary = MODULE.build_queue(source, output, summary_path, first_batch_per_project=1)
+            with output.open(newline="", encoding="utf-8") as f:
+                queued = list(csv.DictReader(f))
+            queued_ids = {item["case_id"] for item in queued}
+            self.assertNotIn("BugsInPy-tqdm-6", queued_ids)
+            self.assertNotIn("BugsInPy-youtube-dl-7", queued_ids)
+            self.assertIn("BugsInPy-newproject-1", queued_ids)
+            self.assertEqual(summary["exclusions_by_reason"]["previously_exposed_permanent_exclusion"], 2)
+            self.assertEqual(summary["documented_exposure_exclusion_count"], 32)
+            self.assertEqual(len(summary["exposure_addendum_sha256"]), 64)
+            self.assertEqual(summary["accepted_confirmatory_cases"], 0)
+
+    def test_exposure_addendum_excludes_an_id_not_in_static_legacy_list(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "inventory.csv"
+            output = root / "queue.csv"
+            summary_path = root / "summary.json"
+            addendum = root / "exposure.json"
+            rows = [row("tqdm", 6), row("newproject", 1)]
+            with source.open("w", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=FIELDS)
+                writer.writeheader()
+                writer.writerows(rows)
+            addendum.write_text(json.dumps({
+                "excluded_case_ids": ["BugsInPy-tqdm-6"],
+                "additional_batch_records": [],
+            }), encoding="utf-8")
+
+            summary = MODULE.build_queue(
+                source, output, summary_path, first_batch_per_project=1,
+                exposure_addendum_path=addendum,
+            )
+            with output.open(newline="", encoding="utf-8") as f:
+                queued = list(csv.DictReader(f))
+            self.assertEqual([item["case_id"] for item in queued], ["BugsInPy-newproject-1"])
+            self.assertEqual(summary["documented_exposure_exclusion_count"], 1)
+            self.assertEqual(summary["exposure_addendum_sha256"], __import__("hashlib").sha256(addendum.read_bytes()).hexdigest())
+
+    def test_inconsistent_exposure_addendum_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "inventory.csv"
+            addendum = root / "exposure.json"
+            rows = [row("tqdm", 6), row("newproject", 1)]
+            with source.open("w", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=FIELDS)
+                writer.writeheader()
+                writer.writerows(rows)
+            addendum.write_text(json.dumps({
+                "excluded_case_ids": [],
+                "additional_batch_records": [
+                    {"category": "screen", "cases": ["BugsInPy-tqdm-6"]}
+                ],
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "missing from excluded_case_ids"):
+                MODULE.build_queue(
+                    source, root / "queue.csv", root / "summary.json",
+                    exposure_addendum_path=addendum,
+                )
+
+    def test_malformed_exposure_addendum_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "inventory.csv"
+            with source.open("w", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=FIELDS)
+                writer.writeheader()
+                writer.writerow(row("demo", 1))
+            addendum = root / "exposure.json"
+            addendum.write_text("{", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "Exposure exclusion addendum is missing or invalid"):
+                MODULE.build_queue(
+                    source, root / "queue.csv", root / "summary.json",
+                    exposure_addendum_path=addendum,
+                )
+
     def test_missing_columns_fail_closed(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
