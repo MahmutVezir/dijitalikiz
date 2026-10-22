@@ -3,6 +3,8 @@
 **Classification: exploratory engineering smoke only. Not official, not confirmatory, not a calibration set.**  
 **Experiment inference gate:** remains closed for the evidence-abstention study.
 
+Machine-readable sidecar: [KAGGLE_SMOKE_AUDIT_2026-10-22.json](../research_candidates/evidence_abstention/KAGGLE_SMOKE_AUDIT_2026-10-22.json), including the exact condition-level counts and inner-file checksums.
+
 ## Immutable run and artifact
 
 - GitHub Actions run: [39837255019](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39837255019)
