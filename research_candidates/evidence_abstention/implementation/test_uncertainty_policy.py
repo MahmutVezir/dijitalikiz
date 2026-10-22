@@ -25,7 +25,7 @@ class UncertaintyPolicyTests(unittest.TestCase):
 
     def request(self, **overrides):
         values = {
-            "evidence_level": "E1",
+            "operational_evidence_status": "sufficient",
             "answer": "Cache invalidation caused the defect.",
             "available_evidence_ids": frozenset({"E1", "E2"}),
             "cited_evidence_ids": ("E1",),
@@ -68,15 +68,20 @@ class UncertaintyPolicyTests(unittest.TestCase):
         self.assertEqual(result.decision, "diagnose")
         self.assertEqual(result.confidence_probability, 11 / 12)
 
-    def test_unknown_evidence_level_abstains(self):
-        result = self.decide(self.request(evidence_level=None))
+    def test_unknown_operational_evidence_status_abstains(self):
+        result = self.decide(self.request(operational_evidence_status=None))
         self.assertEqual(result.decision, "abstain")
-        self.assertIn("evidence_level_unknown", result.reasons)
+        self.assertIn("operational_evidence_status_unknown", result.reasons)
 
-    def test_insufficient_evidence_abstains(self):
-        result = self.decide(self.request(evidence_level="E3"))
+    def test_insufficient_operational_evidence_abstains(self):
+        result = self.decide(self.request(operational_evidence_status="insufficient"))
         self.assertEqual(result.decision, "abstain")
-        self.assertIn("evidence_insufficient", result.reasons)
+        self.assertIn("operational_evidence_insufficient", result.reasons)
+
+    def test_gold_evidence_level_label_is_not_a_valid_runtime_status(self):
+        result = self.decide(self.request(operational_evidence_status="E3"))
+        self.assertEqual(result.decision, "abstain")
+        self.assertIn("operational_evidence_status_unknown", result.reasons)
 
     def test_model_requested_abstention_is_never_overridden(self):
         result = self.decide(self.request(model_requested_abstention=True))
