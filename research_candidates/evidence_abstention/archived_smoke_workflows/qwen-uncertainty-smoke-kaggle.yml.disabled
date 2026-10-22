@@ -1,0 +1,324 @@
+name: Qwen uncertainty engineering smoke (Kaggle GPU)
+
+on:
+  push:
+    branches:
+      - research/uncertainty-smoke-kaggle-2026-10-22
+    paths:
+      - ".github/workflows/qwen-uncertainty-smoke-kaggle.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: qwen-uncertainty-smoke-kaggle-2026-10-22
+  cancel-in-progress: false
+
+jobs:
+  run-four-case-smoke:
+    if: github.ref == 'refs/heads/research/uncertainty-smoke-kaggle-2026-10-22' && contains(github.event.head_commit.message, '[uncertainty-smoke]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout isolated branch
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Verify Kaggle access
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$KAGGLE_API_TOKEN" || { echo "Missing KAGGLE_API_TOKEN secret"; exit 1; }
+          echo "::add-mask::$KAGGLE_API_TOKEN"
+          python -m pip install --upgrade kaggle
+          kaggle --version
+          kaggle kernels list --mine --page-size 5
+          mkdir -p "$RUNNER_TEMP/qwen-smoke"
+          echo "SMOKE_DIR=$RUNNER_TEMP/qwen-smoke" >> "$GITHUB_ENV"
+
+      - name: Retrieve and verify four previously exposed CI artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$SMOKE_DIR"
+          while IFS='|' read -r case_id artifact_id archive_sha log_sha; do
+            archive="$SMOKE_DIR/$case_id.zip"
+            out="$SMOKE_DIR/$case_id"
+            mkdir -p "$out"
+            curl --fail --silent --show-error --location               -H "Accept: application/vnd.github+json"               -H "Authorization: Bearer $GH_TOKEN"               -H "X-GitHub-Api-Version: 2022-11-28"               "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/$artifact_id/zip"               --output "$archive"
+            printf '%s  %s\n' "$archive_sha" "$archive" | sha256sum --check -
+            unzip -q "$archive" -d "$out"
+            printf '%s  %s\n' "$log_sha" "$out/buggy-test.log" | sha256sum --check -
+            rm "$archive"
+          done <<'EOF'
+          ansible-4|12442047158|5beae32ce486b170ad69082cd9e3d40c695e8668f3e240328f64b2992445cc6b|6da14a39e2da36bf83d08808686d58c26caae944578e52bad4588e1b33987c1e
+          tqdm-4|12441219399|ba00e16a0a2af683a1728f6e78576e7f15c8b7f5f4593d5c0ec69f7f28e80004|b6fd1b004a44a81702e5a2776d0ef7c3b4b42b18b13b45a69823f253c25424e0
+          httpie-5|12442201750|a310720ee72a62da8c5fd18cf49b167fa738b25815f857f0b1fdea19097f5360|faffe66a78d0138741b960ec36ad6657a35b76daa58ecd2ce172bee042061472
+          youtube-dl-4|12442541682|0b0f3c51f6de9baf58f15497c45168ce88a21174e9c812abfc8ba71f00a46bde|66b3096da19e282c2cdbeba7f3da94ca83fbf1b1bc766e2ae981664dcf8c4b34
+          EOF
+
+      - name: Assemble pinned policy and buggy-side-only prompt inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 394c16dd04771cd6f75f69350792ef17a6deb825
+          git show 394c16dd04771cd6f75f69350792ef17a6deb825:research_candidates/evidence_abstention/implementation/uncertainty_policy.py > "$SMOKE_DIR/uncertainty_policy.py"
+          test "$(git hash-object "$SMOKE_DIR/uncertainty_policy.py")" = "e27ebef62c38fd42472d37afd508bcaa3bbbd2d8"
+
+          python - "$SMOKE_DIR" <<'PY'
+          import hashlib, json, sys
+          from pathlib import Path
+
+          root = Path(sys.argv[1])
+          configs = [
+            ("BugsInPy-ansible-4","ansible-4","ansible","4","3.6.9","d91658ec0c8434c82c3ef98bfe9eb4e1027a43a3","https://github.com/ansible/ansible","test/units/playbook/test_collectionsearch.py","pytest test/units/playbook/test_collectionsearch.py::test_collection_static_warning","lib/ansible/playbook/collectionsearch.py","6da14a39e2da36bf83d08808686d58c26caae944578e52bad4588e1b33987c1e"),
+            ("BugsInPy-tqdm-4","tqdm-4","tqdm","4","3.6.9","03b347646492131d889871939b40457d29147216","https://github.com/tqdm/tqdm","tqdm/tests/tests_tqdm.py","python3 -m pytest tqdm/tests/tests_tqdm.py::test_nototal","tqdm/_tqdm.py","b6fd1b004a44a81702e5a2776d0ef7c3b4b42b18b13b45a69823f253c25424e0"),
+            ("BugsInPy-httpie-5","httpie-5","httpie","5","3.7.3","16df8848e81eefac830f407e4b985f42b52970da","https://github.com/jakubroztocil/httpie/","tests/tests.py","pytest tests/tests.py::TestItemParsing::test_escape_longsep","httpie/cli.py","faffe66a78d0138741b960ec36ad6657a35b76daa58ecd2ce172bee042061472"),
+            ("BugsInPy-youtube-dl-4","youtube-dl-4","youtube-dl","4","3.7.0","bc40b3a5ba44006c23daf7fe0ed872af5e33bdc5","https://github.com/ytdl-org/youtube-dl","test/test_jsinterp.py","python -m unittest -q test.test_jsinterp.TestJSInterpreter.test_call","youtube_dl/jsinterp.py","66b3096da19e282c2cdbeba7f3da94ca83fbf1b1bc766e2ae981664dcf8c4b34"),
+          ]
+          cases = []
+          for cid, directory, project, bug, python_version, commit, repo, test_file, test_cmd, source_hint, log_sha in configs:
+            raw = (root / directory / "buggy-test.log").read_bytes()
+            if hashlib.sha256(raw).hexdigest() != log_sha:
+              raise SystemExit("Raw buggy log SHA-256 mismatch for " + cid)
+            cases.append({
+              "case_id": cid, "project": project, "bug_id": bug,
+              "python_version": python_version, "buggy_commit": commit,
+              "source_repository": repo, "target_test_file": test_file,
+              "target_test_command": test_cmd, "modified_source_path_hint": source_hint,
+              "buggy_test_log_sha256": log_sha,
+              "buggy_test_log_raw": raw.decode("utf-8", errors="replace")
+            })
+          payload = {
+            "record_type": "engineering_smoke_test_inputs_not_research_data",
+            "source_workflow_run": "39815552452",
+            "previously_exposed_cases": True,
+            "confirmatory_cases": False,
+            "cases": cases
+          }
+          (root / "smoke_cases_4.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+          print(json.dumps({"case_ids":[c["case_id"] for c in cases],"all_raw_log_hashes_verified":True,"frozen_policy_blob":"e27ebef62c38fd42472d37afd508bcaa3bbbd2d8","official_manifest_modified":False}, indent=2))
+          PY
+
+      - name: Build the private Kaggle GPU kernel payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .kaggle-uncertainty-smoke
+          python - "$SMOKE_DIR" <<'PY'
+          import base64, hashlib, json, py_compile, sys
+          from pathlib import Path
+
+          root = Path(sys.argv[1])
+          cases_b64 = base64.b64encode((root / "smoke_cases_4.json").read_bytes()).decode("ascii")
+          policy_b64 = base64.b64encode((root / "uncertainty_policy.py").read_bytes()).decode("ascii")
+          kernel = r'''import base64, hashlib, importlib.util, json, math, platform, subprocess, sys
+          from pathlib import Path
+
+          CASES = "__CASES_B64__"
+          POLICY = "__POLICY_B64__"
+          MODEL = "Qwen/Qwen2.5-3B-Instruct"
+          REVISION = "aa8e72537993ba99e69dfaafa59ed015b17504d1"
+          OUT = Path("/kaggle/working/uncertainty-smoke-run")
+
+          def sha(data): return hashlib.sha256(data).hexdigest()
+
+          def parse_answer(text):
+              left, right = text.find("{"), text.rfind("}")
+              if left < 0 or right <= left:
+                  return {"parse_ok": False, "decision": "INVALID_OUTPUT", "root_cause": "", "abstain": None, "confidence": None, "evidence_ids": []}
+              try:
+                  obj = json.loads(text[left:right+1])
+              except Exception:
+                  return {"parse_ok": False, "decision": "INVALID_OUTPUT", "root_cause": "", "abstain": None, "confidence": None, "evidence_ids": []}
+              confidence = obj.get("confidence")
+              if isinstance(confidence, bool) or not isinstance(confidence, (int,float)) or not 0 <= confidence <= 1: confidence = None
+              abstain = obj.get("abstain") if isinstance(obj.get("abstain"), bool) else None
+              ids = obj.get("evidence_ids", [])
+              if not isinstance(ids, list): ids = []
+              return {"parse_ok": True, "decision": str(obj.get("decision","")), "root_cause": str(obj.get("root_cause","")), "abstain": abstain, "confidence": confidence, "evidence_ids": [str(x) for x in ids], "evidence_support": str(obj.get("evidence_support",""))}
+
+          def main():
+              runtime = Path("/tmp/qwen-uncertainty-smoke")
+              runtime.mkdir(parents=True, exist_ok=True)
+              cases_payload = json.loads(base64.b64decode(CASES, validate=True))
+              policy_bytes = base64.b64decode(POLICY, validate=True)
+              policy_path = runtime / "uncertainty_policy.py"
+              policy_path.write_bytes(policy_bytes)
+              expected = {"BugsInPy-ansible-4","BugsInPy-tqdm-4","BugsInPy-httpie-5","BugsInPy-youtube-dl-4"}
+              cases = cases_payload.get("cases", [])
+              if cases_payload.get("record_type") != "engineering_smoke_test_inputs_not_research_data" or len(cases) != 4 or {c["case_id"] for c in cases} != expected:
+                  raise RuntimeError("Unexpected input cohort; refusing inference")
+              for case in cases:
+                  if sha(case["buggy_test_log_raw"].encode("utf-8")) != case["buggy_test_log_sha256"]:
+                      raise RuntimeError("Raw log hash mismatch: " + case["case_id"])
+              subprocess.run([sys.executable,"-m","pip","install","--quiet","--disable-pip-version-check","transformers==4.48.3","accelerate==1.2.1","safetensors>=0.4.5"],check=True)
+              import torch, transformers
+              from transformers import AutoModelForCausalLM, AutoTokenizer
+              if not torch.cuda.is_available(): raise RuntimeError("CUDA GPU is required; inference stopped")
+              sys.path.insert(0,str(runtime))
+              import uncertainty_policy as up
+              tokenizer = AutoTokenizer.from_pretrained(MODEL,revision=REVISION,trust_remote_code=False)
+              model = AutoModelForCausalLM.from_pretrained(MODEL,revision=REVISION,torch_dtype=torch.float16,device_map="auto",trust_remote_code=False,low_cpu_mem_usage=True)
+              devices = {p.device.type for p in model.parameters()}
+              dtypes = {str(p.dtype) for p in model.parameters()}
+              offload = {str(k):str(v) for k,v in getattr(model,"hf_device_map",{}).items() if not (isinstance(v,int) or str(v).startswith("cuda"))}
+              if devices != {"cuda"} or dtypes != {"torch.float16"} or offload:
+                  raise RuntimeError("FP16/CUDA-only model load gate failed: "+json.dumps({"devices":list(devices),"dtypes":list(dtypes),"offload":offload}))
+              model.eval()
+              OUT.mkdir(parents=True,exist_ok=True)
+              raw_path, logits_path = OUT/"raw_model_outputs.jsonl", OUT/"token_logit_top5.jsonl"
+              case_results, total_tokens = [], 0
+              print(json.dumps({"event":"model_preflight_passed","model":MODEL,"revision":REVISION,"dtype":"float16","cuda_device":torch.cuda.get_device_name(0),"torch":torch.__version__,"transformers":transformers.__version__,"python":platform.python_version(),"case_count":4,"generations_per_case":5,"official_experiment":False}),flush=True)
+              with raw_path.open("w",encoding="utf-8") as raw_file, logits_path.open("w",encoding="utf-8") as logits_file:
+                  for case_index,case in enumerate(cases):
+                      prompt = (
+                        "İşi: Bir yazılım test hata günlüğünden desteklenen kök nedeni bul. Kanıt yetmiyorsa uydurma, abstain=true ve decision='Yetersiz Kanıt / Bilmiyorum' ver. Yalnızca JSON üret. "
+                        "JSON şeması: {\"decision\":\"teşhis veya Yetersiz Kanıt / Bilmiyorum\",\"root_cause\":\"kısa neden veya boş\",\"abstain\":true,\"confidence\":0.0,\"evidence_ids\":[\"LOG\"],\"evidence_support\":\"kanıtın desteklediği iddia\"}. "
+                        "confidence öz-bildirimdir, kalibre edilmiş olasılık değildir. Evidence ID: LOG, CASE_METADATA, TEST_COMMAND.\n"
+                        + json.dumps({k:v for k,v in case.items() if k != "buggy_test_log_raw"},ensure_ascii=False)
+                        + "\n--- RAW BUGGY-SIDE TEST LOG ---\n" + case["buggy_test_log_raw"] + "\n--- END LOG ---"
+                      )
+                      prompt_sha = sha(prompt.encode("utf-8"))
+                      messages = [{"role":"system","content":"Bilimsel dürüstlük: kanıtsız kesin teşhis verme; veri yetersizse açıkça belirt."},{"role":"user","content":prompt}]
+                      encoded = tokenizer.apply_chat_template(messages,tokenize=True,add_generation_prompt=True,return_tensors="pt").to("cuda")
+                      answers, parsed_rows, entropies, decisions = [], [], [], []
+                      for rep in range(5):
+                          seed = 20261022 + case_index*100 + rep
+                          torch.manual_seed(seed); torch.cuda.manual_seed_all(seed)
+                          with torch.inference_mode():
+                              gen = model.generate(input_ids=encoded,max_new_tokens=128,do_sample=True,temperature=0.2,top_p=1.0,num_return_sequences=1,pad_token_id=tokenizer.eos_token_id,eos_token_id=tokenizer.eos_token_id,return_dict_in_generate=True,output_scores=True,output_logits=True)
+                          token_ids = gen.sequences[0,encoded.shape[-1]:].detach().cpu().tolist()
+                          text = tokenizer.decode(token_ids,skip_special_tokens=True).strip()
+                          parsed = parse_answer(text)
+                          answer = parsed["root_cause"].strip() or parsed["decision"].strip() or text
+                          answers.append(answer); parsed_rows.append(parsed); decisions.append(parsed["decision"])
+                          if not gen.logits or not token_ids: raise RuntimeError("Raw logits/token steps missing")
+                          for step, logits in enumerate(gen.logits[:len(token_ids)]):
+                              vector = logits[0].detach().float()
+                              logp = torch.log_softmax(vector,dim=-1); probs = logp.exp()
+                              ent = float((-(probs*logp).sum()/math.log(vector.numel())).clamp(0,1).item())
+                              entropies.append(ent); total_tokens += 1
+                              topv,topi = torch.topk(vector,k=min(5,vector.numel()))
+                              tid = int(token_ids[step])
+                              logits_file.write(json.dumps({"case_id":case["case_id"],"replicate":rep,"seed":seed,"step":step,"generated_token_id":tid,"generated_token_text":tokenizer.decode([tid],skip_special_tokens=False),"generated_token_logit":float(vector[tid].item()),"normalized_full_vocab_entropy":ent,"top5_raw_logits":[{"token_id":int(t.item()),"token_text":tokenizer.decode([int(t.item())],skip_special_tokens=False),"raw_logit":float(v.item())} for v,t in zip(topv,topi)]},ensure_ascii=False)+"\n")
+                          raw_file.write(json.dumps({"case_id":case["case_id"],"replicate":rep,"seed":seed,"prompt_sha256":prompt_sha,"raw_output":text,"parse_ok":parsed["parse_ok"],"model_self_reported_decision":parsed["decision"],"model_self_reported_root_cause":parsed["root_cause"],"model_self_reported_abstain":parsed["abstain"],"model_self_reported_confidence_not_calibrated":parsed["confidence"],"model_cited_evidence_ids":parsed["evidence_ids"],"model_evidence_support_text":parsed.get("evidence_support",""),"generated_token_count":len(token_ids),"mean_normalized_token_entropy":sum(entropies[-len(token_ids):])/len(token_ids)},ensure_ascii=False)+"\n")
+                          del gen
+                          torch.cuda.empty_cache()
+                      mean_ent = sum(entropies)/len(entropies) if entropies else None
+                      disagreement = up.lexical_disagreement(answers)
+                      request = up.DecisionRequest(evidence_level=None,answer="\n".join(answers),available_evidence_ids=frozenset({"LOG","CASE_METADATA","TEST_COMMAND"}),cited_evidence_ids=tuple(dict.fromkeys(x for p in parsed_rows for x in p["evidence_ids"])),supported_claim_coverage=None,normalized_token_entropy=mean_ent,candidate_answers=tuple(answers),self_check_conflict=None,explicit_contradiction=None)
+                      blocked = up.DecisionPolicy(minimum_confidence=None,maximum_uncertainty=None,calibration_id=None,calibration_verified=False)
+                      result = up.decide(request,up.EmpiricalConfidenceCalibrator(bin_count=5,min_samples_per_bin=8),blocked)
+                      row = {"case_id":case["case_id"],"project":case["project"],"input_log_sha256":case["buggy_test_log_sha256"],"generations":5,"prompt_sha256":prompt_sha,"generated_token_count":len(entropies),"mean_normalized_token_entropy":mean_ent,"lexical_disagreement":disagreement,"model_self_reported_decisions":decisions,"policy_decision":result.decision,"policy_confidence_probability":result.confidence_probability,"uncertainty_index":result.uncertainty_index,"policy_reasons":list(result.reasons),"independent_evidence_review":None,"real_case_calibration_verified":False,"confirmatory_case":False}
+                      case_results.append(row)
+                      print(json.dumps({"event":"case_complete",**row},ensure_ascii=False),flush=True)
+              probe = up.EmpiricalConfidenceCalibrator(bin_count=5,min_samples_per_bin=2)
+              probe.fit([up.CalibrationObservation(0.1,True),up.CalibrationObservation(0.1,False)])
+              if probe.predict(0.1) != 0.5: raise RuntimeError("Laplace smoothing check failed")
+              OUT.joinpath("case_summary.json").write_text(json.dumps({"run_type":"engineering_smoke_only_not_research_result","model":MODEL,"revision":REVISION,"dtype":"float16","python":platform.python_version(),"torch":torch.__version__,"transformers":transformers.__version__,"cuda":torch.version.cuda,"cuda_device":torch.cuda.get_device_name(0),"case_count":4,"generations_per_case":5,"generated_token_steps":total_tokens,"official_manifest_modified":False,"official_experiment":False,"case_results":case_results,"synthetic_laplace_probe":{"correct":1,"count":2,"probability":probe.predict(0.1),"used_for_case_decisions":False},"interpretation":"Policy abstention is fail-closed because independent evidence labels and verified calibration are unavailable; it is not evidence that the model itself abstained."},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+              report = ["# Qwen uncertainty smoke report","","Engineering smoke only; these four cases are previously exposed and excluded from confirmatory analysis.","",f"- Model: {MODEL}",f"- Revision: {REVISION}","- FP16/CUDA gate: passed","- Samples: 5 per case",f"- Token steps: {total_tokens}","","|Case|Mean normalized entropy|Lexical disagreement|Policy decision|Reasons|","|---|---:|---:|---|---|"]
+              for row in case_results: report.append(f"|{row['case_id']}|{row['mean_normalized_token_entropy']:.6f}|{row['lexical_disagreement']}|{row['policy_decision']}|{', '.join(row['policy_reasons'])}|")
+              report += ["","Model self-reported confidence is not calibrated probability. Same-model lexical disagreement is only a proxy. Laplace test uses synthetic labels, not case labels.",""]
+              OUT.joinpath("README_SMOKE_REPORT.md").write_text("\n".join(report),encoding="utf-8")
+              names = ["raw_model_outputs.jsonl","token_logit_top5.jsonl","case_summary.json","README_SMOKE_REPORT.md"]
+              OUT.joinpath("SHA256SUMS").write_text("\n".join(f"{sha((OUT/n).read_bytes())}  {n}" for n in names)+"\n",encoding="utf-8")
+              print(json.dumps({"event":"smoke_complete","results":{r["case_id"]:r["policy_decision"] for r in case_results},"official_experiment":False}),flush=True)
+
+          if __name__ == "__main__": main()
+          '''
+          kernel = kernel.replace("__CASES_B64__", cases_b64).replace("__POLICY_B64__", policy_b64)
+          if "__CASES_B64__" in kernel or "__POLICY_B64__" in kernel:
+              raise SystemExit("Missing substitutions")
+          destination = Path(".kaggle-uncertainty-smoke/kernel.py")
+          destination.write_text(kernel,encoding="utf-8")
+          py_compile.compile(str(destination),doraise=True)
+          print(json.dumps({"kernel_sha256":hashlib.sha256(destination.read_bytes()).hexdigest(),"kernel_bytes":destination.stat().st_size,"policy_blob_sha256":"e27ebef62c38fd42472d37afd508bcaa3bbbd2d8","cases":[c["case_id"] for c in json.loads((root/"smoke_cases_4.json").read_text())["cases"]]}))
+          PY
+
+          SLUG="qwen-uncertainty-smoke-${GITHUB_SHA:0:8}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          echo "KAGGLE_KERNEL_REF=mahmutvezir/$SLUG" >> "$GITHUB_ENV"
+          cat > .kaggle-uncertainty-smoke/kernel-metadata.json <<EOF
+          {
+            "id": "mahmutvezir/$SLUG",
+            "title": "$SLUG",
+            "code_file": "kernel.py",
+            "language": "python",
+            "kernel_type": "script",
+            "is_private": true,
+            "enable_gpu": true,
+            "enable_tpu": false,
+            "enable_internet": true,
+            "machine_shape": "NvidiaTeslaT4",
+            "dataset_sources": [],
+            "competition_sources": [],
+            "kernel_sources": [],
+            "model_sources": []
+          }
+          EOF
+          python -m json.tool .kaggle-uncertainty-smoke/kernel-metadata.json >/dev/null
+          sha256sum .kaggle-uncertainty-smoke/kernel.py .kaggle-uncertainty-smoke/kernel-metadata.json
+
+      - name: Submit private Kaggle GPU smoke kernel
+        shell: bash
+        run: |
+          set -euo pipefail
+          kaggle kernels push -p .kaggle-uncertainty-smoke
+
+      - name: Wait for the smoke kernel
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SMOKE_DIR/diagnostics"
+          for attempt in $(seq 1 220); do
+            status="$(kaggle kernels status "$KAGGLE_KERNEL_REF" 2>&1 || true)"
+            echo "$status"
+            printf '%s\n' "$status" > "$SMOKE_DIR/diagnostics/kernel-status.txt"
+            if echo "$status" | grep -q "KernelWorkerStatus.COMPLETE"; then
+              kaggle kernels logs "$KAGGLE_KERNEL_REF" > "$SMOKE_DIR/diagnostics/kaggle-kernel.log" 2>&1 || true
+              exit 0
+            fi
+            if echo "$status" | grep -Eq "KernelWorkerStatus.(ERROR|CANCEL_REQUESTED|CANCEL_ACKNOWLEDGED)"; then
+              kaggle kernels logs "$KAGGLE_KERNEL_REF" > "$SMOKE_DIR/diagnostics/kaggle-kernel.log" 2>&1 || true
+              cat "$SMOKE_DIR/diagnostics/kaggle-kernel.log" || true
+              exit 1
+            fi
+            sleep 60
+          done
+          kaggle kernels logs "$KAGGLE_KERNEL_REF" > "$SMOKE_DIR/diagnostics/kaggle-kernel.log" 2>&1 || true
+          cat "$SMOKE_DIR/diagnostics/kaggle-kernel.log" || true
+          exit 1
+
+      - name: Download and verify smoke outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SMOKE_DIR/results"
+          kaggle kernels output "$KAGGLE_KERNEL_REF" -p "$SMOKE_DIR/results" --force
+          for required in raw_model_outputs.jsonl token_logit_top5.jsonl case_summary.json README_SMOKE_REPORT.md SHA256SUMS; do
+            test -n "$(find "$SMOKE_DIR/results" -name "$required" -type f -print -quit)" || {
+              echo "Missing output: $required"
+              find "$SMOKE_DIR/results" -type f -print
+              exit 1
+            }
+          done
+          SUMS="$(find "$SMOKE_DIR/results" -name SHA256SUMS -type f -print -quit)"
+          (cd "$(dirname "$SUMS")" && sha256sum --check SHA256SUMS)
+          mkdir -p smoke-output
+          cp -a "$SMOKE_DIR/results/." smoke-output/
+          printf 'kernel_ref=%s\nsource_commit=%s\nrun_type=engineering-smoke-only\nofficial_manifest_modified=false\n' "$KAGGLE_KERNEL_REF" "$GITHUB_SHA" > smoke-output/GITHUB_RUN_INFO.txt
+          cp "$SMOKE_DIR/diagnostics/"* smoke-output/ 2>/dev/null || true
+
+      - name: Upload smoke output artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: qwen-uncertainty-smoke-${{ github.run_id }}
+          path: smoke-output/
+          if-no-files-found: warn
+          retention-days: 30
