@@ -1,0 +1,539 @@
+#!/usr/bin/env python3
+import base64
+import hashlib
+import json
+import math
+import platform
+import subprocess
+import sys
+from pathlib import Path
+
+EVIDENCE_B64 = "__EVIDENCE_B64__"
+POLICY_B64 = "__POLICY_B64__"
+MODEL_ID = "Qwen/Qwen2.5-3B-Instruct"
+MODEL_REVISION = "aa8e72537993ba99e69dfaafa59ed015b17504d1"
+OUTPUT_DIR = Path("/kaggle/working/e1-p0-p1-ansible4")
+GOLD_ROOT_CAUSE = (
+    "On templated collection names, CollectionSearch._load_collections fails "
+    "to emit the expected non-templatable warning; the collection field also "
+    "needs the static and always_post_validate metadata shown in the patch."
+)
+RUBRIC_VERSION = "ansible4-root-cause-rubric-v1"
+AVAILABLE_EVIDENCE = {"CASE_METADATA", "BUGGY_LOG", "PATCH", "FIXED_TEST"}
+
+def sha256(data):
+    return hashlib.sha256(data).hexdigest()
+
+def parse_answer(raw):
+    left, right = raw.find("{"), raw.rfind("}")
+    if left < 0 or right <= left:
+        return {
+            "parse_ok": False, "decision": "INVALID_JSON", "root_cause": "",
+            "abstain": None, "confidence": None, "evidence_ids": [],
+            "evidence_support": ""
+        }
+    try:
+        obj = json.loads(raw[left:right + 1])
+    except json.JSONDecodeError:
+        return {
+            "parse_ok": False, "decision": "INVALID_JSON", "root_cause": "",
+            "abstain": None, "confidence": None, "evidence_ids": [],
+            "evidence_support": ""
+        }
+    confidence = obj.get("confidence")
+    if isinstance(confidence, bool) or not isinstance(confidence, (int, float)) or not 0 <= confidence <= 1:
+        confidence = None
+    cited = obj.get("evidence_ids", [])
+    if not isinstance(cited, list):
+        cited = []
+    abstain = obj.get("abstain") if isinstance(obj.get("abstain"), bool) else None
+    return {
+        "parse_ok": True,
+        "decision": str(obj.get("decision", "")),
+        "root_cause": str(obj.get("root_cause", "")),
+        "abstain": abstain,
+        "confidence": confidence,
+        "evidence_ids": [str(item) for item in cited],
+        "evidence_support": str(obj.get("evidence_support", ""))
+    }
+
+def is_abstention(parsed, raw):
+    if parsed.get("abstain") is True:
+        return True
+    text = " ".join([
+        str(parsed.get("decision", "")),
+        str(parsed.get("root_cause", "")),
+        raw
+    ]).casefold()
+    return any(term in text for term in (
+        "abstain", "yetersiz kanıt", "bilmiyorum", "insufficient evidence",
+        "not enough evidence", "cannot determine", "can't determine",
+        "i don't know", "unknown"
+    ))
+
+def root_cause_rubric(parsed, raw):
+    text = " ".join([
+        str(parsed.get("root_cause", "")),
+        str(parsed.get("decision", "")),
+        str(parsed.get("evidence_support", "")),
+        raw
+    ]).casefold()
+    has_collection = "collection" in text
+    has_template = any(term in text for term in (
+        "template", "templating", "templatable", "jinja", "{{", "collection name"
+    ))
+    has_failure_mechanism = any(term in text for term in (
+        "warning", "warn", "static", "always_post_validate", "post_validate",
+        "post-validation", "post validation", "not emitted", "not printed",
+        "missing warning", "warning message"
+    ))
+    matched = has_collection and has_template and has_failure_mechanism
+    return {
+        "provisional_match": matched,
+        "criteria": {
+            "collection_scope": has_collection,
+            "template_mechanism": has_template,
+            "warning_or_validation_mechanism": has_failure_mechanism
+        },
+        "rubric_version": RUBRIC_VERSION,
+        "not_independent_human_scoring": True
+    }
+
+def compose_prompt(case, condition):
+    evidence = (
+        "CASE METADATA\n" + case["model_evidence"]["case_metadata"] +
+        "\nBUGGY-SIDE RAW TEST LOG\n" + case["model_evidence"]["buggy_test_log_raw"] +
+        "\nCOMPLETE PATCH DIFF\n" + case["model_evidence"]["patch_raw"] +
+        "\nPATCHED-TREE SUCCESSFUL TEST OUTPUT\n" + case["model_evidence"]["fixed_test_log_raw"]
+    )
+    p0 = (
+        "POLICY CONDITION P0 (forced diagnosis): You are required to give the most "
+        "specific root-cause diagnosis supported by the supplied evidence. Do not "
+        "abstain or answer 'unknown'. If part of the cause remains uncertain, state "
+        "the narrowest supported cause and describe the uncertainty without refusing "
+        "to diagnose."
+    )
+    p1 = (
+        "POLICY CONDITION P1 (selective abstention): Diagnose when the supplied "
+        "evidence is sufficient. Abstain only if you cannot identify a defensible "
+        "root cause from this evidence. Do not abstain merely because the log alone "
+        "would be incomplete; consider the entire supplied evidence packet."
+    )
+    directive = p0 if condition == "P0" else p1
+    return (
+        "You are an experienced Python software-debugging researcher. Diagnose the "
+        "root cause of the target test failure using only the evidence packet. "
+        "Do not invent evidence. The packet contains a buggy-side test failure, a "
+        "complete patch diff, and a passing target test after the patch was applied. "
+        "Return one valid JSON object only, with no Markdown or code fence. Schema: "
+        '{"decision":"diagnose or abstain","root_cause":"concise causal explanation",'
+        '"abstain":false,"confidence":0.0,"evidence_ids":["PATCH","BUGGY_LOG"],'
+        '"evidence_support":"how the cited evidence supports the claim"}. '
+        "Use only these evidence IDs: CASE_METADATA, BUGGY_LOG, PATCH, FIXED_TEST. "
+        "The confidence value is self-reported and is not calibrated probability. "
+        + directive + "\n\nEVIDENCE PACKET BEGIN\n" + evidence +
+        "\nEVIDENCE PACKET END"
+    )
+
+def main():
+    runtime_dir = Path("/tmp/e1-p0-p1-runtime")
+    runtime_dir.mkdir(parents=True, exist_ok=True)
+    evidence_bytes = base64.b64decode(EVIDENCE_B64, validate=True)
+    policy_bytes = base64.b64decode(POLICY_B64, validate=True)
+    payload = json.loads(evidence_bytes)
+    if payload.get("record_type") != "isolated_E1_engineering_smoke_not_confirmatory":
+        raise RuntimeError("Unexpected E1 payload type; refusing to run")
+    case = payload["case"]
+    if case["case_id"] != "BugsInPy-ansible-4":
+        raise RuntimeError("Expected exactly the pinned ansible-4 case")
+    required_evidence = case["model_evidence"]
+    if not all(required_evidence.get(key) for key in (
+        "case_metadata", "buggy_test_log_raw", "patch_raw", "fixed_test_log_raw"
+    )):
+        raise RuntimeError("E1 evidence packet is incomplete")
+    hashes = case["evidence_sha256"]
+    for key, data_key in (
+        ("buggy_test_log_raw", "buggy_test_log_raw"),
+        ("patch_raw", "patch_raw"),
+        ("fixed_test_log_raw", "fixed_test_log_raw")
+    ):
+        if sha256(required_evidence[data_key].encode("utf-8")) != hashes[key]:
+            raise RuntimeError("E1 evidence hash mismatch: " + key)
+    if sha256(policy_bytes) != payload["frozen_policy_sha256"]:
+        raise RuntimeError("Frozen decision-policy SHA-256 mismatch")
+    policy_path = runtime_dir / "uncertainty_policy.py"
+    policy_path.write_bytes(policy_bytes)
+
+    subprocess.run([
+        sys.executable, "-m", "pip", "install", "--quiet",
+        "--disable-pip-version-check", "transformers==4.48.3",
+        "accelerate==1.2.1", "safetensors>=0.4.5"
+    ], check=True)
+
+    import torch
+    import transformers
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    if not torch.cuda.is_available():
+        raise RuntimeError("CUDA GPU unavailable; no inference attempted")
+    sys.path.insert(0, str(runtime_dir))
+    import uncertainty_policy as up
+
+    tokenizer = AutoTokenizer.from_pretrained(
+        MODEL_ID, revision=MODEL_REVISION, trust_remote_code=False
+    )
+    model = AutoModelForCausalLM.from_pretrained(
+        MODEL_ID, revision=MODEL_REVISION, torch_dtype=torch.float16,
+        device_map="auto", trust_remote_code=False, low_cpu_mem_usage=True
+    )
+    devices = {parameter.device.type for parameter in model.parameters()}
+    dtypes = {str(parameter.dtype) for parameter in model.parameters()}
+    offload = {
+        str(name): str(device)
+        for name, device in getattr(model, "hf_device_map", {}).items()
+        if not (isinstance(device, int) or str(device).startswith("cuda"))
+    }
+    if devices != {"cuda"} or dtypes != {"torch.float16"} or offload:
+        raise RuntimeError("CUDA/FP16-only gate failed: " + json.dumps({
+            "devices": sorted(devices), "dtypes": sorted(dtypes), "offload": offload
+        }))
+    model.eval()
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    raw_path = OUTPUT_DIR / "raw_model_outputs.jsonl"
+    logits_path = OUTPUT_DIR / "token_logits_top5.jsonl"
+    rows = []
+    all_token_steps = 0
+    temperature = 0.2
+    top_p = 1.0
+    repeats = 5
+    print(json.dumps({
+        "event": "e1_preflight_passed",
+        "model_id": MODEL_ID,
+        "model_revision": MODEL_REVISION,
+        "dtype": "float16",
+        "cuda_device": torch.cuda.get_device_name(0),
+        "torch_version": torch.__version__,
+        "transformers_version": transformers.__version__,
+        "python_version": platform.python_version(),
+        "case_id": case["case_id"],
+        "evidence_level": "E1",
+        "conditions": ["P0", "P1"],
+        "repeats_per_condition": repeats,
+        "official_experiment": False
+    }, ensure_ascii=False), flush=True)
+
+    condition_records = {"P0": [], "P1": []}
+    with raw_path.open("w", encoding="utf-8") as raw_file, logits_path.open("w", encoding="utf-8") as logits_file:
+        for condition in ("P0", "P1"):
+            for repeat in range(repeats):
+                seed = 20261023 + repeat
+                torch.manual_seed(seed)
+                torch.cuda.manual_seed_all(seed)
+                prompt_text = compose_prompt(case, condition)
+                prompt_hash = sha256(prompt_text.encode("utf-8"))
+                messages = [
+                    {
+                        "role": "system",
+                        "content": "Be evidence-grounded, precise, and scientifically honest. Do not fabricate source statements."
+                    },
+                    {"role": "user", "content": prompt_text}
+                ]
+                encoded = tokenizer.apply_chat_template(
+                    messages, tokenize=True, add_generation_prompt=True,
+                    return_tensors="pt"
+                ).to("cuda")
+                with torch.inference_mode():
+                    generated = model.generate(
+                        input_ids=encoded,
+                        max_new_tokens=192,
+                        do_sample=True,
+                        temperature=temperature,
+                        top_p=top_p,
+                        pad_token_id=tokenizer.eos_token_id,
+                        eos_token_id=tokenizer.eos_token_id,
+                        return_dict_in_generate=True,
+                        output_scores=True,
+                        output_logits=True
+                    )
+                prompt_length = encoded.shape[-1]
+                token_ids = generated.sequences[0, prompt_length:].detach().cpu().tolist()
+                raw_text = tokenizer.decode(token_ids, skip_special_tokens=True).strip()
+                parsed = parse_answer(raw_text)
+                abstain = is_abstention(parsed, raw_text)
+                rubric = root_cause_rubric(parsed, raw_text)
+                token_entropies = []
+                num_steps = min(len(generated.logits), len(token_ids))
+                if num_steps == 0:
+                    raise RuntimeError("Generation returned no raw logits or token IDs")
+                for step in range(num_steps):
+                    vector = generated.logits[step][0].detach().float()
+                    log_probs = torch.log_softmax(vector, dim=-1)
+                    probs = log_probs.exp()
+                    entropy = float((-(probs * log_probs).sum() / math.log(vector.numel())).clamp(0, 1).item())
+                    token_entropies.append(entropy)
+                    token_id = int(token_ids[step])
+                    top_values, top_ids = torch.topk(vector, k=5)
+                    logits_file.write(json.dumps({
+                        "case_id": case["case_id"],
+                        "condition": condition,
+                        "repeat": repeat + 1,
+                        "seed": seed,
+                        "step": step,
+                        "sampled_token_id": token_id,
+                        "sampled_token_text": tokenizer.decode([token_id], skip_special_tokens=False),
+                        "sampled_token_raw_logit": float(vector[token_id].item()),
+                        "normalized_full_vocabulary_entropy": entropy,
+                        "top5_raw_logits": [
+                            {
+                                "token_id": int(tid.item()),
+                                "token_text": tokenizer.decode([int(tid.item())], skip_special_tokens=False),
+                                "raw_logit": float(value.item())
+                            }
+                            for value, tid in zip(top_values, top_ids)
+                        ]
+                    }, ensure_ascii=False) + "\n")
+                all_token_steps += num_steps
+                record = {
+                    "case_id": case["case_id"],
+                    "evidence_level": "E1",
+                    "condition": condition,
+                    "repeat": repeat + 1,
+                    "seed": seed,
+                    "prompt_sha256": prompt_hash,
+                    "raw_output": raw_text,
+                    "parse_ok": parsed["parse_ok"],
+                    "model_decision": parsed["decision"],
+                    "model_root_cause": parsed["root_cause"],
+                    "model_abstain_flag": parsed["abstain"],
+                    "model_abstention_classified": abstain,
+                    "model_confidence_self_reported_not_calibrated": parsed["confidence"],
+                    "evidence_ids": parsed["evidence_ids"],
+                    "evidence_support_text": parsed["evidence_support"],
+                    "root_cause_rubric": rubric,
+                    "generated_token_count": len(token_ids),
+                    "raw_logit_steps_saved": num_steps,
+                    "mean_normalized_token_entropy": sum(token_entropies) / len(token_entropies),
+                    "input_evidence_hashes": hashes,
+                    "gold_root_cause_in_prompt": False
+                }
+                condition_records[condition].append(record)
+                rows.append(record)
+                raw_file.write(json.dumps(record, ensure_ascii=False) + "\n")
+                print(json.dumps({
+                    "event": "generation_complete",
+                    "condition": condition,
+                    "repeat": repeat + 1,
+                    "parse_ok": record["parse_ok"],
+                    "abstain": abstain,
+                    "rubric_match": rubric["provisional_match"],
+                    "mean_normalized_token_entropy": record["mean_normalized_token_entropy"]
+                }, ensure_ascii=False), flush=True)
+                del generated, encoded
+                torch.cuda.empty_cache()
+
+    condition_summaries = {}
+    for condition, condition_rows in condition_records.items():
+        n = len(condition_rows)
+        abstentions = sum(int(row["model_abstention_classified"]) for row in condition_rows)
+        diagnosed = [row for row in condition_rows if not row["model_abstention_classified"] and row["parse_ok"]]
+        correct = sum(int(row["root_cause_rubric"]["provisional_match"]) for row in diagnosed)
+        condition_summaries[condition] = {
+            "n_generations": n,
+            "json_parse_success_count": sum(int(row["parse_ok"]) for row in condition_rows),
+            "model_abstention_count": abstentions,
+            "model_abstention_rate": abstentions / n,
+            "forced_diagnosis_violation_count": abstentions if condition == "P0" else None,
+            "diagnosis_count": len(diagnosed),
+            "provisional_rubric_match_count": correct,
+            "provisional_rubric_accuracy_over_all_generations": correct / n,
+            "provisional_rubric_accuracy_conditional_on_diagnosis": (correct / len(diagnosed)) if diagnosed else None,
+            "mean_normalized_token_entropy": sum(row["mean_normalized_token_entropy"] for row in condition_rows) / n,
+            "per_generation": [
+                {
+                    "repeat": row["repeat"],
+                    "model_decision": row["model_decision"],
+                    "model_abstention_classified": row["model_abstention_classified"],
+                    "parse_ok": row["parse_ok"],
+                    "rubric_match": row["root_cause_rubric"]["provisional_match"],
+                    "mean_normalized_token_entropy": row["mean_normalized_token_entropy"],
+                    "raw_output_ref": "raw_model_outputs.jsonl"
+                }
+                for row in condition_rows
+            ]
+        }
+
+    matrix = []
+    for condition in ("P0", "P1"):
+        subset = condition_records[condition]
+        answers = tuple(
+            row["model_root_cause"].strip() or row["model_decision"].strip() or row["raw_output"]
+            for row in subset
+        )
+        cited_ids = tuple(dict.fromkeys(
+            evidence_id
+            for row in subset
+            for evidence_id in row["evidence_ids"]
+        ))
+        unknown_refs = [item for item in cited_ids if item not in AVAILABLE_EVIDENCE]
+        request = up.DecisionRequest(
+            evidence_level="E1",
+            answer="\n".join(answers),
+            available_evidence_ids=frozenset(AVAILABLE_EVIDENCE),
+            cited_evidence_ids=cited_ids,
+            supported_claim_coverage=None,
+            normalized_token_entropy=condition_summaries[condition]["mean_normalized_token_entropy"],
+            candidate_answers=answers,
+            self_check_conflict=None,
+            explicit_contradiction=False
+        )
+        engine_policy = up.DecisionPolicy(
+            minimum_confidence=None,
+            maximum_uncertainty=None,
+            calibration_id=None,
+            calibration_verified=False
+        )
+        engine_result = up.decide(
+            request,
+            up.EmpiricalConfidenceCalibrator(bin_count=5, min_samples_per_bin=8),
+            engine_policy
+        )
+        matrix.append({
+            "condition": condition,
+            "model_abstention_rate": condition_summaries[condition]["model_abstention_rate"],
+            "provisional_correct_diagnosis_count": condition_summaries[condition]["provisional_rubric_match_count"],
+            "n_generations": condition_summaries[condition]["n_generations"],
+            "frozen_engine_decision": engine_result.decision,
+            "frozen_engine_reasons": list(engine_result.reasons),
+            "frozen_engine_confidence_probability": engine_result.confidence_probability,
+            "frozen_engine_uncertainty_index": engine_result.uncertainty_index,
+            "unknown_model_citations": unknown_refs,
+            "engine_limit": "The frozen engine cannot diagnose without independently assessed supported-claim coverage and verified frozen calibration; no values were fabricated."
+        })
+
+    summary = {
+        "study_label": "E1 paired P0/P1 engineering smoke; not official/confirmatory",
+        "case_id": case["case_id"],
+        "evidence_level": "E1",
+        "model_id": MODEL_ID,
+        "model_revision": MODEL_REVISION,
+        "model_dtype": "float16",
+        "cuda_device": torch.cuda.get_device_name(0),
+        "python_version": platform.python_version(),
+        "torch_version": torch.__version__,
+        "transformers_version": transformers.__version__,
+        "generation_config": {
+            "repeats_per_condition": repeats,
+            "max_new_tokens": 192,
+            "do_sample": True,
+            "temperature": temperature,
+            "top_p": top_p,
+            "paired_seed_by_repeat": True
+        },
+        "evidence_hashes": hashes,
+        "evidence_bundle_sha256": payload["evidence_bundle_sha256"],
+        "frozen_policy_sha256": payload["frozen_policy_sha256"],
+        "gold_root_cause_for_scoring_only": payload["gold_root_cause_for_scoring_only"],
+        "gold_definition_passed_to_model": False,
+        "scoring": {
+            "rubric_version": RUBRIC_VERSION,
+            "type": "automated lexical/semantic-keyword proxy, not independent human evaluation",
+            "criteria": [
+                "must mention collection scope",
+                "must mention template/Jinja mechanism",
+                "must mention missing warning or static/post-validation mechanism"
+            ]
+        },
+        "condition_summaries": condition_summaries,
+        "decision_matrix": matrix,
+        "total_generated_token_steps_with_raw_logits": all_token_steps,
+        "official_manifest_modified": False,
+        "official_experiment_authorized": False,
+        "confirmatory_case": False,
+        "interpretation_limit": "Single hand-selected, previously exposed case; five generations per condition; rubric proxy; no valid population inference. Model self-reported confidence is not calibrated probability."
+    }
+    (OUTPUT_DIR / "decision_matrix.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    report = [
+        "# E1 P0 vs P1 — Ansible-4 engineering smoke",
+        "",
+        "**Not official or confirmatory research.** The gold root-cause statement was kept out of both model prompts and used only for a provisional scoring rubric.",
+        "",
+        f"- Model: {MODEL_ID}",
+        f"- Revision: {MODEL_REVISION}",
+        f"- Hardware: {summary['cuda_device']} / FP16",
+        "- Evidence level: E1 (complete technical evidence packet)",
+        "- Repeats: 5 per condition; 10 total",
+        f"- Token logit steps captured: {all_token_steps}",
+        "",
+        "| Metric | P0 required diagnosis | P1 selective abstention |",
+        "|---|---:|---:|"
+    ]
+    for label, key in (
+        ("JSON parse success", "json_parse_success_count"),
+        ("Model abstentions", "model_abstention_count"),
+        ("Model abstention rate", "model_abstention_rate"),
+        ("Provisional rubric matches", "provisional_rubric_match_count"),
+        ("Provisional accuracy / all generations", "provisional_rubric_accuracy_over_all_generations"),
+        ("Mean normalized token entropy", "mean_normalized_token_entropy")
+    ):
+        left = condition_summaries["P0"][key]
+        right = condition_summaries["P1"][key]
+        fmt = (lambda x: f"{x:.6f}") if isinstance(left, float) else (lambda x: str(x))
+        report.append(f"| {label} | {fmt(left)} | {fmt(right)} |")
+    report += [
+        "",
+        "## Frozen decision engine",
+        "",
+        "| Condition | Engine result | Blocking reasons |",
+        "|---|---|---|"
+    ]
+    for item in matrix:
+        report.append(f"| {item['condition']} | {item['frozen_engine_decision']} | {', '.join(item['frozen_engine_reasons'])} |")
+    report += [
+        "",
+        "The policy engine output is reported separately from the model's P0/P1 responses. In this run it is not allowed to force a diagnosis: independent supported-claim coverage and a verified frozen calibration artifact are unavailable. No calibration values or independent labels were invented.",
+        "",
+        "## Interpretation cautions",
+        "",
+        "- This is one exposed technical case, not a blind confirmatory sample.",
+        "- Root-cause score is an automated rubric proxy; inspect raw JSON and patch before treating it as adjudicated correctness.",
+        "- False abstention is defined here as a model-level abstention under the independently pre-classified E1 packet. Treat this as descriptive for this case only.",
+        "- Self-reported confidence is not calibrated probability.",
+        "- Full-vocabulary logits were used to calculate entropy; selected-token raw logits and top-5 raw logits were persisted per step.",
+        ""
+    ]
+    (OUTPUT_DIR / "E1_P0_P1_REPORT.md").write_text("\n".join(report), encoding="utf-8")
+    (OUTPUT_DIR / "scoring_rubric.json").write_text(json.dumps({
+        "version": RUBRIC_VERSION,
+        "gold_definition": GOLD_ROOT_CAUSE,
+        "model_prompt_contains_gold_definition": False,
+        "criteria": {
+            "collection_scope": "root-cause answer mentions collection(s)",
+            "template_mechanism": "root-cause answer mentions template/Jinja/templatable expression",
+            "warning_or_validation_mechanism": "root-cause answer mentions missing warning or static/post-validation metadata"
+        },
+        "match_rule": "all three criteria true",
+        "qualification": "automated lexical proxy only; human review required"
+    }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    files = [path for path in OUTPUT_DIR.iterdir() if path.is_file() and path.name != "SHA256SUMS"]
+    (OUTPUT_DIR / "SHA256SUMS").write_text(
+        "\n".join(f"{sha256(path.read_bytes())}  {path.name}" for path in sorted(files)) + "\n",
+        encoding="utf-8"
+    )
+    print(json.dumps({
+        "event": "e1_p0_p1_smoke_complete",
+        "summary_path": str(OUTPUT_DIR / "decision_matrix.json"),
+        "report_path": str(OUTPUT_DIR / "E1_P0_P1_REPORT.md"),
+        "conditions": {
+            condition: {
+                "model_abstention_rate": values["model_abstention_rate"],
+                "provisional_rubric_matches": values["provisional_rubric_match_count"],
+                "mean_entropy": values["mean_normalized_token_entropy"]
+            }
+            for condition, values in condition_summaries.items()
+        },
+        "official_experiment": False
+    }, ensure_ascii=False), flush=True)
+
+if __name__ == "__main__":
+    main()
