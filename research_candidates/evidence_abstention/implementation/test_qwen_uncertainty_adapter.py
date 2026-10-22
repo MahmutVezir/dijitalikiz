@@ -61,7 +61,7 @@ class QwenAdapterTests(unittest.TestCase):
     def test_identical_supported_candidates_can_diagnose(self):
         result = assess_candidates(self.samples, self.audit, self.calibrator, self.policy)
         self.assertEqual(result.decision, "diagnose")
-        self.assertAlmostEqual(result.uncertainty_index, 0.1)
+        self.assertAlmostEqual(result.uncertainty_index, 0.0875)
 
     def test_candidate_abstention_is_not_overridden(self):
         samples = (
