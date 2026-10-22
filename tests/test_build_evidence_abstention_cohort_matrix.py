@@ -168,5 +168,28 @@ class CohortMatrixTests(unittest.TestCase):
                         MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",1)
 
 
+    def test_selects_later_frozen_batch_without_reordering(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            rows=[row(i,p) for i,p in enumerate(["a","b","c","d","e"],1)]
+            q,c=self.setup_files(root,rows)
+            out=MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",2,2)
+            self.assertEqual([x["case_id"] for x in out["matrix"]["include"]],
+                             ["BugsInPy-c-3","BugsInPy-d-4"])
+            self.assertEqual(out["summary"]["batch_offset"],2)
+            self.assertEqual(out["summary"]["accepted_confirmatory_cases"],0)
+            self.assertFalse(out["summary"]["llm_inference_performed"])
+
+    def test_rejects_invalid_or_unavailable_batch_offset(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            rows=[row(i,p) for i,p in enumerate(["a","b","c","d","e"],1)]
+            q,c=self.setup_files(root,rows)
+            with self.assertRaisesRegex(ValueError,"multiple of batch_size"):
+                MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",2,1)
+            with self.assertRaisesRegex(ValueError,"smaller than requested batch offset/size"):
+                MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",2,4)
+
+
 if __name__=="__main__":
     unittest.main()
