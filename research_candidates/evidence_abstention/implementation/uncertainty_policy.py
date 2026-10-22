@@ -128,7 +128,7 @@ def expected_calibration_error(probabilities: Sequence[float], outcomes: Sequenc
 
 @dataclass(frozen=True)
 class DecisionRequest:
-    evidence_level: str | None
+    packet_validation_status: str | None
     answer: str
     available_evidence_ids: frozenset[str]
     cited_evidence_ids: tuple[str, ...]
@@ -162,10 +162,11 @@ def decide(
     policy: DecisionPolicy,
 ) -> DecisionResult:
     reasons = []
-    if request.evidence_level not in {"E1", "E2", "E3"}:
-        reasons.append("evidence_level_unknown")
-    elif request.evidence_level == "E3":
-        reasons.append("evidence_insufficient")
+    if request.packet_validation_status != "valid":
+        if request.packet_validation_status == "invalid":
+            reasons.append("packet_validation_failed")
+        else:
+            reasons.append("packet_validation_unknown")
     if request.model_requested_abstention:
         reasons.append("model_requested_abstention")
     if request.explicit_contradiction is None:

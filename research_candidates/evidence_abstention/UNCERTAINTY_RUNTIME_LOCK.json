@@ -1,0 +1,40 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "lock_version": "0.1-candidate",
+  "status": "candidate_not_verified",
+  "purpose": "Pinned candidate runtime for no-output model/tokenizer load verification; this file does not authorize inference.",
+  "model": {
+    "id": "Qwen/Qwen2.5-3B-Instruct",
+    "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "tokenizer_id": "Qwen/Qwen2.5-3B-Instruct",
+    "tokenizer_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "dtype": "float16",
+    "quantization": "none",
+    "trust_remote_code": false
+  },
+  "proposed_environment": {
+    "python": "3.11.9",
+    "torch": "2.2.1",
+    "transformers": "4.43.2",
+    "accelerate": "0.33.0",
+    "requires_cuda": true,
+    "device_map": "auto"
+  },
+  "generation": {
+    "candidate_count": 5,
+    "do_sample": true,
+    "temperature": 0.7,
+    "top_p": 1,
+    "top_k": 0,
+    "max_new_tokens": 240,
+    "seed_policy": "base_seed_plus_candidate_index",
+    "selected_output_policy": "first_candidate_is_the_predeclared_selected_output",
+    "generation_performed_during_preflight": false
+  },
+  "outputs": {
+    "prompt_or_response_content_saved": false,
+    "model_generation_called": false,
+    "expected_artifact": "runtime_preflight.json"
+  },
+  "note": "Do not mark verified until the exact checkpoint loads, all pinned package versions match, resolved revision hashes match the pin, and the saved preflight artifact has been independently inspected."
+}
