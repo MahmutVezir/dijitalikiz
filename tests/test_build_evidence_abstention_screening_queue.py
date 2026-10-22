@@ -100,6 +100,7 @@ class ScreeningQueueTests(unittest.TestCase):
                 queued = list(csv.DictReader(f))
             queued_ids = {item["case_id"] for item in queued}
             self.assertNotIn("BugsInPy-tqdm-6", queued_ids)
+            self.assertNotIn("BugsInPy-youtube-dl-6", queued_ids)
             self.assertNotIn("BugsInPy-youtube-dl-7", queued_ids)
             self.assertIn("BugsInPy-newproject-1", queued_ids)
             self.assertEqual(summary["exclusions_by_reason"]["previously_exposed_permanent_exclusion"], 2)
