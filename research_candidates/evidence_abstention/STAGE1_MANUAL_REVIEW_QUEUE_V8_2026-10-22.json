@@ -1,0 +1,212 @@
+{
+  "record_type": "ground_truth_review_handoff_not_case_acceptance",
+  "created_on": "2026-10-22",
+  "workflow_run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39818472947",
+  "source_dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "cases": [
+    {
+      "case_id": "BugsInPy-fastapi-5",
+      "upstream_project": "FastAPI",
+      "python_version": "3.8.3",
+      "buggy_commit": "7cea84b74ca3106a7f861b774e9d215e5228728f",
+      "fixed_commit": "75a07f24bf01a31225ee687f3e2b3fc1981b67ab",
+      "dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+      "target_test": "pytest tests/test_filter_pydantic_sub_model.py::test_filter_sub_model",
+      "bug_info_sha256": "f07ad0ab582d00d58af97b3913a92351f2a1fc414462e87b68ccd8a7321e3b7c",
+      "project_info_sha256": "4f7ee4b8497b40ddedf7376056fbf021c46f735623547b80c4c0355e48cfcd7f",
+      "run_test_sha256": "1b142738a1e6ce38452c90f558f4374cb0d93e94c7d3076cb0313d77cbd950a1",
+      "buggy_test_log_sha256": "82446ed900ea66157bc458b57d0cdb855ba419f41b3a5deaf1920db697db501c",
+      "fixed_test_log_sha256": "0e80b98d7ad08e8cfc20fe7cbf18a2021a5bec7290046b46bc489605120f8dab",
+      "runtime_fingerprint_sha256": "1affb70b55b2580270df972497c4330bf4f7ea57cb5b3c3df4acf92876f666bc",
+      "artifact_zip_sha256": "f3071dc4306e32e93a50e6dcf488f352dc57441d603a466dfb2928f5b1a1ff65c",
+      "artifact_id": 12444670326,
+      "artifact_name": "evidence-abstention-cohort-BugsInPy-fastapi-5-technical-screen",
+      "technical_outcome": "buggy_target_test_failed_and_fixed_target_test_passed",
+      "source_references": {
+        "bug_info": "https://github.com/soarsmu/BugsInPy/blob/11c5f1eea954a42132cfd06bf257766a7963e0fd/projects/fastapi/bugs/5/bug.info",
+        "patch_for_ground_truth_panel_only": "https://github.com/soarsmu/BugsInPy/blob/11c5f1eea954a42132cfd06bf257766a7963e0fd/projects/fastapi/bugs/5/bug_patch.txt",
+        "license_at_buggy_revision": "https://github.com/fastapi/fastapi/blob/7cea84b74ca3106a7f861b774e9d215e5228728f/LICENSE",
+        "test_at_buggy_revision": "https://github.com/fastapi/fastapi/blob/7cea84b74ca3106a7f861b774e9d215e5228728f/tests/test_filter_pydantic_sub_model.py"
+      },
+      "runtime_matches_metadata": true,
+      "accepted_for_confirmatory": false,
+      "manual_review_required": true,
+      "license_reviewed": false,
+      "root_cause_reviewed_by_two": false,
+      "evidence_levels_reviewed_by_two": false,
+      "leakage_and_prior_exposure_reviewed": false,
+      "evidence_packets_prepared": false,
+      "reviewers": {
+        "ground_truth_reviewer_ids": [],
+        "evidence_sufficiency_reviewer_ids": []
+      },
+      "exclusion_note": "Technical signal only. This is a human-review handoff, not case acceptance. Patch and fixed-commit materials are for the ground-truth panel only."
+    },
+    {
+      "case_id": "BugsInPy-keras-4",
+      "upstream_project": "Keras",
+      "python_version": "3.7.3",
+      "buggy_commit": "b0bfd5201da2bfced84028bcc5bda05bdfd75af7",
+      "fixed_commit": "4185cbb50bfcae9cc30b0fc7b67e81d67a50a8ac",
+      "dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+      "target_test": "pytest tests/keras/optimizers_test.py::test_tfoptimizer_pass_correct_named_params_to_native_tensorflow_optimizer",
+      "bug_info_sha256": "18d1bd2665866a8ee4f823f508dadf7cc210a687284bf515d690c4a97b1adacf",
+      "project_info_sha256": "09984ebb32e44deee1f0a8374c39c86df5ad31dc48b8c40261b10d0149e2d59d",
+      "run_test_sha256": "16fad6cb33c000466055a445887fb6c248323e5673b188727b1dcd6cf3e86014",
+      "buggy_test_log_sha256": "cc156c332f6bf20c066eb7042e8cd314dc14ead21b89068f9462ac8fb6f5001d",
+      "fixed_test_log_sha256": "8a895009d909b976b0449a7608839afc4023784e6c301e09709e938ad510ee2a",
+      "runtime_fingerprint_sha256": "e87351ac93f8ff477a52b612dedf0bb0b5d4ecc29ecab5e5841dd7d94a6d50b5",
+      "artifact_zip_sha256": "c00faad35aa008cc0fa736ed878fe2d4a5b38a83f4ea34f568d3cc037d1c3a45",
+      "artifact_id": 12444021121,
+      "artifact_name": "evidence-abstention-cohort-BugsInPy-keras-4-technical-screen",
+      "technical_outcome": "buggy_target_test_failed_and_fixed_target_test_passed",
+      "source_references": {
+        "bug_info": "https://github.com/soarsmu/BugsInPy/blob/11c5f1eea954a42132cfd06bf257766a7963e0fd/projects/keras/bugs/4/bug.info",
+        "patch_for_ground_truth_panel_only": "https://github.com/soarsmu/BugsInPy/blob/11c5f1eea954a42132cfd06bf257766a7963e0fd/projects/keras/bugs/4/bug_patch.txt",
+        "license_at_buggy_revision": "https://github.com/keras-team/keras/blob/b0bfd5201da2bfced84028bcc5bda05bdfd75af7/LICENSE",
+        "test_at_buggy_revision": "https://github.com/keras-team/keras/blob/b0bfd5201da2bfced84028bcc5bda05bdfd75af7/tests/keras/optimizers_test.py"
+      },
+      "runtime_matches_metadata": true,
+      "accepted_for_confirmatory": false,
+      "manual_review_required": true,
+      "license_reviewed": false,
+      "root_cause_reviewed_by_two": false,
+      "evidence_levels_reviewed_by_two": false,
+      "leakage_and_prior_exposure_reviewed": false,
+      "evidence_packets_prepared": false,
+      "reviewers": {
+        "ground_truth_reviewer_ids": [],
+        "evidence_sufficiency_reviewer_ids": []
+      },
+      "exclusion_note": "Technical signal only. This is a human-review handoff, not case acceptance. Patch and fixed-commit materials are for the ground-truth panel only."
+    },
+    {
+      "case_id": "BugsInPy-scrapy-5",
+      "upstream_project": "Scrapy",
+      "python_version": "3.8.3",
+      "buggy_commit": "426da0ed07637e7efbcfb0fe49546e187d5d7f67",
+      "fixed_commit": "acd2b8d43b5ebec7ffd364b6f335427041a0b98d",
+      "dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+      "target_test": "python -m unittest -q tests.test_http_response.BaseResponseTest.test_follow_None_url",
+      "bug_info_sha256": "31c80f5962dbea425d469af4c9538481992a2308f6e6bf2c9c17705b1791c0df",
+      "project_info_sha256": "32e7b621a1df6bf2fa994483d2973c8d5d99b8e72b6c22ee3f6410f736b03c72",
+      "run_test_sha256": "59926f004b96bb1c4a686e2795aca7ddda44e7e5e9ab09f178bef98548607bc0",
+      "buggy_test_log_sha256": "e2e8ab724c5569f3821ecc032b6bae64ef0f363810766a67bfde08553d2b92fb",
+      "fixed_test_log_sha256": "f45b7179c3101983ae7c666a3a2bdd66ebcbd3eee9b42dc3e2b02f5c5cf4deae",
+      "runtime_fingerprint_sha256": "1affb70b55b2580270df972497c4330bf4f7ea57cb5b3c3df4acf92876f666bc",
+      "artifact_zip_sha256": "5a65fe9ce3c3b4e61c9d9fbf810380438a1ef00d278ebbba20bc398b63a19cd3",
+      "artifact_id": 12444171988,
+      "artifact_name": "evidence-abstention-cohort-BugsInPy-scrapy-5-technical-screen",
+      "technical_outcome": "buggy_target_test_failed_and_fixed_target_test_passed",
+      "source_references": {
+        "bug_info": "https://github.com/soarsmu/BugsInPy/blob/11c5f1eea954a42132cfd06bf257766a7963e0fd/projects/scrapy/bugs/5/bug.info",
+        "patch_for_ground_truth_panel_only": "https://github.com/soarsmu/BugsInPy/blob/11c5f1eea954a42132cfd06bf257766a7963e0fd/projects/scrapy/bugs/5/bug_patch.txt",
+        "license_at_buggy_revision": "https://github.com/scrapy/scrapy/blob/426da0ed07637e7efbcfb0fe49546e187d5d7f67/LICENSE",
+        "test_at_buggy_revision": "https://github.com/scrapy/scrapy/blob/426da0ed07637e7efbcfb0fe49546e187d5d7f67/tests/test_http_response.py"
+      },
+      "runtime_matches_metadata": true,
+      "accepted_for_confirmatory": false,
+      "manual_review_required": true,
+      "license_reviewed": false,
+      "root_cause_reviewed_by_two": false,
+      "evidence_levels_reviewed_by_two": false,
+      "leakage_and_prior_exposure_reviewed": false,
+      "evidence_packets_prepared": false,
+      "reviewers": {
+        "ground_truth_reviewer_ids": [],
+        "evidence_sufficiency_reviewer_ids": []
+      },
+      "exclusion_note": "Technical signal only. This is a human-review handoff, not case acceptance. Patch and fixed-commit materials are for the ground-truth panel only."
+    },
+    {
+      "case_id": "BugsInPy-sanic-5",
+      "upstream_project": "Sanic",
+      "python_version": "3.8.3",
+      "buggy_commit": "e3a27c2cc485d57aa1ff87d9f69098e4ab12727e",
+      "fixed_commit": "b63c06c75a54752d7f3115d3c635580db44b8399",
+      "dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+      "target_test": "pytest tests/test_logging.py::test_logging_modified_root_logger_config",
+      "bug_info_sha256": "c004b3f3b7a6cd45af630b34426e46134285bee2307e481425804c37b44e2826",
+      "project_info_sha256": "a5d8329e85e2c902477effc401932926798f7efbd1d34bf89cdedc3312b843dc",
+      "run_test_sha256": "2ba0afb65377f8f57619233a83932dcaa718703c3fd039523ad49a05ea8c2e70",
+      "buggy_test_log_sha256": "a95c3c92a208561cb3c75109c01dc4fbfb993221bc957678983a14cb7e77e963",
+      "fixed_test_log_sha256": "819bb2e06ed58487a12e822630fed4df072dd5c51e5d4b6e5ea84805e7c6fde4",
+      "runtime_fingerprint_sha256": "1affb70b55b2580270df972497c4330bf4f7ea57cb5b3c3df4acf92876f666bc",
+      "artifact_zip_sha256": "046be56a9d0799f06c8c400b1a8f57729a7ded669471bf028a471ac81da0a92e",
+      "artifact_id": 12443498972,
+      "artifact_name": "evidence-abstention-cohort-BugsInPy-sanic-5-technical-screen",
+      "technical_outcome": "buggy_target_test_failed_and_fixed_target_test_passed",
+      "source_references": {
+        "bug_info": "https://github.com/soarsmu/BugsInPy/blob/11c5f1eea954a42132cfd06bf257766a7963e0fd/projects/sanic/bugs/5/bug.info",
+        "patch_for_ground_truth_panel_only": "https://github.com/soarsmu/BugsInPy/blob/11c5f1eea954a42132cfd06bf257766a7963e0fd/projects/sanic/bugs/5/bug_patch.txt",
+        "license_at_buggy_revision": "https://github.com/huge-success/sanic/blob/e3a27c2cc485d57aa1ff87d9f69098e4ab12727e/LICENSE",
+        "test_at_buggy_revision": "https://github.com/huge-success/sanic/blob/e3a27c2cc485d57aa1ff87d9f69098e4ab12727e/tests/test_logging.py"
+      },
+      "runtime_matches_metadata": true,
+      "accepted_for_confirmatory": false,
+      "manual_review_required": true,
+      "license_reviewed": false,
+      "root_cause_reviewed_by_two": false,
+      "evidence_levels_reviewed_by_two": false,
+      "leakage_and_prior_exposure_reviewed": false,
+      "evidence_packets_prepared": false,
+      "reviewers": {
+        "ground_truth_reviewer_ids": [],
+        "evidence_sufficiency_reviewer_ids": []
+      },
+      "exclusion_note": "Technical signal only. This is a human-review handoff, not case acceptance. Patch and fixed-commit materials are for the ground-truth panel only."
+    }
+  ],
+  "accepted_confirmatory_case_count": 0,
+  "gates": {
+    "technical_reproduction": "candidate signal only; raw logs and hashes require review",
+    "license_and_provenance": "not formally approved",
+    "ground_truth_panel": "at least two independent reviewers with pseudonymous IDs and evidence references",
+    "evidence_sufficiency_panel": "at least two reviewers, disjoint from ground-truth panel and blinded to patch/fixed commit/root cause",
+    "sample_independence": "check duplicate root cause, PR, and upstream dependence",
+    "model_inference": "not performed and not authorized"
+  },
+  "notes": [
+    "The technical signal does not establish accepted ground-truth labels or E1/E2/E3 evidence labels.",
+    "Do not add any of these cases to CASE_REGISTRY.json as accepted until all case-level and global gates pass.",
+    "This queue is for the independent ground-truth panel. Build a separate evidence-sufficiency packet without patches, fixed commits, issue or PR identifiers, or answers."
+  ],
+  "technical_batch_disposition": {
+    "workflow_run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/39818472947",
+    "matrix_jobs_completed": true,
+    "note": "All nine jobs shown in the latest job listing have completed, although the top-level Actions run was still reported as in_progress during the last refresh.",
+    "clear_technical_pairs": 4,
+    "candidates_handed_to_ground_truth_review": 4,
+    "accepted_confirmatory_case_count": 0,
+    "other_cases": [
+      {
+        "case_id": "BugsInPy-black-6",
+        "artifact_id": 12443317522,
+        "artifact_sha256": "8c6e347c4a579fd8903777b17046da00121d86216e65eb3e316e9afae2b03dda",
+        "status": "blocked_missing_test_fixture_or_harness_error",
+        "warning": "Automated artifact audit says the buggy log resembles a missing fixture or harness file."
+      },
+      {
+        "case_id": "BugsInPy-matplotlib-4",
+        "artifact_id": 12443133384,
+        "artifact_sha256": "1ae5404d057ac8dc1ce8b05b733bde394f97cb79e8eae5fba3486847748f0528",
+        "status": "blocked_environment_or_dependency_error",
+        "warning": "Both target-test commands exited 1; no valid target bug failure or fixed pass signal."
+      },
+      {
+        "case_id": "BugsInPy-luigi-5",
+        "artifact_id": 12443723364,
+        "artifact_sha256": "3c645942b5c21bd7b3d412bc9272c47330d42b29d4d7be65a968ab967593ff35",
+        "status": "blocked_runtime_not_recorded_consistently",
+        "warning": "Observed runtime Python did not explicitly match the metadata; no valid paired outcome."
+      },
+      {
+        "case_id": "BugsInPy-pandas-4",
+        "artifact_id": 12444737299,
+        "artifact_sha256": "1eaa5a64f8e14564542512bce0a3cb52809772039168e3204c4a2002131bc1a7",
+        "status": "blocked_pinned_pytest_installation_failed",
+        "warning": "Pytest installation failed before the target test ran on either revision; no outcome can be inferred."
+      }
+    ]
+  }
+}
