@@ -1,7 +1,9 @@
+import argparse
 import hashlib
 import json
 import os
 import re
+import sys
 from pathlib import Path
 from typing import Mapping
 
@@ -163,3 +165,25 @@ def load_authorized_qwen(root: Path, manifest_path: Path):
     )
     model.eval()
     return tokenizer, model
+
+
+
+def main(argv=None) -> int:
+    parser = argparse.ArgumentParser(description="Read-only uncertainty inference preflight; never runs the model.")
+    parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[3])
+    parser.add_argument(
+        "--manifest",
+        type=Path,
+        default=Path("research_candidates/evidence_abstention/UNCERTAINTY_EXPERIMENT_MANIFEST.json"),
+    )
+    parser.add_argument("--require-ready", action="store_true")
+    args = parser.parse_args(argv)
+    report = evaluate_gate(args.root, args.manifest)
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    if args.require_ready and not report["ready"]:
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
