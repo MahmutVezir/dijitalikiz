@@ -1,0 +1,51 @@
+name: Evidence abstention cohort builder tests (No Inference)
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/evidence-abstention-cohort-batch1.yml"
+      - ".github/workflows/evidence-abstention-cohort-unit-tests.yml"
+      - "research_candidates/evidence_abstention/SCREENING_COHORT_116_V8_2026-10-22.json"
+      - "scripts/inventory_bugsinpy_candidates.py"
+      - "scripts/build_evidence_abstention_screening_queue.py"
+      - "scripts/build_evidence_abstention_cohort_matrix.py"
+      - "scripts/evidence_abstention_requires_pytest.py"
+      - "tests/test_inventory_bugsinpy_candidates.py"
+      - "tests/test_build_evidence_abstention_screening_queue.py"
+      - "tests/test_build_evidence_abstention_cohort_matrix.py"
+      - "tests/test_evidence_abstention_requires_pytest.py"
+  push:
+    branches:
+      - "research/evidence-abstention-*"
+    paths:
+      - ".github/workflows/evidence-abstention-cohort-batch1.yml"
+      - ".github/workflows/evidence-abstention-cohort-unit-tests.yml"
+      - "research_candidates/evidence_abstention/SCREENING_COHORT_116_V8_2026-10-22.json"
+      - "scripts/inventory_bugsinpy_candidates.py"
+      - "scripts/build_evidence_abstention_screening_queue.py"
+      - "scripts/build_evidence_abstention_cohort_matrix.py"
+      - "scripts/evidence_abstention_requires_pytest.py"
+      - "tests/test_inventory_bugsinpy_candidates.py"
+      - "tests/test_build_evidence_abstention_screening_queue.py"
+      - "tests/test_build_evidence_abstention_cohort_matrix.py"
+      - "tests/test_evidence_abstention_requires_pytest.py"
+
+permissions:
+  contents: read
+
+jobs:
+  metadata-builder-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run metadata-only and batch-offset regression tests
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_inventory_bugsinpy_candidates.py' -v
+          python -m unittest discover -s tests -p 'test_build_evidence_abstention_screening_queue.py' -v
+          python -m unittest discover -s tests -p 'test_build_evidence_abstention_cohort_matrix.py' -v
+          python -m unittest discover -s tests -p 'test_evidence_abstention_requires_pytest.py' -v
