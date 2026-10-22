@@ -1,9 +1,9 @@
-name: Evidence Abstention Cohort Batch 1 (Predeclared, No Inference)
+name: Evidence Abstention Cohort Screening (Predeclared, No Inference)
 
 on:
   push:
     branches:
-      - "research/evidence-abstention-v8-stage1-2026-10-22"
+      - "research/evidence-abstention-*"
     paths:
       - ".github/workflows/evidence-abstention-cohort-batch1.yml"
       - "research_candidates/evidence_abstention/SCREENING_COHORT_116_V8_2026-10-22.json"
@@ -14,9 +14,15 @@ on:
       - "tests/test_build_evidence_abstention_screening_queue.py"
       - "tests/test_build_evidence_abstention_cohort_matrix.py"
   workflow_dispatch:
+    inputs:
+      batch_offset:
+        description: "Frozen cohort row offset; use multiples of 8. Offset 8 is the next unprocessed batch."
+        required: true
+        type: number
+        default: 8
 
 concurrency:
-  group: evidence-abstention-cohort-batch1-${{ github.ref }}
+  group: evidence-abstention-cohort-screen-${{ github.ref }}-${{ github.event.inputs.batch_offset || '8' }}
   cancel-in-progress: true
 
 permissions:
@@ -24,13 +30,14 @@ permissions:
 
 jobs:
   freeze_batch:
-    name: Rebuild and verify frozen first-eight cohort intake
+    name: Rebuild and verify frozen cohort batch selection
     runs-on: ubuntu-latest
     timeout-minutes: 15
     outputs:
       matrix: ${{ steps.export.outputs.matrix }}
     env:
       BUGSINPY_COMMIT: "11c5f1eea954a42132cfd06bf257766a7963e0fd"
+      BATCH_OFFSET: ${{ github.event.inputs.batch_offset || '8' }}
     steps:
       - name: Checkout the research branch
         uses: actions/checkout@v4
@@ -72,32 +79,33 @@ jobs:
           python scripts/build_evidence_abstention_cohort_matrix.py \
             --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
             --cohort research_candidates/evidence_abstention/SCREENING_COHORT_116_V8_2026-10-22.json \
-            --matrix-output "$RUNNER_TEMP/cohort-batch1-matrix.json" \
-            --summary-output "$RUNNER_TEMP/cohort-batch1-summary.json" \
-            --batch-size 8
+            --matrix-output "$RUNNER_TEMP/cohort-screen-matrix.json" \
+            --summary-output "$RUNNER_TEMP/cohort-screen-summary.json" \
+            --batch-size 8 \
+            --batch-offset "$BATCH_OFFSET"
 
       - name: Publish matrix and provenance
         id: export
         run: |
           set -euo pipefail
-          matrix="$(jq -c '.include' "$RUNNER_TEMP/cohort-batch1-matrix.json")"
+          matrix="$(jq -c '.include' "$RUNNER_TEMP/cohort-screen-matrix.json")"
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
-          mkdir -p "$RUNNER_TEMP/cohort-batch1-preflight"
-          cp "$RUNNER_TEMP/cohort-batch1-matrix.json" "$RUNNER_TEMP/cohort-batch1-preflight/"
-          cp "$RUNNER_TEMP/cohort-batch1-summary.json" "$RUNNER_TEMP/cohort-batch1-preflight/"
+          mkdir -p "$RUNNER_TEMP/cohort-screen-preflight"
+          cp "$RUNNER_TEMP/cohort-screen-matrix.json" "$RUNNER_TEMP/cohort-screen-preflight/"
+          cp "$RUNNER_TEMP/cohort-screen-summary.json" "$RUNNER_TEMP/cohort-screen-preflight/"
           cp "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" "$RUNNER_TEMP/cohort-batch1-preflight/"
           cp "$RUNNER_TEMP/bugsinpy-metadata-inventory-summary.json" "$RUNNER_TEMP/cohort-batch1-preflight/"
           cp "$RUNNER_TEMP/bugsinpy-screening-queue.csv" "$RUNNER_TEMP/cohort-batch1-preflight/"
           cp "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" "$RUNNER_TEMP/cohort-batch1-preflight/"
-          cd "$RUNNER_TEMP/cohort-batch1-preflight"
+          cd "$RUNNER_TEMP/cohort-screen-preflight"
           find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
           sha256sum -c SHA256SUMS
 
       - name: Upload selection freeze evidence
         uses: actions/upload-artifact@v4
         with:
-          name: evidence-abstention-predeclared-cohort-batch1-freeze
-          path: ${{ runner.temp }}/cohort-batch1-preflight/
+          name: evidence-abstention-predeclared-cohort-batch-${{ github.event.inputs.batch_offset || '8' }}-freeze
+          path: ${{ runner.temp }}/cohort-screen-preflight/
           if-no-files-found: error
           retention-days: 30
 
