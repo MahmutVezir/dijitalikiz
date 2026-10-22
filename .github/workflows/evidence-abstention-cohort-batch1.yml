@@ -5,19 +5,19 @@ name: Evidence Abstention Cohort Screening (Predeclared, No Inference)
 on:
   push:
     branches:
-      - "research/evidence-abstention-v9-batch1-once-2026-10-22"
+      - "research/evidence-abstention-v9-batch1-offset8-once-2026-10-22"
     paths:
       - ".github/workflows/evidence-abstention-cohort-batch1.yml"
   workflow_dispatch:
     inputs:
       batch_offset:
-        description: "Frozen V9 cohort row offset; use multiples of 8. Offset 0 is the first clean batch."
+        description: "Frozen V9 cohort row offset; use multiples of 8. Offset 8 is the next batch after the completed first batch."
         required: true
         type: number
-        default: 0
+        default: 8
 
 concurrency:
-  group: evidence-abstention-cohort-screen-${{ github.ref }}-${{ github.event.inputs.batch_offset || '0' }}
+  group: evidence-abstention-cohort-screen-${{ github.ref }}-${{ github.event.inputs.batch_offset || '8' }}
   cancel-in-progress: true
 
 permissions:
@@ -32,7 +32,7 @@ jobs:
       matrix: ${{ steps.export.outputs.matrix }}
     env:
       BUGSINPY_COMMIT: "11c5f1eea954a42132cfd06bf257766a7963e0fd"
-      BATCH_OFFSET: ${{ github.event.inputs.batch_offset || '0' }}
+      BATCH_OFFSET: ${{ github.event.inputs.batch_offset || '8' }}
     steps:
       - name: Checkout the research branch
         uses: actions/checkout@v4
@@ -99,7 +99,7 @@ jobs:
       - name: Upload selection freeze evidence
         uses: actions/upload-artifact@v4
         with:
-          name: evidence-abstention-predeclared-cohort-batch-${{ github.event.inputs.batch_offset || '0' }}-freeze
+          name: evidence-abstention-predeclared-cohort-batch-${{ github.event.inputs.batch_offset || '8' }}-freeze
           path: ${{ runner.temp }}/cohort-screen-preflight/
           if-no-files-found: error
           retention-days: 30
