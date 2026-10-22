@@ -128,7 +128,7 @@ def expected_calibration_error(probabilities: Sequence[float], outcomes: Sequenc
 
 @dataclass(frozen=True)
 class DecisionRequest:
-    evidence_level: str | None
+    operational_evidence_status: str | None
     answer: str
     available_evidence_ids: frozenset[str]
     cited_evidence_ids: tuple[str, ...]
@@ -162,10 +162,14 @@ def decide(
     policy: DecisionPolicy,
 ) -> DecisionResult:
     reasons = []
-    if request.evidence_level not in {"E1", "E2", "E3"}:
-        reasons.append("evidence_level_unknown")
-    elif request.evidence_level == "E3":
-        reasons.append("evidence_insufficient")
+    if request.operational_evidence_status not in {"sufficient", "insufficient", "unknown", "contradictory"}:
+        reasons.append("operational_evidence_status_unknown")
+    elif request.operational_evidence_status == "insufficient":
+        reasons.append("operational_evidence_insufficient")
+    elif request.operational_evidence_status == "unknown":
+        reasons.append("operational_evidence_status_unknown")
+    elif request.operational_evidence_status == "contradictory":
+        reasons.append("operational_evidence_contradictory")
     if request.model_requested_abstention:
         reasons.append("model_requested_abstention")
     if request.explicit_contradiction is None:
