@@ -1,0 +1,31 @@
+name: Evidence abstention Qwen adapter tests
+
+on:
+  push:
+    branches:
+      - research/evidence-abstention-qwen-adapter-2026-10-22
+    paths:
+      - "research_candidates/evidence_abstention/implementation/**"
+      - "research_candidates/evidence_abstention/UNCERTAINTY_EXPERIMENT_MANIFEST.json"
+      - "research_candidates/evidence_abstention/UNCERTAINTY_INFERENCE_GATE.md"
+      - ".github/workflows/evidence-abstention-qwen-adapter.yml"
+  pull_request:
+    paths:
+      - "research_candidates/evidence_abstention/implementation/**"
+      - "research_candidates/evidence_abstention/UNCERTAINTY_EXPERIMENT_MANIFEST.json"
+      - "research_candidates/evidence_abstention/UNCERTAINTY_INFERENCE_GATE.md"
+      - ".github/workflows/evidence-abstention-qwen-adapter.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cpu-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m unittest discover -s research_candidates/evidence_abstention/implementation -p 'test_*.py' -v

@@ -1,0 +1,10 @@
+{
+  "record_type": "empty_calibration_data_template_not_for_scoring",
+  "status": "not_fitted_no_observations",
+  "observations": [],
+  "notes": [
+    "No real calibration observations exist yet.",
+    "This file must not be populated with synthetic unit-test observations.",
+    "Each future record must come from independent labeled calibration cases with model revision, prompt/evidence hashes, uncertainty signals, and adjudicated correctness plus evidence-support labels."
+  ]
+}

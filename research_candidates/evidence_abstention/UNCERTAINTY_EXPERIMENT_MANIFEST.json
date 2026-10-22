@@ -1,0 +1,73 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "manifest_version": "0.1-draft",
+  "purpose": "Isolated uncertainty-aware generation adapter; separate from the predeclared E1/E2/E3 x P0/P1 confirmatory design.",
+  "inference_allowed": false,
+  "dataset_validation_gate": "OPEN",
+  "preregistration_status": "draft",
+  "preregistration_uri": "",
+  "reviewer_protocol_frozen": false,
+  "calibration_complete": false,
+  "minimum_confirmatory_cases": 60,
+  "target_independent_cases": 80,
+  "minimum_upstream_projects": 8,
+  "case_ids": [],
+  "case_registry_path": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
+  "model": {
+    "id": "Qwen/Qwen2.5-3B-Instruct",
+    "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "tokenizer_id": "Qwen/Qwen2.5-3B-Instruct",
+    "tokenizer_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "dtype": "float16",
+    "quantization": "none",
+    "runtime_verification": "not_run"
+  },
+  "generation": {
+    "candidate_count": 5,
+    "do_sample": true,
+    "temperature": 0.7,
+    "top_p": 1,
+    "top_k": 0,
+    "max_new_tokens": 240,
+    "seed_policy": "base_seed_plus_candidate_index",
+    "selected_output_policy": "first_candidate_is_the_predeclared_selected_output",
+    "score_source": "Transformers generation scores after configured decoding processors; not labeled as raw pre-decoding logits"
+  },
+  "frozen_artifacts": {
+    "case_registry": {
+      "path": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
+      "sha256": ""
+    },
+    "output_schema": {
+      "path": "research_candidates/evidence_abstention/OUTPUT_SCHEMA.json",
+      "sha256": ""
+    },
+    "prompt_template": {
+      "path": "research_candidates/evidence_abstention/PROMPT_CONDITIONS.md",
+      "sha256": ""
+    },
+    "analysis_plan": {
+      "path": "research_candidates/evidence_abstention/ANALYSIS_PLAN_STAGE3.md",
+      "sha256": ""
+    },
+    "runtime_lock": {
+      "path": "research_candidates/evidence_abstention/RUNTIME_LOCK.json",
+      "sha256": ""
+    },
+    "calibration_data": {
+      "path": "research_candidates/evidence_abstention/CALIBRATION_DATA.json",
+      "sha256": ""
+    },
+    "evidence_audit_protocol": {
+      "path": "research_candidates/evidence_abstention/RUBRIC_AND_ADJUDICATION.md",
+      "sha256": ""
+    }
+  },
+  "explicit_authorization_environment_variable": "EVIDENCE_UNCERTAINTY_INFERENCE_APPROVED",
+  "notes": [
+    "This manifest is intentionally closed and contains no accepted cases.",
+    "It is not a preregistration and does not authorize model loading or generation.",
+    "Do not replace or edit the original confirmatory experiment manifest to route this prototype into P0/P1.",
+    "Repeated sampling and generation-score entropy require this separate experiment to be reviewed, preregistered, frozen, and separately authorized."
+  ]
+}
