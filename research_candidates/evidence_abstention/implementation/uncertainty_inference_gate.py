@@ -205,6 +205,8 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
         if not isinstance(expected, str) or not HEX64.fullmatch(expected) or not isinstance(relative_path, str) or not relative_path:
             blockers.append("Frozen artifact path or SHA-256 missing/invalid: " + name)
             continue
+        if name == "case_registry" and relative_path != manifest.get("case_registry_path"):
+            blockers.append("Frozen case_registry path must match manifest case_registry_path.")
         target = root / relative_path
         if not target.is_file():
             blockers.append("Frozen artifact file missing: " + name)
