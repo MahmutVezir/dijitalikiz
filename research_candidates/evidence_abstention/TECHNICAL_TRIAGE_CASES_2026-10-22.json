@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "record_type": "technical_triage_only_not_confirmatory_sample",
+  "created_on": "2026-10-22",
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "source_dataset": "BugsInPy",
+  "source_repository": "https://github.com/soarsmu/BugsInPy",
+  "dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "purpose": "Run raw BugsInPy buggy/fixed target tests in isolated metadata-matched Python environments; retain logs and hashes for manual review only.",
+  "model_inference_performed": false,
+  "accepted_confirmatory_cases": 0,
+  "automatic_acceptance": false,
+  "selection_note": "The four specifically requested records are included. Sanic-3 is included as a fifth cross-project candidate for technical triage. This hand-targeted batch is not a confirmatory sample and cannot be represented as the first five accepted independent cases.",
+  "cases": [
+    {
+      "case_id": "BugsInPy-ansible-4",
+      "project": "ansible",
+      "bug_id": "4",
+      "python_version": "3.6.9",
+      "buggy_commit": "d91658ec0c8434c82c3ef98bfe9eb4e1027a43a3",
+      "fixed_commit": "18a66e291dad71128a32d662aa808213acefe0e9",
+      "bug_info_sha256": "0410bd942896474b27a38a06ba4cff6fbc42e442569098a7f0bd23716bb25904",
+      "project_info_sha256": "f670bc1ee75b15444c2855afec08753228cdc25c9267b20d1840e85614c49bf6",
+      "run_test_sha256": "be2e8033dd9372129abcbd0c1c90b7c55c506291aa22f1054284d65d673b3cde",
+      "patch_sha256": "ffa1bb172249904a54b999ec06ceda90d7469e0f2e9d7b7869075b0c448712e5"
+    },
+    {
+      "case_id": "BugsInPy-tqdm-4",
+      "project": "tqdm",
+      "bug_id": "4",
+      "python_version": "3.6.9",
+      "buggy_commit": "03b347646492131d889871939b40457d29147216",
+      "fixed_commit": "964dee631d0ed30e2f799b42fc58ba5e73795a08",
+      "bug_info_sha256": "51bea30e7d69f67f8a49da2e59594ca4feaa08737d6f65573af795fb46936ab8",
+      "project_info_sha256": "77d42727de47666333cb05561fba445a3d6aae52fa93461f4970243fbfd27ba7",
+      "run_test_sha256": "05c0562d3d33fbfa2faaddf5cd369639570f4a99ba5626a8be18c7d7ce1d451d",
+      "patch_sha256": "ae61e03e07b6d74840bd3a5eb86a0e476eb33f2e134f550b4bfe19ef14727bb2"
+    },
+    {
+      "case_id": "BugsInPy-httpie-5",
+      "project": "httpie",
+      "bug_id": "5",
+      "python_version": "3.7.3",
+      "buggy_commit": "16df8848e81eefac830f407e4b985f42b52970da",
+      "fixed_commit": "90af1f742230831792d74d303d1e7ce56c96d4bd",
+      "bug_info_sha256": "2dd5363740eca8808fa82cb8c10ff8cacb39a79d5a602eef2375f1bb65819535",
+      "project_info_sha256": "736f95b9e0ae3ce802581f20755a57fdbfa262827821ea388aabbd27962ed684",
+      "run_test_sha256": "95b90dd54986ed30a03883a76b629408f3c1e9c0409e68fd3a605e8d9ec34a6a",
+      "patch_sha256": "b7f419e7993e92164969b7a99689f01dfa279ce2d1615e25fce0bb21486f472d"
+    },
+    {
+      "case_id": "BugsInPy-youtube-dl-4",
+      "project": "youtube-dl",
+      "bug_id": "4",
+      "python_version": "3.7.0",
+      "buggy_commit": "bc40b3a5ba44006c23daf7fe0ed872af5e33bdc5",
+      "fixed_commit": "189935f15960300d316e8b07108b076ac6c2186a",
+      "bug_info_sha256": "2c31fc6663bb88119fa490f4612282e316fad4a6175a70aaa418092ce391136c",
+      "project_info_sha256": "d611ae5a51d1be9d1dda2762f71720351824560c7c4a94a1325129438c661544",
+      "run_test_sha256": "279d8fad881da2f7f386efcb07693cdc15d2b89a16adfaba9fa94c5af36d0004",
+      "patch_sha256": "29ed6ba59d8267ca399e6fd1bd68cb8e806c1fa0bb2d22d702b323e4c1722f98"
+    },
+    {
+      "case_id": "BugsInPy-sanic-3",
+      "project": "sanic",
+      "bug_id": "3",
+      "python_version": "3.8.3",
+      "buggy_commit": "91f6abaa81248189fbcbdf685e8bdcbb7846609f",
+      "fixed_commit": "861e87347a2d373d6ffa387965a6887c83af632c",
+      "bug_info_sha256": "4424ca8f88e75abbc290a3c54d8a4c8d2dcb6d9ce3b66dca3990b59d88fce8e6",
+      "project_info_sha256": "a5d8329e85e2c902477effc401932926798f7efbd1d34bf89cdedc3312b843dc",
+      "run_test_sha256": "4ae67771f8558183efe6a0f50243098c621752d8006c4242f42af82f893704f4",
+      "patch_sha256": "f7ba4617b1877f56a003ed518500737032747e694a5492f15434630faf1bc7e4"
+    }
+  ],
+  "acceptance_gates": {
+    "source_metadata_hashes_match": true,
+    "dataset_commit_matches_pin": true,
+    "observed_python_matches_metadata_exactly": true,
+    "buggy_and_fixed_use_same_target_command": true,
+    "both_setups_complete": true,
+    "normalized_dependency_fingerprints_match": true,
+    "buggy_test_fails_with_test_specific_signature": true,
+    "fixed_same_test_passes": true,
+    "fixed_worktree_matches_pinned_patch_paths": true,
+    "manual_source_diff_and_root_cause_review": true,
+    "license_review": true,
+    "independence_and_prior_exposure_review": true,
+    "evidence_sufficiency_review_before_model_outputs": true,
+    "automatic_acceptance": false
+  }
+}
