@@ -23,9 +23,26 @@ permissions:
 jobs:
   cpu-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: python -m unittest discover -s research_candidates/evidence_abstention/implementation -p 'test_*.py' -v
+      - name: Run unit tests and capture output
+        shell: bash
+        run: |
+          set +e
+          python -m unittest discover -s research_candidates/evidence_abstention/implementation -p 'test_*.py' -v > qwen-unit-test.log 2>&1
+          test_status=$?
+          cat qwen-unit-test.log
+          echo "Qwen unit-test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
+      - name: Upload unit-test log even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-abstention-qwen-unit-test-log-${{ github.run_id }}-${{ github.run_attempt }}
+          path: qwen-unit-test.log
+          if-no-files-found: warn
+          retention-days: 14
