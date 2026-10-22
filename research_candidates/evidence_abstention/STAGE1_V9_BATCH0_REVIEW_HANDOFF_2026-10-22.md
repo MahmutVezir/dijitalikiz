@@ -6,7 +6,7 @@ Frozen source: BugsInPy revision `11c5f1eea954a42132cfd06bf257766a7963e0fd`.
 
 ## Outcome-independent disposition
 
-The first V9 batch was selected by the frozen queue before these target tests ran. Automated checks are only triage signals; every case remains `accepted_for_confirmatory=false` until the independent review protocol is complete.
+The first V9 batch was selected by the frozen queue before these target tests ran. All eight case jobs are now complete. Automated checks are only triage signals; every case remains `accepted_for_confirmatory=false` until the independent review protocol is complete.
 
 | Candidate | Technical signal from artifact | Disposition |
 |---|---|---|
@@ -17,7 +17,7 @@ The first V9 batch was selected by the frozen queue before these target tests ra
 | TheFuck-6 | No valid buggy-fail/fixed-pass signal; artifact flags environment/dependency or harness uncertainty | Hold/reject unless independently resolved without changing the frozen rule |
 | Luigi-6 | Runtime Python was not captured consistently; no valid target outcome pair | Not eligible on current evidence |
 | SpaCy-5 | Environment setup failed before target tests; runtime and source checks incomplete | Not eligible on current evidence |
-| Pandas-5 | Job had not completed at this report's last check | Pending; do not classify until its artifact is available |
+| Pandas-5 | Both target runs stopped before the target test: pinned pytest bootstrap failed (exit 4); no buggy/fixed test result | Not eligible on current evidence; preserve as environment/setup failure |
 
 ## Technical artifact evidence for the two handoff candidates
 
@@ -51,6 +51,14 @@ The workflow records that BugsInPy may keep the buggy base as Git HEAD while app
 2. Two disjoint Panel B reviewers independently assess packet sufficiency without seeing case identity, gold root cause, patch, fixed code, hidden E-level label, or condition.
 3. Create E1/E2/E3 blinded packets from the frozen evidence policy; validate only structure/hash at first. The structural validator is not a semantic sufficiency judge.
 4. Preserve original independent ratings and adjudication records. No inference until at least 60 accepted cases from at least 8 upstream projects, calibration and runtime gates, artifact hashes, preregistration and explicit authorization are complete.
+
+### Pandas-5 final artifact
+
+- GitHub Actions artifact ID: `12450841813`
+- GitHub artifact digest: `sha256:40a9a744cbbc94ac93f3961b70b10410d77a757a5eed18c019cfedca0e12da0d0`
+- Target: `pytest pandas/tests/groupby/test_function.py::test_ops_not_as_index`
+- Pinned pytest bootstrap failed with exit code 4 on both buggy and fixed sides; neither target test ran.
+- Artifact audit SHA-256: `d57e5bfb7356d3e20502c57c8a78b04d5baaa222acaf73a9db835a174ed48823`
 
 ## Interpretation boundary
 
