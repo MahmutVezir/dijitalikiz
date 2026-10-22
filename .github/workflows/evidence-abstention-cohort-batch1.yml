@@ -1,8 +1,13 @@
 name: Evidence Abstention Cohort Screening (Predeclared, No Inference)
 
-# Technical case execution is manual-only. A push or PR update must not silently
-# rerun the same frozen candidate batch and contaminate later confirmatory use.
+# One-shot run branch only. Do not push to this branch a second time.
+# The durable research branch remains manual-dispatch-only.
 on:
+  push:
+    branches:
+      - "research/evidence-abstention-v9-batch1-once-2026-10-22"
+    paths:
+      - ".github/workflows/evidence-abstention-cohort-batch1.yml"
   workflow_dispatch:
     inputs:
       batch_offset:
