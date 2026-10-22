@@ -3,10 +3,10 @@ name: Evidence Abstention Cohort Batch 1 (Predeclared, No Inference)
 on:
   push:
     branches:
-      - "research/evidence-abstention-draft-2026-10-19"
+      - "research/evidence-abstention-v8-stage1-2026-10-22"
     paths:
       - ".github/workflows/evidence-abstention-cohort-batch1.yml"
-      - "research_candidates/evidence_abstention/SCREENING_COHORT_120_V7_2026-10-21.json"
+      - "research_candidates/evidence_abstention/SCREENING_COHORT_116_V8_2026-10-22.json"
       - "scripts/inventory_bugsinpy_candidates.py"
       - "scripts/build_evidence_abstention_screening_queue.py"
       - "scripts/build_evidence_abstention_cohort_matrix.py"
@@ -71,7 +71,7 @@ jobs:
             --first-batch-per-project 5
           python scripts/build_evidence_abstention_cohort_matrix.py \
             --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
-            --cohort research_candidates/evidence_abstention/SCREENING_COHORT_120_V7_2026-10-21.json \
+            --cohort research_candidates/evidence_abstention/SCREENING_COHORT_116_V8_2026-10-22.json \
             --matrix-output "$RUNNER_TEMP/cohort-batch1-matrix.json" \
             --summary-output "$RUNNER_TEMP/cohort-batch1-summary.json" \
             --batch-size 8
