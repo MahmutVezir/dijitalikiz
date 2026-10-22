@@ -88,5 +88,6 @@
     "independence_and_prior_exposure_review": true,
     "evidence_sufficiency_review_before_model_outputs": true,
     "automatic_acceptance": false
-  }
+  },
+  "validation_workflow_revision": "c86506d46bf4c776cadccaac494afbca5d00aaca"
 }
