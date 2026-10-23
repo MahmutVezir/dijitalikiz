@@ -113,6 +113,65 @@ class ExactMcNemarTests(unittest.TestCase):
 
 
 
+
+    def test_dynamic_exposure_union_rejects_recently_exposed_case(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            registry = root / "CASE_REGISTRY.json"
+            registry.write_text(json.dumps({"records": [{
+                "accepted_for_confirmatory": True,
+                "case_id": "BugsInPy-keras-5",
+                "upstream_project": "keras",
+            }]}), encoding="utf-8")
+            union = root / "EXPOSURE_UNION.json"
+            union.write_text(json.dumps({
+                "excluded_case_ids": ["BugsInPy-keras-5", "BugsInPy-tornado-6"],
+                "unique_exclusion_count": 2,
+            }), encoding="utf-8")
+
+            excluded = MODULE.load_exposure_union(union)
+            with self.assertRaisesRegex(ValueError, "permanently excluded"):
+                MODULE.load_accepted_registry(registry, excluded)
+
+    def test_exposure_union_rejects_duplicate_or_inconsistent_id_list(self):
+        with tempfile.TemporaryDirectory() as temp:
+            union = Path(temp) / "EXPOSURE_UNION.json"
+            union.write_text(json.dumps({
+                "excluded_case_ids": ["BugsInPy-keras-5", "BugsInPy-keras-5"],
+                "unique_exclusion_count": 2,
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "unique non-empty"):
+                MODULE.load_exposure_union(union)
+
+            union.write_text(json.dumps({
+                "excluded_case_ids": ["BugsInPy-keras-5"],
+                "unique_exclusion_count": 2,
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "does not match"):
+                MODULE.load_exposure_union(union)
+
+    def test_frozen_hash_validator_requires_full_set_and_detects_tampering(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            frozen = {}
+            for relative in MODULE.REQUIRED_FROZEN_PATHS:
+                target = root / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text("fixture:" + relative, encoding="utf-8")
+                frozen[relative] = MODULE.sha256_file(target)
+
+            MODULE.validate_frozen_hashes(root, frozen)
+
+            missing = dict(frozen)
+            missing.pop(MODULE.EXPOSURE_UNION_RELATIVE_PATH)
+            with self.assertRaisesRegex(ValueError, "required frozen file hashes are missing"):
+                MODULE.validate_frozen_hashes(root, missing)
+
+            target = root / MODULE.EXPOSURE_UNION_RELATIVE_PATH
+            target.write_text("tampered", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "SHA-256 mismatch"):
+                MODULE.validate_frozen_hashes(root, frozen)
+
     def test_full_analysis_refuses_unopened_scientific_gates(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
