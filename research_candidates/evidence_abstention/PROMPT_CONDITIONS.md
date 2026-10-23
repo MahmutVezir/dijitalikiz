@@ -21,6 +21,9 @@ Evidence packet:
 {CASE_EVIDENCE_PACKET}
 
 Use evidence item IDs when referring to packet evidence. Do not cite information that is not present in the packet. If abstaining, leave root_cause as an empty string and list the specific evidence that would distinguish the plausible causes. Return only the JSON object defined by the schema.
+
+JSON schema:
+{OUTPUT_SCHEMA_JSON}
 ~~~
 
 ## P0 — zorunlu teşhis
