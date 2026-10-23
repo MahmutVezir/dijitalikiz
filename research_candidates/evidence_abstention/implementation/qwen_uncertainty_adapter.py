@@ -12,6 +12,7 @@ from uncertainty_policy import (
     EmpiricalConfidenceCalibrator,
     decide,
 )
+from semantic_evidence_auditor import parse_semantic_audit
 
 
 @dataclass(frozen=True)
@@ -51,6 +52,33 @@ class EvidenceAudit:
     supported_claim_coverage: float | None
     self_check_conflict: bool | None
     explicit_contradiction: bool | None
+
+
+def evidence_audit_with_semantic_report(
+    structural_audit: EvidenceAudit,
+    raw_report: str,
+) -> EvidenceAudit:
+    if structural_audit.packet_validation_status != "valid":
+        return structural_audit
+
+    try:
+        assessment = parse_semantic_audit(raw_report, structural_audit.available_evidence_ids)
+    except ValueError:
+        return EvidenceAudit(
+            structural_audit.packet_validation_status,
+            structural_audit.available_evidence_ids,
+            None,
+            None,
+            None,
+        )
+
+    return EvidenceAudit(
+        structural_audit.packet_validation_status,
+        structural_audit.available_evidence_ids,
+        assessment.supported_claim_coverage,
+        assessment.self_check_conflict,
+        assessment.explicit_contradiction,
+    )
 
 
 def evidence_audit_from_structural_report(report: Any) -> EvidenceAudit:

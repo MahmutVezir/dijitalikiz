@@ -10,6 +10,7 @@ from qwen_uncertainty_adapter import (
     GenerationSample,
     assess_candidates,
     evidence_audit_from_structural_report,
+    evidence_audit_with_semantic_report,
     parse_structured_answer,
 )
 from evidence_packet_audit import audit_packet, create_packet
@@ -116,6 +117,42 @@ class QwenAdapterTests(unittest.TestCase):
         audit = evidence_audit_from_structural_report(InvalidReport())
         self.assertEqual(audit.packet_validation_status, "invalid")
         self.assertEqual(audit.available_evidence_ids, frozenset())
+
+    def test_semantic_audit_populates_runtime_signals_without_hidden_labels(self):
+        raw = json.dumps({
+            "claims": [
+                {
+                    "claim_id": "C1",
+                    "claim": "The cache path ignores the configured directory.",
+                    "status": "supported",
+                    "evidence_refs": ["TRACE_A"],
+                    "rationale": "The trace shows the default path.",
+                },
+                {
+                    "claim_id": "C2",
+                    "claim": "The issue always affects every user.",
+                    "status": "partial",
+                    "evidence_refs": ["TEST_B"],
+                    "rationale": "The test covers one configuration only.",
+                },
+            ],
+            "self_check_conflict": False,
+            "explicit_contradiction": False,
+        })
+        result = evidence_audit_with_semantic_report(self.audit, raw)
+        self.assertEqual(result.packet_validation_status, "valid")
+        self.assertAlmostEqual(result.supported_claim_coverage, 0.75)
+        self.assertFalse(result.self_check_conflict)
+        self.assertFalse(result.explicit_contradiction)
+
+    def test_malformed_semantic_audit_leaves_required_signals_unknown(self):
+        result = evidence_audit_with_semantic_report(self.audit, "{}")
+        self.assertEqual(result.packet_validation_status, "valid")
+        self.assertIsNone(result.supported_claim_coverage)
+        self.assertIsNone(result.self_check_conflict)
+        self.assertIsNone(result.explicit_contradiction)
+        decision = assess_candidates(self.samples, result, self.calibrator, self.policy)
+        self.assertEqual(decision.decision, "abstain")
 
     def test_gold_evidence_level_label_cannot_be_used_as_packet_status(self):
         from dataclasses import replace

@@ -4,25 +4,26 @@
 
 **Bilimsel rapor için önerilen başlık:** *Yazılım Hata Teşhisinde Kanıt Yeterliliğinin Büyük Dil Modellerinin Cevap Vermekten Kaçınma Davranışına Etkisi*
 
-## Güncel durum — 21 Ekim 2026
+## Güncel durum — 23 Ekim 2026
 
-**Proje tamamlanmış değildir.** Araştırma sorusu, taslak deney tasarımı ve ön kontroller hazırlandı; fakat doğrulanmış vaka kümesi ve yeni deney sonucu henüz yoktur.
+**Bilimsel durum: tamamlanmadı; doğrulayıcı model çıkarımı kapalı.** Araştırma sorusu, deney tasarımı ve yazılım prototipi mevcut; ancak kabul edilmiş bağımsız vaka sayısı **0**, yeni çalışmanın formal model çıktısı **0**, kalibrasyon gözlemi **0** ve exact CUDA/model-runtime doğrulaması tamamlanmış değil.
 
-| Kontrol | Kanıtlanan durum |
+| Bileşen | Durum |
 |---|---|
-| Kaynak envanteri | BugsInPy sabit revizyonunda 17 projeden 501 ham metadata kaydı |
-| Temel metadata kapısı | 500 kayıt geçti; 1 kayıt buggy/fixed commit tutarsızlığı nedeniyle sorunlu |
-| Gerçek test çifti doğrulaması | 0 |
-| Güncel metadata tarama kuyruğu | 487 aday / 17 proje (78 ilk grup, 409 sonraki grup) |
-| Dondurulmuş ilk tarama sırası | 120 aday; metadata-only, testler henüz çalıştırılmadı |
-| İlk-dalga teknik triage | 4 hedefe özgü görünen sinyal; 1 fixture sorunu; 2 ortam/bağımlılık engeli. Tümü kalıcı dışlama. |
-| Kabul edilmiş bağımsız doğrulayıcı vaka | **0** |
-| Yeni proje için LLM çıkarımı | **Yapılmadı; kapalı** |
-| Teknik ön kontrol | GitHub Actions geçti; rapor yine de `ready=false` diyor |
+| Kaynak envanteri | BugsInPy sabit sürümünde 501 ham metadata kaydı / 17 proje; bu sayı kabul edilmiş vaka sayısı değildir. |
+| Güncel intake | 100 metadata adayı / 13 upstream proje içeren V9 intake. Teknik taramada incelenen iki 8'li grubun 16 vakası doğrulayıcı örneklemden kalıcı çıkarıldı. |
+| Kabul edilmiş doğrulayıcı vakalar | **0**; vaka sicili bilerek boş. |
+| Yazılım prototipi | Qwen adapter'ı, yapılandırılmış çıktı ayrıştırma, belirsizlik/politika katmanı, paket hash/referans denetimi, inference kapısı ve sentetik birim testleri var. |
+| Semantik kanıt desteği | Yeni auditor arayüzü ve şema testleri geliştirme dalında eklendi; insan puanlarına karşı validasyon ve gerçek çalışma zamanı denetçisi çağrısı henüz doğrulanmadı. |
+| Keşifsel smoke | 10 çıktı; P0 ve P1 koşullarının ikisinde de 0/5 açık kaçınma. Maruziyet, prompt sızıntısı ve runtime uyumsuzluğu nedeniyle doğrulayıcı sonuç değil. |
+| Kalibrasyon / ön kayıt / runtime | Kalibrasyon verisi boş; doğrulanabilir ön kayıt yok; tam model/tokenizer/CUDA runtime denetimi tamamlanmadı. |
+| Başvuru | Gerçek deney, kör puanlama ve analiz tamamlanmadan proje tamamlanmış araştırma olarak sunulamaz. |
 
-Ayrıntı: [güncel aday kuyruğu sonucu](research_candidates/evidence_abstention/SCREENING_QUEUE_RESULT_2026-10-21.md), [ilk 120 adaylık sabit sıra](research_candidates/evidence_abstention/SCREENING_COHORT_120_2026-10-21.json), [teknik hazırlık denetimi](research_candidates/evidence_abstention/STAGE4_TECHNICAL_READINESS_2026-10-21.md), [ilk-dalga teknik triage](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39638198482) ve [no-inference test koşusu](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39640796171).
+Tek kaynaklı güncel durum: [CURRENT_STATUS_AND_EXECUTION_PLAN_2026-10-23.md](research_candidates/evidence_abstention/CURRENT_STATUS_AND_EXECUTION_PLAN_2026-10-23.md). Semantik auditor için sınırlar ve doğrulama gereksinimleri: [SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md](research_candidates/evidence_abstention/SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md). Önceki smoke tanılaması: [EXPLORATORY_ENGINEERING_REPORT_2026-10-23.md](research_candidates/evidence_abstention/EXPLORATORY_ENGINEERING_REPORT_2026-10-23.md).
 
-501 kayıt bir deney örneklemi değildir. Doğrulayıcı çalışma için **en az 60 bağımsız vaka ve en az 8 ayrı upstream proje** gereklidir; hedef 80 vakadır. Her vaka için aynı hedef testin buggy sürümde beklenen kusuru göstermesi, fixed sürümde geçmesi, uygun lisans, doğrulanmış kök neden, kanıt seviyeleri, sızıntı ve önceki maruziyet kontrolleri gerekir.
+**Üç aşamalı plan:** (1) en az 60 kabul edilmiş bağımsız vaka/8 upstream proje, iki ayrık insan paneli, semantik auditor validasyonu, kalibrasyon, model-runtime, hash dondurma ve ön kayıt kapılarını kapat; (2) sadece tüm kapılar kapandıktan sonra E1/E2/E3 × P0/P1 deneyini yürüt, kör puanla ve önceden planlanan istatistiği hesapla; (3) gerçek sonuçları ve sınırlılıkları resmi TÜBİTAK raporuna aktar ve başvuruyu tamamla.
+
+TÜBİTAK'ın 2026–2027 çağrısında başvuru son tarihi **4 Ocak 2027 saat 17.30 (Türkiye saati)** olarak duyurulmuştur: [resmî çağrı](https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi). Finalistlik hedefi korunur; sonuç garanti edilemez. Eski CCDG verileri ve sonuçları bu yeni araştırmaya taşınmayacaktır.
 
 ## Araştırma sorusu
 
