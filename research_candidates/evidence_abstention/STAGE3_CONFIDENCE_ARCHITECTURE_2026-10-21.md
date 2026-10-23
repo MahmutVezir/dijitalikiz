@@ -11,32 +11,36 @@
 
 ## 2. Önerilen karar hattı
 
-1. **Kanıt sözleşmesi:** Kanıt paketine sabit kimlikler verilir. E1/E2/E3 seviyesi ve çelişki değerlendirmesi model çıktıları görülmeden bağımsız inceleyicilerce yapılır. Bilinmeyen seviye güvenli varsayıma dönüştürülmez.
+1. **Kanıt sözleşmesi:** Kanıt paketine sabit kimlikler verilir. E1/E2/E3 koşul etiketi deney tasarımı ve sonuçları katmanında saklanır; model istemine, adapter girdisine veya karar fonksiyonuna doğrudan verilmez. Model yalnızca gerçek çalıştırmada gördüğü kanıt paketini alır. Paket bütünlüğü ve çalışma-zamanı kanıt denetiminin sonuçları, E1/E2/E3 gold etiketiyle aynı şey değildir. Bağımsız inceleyiciler koşul etiketi ve model çıktısını görmeden kanıt yeterliliğini puanlar.
 2. **Üretim kaydı:** Model/tokenizer revision, chat template, prompt/kanıt hash'i, decoding ayarları ve çalışma zamanı kaydedilir. Token entropisi hesaplanacaksa yalnızca üretilen yanıt token'larının logits değerleri kullanılır; prompt/padding token'ları dahil edilmez. Tek tek token entropileri ortalanır.
 3. **Kararlılık:** Aynı vaka için önceden belirlenmiş K bağımsız üretim alınır. Prototip en az iki cevapla çalışır; gerçek deney için K ve decoding ayarları önceden belirlenmelidir. Lexical Jaccard ayrışması yalnızca kelime-temelli vekil ölçüdür; anlamsal eşdeğerlik veya saf epistemik belirsizlik ölçüsü değildir.
 4. **Kanıta dayalı destek:** Yanıttaki iddiaların kanıt paketince desteklenen oranı supported_claim_coverage olarak girilir. Sadece kaynak ID'sinin var olması destek kanıtlamaz; bağımsız ve önceden tanımlı değerlendirici gerekir. Modelin kendi beyanı tek başına destek denetimi sayılmaz. Çelişki durumunun bilinmemesi de ret sebebidir.
 5. **Sinyal birleştirme:** uncertainty_index = max(normalized_token_entropy, lexical_disagreement, 1 - supported_claim_coverage, self_check_conflict). Bileşenleri gelişigüzel ağırlıklandırmamak için maksimum kullanılır. Bu endeks olasılık değildir; güven puanı diye yorumlanmaz.
 6. **Kalibrasyon:** Ayrı kalibrasyon bölümünde hedef etiket “kök neden doğru **ve** sunulan kanıt tarafından destekli” olur. EmpiricalConfidenceCalibrator sabit aralıklarda Laplace-yumuşatılmış ampirik başarı oranı hesaplar; bir aralıkta yeterli örnek yoksa puan üretmez. Brier skoru ve ECE raporlanır. Kalibrasyon/test ayrımı vaka ve mümkünse upstream proje düzeyinde yapılmalıdır. Kalibrasyon artefaktının SHA-256 kimliği dondurulmalı ve doğrulanmış olmalıdır.
-7. **Fail-closed karar:** E3, bilinmeyen kanıt seviyesi, bilinmeyen çelişki durumu, açık çelişki, bilinmeyen kanıt referansı, eksik sinyal veya dondurulmamış/doğrulanmamış kalibrasyon varsa doğrudan kaçın. Diğer durumlarda motor belirsizlik endeksini kendisi hesaplar; aynı endeks kalibratöre verilerek güven olasılığı türetilir. Kalibrasyon diliminde yeterli örnek yoksa da kaçınır. Ancak kalibre edilmiş olasılık alt eşiği geçiyor ve endeks üst sınırı aşmıyorsa teşhis döndürür.
+7. **Fail-closed karar:** Paket bütünlüğü geçersiz/bilinmiyor, kanıt denetimi veya gerekli belirsizlik sinyali eksik, açık çelişki var ya da kalibrasyon/eşik dondurulmamışsa doğrudan kaçın. Motor E1/E2/E3 gold etiketini kontrol girdisi olarak kullanmaz; özellikle deneyde E3 etiketi görünür olduğu için kaçınmak, E3 altındaki kaçınma performansını döngüsel ve geçersiz hâle getirir. E3'e ait etki, modelin yalnızca yetersiz paket içeriğinden hareketle ne yaptığıyla ölçülür. Diğer durumlarda motor belirsizlik endeksini kendisi hesaplar; aynı endeks kalibratöre verilerek ampirik güven tahmini türetilir. Kalibrasyon diliminde yeterli örnek yoksa da kaçınır. Ancak bağımsız ve ayrı kalibrasyonla dondurulmuş tahmin/eşik şartları geçerse teşhis döndürür.
 8. **İzlenebilir çıktı:** Karar, gerekçeli ret kodları, ham sinyaller, kalibrasyon kimliği, model ve vaka hash'leri kaydedilir. Ham model yanıtı asla otomatik onarılmaz; ret sebebi silinmez.
 
 ## 3. Pseudo-code
 
 ~~~text
-evidence = load_frozen_packet()
-if evidence.level is unknown or evidence.level == E3:
-    abstain("insufficient_or_unknown_evidence")
-if evidence.contradiction_status is unknown or evidence.has_unresolved_contradiction:
-    abstain("evidence_contradiction_or_unknown")
+packet = load_frozen_packet()
+if structural_or_hash_validation(packet) is not valid:
+    abstain("packet_validation_failed_or_unknown")
 
-answers, logits = generate_K_independent_answers(model, evidence)
-if K, logits, or independent evidence-support audit is incomplete:
+answers, score_vectors = generate_K_independent_answers(model, packet)
+if generation_or_required_scores_are_missing:
     abstain("uncertainty_signals_incomplete")
 
-entropy = mean_normalized_entropy_over_generated_tokens(logits)
+audit = audit_visible_claims_against_visible_packet(answers, packet)
+if audit is missing, malformed, or semantically unvalidated for this use:
+    abstain("evidence_audit_unavailable")
+if audit.explicit_contradiction or audit.self_check_conflict is unknown:
+    abstain("evidence_contradiction_or_unknown")
+
+entropy = mean_normalized_entropy_over_generated_tokens(score_vectors)
 disagreement = lexical_disagreement_proxy(answers)
-support = independent_claim_support_coverage(answers, evidence)
-risk = max(entropy, disagreement, 1 - support, self_check_conflict)
+support = audit.supported_claim_coverage
+risk = max(entropy, disagreement, 1 - support, audit.self_check_conflict)
 
 confidence = frozen_calibrator.predict(risk)
 if confidence is unavailable or calibration hash/thresholds are not verified:
@@ -46,7 +50,14 @@ if confidence is unavailable for this risk bin:
 if risk > maximum_uncertainty or confidence < minimum_confidence:
     abstain("threshold_failed")
 return diagnosis_with_evidence_refs()
+
+# E1/E2/E3 condition labels remain in the evaluation data for stratified analysis;
+# they are never supplied as a runtime decision feature or hidden-answer shortcut.
 ~~~
+
+
+
+**Etiket sızıntısı için kritik sınır:** E1/E2/E3 seviyeleri deney hücrelerini ve stratifiye analizleri tanımlar; bunlar cevap motoruna doğrudan verilmez. Çalışma-zamanı adapter'ı yetersizliği yalnızca görünür paket içeriği, yapısal doğrulama ve önceden tanımlanmış denetim sinyallerinden çıkarmalıdır. Aynı Qwen modelinin anlamsal denetçisi bağımsız hakem değildir; bu sinyal bağımsız, kör insan puanlarına karşı doğrulanana kadar deneysel olarak doğrulanmış gerçek gibi raporlanamaz. Ana E1/E2/E3 × P0/P1 doğrulayıcı deney, bu çoklu örneklemeli kalibrasyon adapter'ından ayrı tutulur.
 
 ## 4. Kodda bulunan parçalar
 
