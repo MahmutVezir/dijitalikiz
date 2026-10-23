@@ -14,7 +14,7 @@
 | Güncel intake | V10 yerel metadata sırası: 100 aday / 14 upstream proje; 407 adaylık yenilenmiş kuyruğun ardından oluşturuldu. 61 tarihsel + 32 güncel teknik/maruziyet kaydı = 93 kalıcı dışlama; seçilen V10 listesiyle kesişim 0. Uzak CI doğrulaması hâlâ bekliyor. |
 | Kabul edilmiş doğrulayıcı vakalar | **0**; vaka sicili bilerek boş. |
 | Yazılım prototipi | Qwen adapter'ı, yapılandırılmış çıktı ayrıştırma, belirsizlik/politika katmanı, paket hash/referans denetimi, inference kapısı ve sentetik birim testleri var. |
-| Semantik kanıt desteği | Prompt/parser ve adapter arayüzü mevcut; son girdi doğrulama sıkılaştırmasının 12 izole yerel birim testi geçti. Tam GitHub Actions/adapter test paketi, gerçek Qwen denetçi çağrısı ve insan puanlarıyla geçerlik henüz doğrulanmadı. |
+| Semantik kanıt desteği | Prompt/parser, adapter arayüzü ve hash-bağlı paket giriş noktası mevcut. 12 temel sentetik test, hash-bağlama regresyon testleri eklenmeden önce yerelde geçmişti; yeni birleşik test paketinin tamamı için doğrulanmış geçiş sonucu yok. Son GitHub Actions denemeleri adım kaydetmeden başarısız oldu. Gerçek Qwen denetçi çağrısı ve insan puanlarıyla geçerlik de henüz doğrulanmadı. |
 | Keşifsel smoke | 10 çıktı; P0 ve P1 koşullarının ikisinde de 0/5 açık kaçınma. Maruziyet, prompt sızıntısı ve runtime uyumsuzluğu nedeniyle doğrulayıcı sonuç değil. |
 | Kalibrasyon / ön kayıt / runtime | Kalibrasyon verisi boş; doğrulanabilir ön kayıt yok; tam model/tokenizer/CUDA runtime denetimi tamamlanmadı. |
 | Başvuru | Gerçek deney, kör puanlama ve analiz tamamlanmadan proje tamamlanmış araştırma olarak sunulamaz. |
