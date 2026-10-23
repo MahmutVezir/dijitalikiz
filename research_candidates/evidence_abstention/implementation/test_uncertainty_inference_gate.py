@@ -44,7 +44,19 @@ def accepted_case():
     }
 
 
-def write_ready_gate_fixture(root: Path, record: dict) -> Path:
+def write_ready_gate_fixture(root: Path, record: dict, excluded_case_ids=None) -> Path:
+    excluded_case_ids = [] if excluded_case_ids is None else excluded_case_ids
+    exposure_union_path = root / "exposure_union.json"
+    exposure_union_document = {
+        "record_type": "synthetic_test_fixture",
+        "excluded_case_ids": excluded_case_ids,
+        "unique_exclusion_count": len(excluded_case_ids),
+    }
+    exposure_union_path.write_text(
+        json.dumps(exposure_union_document, indent=2) + "\n", encoding="utf-8"
+    )
+    exposure_union_hash = hashlib.sha256(exposure_union_path.read_bytes()).hexdigest()
+
     registry_path = root / "registry.json"
     registry_path.write_text(json.dumps({"records": [record]}), encoding="utf-8")
     registry_hash = hashlib.sha256(registry_path.read_bytes()).hexdigest()
@@ -71,10 +83,12 @@ def write_ready_gate_fixture(root: Path, record: dict) -> Path:
         },
         "case_ids": [record["case_id"]],
         "case_registry_path": "registry.json",
+        "exposure_union_path": "exposure_union.json",
         "minimum_confirmatory_cases": 1,
         "minimum_upstream_projects": 1,
         "frozen_artifacts": {
             "case_registry": {"path": "registry.json", "sha256": registry_hash},
+            "exposure_union": {"path": "exposure_union.json", "sha256": exposure_union_hash},
             **{
                 name: {"path": "artifact.json", "sha256": artifact_hash}
                 for name in (
@@ -161,7 +175,7 @@ class InferenceGateTests(unittest.TestCase):
                 "frozen_artifacts": {
                     name: {"path": "artifact.json", "sha256": "a" * 64}
                     for name in (
-                        "case_registry", "output_schema", "prompt_template",
+                        "case_registry", "exposure_union", "output_schema", "prompt_template",
                         "analysis_plan", "runtime_lock", "calibration_data", "evidence_audit_protocol"
                     )
                 },
@@ -214,6 +228,38 @@ class InferenceGateTests(unittest.TestCase):
             self.assertFalse(report["ready"])
             self.assertTrue(any("Case IDs are missing, malformed" in item for item in report["blockers"]))
 
+
+    def test_complete_synthetic_gate_fixture_is_ready_without_running_model(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = write_ready_gate_fixture(root, accepted_case())
+
+            report = evaluate_gate(
+                root, path, {"EVIDENCE_UNCERTAINTY_INFERENCE_APPROVED": "YES"}
+            )
+
+            self.assertTrue(report["ready"], report["blockers"])
+            self.assertFalse(report["model_inference_performed"])
+
+    def test_exposure_union_blocks_previously_exposed_case_even_if_registry_flags_clear(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            record = accepted_case()
+            record["case_id"] = "BugsInPy-keras-5"
+            record["upstream_project"] = "keras"
+            path = write_ready_gate_fixture(
+                root, record, excluded_case_ids=["BugsInPy-keras-5"]
+            )
+
+            report = evaluate_gate(
+                root, path, {"EVIDENCE_UNCERTAINTY_INFERENCE_APPROVED": "YES"}
+            )
+
+            self.assertFalse(report["ready"])
+            self.assertTrue(
+                any("permanent exposure exclusion union" in item for item in report["blockers"]),
+                report["blockers"],
+            )
 
 if __name__ == "__main__":
     unittest.main()
