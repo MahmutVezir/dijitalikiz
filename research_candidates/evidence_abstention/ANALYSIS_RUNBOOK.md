@@ -42,7 +42,7 @@ Birincil E3 endpoint'i insan tarafından adjudike edilmiş unsupported definitiv
 
 ## Doğrulayıcı çalıştırıcı sözleşmesi — 23 Ekim 2026
 
-Kaggle çalıştırıcısı artık kanonik salt-okunur Stage 3 ön denetimini tamamlamadan model yükleyip yanıt üretmez. `EVIDENCE_ABSTENTION_INFERENCE_APPROVED=YES` tek başına yeterli değildir; manifest, sicil, maruziyet dışlamaları, on dosyanın hash'leri, ön kayıt, bağımsız değerlendirici kalibrasyonu ve tam çalışma ortamı da geçerli olmalıdır. `--runtime-preflight` yalnızca sabit model/tokenizer'ı yükler ve sıfır yanıt ürettiğini kaydeden bir runtime raporu yazar; bu rapor çıkarım izni vermez.
+Kaggle çalıştırıcısı artık kanonik salt-okunur Stage 3 ön denetimini tamamlamadan model yükleyip yanıt üretmez. `EVIDENCE_ABSTENTION_INFERENCE_APPROVED=YES` tek başına yeterli değildir; manifest, sicil, maruziyet dışlamaları, on bir dosyanın hash'leri, ön kayıt, bağımsız değerlendirici kalibrasyonu ve tam çalışma ortamı da geçerli olmalıdır. `--runtime-preflight` yalnızca sabit model/tokenizer'ı yükler ve sıfır yanıt ürettiğini kaydeden bir runtime raporu yazar; bu rapor çıkarım izni vermez.
 
 İstem oluşturucusu gizli E1/E2/E3 koşul adını argüman olarak almaz ve prompt'a eklemez. Model yalnızca görünür kanıt paketini (CODE_1, TRACE_1 ve varsa CONTEXT_1) görür. Ana deneydeki P0/P1 farkı `PROMPT_CONDITIONS.md` içindeki politika talimatlarından ibarettir. Öz-bildirilen güven puanı ana deney çıktısına dahil edilmez; kalibre güven iddiası ayrı adaptör protokolüne aittir.
 
