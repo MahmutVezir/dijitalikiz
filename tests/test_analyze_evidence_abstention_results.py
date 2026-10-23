@@ -203,6 +203,11 @@ class ExactMcNemarTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "required frozen file hashes are missing"):
                 MODULE.validate_frozen_hashes(root, missing)
 
+            extra = dict(frozen)
+            extra["research_candidates/evidence_abstention/CALIBRATION_DATA.json"] = "a" * 64
+            with self.assertRaisesRegex(ValueError, "unexpected frozen file hash paths"):
+                MODULE.validate_frozen_hashes(root, extra)
+
             target = root / MODULE.EXPOSURE_UNION_RELATIVE_PATH
             target.write_text("tampered", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "SHA-256 mismatch"):
