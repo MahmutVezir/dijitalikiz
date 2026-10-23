@@ -34,9 +34,9 @@ Bu, **metadata sırası doğrulamasıdır**, bug-fix test çifti doğrulaması d
 | Doğrulayıcı vaka havuzu | 0 kabul | En az 60 bağımsız vaka, en az 8 upstream proje; hedef 80. Her vaka için aynı hedef testte buggy-fail/fixed-pass ve gerçek kayıtlı Python sürümü. |
 | Kök neden/provenance | Tam bağımsız inceleme yapılmadı | Her vaka için iki bağımsız insan incelemesi, lisans/kök neden/patch-test ilişkisi ve uyuşmazlık kaydı. |
 | E1/E2/E3 kanıt yeterliliği | Tamamlanmadı | Farklı ve bağımsız iki kişilik kör panel; altın kök neden ve koşul etiketi gösterilmeden paket onayı. |
-| Semantik auditor | Arayüz eklendi; doğrulanmadı | Ayrı kalibrasyon vakalarında kör insan puanlarına karşı validasyon; bilinen yanıt/etiket sızıntısı olmaması. |
+| Semantik auditor/entropi prototipi | Kod iskeleti ve hash-bağlı giriş mevcut; yeni test paketi ve gerçek Qwen çağrısı doğrulanmadı | Bu kol ana P0/P1 doğrulayıcı deneyden ayrıdır. Operasyonel sistem/kalibre eşik iddiası için ayrı örneklem, kör insan karşılaştırması ve ayrı izin gerekir; ana istem-politikası hipotezinin birincil ölçütüne dahil edilmez. |
 | Model/runtime | Aday kilitli fakat doğrulanmadı | Tam Qwen/tokenizer revision, chat template, Python/PyTorch/Transformers/CUDA ayarları ve yükleme artefaktı kontrolü. |
-| Güven kalibrasyonu | Veri boş | Bağımsız etiketli calibration split, önceden belirlenmiş metrik/eşik seçimi, hash ile dondurma. |
+| Model-güven kalibrasyonu | Veri boş | Yalnızca ayrı entropi/semantik-auditor prototipi için geçerlidir. Ana P0/P1 istem-politikası çalışmasında modelin kendine verdiği güven skoru ya da kalibre eşik kullanılmaz. |
 | Ön kayıt ve izin | Taslak/kapalı | Son protokol ve hash manifesti sonuçlar görülmeden denetlenebilir kayıtla yayımlanmalı; ayrıca açık yürütme izni. |
 | CI/runner | Son durum için tüm test adımları kanıtı tamamlanmış değil | Gerçek runner atanmalı, yeni birimin test logu ve iş artefaktı incelenmeli. İş runner'a başlamadıysa “test geçti” sayılmaz. |
 | Resmî rapor | Final sonuçlar yok | Yöntem, gerçek sonuç, sınırlılıklar, dışlamalar, kaynakça ve resmi şablon kontrolü. |
@@ -49,11 +49,11 @@ Bu, **metadata sırası doğrulamasıdır**, bug-fix test çifti doğrulaması d
 1. GitHub Actions runner sorununu ayır: basit no-inference iş akışı gerçekten adımları çalıştırıyor mu? Sonra tüm birim testlerini çalıştır ve ham logu/arşivi denetle.
 2. Tarama kuyruğunda önceden açılmamış vakaları belirlenmiş sırayla işle; teknik test sinyali verenleri otomatik kabul etme.
 3. İki ayrık insan panelini fiilen oluştur ve vaka başına kaynak/lisans/kök neden/kanıt paketlerini gözden geçir.
-4. Semantik auditor'ı ayrı bir kalibrasyon bölmesinde, kör insan değerlendirmelerine karşı doğrula. İnsan doğrulaması olmadan auditor sinyali “kalibre edilmiş güven” değildir.
-5. Model/tokenizer/runtime'ı çıktı üretmeden denetle; tüm prompt, şema, analiz, vaka, calibration, auditor ve runtime dosyalarının hash'lerini dondur; protokolü sonuçlardan önce kaydet.
+4. Ana doğrulayıcı deneyde yalnızca dondurulmuş P0/P1 istem talimatları kullanılır; entropy, semantik-auditor kararı veya eşik çıktısı bu koşullara karıştırılmaz. Entropi/semantik-auditor prototipi, etkinliği iddia edilmeden önce ayrı bir mühendislik-validasyon kolunda ele alınır.
+5. Ana deney için model/tokenizer/runtime'ı çıktı üretmeden denetle; yalnızca ana deneyde kullanılan prompt, şema, analiz planı, vaka/kanıt paketleri, rubrik ve runtime hash'lerini dondur; protokolü sonuçlardan önce kaydet. Ayrı adapter validasyonu yürütülecekse onun calibration/auditor artefaktları farklı bir sürüm/ön kayıt altında tutulur.
 6. En az 60 kabul edilmiş bağımsız vaka / 8 proje şartı ve diğer kapılar sağlanmadan inference çalıştırma. 4 Kasım iç kontrolünde bu eşik sağlanmıyorsa açık bir go/no-go kararı al; eşiği sessizce gevşetme.
 
-**Aşama 1 çıkışı:** audit edilebilir veri sicili, bağımsız değerlendirici kayıtları, geçerli kalibrasyon/runtime, hash manifesti, kayıtlı protokol ve açık izin.
+**Aşama 1 çıkışı:** audit edilebilir veri sicili, bağımsız değerlendirici kayıtları, tam model-runtime kontrolü, ana deney hash manifesti, kayıtlı protokol ve açık izin. Model güven kalibrasyonu, yalnızca ayrı adapter iddiası için gerekli ayrı çıktıdır.
 
 ### Aşama 2 — Deneyi yürüt ve bilimsel sonucu üret
 

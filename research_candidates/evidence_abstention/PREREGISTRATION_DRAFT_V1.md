@@ -1,7 +1,6 @@
 # Preregistration draft — evidence-aware abstention in software root-cause diagnosis
 
-**Status: draft only. This is not an external registration, not a frozen protocol, and not permission to run model inference.** Complete the fields marked `[REQUIRES HUMAN / EXTERNAL ACTION]` before the inference gate can be opened.
-
+**Status: draft only. This is not an external registration, not a frozen protocol, and not permission to run model inference.** Complete the fields marked `[REQUIRES HUMAN / EXTERNAL ACTION]` before the inference gate can be opened.\n\n> **Version status (23 October 2026):** This document is retained as historical draft V1 and is superseded for future protocol work by [PREREGISTRATION_DRAFT_V1_1.md](PREREGISTRATION_DRAFT_V1_1.md). V1 incorrectly specified five stochastic candidates per confirmatory request, which conflicts with the primary analysis plan and the deterministic main runtime manifest. No formal inference had been performed when the correction was made. Do not use V1 as the current protocol or silently combine it with the separate five-candidate uncertainty-adapter prototype.\n
 ## Research question
 
 Does an explicit evidence-insufficiency/abstention policy (P1), compared with a baseline instruction (P0), reduce unsupported definitive root-cause diagnoses when a language model is given insufficient evidence (E3), while preserving supported diagnoses when evidence is sufficient (E1)?
