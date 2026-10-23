@@ -46,7 +46,11 @@ def accepted_case():
 
 def write_ready_gate_fixture(root: Path, record: dict, excluded_case_ids=None) -> Path:
     excluded_case_ids = [] if excluded_case_ids is None else excluded_case_ids
-    exposure_union_path = root / "exposure_union.json"
+    exposure_union_relative_path = Path(
+        "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
+    )
+    exposure_union_path = root / exposure_union_relative_path
+    exposure_union_path.parent.mkdir(parents=True, exist_ok=True)
     exposure_union_document = {
         "record_type": "synthetic_test_fixture",
         "excluded_case_ids": excluded_case_ids,
@@ -83,12 +87,12 @@ def write_ready_gate_fixture(root: Path, record: dict, excluded_case_ids=None) -
         },
         "case_ids": [record["case_id"]],
         "case_registry_path": "registry.json",
-        "exposure_union_path": "exposure_union.json",
+        "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
         "minimum_confirmatory_cases": 1,
         "minimum_upstream_projects": 1,
         "frozen_artifacts": {
             "case_registry": {"path": "registry.json", "sha256": registry_hash},
-            "exposure_union": {"path": "exposure_union.json", "sha256": exposure_union_hash},
+            "exposure_union": {"path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json", "sha256": exposure_union_hash},
             **{
                 name: {"path": "artifact.json", "sha256": artifact_hash}
                 for name in (
