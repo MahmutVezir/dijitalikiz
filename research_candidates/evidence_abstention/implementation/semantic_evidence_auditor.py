@@ -30,12 +30,39 @@ def build_semantic_audit_messages(
 ) -> tuple[dict[str, str], dict[str, str]]:
     if not isinstance(candidate_answer, Mapping) or set(candidate_answer) != ANSWER_FIELDS:
         raise ValueError("candidate answer does not match the frozen answer schema")
-    if not isinstance(candidate_answer.get("decision"), str) or candidate_answer["decision"] not in {"diagnose", "abstain"}:
+
+    decision = candidate_answer["decision"]
+    root_cause = candidate_answer["root_cause"]
+    rationale = candidate_answer["rationale"]
+    if not isinstance(decision, str) or decision not in {"diagnose", "abstain"}:
         raise ValueError("candidate answer has an invalid decision")
-    if candidate_answer["decision"] == "diagnose" and not str(candidate_answer.get("root_cause", "")).strip():
+    if not isinstance(root_cause, str) or not isinstance(rationale, str):
+        raise ValueError("root_cause and rationale must be strings")
+    if decision == "diagnose" and not root_cause.strip():
         raise ValueError("diagnosis must have a non-empty root cause")
-    if candidate_answer["decision"] == "abstain" and candidate_answer.get("root_cause") != "":
+    if decision == "abstain" and root_cause != "":
         raise ValueError("abstention must have an empty root cause")
+
+    raw_references = candidate_answer["evidence_refs"]
+    if not isinstance(raw_references, (list, tuple)) or len(raw_references) > 8:
+        raise ValueError("candidate evidence_refs must contain at most eight items")
+    if any(
+        not isinstance(ref, str) or EVIDENCE_ID_PATTERN.fullmatch(ref) is None
+        for ref in raw_references
+    ):
+        raise ValueError("candidate answer has an invalid evidence reference")
+    if len(raw_references) != len(set(raw_references)):
+        raise ValueError("candidate evidence references must be unique")
+
+    normalized_answer = dict(candidate_answer)
+    normalized_answer["evidence_refs"] = list(raw_references)
+    for key in ("alternative_hypotheses", "missing_evidence"):
+        values = normalized_answer[key]
+        if not isinstance(values, (list, tuple)) or len(values) > 8 or any(
+            not isinstance(item, str) for item in values
+        ):
+            raise ValueError(key + " must contain at most eight strings")
+        normalized_answer[key] = list(values)
 
     if not isinstance(evidence_items, Sequence) or isinstance(evidence_items, (str, bytes)) or not evidence_items:
         raise ValueError("evidence items must be a non-empty sequence")
@@ -56,8 +83,11 @@ def build_semantic_audit_messages(
         seen_ids.add(evidence_id)
         safe_items.append({"id": evidence_id, "content": content})
 
+    if any(ref not in seen_ids for ref in normalized_answer["evidence_refs"]):
+        raise ValueError("candidate answer references evidence not present in the packet")
+
     payload = {
-        "candidate_answer": dict(candidate_answer),
+        "candidate_answer": normalized_answer,
         "evidence_items": safe_items,
         "available_evidence_ids": sorted(seen_ids),
     }
