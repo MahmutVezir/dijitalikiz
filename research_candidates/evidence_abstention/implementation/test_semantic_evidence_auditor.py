@@ -90,6 +90,12 @@ class SemanticEvidenceAuditorTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             parse_semantic_audit('{"claims":[],"extra":true}', frozenset({"TRACE_A"}))
 
+    def test_rejects_non_string_claim_status_without_crashing(self):
+        invalid = claim()
+        invalid["status"] = ["supported"]
+        with self.assertRaisesRegex(ValueError, "unknown support status"):
+            parse_semantic_audit(audit([invalid]), frozenset({"TRACE_A"}))
+
     def test_detects_explicit_contradiction_for_fail_closed_use(self):
         result = parse_semantic_audit(
             audit([claim(status="contradicted")], explicit_contradiction=True),
