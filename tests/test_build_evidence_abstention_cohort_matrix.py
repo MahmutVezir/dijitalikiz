@@ -175,7 +175,7 @@ class CohortMatrixTests(unittest.TestCase):
             with q.open("w",newline="",encoding="utf-8") as f:
                 w=csv.DictWriter(f,fieldnames=FIELDS);w.writeheader();w.writerows(rows[1:])
             excluded=["BugsInPy-a-1","BugsInPy-b-2"]
-            ids=[x["case_id"] for x in rows[1:]]
+            ids=[x["case_id"] for x in rows[2:]]
             cohort={
                 "record_type":"metadata_only_screening_intake_not_confirmatory_dataset",
                 "cohort_size":len(ids),
