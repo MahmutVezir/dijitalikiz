@@ -344,10 +344,10 @@ def analyze(registry_path, manifest_path, ratings_path):
     frozen = manifest.get("frozen_hashes")
     validate_frozen_hashes(repository_root, frozen)
 
-    exposure_path_value = manifest.get("exposure_union_path", EXPOSURE_UNION_RELATIVE_PATH)
-    exposure_relative = Path(exposure_path_value) if isinstance(exposure_path_value, str) else Path("/")
-    if exposure_relative.is_absolute() or ".." in exposure_relative.parts:
-        raise ValueError("analysis blocked: exposure_union_path must be a safe repository-relative path")
+    exposure_path_value = manifest.get("exposure_union_path")
+    if exposure_path_value != EXPOSURE_UNION_RELATIVE_PATH:
+        raise ValueError("analysis blocked: exposure_union_path must match the canonical dated exposure union")
+    exposure_relative = Path(exposure_path_value)
     exposure_path = repository_root / exposure_relative
     excluded_case_ids = load_exposure_union(exposure_path)
 
