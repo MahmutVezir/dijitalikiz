@@ -198,6 +198,24 @@ class InferenceGateTests(unittest.TestCase):
                 report["blockers"],
             )
 
+    def test_valid_relative_but_noncanonical_artifact_path_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = write_ready_gate_fixture(root, accepted_case())
+            manifest = json.loads(path.read_text(encoding="utf-8"))
+            manifest["frozen_artifacts"]["output_schema"]["path"] = "alternate-output-schema.json"
+            path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            report = evaluate_gate(
+                root, path, {"EVIDENCE_UNCERTAINTY_INFERENCE_APPROVED": "YES"}
+            )
+
+            self.assertFalse(report["ready"])
+            self.assertTrue(
+                any("canonical project path" in item for item in report["blockers"]),
+                report["blockers"],
+            )
+
     def test_accepted_case_requires_independent_review_and_reproducible_test_pair(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
