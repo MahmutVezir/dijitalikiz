@@ -1,6 +1,11 @@
 name: Minimal GitHub-hosted Runner Probe (No Checkout, No Dependencies)
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/minimal-runner-probe.yml"
   pull_request:
     branches:
       - main
