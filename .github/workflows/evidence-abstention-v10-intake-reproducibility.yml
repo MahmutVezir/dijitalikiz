@@ -1,0 +1,145 @@
+name: Evidence abstention V10 metadata reproducibility (No Bug Tests, No Inference)
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/evidence-abstention-v10-intake-reproducibility.yml"
+      - "research_candidates/evidence_abstention/SCREENING_COHORT_100_V10_2026-10-23.json"
+      - "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
+      - "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_LOG_2026-10-21.json"
+      - "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json"
+      - "scripts/inventory_bugsinpy_candidates.py"
+      - "scripts/build_evidence_abstention_screening_queue.py"
+      - "scripts/build_evidence_abstention_intake.py"
+      - "scripts/verify_evidence_abstention_v10_intake.py"
+      - "tests/test_inventory_bugsinpy_candidates.py"
+      - "tests/test_build_evidence_abstention_screening_queue.py"
+      - "tests/test_build_evidence_abstention_intake.py"
+      - "tests/test_verify_evidence_abstention_v10_intake.py"
+      - "tests/test_evidence_abstention_requires_pytest.py"
+  push:
+    branches:
+      - "research/evidence-abstention-*"
+      - "research/v10-metadata-reproducibility-gate-2026-10-23"
+    paths:
+      - ".github/workflows/evidence-abstention-v10-intake-reproducibility.yml"
+      - "research_candidates/evidence_abstention/SCREENING_COHORT_100_V10_2026-10-23.json"
+      - "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
+      - "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_LOG_2026-10-21.json"
+      - "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json"
+      - "scripts/inventory_bugsinpy_candidates.py"
+      - "scripts/build_evidence_abstention_screening_queue.py"
+      - "scripts/build_evidence_abstention_intake.py"
+      - "scripts/verify_evidence_abstention_v10_intake.py"
+      - "tests/test_inventory_bugsinpy_candidates.py"
+      - "tests/test_build_evidence_abstention_screening_queue.py"
+      - "tests/test_build_evidence_abstention_intake.py"
+      - "tests/test_verify_evidence_abstention_v10_intake.py"
+      - "tests/test_evidence_abstention_requires_pytest.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v10-metadata-reproducibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      BUGSINPY_COMMIT: "11c5f1eea954a42132cfd06bf257766a7963e0fd"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run metadata builder and V10 gate unit tests with retained logs
+        shell: bash
+        run: |
+          set +e
+          mkdir -p "$RUNNER_TEMP/v10-diagnostics"
+          failed=0
+          for spec in \
+            "test_inventory_bugsinpy_candidates.py" \
+            "test_build_evidence_abstention_screening_queue.py" \
+            "test_build_evidence_abstention_intake.py" \
+            "test_verify_evidence_abstention_v10_intake.py" \
+            "test_evidence_abstention_requires_pytest.py"; do
+            log="$RUNNER_TEMP/v10-diagnostics/$spec.log"
+            python -m unittest discover -s tests -p "$spec" -v >"$log" 2>&1
+            rc=$?
+            cat "$log"
+            printf '%s\n' "$rc" >"$RUNNER_TEMP/v10-diagnostics/$spec.exit-code"
+            if [ "$rc" -ne 0 ]; then failed=1; fi
+          done
+          exit "$failed"
+
+      - name: Fetch pinned BugsInPy source metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/soarsmu/BugsInPy.git "$RUNNER_TEMP/BugsInPy"
+          git -C "$RUNNER_TEMP/BugsInPy" checkout --detach "$BUGSINPY_COMMIT"
+          test "$(git -C "$RUNNER_TEMP/BugsInPy" rev-parse HEAD)" = "$BUGSINPY_COMMIT"
+
+      - name: Rebuild the pinned metadata inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v10-output"
+          python scripts/inventory_bugsinpy_candidates.py \
+            --root "$RUNNER_TEMP/BugsInPy" \
+            --output "$RUNNER_TEMP/v10-output/bugsinpy-metadata-inventory.csv" \
+            --summary "$RUNNER_TEMP/v10-output/inventory-summary.json" \
+            --expected-commit "$BUGSINPY_COMMIT" \
+            --expected-count 501
+
+      - name: Rebuild the exposure-filtered 407-row queue
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_evidence_abstention_screening_queue.py \
+            --input "$RUNNER_TEMP/v10-output/bugsinpy-metadata-inventory.csv" \
+            --output "$RUNNER_TEMP/v10-output/bugsinpy-screening-queue.csv" \
+            --summary "$RUNNER_TEMP/v10-output/queue-summary.json" \
+            --first-batch-per-project 5
+
+      - name: Rebuild and verify the frozen 100-candidate V10 intake
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_evidence_abstention_intake.py \
+            --inventory "$RUNNER_TEMP/v10-output/bugsinpy-metadata-inventory.csv" \
+            --queue "$RUNNER_TEMP/v10-output/bugsinpy-screening-queue.csv" \
+            --output "$RUNNER_TEMP/v10-output/generated-v10-intake.json" \
+            --size 100
+          python scripts/verify_evidence_abstention_v10_intake.py \
+            --inventory "$RUNNER_TEMP/v10-output/bugsinpy-metadata-inventory.csv" \
+            --queue "$RUNNER_TEMP/v10-output/bugsinpy-screening-queue.csv" \
+            --generated-intake "$RUNNER_TEMP/v10-output/generated-v10-intake.json" \
+            --frozen-intake research_candidates/evidence_abstention/SCREENING_COHORT_100_V10_2026-10-23.json \
+            --exposure-union research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json \
+            --report "$RUNNER_TEMP/v10-output/v10-reproducibility-report.json"
+
+      - name: Upload builder diagnostics even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-abstention-v10-builder-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/v10-diagnostics/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload rebuilt V10 provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-abstention-v10-reproducibility-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/v10-output/
+          if-no-files-found: warn
+          retention-days: 30
