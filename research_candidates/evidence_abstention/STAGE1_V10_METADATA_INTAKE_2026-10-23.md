@@ -75,3 +75,10 @@ A local implementation of the documented deterministic queue algorithm, using th
 This is a real, artifact-backed **local reproduction of the metadata order**, stronger than the synthetic tests alone. It still does not prove that the newly added GitHub Actions workflow ran on a runner, that the exact checked-in builder script passed in GitHub CI, that any candidate bug/fix test pair is valid, or that any case is accepted. The isolated V10 verifier's seven synthetic regression tests pass locally; its remote execution remains unverified because Actions run `39985336539` had no job steps and log retrieval returned `BlobNotFound`.
 
 **State after this check:** the V10 metadata intake's inventory hash, queue hash, first-100 ordered IDs, project distribution and 93-item exclusion separation are independently reproduced locally. The remote CI/runner blocker, all scientific case acceptance checks, independent reviewer panels, exact Qwen/CUDA runtime, calibration, preregistration and confirmatory inference remain open.
+
+
+## Remote retry result — 23 October 2026
+
+After the first V10 reproducibility workflow attempt returned no step records and BlobNotFound for its logs, the failed job was explicitly re-run through the repository's GitHub Actions API. The same run ID (39985336539) again returned a completed failure with no step records and no uploaded artifacts. This retry therefore did not supply a code-test result either: it is not valid to classify it as passing or as a failure of the verifier logic without runner steps/logs.
+
+The local evidence remains unchanged: artifact-backed metadata queue recreation passed the recorded inventory and queue hash/order checks; seven synthetic verifier tests passed locally. The next remote action is an owner-visible manual rerun/inspection in GitHub Actions once a runner starts recording steps. Do not run any V10 candidate bug/fix test or model generation while the validation runner is not auditable.
