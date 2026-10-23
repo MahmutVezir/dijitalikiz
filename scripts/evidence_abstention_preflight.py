@@ -127,7 +127,7 @@ def evaluate(root):
                 required = (
                     "upstream_project", "source_repository", "license_reference",
                     "buggy_commit", "fixed_commit", "test_command", "runtime_fingerprint",
-                    "root_cause_reference", "metadata_python_version", "runtime_python_version",
+                    "root_cause_reference", "reference_root_cause_sha256", "metadata_python_version", "runtime_python_version",
                     "buggy_test_log_uri", "fixed_test_log_uri",
                 )
                 for field in required:
@@ -160,7 +160,7 @@ def evaluate(root):
                 evidence_ids_valid = isinstance(evidence_ids, list) and all(isinstance(item, str) and item.strip() for item in evidence_ids)
                 if gt_ids_valid and evidence_ids_valid and set(gt_ids) & set(evidence_ids):
                     blockers.append(cid + ": reviewer IDs must be distinct between ground-truth and evidence review panels.")
-                for field in ("buggy_test_log_sha256", "fixed_test_log_sha256", "runtime_fingerprint_sha256"):
+                for field in ("buggy_test_log_sha256", "fixed_test_log_sha256", "runtime_fingerprint_sha256", "reference_root_cause_sha256"):
                     if not isinstance(record.get(field), str) or not HEX64.fullmatch(record[field]):
                         blockers.append(cid + ": missing/invalid " + field)
                 packets = record.get("evidence_packet_sha256", {})
