@@ -114,7 +114,7 @@ Current science gates after PR #140 remain unchanged: 93 exclusions, 0 accepted 
 
 ## Tekil hash sözleşmesi ve adaptör ayrımı — PR #143, 23 Ekim 2026
 
-[PR #143](https://github.com/MahmutVezir/dijitalikiz/pull/143) ana deneyin salt-okunur ön denetimi ile sonuç analiz betiği arasındaki hash anahtar uyuşmazlığını giderdi. Her iki katman artık aynı on depo-köklü tam dosya yolunu arar; eksik hash, hash eşleşmezliği veya beklenmeyen ek bir hash yolu kapıyı kapalı tutar. Ana deneyin bu zorunlu kümesine vaka sicili, 93 kimlikli maruziyet birleşimi, prompt, şema, tasarım/analiz, rubrik, runtime kilidi ve analiz kodu dahildir.
+[PR #143](https://github.com/MahmutVezir/dijitalikiz/pull/143) ana deneyin salt-okunur ön denetimi ile sonuç analiz betiği arasındaki hash anahtar uyuşmazlığını giderdi. Her iki katman artık aynı on bir depo-köklü tam dosya yolunu arar; eksik hash, hash eşleşmezliği veya beklenmeyen ek bir hash yolu kapıyı kapalı tutar. Ana deneyin bu zorunlu kümesine vaka sicili, 93 kimlikli maruziyet birleşimi, prompt, şema, tasarım/analiz, rubrik, runtime kilidi ve analiz kodu dahildir.
 
 Ana P0/P1 istem-politikası deneyi, beş-adaylı entropy/kalibrasyon adaptöründen ayrı tutulur. Bu yüzden adaptöre ait `CALIBRATION_DATA.json`, ana karşılaştırmanın zorunlu hash sözleşmesinden çıkarıldı; bu veri yalnızca ayrı adaptör üzerinde Brier/ECE veya kalibre güven skoru iddiaları yapılacaksa ayrı protokol ve doğrulamayla kullanılır. Adaptör manifesti inference kapalı durumunu korur.
 
