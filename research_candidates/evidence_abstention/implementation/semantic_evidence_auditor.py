@@ -124,7 +124,7 @@ def parse_semantic_audit(
             raise ValueError("claim IDs must be unique C1-C999 identifiers")
         if not isinstance(text, str) or not text.strip() or not isinstance(rationale, str):
             raise ValueError("claim and rationale must be strings; claim cannot be empty")
-        if status not in CLAIM_STATUSES:
+        if not isinstance(status, str) or status not in CLAIM_STATUSES:
             raise ValueError("claim has an unknown support status")
         if not isinstance(references, list) or len(references) > 8:
             raise ValueError("evidence_refs must be a list with at most eight items")
