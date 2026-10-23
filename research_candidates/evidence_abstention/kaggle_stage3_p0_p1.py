@@ -243,6 +243,15 @@ def validate_cases(cases, manifest, registry, excluded_ids):
             raise ValueError("Permanently exposed case is not eligible: " + str(case_id))
         if not isinstance(case.get("reference_root_cause"), str) or not case["reference_root_cause"].strip():
             raise ValueError("Restricted answer key is missing a root cause for " + str(case_id))
+        expected_gold_hash = record.get("reference_root_cause_sha256")
+        if (
+            not isinstance(expected_gold_hash, str)
+            or len(expected_gold_hash) != 64
+            or sha256_text(case["reference_root_cause"]) != expected_gold_hash
+        ):
+            raise ValueError(
+                "Restricted gold root-cause SHA-256 mismatch for " + str(case_id)
+            )
         packs = case.get("evidence_packs")
         if not isinstance(packs, dict) or set(packs) != set(LEVELS):
             raise ValueError("E1/E2/E3 evidence packs are missing or unexpected for " + str(case_id))
