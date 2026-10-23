@@ -18,6 +18,7 @@ HASHES = {
     "exposure_union": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
     "analysis_code": "scripts/analyze_evidence_abstention_results.py",
     "inference_runner": "research_candidates/evidence_abstention/kaggle_stage3_p0_p1.py",
+    "preflight_code": "scripts/evidence_abstention_preflight.py",
 }
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 LEVELS = ("E1_sufficient", "E2_partial", "E3_insufficient")
