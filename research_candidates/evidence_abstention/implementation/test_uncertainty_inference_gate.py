@@ -1,9 +1,92 @@
+import hashlib
 import json
 import tempfile
 import unittest
 from pathlib import Path
 
 from uncertainty_inference_gate import evaluate_gate, load_authorized_qwen
+
+
+def accepted_case():
+    return {
+        "case_id": "case-1",
+        "accepted_for_confirmatory": True,
+        "upstream_project": "demo-project",
+        "source_repository": "https://example.org/demo",
+        "license_reference": "https://example.org/demo/LICENSE",
+        "buggy_commit": "a" * 40,
+        "fixed_commit": "b" * 40,
+        "test_command": "pytest tests/test_demo.py::test_target",
+        "runtime_fingerprint": "pinned test runtime",
+        "root_cause_reference": "blinded ground-truth record gt-case-1",
+        "metadata_python_version": "3.11.9",
+        "runtime_python_version": "3.11.9",
+        "buggy_test_outcome": "target_failure_reproduced",
+        "fixed_test_outcome": "target_test_passed",
+        "buggy_test_log_uri": "artifact://case-1/buggy.log",
+        "fixed_test_log_uri": "artifact://case-1/fixed.log",
+        "buggy_test_log_sha256": "c" * 64,
+        "fixed_test_log_sha256": "d" * 64,
+        "runtime_fingerprint_sha256": "e" * 64,
+        "evidence_packet_sha256": {
+            "E1_sufficient": "1" * 64,
+            "E2_partial": "2" * 64,
+            "E3_insufficient": "3" * 64,
+        },
+        "license_reviewed": True,
+        "leakage_reviewed": True,
+        "prior_exposure_clearance": True,
+        "evidence_levels_reviewed": True,
+        "test_pair_verified": True,
+        "root_cause_reviewed_by_two": True,
+        "ground_truth_reviewer_ids": ["gt-r1", "gt-r2"],
+        "evidence_reviewer_ids": ["ev-r1", "ev-r2"],
+    }
+
+
+def write_ready_gate_fixture(root: Path, record: dict) -> Path:
+    registry_path = root / "registry.json"
+    registry_path.write_text(json.dumps({"records": [record]}), encoding="utf-8")
+    registry_hash = hashlib.sha256(registry_path.read_bytes()).hexdigest()
+
+    artifact_path = root / "artifact.json"
+    artifact_path.write_text("{}", encoding="utf-8")
+    artifact_hash = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+
+    manifest = {
+        "inference_allowed": True,
+        "dataset_validation_gate": "CLOSED",
+        "preregistration_status": "registered",
+        "preregistration_uri": "https://example.org/preregistration",
+        "reviewer_protocol_frozen": True,
+        "calibration_complete": True,
+        "model": {
+            "id": "Qwen/Qwen2.5-3B-Instruct",
+            "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+            "tokenizer_id": "Qwen/Qwen2.5-3B-Instruct",
+            "tokenizer_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+            "runtime_verification": "passed",
+            "dtype": "float16",
+            "quantization": "none",
+        },
+        "case_ids": [record["case_id"]],
+        "case_registry_path": "registry.json",
+        "minimum_confirmatory_cases": 1,
+        "minimum_upstream_projects": 1,
+        "frozen_artifacts": {
+            "case_registry": {"path": "registry.json", "sha256": registry_hash},
+            **{
+                name: {"path": "artifact.json", "sha256": artifact_hash}
+                for name in (
+                    "output_schema", "prompt_template", "analysis_plan",
+                    "runtime_lock", "calibration_data", "evidence_audit_protocol"
+                )
+            },
+        },
+    }
+    manifest_path = root / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    return manifest_path
 
 
 class InferenceGateTests(unittest.TestCase):
@@ -88,6 +171,48 @@ class InferenceGateTests(unittest.TestCase):
             report = evaluate_gate(root, path, {})
             self.assertFalse(report["ready"])
             self.assertTrue(any("SHA-256 mismatch" in item for item in report["blockers"]))
+
+    def test_accepted_case_requires_independent_review_and_reproducible_test_pair(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            record = accepted_case()
+            record["ground_truth_reviewer_ids"] = []
+            record["evidence_reviewer_ids"] = []
+            record["metadata_python_version"] = "3.7.3"
+            record["runtime_python_version"] = "3.11.9"
+            record["buggy_test_outcome"] = "environment_error"
+            path = write_ready_gate_fixture(root, record)
+
+            report = evaluate_gate(root, path, {"EVIDENCE_UNCERTAINTY_INFERENCE_APPROVED": "YES"})
+
+            self.assertFalse(report["ready"])
+            self.assertTrue(any("two ground-truth reviewer IDs" in item for item in report["blockers"]))
+            self.assertTrue(any("two evidence-sufficiency reviewer IDs" in item for item in report["blockers"]))
+            self.assertTrue(any("runtime Python does not match" in item for item in report["blockers"]))
+            self.assertTrue(any("buggy target failure was not reproduced" in item for item in report["blockers"]))
+
+    def test_ground_truth_and_evidence_review_panels_must_be_disjoint(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            record = accepted_case()
+            record["evidence_reviewer_ids"] = ["ev-r1", "gt-r2"]
+            path = write_ready_gate_fixture(root, record)
+
+            report = evaluate_gate(root, path, {"EVIDENCE_UNCERTAINTY_INFERENCE_APPROVED": "YES"})
+
+            self.assertFalse(report["ready"])
+            self.assertTrue(any("panels must be disjoint" in item for item in report["blockers"]))
+
+    def test_malformed_case_ids_fail_closed_without_raising(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = root / "manifest.json"
+            path.write_text(json.dumps({"case_ids": [{}]}), encoding="utf-8")
+
+            report = evaluate_gate(root, path, {})
+
+            self.assertFalse(report["ready"])
+            self.assertTrue(any("Case IDs are missing, malformed" in item for item in report["blockers"]))
 
 
 if __name__ == "__main__":
