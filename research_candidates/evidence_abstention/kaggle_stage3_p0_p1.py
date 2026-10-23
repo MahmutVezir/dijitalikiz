@@ -9,6 +9,7 @@ import json
 import os
 import platform
 import random
+import secrets
 import sys
 from pathlib import Path
 
@@ -54,15 +55,10 @@ SYSTEM_PROMPT = (
     "from a cause supported by the packet. Return exactly one valid JSON object matching the provided "
     "output schema, without Markdown fences or text outside the JSON."
 )
-OUTPUT_SCHEMA = {
-    "decision": "diagnose or abstain",
-    "root_cause": "non-empty diagnosis, or empty string if abstaining",
-    "evidence_refs": ["IDs of evidence items used"],
-    "rationale": "brief explanation limited to the packet",
-    "alternative_hypotheses": ["plausible alternatives"],
-    "missing_evidence": ["specific evidence needed to distinguish alternatives"],
+REQUIRED_OUTPUT_KEYS = {
+    "decision", "root_cause", "evidence_refs", "rationale",
+    "alternative_hypotheses", "missing_evidence",
 }
-REQUIRED_OUTPUT_KEYS = set(OUTPUT_SCHEMA)
 
 
 def sha256_bytes(value):
@@ -102,7 +98,7 @@ def evidence_ids(pack):
     return {"CODE_1", "TRACE_1"} | ({"CONTEXT_1"} if pack.get("context", "").strip() else set())
 
 
-def make_prompt(policy, pack):
+def make_prompt(policy, pack, schema):
     if policy not in POLICY_INSTRUCTIONS:
         raise ValueError("Unknown policy.")
     evidence_packet = render_evidence_packet(pack)
@@ -116,7 +112,7 @@ def make_prompt(policy, pack):
         "that is not present in the packet. If abstaining, leave root_cause as an empty string and "
         "list the specific evidence that would distinguish the plausible causes. Return only the JSON "
         "object defined by the schema.\n\nJSON schema:\n"
-        + json.dumps(OUTPUT_SCHEMA, ensure_ascii=False)
+        + json.dumps(schema, ensure_ascii=False)
     )
     return [
         {"role": "system", "content": SYSTEM_PROMPT},
@@ -137,16 +133,19 @@ def invalid_response(reason):
     }
 
 
-def parse_response(raw, allowed_evidence_ids):
+def parse_response(raw, allowed_evidence_ids, schema):
     try:
         parsed = json.loads(raw)
     except (TypeError, json.JSONDecodeError) as exc:
         return invalid_response("invalid_json: " + str(exc))
     if not isinstance(parsed, dict):
         return invalid_response("top_level_json_must_be_object")
-    if set(parsed) != REQUIRED_OUTPUT_KEYS:
-        missing = sorted(REQUIRED_OUTPUT_KEYS - set(parsed))
-        extra = sorted(set(parsed) - REQUIRED_OUTPUT_KEYS)
+    required_keys = set(schema.get("required", []))
+    if required_keys != REQUIRED_OUTPUT_KEYS:
+        return invalid_response("canonical_output_schema_required_keys_mismatch")
+    if set(parsed) != required_keys:
+        missing = sorted(required_keys - set(parsed))
+        extra = sorted(set(parsed) - required_keys)
         return invalid_response("schema_keys_mismatch; missing=" + repr(missing) + "; extra=" + repr(extra))
     if parsed.get("decision") not in {"diagnose", "abstain"}:
         return invalid_response("decision_must_be_diagnose_or_abstain")
@@ -179,6 +178,20 @@ def parse_response(raw, allowed_evidence_ids):
         "alternative_hypotheses": parsed["alternative_hypotheses"],
         "missing_evidence": parsed["missing_evidence"],
     }
+
+
+def validate_schema_contract(schema):
+    properties = schema.get("properties") if isinstance(schema, dict) else None
+    if (
+        not isinstance(properties, dict)
+        or set(schema.get("required", [])) != REQUIRED_OUTPUT_KEYS
+        or set(properties) != REQUIRED_OUTPUT_KEYS
+        or schema.get("additionalProperties") is not False
+        or properties.get("decision", {}).get("enum") != ["diagnose", "abstain"]
+        or properties.get("root_cause", {}).get("type") != "string"
+        or properties.get("evidence_refs", {}).get("type") != "array"
+    ):
+        raise ValueError("Canonical OUTPUT_SCHEMA.json is not compatible with the frozen runner parser.")
 
 
 def validate_cases(cases, manifest, registry, excluded_ids):
@@ -374,6 +387,8 @@ def run_study(root, manifest):
     excluded = union.get("excluded_case_ids")
     if not isinstance(excluded, list) or len(excluded) != len(set(excluded)):
         raise RuntimeError("Canonical exposure exclusion union is malformed.")
+    schema = read_json(project / "OUTPUT_SCHEMA.json")
+    validate_schema_contract(schema)
     cases = validate_cases(read_json(CASES_PATH), manifest, registry, set(excluded))
 
     outputs = (RAW_OUTPUTS_PATH, BLIND_REVIEW_PATH, CONDITION_MAP_PATH, ANSWER_KEY_PATH, RUN_METADATA_PATH)
@@ -407,20 +422,18 @@ def run_study(root, manifest):
                 policies = ["P0", "P1"]
                 order_rng.shuffle(policies)
                 for policy in policies:
-                    messages = make_prompt(policy, pack)
+                    messages = make_prompt(policy, pack, schema)
                     serialized_messages = json.dumps(messages, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
                     prompt_hash = sha256_text(serialized_messages)
                     error = ""
                     raw = ""
                     try:
                         raw = generate(tokenizer, model, messages, generation["max_new_tokens"])
-                        parsed = parse_response(raw, evidence_ids(pack))
+                        parsed = parse_response(raw, evidence_ids(pack), schema)
                     except Exception as exc:
                         parsed = invalid_response("generation_error: " + type(exc).__name__ + ": " + str(exc))
                         error = type(exc).__name__ + ": " + str(exc)
-                    output_id = sha256_text(
-                        str(BLIND_ORDER_SEED) + "|" + str(output_index) + "|" + case["case_id"] + "|" + level + "|" + policy
-                    )[:20]
+                    output_id = secrets.token_hex(10)
                     output_index += 1
                     row = {
                         "output_id": output_id,
