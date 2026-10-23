@@ -137,6 +137,14 @@ A strict reproducibility checker and seven synthetic regression tests were added
 The failed V10 metadata-reproducibility job was explicitly rerun. It again completed without recorded steps or uploaded artifacts, and log retrieval remained unavailable. Thus the checked-in Actions workflow still has no auditable remote execution result. This does not negate the separate artifact-backed local reproduction of the 501-row inventory, 407-row queue and exact frozen V10 order, but it blocks claiming the new verifier/workflow itself passed CI. No case tests or model outputs were produced.
 
 
+## Kilitli çalışma ortamı — 23 Ekim 2026
+
+Çalıştırıcı artık yalnızca model adını kontrol etmez: `RUNTIME_LOCK.json` içindeki Python 3.11.9, PyTorch 2.2.1, Transformers 4.43.2 ve Accelerate 0.33.0 sürümleri gerçek paket sürümleriyle eşleşmelidir; CUDA GPU gerekir. Model ve tokenizer yüklenirken aynı değişmez tam commit SHA gönderilir. Yüklenen nesne çözülmüş commit bilgisini sağlıyorsa uyuşmazlıkta durur; ilgili Transformers API bilgiyi göstermiyorsa rapor bunu açıkça kaydeder ve çağrılan SHA'yı belirtir. Bunlar kodda tanımlanmış yeni koşullardır; runtime doğrulaması yine `not_run` durumundadır, çünkü henüz uygun ortamda yükleme yapılmamıştır.
+
+## Kısıtlı altın cevap bütünlüğü — 23 Ekim 2026
+
+Bir vaka dosyası modelin göreceği kanıt paketleriyle birlikte kısıtlı `reference_root_cause` metnini de içerir. Kanıt paketleri vaka sicilindeki hash'lerle doğrulanıyordu; altın cevap metni için karşılaştırmalı hash kontrolü eksikti. Son düzeltme, `reference_root_cause_sha256` alanını kabul edilen sicilde zorunlu kılar, ön-denetimde 64 karakterlik SHA-256 biçimini doğrular ve inference çalıştırıcısında `cases.json` içindeki tam UTF-8 altın cevap metninin hash'ini sicil değeriyle eşleştirir. Hash uyuşmazsa model çalıştırıcısı durur. Intake şablonu, analiz runbook'u ve regresyon testleri de güncellendi. Bu metadata değişikliği inference izni vermez; çalışma sicili boş kalır ve testler runner engeli nedeniyle henüz uzaktan yürütülmüş sayılmaz.
+
 ## Kaggle çalıştırıcısı ve gizli koşul etiketi güvenliği — 23 Ekim 2026
 
 Son protokol denetiminde `kaggle_stage3_p0_p1.py` içinde bir yöntemsel kusur tespit edildi: eski sürüm `evidence_level` etiketini prompt'a ekliyor, protokolün kanonik `OUTPUT_SCHEMA.json`/prompt metniyle uyuşmayan bir öz-bildirilen `confidence` alanı kullanıyor ve kanonik Stage 3 ön denetimini çağırmıyordu. Bu, gelecekteki çıktıları protokol dışına çıkarabilirdi. Düzeltme PR'ında çalıştırıcı prompt'undan gizli seviye etiketi kaldırıldı, model çıktısı kanonik şemaya hizalandı, geçersiz JSON için otomatik onarım/yeniden üretme engellendi, kanonik ön denetim inference kapısının zorunlu ön şartı yapıldı ve çalıştırıcı SHA-256 dondurulmuş dosya kümesine eklendi.

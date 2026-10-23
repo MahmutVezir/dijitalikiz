@@ -54,17 +54,21 @@ Hedef 80 bağımsız kusur vakasıdır. Doğrulayıcı alt sınır en az 60 bağ
 
 Aday model Qwen/Qwen2.5-3B-Instruct, sabit revizyon kimliği aa8e72537993ba99e69dfaafa59ed015b17504d1 olarak belirlenmiştir. Model ve tokenizer yüklemesi, chat template, Python/PyTorch/Transformers/CUDA-GPU ortamı ve artefakt hash'leri deney öncesinde doğrulanmalıdır. Ana deney deterministiktir; otomatik yeniden üretme, bozuk JSON'u onarma veya sonuç görüldükten sonra hücre değiştirme yoktur.
 
-### 4.4 Kör değerlendirme
+### 4.4 Altın cevap ve paket bütünlüğü
+
+Her kanıt paketinin tam olarak modele gösterilen metin biçimi SHA-256 ile bağlanır. Buna ek olarak, modelin görmediği doğrulanmış kök neden metninin hash'i kabul edilen vaka sicilinde saklanır ve kısıtlı çalıştırma veri kümesindeki metinle eşleşmesi zorunludur. Bu iki bütünlük denetimi, aynı kanıt paketi korunurken referans cevabın sessizce değiştirilmesini önlemeyi amaçlar. Hash uyuşmazlığında deney çalıştırması durdurulur; vakayı yeni bir değerle otomatik olarak güncellemek yasaktır.
+
+### 4.5 Kör değerlendirme
 
 Kök neden ve buggy/fixed test ilişkisini değerlendiren iki kişilik panel ile modelin görünen kanıtına dayanmasını değerlendiren, ilk panelden ayrı iki kişilik kör panel planlanmıştır. Kanıt paneli gerçek kök nedeni, fixed kodu, vaka kimliğini ve gizli kanıt düzeyi etiketini görmemelidir. İlk puanlar saklanacak, uyuşmazlıklar önceden belirlenmiş adjudication kurallarıyla çözülecektir. İnsanlar fiilen değerlendirme yapmadan bu adım tamamlanmış sayılmayacaktır.
 
-### 4.5 Ölçütler ve analiz
+### 4.6 Ölçütler ve analiz
 
 **Birincil ölçüt:** E3'te desteklenmeyen kesin teşhislerin P1−P0 vaka-eşleştirilmiş risk farkı. Önceden belirlenen analiz, iki taraflı exact McNemar testi ve konservatif %95 güven aralığıdır.
 
 **İkincil ölçütler:** E1/E2/E3 için cevap/kaçınma kapsamı; E1'de gereksiz kaçınma; kök neden doğruluğu; görünür kanıt desteği; geçersiz JSON/şema oranı; değerlendiriciler arası uyum ve ek kanıt isteminin ayırt ediciliği. Daha çok kaçınmak tek başına başarı kabul edilmeyecektir.
 
-### 4.6 Örneklem gücü duyarlılığı
+### 4.7 Örneklem gücü duyarlılığı
 
 Mevcut analiz planında 60 vakalık alt sınır ve 80 vakalık hedef için senaryo tabanlı exact McNemar güç hesapları yer almaktadır. Bunlar gözlenmiş sonuç veya tarihsel pilot tahmini değildir. Örneğin, çiftlerin %30'unun iki politikada farklı sonuca sahip olduğu ve bu farklı çiftlerin %83'ünde sonucun P1 lehine olduğu varsayılırsa, iki taraflı alfa 0,05 için hesaplanan güç N=60'ta yaklaşık %78,7 ve N=80'de yaklaşık %90,1'dir. Aynı %30 discordance altında P1 lehine oran %75'e düşerse güç N=60'ta yaklaşık %49,5 ve N=80'de yaklaşık %63,4 olur.
 

@@ -49,7 +49,7 @@ POLICY_INSTRUCTIONS = {
     ),
 }
 SYSTEM_PROMPT = (
-    "You are analyzing a software defect using the evidence packet supplied in the user message. "
+    "You are analyzing a software defect using the evidence packet supplied in the user message.\n"
     "Base factual claims only on information in that packet. Do not use external tools, web search, "
     "retrieval, or code execution. Do not claim to have run tests. Distinguish a plausible hypothesis "
     "from a cause supported by the packet. Return exactly one valid JSON object matching the provided "
@@ -243,6 +243,15 @@ def validate_cases(cases, manifest, registry, excluded_ids):
             raise ValueError("Permanently exposed case is not eligible: " + str(case_id))
         if not isinstance(case.get("reference_root_cause"), str) or not case["reference_root_cause"].strip():
             raise ValueError("Restricted answer key is missing a root cause for " + str(case_id))
+        expected_gold_hash = record.get("reference_root_cause_sha256")
+        if (
+            not isinstance(expected_gold_hash, str)
+            or len(expected_gold_hash) != 64
+            or sha256_text(case["reference_root_cause"]) != expected_gold_hash
+        ):
+            raise ValueError(
+                "Restricted gold root-cause SHA-256 mismatch for " + str(case_id)
+            )
         packs = case.get("evidence_packs")
         if not isinstance(packs, dict) or set(packs) != set(LEVELS):
             raise ValueError("E1/E2/E3 evidence packs are missing or unexpected for " + str(case_id))
@@ -259,6 +268,82 @@ def validate_cases(cases, manifest, registry, excluded_ids):
                 )
         ordered_cases.append(case)
     return ordered_cases
+
+
+def normalized_distribution_version(distribution):
+    try:
+        return importlib.metadata.version(distribution).split("+", 1)[0]
+    except importlib.metadata.PackageNotFoundError:
+        return None
+
+
+def validate_runtime_environment(root):
+    project = root / "research_candidates" / "evidence_abstention"
+    runtime_lock = read_json(project / "RUNTIME_LOCK.json")
+    manifest = read_json(project / "EXPERIMENT_MANIFEST_STAGE3.json")
+    model_lock = runtime_lock.get("model", {})
+    manifest_model = manifest.get("model", {})
+    if (
+        model_lock.get("id") != MODEL_ID
+        or model_lock.get("revision") != MODEL_REVISION
+        or model_lock.get("tokenizer_id") != MODEL_ID
+        or model_lock.get("tokenizer_revision") != MODEL_REVISION
+    ):
+        raise RuntimeError("RUNTIME_LOCK.json does not match the immutable model/tokenizer revision.")
+    if (
+        manifest_model.get("id") != MODEL_ID
+        or manifest_model.get("revision") != MODEL_REVISION
+        or manifest_model.get("tokenizer_id") != MODEL_ID
+        or manifest_model.get("tokenizer_revision") != MODEL_REVISION
+        or manifest_model.get("do_sample") is not False
+        or manifest_model.get("max_new_tokens") != 512
+    ):
+        raise RuntimeError("Experiment manifest differs from the candidate model or deterministic generation lock.")
+    if model_lock.get("dtype") != "float16" or model_lock.get("quantization") != "none":
+        raise RuntimeError("The model lock must specify the reviewed FP16 non-quantized checkpoint.")
+
+    expected = runtime_lock.get("proposed_environment", {})
+    actual = {
+        "python": platform.python_version(),
+        "torch": normalized_distribution_version("torch"),
+        "transformers": normalized_distribution_version("transformers"),
+        "accelerate": normalized_distribution_version("accelerate"),
+    }
+    mismatches = {
+        name: {"expected": expected.get(name), "actual": actual.get(name)}
+        for name in actual
+        if not expected.get(name) or expected.get(name) != actual.get(name)
+    }
+    if mismatches:
+        raise RuntimeError(
+            "Runtime package/version lock mismatch; model load is blocked: "
+            + json.dumps(mismatches, ensure_ascii=False, sort_keys=True)
+        )
+    if not torch.cuda.is_available():
+        raise RuntimeError("Locked runtime requires a CUDA-capable GPU.")
+    return runtime_lock
+
+
+def validate_loaded_model(tokenizer, model):
+    if (
+        len(MODEL_REVISION) != 40
+        or any(character not in "0123456789abcdef" for character in MODEL_REVISION)
+    ):
+        raise RuntimeError("Model/tokenizer revision must be an immutable full commit SHA.")
+    model_revision = getattr(model.config, "_commit_hash", None)
+    tokenizer_kwargs = getattr(tokenizer, "init_kwargs", {}) or {}
+    tokenizer_revision = tokenizer_kwargs.get("_commit_hash") or getattr(tokenizer, "_commit_hash", None)
+    if model_revision is not None and model_revision != MODEL_REVISION:
+        raise RuntimeError(
+            "Observed model commit does not match the immutable requested revision: " + repr(model_revision)
+        )
+    if tokenizer_revision is not None and tokenizer_revision != MODEL_REVISION:
+        raise RuntimeError(
+            "Observed tokenizer commit does not match the immutable requested revision: " + repr(tokenizer_revision)
+        )
+    first_parameter = next(model.parameters(), None)
+    if first_parameter is None or first_parameter.dtype != torch.float16:
+        raise RuntimeError("Loaded model parameters are not confirmed FP16.")
 
 
 def load_model():
@@ -298,8 +383,14 @@ def runtime_report(tokenizer, model):
         "gpu_count": torch.cuda.device_count(),
         "model_id": MODEL_ID,
         "model_revision": MODEL_REVISION,
+        "resolved_model_revision": getattr(model.config, "_commit_hash", None),
+        "resolved_model_revision_observable": getattr(model.config, "_commit_hash", None) is not None,
         "tokenizer_id": MODEL_ID,
         "tokenizer_revision": MODEL_REVISION,
+        "resolved_tokenizer_revision": (getattr(tokenizer, "init_kwargs", {}) or {}).get("_commit_hash") or getattr(tokenizer, "_commit_hash", None),
+        "resolved_tokenizer_revision_observable": bool((getattr(tokenizer, "init_kwargs", {}) or {}).get("_commit_hash") or getattr(tokenizer, "_commit_hash", None)),
+        "revision_pin_method": "immutable_full_commit_sha_passed_to_from_pretrained; exposed resolved revisions are checked when available",
+        "model_parameter_dtype": str(next(model.parameters(), None).dtype) if next(model.parameters(), None) is not None else None,
         "tokenizer_chat_template_sha256": sha256_text(template),
         "model_type": getattr(model.config, "model_type", None),
         "model_max_position_embeddings": getattr(model.config, "max_position_embeddings", None),
@@ -360,22 +451,25 @@ def require_authorized_preflight(root):
         raise RuntimeError("Runner token limit differs from the frozen Stage 3 manifest.")
     if os.getenv("EVIDENCE_ABSTENTION_INFERENCE_APPROVED") != "YES":
         raise RuntimeError("Explicit inference authorization environment variable is absent.")
+    validate_runtime_environment(root)
     return manifest
 
 
 def runtime_preflight(root):
+    if RUNTIME_REPORT_PATH.exists():
+        raise FileExistsError("Runtime report exists; choose a new output path rather than overwrite evidence.")
     manifest_path = root / "research_candidates" / "evidence_abstention" / "EXPERIMENT_MANIFEST_STAGE3.json"
     manifest = read_json(manifest_path)
     model_lock = manifest.get("model", {})
     if model_lock.get("id") != MODEL_ID or model_lock.get("revision") != MODEL_REVISION:
         raise RuntimeError("Candidate model/revision differs from the canonical manifest.")
+    validate_runtime_environment(root)
     tokenizer, model = load_model()
+    validate_loaded_model(tokenizer, model)
     report = runtime_report(tokenizer, model)
     report["mode"] = "generation_free_runtime_preflight"
     report["note"] = "No model response was generated; this report does not authorize confirmatory inference."
     RUNTIME_REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    if RUNTIME_REPORT_PATH.exists():
-        raise FileExistsError("Runtime report exists; choose a new output path rather than overwrite evidence.")
     RUNTIME_REPORT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
 
@@ -398,7 +492,9 @@ def run_study(root, manifest):
     for path in outputs:
         path.parent.mkdir(parents=True, exist_ok=True)
 
+    validate_runtime_environment(root)
     tokenizer, model = load_model()
+    validate_loaded_model(tokenizer, model)
     runtime = runtime_report(tokenizer, model)
     runtime_hash = runtime["runtime_fingerprint_sha256"]
     generation = manifest["model"]

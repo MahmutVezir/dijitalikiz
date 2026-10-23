@@ -125,7 +125,8 @@
       "E2_partial": "",
       "E3_insufficient": ""
     },
-    "review_decision_record_sha256": ""
+    "review_decision_record_sha256": "",
+    "reference_root_cause_sha256": ""
   },
   "final_case_decision": {
     "accepted_for_confirmatory": false,
