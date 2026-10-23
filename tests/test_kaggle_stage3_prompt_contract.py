@@ -62,6 +62,11 @@ class Stage3PromptContractTests(unittest.TestCase):
         self.assertIn('"research_candidates/evidence_abstention/kaggle_stage3_p0_p1.py"', analyzer)
         self.assertIn('"scripts/evidence_abstention_preflight.py"', analyzer)
 
+    def test_gold_root_cause_is_bound_to_canonical_registry_hash(self):
+        self.assertIn('record.get("reference_root_cause_sha256")', SOURCE)
+        self.assertIn('sha256_text(case["reference_root_cause"])', SOURCE)
+        self.assertIn("Restricted gold root-cause SHA-256 mismatch", SOURCE)
+
     def test_run_output_identity_is_not_derived_from_hidden_condition(self):
         body = ast.get_source_segment(SOURCE, function_node("run_study"))
         self.assertIn("secrets.token_hex(10)", body)
