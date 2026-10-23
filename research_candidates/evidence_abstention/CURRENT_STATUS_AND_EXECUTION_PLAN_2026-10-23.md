@@ -25,7 +25,7 @@ Bir önceki mühendislik smoke çalışmasında 10 çıktı (P0: 5; P1: 5) üret
 
 Eski V10 denemesi, yalnızca 2026-10-22 tarihli 32 ID'lik ek listeyi kullandığında eski 2026-10-21 maruziyet günlüğündeki kayıtların yeniden kuyruğa girebileceği için geçersiz sayıldı ve onunla devam edilmedi. Düzeltmede iki kaynak birleştirilerek 93 benzersiz ID kalıcı olarak çıkarıldı. Yeni kuyruk 407 aday / 14 proje; dondurulan ilk 100 aday 14 proje ve maruziyet kümesiyle kesişim 0. Kaynak envanter ve yenilenmiş kuyruk hash'leri V10 raporunda kayıtlıdır.
 
-Bu, **metadata sırası doğrulamasıdır**, bug-fix test çifti doğrulaması değildir. Yerel olarak üretilmiş çıktılar V10 raporunda paylaşılmış; GitHub Actions koşularında runner adımları görünmediğinden ve log indirmesi `BlobNotFound` döndürdüğünden remote CI'nin gerçekten yürüdüğü henüz kanıtlanamamıştır. Ana doğrulayıcı vaka sicili boş kalır; hiçbir vaka otomatik kabul edilmez.
+Bu, **metadata sırası doğrulamasıdır**, bug-fix test çifti doğrulaması değildir. İzole yerel kopyalar `py_compile` kontrolünü geçti; 407 satırlı kuyruk ve 100 adaylık intake yeniden üretildi, kuyruk SHA-256'sı V10 manifestiyle eşleşti ve seçilen ID'lerle 93 dışlama kimliğinin kesişimi 0 çıktı. Bu kontrol orijinal historical JSON dosyasının bayt düzeyinde kopyasıyla değil, kaynak kayıttan çıkarılmış 61 ID listesiyle yapıldı; dolayısıyla remote CI veya kaynak dosyanın ham hash'i yerine geçmez. GitHub Actions run 39984142075 yeniden denendi ancak yine adım kaydetmedi ve log indirmesi `BlobNotFound` döndürdü. Ana doğrulayıcı vaka sicili boş kalır; hiçbir vaka otomatik kabul edilmez.
 
 ## Ne kaldı?
 
