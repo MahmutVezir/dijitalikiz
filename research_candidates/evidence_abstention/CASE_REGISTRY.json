@@ -2,7 +2,7 @@
   "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
   "registry_version": "0.1-draft",
   "status": "empty_no_confirmatory_cases_accepted",
-  "as_of": "2026-10-22",
+  "as_of": "2026-10-23",
   "records": [],
   "notes": [
     "An empty registry is not evidence of zero observed model errors or zero eligible upstream bugs.",
@@ -22,11 +22,13 @@
     "The current metadata-only technical intake is SCREENING_COHORT_120_V5_2026-10-21.json. It skips 32 queue-ranked debug-exposure IDs and is not itself a confirmatory sample; the accepted case registry remains empty.",
     "Exposure addendum dated 2026-10-22 permanently excludes the first eight V8 technical-screen candidates and the second eight candidates run in workflow 39830777415. The second batch was executed during workflow verification; all eight are excluded independent of technical outcome. V8 remains historical provenance; V9 is the current metadata-only intake.",
     "Exploratory human-review leads from both exposed V8 batches are recorded in STAGE1_EXPLORATORY_REVIEW_HANDOFF_2026-10-22.json. They must not be promoted into the confirmatory registry.",
-    "The current V9 intake has 100 remaining IDs across 13 upstream projects after the 16 newly documented exclusions plus earlier recorded exposure exclusions. It is metadata-only; accepted confirmatory cases remain zero."
+    "The V9 intake remains historical provenance. The current metadata-only intake path is SCREENING_COHORT_100_V10_2026-10-23.json: 100 candidate IDs across 14 upstream projects from a locally rebuilt 407-row queue. It applies 61 IDs from the historical exposure log plus 32 IDs from the 2026-10-22 addendum (93 unique permanent exclusions). The remote builder CI run is still unverified; none of these IDs is accepted.",
+    "The machine-readable union of all exposure exclusions is EXPOSURE_UNION_2026-10-23.json. It preserves the original historical log and addendum unchanged and must be applied to every new metadata queue."
   ],
   "exposure_exclusion_log_path": "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_LOG_2026-10-21.json",
-  "current_screening_intake_path": "research_candidates/evidence_abstention/SCREENING_COHORT_100_V9_2026-10-22.json",
+  "current_screening_intake_path": "research_candidates/evidence_abstention/SCREENING_COHORT_100_V10_2026-10-23.json",
   "exposure_exclusion_addenda": [
     "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json"
-  ]
+  ],
+  "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
 }
