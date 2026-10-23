@@ -1,0 +1,36 @@
+name: Minimal GitHub-hosted Runner Probe (No Checkout, No Dependencies)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/minimal-runner-probe.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/minimal-runner-probe.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runner-dispatch-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Record runner allocation and execute one shell command
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'runner_probe=started\n'
+          printf 'run_id=%s\n' "$GITHUB_RUN_ID"
+          printf 'run_attempt=%s\n' "$GITHUB_RUN_ATTEMPT"
+          printf 'runner_os=%s\n' "$RUNNER_OS"
+          printf 'runner_arch=%s\n' "$RUNNER_ARCH"
+          printf 'runner_name=%s\n' "$RUNNER_NAME"
+          date -u
+          uname -a
+          printf 'runner_probe=passed\n'
