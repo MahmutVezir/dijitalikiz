@@ -104,6 +104,23 @@ class MetadataIntakeTests(unittest.TestCase):
                 cohort_size=8, exposure_addendum_path=self.exposure_path,
             )
 
+    def test_rejects_case_from_historical_exposure_log_even_if_not_in_v9_addendum(self):
+        exposed = "BugsInPy-ansible-1"
+        self.inventory_rows.append(candidate(exposed, "ansible", False))
+        self.queue_rows[0] = queue_row(exposed, "ansible")
+        write_csv(self.inventory_path, [
+            "case_id", "project", "permanently_excluded_feasibility_case",
+            "metadata_complete", "accepted_for_confirmatory",
+        ], self.inventory_rows)
+        write_csv(self.queue_path, [
+            "case_id", "project", "metadata_complete", "accepted_for_confirmatory",
+        ], self.queue_rows)
+        with self.assertRaisesRegex(ValueError, "documented prior-exposure"):
+            MODULE.build_intake(
+                self.inventory_path, self.queue_path, self.output_path,
+                cohort_size=8, exposure_addendum_path=self.exposure_path,
+            )
+
     def test_rejects_duplicate_queue_ids(self):
         self.queue_rows[1] = dict(self.queue_rows[0])
         write_csv(self.queue_path, [
