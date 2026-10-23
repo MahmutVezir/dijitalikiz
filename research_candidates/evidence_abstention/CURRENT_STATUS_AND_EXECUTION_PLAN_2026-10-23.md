@@ -18,7 +18,7 @@ Bir önceki mühendislik smoke çalışmasında 10 çıktı (P0: 5; P1: 5) üret
 - 100 aday / 13 proje içeren metadata-only V9 intake üretildi. V9 offset-0 ve offset-8 taramalarında incelenen toplam 16 vaka, teknik iş akışının doğrulamasında kullanıldıkları için doğrulayıcı örneklemden kalıcı biçimde dışlandı. Bu intake'te kalan adaylar da yalnızca metadata adayıdır.
 - Qwen yapılandırılmış yanıt adapter'ı, katı JSON ayrıştırma, çoklu aday entropy/lexical disagreement sinyalleri, kalibrasyon arayüzü, Brier/ECE metrikleri, kanıt paketi/hash auditor'ı ve fail-closed inference kapısı oluşturuldu.
 - Karar katmanı; kanıt desteği/çelişki sinyalleri veya kalibrasyon eksikse teşhis üretmek yerine kaçınıyor.
-- Semantik auditor için yeni arayüz ve testler bu yürütme dalında eklendi: [SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md](SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md). **Bu yeni kodun CI sonucu henüz doğrulanmadı; semantik doğruluğu insan puanlamasıyla doğrulanmadı.**
+- Semantik auditor prompt/parser arayüzü ve adapter eşlemesi eklendi; giriş doğrulamaları da sıkılaştırıldı. Modülün 12 sentetik birim testi izole yerel koşuda geçti. Bu, GitHub Actions'ın/adapter'ın tam test paketinin geçtiği veya anlamsal kararların insan puanlarına göre doğru olduğu anlamına gelmez; gerçek Qwen auditor çağrısı ve kör insan doğrulaması hâlâ yapılmadı. Ayrıntı: [SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md](SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md).
 - Tarihsel DİJİTALİKİZ/CCDG veri ve sonuçları yeni araştırmadan ayrıldı; bunlar yeni çalışmanın kanıtı olarak kullanılmayacak.
 
 ## Ne kaldı?
