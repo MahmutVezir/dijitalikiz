@@ -100,15 +100,20 @@ def prepare(queue_path, cohort_path, matrix_path, summary_path, batch_size=8, ba
     # Cohort v1 is the exact queue prefix. Cohort v2 may skip only IDs
     # explicitly documented as permanently exposed before model inference.
     queue_ids=[r["case_id"] for r in queue]
+    if len(queue_ids) != len(set(queue_ids)):
+        raise ValueError("Source queue contains duplicate case IDs")
     excluded=cohort.get("excluded_prior_exposure", [])
-    if not isinstance(excluded, list) or len(excluded) != len(set(excluded)):
+    if not isinstance(excluded, list) or any(not isinstance(item, str) or not item.strip() for item in excluded) or len(excluded) != len(set(excluded)):
         raise ValueError("Prior-exposure exclusion list is malformed or duplicated")
-    if set(ids) & set(excluded):
+    excluded_set=set(excluded)
+    if set(ids) & excluded_set:
         raise ValueError("A prior-exposed ID appears in the active screening cohort")
-    missing_excluded=set(excluded)-set(queue_ids)
-    if missing_excluded:
-        raise ValueError("Excluded prior-exposure IDs are absent from the source queue: "+", ".join(sorted(missing_excluded)))
-    eligible_queue=[r for r in queue if r["case_id"] not in set(excluded)]
+
+    present_exclusions=excluded_set & set(queue_ids)
+    absent_exclusions=excluded_set - set(queue_ids)
+    if present_exclusions and absent_exclusions:
+        raise ValueError("Source queue mixes pre-filtered and unfiltered exposure exclusions")
+    eligible_queue=[r for r in queue if r["case_id"] not in excluded_set] if present_exclusions else queue
     eligible_ids=[r["case_id"] for r in eligible_queue]
     if eligible_ids[:len(ids)] != ids:
         raise ValueError("Frozen cohort IDs do not match the deterministic queue after documented exposure exclusions")
