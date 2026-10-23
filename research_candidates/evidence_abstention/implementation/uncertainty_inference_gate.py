@@ -162,8 +162,8 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
     exposure_ids = set()
     try:
         exposure_union_path_value = manifest.get("exposure_union_path")
-        if not isinstance(exposure_union_path_value, str) or not exposure_union_path_value:
-            raise ValueError("exposure_union_path is missing")
+        if exposure_union_path_value != "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json":
+            raise ValueError("exposure_union_path must point to the canonical dated exposure union")
         exposure_union_relative = Path(exposure_union_path_value)
         if exposure_union_relative.is_absolute() or ".." in exposure_union_relative.parts:
             raise ValueError("exposure union path must be a safe repository-relative path")

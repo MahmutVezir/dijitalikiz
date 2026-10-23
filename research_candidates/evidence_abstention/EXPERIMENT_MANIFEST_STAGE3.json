@@ -54,5 +54,6 @@
   "two_rater_protocol_frozen": false,
   "reviewer_calibration_complete": false,
   "frozen_hashes": {},
-  "case_registry_path": "research_candidates/evidence_abstention/CASE_REGISTRY.json"
+  "case_registry_path": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
+  "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
 }

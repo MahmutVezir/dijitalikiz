@@ -4,7 +4,12 @@
 
 ## Çalıştırma kapısı
 
-Yalnızca `CASE_REGISTRY.json` içinde en az 60 `accepted_for_confirmatory=true` vaka ve en az 8 farklı upstream proje bulunursa analiz yürütülür (hedef 80). `EXPERIMENT_MANIFEST_STAGE3.json` içindeki `case_ids`, kabul edilmiş sicil kayıtlarıyla birebir eşleşmelidir. CSV, her vaka için E1/E2/E3 × P0/P1 altı hücrenin tamamını ve yalnızca son/adjudike edilmiş puanları içermelidir. Önceden maruz kalınan 13 vaka kod içinde de reddedilir.
+Yalnızca `CASE_REGISTRY.json` içinde en az 60 `accepted_for_confirmatory=true` vaka ve en az 8 farklı upstream proje bulunursa analiz yürütülür (hedef 80). `EXPERIMENT_MANIFEST_STAGE3.json` içindeki `case_ids`, kabul edilmiş sicil kayıtlarıyla birebir eşleşmelidir. CSV, her vaka için E1/E2/E3 × P0/P1 altı hücrenin tamamını ve yalnızca son/adjudike edilmiş puanları içermelidir. Eski sabit dışlama listesine ek olarak, `EXPOSURE_UNION_2026-10-23.json` içindeki bütün kalıcı dışlama kimlikleri de her analiz öncesi dinamik biçimde kontrol edilir. Bu birleşim okunamaz, yinelenen kimlik içerir veya sayım alanı tutarsızsa analiz durur.
+
+
+## Dondurulmuş girdilerin SHA-256 denetimi
+
+`frozen_hashes`, depo köküne göreli dosya yollarını anahtar; dosyanın ham baytları üzerinde hesaplanan 64 karakterli küçük harf SHA-256 değerini değer olarak kullanır. Analiz kodu bütün zorunlu girdilerin mevcut hash kayıtlarını ister, her dosyanın gerçek SHA-256 değerini yeniden hesaplar ve tek bir eşleşmezlikte durur. Zorunlu girdiler arasında vaka sicili, kanonik maruziyet birleşimi, çıktı şeması, prompt koşulları, analiz planı, runtime kilidi, kalibrasyon verisi, puanlama rubriği ve analiz kodunun kendisi bulunur. Boş/temsili hash, yalnızca kısmen doldurulmuş liste veya dosya yolunu değiştiren manifest analiz kapısını açmaz.
 
 ## CSV alan sözleşmesi
 

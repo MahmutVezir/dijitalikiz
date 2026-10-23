@@ -5,6 +5,7 @@ import csv
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 
 LEVELS = ("E1_sufficient", "E2_partial", "E3_insufficient")
@@ -17,6 +18,19 @@ COLUMNS = {
     "case_id", "upstream_project", "evidence_level", "policy", "decision",
     "unsupported_definitive_diagnosis", "root_cause_accuracy", "evidence_support",
     "missing_evidence_quality", "adjudication_status",
+}
+HEX64 = re.compile(r"^[0-9a-f]{64}$")
+EXPOSURE_UNION_RELATIVE_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
+REQUIRED_FROZEN_PATHS = {
+    "research_candidates/evidence_abstention/CASE_REGISTRY.json",
+    EXPOSURE_UNION_RELATIVE_PATH,
+    "research_candidates/evidence_abstention/OUTPUT_SCHEMA.json",
+    "research_candidates/evidence_abstention/PROMPT_CONDITIONS.md",
+    "research_candidates/evidence_abstention/ANALYSIS_PLAN_STAGE3.md",
+    "research_candidates/evidence_abstention/RUNTIME_LOCK.json",
+    "research_candidates/evidence_abstention/CALIBRATION_DATA.json",
+    "research_candidates/evidence_abstention/RUBRIC_AND_ADJUDICATION.md",
+    "scripts/analyze_evidence_abstention_results.py",
 }
 PERMANENT_EXCLUSIONS = {
     "BugsInPy-black-1", "BugsInPy-tqdm-1", "BugsInPy-httpie-1",
@@ -92,12 +106,49 @@ def exact_mcnemar_pvalue(p0, p1):
     return {"p_value": p, "p0_only_unsupported": b, "p1_only_unsupported": c, "discordant_pairs": d}
 
 
-def load_accepted_registry(path):
+def load_exposure_union(path):
+    document = json.loads(Path(path).read_text(encoding="utf-8"))
+    ids = document.get("excluded_case_ids") if isinstance(document, dict) else None
+    if (
+        not isinstance(ids, list)
+        or any(not isinstance(value, str) or not value.strip() for value in ids)
+        or len(ids) != len(set(ids))
+    ):
+        raise ValueError("exposure union must contain unique non-empty excluded_case_ids")
+    if document.get("unique_exclusion_count") != len(ids):
+        raise ValueError("exposure union unique_exclusion_count does not match its IDs")
+    return set(ids)
+
+
+def validate_frozen_hashes(root, frozen_hashes):
+    if not isinstance(frozen_hashes, dict) or not frozen_hashes:
+        raise ValueError("analysis blocked: frozen protocol hashes are missing")
+    missing = sorted(REQUIRED_FROZEN_PATHS - set(frozen_hashes))
+    if missing:
+        raise ValueError("analysis blocked: required frozen file hashes are missing: " + ", ".join(missing))
+    for relative_path, expected_hash in frozen_hashes.items():
+        relative = Path(relative_path)
+        if relative.is_absolute() or ".." in relative.parts:
+            raise ValueError("unsafe path in frozen hashes: " + str(relative_path))
+        if not isinstance(expected_hash, str) or not HEX64.fullmatch(expected_hash):
+            raise ValueError("invalid SHA-256 in frozen hashes for " + str(relative_path))
+        target = Path(root) / relative
+        if not target.is_file():
+            raise ValueError("frozen file missing: " + str(relative_path))
+        actual_hash = sha256_file(target)
+        if actual_hash != expected_hash:
+            raise ValueError("frozen file SHA-256 mismatch: " + str(relative_path))
+
+
+def load_accepted_registry(path, excluded_case_ids=None):
     registry = json.loads(Path(path).read_text(encoding="utf-8"))
     records = registry.get("records")
     if not isinstance(records, list):
         raise ValueError("CASE_REGISTRY records must be a list")
     accepted = {}
+    all_exclusions = set(PERMANENT_EXCLUSIONS)
+    if excluded_case_ids is not None:
+        all_exclusions.update(excluded_case_ids)
     for rec in records:
         if rec.get("accepted_for_confirmatory") is not True:
             continue
@@ -106,7 +157,7 @@ def load_accepted_registry(path):
             raise ValueError("accepted registry record lacks case_id/upstream_project")
         if cid in accepted:
             raise ValueError("duplicate accepted case_id: " + cid)
-        if cid in PERMANENT_EXCLUSIONS:
+        if cid in all_exclusions:
             raise ValueError("permanently excluded feasibility/triage case cannot be analyzed: " + cid)
         accepted[cid] = project
     return registry, accepted
@@ -273,10 +324,8 @@ def validate_and_analyze(rows, accepted, minimum_cases=60, minimum_projects=8):
 
 
 def analyze(registry_path, manifest_path, ratings_path):
-    _, accepted = load_accepted_registry(registry_path)
     manifest = json.loads(Path(manifest_path).read_text(encoding="utf-8"))
-    # Analysis must fail closed unless the project has explicitly passed every
-    # pre-inference gate and a timestamped preregistration is recorded.
+    # Analysis must fail closed unless every scientific gate and frozen input is verified.
     if manifest.get("inference_allowed") is not True:
         raise ValueError("analysis blocked: manifest has not explicitly authorized the experiment")
     if manifest.get("dataset_validation_gate") != "CLOSED":
@@ -290,9 +339,25 @@ def analyze(registry_path, manifest_path, ratings_path):
     model = manifest.get("model")
     if not isinstance(model, dict) or model.get("runtime_verification") != "passed":
         raise ValueError("analysis blocked: exact model/tokenizer/runtime verification has not passed")
+
+    repository_root = Path(__file__).resolve().parents[1]
     frozen = manifest.get("frozen_hashes")
-    if not isinstance(frozen, dict) or not frozen:
-        raise ValueError("analysis blocked: frozen protocol hashes are missing")
+    validate_frozen_hashes(repository_root, frozen)
+
+    exposure_path_value = manifest.get("exposure_union_path")
+    if exposure_path_value != EXPOSURE_UNION_RELATIVE_PATH:
+        raise ValueError("analysis blocked: exposure_union_path must match the canonical dated exposure union")
+    exposure_relative = Path(exposure_path_value)
+    exposure_path = repository_root / exposure_relative
+    excluded_case_ids = load_exposure_union(exposure_path)
+
+    expected_registry_path = repository_root / manifest.get(
+        "case_registry_path", "research_candidates/evidence_abstention/CASE_REGISTRY.json"
+    )
+    if Path(registry_path).resolve() != expected_registry_path.resolve():
+        raise ValueError("analysis blocked: registry input does not match the repository's declared CASE_REGISTRY")
+
+    _, accepted = load_accepted_registry(registry_path, excluded_case_ids)
     ids = manifest.get("case_ids")
     if not isinstance(ids, list) or set(ids) != set(accepted) or len(ids) != len(accepted):
         raise ValueError("manifest case_ids must exactly match accepted CASE_REGISTRY records")
@@ -304,6 +369,8 @@ def analyze(registry_path, manifest_path, ratings_path):
         "experiment_manifest_sha256": sha256_file(manifest_path),
         "adjudicated_ratings_sha256": sha256_file(ratings_path),
         "analysis_code_sha256": sha256_file(Path(__file__)),
+        "exposure_union_sha256": sha256_file(exposure_path),
+        "frozen_hashes_verified": True,
     }
     return result
 
