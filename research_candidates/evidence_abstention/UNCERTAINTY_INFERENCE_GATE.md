@@ -10,7 +10,8 @@ Before any model loading or generation, the read-only gate requires:
 - A verifiable preregistration URI and frozen reviewer/adjudication protocol.
 - At least 60 independently accepted cases across at least eight upstream projects.
 - Exact model/tokenizer/runtime verification.
-- Existing artifact files whose SHA-256 hashes match the frozen manifest.
+- The canonical `EXPOSURE_UNION_2026-10-23.json` must be readable, have a unique and count-consistent list of 93 permanent exclusions, and match its frozen SHA-256. No accepted case may intersect that full exclusion union.
+- Every frozen artifact must use its canonical repository-relative path; the case registry may not be redirected to another file. All frozen hashes must match actual file bytes.
 - Separate explicit authorization through EVIDENCE_UNCERTAINTY_INFERENCE_APPROVED=YES.
 
 The current manifest deliberately fails these gates: no accepted case IDs, open validation gate, draft preregistration, unverified model runtime, empty frozen hashes, empty calibration data, and no authorization. Unit tests use synthetic sample objects only; they do not load a model or generate research outputs.
@@ -42,3 +43,8 @@ To make an open gate fail the shell command:
     python research_candidates/evidence_abstention/implementation/uncertainty_inference_gate.py --require-ready
 
 The report-only form prints every blocker and exits successfully without importing PyTorch or Transformers. The require-ready form exits non-zero when any blocker remains. Neither command loads the model or runs inference.
+
+
+## Remote-runner status — 23 October 2026
+
+GitHub Actions attempts associated with the recent inference-gate and analysis-helper changes repeatedly ended before any step was recorded. Raw job metadata for run `39985336539`, attempt 3, reports job `120546618992`, `runner_id=0`, empty `runner_name`, `steps=[]`, and no uploaded artifacts. Runs `39991977270` / job `120545733659` and `39991977312` / job `120545733724` show the same pre-step pattern. These are **not evidence that the tests passed or failed in Python**; the jobs were not assigned a runner in the recorded attempts. The root cause is unconfirmed. Check the repository's Actions enablement/workflow policy and the owner account's Actions usage, billing method and budget stop settings; if those settings do not explain it, provide the run/job IDs and raw metadata to GitHub Support.
