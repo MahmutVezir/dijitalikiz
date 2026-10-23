@@ -33,7 +33,7 @@ Provenance hashes for the local outputs:
 - Refreshed metadata queue CSV: `91c926665752e0e44c6a4ba499422d2af23c6156f4d61b675e29ca0288a27ece`
 - The matching V10 JSON manifest is stored at [SCREENING_COHORT_100_V10_2026-10-23.json](SCREENING_COHORT_100_V10_2026-10-23.json).
 
-This was rebuilt locally from the downloaded/pinned metadata inventory using the documented deterministic project-interleaving order and exposure filtering. The V10 intake itself records that this is a local rebuild pending remote builder execution.
+The refreshed queue was recreated locally using the repository's queue/intake algorithm (with an isolated reconstruction of the historical identifier list matching the 61 recorded source IDs). Both local scripts passed Python compilation and the local end-to-end metadata build reproduced 407 queue rows / 14 projects and the exact refreshed queue SHA-256 shown above. The intake builder then reproduced the same 100 IDs in the frozen V10 manifest, with 0 selected/exposed overlap, 0 accepted cases, and inference false. Because this isolated worktree does not carry the original historical JSON byte-for-byte, this is a filtering/order regression check, not proof of the source-file raw hash or the remote CI run. The V10 manifest remains a local rebuild pending remote builder execution.
 
 ## 3. Remote CI caveat
 
