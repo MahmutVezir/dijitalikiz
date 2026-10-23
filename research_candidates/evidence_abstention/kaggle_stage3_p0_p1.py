@@ -325,16 +325,21 @@ def validate_runtime_environment(root):
 
 
 def validate_loaded_model(tokenizer, model):
+    if (
+        len(MODEL_REVISION) != 40
+        or any(character not in "0123456789abcdef" for character in MODEL_REVISION)
+    ):
+        raise RuntimeError("Model/tokenizer revision must be an immutable full commit SHA.")
     model_revision = getattr(model.config, "_commit_hash", None)
     tokenizer_kwargs = getattr(tokenizer, "init_kwargs", {}) or {}
     tokenizer_revision = tokenizer_kwargs.get("_commit_hash") or getattr(tokenizer, "_commit_hash", None)
-    if model_revision != MODEL_REVISION:
+    if model_revision is not None and model_revision != MODEL_REVISION:
         raise RuntimeError(
-            "Resolved model commit does not match pinned revision: " + repr(model_revision)
+            "Observed model commit does not match the immutable requested revision: " + repr(model_revision)
         )
-    if tokenizer_revision != MODEL_REVISION:
+    if tokenizer_revision is not None and tokenizer_revision != MODEL_REVISION:
         raise RuntimeError(
-            "Resolved tokenizer commit does not match pinned revision: " + repr(tokenizer_revision)
+            "Observed tokenizer commit does not match the immutable requested revision: " + repr(tokenizer_revision)
         )
     first_parameter = next(model.parameters(), None)
     if first_parameter is None or first_parameter.dtype != torch.float16:
@@ -379,9 +384,12 @@ def runtime_report(tokenizer, model):
         "model_id": MODEL_ID,
         "model_revision": MODEL_REVISION,
         "resolved_model_revision": getattr(model.config, "_commit_hash", None),
+        "resolved_model_revision_observable": getattr(model.config, "_commit_hash", None) is not None,
         "tokenizer_id": MODEL_ID,
         "tokenizer_revision": MODEL_REVISION,
         "resolved_tokenizer_revision": (getattr(tokenizer, "init_kwargs", {}) or {}).get("_commit_hash") or getattr(tokenizer, "_commit_hash", None),
+        "resolved_tokenizer_revision_observable": bool((getattr(tokenizer, "init_kwargs", {}) or {}).get("_commit_hash") or getattr(tokenizer, "_commit_hash", None)),
+        "revision_pin_method": "immutable_full_commit_sha_passed_to_from_pretrained; exposed resolved revisions are checked when available",
         "model_parameter_dtype": str(next(model.parameters(), None).dtype) if next(model.parameters(), None) is not None else None,
         "tokenizer_chat_template_sha256": sha256_text(template),
         "model_type": getattr(model.config, "model_type", None),
