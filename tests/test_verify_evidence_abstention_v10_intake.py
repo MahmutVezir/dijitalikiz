@@ -102,6 +102,7 @@ class V10IntakeReproducibilityTests(unittest.TestCase):
             self.frozen_path,
             self.exposure_path,
             expected_inventory_rows=15,
+            expected_inventory_projects=15,
             expected_queue_rows=12,
             expected_cohort_size=10,
             expected_project_count=10,
@@ -143,6 +144,23 @@ class V10IntakeReproducibilityTests(unittest.TestCase):
         report = self.verify()
         self.assertFalse(report["ready"])
         self.assertTrue(any("reintroduces previously exposed IDs" in item for item in report["blockers"]))
+
+    def test_rejects_exposure_union_id_absent_from_inventory(self):
+        exposure = json.loads(self.exposure_path.read_text(encoding="utf-8"))
+        exposure["excluded_case_ids"].append("BugsInPy-not-in-inventory")
+        exposure["unique_exclusion_count"] = len(exposure["excluded_case_ids"])
+        self.exposure_path.write_text(json.dumps(exposure), encoding="utf-8")
+        report = self.verify()
+        self.assertFalse(report["ready"])
+        self.assertTrue(any("absent from the inventory" in item for item in report["blockers"]))
+
+    def test_rejects_malformed_exclusion_list_without_raising(self):
+        generated = json.loads(self.generated_path.read_text(encoding="utf-8"))
+        generated["excluded_prior_exposure"] = [{"unexpected": "object"}]
+        self.generated_path.write_text(json.dumps(generated), encoding="utf-8")
+        report = self.verify()
+        self.assertFalse(report["ready"])
+        self.assertTrue(any("missing or malformed" in item for item in report["blockers"]))
 
     def test_rejects_preaccepted_metadata_case(self):
         generated = json.loads(self.generated_path.read_text(encoding="utf-8"))
