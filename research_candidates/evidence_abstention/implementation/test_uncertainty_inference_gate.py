@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from uncertainty_inference_gate import evaluate_gate, load_authorized_qwen
+from uncertainty_inference_gate import EXPECTED_ARTIFACT_PATHS, evaluate_gate, load_authorized_qwen
 
 
 def accepted_case():
@@ -48,7 +48,7 @@ def write_ready_gate_fixture(root: Path, record: dict, excluded_case_ids=None) -
     excluded_case_ids = [] if excluded_case_ids is None else excluded_case_ids
     frozen_artifacts = {}
 
-    for name, relative_path in __import__("uncertainty_inference_gate").EXPECTED_ARTIFACT_PATHS.items():
+    for name, relative_path in EXPECTED_ARTIFACT_PATHS.items():
         target = root / relative_path
         target.parent.mkdir(parents=True, exist_ok=True)
         if name == "case_registry":
@@ -84,8 +84,8 @@ def write_ready_gate_fixture(root: Path, record: dict, excluded_case_ids=None) -
             "quantization": "none",
         },
         "case_ids": [record["case_id"]],
-        "case_registry_path": __import__("uncertainty_inference_gate").EXPECTED_ARTIFACT_PATHS["case_registry"],
-        "exposure_union_path": __import__("uncertainty_inference_gate").EXPECTED_ARTIFACT_PATHS["exposure_union"],
+        "case_registry_path": EXPECTED_ARTIFACT_PATHS["case_registry"],
+        "exposure_union_path": EXPECTED_ARTIFACT_PATHS["exposure_union"],
         "minimum_confirmatory_cases": 1,
         "minimum_upstream_projects": 1,
         "frozen_artifacts": frozen_artifacts,
