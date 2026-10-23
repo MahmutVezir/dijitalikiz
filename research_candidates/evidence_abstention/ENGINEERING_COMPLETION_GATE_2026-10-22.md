@@ -10,7 +10,7 @@
 - Uncertainty-policy prototype: generation-score token entropy, candidate disagreement, calibration interface, Brier/ECE metrics, and fail-closed diagnosis decision.
 - Independent inference gate; current manifest remains closed.
 - Deterministic evidence-packet and citation integrity auditor: exact packet/item fields, canonical SHA-256 checks, unique evidence IDs, no known gold-label/answerability fields at packet level, and response references restricted to packet IDs.
-- Bridge from structural audit to the decision layer. It never derives semantic judgments from E-level labels and leaves support coverage, self-check conflict, and contradiction unset; with those signals missing, the system abstains.
+- Bridge from structural audit to the decision layer. A semantic-audit prompt/parser interface and adapter mapping have now been added on the current development branch; malformed/missing semantic output still leaves signals unset and forces abstention. The interface has not been validated against independent human ratings.
 - Synthetic unit tests for the structural auditor and adapter decision path.
 - Reviewer form templates for Keras-5 and Tornado-6; they are blank forms, not completed reviews.
 - Exploratory Kaggle smoke audit preserved and explicitly excluded from confirmatory results.
@@ -22,7 +22,7 @@
 | Accepted independent cases | 0 | At least 60 accepted cases from at least 8 upstream projects; target 80 |
 | Case root-cause ground truth | Not adjudicated | Two independent reviewers plus recorded disagreement/adjudication per accepted case |
 | Evidence sufficiency review | Not complete | Separate, disjoint blinded panel reviews E1/E2/E3 evidence packets |
-| Semantic support/contradiction runtime signals | Not implemented or validated | Frozen method evaluated independently against blinded human ratings; gold E-level labels and hidden answers never enter runtime |
+| Semantic support/contradiction runtime signals | Interface implemented in the current development PR; semantic validity not established | Execute the pinned auditor invocation only after permissions, compare against blinded human ratings on separate calibration data, report agreement/error types, and freeze an audited threshold; gold E-level labels and hidden answers never enter runtime |
 | Model/tokenizer/runtime load | Not verified for study lock | Exact pinned non-quantized checkpoint, tokenizer/chat template, Python, PyTorch, Transformers and CUDA device verified without output generation |
 | Calibration data and thresholds | Empty/unfrozen | Independent labeled calibration split, documented metrics, thresholds selected before confirmatory results and frozen |
 | Preregistration | Draft only | Public, timestamped, auditable preregistration before any confirmatory inference |
