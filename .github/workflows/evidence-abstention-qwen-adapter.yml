@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - research/evidence-abstention-qwen-adapter-2026-10-22
+      - research/current-status-and-execution-plan-2026-10-23
     paths:
       - "research_candidates/evidence_abstention/implementation/**"
       - "research_candidates/evidence_abstention/UNCERTAINTY_EXPERIMENT_MANIFEST.json"
