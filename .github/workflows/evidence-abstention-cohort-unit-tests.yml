@@ -9,10 +9,12 @@ on:
       - "scripts/inventory_bugsinpy_candidates.py"
       - "scripts/build_evidence_abstention_screening_queue.py"
       - "scripts/build_evidence_abstention_cohort_matrix.py"
+      - "scripts/build_evidence_abstention_intake.py"
       - "scripts/evidence_abstention_requires_pytest.py"
       - "tests/test_inventory_bugsinpy_candidates.py"
       - "tests/test_build_evidence_abstention_screening_queue.py"
       - "tests/test_build_evidence_abstention_cohort_matrix.py"
+      - "tests/test_build_evidence_abstention_intake.py"
       - "tests/test_evidence_abstention_requires_pytest.py"
   push:
     branches:
@@ -24,10 +26,12 @@ on:
       - "scripts/inventory_bugsinpy_candidates.py"
       - "scripts/build_evidence_abstention_screening_queue.py"
       - "scripts/build_evidence_abstention_cohort_matrix.py"
+      - "scripts/build_evidence_abstention_intake.py"
       - "scripts/evidence_abstention_requires_pytest.py"
       - "tests/test_inventory_bugsinpy_candidates.py"
       - "tests/test_build_evidence_abstention_screening_queue.py"
       - "tests/test_build_evidence_abstention_cohort_matrix.py"
+      - "tests/test_build_evidence_abstention_intake.py"
       - "tests/test_evidence_abstention_requires_pytest.py"
 
 permissions:
@@ -53,6 +57,7 @@ jobs:
             "test_inventory_bugsinpy_candidates.py" \
             "test_build_evidence_abstention_screening_queue.py" \
             "test_build_evidence_abstention_cohort_matrix.py" \
+            "test_build_evidence_abstention_intake.py" \
             "test_evidence_abstention_requires_pytest.py"; do
             log="$log_dir/$spec.log"
             python -m unittest discover -s tests -p "$spec" -v >"$log" 2>&1

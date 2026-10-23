@@ -4,8 +4,13 @@ import argparse
 import csv
 import hashlib
 import json
+import sys
 from collections import Counter
 from pathlib import Path
+
+SCRIPT_DIR = str(Path(__file__).resolve().parent)
+if SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, SCRIPT_DIR)
 
 from build_evidence_abstention_screening_queue import EXCLUDED_CASES, load_exposure_exclusions
 
