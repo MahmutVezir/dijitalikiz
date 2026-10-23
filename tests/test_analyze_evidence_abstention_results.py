@@ -10,6 +10,12 @@ MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC and SPEC.loader
 SPEC.loader.exec_module(MODULE)
 
+PREFLIGHT_SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "evidence_abstention_preflight.py"
+PREFLIGHT_SPEC = importlib.util.spec_from_file_location("evidence_abstention_preflight", PREFLIGHT_SCRIPT)
+PREFLIGHT_MODULE = importlib.util.module_from_spec(PREFLIGHT_SPEC)
+assert PREFLIGHT_SPEC and PREFLIGHT_SPEC.loader
+PREFLIGHT_SPEC.loader.exec_module(PREFLIGHT_MODULE)
+
 
 def synthetic_inputs(n=8, projects=8):
     accepted = {f"BugsInPy-proj{i % projects}-{i+1}": f"proj{i % projects}" for i in range(n)}
@@ -172,6 +178,13 @@ class ExactMcNemarTests(unittest.TestCase):
                 MODULE.validate_registry_path(canonical, canonical_manifest, root),
                 canonical,
             )
+
+
+    def test_preflight_and_analysis_require_the_same_frozen_file_paths(self):
+        self.assertEqual(
+            set(MODULE.REQUIRED_FROZEN_PATHS),
+            set(PREFLIGHT_MODULE.HASHES.values()),
+        )
 
     def test_frozen_hash_validator_requires_full_set_and_detects_tampering(self):
         with tempfile.TemporaryDirectory() as temp:

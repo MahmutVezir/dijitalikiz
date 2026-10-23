@@ -8,14 +8,15 @@ import sys
 from pathlib import Path
 
 HASHES = {
-    "prompt_conditions": "PROMPT_CONDITIONS.md",
-    "output_schema": "OUTPUT_SCHEMA.json",
-    "analysis_plan": "ANALYSIS_PLAN_STAGE3.md",
-    "design": "STAGE3_EXPERIMENT_DESIGN.md",
-    "scoring_rubric": "RUBRIC_AND_ADJUDICATION.md",
-    "runtime_lock": "RUNTIME_LOCK.json",
-    "case_registry": "CASE_REGISTRY.json",
-    "exposure_union": "EXPOSURE_UNION_2026-10-23.json",
+    "prompt_conditions": "research_candidates/evidence_abstention/PROMPT_CONDITIONS.md",
+    "output_schema": "research_candidates/evidence_abstention/OUTPUT_SCHEMA.json",
+    "analysis_plan": "research_candidates/evidence_abstention/ANALYSIS_PLAN_STAGE3.md",
+    "design": "research_candidates/evidence_abstention/STAGE3_EXPERIMENT_DESIGN.md",
+    "scoring_rubric": "research_candidates/evidence_abstention/RUBRIC_AND_ADJUDICATION.md",
+    "runtime_lock": "research_candidates/evidence_abstention/RUNTIME_LOCK.json",
+    "case_registry": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
+    "exposure_union": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
+    "analysis_code": "scripts/analyze_evidence_abstention_results.py",
 }
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 LEVELS = ("E1_sufficient", "E2_partial", "E3_insufficient")
@@ -49,7 +50,7 @@ def evaluate(root):
     schema = read_json(project / "OUTPUT_SCHEMA.json", "output schema", blockers)
 
     for name, relpath in HASHES.items():
-        if not (project / relpath).is_file():
+        if not (root / relpath).is_file():
             blockers.append("Required hash target missing: " + relpath)
 
     excluded_case_ids = set()
@@ -91,8 +92,12 @@ def evaluate(root):
         if not isinstance(frozen, dict):
             frozen = {}
             blockers.append("Manifest frozen_hashes must be an object.")
+        expected_paths = set(HASHES.values())
+        unexpected_paths = sorted(set(frozen) - expected_paths)
+        if unexpected_paths:
+            blockers.append("Unexpected frozen SHA-256 path(s): " + ", ".join(unexpected_paths))
         for name, relpath in HASHES.items():
-            expected, path = frozen.get(name), project / relpath
+            expected, path = frozen.get(relpath), root / relpath
             if not isinstance(expected, str) or not HEX64.fullmatch(expected):
                 blockers.append("Frozen SHA-256 missing/invalid: " + name)
             elif path.is_file() and sha256(path) != expected:

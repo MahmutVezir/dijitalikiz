@@ -39,6 +39,9 @@ def fixture(root, excluded_case_ids=None):
     (project / "OUTPUT_SCHEMA.json").write_text(json.dumps({"type": "object", "required": required}), encoding="utf-8")
     for name in ("PROMPT_CONDITIONS.md", "ANALYSIS_PLAN_STAGE3.md", "STAGE3_EXPERIMENT_DESIGN.md", "RUBRIC_AND_ADJUDICATION.md"):
         (project / name).write_text("fixture only", encoding="utf-8")
+    analysis_code = root / "scripts" / "analyze_evidence_abstention_results.py"
+    analysis_code.parent.mkdir(parents=True, exist_ok=True)
+    analysis_code.write_text("analysis helper fixture", encoding="utf-8")
 
 
 class PreflightTests(unittest.TestCase):
@@ -173,6 +176,27 @@ class PreflightTests(unittest.TestCase):
             self.assertFalse(report["ready"])
             self.assertTrue(any("reviewer IDs must be distinct between ground-truth and evidence review panels" in b for b in report["blockers"]))
 
+
+
+    def test_frozen_hashes_use_the_canonical_repository_relative_path_contract(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fixture(root)
+            project = root / "research_candidates" / "evidence_abstention"
+            manifest_path = project / "EXPERIMENT_MANIFEST_STAGE3.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["frozen_hashes"] = {
+                relative_path: MODULE.sha256(root / relative_path)
+                for relative_path in MODULE.HASHES.values()
+            }
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            report = MODULE.evaluate(root)
+
+            self.assertFalse(report["ready"])
+            self.assertFalse(any("Frozen SHA-256 missing/invalid" in b for b in report["blockers"]))
+            self.assertFalse(any("Frozen SHA-256 mismatch" in b for b in report["blockers"]))
+            self.assertFalse(any("Unexpected frozen SHA-256 path" in b for b in report["blockers"]))
 
     def test_preflight_rejects_malformed_exposure_union(self):
         with tempfile.TemporaryDirectory() as tmp:
