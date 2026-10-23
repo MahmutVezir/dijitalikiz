@@ -11,16 +11,17 @@ from typing import Mapping
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 EXPECTED_MODEL_ID = "Qwen/Qwen2.5-3B-Instruct"
 EXPECTED_MODEL_REVISION = "aa8e72537993ba99e69dfaafa59ed015b17504d1"
-REQUIRED_ARTIFACTS = (
-    "case_registry",
-    "exposure_union",
-    "output_schema",
-    "prompt_template",
-    "analysis_plan",
-    "runtime_lock",
-    "calibration_data",
-    "evidence_audit_protocol",
-)
+EXPECTED_ARTIFACT_PATHS = {
+    "case_registry": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
+    "exposure_union": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
+    "output_schema": "research_candidates/evidence_abstention/OUTPUT_SCHEMA.json",
+    "prompt_template": "research_candidates/evidence_abstention/PROMPT_CONDITIONS.md",
+    "analysis_plan": "research_candidates/evidence_abstention/ANALYSIS_PLAN_STAGE3.md",
+    "runtime_lock": "research_candidates/evidence_abstention/UNCERTAINTY_RUNTIME_LOCK.json",
+    "calibration_data": "research_candidates/evidence_abstention/CALIBRATION_DATA.json",
+    "evidence_audit_protocol": "research_candidates/evidence_abstention/RUBRIC_AND_ADJUDICATION.md",
+}
+REQUIRED_ARTIFACTS = tuple(EXPECTED_ARTIFACT_PATHS)
 EVIDENCE_LEVELS = ("E1_sufficient", "E2_partial", "E3_insufficient")
 
 
@@ -185,8 +186,8 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
     project_count = 0
     try:
         registry_path_value = manifest.get("case_registry_path")
-        if not isinstance(registry_path_value, str) or not registry_path_value:
-            raise ValueError("case_registry_path is missing")
+        if registry_path_value != EXPECTED_ARTIFACT_PATHS["case_registry"]:
+            raise ValueError("case_registry_path must point to the canonical confirmatory case registry")
         registry_path = root / registry_path_value
         registry = json.loads(registry_path.read_text(encoding="utf-8"))
         records = registry.get("records") if isinstance(registry, dict) else None
@@ -230,6 +231,13 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
         relative_path = entry.get("path")
         if not isinstance(expected, str) or not HEX64.fullmatch(expected) or not isinstance(relative_path, str) or not relative_path:
             blockers.append("Frozen artifact path or SHA-256 missing/invalid: " + name)
+            continue
+        artifact_relative = Path(relative_path)
+        if artifact_relative.is_absolute() or ".." in artifact_relative.parts:
+            blockers.append("Frozen artifact path must be a safe repository-relative path: " + name)
+            continue
+        if relative_path != EXPECTED_ARTIFACT_PATHS[name]:
+            blockers.append("Frozen artifact path does not match canonical project path: " + name)
             continue
         if name == "case_registry" and relative_path != manifest.get("case_registry_path"):
             blockers.append("Frozen case_registry path must match manifest case_registry_path.")
