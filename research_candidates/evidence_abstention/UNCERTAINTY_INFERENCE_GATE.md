@@ -10,7 +10,8 @@ Before any model loading or generation, the read-only gate requires:
 - A verifiable preregistration URI and frozen reviewer/adjudication protocol.
 - At least 60 independently accepted cases across at least eight upstream projects.
 - Exact model/tokenizer/runtime verification.
-- Existing artifact files whose SHA-256 hashes match the frozen manifest.
+- The canonical `EXPOSURE_UNION_2026-10-23.json` is valid, has a unique and count-consistent ID list, and is hash-bound in the manifest; no accepted case ID may intersect the permanent exposure union.
+- Existing artifact files whose SHA-256 hashes match the frozen manifest, including the exposure union itself.
 - Separate explicit authorization through EVIDENCE_UNCERTAINTY_INFERENCE_APPROVED=YES.
 
 The current manifest deliberately fails these gates: no accepted case IDs, open validation gate, draft preregistration, unverified model runtime, empty frozen hashes, empty calibration data, and no authorization. Unit tests use synthetic sample objects only; they do not load a model or generate research outputs.
@@ -42,3 +43,8 @@ To make an open gate fail the shell command:
     python research_candidates/evidence_abstention/implementation/uncertainty_inference_gate.py --require-ready
 
 The report-only form prints every blocker and exits successfully without importing PyTorch or Transformers. The require-ready form exits non-zero when any blocker remains. Neither command loads the model or runs inference.
+
+
+## Permanent exposure guard (added 23 October 2026)
+
+The gate rejects a registry case found anywhere in the canonical 93-ID exposure union, even if its registry row claims prior-exposure clearance. The manifest must point to the one canonical dated file, and the frozen artifact entry must use the exact same path and match its SHA-256. A missing, malformed, duplicated, count-inconsistent, or hash-mismatched exclusion list keeps inference closed. This does not accept any cases or change the currently empty registry.
