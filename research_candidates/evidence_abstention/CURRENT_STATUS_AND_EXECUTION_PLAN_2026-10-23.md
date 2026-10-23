@@ -15,11 +15,17 @@ Bir önceki mühendislik smoke çalışmasında 10 çıktı (P0: 5; P1: 5) üret
 
 - Araştırma sorusu ve aday bilimsel katkı tanımlandı; literatür taramasının hedefli olduğu ve özgünlüğün kanıtlanmadığı açıklandı.
 - BugsInPy sabit revizyonunda 501 ham metadata kaydı / 17 upstream proje envanteri oluşturuldu; bu kabul edilmiş örneklem değildir.
-- 100 aday / 13 proje içeren metadata-only V9 intake üretildi. V9 offset-0 ve offset-8 taramalarında incelenen toplam 16 vaka, teknik iş akışının doğrulamasında kullanıldıkları için doğrulayıcı örneklemden kalıcı biçimde dışlandı. Bu intake'te kalan adaylar da yalnızca metadata adayıdır.
+- V9'un yerini alan **V10 metadata-only intake** hazırlandı: sabit BugsInPy envanterindeki 501 ham metadata kaydı üzerinden, 61 tarihsel + 32 güncel = 93 kalıcı maruziyet/dışlama kimliği birleştirildi. Bu filtreyle 407 metadata adayı / 14 proje kaldı; V10'un ilk 100 adayı 14 proje içeriyor ve dışlama kümesiyle kesişimi 0. Bu sıra yerel olarak yeniden üretildi; remote CI yürütmesi henüz doğrulanmadı. Hiçbir V10 adayı kabul edilmiş vaka değil ve V9 teknik tarama grupları hâlâ kalıcı dışlamada. Ayrıntı: [V10 intake raporu](STAGE1_V10_METADATA_INTAKE_2026-10-23.md), [93 ID'lik maruziyet birleşimi](EXPOSURE_UNION_2026-10-23.json), [dondurulmuş V10 sıra manifesti](SCREENING_COHORT_100_V10_2026-10-23.json).
 - Qwen yapılandırılmış yanıt adapter'ı, katı JSON ayrıştırma, çoklu aday entropy/lexical disagreement sinyalleri, kalibrasyon arayüzü, Brier/ECE metrikleri, kanıt paketi/hash auditor'ı ve fail-closed inference kapısı oluşturuldu.
 - Karar katmanı; kanıt desteği/çelişki sinyalleri veya kalibrasyon eksikse teşhis üretmek yerine kaçınıyor.
 - Semantik auditor prompt/parser arayüzü ve adapter eşlemesi eklendi; giriş doğrulamaları da sıkılaştırıldı. Modülün 12 sentetik birim testi izole yerel koşuda geçti. Bu, GitHub Actions'ın/adapter'ın tam test paketinin geçtiği veya anlamsal kararların insan puanlarına göre doğru olduğu anlamına gelmez; gerçek Qwen auditor çağrısı ve kör insan doğrulaması hâlâ yapılmadı. Ayrıntı: [SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md](SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md).
 - Tarihsel DİJİTALİKİZ/CCDG veri ve sonuçları yeni araştırmadan ayrıldı; bunlar yeni çalışmanın kanıtı olarak kullanılmayacak.
+
+## V10 veri kuyruğu düzeltmesi — 23 Ekim 2026
+
+Eski V10 denemesi, yalnızca 2026-10-22 tarihli 32 ID'lik ek listeyi kullandığında eski 2026-10-21 maruziyet günlüğündeki kayıtların yeniden kuyruğa girebileceği için geçersiz sayıldı ve onunla devam edilmedi. Düzeltmede iki kaynak birleştirilerek 93 benzersiz ID kalıcı olarak çıkarıldı. Yeni kuyruk 407 aday / 14 proje; dondurulan ilk 100 aday 14 proje ve maruziyet kümesiyle kesişim 0. Kaynak envanter ve yenilenmiş kuyruk hash'leri V10 raporunda kayıtlıdır.
+
+Bu, **metadata sırası doğrulamasıdır**, bug-fix test çifti doğrulaması değildir. Yerel olarak üretilmiş çıktılar V10 raporunda paylaşılmış; GitHub Actions koşularında runner adımları görünmediğinden ve log indirmesi `BlobNotFound` döndürdüğünden remote CI'nin gerçekten yürüdüğü henüz kanıtlanamamıştır. Ana doğrulayıcı vaka sicili boş kalır; hiçbir vaka otomatik kabul edilmez.
 
 ## Ne kaldı?
 
