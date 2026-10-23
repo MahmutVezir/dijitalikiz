@@ -3,8 +3,11 @@ import re
 from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
+from evidence_packet_audit import audit_packet
+
 EVIDENCE_ID_PATTERN = re.compile(r"[A-Z][A-Z0-9_-]{0,63}")
 CLAIM_ID_PATTERN = re.compile(r"C[1-9][0-9]{0,2}")
+HASH_PATTERN = re.compile(r"[0-9a-f]{64}")
 CLAIM_STATUSES = {"supported", "partial", "unsupported", "contradicted"}
 ANSWER_FIELDS = {
     "decision",
@@ -64,7 +67,11 @@ def build_semantic_audit_messages(
             raise ValueError(key + " must contain at most eight strings")
         normalized_answer[key] = list(values)
 
-    if not isinstance(evidence_items, Sequence) or isinstance(evidence_items, (str, bytes)) or not evidence_items:
+    if (
+        not isinstance(evidence_items, Sequence)
+        or isinstance(evidence_items, (str, bytes))
+        or not evidence_items
+    ):
         raise ValueError("evidence items must be a non-empty sequence")
 
     safe_items = []
@@ -106,6 +113,34 @@ def build_semantic_audit_messages(
     )
     user = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return {"role": "system", "content": system}, {"role": "user", "content": user}
+
+
+def build_semantic_audit_messages_from_packet(
+    candidate_answer: Mapping[str, Any],
+    packet: Any,
+    expected_packet_sha256: str,
+) -> tuple[dict[str, str], dict[str, str]]:
+    """Build the auditor request only from a structurally valid, externally frozen packet."""
+    if not isinstance(expected_packet_sha256, str) or HASH_PATTERN.fullmatch(expected_packet_sha256) is None:
+        raise ValueError("a frozen external packet SHA-256 is required")
+
+    packet_audit = audit_packet(packet, expected_sha256=expected_packet_sha256)
+    if packet_audit.status != "valid":
+        raise ValueError(
+            "evidence packet failed structural/hash validation: " + "; ".join(packet_audit.errors)
+        )
+
+    if not isinstance(packet, Mapping):
+        raise ValueError("evidence packet must be a mapping")
+    items = packet.get("items")
+    if not isinstance(items, list):
+        raise ValueError("validated evidence packet items must be a list")
+
+    safe_items = [{"id": item["id"], "content": item["content"]} for item in items]
+    if {item["id"] for item in safe_items} != set(packet_audit.available_evidence_ids):
+        raise ValueError("validated evidence IDs do not match packet contents")
+
+    return build_semantic_audit_messages(candidate_answer, safe_items)
 
 
 def parse_semantic_audit(
