@@ -20,6 +20,7 @@ COLUMNS = {
     "missing_evidence_quality", "adjudication_status",
 }
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
+CASE_REGISTRY_RELATIVE_PATH = "research_candidates/evidence_abstention/CASE_REGISTRY.json"
 EXPOSURE_UNION_RELATIVE_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
 REQUIRED_FROZEN_PATHS = {
     "research_candidates/evidence_abstention/CASE_REGISTRY.json",
@@ -118,6 +119,16 @@ def load_exposure_union(path):
     if document.get("unique_exclusion_count") != len(ids):
         raise ValueError("exposure union unique_exclusion_count does not match its IDs")
     return set(ids)
+
+
+def validate_registry_path(registry_path, manifest, repository_root):
+    declared = manifest.get("case_registry_path")
+    if declared != CASE_REGISTRY_RELATIVE_PATH:
+        raise ValueError("analysis blocked: case_registry_path must point to the canonical confirmatory registry")
+    expected = Path(repository_root) / CASE_REGISTRY_RELATIVE_PATH
+    if Path(registry_path).resolve() != expected.resolve():
+        raise ValueError("analysis blocked: registry input is not the canonical confirmatory registry")
+    return expected
 
 
 def validate_frozen_hashes(root, frozen_hashes):
@@ -351,13 +362,9 @@ def analyze(registry_path, manifest_path, ratings_path):
     exposure_path = repository_root / exposure_relative
     excluded_case_ids = load_exposure_union(exposure_path)
 
-    expected_registry_path = repository_root / manifest.get(
-        "case_registry_path", "research_candidates/evidence_abstention/CASE_REGISTRY.json"
-    )
-    if Path(registry_path).resolve() != expected_registry_path.resolve():
-        raise ValueError("analysis blocked: registry input does not match the repository's declared CASE_REGISTRY")
+    expected_registry_path = validate_registry_path(registry_path, manifest, repository_root)
 
-    _, accepted = load_accepted_registry(registry_path, excluded_case_ids)
+    _, accepted = load_accepted_registry(expected_registry_path, excluded_case_ids)
     ids = manifest.get("case_ids")
     if not isinstance(ids, list) or set(ids) != set(accepted) or len(ids) != len(accepted):
         raise ValueError("manifest case_ids must exactly match accepted CASE_REGISTRY records")
