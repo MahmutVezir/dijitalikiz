@@ -54,6 +54,10 @@ Hedef 80 bağımsız kusur vakasıdır. Doğrulayıcı alt sınır en az 60 bağ
 
 Aday model Qwen/Qwen2.5-3B-Instruct, sabit revizyon kimliği aa8e72537993ba99e69dfaafa59ed015b17504d1 olarak belirlenmiştir. Model ve tokenizer yüklemesi, chat template, Python/PyTorch/Transformers/CUDA-GPU ortamı ve artefakt hash'leri deney öncesinde doğrulanmalıdır. Ana deney deterministiktir; otomatik yeniden üretme, bozuk JSON'u onarma veya sonuç görüldükten sonra hücre değiştirme yoktur.
 
+### 4.4 Altın cevap ve paket bütünlüğü
+
+Her kanıt paketinin tam olarak modele gösterilen metin biçimi SHA-256 ile bağlanır. Buna ek olarak, modelin görmediği doğrulanmış kök neden metninin hash'i kabul edilen vaka sicilinde saklanır ve kısıtlı çalıştırma veri kümesindeki metinle eşleşmesi zorunludur. Bu iki bütünlük denetimi, aynı kanıt paketi korunurken referans cevabın sessizce değiştirilmesini önlemeyi amaçlar. Hash uyuşmazlığında deney çalıştırması durdurulur; vakayı yeni bir değerle otomatik olarak güncellemek yasaktır.
+
 ### 4.4 Kör değerlendirme
 
 Kök neden ve buggy/fixed test ilişkisini değerlendiren iki kişilik panel ile modelin görünen kanıtına dayanmasını değerlendiren, ilk panelden ayrı iki kişilik kör panel planlanmıştır. Kanıt paneli gerçek kök nedeni, fixed kodu, vaka kimliğini ve gizli kanıt düzeyi etiketini görmemelidir. İlk puanlar saklanacak, uyuşmazlıklar önceden belirlenmiş adjudication kurallarıyla çözülecektir. İnsanlar fiilen değerlendirme yapmadan bu adım tamamlanmış sayılmayacaktır.
