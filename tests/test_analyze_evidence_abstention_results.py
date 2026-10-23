@@ -150,6 +150,29 @@ class ExactMcNemarTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "does not match"):
                 MODULE.load_exposure_union(union)
 
+
+    def test_analysis_registry_path_cannot_be_redirected_by_manifest(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            canonical = root / MODULE.CASE_REGISTRY_RELATIVE_PATH
+            canonical.parent.mkdir(parents=True, exist_ok=True)
+            canonical.write_text(json.dumps({"records": []}), encoding="utf-8")
+            alternate = root / "alternate-registry.json"
+            alternate.write_text(json.dumps({"records": []}), encoding="utf-8")
+
+            redirected_manifest = {"case_registry_path": "alternate-registry.json"}
+            with self.assertRaisesRegex(ValueError, "canonical confirmatory registry"):
+                MODULE.validate_registry_path(alternate, redirected_manifest, root)
+
+            canonical_manifest = {"case_registry_path": MODULE.CASE_REGISTRY_RELATIVE_PATH}
+            with self.assertRaisesRegex(ValueError, "not the canonical"):
+                MODULE.validate_registry_path(alternate, canonical_manifest, root)
+
+            self.assertEqual(
+                MODULE.validate_registry_path(canonical, canonical_manifest, root),
+                canonical,
+            )
+
     def test_frozen_hash_validator_requires_full_set_and_detects_tampering(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
