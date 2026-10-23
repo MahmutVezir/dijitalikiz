@@ -11,7 +11,7 @@
 | Bileşen | Durum |
 |---|---|
 | Kaynak envanteri | BugsInPy sabit sürümünde 501 ham metadata kaydı / 17 proje; bu sayı kabul edilmiş vaka sayısı değildir. |
-| Güncel intake | 100 metadata adayı / 13 upstream proje içeren V9 intake. Teknik taramada incelenen iki 8'li grubun 16 vakası doğrulayıcı örneklemden kalıcı çıkarıldı. |
+| Güncel intake | V10 yerel metadata sırası: 100 aday / 14 upstream proje; 407 adaylık yenilenmiş kuyruğun ardından oluşturuldu. 61 tarihsel + 32 güncel teknik/maruziyet kaydı = 93 kalıcı dışlama; seçilen V10 listesiyle kesişim 0. Uzak CI doğrulaması hâlâ bekliyor. |
 | Kabul edilmiş doğrulayıcı vakalar | **0**; vaka sicili bilerek boş. |
 | Yazılım prototipi | Qwen adapter'ı, yapılandırılmış çıktı ayrıştırma, belirsizlik/politika katmanı, paket hash/referans denetimi, inference kapısı ve sentetik birim testleri var. |
 | Semantik kanıt desteği | Prompt/parser ve adapter arayüzü mevcut; son girdi doğrulama sıkılaştırmasının 12 izole yerel birim testi geçti. Tam GitHub Actions/adapter test paketi, gerçek Qwen denetçi çağrısı ve insan puanlarıyla geçerlik henüz doğrulanmadı. |
@@ -19,7 +19,7 @@
 | Kalibrasyon / ön kayıt / runtime | Kalibrasyon verisi boş; doğrulanabilir ön kayıt yok; tam model/tokenizer/CUDA runtime denetimi tamamlanmadı. |
 | Başvuru | Gerçek deney, kör puanlama ve analiz tamamlanmadan proje tamamlanmış araştırma olarak sunulamaz. |
 
-Tek kaynaklı güncel durum: [CURRENT_STATUS_AND_EXECUTION_PLAN_2026-10-23.md](research_candidates/evidence_abstention/CURRENT_STATUS_AND_EXECUTION_PLAN_2026-10-23.md). Semantik auditor için sınırlar ve doğrulama gereksinimleri: [SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md](research_candidates/evidence_abstention/SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md). Önceki smoke tanılaması: [EXPLORATORY_ENGINEERING_REPORT_2026-10-23.md](research_candidates/evidence_abstention/EXPLORATORY_ENGINEERING_REPORT_2026-10-23.md).
+V10 aday sırası ve maruziyet denetimi: [STAGE1_V10_METADATA_INTAKE_2026-10-23.md](research_candidates/evidence_abstention/STAGE1_V10_METADATA_INTAKE_2026-10-23.md). Tek kaynaklı güncel durum: [CURRENT_STATUS_AND_EXECUTION_PLAN_2026-10-23.md](research_candidates/evidence_abstention/CURRENT_STATUS_AND_EXECUTION_PLAN_2026-10-23.md). Semantik auditor için sınırlar ve doğrulama gereksinimleri: [SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md](research_candidates/evidence_abstention/SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md). Önceki smoke tanılaması: [EXPLORATORY_ENGINEERING_REPORT_2026-10-23.md](research_candidates/evidence_abstention/EXPLORATORY_ENGINEERING_REPORT_2026-10-23.md).
 
 **Üç aşamalı plan:** (1) en az 60 kabul edilmiş bağımsız vaka/8 upstream proje, iki ayrık insan paneli, semantik auditor validasyonu, kalibrasyon, model-runtime, hash dondurma ve ön kayıt kapılarını kapat; (2) sadece tüm kapılar kapandıktan sonra E1/E2/E3 × P0/P1 deneyini yürüt, kör puanla ve önceden planlanan istatistiği hesapla; (3) gerçek sonuçları ve sınırlılıkları resmi TÜBİTAK raporuna aktar ve başvuruyu tamamla.
 
