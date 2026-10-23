@@ -1,4 +1,5 @@
 name: Evidence Abstention V10 Metadata Intake (No Tests, No Inference)
+run-name: "V10 metadata intake (no tests, no inference) — hardened import path"
 
 on:
   push:
