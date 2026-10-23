@@ -251,3 +251,18 @@ Bu çapraz kontrol, projenin genel fikrinin zaten etkin bir araştırma alanınd
 Bu dar katkının da literatürde benzersiz olduğu henüz kanıtlanmış değildir. Ön kayıt öncesinde en azından bu dört kaynağın tam metinleri, geriye/ileriye atıf zincirleri ve daha geniş çoklu veri tabanı sorguları taranmalı; dahil/dışla kararları kaydedilmelidir. Erişilebilir özetler tek başına “ilk çalışma” veya “özgün yöntem” iddiasını desteklemez.
 
 **Gate status:** Bu ek literatür sınırını günceller; hipotezi, birincil sonucu veya örneklem ölçütlerini değiştirmez ve inference izni vermez.
+
+
+## 14. Ek çapraz kontrol: AbstentionBench yayını — 23 Ekim 2026
+
+Hedefli literatür taramasına, NeurIPS 2025 Datasets and Benchmarks Track'te yayımlanan **Kirichenko, Ibrahim, Chaudhuri ve Bell, “AbstentionBench: Reasoning LLMs Fail on Unanswerable Questions”** eklendi. Yayın sayfası: https://proceedings.neurips.cc/paper_files/paper/2025/hash/fb122bfc3f0127a94ded048b5b03496f-Abstract-Datasets_and_Benchmarks_Track.html ; ön baskı: https://arxiv.org/abs/2506.09038 .
+
+Erişilebilir özet, farklı türden cevaplanamaz/eksik tanımlanmış soruları kapsayan 20 veri kümesi üzerinde 20 frontier LLM'i değerlendirdiğini; istemle abstention oranının iyileştirilebildiğini, fakat bunun belirsizliği güvenilir biçimde yönetme sorununu çözmediğini bildiriyor. Bulgular bu makalenin yazarların rapor ettiği sonuçlarıdır; bu projede yeniden üretilmiş değildir.
+
+**Bu projeye etkisi:** Genel abstention için geniş bir benchmark zaten vardır. Çalışmanın özgünlüğü “LLM cevap vermekten kaçınabilir mi?” ya da genel bir prompt karşılaştırması olamaz. Savunulabilecek olası dar fark, gerçek kaynak/test/düzeltme geçmişi olan yazılım kusurlarında kök neden doğruluğu ile görünür kanıtın teşhisi desteklemesini ayrı değerlendirmek ve E3'te desteksiz kesin teşhis maliyetini E1'de gereksiz kaçınma/coverage ile birlikte raporlamaktır. Bu farkın benzeri tüm yayınlarda dışlanmış değildir; tam metin/atıf ağı taraması kapanış koşulu olarak kalır.
+
+### Özgünlük kararına güncelleme
+
+**Genel abstention'ın yeni olmadığı daha güçlü kaynaklarla teyit edilmiştir; aday katkı hâlâ koşulludur.** Rapor “ilk”, “benzersiz”, “halüsinasyonu kesin azaltır” veya “kalibre edilmiş güven skoru üretir” diye iddia kurmamalıdır. Ana doğrulayıcı deney yalnızca P0/P1 politika talimatının, kilitli model ve kabul edilen vaka havuzunda, önceden tanımlanan birincil sonlanım üzerindeki etkisini test edebilir. Kalibre edilmiş güven puanı iddiası ayrı bir protokol ve ayrı insan etiketli kalibrasyon verisi gerektirir.
+
+**Gate status:** Bu ek literatür sınırını günceller; ana hipotezi, örneklem eşiğini, primary endpoint'i ya da inference kapısını değiştirmez. Model çıkarımı hâlâ kapalıdır.
