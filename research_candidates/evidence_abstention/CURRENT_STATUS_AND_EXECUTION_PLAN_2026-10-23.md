@@ -112,6 +112,14 @@ These are pre-runner dispatch failures, not Python test logs. Consequently it is
 
 Current science gates after PR #140 remain unchanged: 93 exclusions, 0 accepted cases, 0 confirmatory model outputs, empty calibration data, no verifiable preregistration, and inference disabled. No new candidate tests should run until the minimal runner starts recording real steps and logs, since using candidates to troubleshoot the runner would permanently expose them.
 
+## Tekil hash sözleşmesi ve adaptör ayrımı — PR #143, 23 Ekim 2026
+
+[PR #143](https://github.com/MahmutVezir/dijitalikiz/pull/143) ana deneyin salt-okunur ön denetimi ile sonuç analiz betiği arasındaki hash anahtar uyuşmazlığını giderdi. Her iki katman artık aynı dokuz depo-köklü tam dosya yolunu arar; eksik hash, hash eşleşmezliği veya beklenmeyen ek bir hash yolu kapıyı kapalı tutar. Ana deneyin bu zorunlu kümesine vaka sicili, 93 kimlikli maruziyet birleşimi, prompt, şema, tasarım/analiz, rubrik, runtime kilidi ve analiz kodu dahildir.
+
+Ana P0/P1 istem-politikası deneyi, beş-adaylı entropy/kalibrasyon adaptöründen ayrı tutulur. Bu yüzden adaptöre ait `CALIBRATION_DATA.json`, ana karşılaştırmanın zorunlu hash sözleşmesinden çıkarıldı; bu veri yalnızca ayrı adaptör üzerinde Brier/ECE veya kalibre güven skoru iddiaları yapılacaksa ayrı protokol ve doğrulamayla kullanılır. Adaptör manifesti inference kapalı durumunu korur.
+
+**CI sınırı:** PR #143 birleştirildi; ancak ilişkili GitHub Actions işlerinde runner atanmadı (`runner_id=0`, `steps=[]`). Kod değişikliklerinin gerçek Python testlerinden geçtiği henüz doğrulanmadı. Bu sözleşme tutarlılığına ilişkin statik çapraz kontrol dışında test başarısı iddiası yoktur. Mevcut ana deney manifestinde `frozen_hashes={}`, kabul edilmiş vakalar 0 ve inference kapalıdır.
+
 ## Nihai durum
 
 **Yazılım prototipi var; bilimsel etkinlik henüz ölçülmedi.** En büyük dış bağımlılıklar bağımsız değerlendiriciler, yeterli ve kabul edilmiş gerçek vaka havuzu, semantik auditor validasyonu ve gerçek GPU/runtime doğrulamasıdır. Bu işler tamamlanmadan projeye “halüsinasyon azaltıldı” veya “hipotez doğrulandı” denmeyecektir.
