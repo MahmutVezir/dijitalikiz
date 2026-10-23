@@ -64,6 +64,12 @@ Kök neden ve buggy/fixed test ilişkisini değerlendiren iki kişilik panel ile
 
 **İkincil ölçütler:** E1/E2/E3 için cevap/kaçınma kapsamı; E1'de gereksiz kaçınma; kök neden doğruluğu; görünür kanıt desteği; geçersiz JSON/şema oranı; değerlendiriciler arası uyum ve ek kanıt isteminin ayırt ediciliği. Daha çok kaçınmak tek başına başarı kabul edilmeyecektir.
 
+### 4.6 Örneklem gücü duyarlılığı
+
+Mevcut analiz planında 60 vakalık alt sınır ve 80 vakalık hedef için senaryo tabanlı exact McNemar güç hesapları yer almaktadır. Bunlar gözlenmiş sonuç veya tarihsel pilot tahmini değildir. Örneğin, çiftlerin %30'unun iki politikada farklı sonuca sahip olduğu ve bu farklı çiftlerin %83'ünde sonucun P1 lehine olduğu varsayılırsa, iki taraflı alfa 0,05 için hesaplanan güç N=60'ta yaklaşık %78,7 ve N=80'de yaklaşık %90,1'dir. Aynı %30 discordance altında P1 lehine oran %75'e düşerse güç N=60'ta yaklaşık %49,5 ve N=80'de yaklaşık %63,4 olur.
+
+Bu yüzden 60/80 hedefi küçük etkileri dışlamak için garanti değildir. Varsayımlar gerçek verilere dayanmamaktadır; bulgular görülmeden önceki duyarlılık değerlendirmesi olarak yorumlanmalıdır. Gerçek vaka havuzu bu örnekleme ulaşmazsa eşik sonradan gevşetilmemeli; sınırlı güç ve keşifsel yorum açıkça raporlanmalıdır.
+
 ## 5. Hazırlık durumu — bilimsel sonuç değildir
 
 | Gösterge | Güncel doğrulanmış kayıt |
