@@ -40,6 +40,8 @@ class Stage3PromptContractTests(unittest.TestCase):
         self.assertIn('expected.get(name) != actual.get(name)', SOURCE)
         self.assertIn('model_revision != MODEL_REVISION', SOURCE)
         self.assertIn('tokenizer_revision != MODEL_REVISION', SOURCE)
+        self.assertIn('"resolved_tokenizer_revision_observable"', SOURCE)
+        self.assertIn('"immutable_full_commit_sha_passed_to_from_pretrained; exposed resolved revisions are checked when available"', SOURCE)
 
     def test_prompt_builder_does_not_receive_hidden_evidence_level(self):
         node = function_node("make_prompt")
