@@ -11,7 +11,7 @@
 | Bileşen | Durum |
 |---|---|
 | Kaynak envanteri | BugsInPy sabit sürümünde 501 ham metadata kaydı / 17 proje; bu sayı kabul edilmiş vaka sayısı değildir. |
-| Güncel intake | 100 metadata adayı / 13 upstream proje içeren V9 intake. Teknik taramada incelenen iki 8'li grubun 16 vakası doğrulayıcı örneklemden kalıcı çıkarıldı. |
+| Güncel intake | Son dondurulmuş intake V9: 100 metadata adayı / 13 upstream proje. V9 teknik taramalarındaki 16 vaka doğrulayıcı örneklemden kalıcı çıkarıldı. V10 oluşturucusu artık hem tarihli ek dışlama kaydını hem tam tarihsel maruziyet günlüğünü uyguluyor; ancak V10 için yeniden oluşturulmuş envanter/kuyruk artefaktı ve yeni dondurulmuş intake dosyası henüz doğrulanmadı. |
 | Kabul edilmiş doğrulayıcı vakalar | **0**; vaka sicili bilerek boş. |
 | Yazılım prototipi | Qwen adapter'ı, yapılandırılmış çıktı ayrıştırma, belirsizlik/politika katmanı, paket hash/referans denetimi, inference kapısı ve sentetik birim testleri var. |
 | Semantik kanıt desteği | Prompt/parser ve adapter arayüzü mevcut; son girdi doğrulama sıkılaştırmasının 12 izole yerel birim testi geçti. Tam GitHub Actions/adapter test paketi, gerçek Qwen denetçi çağrısı ve insan puanlarıyla geçerlik henüz doğrulanmadı. |
