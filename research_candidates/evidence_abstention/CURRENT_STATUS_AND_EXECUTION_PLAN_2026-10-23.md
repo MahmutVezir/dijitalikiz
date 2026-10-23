@@ -114,7 +114,7 @@ Current science gates after PR #140 remain unchanged: 93 exclusions, 0 accepted 
 
 ## Tekil hash sözleşmesi ve adaptör ayrımı — PR #143, 23 Ekim 2026
 
-[PR #143](https://github.com/MahmutVezir/dijitalikiz/pull/143) ana deneyin salt-okunur ön denetimi ile sonuç analiz betiği arasındaki hash anahtar uyuşmazlığını giderdi. Her iki katman artık aynı dokuz depo-köklü tam dosya yolunu arar; eksik hash, hash eşleşmezliği veya beklenmeyen ek bir hash yolu kapıyı kapalı tutar. Ana deneyin bu zorunlu kümesine vaka sicili, 93 kimlikli maruziyet birleşimi, prompt, şema, tasarım/analiz, rubrik, runtime kilidi ve analiz kodu dahildir.
+[PR #143](https://github.com/MahmutVezir/dijitalikiz/pull/143) ana deneyin salt-okunur ön denetimi ile sonuç analiz betiği arasındaki hash anahtar uyuşmazlığını giderdi. Her iki katman artık aynı on bir depo-köklü tam dosya yolunu arar; eksik hash, hash eşleşmezliği veya beklenmeyen ek bir hash yolu kapıyı kapalı tutar. Ana deneyin bu zorunlu kümesine vaka sicili, 93 kimlikli maruziyet birleşimi, prompt, şema, tasarım/analiz, rubrik, runtime kilidi ve analiz kodu dahildir.
 
 Ana P0/P1 istem-politikası deneyi, beş-adaylı entropy/kalibrasyon adaptöründen ayrı tutulur. Bu yüzden adaptöre ait `CALIBRATION_DATA.json`, ana karşılaştırmanın zorunlu hash sözleşmesinden çıkarıldı; bu veri yalnızca ayrı adaptör üzerinde Brier/ECE veya kalibre güven skoru iddiaları yapılacaksa ayrı protokol ve doğrulamayla kullanılır. Adaptör manifesti inference kapalı durumunu korur.
 
@@ -135,3 +135,10 @@ A strict reproducibility checker and seven synthetic regression tests were added
 ## Remote runner retry — 23 October 2026
 
 The failed V10 metadata-reproducibility job was explicitly rerun. It again completed without recorded steps or uploaded artifacts, and log retrieval remained unavailable. Thus the checked-in Actions workflow still has no auditable remote execution result. This does not negate the separate artifact-backed local reproduction of the 501-row inventory, 407-row queue and exact frozen V10 order, but it blocks claiming the new verifier/workflow itself passed CI. No case tests or model outputs were produced.
+
+
+## Kaggle çalıştırıcısı ve gizli koşul etiketi güvenliği — 23 Ekim 2026
+
+Son protokol denetiminde `kaggle_stage3_p0_p1.py` içinde bir yöntemsel kusur tespit edildi: eski sürüm `evidence_level` etiketini prompt'a ekliyor, protokolün kanonik `OUTPUT_SCHEMA.json`/prompt metniyle uyuşmayan bir öz-bildirilen `confidence` alanı kullanıyor ve kanonik Stage 3 ön denetimini çağırmıyordu. Bu, gelecekteki çıktıları protokol dışına çıkarabilirdi. Düzeltme PR'ında çalıştırıcı prompt'undan gizli seviye etiketi kaldırıldı, model çıktısı kanonik şemaya hizalandı, geçersiz JSON için otomatik onarım/yeniden üretme engellendi, kanonik ön denetim inference kapısının zorunlu ön şartı yapıldı ve çalıştırıcı SHA-256 dondurulmuş dosya kümesine eklendi.
+
+Bu düzeltme doğrulama amaçlı bir kod değişikliğidir; **model çağrısı yapılmadı ve deney izni açılmadı**. Yeni Python testlerinin uzak CI'da çalıştığı henüz gösterilemedi, çünkü en son GitHub Actions işleri runner atanmadan sona eriyor. Güncel kayıt ve depo sahibinin yapması gereken Actions/billing kontrolü: [issue #18](https://github.com/MahmutVezir/dijitalikiz/issues/18). Çalıştırıcıyı yeni haliyle doğrulamak için önce gerçekten adım kaydeden no-inference CI veya bağımsız yerel test yürütmesi gerekir.

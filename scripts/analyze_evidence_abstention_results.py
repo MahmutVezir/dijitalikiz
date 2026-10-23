@@ -32,6 +32,8 @@ REQUIRED_FROZEN_PATHS = {
     "research_candidates/evidence_abstention/RUNTIME_LOCK.json",
     "research_candidates/evidence_abstention/RUBRIC_AND_ADJUDICATION.md",
     "scripts/analyze_evidence_abstention_results.py",
+    "research_candidates/evidence_abstention/kaggle_stage3_p0_p1.py",
+    "scripts/evidence_abstention_preflight.py",
 }
 PERMANENT_EXCLUSIONS = {
     "BugsInPy-black-1", "BugsInPy-tqdm-1", "BugsInPy-httpie-1",
