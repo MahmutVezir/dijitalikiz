@@ -11,7 +11,8 @@ assert SPEC and SPEC.loader
 SPEC.loader.exec_module(MODULE)
 
 
-def fixture(root):
+def fixture(root, excluded_case_ids=None):
+    excluded_case_ids = [] if excluded_case_ids is None else excluded_case_ids
     project = root / "research_candidates" / "evidence_abstention"
     project.mkdir(parents=True)
     manifest = {
@@ -19,12 +20,20 @@ def fixture(root):
         "preregistration_status": "draft", "preregistration_uri": "",
         "two_rater_protocol_frozen": False, "reviewer_calibration_complete": False,
         "model": {"id": "test/model", "revision": "abc123", "runtime_verification": "not_run", "quantization": "none"},
-        "frozen_hashes": {}, "case_ids": [], "minimum_confirmatory_cases": 60,
+        "frozen_hashes": {}, "case_ids": [],
+        "case_registry_path": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
+        "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
+        "minimum_confirmatory_cases": 60,
         "minimum_upstream_projects": 8, "target_independent_cases": 80,
         "cells_per_case": 6, "planned_model_outputs_at_target": 480
     }
     (project / "EXPERIMENT_MANIFEST_STAGE3.json").write_text(json.dumps(manifest), encoding="utf-8")
     (project / "CASE_REGISTRY.json").write_text(json.dumps({"records": []}), encoding="utf-8")
+    (project / "EXPOSURE_UNION_2026-10-23.json").write_text(json.dumps({
+        "record_type": "synthetic_test_fixture",
+        "excluded_case_ids": excluded_case_ids,
+        "unique_exclusion_count": len(excluded_case_ids),
+    }), encoding="utf-8")
     (project / "RUNTIME_LOCK.json").write_text(json.dumps({"status": "draft", "inference_performed": False}), encoding="utf-8")
     required = ["decision", "root_cause", "evidence_refs", "rationale", "alternative_hypotheses", "missing_evidence"]
     (project / "OUTPUT_SCHEMA.json").write_text(json.dumps({"type": "object", "required": required}), encoding="utf-8")
@@ -60,7 +69,7 @@ class PreflightTests(unittest.TestCase):
     def test_rejects_accepted_case_with_unreproduced_bug_or_runtime_mismatch(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            fixture(root)
+            fixture(root, excluded_case_ids=["BugsInPy-demo-1"])
             project = root / "research_candidates" / "evidence_abstention"
             manifest_path = project / "EXPERIMENT_MANIFEST_STAGE3.json"
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -110,6 +119,7 @@ class PreflightTests(unittest.TestCase):
             self.assertFalse(report["ready"])
             self.assertTrue(any("runtime Python does not match" in b for b in report["blockers"]))
             self.assertTrue(any("buggy-side target failure was not reproduced" in b for b in report["blockers"]))
+            self.assertTrue(any("permanent exposure exclusion union" in b for b in report["blockers"]))
 
     def test_rejects_overlapping_ground_truth_and_evidence_review_panels(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -162,6 +172,39 @@ class PreflightTests(unittest.TestCase):
             report = MODULE.evaluate(root)
             self.assertFalse(report["ready"])
             self.assertTrue(any("reviewer IDs must be distinct between ground-truth and evidence review panels" in b for b in report["blockers"]))
+
+
+    def test_preflight_rejects_malformed_exposure_union(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fixture(root)
+            project = root / "research_candidates" / "evidence_abstention"
+            union_path = project / "EXPOSURE_UNION_2026-10-23.json"
+            union_path.write_text(json.dumps({
+                "excluded_case_ids": ["BugsInPy-demo-1", "BugsInPy-demo-1"],
+                "unique_exclusion_count": 2,
+            }), encoding="utf-8")
+
+            report = MODULE.evaluate(root)
+
+            self.assertFalse(report["ready"])
+            self.assertTrue(any("malformed, or duplicate ID list" in b for b in report["blockers"]))
+
+    def test_preflight_rejects_noncanonical_exposure_manifest_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fixture(root)
+            project = root / "research_candidates" / "evidence_abstention"
+            manifest_path = project / "EXPERIMENT_MANIFEST_STAGE3.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["exposure_union_path"] = "alternate-union.json"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            report = MODULE.evaluate(root)
+
+            self.assertFalse(report["ready"])
+            self.assertTrue(any("not the canonical dated exclusion union" in b for b in report["blockers"]))
+
 
 if __name__ == "__main__":
     unittest.main()

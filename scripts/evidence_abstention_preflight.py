@@ -15,6 +15,7 @@ HASHES = {
     "scoring_rubric": "RUBRIC_AND_ADJUDICATION.md",
     "runtime_lock": "RUNTIME_LOCK.json",
     "case_registry": "CASE_REGISTRY.json",
+    "exposure_union": "EXPOSURE_UNION_2026-10-23.json",
 }
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 LEVELS = ("E1_sufficient", "E2_partial", "E3_insufficient")
@@ -41,12 +42,29 @@ def evaluate(root):
     blockers, warnings = [], []
     manifest = read_json(project / "EXPERIMENT_MANIFEST_STAGE3.json", "experiment manifest", blockers)
     registry = read_json(project / "CASE_REGISTRY.json", "case registry", blockers)
+    exposure_union = read_json(
+        project / "EXPOSURE_UNION_2026-10-23.json", "exposure exclusion union", blockers
+    )
     runtime = read_json(project / "RUNTIME_LOCK.json", "runtime lock", blockers)
     schema = read_json(project / "OUTPUT_SCHEMA.json", "output schema", blockers)
 
     for name, relpath in HASHES.items():
         if not (project / relpath).is_file():
             blockers.append("Required hash target missing: " + relpath)
+
+    excluded_case_ids = set()
+    if exposure_union is not None:
+        raw_excluded_ids = exposure_union.get("excluded_case_ids")
+        if (
+            not isinstance(raw_excluded_ids, list)
+            or any(not isinstance(value, str) or not value.strip() for value in raw_excluded_ids)
+            or len(raw_excluded_ids) != len(set(raw_excluded_ids))
+        ):
+            blockers.append("Exposure exclusion union has a missing, malformed, or duplicate ID list.")
+        elif exposure_union.get("unique_exclusion_count") != len(raw_excluded_ids):
+            blockers.append("Exposure exclusion union count does not match the unique ID list.")
+        else:
+            excluded_case_ids = set(raw_excluded_ids)
 
     if manifest is not None:
         checks = (
@@ -55,6 +73,8 @@ def evaluate(root):
             (manifest.get("preregistration_status") == "registered" and bool(manifest.get("preregistration_uri")), "Protocol has no verifiable preregistration URI."),
             (manifest.get("two_rater_protocol_frozen") is True, "Two-rater rubric/adjudication protocol is not frozen."),
             (manifest.get("reviewer_calibration_complete") is True, "Independent reviewer calibration is incomplete."),
+            (manifest.get("case_registry_path") == "research_candidates/evidence_abstention/CASE_REGISTRY.json", "Manifest case_registry_path is not the canonical confirmatory registry."),
+            (manifest.get("exposure_union_path") == "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json", "Manifest exposure_union_path is not the canonical dated exclusion union."),
         )
         blockers.extend(message for ok, message in checks if not ok)
 
@@ -90,6 +110,8 @@ def evaluate(root):
                 blockers.append("Every case registry entry must be an object with case_id.")
                 continue
             cid = record["case_id"]
+            if record.get("accepted_for_confirmatory") is True and cid in excluded_case_ids:
+                blockers.append(cid + ": accepted case appears in the permanent exposure exclusion union.")
             if cid in seen:
                 blockers.append("Duplicate case ID: " + cid)
             seen.add(cid)
