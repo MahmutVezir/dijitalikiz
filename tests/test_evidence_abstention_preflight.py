@@ -44,6 +44,8 @@ def fixture(root, excluded_case_ids=None):
     analysis_code.write_text("analysis helper fixture", encoding="utf-8")
     runner_code = root / "research_candidates" / "evidence_abstention" / "kaggle_stage3_p0_p1.py"
     runner_code.write_text("runner fixture", encoding="utf-8")
+    preflight_code = root / "scripts" / "evidence_abstention_preflight.py"
+    preflight_code.write_text("preflight fixture", encoding="utf-8")
 
 
 class PreflightTests(unittest.TestCase):
