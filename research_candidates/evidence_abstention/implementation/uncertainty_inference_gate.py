@@ -13,6 +13,7 @@ EXPECTED_MODEL_ID = "Qwen/Qwen2.5-3B-Instruct"
 EXPECTED_MODEL_REVISION = "aa8e72537993ba99e69dfaafa59ed015b17504d1"
 REQUIRED_ARTIFACTS = (
     "case_registry",
+    "exposure_union",
     "output_schema",
     "prompt_template",
     "analysis_plan",
@@ -158,6 +159,29 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
         blockers.append("Case IDs are missing, malformed, empty, or duplicated.")
         case_ids = []
 
+    exposure_ids = set()
+    try:
+        exposure_union_path_value = manifest.get("exposure_union_path")
+        if not isinstance(exposure_union_path_value, str) or not exposure_union_path_value:
+            raise ValueError("exposure_union_path is missing")
+        exposure_union_relative = Path(exposure_union_path_value)
+        if exposure_union_relative.is_absolute() or ".." in exposure_union_relative.parts:
+            raise ValueError("exposure union path must be a safe repository-relative path")
+        exposure_union_path = root / exposure_union_relative
+        exposure_document = json.loads(exposure_union_path.read_text(encoding="utf-8"))
+        raw_excluded_ids = exposure_document.get("excluded_case_ids") if isinstance(exposure_document, dict) else None
+        if (
+            not isinstance(raw_excluded_ids, list)
+            or any(not isinstance(value, str) or not value.strip() for value in raw_excluded_ids)
+            or len(raw_excluded_ids) != len(set(raw_excluded_ids))
+        ):
+            raise ValueError("excluded_case_ids must be a unique list of non-empty strings")
+        if exposure_document.get("unique_exclusion_count") != len(raw_excluded_ids):
+            raise ValueError("unique_exclusion_count does not match excluded_case_ids")
+        exposure_ids = set(raw_excluded_ids)
+    except (OSError, json.JSONDecodeError, TypeError, ValueError) as exc:
+        blockers.append("Exposure exclusion union missing or invalid: " + str(exc))
+
     project_count = 0
     try:
         registry_path_value = manifest.get("case_registry_path")
@@ -176,6 +200,8 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
         for row in accepted:
             case_id = row.get("case_id")
             accepted_ids.append(case_id)
+            if isinstance(case_id, str) and case_id in exposure_ids:
+                blockers.append(f"{case_id}: case appears in the permanent exposure exclusion union.")
             _validate_accepted_case(row, blockers)
         if case_ids != accepted_ids:
             blockers.append("Manifest case IDs do not match the ordered accepted case registry.")
@@ -207,6 +233,8 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
             continue
         if name == "case_registry" and relative_path != manifest.get("case_registry_path"):
             blockers.append("Frozen case_registry path must match manifest case_registry_path.")
+        if name == "exposure_union" and relative_path != manifest.get("exposure_union_path"):
+            blockers.append("Frozen exposure_union path must match manifest exposure_union_path.")
         target = root / relative_path
         if not target.is_file():
             blockers.append("Frozen artifact file missing: " + name)
