@@ -82,6 +82,16 @@ Resmî çağrı sayfasında başvuru dönemi 23 Eylül 2026–4 Ocak 2027; kapan
 - Hipotez, birincil ölçüt veya dışlama kuralları sonuç görüldükten sonra değiştirilmez.
 - Türkiye finalisti olma hedefi korunur ancak garanti verilemez.
 
+## Güvenlik kapısı düzeltmesi ve güncel CI durumu — 23 Ekim 2026
+
+PR [#130](https://github.com/MahmutVezir/dijitalikiz/pull/130) ana dala birleştirildi. Analiz betiği ve yeni inference kapısı artık yalnızca ilk 13 eski dışlama kimliğine güvenmiyor; kanonik `EXPOSURE_UNION_2026-10-23.json` içindeki 93 kalıcı dışlamanın tamamını kontrol edecek şekilde güncellendi. Ayrıca analiz öncesi `frozen_hashes` alanının sadece dolu olması yeterli değil: zorunlu dosyaların SHA-256 değerlerinin mevcut dosyalarla bire bir eşleşmesi aranıyor. Sentetik regresyon testleri bu kontroller için eklendi.
+
+Bu düzeltmenin ardından ilişkili GitHub Actions denemeleri API'de başarısız göründü, fakat işlerin adım listeleri boştu (`steps=null/[]`), günlük indirmeleri `BlobNotFound` döndürdü ve artefakt oluşmadı. Dolayısıyla bu kayıtlar ne “testler geçti” ne de “test kod hatasından çöktü” sonucunu destekler. **PR #130 birleştirildi, ancak bu PR'ın yeni testleri için denetlenebilir uzak CI sonucu henüz yoktur.** Birleştirme durumu testlerin geçişiyle karıştırılmamalıdır.
+
+V10 metadata intake için yerel/artefakt destekli tekrar üretim denetimi aynı sonuçları koruyor: sabit BugsInPy envanteri 501 satır/17 proje; tam 93-ID dışlama birleşimi sonrasında 407 satır/14 proje; V10 ilk 100 aday/14 proje; seçilen kimlikler ile dışlama birleşimi kesişimi 0. Bu yalnızca metadata sırası ve maruziyet filtrelemesi doğrulamasıdır. Uzak builder iş akışının gerçekten çalıştığı henüz kanıtlanmadı.
+
+Güncel bilimsel kapılar değişmedi: kabul edilmiş bağımsız vakalar 0, doğrulayıcı model çıktısı 0, doğrulanmış Qwen/CUDA runtime yok, kalibrasyon gözlemi yok, ön kayıt taslak ve inference izni kapalı. Aşama 1'deki sıradaki eylem, depo sahibinin GitHub Actions ekranında bir runner'ın gerçekten atandığını ve log/artifact'ların üretildiğini doğrulamasıdır. Bu operasyonel engel kalkınca V10 aday teknik taraması, protokolde belirlenmiş sırayla başlatılabilir; geçmişte debug için açığa çıkan vakalar geri eklenemez.
+
 ## Nihai durum
 
 **Yazılım prototipi var; bilimsel etkinlik henüz ölçülmedi.** En büyük dış bağımlılıklar bağımsız değerlendiriciler, yeterli ve kabul edilmiş gerçek vaka havuzu, semantik auditor validasyonu ve gerçek GPU/runtime doğrulamasıdır. Bu işler tamamlanmadan projeye “halüsinasyon azaltıldı” veya “hipotez doğrulandı” denmeyecektir.
