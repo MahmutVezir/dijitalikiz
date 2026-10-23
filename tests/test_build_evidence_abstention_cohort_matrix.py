@@ -138,6 +138,58 @@ class CohortMatrixTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,"prior-exposed ID appears"):
                 MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",2)
 
+    def test_v2_accepts_source_queue_already_filtered_by_exposure_ledger(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            inventory_order=[row(i,p) for i,p in enumerate(["a","b","c","d","e"],1)]
+            queue_rows=inventory_order[2:]
+            q=root/"queue.csv"
+            with q.open("w",newline="",encoding="utf-8") as f:
+                w=csv.DictWriter(f,fieldnames=FIELDS);w.writeheader();w.writerows(queue_rows)
+            excluded=["BugsInPy-a-1","BugsInPy-b-2"]
+            ids=[x["case_id"] for x in queue_rows]
+            cohort={
+                "record_type":"metadata_only_screening_intake_not_confirmatory_dataset",
+                "cohort_size":len(ids),
+                "case_ids":ids,
+                "excluded_prior_exposure":excluded,
+                "source_queue_sha256":hashlib.sha256(q.read_bytes()).hexdigest(),
+                "accepted_confirmatory_cases":0,
+                "llm_inference_performed":False
+            }
+            cohort_path=root/"cohort.json"
+            cohort_path.write_text(json.dumps(cohort),encoding="utf-8")
+            out=MODULE.prepare(q,cohort_path,root/"matrix.json",root/"summary.json",2)
+            self.assertEqual(
+                [x["case_id"] for x in out["matrix"]["include"]],
+                ["BugsInPy-c-3","BugsInPy-d-4"],
+            )
+            self.assertEqual(out["summary"]["accepted_confirmatory_cases"],0)
+            self.assertFalse(out["summary"]["llm_inference_performed"])
+
+    def test_v2_fails_closed_if_source_queue_partially_filters_exposure_ids(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            rows=[row(i,p) for i,p in enumerate(["a","b","c","d"],1)]
+            q=root/"queue.csv"
+            with q.open("w",newline="",encoding="utf-8") as f:
+                w=csv.DictWriter(f,fieldnames=FIELDS);w.writeheader();w.writerows(rows[1:])
+            excluded=["BugsInPy-a-1","BugsInPy-b-2"]
+            ids=[x["case_id"] for x in rows[1:]]
+            cohort={
+                "record_type":"metadata_only_screening_intake_not_confirmatory_dataset",
+                "cohort_size":len(ids),
+                "case_ids":ids,
+                "excluded_prior_exposure":excluded,
+                "source_queue_sha256":hashlib.sha256(q.read_bytes()).hexdigest(),
+                "accepted_confirmatory_cases":0,
+                "llm_inference_performed":False
+            }
+            cohort_path=root/"cohort.json"
+            cohort_path.write_text(json.dumps(cohort),encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"mixes pre-filtered and unfiltered"):
+                MODULE.prepare(q,cohort_path,root/"matrix.json",root/"summary.json",2)
+
 
     def test_historical_cohort_fails_closed_when_it_contains_later_exposed_case(self):
         with tempfile.TemporaryDirectory() as td:
