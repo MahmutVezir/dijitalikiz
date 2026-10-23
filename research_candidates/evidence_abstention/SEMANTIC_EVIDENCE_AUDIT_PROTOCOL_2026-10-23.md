@@ -7,7 +7,7 @@
 
 Paket denetleyicisi bir kanıt paketinin bütünlüğünü, alanlarını ve referans kimliklerini kontrol eder; tek başına bir kök neden iddiasının kanıtlarla gerçekten desteklenip desteklenmediğini değerlendiremez. Karar katmanının gerektirdiği `supported_claim_coverage`, `self_check_conflict` ve `explicit_contradiction` sinyallerinin eksik olduğu durumda doğru davranış cevap vermekten kaçınmaktır.
 
-Yeni `implementation/semantic_evidence_auditor.py` dosyası, görünür bir aday yanıtı ve görünür kanıt öğelerini değerlendirici modele iletecek istemi ve yapısal çıktı denetimini tanımlar. `qwen_uncertainty_adapter.py` içindeki `evidence_audit_with_semantic_report` işlevi, geçerli bir değerlendirme çıktısını karar katmanının kullandığı sinyallere dönüştürür. Bozuk/eksik değerlendirme çıktısı yapısal paketi yanlış biçimde “geçersiz” işaretlemek yerine sinyalleri bilinmiyor bırakır; karar katmanı bu durumda teşhis üretmez.
+Yeni `implementation/semantic_evidence_auditor.py` dosyası, görünür aday yanıtı ve görünür kanıt öğelerini değerlendiren istemi ve yapısal çıktı denetimini tanımlar. Araştırma için kullanılacak `build_semantic_audit_messages_from_packet()` giriş noktası; kanıt paketinin yapısını, öğe hash'lerini, kanonik paket hash'ini ve dışarıdan sabitlenmiş paket SHA-256 değerini doğruladıktan sonra istemi yalnızca bu paketin içeriğinden oluşturur. Ham `build_semantic_audit_messages()` fonksiyonu arayüz/birim testleri içindir; önceden hash doğrulaması olmadan araştırma istemi üretmekte kullanılmamalıdır. `qwen_uncertainty_adapter.py` içindeki `evidence_audit_with_semantic_report` geçerli değerlendirme çıktısını karar katmanının kullandığı sinyallere dönüştürür. Bozuk veya eksik değerlendirme çıktısı gerekli sinyalleri bilinmiyor bırakır ve karar katmanının teşhis üretmek yerine kaçınmasına neden olur. Bu, yapısal güvenlik önlemi olup denetçinin anlamsal doğruluğunu tek başına kanıtlamaz.
 
 ## Girdi sınırı ve bilgi sızıntısı
 
@@ -46,6 +46,8 @@ Referanslar paketteki var olan kimliklerle eşleşmelidir. Desteklenmiş, kısme
 6. **Araştırma kullanımı:** Anlamsal denetçi birincil sonucun yerine geçmez. Birincil sonucun kök neden doğruluğu ve kanıtsal desteği, koşullara kör bağımsız insan değerlendiricilerce puanlanmalıdır. Denetçi sinyali yalnızca önceden dondurulmuş sistem kararının parçası olabilir.
 
 ## Bu sürümün gerçek durumu
+
+- Araştırma yolu, dışarıdan dondurulmuş paket SHA-256'sını zorunlu kılar. Bu, aynı paket içeriğinin denetlendiğine dair bütünlük kontrolüdür; içeriğin doğru veya yeterli olduğunu garanti etmez.
 
 - Kod: arayüz, sıkı JSON çözümleyicisi, kanıt referansı denetimi ve adapter bağlantısı eklendi.
 - Sentetik yazılım testleri: input validation sıkılaştırması sonrası 12 test izole yerel koşuda geçti. GitHub Actions/full adapter test paketinin durumu doğrulanmadı; bu testler anlamsal karar kalitesini ölçmez.
