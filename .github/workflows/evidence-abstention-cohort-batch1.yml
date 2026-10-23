@@ -1,6 +1,7 @@
 name: Evidence Abstention Cohort Screening (Predeclared, No Inference)
 
-# One-shot run branch only. Do not push to this branch a second time.
+# One-shot historical V9 run branch only. Do not push to this branch a second time.
+# The V9 frozen cohort is historical provenance; current queue generation now applies the full exposure log.
 # The durable research branch remains manual-dispatch-only.
 on:
   push:

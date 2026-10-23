@@ -15,6 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_EXPOSURE_ADDENDUM = ROOT / "research_candidates" / "evidence_abstention" / "EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json"
+DEFAULT_HISTORICAL_EXPOSURE_LOG = ROOT / "research_candidates" / "evidence_abstention" / "EXPOSURE_EXCLUSION_LOG_2026-10-21.json"
 
 # Any candidate used to test the validation workflow or inspect raw test results
 # is kept out of the confirmatory queue to prevent researcher/pipeline-debug exposure.
@@ -88,13 +89,44 @@ def load_exposure_exclusions(path):
     return set(case_ids), hashlib.sha256(raw).hexdigest()
 
 
-def build_queue(input_path, output_path, summary_path, first_batch_per_project=5, exposure_addendum_path=None):
+def load_historical_exposure_exclusions(path=None):
+    path = Path(path) if path is not None else DEFAULT_HISTORICAL_EXPOSURE_LOG
+    try:
+        raw = path.read_bytes()
+        document = json.loads(raw.decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError("Historical exposure log is missing or invalid: " + str(exc)) from exc
+    if not isinstance(document, dict):
+        raise ValueError("Historical exposure log must contain a JSON object")
+
+    ids = set()
+
+    def collect(value):
+        if isinstance(value, str):
+            ids.update(re.findall(r"BugsInPy-[A-Za-z0-9_-]+", value))
+        elif isinstance(value, list):
+            for item in value:
+                collect(item)
+        elif isinstance(value, dict):
+            for key, item in value.items():
+                collect(key)
+                collect(item)
+
+    collect(document)
+    if not ids:
+        raise ValueError("Historical exposure log contains no case identifiers")
+    return ids, hashlib.sha256(raw).hexdigest()
+
+
+def build_queue(input_path, output_path, summary_path, first_batch_per_project=5, exposure_addendum_path=None, historical_exposure_log_path=None):
     input_path = Path(input_path)
     output_path = Path(output_path)
     summary_path = Path(summary_path)
     exposure_path = Path(exposure_addendum_path) if exposure_addendum_path else DEFAULT_EXPOSURE_ADDENDUM
     dynamic_exclusions, exposure_sha256 = load_exposure_exclusions(exposure_path)
-    excluded_cases = EXCLUDED_CASES | dynamic_exclusions
+    history_path = Path(historical_exposure_log_path) if historical_exposure_log_path else DEFAULT_HISTORICAL_EXPOSURE_LOG
+    historical_exclusions, historical_sha256 = load_historical_exposure_exclusions(history_path)
+    excluded_cases = EXCLUDED_CASES | dynamic_exclusions | historical_exclusions
     with input_path.open("r", newline="", encoding="utf-8-sig") as handle:
         reader = csv.DictReader(handle)
         fields = reader.fieldnames or []
@@ -180,6 +212,11 @@ def build_queue(input_path, output_path, summary_path, first_batch_per_project=5
         "exposure_addendum_sha256": exposure_sha256,
         "documented_exposure_exclusion_count": len(dynamic_exclusions),
         "documented_exposure_exclusion_ids": sorted(dynamic_exclusions),
+        "historical_exposure_log_sha256": historical_sha256,
+        "historical_exposure_exclusion_count": len(historical_exclusions),
+        "historical_exposure_exclusion_ids": sorted(historical_exclusions),
+        "total_documented_exposure_exclusion_count": len(EXCLUDED_CASES | dynamic_exclusions | historical_exclusions),
+        "total_documented_exposure_exclusion_ids": sorted(EXCLUDED_CASES | dynamic_exclusions | historical_exclusions),
         "exclusions_by_reason": dict(sorted(exclusions.items())),
         "test_pairs_run_by_this_script": 0,
         "licenses_reviewed_by_this_script": 0,
@@ -205,10 +242,11 @@ def main(argv=None):
     parser.add_argument("--summary", type=Path, required=True, help="JSON queue summary")
     parser.add_argument("--first-batch-per-project", type=int, default=5)
     parser.add_argument("--exposure-addendum", type=Path, default=DEFAULT_EXPOSURE_ADDENDUM)
+    parser.add_argument("--historical-exposure-log", type=Path, default=DEFAULT_HISTORICAL_EXPOSURE_LOG)
     args = parser.parse_args(argv)
     if args.first_batch_per_project < 1:
         parser.error("--first-batch-per-project must be at least 1")
-    summary = build_queue(args.input, args.output, args.summary, args.first_batch_per_project, args.exposure_addendum)
+    summary = build_queue(args.input, args.output, args.summary, args.first_batch_per_project, args.exposure_addendum, args.historical_exposure_log)
     print(json.dumps(summary, ensure_ascii=False, indent=2))
     return 0
 

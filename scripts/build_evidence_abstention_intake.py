@@ -12,7 +12,11 @@ SCRIPT_DIR = str(Path(__file__).resolve().parent)
 if SCRIPT_DIR not in sys.path:
     sys.path.insert(0, SCRIPT_DIR)
 
-from build_evidence_abstention_screening_queue import EXCLUDED_CASES, load_exposure_exclusions
+from build_evidence_abstention_screening_queue import (
+    EXCLUDED_CASES,
+    load_exposure_exclusions,
+    load_historical_exposure_exclusions,
+)
 
 
 def sha256_file(path):
@@ -82,12 +86,15 @@ def build_intake(inventory_path, queue_path, output_path, cohort_size=100, expos
         / "EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json"
     )
     dynamic_exclusions, exposure_sha = load_exposure_exclusions(exposure_path)
+    historical_exclusions, historical_exposure_sha = load_historical_exposure_exclusions()
     permanently_excluded = {
         row["case_id"]
         for row in inventory
         if row.get("permanently_excluded_feasibility_case", "").lower() == "true"
     }
-    documented_exclusions = (EXCLUDED_CASES | dynamic_exclusions | permanently_excluded) & inventory_id_set
+    documented_exclusions = (
+        EXCLUDED_CASES | dynamic_exclusions | historical_exclusions | permanently_excluded
+    ) & inventory_id_set
     if documented_exclusions & queue_id_set:
         raise ValueError("Exposure-filtered queue contains documented prior-exposure IDs")
     if documented_exclusions & set(selected_ids):
@@ -117,6 +124,9 @@ def build_intake(inventory_path, queue_path, output_path, cohort_size=100, expos
         "source_inventory_sha256": sha256_file(inventory_path),
         "source_queue_sha256": sha256_file(queue_path),
         "exposure_addendum_sha256": exposure_sha,
+        "historical_exposure_log_sha256": historical_exposure_sha,
+        "historical_exposure_log_exclusion_count": len(historical_exclusions),
+        "historical_exposure_log_exclusion_ids": sorted(historical_exclusions),
         "accepted_confirmatory_cases": 0,
         "llm_inference_performed": False,
         "excluded_prior_exposure": sorted(documented_exclusions),
@@ -125,7 +135,7 @@ def build_intake(inventory_path, queue_path, output_path, cohort_size=100, expos
             "This file freezes a metadata-only screening order, not an accepted or labeled experiment dataset.",
             "No buggy/fixed test pair has been run by this builder.",
             "No license, root-cause, evidence sufficiency, leakage or independent-review gate is passed by this builder.",
-            "Candidates used to debug the validation pipeline remain excluded irrespective of their technical outcome.",
+            "The complete historical exposure log and the newer dated addendum are both applied; technical/debug candidates remain excluded irrespective of outcome.",
             "Every subsequent eight-case screen must record raw artifacts; an automated technical signal never auto-accepts a case.",
             "No model inference is performed or authorized by this file.",
         ],

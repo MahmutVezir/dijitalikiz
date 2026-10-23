@@ -79,6 +79,33 @@ class ScreeningQueueTests(unittest.TestCase):
             self.assertEqual(summary["exclusions_by_reason"]["previously_exposed_permanent_exclusion"], 2)
             self.assertEqual(summary["exclusions_by_reason"]["invalid_or_identical_commit_ids"], 1)
 
+    def test_full_historical_exposure_log_excludes_older_debug_candidates(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "inventory.csv"
+            output = root / "queue.csv"
+            summary_path = root / "summary.json"
+            rows = [
+                row("ansible", 1),
+                row("black", 3),
+                row("newproject", 1),
+            ]
+            with source.open("w", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=FIELDS)
+                writer.writeheader()
+                writer.writerows(rows)
+
+            summary = MODULE.build_queue(source, output, summary_path, first_batch_per_project=1)
+            with output.open(newline="", encoding="utf-8") as f:
+                queued_ids = {item["case_id"] for item in csv.DictReader(f)}
+
+            self.assertNotIn("BugsInPy-ansible-1", queued_ids)
+            self.assertNotIn("BugsInPy-black-3", queued_ids)
+            self.assertIn("BugsInPy-newproject-1", queued_ids)
+            self.assertEqual(summary["historical_exposure_exclusion_count"], 61)
+            self.assertEqual(len(summary["historical_exposure_log_sha256"]), 64)
+            self.assertGreaterEqual(summary["total_documented_exposure_exclusion_count"], 90)
+
     def test_current_exposure_ledger_excludes_recent_v9_screened_cases(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
