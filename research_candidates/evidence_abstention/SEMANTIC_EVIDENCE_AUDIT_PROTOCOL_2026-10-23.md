@@ -48,7 +48,7 @@ Referanslar paketteki var olan kimliklerle eşleşmelidir. Desteklenmiş, kısme
 ## Bu sürümün gerçek durumu
 
 - Kod: arayüz, sıkı JSON çözümleyicisi, kanıt referansı denetimi ve adapter bağlantısı eklendi.
-- Sentetik yazılım testleri: yeni testler yazıldı; bu dalda otomatik çalışma sonucu henüz doğrulanmadı.
+- Sentetik yazılım testleri: input validation sıkılaştırması sonrası 12 test izole yerel koşuda geçti. GitHub Actions/full adapter test paketinin durumu doğrulanmadı; bu testler anlamsal karar kalitesini ölçmez.
 - Gerçek Qwen denetçi çağrısı: çalıştırılıp doğrulanmadı.
 - İnsanla karşılaştırmalı anlamsal doğrulama: yapılmadı.
 - Kalibrasyon verisi/eşikleri: boş ve dondurulmamış.
