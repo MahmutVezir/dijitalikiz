@@ -46,28 +46,26 @@ def accepted_case():
 
 def write_ready_gate_fixture(root: Path, record: dict, excluded_case_ids=None) -> Path:
     excluded_case_ids = [] if excluded_case_ids is None else excluded_case_ids
-    exposure_union_relative_path = Path(
-        "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
-    )
-    exposure_union_path = root / exposure_union_relative_path
-    exposure_union_path.parent.mkdir(parents=True, exist_ok=True)
-    exposure_union_document = {
-        "record_type": "synthetic_test_fixture",
-        "excluded_case_ids": excluded_case_ids,
-        "unique_exclusion_count": len(excluded_case_ids),
-    }
-    exposure_union_path.write_text(
-        json.dumps(exposure_union_document, indent=2) + "\n", encoding="utf-8"
-    )
-    exposure_union_hash = hashlib.sha256(exposure_union_path.read_bytes()).hexdigest()
+    frozen_artifacts = {}
 
-    registry_path = root / "registry.json"
-    registry_path.write_text(json.dumps({"records": [record]}), encoding="utf-8")
-    registry_hash = hashlib.sha256(registry_path.read_bytes()).hexdigest()
-
-    artifact_path = root / "artifact.json"
-    artifact_path.write_text("{}", encoding="utf-8")
-    artifact_hash = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+    for name, relative_path in __import__("uncertainty_inference_gate").EXPECTED_ARTIFACT_PATHS.items():
+        target = root / relative_path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if name == "case_registry":
+            payload = json.dumps({"records": [record]}, indent=2) + "\n"
+        elif name == "exposure_union":
+            payload = json.dumps({
+                "record_type": "synthetic_test_fixture",
+                "excluded_case_ids": excluded_case_ids,
+                "unique_exclusion_count": len(excluded_case_ids),
+            }, indent=2) + "\n"
+        else:
+            payload = "{}\n"
+        target.write_text(payload, encoding="utf-8")
+        frozen_artifacts[name] = {
+            "path": relative_path,
+            "sha256": hashlib.sha256(target.read_bytes()).hexdigest(),
+        }
 
     manifest = {
         "inference_allowed": True,
@@ -86,24 +84,14 @@ def write_ready_gate_fixture(root: Path, record: dict, excluded_case_ids=None) -
             "quantization": "none",
         },
         "case_ids": [record["case_id"]],
-        "case_registry_path": "registry.json",
-        "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
+        "case_registry_path": __import__("uncertainty_inference_gate").EXPECTED_ARTIFACT_PATHS["case_registry"],
+        "exposure_union_path": __import__("uncertainty_inference_gate").EXPECTED_ARTIFACT_PATHS["exposure_union"],
         "minimum_confirmatory_cases": 1,
         "minimum_upstream_projects": 1,
-        "frozen_artifacts": {
-            "case_registry": {"path": "registry.json", "sha256": registry_hash},
-            "exposure_union": {"path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json", "sha256": exposure_union_hash},
-            **{
-                name: {"path": "artifact.json", "sha256": artifact_hash}
-                for name in (
-                    "output_schema", "prompt_template", "analysis_plan",
-                    "runtime_lock", "calibration_data", "evidence_audit_protocol"
-                )
-            },
-        },
+        "frozen_artifacts": frozen_artifacts,
     }
     manifest_path = root / "manifest.json"
-    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return manifest_path
 
 
@@ -162,33 +150,53 @@ class InferenceGateTests(unittest.TestCase):
     def test_artifact_hash_mismatch_blocks_inference(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            (root / "registry.json").write_text(json.dumps({"records": []}), encoding="utf-8")
-            (root / "artifact.json").write_text("{}", encoding="utf-8")
-            manifest = {
-                "inference_allowed": False,
-                "dataset_validation_gate": "OPEN",
-                "preregistration_status": "draft",
-                "preregistration_uri": "",
-                "reviewer_protocol_frozen": False,
-                "calibration_complete": False,
-                "model": {"id": "model", "revision": "pinned", "runtime_verification": "not_run"},
-                "case_ids": [],
-                "case_registry_path": "registry.json",
-                "minimum_confirmatory_cases": 60,
-                "minimum_upstream_projects": 8,
-                "frozen_artifacts": {
-                    name: {"path": "artifact.json", "sha256": "a" * 64}
-                    for name in (
-                        "case_registry", "exposure_union", "output_schema", "prompt_template",
-                        "analysis_plan", "runtime_lock", "calibration_data", "evidence_audit_protocol"
-                    )
-                },
-            }
-            path = root / "manifest.json"
+            path = write_ready_gate_fixture(root, accepted_case())
+            manifest = json.loads(path.read_text(encoding="utf-8"))
+            for entry in manifest["frozen_artifacts"].values():
+                entry["sha256"] = "a" * 64
             path.write_text(json.dumps(manifest), encoding="utf-8")
+
             report = evaluate_gate(root, path, {})
+
             self.assertFalse(report["ready"])
             self.assertTrue(any("SHA-256 mismatch" in item for item in report["blockers"]))
+
+
+    def test_alternate_registry_path_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = write_ready_gate_fixture(root, accepted_case())
+            manifest = json.loads(path.read_text(encoding="utf-8"))
+            manifest["case_registry_path"] = "alternate-registry.json"
+            path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            report = evaluate_gate(
+                root, path, {"EVIDENCE_UNCERTAINTY_INFERENCE_APPROVED": "YES"}
+            )
+
+            self.assertFalse(report["ready"])
+            self.assertTrue(
+                any("canonical confirmatory case registry" in item for item in report["blockers"]),
+                report["blockers"],
+            )
+
+    def test_alternate_frozen_artifact_path_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = write_ready_gate_fixture(root, accepted_case())
+            manifest = json.loads(path.read_text(encoding="utf-8"))
+            manifest["frozen_artifacts"]["output_schema"]["path"] = "../../outside.json"
+            path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            report = evaluate_gate(
+                root, path, {"EVIDENCE_UNCERTAINTY_INFERENCE_APPROVED": "YES"}
+            )
+
+            self.assertFalse(report["ready"])
+            self.assertTrue(
+                any("safe repository-relative path" in item for item in report["blockers"]),
+                report["blockers"],
+            )
 
     def test_accepted_case_requires_independent_review_and_reproducible_test_pair(self):
         with tempfile.TemporaryDirectory() as tmp:
