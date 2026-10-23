@@ -1,0 +1,141 @@
+name: Evidence Abstention V10 Metadata Intake (No Tests, No Inference)
+
+on:
+  push:
+    branches:
+      - "research/v10-intake-generation-2026-10-23"
+    paths:
+      - ".github/workflows/evidence-abstention-v10-intake-once.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: evidence-abstention-v10-intake-once
+  cancel-in-progress: false
+
+jobs:
+  metadata-intake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      BUGSINPY_COMMIT: "11c5f1eea954a42132cfd06bf257766a7963e0fd"
+      INTAKE_PATH: "research_candidates/evidence_abstention/SCREENING_COHORT_100_V10_2026-10-23.json"
+    steps:
+      - name: Checkout isolated intake branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Test metadata-only inventory, queue, matrix and intake builders
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_inventory_bugsinpy_candidates.py' -v
+          python -m unittest discover -s tests -p 'test_build_evidence_abstention_screening_queue.py' -v
+          python -m unittest discover -s tests -p 'test_build_evidence_abstention_cohort_matrix.py' -v
+          python -m unittest discover -s tests -p 'test_build_evidence_abstention_intake.py' -v
+
+      - name: Fetch and verify pinned BugsInPy metadata source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/soarsmu/BugsInPy.git "$RUNNER_TEMP/BugsInPy"
+          git -C "$RUNNER_TEMP/BugsInPy" checkout --detach "$BUGSINPY_COMMIT"
+          test "$(git -C "$RUNNER_TEMP/BugsInPy" rev-parse HEAD)" = "$BUGSINPY_COMMIT"
+
+      - name: Build the fixed-revision metadata inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/inventory_bugsinpy_candidates.py \
+            --root "$RUNNER_TEMP/BugsInPy" \
+            --output "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" \
+            --summary "$RUNNER_TEMP/bugsinpy-metadata-inventory-summary.json" \
+            --expected-commit "$BUGSINPY_COMMIT" \
+            --expected-count 501
+
+      - name: Rebuild current screening queue from exposure ledger
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_evidence_abstention_screening_queue.py \
+            --input "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" \
+            --output "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
+            --summary "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" \
+            --first-batch-per-project 5
+
+      - name: Freeze V10 metadata-only intake
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_evidence_abstention_intake.py \
+            --inventory "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" \
+            --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
+            --output "$INTAKE_PATH" \
+            --size 100 \
+            --minimum-projects 8
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=Path(os.environ["INTAKE_PATH"])
+          data=json.loads(p.read_text(encoding="utf-8"))
+          assert data["record_type"] == "metadata_only_screening_intake_not_confirmatory_dataset"
+          assert len(data["case_ids"]) == 100
+          assert data["upstream_project_count"] >= 8
+          assert data["accepted_confirmatory_cases"] == 0
+          assert data["llm_inference_performed"] is False
+          assert len(data["case_ids"]) == len(set(data["case_ids"]))
+          print(json.dumps({
+            "intake_size":len(data["case_ids"]),
+            "upstream_project_count":data["upstream_project_count"],
+            "accepted_confirmatory_cases":data["accepted_confirmatory_cases"],
+            "llm_inference_performed":data["llm_inference_performed"],
+            "source_queue_sha256":data["source_queue_sha256"],
+            "exposure_addendum_sha256":data["exposure_addendum_sha256"]
+          },indent=2))
+          PY
+
+      - name: Freeze artifact checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v10-intake-artifact"
+          cp "$INTAKE_PATH" "$RUNNER_TEMP/v10-intake-artifact/"
+          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" "$RUNNER_TEMP/v10-intake-artifact/"
+          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory-summary.json" "$RUNNER_TEMP/v10-intake-artifact/"
+          cp "$RUNNER_TEMP/bugsinpy-screening-queue.csv" "$RUNNER_TEMP/v10-intake-artifact/"
+          cp "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" "$RUNNER_TEMP/v10-intake-artifact/"
+          cd "$RUNNER_TEMP/v10-intake-artifact"
+          find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+          sha256sum -c SHA256SUMS
+
+      - name: Commit the metadata-only intake on this isolated branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$INTAKE_PATH"
+          if git diff --cached --quiet; then
+            echo "The generated V10 intake is identical to the branch copy; no commit needed."
+          else
+            git commit -m "research: freeze V10 metadata-only intake after exposure exclusions"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi
+
+      - name: Upload inventory, queue, intake and provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-abstention-v10-metadata-intake
+          path: |
+            ${{ runner.temp }}/v10-intake-artifact/
+            ${{ github.workspace }}/${{ env.INTAKE_PATH }}
+          if-no-files-found: warn
+          retention-days: 30
