@@ -45,6 +45,7 @@ def verify_v10_intake(
     frozen_intake_path,
     exposure_union_path,
     expected_inventory_rows=501,
+    expected_inventory_projects=17,
     expected_queue_rows=407,
     expected_cohort_size=100,
     expected_project_count=14,
@@ -85,8 +86,13 @@ def verify_v10_intake(
     inventory_set = set(inventory_ids)
     queue_set = set(queue_ids)
     _require(queue_set.issubset(inventory_set), "Queue contains case IDs absent from the inventory.", blockers)
+    inventory_projects = {row.get("project", "").strip() for row in inventory}
+    if "" in inventory_projects:
+        blockers.append("Inventory contains a row with an empty project name.")
     _require(len(inventory) == expected_inventory_rows,
              f"Inventory row count is {len(inventory)}; expected {expected_inventory_rows}.", blockers)
+    _require(len(inventory_projects) == expected_inventory_projects,
+             f"Inventory has {len(inventory_projects)} projects; expected {expected_inventory_projects}.", blockers)
     _require(len(queue) == expected_queue_rows,
              f"Queue row count is {len(queue)}; expected {expected_queue_rows}.", blockers)
 
@@ -102,6 +108,9 @@ def verify_v10_intake(
     _require(len(exclusion_ids) == expected_exclusion_count,
              f"Exposure union has {len(exclusion_ids)} IDs; expected {expected_exclusion_count}.", blockers)
     exclusion_set = set(exclusion_ids)
+    absent_exclusions = exclusion_set - inventory_set
+    if absent_exclusions:
+        blockers.append("Exposure union includes IDs absent from the inventory: " + repr(sorted(absent_exclusions)))
     if queue_set & exclusion_set:
         blockers.append("Queue reintroduces previously exposed IDs: " + repr(sorted(queue_set & exclusion_set)))
     inventory_exclusion_set = inventory_set & exclusion_set
@@ -159,9 +168,24 @@ def verify_v10_intake(
 
     generated_exclusions = generated.get("excluded_prior_exposure")
     frozen_exclusions = frozen.get("excluded_prior_exposure")
-    if not isinstance(generated_exclusions, list) or not isinstance(frozen_exclusions, list):
-        blockers.append("Generated or frozen exclusion list is missing.")
-        generated_exclusions, frozen_exclusions = [], []
+    valid_generated_exclusions = (
+        isinstance(generated_exclusions, list)
+        and all(isinstance(cid, str) and cid.strip() for cid in generated_exclusions)
+    )
+    valid_frozen_exclusions = (
+        isinstance(frozen_exclusions, list)
+        and all(isinstance(cid, str) and cid.strip() for cid in frozen_exclusions)
+    )
+    if not valid_generated_exclusions:
+        blockers.append("Generated intake exclusion list is missing or malformed.")
+        generated_exclusions = []
+    if not valid_frozen_exclusions:
+        blockers.append("Frozen intake exclusion list is missing or malformed.")
+        frozen_exclusions = []
+    if len(generated_exclusions) != len(set(generated_exclusions)):
+        blockers.append("Generated intake exclusion list contains duplicate IDs.")
+    if len(frozen_exclusions) != len(set(frozen_exclusions)):
+        blockers.append("Frozen intake exclusion list contains duplicate IDs.")
     _require(set(generated_exclusions) == set(frozen_exclusions),
              "Generated intake exposure exclusions differ from the frozen manifest.", blockers)
     _require(set(generated_exclusions) == inventory_exclusion_set,
