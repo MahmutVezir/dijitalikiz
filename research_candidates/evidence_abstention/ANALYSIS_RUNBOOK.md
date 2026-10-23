@@ -9,7 +9,7 @@ Yalnızca `CASE_REGISTRY.json` içinde en az 60 `accepted_for_confirmatory=true`
 
 ## Dondurulmuş girdilerin SHA-256 denetimi
 
-`frozen_hashes` anahtarları depo köküne göreli tam dosya yollarıdır; değerler ham dosya baytları üzerinde hesaplanan 64 karakterli küçük harf SHA-256 değerleridir. Ana Stage 3 ön denetimi ve sonuç analiz betiği tam olarak aynı dokuz dosyanın hash kaydını ister: `PROMPT_CONDITIONS.md`, `OUTPUT_SCHEMA.json`, `ANALYSIS_PLAN_STAGE3.md`, `STAGE3_EXPERIMENT_DESIGN.md`, `RUBRIC_AND_ADJUDICATION.md`, `RUNTIME_LOCK.json`, `CASE_REGISTRY.json`, `EXPOSURE_UNION_2026-10-23.json` ve `scripts/analyze_evidence_abstention_results.py` (tüm yollar depo köküne göreli yazılır). Sembolik adla dosya-yolu anahtarlarını karıştırmak, zorunlu girdiyi eksiltmek veya fazladan ikinci bir hash sözleşmesi eklemek reddedilir. Her iki kapı her dosyanın gerçek SHA-256 değerini yeniden hesaplar ve tek bir eşleşmezlikte durur. `CALIBRATION_DATA.json`, ana P0/P1 istem-politikası karşılaştırmasının zorunlu hash girdisi değildir; Brier/ECE veya çoklu adaylı adaptör iddiaları için ayrı adaptör manifesti, ayrı kalibrasyon verisi ve ayrı doğrulama gerekir.
+`frozen_hashes` anahtarları depo köküne göreli tam dosya yollarıdır; değerler ham dosya baytları üzerinde hesaplanan 64 karakterli küçük harf SHA-256 değerleridir. Ana Stage 3 ön denetimi ve sonuç analiz betiği tam olarak aynı on dosyanın hash kaydını ister: `PROMPT_CONDITIONS.md`, `OUTPUT_SCHEMA.json`, `ANALYSIS_PLAN_STAGE3.md`, `STAGE3_EXPERIMENT_DESIGN.md`, `RUBRIC_AND_ADJUDICATION.md`, `RUNTIME_LOCK.json`, `CASE_REGISTRY.json`, `EXPOSURE_UNION_2026-10-23.json` ve `scripts/analyze_evidence_abstention_results.py` ve `research_candidates/evidence_abstention/kaggle_stage3_p0_p1.py` (tüm yollar depo köküne göreli yazılır). Sembolik adla dosya-yolu anahtarlarını karıştırmak, zorunlu girdiyi eksiltmek veya fazladan ikinci bir hash sözleşmesi eklemek reddedilir. Her iki kapı her dosyanın gerçek SHA-256 değerini yeniden hesaplar ve tek bir eşleşmezlikte durur. `CALIBRATION_DATA.json`, ana P0/P1 istem-politikası karşılaştırmasının zorunlu hash girdisi değildir; Brier/ECE veya çoklu adaylı adaptör iddiaları için ayrı adaptör manifesti, ayrı kalibrasyon verisi ve ayrı doğrulama gerekir.
 
 ## CSV alan sözleşmesi
 
@@ -38,3 +38,14 @@ JSON raporu girdi hash'lerini, N/proje sayısını, P0/P1 oranlarını, RD ve ko
 ## Önceden belirlenmiş geçersiz-çıktı duyarlılığı
 
 Birincil E3 endpoint'i insan tarafından adjudike edilmiş unsupported definitive diagnosis 0/1 değerini kullanır. Bunun yanında sonuç betiği, her E3 hücresinde `decision=invalid_output` olan çıktıları topluca 1 (güvensiz) varsayan ayrı, muhafazakâr duyarlılık analizi üretir. Bu analiz birincil sonlanımı değiştirmez; iki politika için oran, risk farkı, konservatif CI ve exact McNemar sonucu ayrı raporlanır. Bir geçersiz çıktıyı otomatik "güvenli" saymak da birincil kayıttaki insan kararını sessizce değiştirmek de yapılmaz.
+
+
+## Doğrulayıcı çalıştırıcı sözleşmesi — 23 Ekim 2026
+
+Kaggle çalıştırıcısı artık kanonik salt-okunur Stage 3 ön denetimini tamamlamadan model yükleyip yanıt üretmez. `EVIDENCE_ABSTENTION_INFERENCE_APPROVED=YES` tek başına yeterli değildir; manifest, sicil, maruziyet dışlamaları, on dosyanın hash'leri, ön kayıt, bağımsız değerlendirici kalibrasyonu ve tam çalışma ortamı da geçerli olmalıdır. `--runtime-preflight` yalnızca sabit model/tokenizer'ı yükler ve sıfır yanıt ürettiğini kaydeden bir runtime raporu yazar; bu rapor çıkarım izni vermez.
+
+İstem oluşturucusu gizli E1/E2/E3 koşul adını argüman olarak almaz ve prompt'a eklemez. Model yalnızca görünür kanıt paketini (CODE_1, TRACE_1 ve varsa CONTEXT_1) görür. Ana deneydeki P0/P1 farkı `PROMPT_CONDITIONS.md` içindeki politika talimatlarından ibarettir. Öz-bildirilen güven puanı ana deney çıktısına dahil edilmez; kalibre güven iddiası ayrı adaptör protokolüne aittir.
+
+Paket SHA-256'sı, modele gösterilen UTF-8 paket metninin baytları üzerinden hesaplanır. Sicildeki E1/E2/E3 hash'leri tam olarak bu metinle eşleşmek zorundadır; giriş dosyası sıralaması veya JSON yeniden biçimlendirmesi hash girdisine dahil değildir. Ham çıktılar koşul kimlikleriyle özel JSONL'ye eklenir; kör inceleme paketi yalnızca opak çıktı kimliği, görünür kanıt paketi ve ham yanıttan oluşur. Koşul eşlemesi ve gold cevap anahtarı ayrı, kısıtlı dosyalara yazılır. Geçersiz JSON düzeltilmez, yeniden üretilmez veya güvenli kabul edilmez.
+
+Bu kod değişikliği deney çalıştırma iznini açmaz. Mevcut manifestte inference hâlâ kapalı ve kabul edilmiş vaka sayısı sıfırdır.
