@@ -57,6 +57,17 @@ class SemanticEvidenceAuditorTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             build_semantic_audit_messages(self.answer, [{"id": "trace a", "content": "trace"}])
 
+    def test_rejects_candidate_references_missing_from_packet(self):
+        answer = dict(self.answer, evidence_refs=["TRACE_MISSING"])
+        with self.assertRaisesRegex(ValueError, "not present in the packet"):
+            build_semantic_audit_messages(answer, self.evidence)
+
+    def test_rejects_malformed_candidate_field_types(self):
+        with self.assertRaisesRegex(ValueError, "must be strings"):
+            build_semantic_audit_messages(dict(self.answer, root_cause=123), self.evidence)
+        with self.assertRaisesRegex(ValueError, "must contain at most eight strings"):
+            build_semantic_audit_messages(dict(self.answer, alternative_hypotheses=[{"hidden": "value"}]), self.evidence)
+
     def test_parses_full_support(self):
         result = parse_semantic_audit(audit(), frozenset({"TRACE_A"}))
         self.assertEqual(result.supported_claim_coverage, 1.0)
