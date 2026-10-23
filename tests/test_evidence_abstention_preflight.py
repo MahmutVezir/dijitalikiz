@@ -184,6 +184,30 @@ class PreflightTests(unittest.TestCase):
 
 
 
+    def test_rejects_missing_or_malformed_gold_root_cause_hash(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fixture(root)
+            project = root / "research_candidates" / "evidence_abstention"
+            (project / "CASE_REGISTRY.json").write_text(
+                json.dumps({
+                    "records": [{
+                        "case_id": "BugsInPy-demo-1",
+                        "accepted_for_confirmatory": True,
+                        "reference_root_cause_sha256": "not-a-sha256",
+                    }]
+                }),
+                encoding="utf-8",
+            )
+
+            report = MODULE.evaluate(root)
+
+            self.assertFalse(report["ready"])
+            self.assertTrue(any(
+                "missing/invalid reference_root_cause_sha256" in blocker
+                for blocker in report["blockers"]
+            ))
+
     def test_frozen_hashes_use_the_canonical_repository_relative_path_contract(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
