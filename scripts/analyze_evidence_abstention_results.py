@@ -28,8 +28,8 @@ REQUIRED_FROZEN_PATHS = {
     "research_candidates/evidence_abstention/OUTPUT_SCHEMA.json",
     "research_candidates/evidence_abstention/PROMPT_CONDITIONS.md",
     "research_candidates/evidence_abstention/ANALYSIS_PLAN_STAGE3.md",
+    "research_candidates/evidence_abstention/STAGE3_EXPERIMENT_DESIGN.md",
     "research_candidates/evidence_abstention/RUNTIME_LOCK.json",
-    "research_candidates/evidence_abstention/CALIBRATION_DATA.json",
     "research_candidates/evidence_abstention/RUBRIC_AND_ADJUDICATION.md",
     "scripts/analyze_evidence_abstention_results.py",
 }
@@ -137,6 +137,9 @@ def validate_frozen_hashes(root, frozen_hashes):
     missing = sorted(REQUIRED_FROZEN_PATHS - set(frozen_hashes))
     if missing:
         raise ValueError("analysis blocked: required frozen file hashes are missing: " + ", ".join(missing))
+    unexpected = sorted(set(frozen_hashes) - REQUIRED_FROZEN_PATHS)
+    if unexpected:
+        raise ValueError("analysis blocked: unexpected frozen file hash paths: " + ", ".join(unexpected))
     for relative_path, expected_hash in frozen_hashes.items():
         relative = Path(relative_path)
         if relative.is_absolute() or ".." in relative.parts:
