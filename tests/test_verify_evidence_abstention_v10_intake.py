@@ -134,7 +134,8 @@ class V10IntakeReproducibilityTests(unittest.TestCase):
         self.assertTrue(any("Queue SHA-256" in item for item in report["blockers"]))
 
     def test_rejects_reintroduced_exposure(self):
-        queue = list(csv.DictReader(self.queue_path.open("r", newline="", encoding="utf-8")))
+        with self.queue_path.open("r", newline="", encoding="utf-8") as handle:
+            queue = list(csv.DictReader(handle))
         queue[0]["case_id"] = self.excluded[0]
         write_csv(
             self.queue_path,
