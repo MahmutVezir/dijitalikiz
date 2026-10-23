@@ -59,3 +59,19 @@ The isolated synthetic test harness run on the verifier and corresponding regres
 The new GitHub Actions workflow is [Evidence abstention V10 metadata reproducibility](https://github.com/MahmutVezir/dijitalikiz/actions/workflows/evidence-abstention-v10-intake-reproducibility.yml). Its first recorded run is [39985336539](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39985336539). The job is marked failed, but GitHub returned an empty step list (`steps=[]`), and log retrieval returned `BlobNotFound`. Therefore the workflow did not provide evidence that any unit test or inventory rebuild actually executed. We classify this as a **runner/log availability blocker**, not as a code-test failure or a successful validation.
 
 **Current gate status:** synthetic verifier tests 7/7 pass locally; actual 501-row upstream inventory/407-row queue/100-row V10 rebuild in a GitHub runner remains unverified; accepted confirmatory cases remain 0; bug/fix tests and model inference remain 0.
+
+
+## Independent local reproduction from preserved inventory artifact — 23 October 2026
+
+In addition to the synthetic unit fixtures, the preserved GitHub Actions metadata artifact `evidence-abstention-bugsinpy-screening-queue` (artifact ID `12363279778`, from historical run `39640796171`) was downloaded and its inventory CSV byte hash verified as `069e649a37a12cd495ad08a82377f76f0b4518b3fd138380321dc53b15663dcb`. The CSV contains exactly 501 metadata rows across 17 projects.
+
+A local implementation of the documented deterministic queue algorithm, using the pinned inventory bytes and the 93-ID union, reproduced the V10 queue output byte-for-byte:
+- Queue: **407 rows / 14 upstream projects**
+- Rebuilt queue SHA-256: `91c926665752e0e44c6a4ba499422d2af23c6156f4d61b675e29ca0288a27ece` — exact match to the frozen V10 manifest's `source_queue_sha256`
+- First 100 IDs: exact same ordered sequence as the frozen V10 manifest
+- First-100 project counts: `ansible 9, black 9, fastapi 8, httpie 1, keras 8, luigi 8, matplotlib 8, pandas 8, scrapy 8, spacy 5, thefuck 8, tornado 8, tqdm 4, youtube-dl 8`
+- Selected/exposure-union intersection: **0**
+
+This is a real, artifact-backed **local reproduction of the metadata order**, stronger than the synthetic tests alone. It still does not prove that the newly added GitHub Actions workflow ran on a runner, that the exact checked-in builder script passed in GitHub CI, that any candidate bug/fix test pair is valid, or that any case is accepted. The isolated V10 verifier's seven synthetic regression tests pass locally; its remote execution remains unverified because Actions run `39985336539` had no job steps and log retrieval returned `BlobNotFound`.
+
+**State after this check:** the V10 metadata intake's inventory hash, queue hash, first-100 ordered IDs, project distribution and 93-item exclusion separation are independently reproduced locally. The remote CI/runner blocker, all scientific case acceptance checks, independent reviewer panels, exact Qwen/CUDA runtime, calibration, preregistration and confirmatory inference remain open.
