@@ -448,6 +448,8 @@ def require_authorized_preflight(root):
 
 
 def runtime_preflight(root):
+    if RUNTIME_REPORT_PATH.exists():
+        raise FileExistsError("Runtime report exists; choose a new output path rather than overwrite evidence.")
     manifest_path = root / "research_candidates" / "evidence_abstention" / "EXPERIMENT_MANIFEST_STAGE3.json"
     manifest = read_json(manifest_path)
     model_lock = manifest.get("model", {})
@@ -460,8 +462,6 @@ def runtime_preflight(root):
     report["mode"] = "generation_free_runtime_preflight"
     report["note"] = "No model response was generated; this report does not authorize confirmatory inference."
     RUNTIME_REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    if RUNTIME_REPORT_PATH.exists():
-        raise FileExistsError("Runtime report exists; choose a new output path rather than overwrite evidence.")
     RUNTIME_REPORT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
 
