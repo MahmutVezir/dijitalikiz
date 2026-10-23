@@ -99,6 +99,19 @@ Güncel bilimsel kapılar değişmedi: kabul edilmiş bağımsız vakalar 0, do�
 - Uzak yürütme için depo sahibinin operasyonel kontrolü: GitHub deposunda **Settings → Actions → General** altında Actions/workflow izinlerini; hesapta **Billing & plans → Actions** altında kullanım kotasını, ödeme yöntemi ve bütçe durdurma ayarını kontrol et. GitHub belgeleri özel depolarda kullanım kotası/ödeme kısıtlarının hosted runner kullanımını engelleyebildiğini belirtir; burada bunun gerçekten sebep olduğu henüz kanıtlanmadı. Ayarlar normalse yukarıdaki run/job kimlikleri ve `runner_id=0` metaverisiyle GitHub Support'a başvurulmalı.
 - Runner sorunu çözülene kadar daha fazla V10 adayını yalnızca iş akışı hata ayıklamak için çalıştırmak doğru değildir; böyle kullanılan adaylar kalıcı olarak maruz kalmış sayılabilir. Aday testlerine geçmeden önce metadata tekrar üretilebilirliği gerçek log/artefaktlarla kanıtlanmalı. V10 hâlen 100 metadata adayıdır; kabul edilmiş deney vakası sayısı 0'dır.
 
+## Primary preflight exposure guard — PR #140, 23 October 2026
+
+[PR #140](https://github.com/MahmutVezir/dijitalikiz/pull/140) merged a defense-in-depth control into the primary Stage 3 preflight. Its frozen input contract now includes the full `EXPOSURE_UNION_2026-10-23.json`; the union must contain 93 unique, non-empty IDs and an exact count, the manifest must use the canonical registry/union paths, and a case marked `accepted_for_confirmatory=true` is blocked if its ID appears anywhere in the permanent exposure union—even when its row claims `prior_exposure_clearance=true`. Regression tests were added for this behavior, malformed/duplicated unions, and noncanonical paths. The primary experiment manifest was not modified to permit inference.
+
+**This code change is merged; the new tests have not been verified in a real runner.** Post-merge Actions:
+- [39995370426](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39995370426), jobs 120557400108 and 120557400493: both ended after about two seconds with `runner_id=0`, empty runner name, and no steps.
+- [39995357117](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39995357117), job 120557355541: no runner and no steps.
+- [39995356861](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39995356861), jobs 120557352459 and 120557352825: no runner and no steps.
+
+These are pre-runner dispatch failures, not Python test logs. Consequently it is not correct to claim the modified test suite passed or failed on these runs. The minimal one-shell-step probe in [run 39994780466](https://github.com/MahmutVezir/dijitalikiz/actions/runs/39994780466) failed with the same zero-step signature, which isolates the current blocker from project test logic. The underlying cause is not yet determined; repository owner must inspect Actions settings and account usage/budget, then contact GitHub Support if those appear normal.
+
+Current science gates after PR #140 remain unchanged: 93 exclusions, 0 accepted cases, 0 confirmatory model outputs, empty calibration data, no verifiable preregistration, and inference disabled. No new candidate tests should run until the minimal runner starts recording real steps and logs, since using candidates to troubleshoot the runner would permanently expose them.
+
 ## Nihai durum
 
 **Yazılım prototipi var; bilimsel etkinlik henüz ölçülmedi.** En büyük dış bağımlılıklar bağımsız değerlendiriciler, yeterli ve kabul edilmiş gerçek vaka havuzu, semantik auditor validasyonu ve gerçek GPU/runtime doğrulamasıdır. Bu işler tamamlanmadan projeye “halüsinasyon azaltıldı” veya “hipotez doğrulandı” denmeyecektir.
