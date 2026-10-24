@@ -1,0 +1,72 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "candidate_metadata_static_gate",
+  "date": "2026-10-24",
+  "candidate_id": "BugsInPy-ansible-7",
+  "dataset_repository": "https://github.com/soarsmu/BugsInPy",
+  "dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "source_project": "https://github.com/ansible/ansible",
+  "metadata_source_path": "projects/ansible/bugs/7/bug.info",
+  "metadata_source_url": "https://api.github.com/repos/soarsmu/BugsInPy/contents/projects/ansible/bugs/7/bug.info?ref=11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "metadata": {
+    "python_version": "3.6.9",
+    "pythonpath": "ansible/build/lib/",
+    "buggy_commit_id": "cd146b836e032df785ecd9eb711c6ef23c2228b8",
+    "fixed_commit_id": "4ec1437212b2fb3c313e44ed5a76b105f2151622",
+    "test_file": "test/units/modules/network/eos/test_eos_vlans.py",
+    "run_test_command": "pytest test/units/modules/network/eos/test_eos_vlans.py::TestEosVlansModule::test_eos_vlan_replaced",
+    "setup_commands": [
+      "python setup.py install",
+      "pip3 install pytest==3.10.1"
+    ]
+  },
+  "upstream_commit_check": {
+    "buggy_commit_resolves": true,
+    "fixed_commit_resolves": true,
+    "fixed_commit_parent_equals_buggy_commit": true,
+    "fixed_commit_message": "Fix to - eos_vlans using state parameter replaced is giving odd behavior (#67318)",
+    "code_file_changed_by_fixed_commit": "lib/ansible/module_utils/network/eos/config/vlans/vlans.py",
+    "test_file_also_changed_by_fixed_commit": true,
+    "test_method_changed": "TestEosVlansModule.test_eos_vlan_replaced"
+  },
+  "license_check": {
+    "file": "COPYING",
+    "checked_at_buggy_and_fixed_commits": true,
+    "license": "GNU General Public License version 3 (GPL-3.0)",
+    "human_redistribution_and_attribution_review": "pending"
+  },
+  "exposure_check": {
+    "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json",
+    "exposure_union_unique_count": 97,
+    "exposure_union_list_length": 97,
+    "exposure_union_unique_ids": 97,
+    "candidate_in_permanent_exposure_union": false,
+    "exposure_union_blob_sha": "c94b7606f5d3a347a2b06e789ba0d7acef5e2855"
+  },
+  "queue_provenance": {
+    "source_inventory_sha256": "069e649a37a12cd495ad08a82377f76f0b4518b3fd138380321dc53b15663dcb",
+    "metadata_queue_rows": 403,
+    "metadata_queue_sha256": "bac3d90f5d4e473645583aa9585a38f6fa44153ac739cacf4e2e7b16600f8e49",
+    "queue_rank": 1,
+    "qualification": "These queue values are recorded from the prior metadata-only rebuild; queue membership is not scientific acceptance."
+  },
+  "target_patch_summary": {
+    "changed_file": "lib/ansible/module_utils/network/eos/config/vlans/vlans.py",
+    "preliminary_hypothesis": "The fixed change emits removals before setting values and skips removal of keys that are also being set, preventing a removal command from undoing a requested replacement.",
+    "ground_truth_reviewed": false
+  },
+  "gates": {
+    "metadata_complete": true,
+    "runtime_matches_metadata": true,
+    "exposure_gate_passed": true,
+    "license_reviewed": false,
+    "root_cause_independently_reviewed": false,
+    "test_pair_identity_gate": "blocked_test_file_differs_between_buggy_and_fixed_commits",
+    "buggy_fixed_test_pair_reproduced": false,
+    "evidence_levels_reviewed": false,
+    "accepted_for_confirmatory": false
+  },
+  "no_candidate_test_executed": true,
+  "no_model_inference_performed": true,
+  "status": "metadata_gate_passed_test_pair_integrity_review_required"
+}
