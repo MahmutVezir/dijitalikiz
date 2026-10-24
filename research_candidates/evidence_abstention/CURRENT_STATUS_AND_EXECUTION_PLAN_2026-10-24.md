@@ -76,20 +76,33 @@ The minimum diversity gate is at least 8 upstream projects; the currently static
 
 The V10 100-candidate files are historical provenance and must not be reused directly as the new execution order. The rebuilt queue is the active metadata-screening list.
 
-## First post-smoke candidate metadata gate — passed; test-pair identity blocks execution
+## First candidate triage — ansible-7 rejected before test execution; black-9 is next
 
-The active metadata-only queue rebuild recorded in this document identifies `BugsInPy-ansible-7` as rank 1; its source inventory had 501 rows and the rebuilt queue has 403 rows across 13 projects. The recorded queue SHA-256 is `bac3d90f5d4e473645583aa9585a38f6fa44153ac739cacf4e2e7b16600f8e49`. Those values are queue provenance only, not evidence of case acceptance.
+The active metadata-only queue was rebuilt from the pinned 501-row / 17-project inventory with the 97-ID exposure union: 403 queue rows across 13 projects; queue SHA-256 `bac3d90f5d4e473645583aa9585a38f6fa44153ac739cacf4e2e7b16600f8e49`. Queue ordering is triage priority only, not acceptance.
 
-At the pinned BugsInPy revision `11c5f1eea954a42132cfd06bf257766a7963e0fd`, `projects/ansible/bugs/7/bug.info` declares Python 3.6.9, buggy commit `cd146b836e032df785ecd9eb711c6ef23c2228b8`, fixed commit `4ec1437212b2fb3c313e44ed5a76b105f2151622`, and target test `test/units/modules/network/eos/test_eos_vlans.py::TestEosVlansModule::test_eos_vlan_replaced`. Both commit objects resolve, and the fixed commit's parent is the declared buggy commit. The 97-ID exposure union is structurally valid (97 listed, 97 unique) and does not contain `BugsInPy-ansible-7`. Metadata evidence: [ANSIBLE_7_METADATA_GATE_2026-10-24.json](ANSIBLE_7_METADATA_GATE_2026-10-24.json).
+### BugsInPy-ansible-7 — screened out before test execution
 
-The upstream `COPYING` file at both commits is GNU GPL version 3; attribution/redistribution review is still open. The fixed commit changes both the production file `lib/ansible/module_utils/network/eos/config/vlans/vlans.py` and the target test method. Therefore checkout-native buggy/fixed runs would use different test bytes and are blocked. Before either run, apply the prospective, byte-identical test-overlay rule documented in [TEST_PAIR_IDENTITY_RULE_ADDENDUM_2026-10-24.md](TEST_PAIR_IDENTITY_RULE_ADDENDUM_2026-10-24.md); compute and verify identical test SHA-256 in both disposable worktrees. If that overlay cannot be executed without changing the test or the production sources, reject the candidate for test-pair validation. No candidate test has been run and no model inference has been performed.
+The metadata gate and test-file overlay integrity checks passed: exact Python 3.6.9, the pinned buggy/fixed commits resolved, the fixed test overlay hash matched across both worktrees, and production files remained unchanged. However, static test-adequacy review found the target test mocks existing VLAN state as an empty list. For the target `replaced` path, that yields an empty `extant` dict and no removal keys from `dict_diff(desired, extant)`; the changed removal ordering/overlap branch is therefore not reached. The target test is not defect-sensitive for this patch. No dependencies were installed and no target test was run. This is a static pre-execution rejection, **not** a reproduced buggy failure. Evidence: [ANSIBLE_7_TEST_ADEQUACY_AUDIT_2026-10-24.json](ANSIBLE_7_TEST_ADEQUACY_AUDIT_2026-10-24.json).
+
+The overlay integrity result is retained separately as [ANSIBLE_7_TEST_OVERLAY_PREFLIGHT_2026-10-24.json](ANSIBLE_7_TEST_OVERLAY_PREFLIGHT_2026-10-24.json); its successful hash checks do not override the adequacy rejection.
+
+### BugsInPy-black-9 — next candidate, runtime/overlay pending
+
+The next metadata row reviewed is `BugsInPy-black-9`. At pinned BugsInPy revision `11c5f1eea954a42132cfd06bf257766a7963e0fd`, it specifies Python 3.8.3, buggy commit `026c81b83454f176a9f9253cbfb70be2c159d822`, fixed commit `d6db1c12a8e14833fe22da377cddc2bd1f43dc14`, and test bundle `tests/data/python2_print_function.py;tests/test_black.py`. The fixed commit adds the regression method `BlackTestCase.test_python2_print_function` and its data fixture, and changes `black.py`'s grammar selection. The BugsInPy case is not in the 97-ID exclusion union. The upstream `LICENSE` is MIT at both revisions; attribution review remains pending. Evidence: [BLACK_9_METADATA_GATE_2026-10-24.json](BLACK_9_METADATA_GATE_2026-10-24.json).
+
+This candidate needs a source-only overlay preflight that copies both metadata-listed test-bundle files from the fixed revision to the buggy worktree, verifies both SHA-256 hashes match across worktrees, and confirms that no production file changes. The exact Python 3.8.3 runtime must also be discovered or reproducibly provisioned before any target test is executed. Neither the candidate test nor model inference has run.
+
+### Candidate test-integrity rule
+
+Apply [TEST_ADEQUACY_AND_BUNDLE_IDENTITY_GATE_2026-10-24.md](TEST_ADEQUACY_AND_BUNDLE_IDENTITY_GATE_2026-10-24.md) to all candidates. Test identity is necessary but insufficient; static defect sensitivity and all support fixture hashes must be checked before dependency installation or target execution.
 
 ## Immediate next actions
 
-1. Complete the GPL-3.0 attribution and reuse review for `BugsInPy-ansible-7`; retain exact buggy/fixed source revision and license-file hashes.
-2. In disposable source worktrees, verify the target test file hashes at both pinned commits. If they differ, create the prospective fixed-test overlay specified in `TEST_PAIR_IDENTITY_RULE_ADDENDUM_2026-10-24.md`; verify identical test-file hashes, unchanged production source revisions, and a matching Python 3.6.9 runtime before any target test execution.
-3. Freeze dependency/setup commands and capture a case-independent pre-run environment fingerprint. Then perform the paired target test once in each worktree without changing the runner in response to candidate-specific failures. If setup/runner debugging becomes necessary, preserve the logs and permanently exclude this candidate before making runner changes.
-4. After a valid buggy-fail/fixed-pass pair is reproduced, continue independent root-cause review, leakage/prior-exposure review, E1/E2/E3 evidence construction, and two disjoint reviewer panels. No single technical result automatically accepts a case.
+1. Run a case-independent discovery for an exact Python 3.8.3 interpreter and record existing `uv`/environment-manager state. Do not install project dependencies or run candidate tests during discovery.
+2. Run a source-only overlay preflight for `BugsInPy-black-9` at the pinned commits. Overlay both metadata-listed test-bundle paths from the fixed revision into the buggy worktree, hash both files on both sides, and verify production files are unchanged.
+3. If source-overlay and Python-runtime gates pass, review the MIT attribution/reuse note and inspect the upstream project/test dependency pins before installing anything. Use disposable, separate environments for the paired runs or rigorously verify equivalent packages in one shared environment.
+4. Only then run the exact target test in both snapshots, preserve stdout/stderr and environment fingerprints, and check the required buggy-fail/fixed-pass. Setup/import/collection errors are environment failures, not target failures.
+5. Keep the confirmatory registry empty until the independent root-cause, leakage, E1/E2/E3 evidence, disjoint reviewer, minimum 60-case/8-project and other frozen study gates pass.
 
 ## Inference gate
 
