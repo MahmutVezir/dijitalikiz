@@ -1,0 +1,59 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "black9_pretest_environment_manifest",
+  "frozen_before_target_test_execution": true,
+  "date": "2026-10-24",
+  "candidate_id": "BugsInPy-black-9",
+  "source_dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "buggy_commit": "026c81b83454f176a9f9253cbfb70be2c159d822",
+  "fixed_commit": "d6db1c12a8e14833fe22da377cddc2bd1f43dc14",
+  "required_python": "3.8.3",
+  "toolchain": {
+    "pip": "23.3.2",
+    "setuptools": "67.8.0",
+    "wheel": "0.41.3"
+  },
+  "minimal_direct_runtime_dependencies": {
+    "appdirs": "1.4.3",
+    "attrs": "19.3.0",
+    "click": "7.0",
+    "toml": "0.10.0"
+  },
+  "dependency_pin_source": "The pins above are copied from the case-specific BugsInPy requirements file at the pinned dataset revision; they are direct runtime dependencies declared by the upstream setup.py, plus pinned environment bootstrap tooling already smoke-tested on Python 3.7.3.",
+  "exclusions_from_install": [
+    "Do not install the entire case-specific requirements file: it contains many documentation/lint/build packages not needed by this unit test.",
+    "Do not install the editable Git requirement for black; it points to the buggy commit and could cause imports to come from a separate checkout rather than the two local worktrees.",
+    "Do not run pip install . or setup.py install against either worktree."
+  ],
+  "import_integrity": {
+    "run_from_each_worktree_root": true,
+    "PYTHONPATH_must_point_to_active_worktree": true,
+    "verify_black_file_path_matches_active_worktree_before_test": true,
+    "verify_Black_version": "19.3b0",
+    "verify_test_module_file_path_matches_active_worktree": true
+  },
+  "target_test": "python -m unittest -q tests.test_black.BlackTestCase.test_python2_print_function",
+  "test_bundle_overlay": [
+    "tests/data/python2_print_function.py",
+    "tests/test_black.py"
+  ],
+  "setup_adjustment": "Create empty tests/__init__.py in both disposable worktrees as specified by BugsInPy's setup.sh; record its hash and keep this setup marker identical on both sides.",
+  "run_policy": {
+    "same_disposable_venv_for_both_sides": true,
+    "separate_XDG_CACHE_HOME_for_buggy_and_fixed": true,
+    "no_automatic_retries": true,
+    "no_runner_repair_after_candidate_specific_failure": true,
+    "setup_or_import_error_is_not_target_failure": true
+  },
+  "gates": {
+    "source_overlay_passed": true,
+    "exact_python_3_8_3_venv_smoke_passed": true,
+    "dependency_smoke": "pending",
+    "test_bundle_import_preflight": "pending",
+    "target_buggy_test": "not_run",
+    "target_fixed_test": "not_run",
+    "accepted_for_confirmatory": false,
+    "model_inference_authorized": false
+  },
+  "status": "frozen_minimal_runtime_pins_pre_target_test"
+}
