@@ -1,0 +1,32 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "candidate_static_test_adequacy_audit",
+  "date": "2026-10-24",
+  "candidate_id": "BugsInPy-ansible-7",
+  "dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "source_repository": "https://github.com/ansible/ansible",
+  "source_files": {
+    "test": "test/units/modules/network/eos/test_eos_vlans.py",
+    "production": "lib/ansible/module_utils/network/eos/config/vlans/vlans.py",
+    "diff_helper": "lib/ansible/module_utils/network/common/utils.py"
+  },
+  "references": {
+    "buggy_test": "https://github.com/ansible/ansible/blob/cd146b836e032df785ecd9eb711c6ef23c2228b8/test/units/modules/network/eos/test_eos_vlans.py",
+    "fixed_test": "https://github.com/ansible/ansible/blob/4ec1437212b2fb3c313e44ed5a76b105f2151622/test/units/modules/network/eos/test_eos_vlans.py",
+    "buggy_vlans": "https://github.com/ansible/ansible/blob/cd146b836e032df785ecd9eb711c6ef23c2228b8/lib/ansible/module_utils/network/eos/config/vlans/vlans.py",
+    "fixed_vlans": "https://github.com/ansible/ansible/blob/4ec1437212b2fb3c313e44ed5a76b105f2151622/lib/ansible/module_utils/network/eos/config/vlans/vlans.py",
+    "dict_diff": "https://github.com/ansible/ansible/blob/cd146b836e032df785ecd9eb711c6ef23c2228b8/lib/ansible/module_utils/network/common/utils.py"
+  },
+  "static_findings": {
+    "target_test_sets_mocked_current_vlans_to_empty_list": true,
+    "replaced_state_uses_empty_extant_dict_when_vlan_missing": true,
+    "dict_diff_desired_vs_empty_extant_produces_no_removal_keys": true,
+    "bug_changed_logic_requires_to_remove_keys": true,
+    "target_assertion_exercises_changed_logic": false
+  },
+  "rationale": "The selected test method sets execute_show_command.return_value to []. In _state_replaced, a missing VLAN yields an empty extant dict. dict_diff(desired, extant) therefore produces no to_remove keys. The production change only changes the ordering and overlap handling of to_remove versus to_set, so that branch is not exercised by this target case. Identical overlay verification does not cure missing defect sensitivity.",
+  "candidate_test_executed": false,
+  "model_inference_performed": false,
+  "status": "screened_out_before_test_execution_target_not_defect_sensitive",
+  "disposition": "Do not spend environment-install time on this candidate's current target test. Keep its metadata/overlay evidence; do not describe it as a reproduced failure or as a confirmatory result."
+}
