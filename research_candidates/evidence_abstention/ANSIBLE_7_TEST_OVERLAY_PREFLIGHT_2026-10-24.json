@@ -1,0 +1,39 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "ansible7_test_overlay_source_preflight",
+  "date": "2026-10-24",
+  "candidate_id": "BugsInPy-ansible-7",
+  "kaggle_report_path": "/kaggle/working/stage3_ansible7_overlay_audit_20261024_165425_353894/overlay_audit_report.json",
+  "kaggle_report_sha256_reported_by_user": "a92c9a65d44989ae496db817697bab8ac5b54cdd2c26728624325115d1c3ec52",
+  "repository": "https://github.com/ansible/ansible",
+  "buggy_commit": "cd146b836e032df785ecd9eb711c6ef23c2228b8",
+  "fixed_commit": "4ec1437212b2fb3c313e44ed5a76b105f2151622",
+  "test_path": "test/units/modules/network/eos/test_eos_vlans.py",
+  "production_path": "lib/ansible/module_utils/network/eos/config/vlans/vlans.py",
+  "checks": {
+    "buggy_head_matches": true,
+    "fixed_head_matches": true,
+    "initial_test_bytes_identical": false,
+    "test_overlay_applied_to_buggy": true,
+    "final_test_bytes_identical": true,
+    "production_source_untouched": true,
+    "overlay_scope_ok": true,
+    "gpl_v3_header_seen_in_both_snapshots": true
+  },
+  "changed_paths": {
+    "buggy": [
+      "test/units/modules/network/eos/test_eos_vlans.py"
+    ],
+    "fixed": []
+  },
+  "candidate_test_executed": false,
+  "model_inference_performed": false,
+  "project_dependencies_installed": false,
+  "interpretation": "The fixed-commit version of the target test was copied byte-for-byte to the buggy worktree. Final test file SHA-256 matched across worktrees, with production source files unchanged. This establishes test-file identity only; it does not establish that the target regression fails on buggy code and passes on fixed code.",
+  "limitations": [
+    "Only the report summary supplied by the user is recorded; raw report bytes were not independently fetched from the Kaggle runtime.",
+    "License redistribution/attribution review remains pending.",
+    "Environment/dependency compatibility and actual paired target-test outcomes remain unverified."
+  ],
+  "status": "passed_test_overlay_preflight"
+}
