@@ -38,6 +38,12 @@ The probe used `import json, pip, setuptools, wheel`, which imports `pip` before
 
 Next smoke uses an import-order-safe check: import `setuptools` and `wheel` without first importing `pip`, query pip's version through the CLI separately, and verify the three exact entries using `pip freeze --all`. A successful rerun is required before candidate execution.
 
+## Pinned toolchain smoke v2 — passed
+
+The import-order-safe rerun passed on 2026-10-24 at 16:07:33 UTC. A fresh disposable Python 3.7.3 venv installed and verified `pip==23.3.2`, `setuptools==67.8.0`, and `wheel==0.41.3`. The exact `pip freeze --all` lines matched the three pins, and `pip check` returned code 0 with no broken requirements. All recorded commands in this smoke completed without error. Evidence: [PYTHON373_PIP_TOOLCHAIN_SMOKE_V2_2026-10-24.json](PYTHON373_PIP_TOOLCHAIN_SMOKE_V2_2026-10-24.json).
+
+This closes the disposable Python 3.7.3 toolchain-bootstrap smoke only. It does not authorize running a benchmark candidate under a mismatched interpreter. The next queued candidate is `BugsInPy-ansible-7`, whose pinned metadata requires Python 3.6.9, so Python 3.7.3 cannot be used to run it unless an explicit protocol amendment is justified and frozen beforehand. Current next step is a case-independent, read-only search for Python 3.6.9 and environment managers; no candidate source download or test is allowed during this discovery.
+
 ## Exposure decision and rebuilt queue provenance
 
 The dated addendum `EXPOSURE_EXCLUSION_ADDENDUM_2026-10-24.json` records the four session exclusions. The derived `EXPOSURE_UNION_2026-10-24.json` contains 97 unique IDs (the previous 93-ID union plus four cases); the original 21–23 October records remain unchanged.
@@ -58,9 +64,9 @@ The V10 100-candidate files are historical provenance and must not be reused dir
 
 ## Immediate next actions
 
-1. Run an infrastructure-only disposable-venv pip/toolchain smoke using the discovered Python 3.7.3 interpreter. It may install only the pinned bootstrap tools `pip==23.3.2`, `setuptools==67.8.0`, and `wheel==0.41.3` inside a newly created disposable venv. Do not install project requirements or run candidate tests.
-2. Inspect the smoke report and verify every command log/hash, exact tool versions, and `pip check`. If the gate fails, diagnose infrastructure without using a benchmark case.
-3. Only after the toolchain smoke passes, screen the next unexposed candidate from the rebuilt queue, preserving the predeclared project-interleaved order. Buggy-fail/fixed-pass must both be reproducible in the recorded runtime. If a candidate is used to debug or modify the runner, permanently exclude it before modifying the runner.
+1. Run case-independent read-only discovery for Python 3.6.9 and available environment managers. Do not download candidate source, install project dependencies, or run tests during this step.
+2. If Python 3.6.9 is absent, assess a reproducible isolated environment creation plan and its availability before choosing a candidate; preserve the exact Python version metadata gate.
+3. Only after the runtime matches the first queued candidate, screen it with the rebuilt queue and permanent exclusion union. Buggy-fail/fixed-pass must both be reproduced in the recorded runtime. If a candidate is used to debug or modify the runner, permanently exclude it before modifying the runner.
 4. Continue licensing, root-cause, leakage, prior-exposure, evidence-sufficiency, and independent-rater gates. A static-ready candidate is not an accepted case.
 
 ## Inference gate
