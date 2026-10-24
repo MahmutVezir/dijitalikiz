@@ -7,6 +7,10 @@
   "kaggle_report_sha256_reported_by_user": "368f6c301a5219eb9a444603fcb3aafadbe11a1745b63ae23ef2127d9adb65cc",
   "buggy_commit": "026c81b83454f176a9f9253cbfb70be2c159d822",
   "fixed_commit": "d6db1c12a8e14833fe22da377cddc2bd1f43dc14",
+  "metadata_test_bundle": [
+    "tests/data/python2_print_function.py",
+    "tests/test_black.py"
+  ],
   "checks": {
     "buggy_head_matches": true,
     "fixed_head_matches": true,
@@ -24,11 +28,12 @@
   "runtime_discovery": {
     "python_3_8_3_found": false,
     "exact_python_3_8_3_paths": [],
-    "candidate_python_required": "3.8.3"
+    "required_python_version": "3.8.3"
   },
+  "project_dependencies_installed": false,
   "candidate_test_executed": false,
   "model_inference_performed": false,
-  "project_dependencies_installed": false,
-  "interpretation": "Source and two-file test-bundle overlay passed. Exact Python 3.8.3 was not found in the bounded interpreter scan. The next isolated step is to use uv-managed CPython 3.8.3 in a new case-independent directory, then validate the venv version only; no project dependencies or target tests yet.",
-  "status": "passed_source_overlay_python383_provisioning_pending"
+  "interpretation": "Source overlay passed with both test bundle files hash-identical and production code unchanged. Python 3.8.3 was not available in the bounded scan. Source overlay is necessary but does not replace exact runtime and test result gates.",
+  "status": "passed_source_overlay_preflight_python383_not_found",
+  "next_step": "Provision exact CPython 3.8.3 in a case-independent uv-managed directory, create a disposable no-pip virtual environment, verify exact version and isolation, and stop before project dependency installation or target test."
 }
