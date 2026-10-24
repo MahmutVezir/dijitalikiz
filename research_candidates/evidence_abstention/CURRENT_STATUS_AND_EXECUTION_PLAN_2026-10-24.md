@@ -94,6 +94,8 @@ The exact CPython 3.8.3 environment was provisioned with `uv 0.13.5`. The minima
 
 The paired target test was run once in each worktree with the same venv, separate caches, matching test bundle, verified pinned commits, and no automatic retries. The buggy run returned exit code 1 with `black.InvalidInput: Cannot parse: 6:13: print(a, file=sys.stderr)`; the fixed run returned exit code 0 and `OK`. Neither run timed out or reported an import error. Source hashes remained unchanged. This is the expected technical `buggy-fail/fixed-pass` pattern for the target parser regression. Report summary and user-reported SHA-256 are preserved in [BLACK_9_PAIRED_TEST_RESULT_2026-10-24.json](BLACK_9_PAIRED_TEST_RESULT_2026-10-24.json).
 
+A preliminary technical root-cause note is recorded at [BLACK_9_PRELIMINARY_ROOT_CAUSE_2026-10-24.json](BLACK_9_PRELIMINARY_ROOT_CAUSE_2026-10-24.json): the buggy grammar selection rejects the Python 2 `print_function` fixture line `print(a, file=sys.stderr)`, while the fixed code tries a grammar that accepts this syntax first. This is a technical interpretation from the pinned diff and output, **not** a substitute for independent ground-truth review.
+
 The output is not yet a fully closed evidence package: raw stdout/stderr SHA-256 hashes and a compact consistency check from the Kaggle report remain to be recorded. After that, the two core validation tasks are (1) independent root-cause/license/leakage review and (2) construction and blinded assessment of E1/E2/E3 evidence packets. The candidate is **not yet accepted for confirmatory analysis**, and model inference remains closed.
 
 ### Candidate test-integrity rule
