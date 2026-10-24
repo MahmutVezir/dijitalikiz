@@ -76,12 +76,20 @@ The minimum diversity gate is at least 8 upstream projects; the currently static
 
 The V10 100-candidate files are historical provenance and must not be reused directly as the new execution order. The rebuilt queue is the active metadata-screening list.
 
+## First post-smoke candidate metadata gate — passed; test-pair identity blocks execution
+
+The active metadata-only queue rebuild recorded in this document identifies `BugsInPy-ansible-7` as rank 1; its source inventory had 501 rows and the rebuilt queue has 403 rows across 13 projects. The recorded queue SHA-256 is `bac3d90f5d4e473645583aa9585a38f6fa44153ac739cacf4e2e7b16600f8e49`. Those values are queue provenance only, not evidence of case acceptance.
+
+At the pinned BugsInPy revision `11c5f1eea954a42132cfd06bf257766a7963e0fd`, `projects/ansible/bugs/7/bug.info` declares Python 3.6.9, buggy commit `cd146b836e032df785ecd9eb711c6ef23c2228b8`, fixed commit `4ec1437212b2fb3c313e44ed5a76b105f2151622`, and target test `test/units/modules/network/eos/test_eos_vlans.py::TestEosVlansModule::test_eos_vlan_replaced`. Both commit objects resolve, and the fixed commit's parent is the declared buggy commit. The 97-ID exposure union is structurally valid (97 listed, 97 unique) and does not contain `BugsInPy-ansible-7`. Metadata evidence: [ANSIBLE_7_METADATA_GATE_2026-10-24.json](ANSIBLE_7_METADATA_GATE_2026-10-24.json).
+
+The upstream `COPYING` file at both commits is GNU GPL version 3; attribution/redistribution review is still open. The fixed commit changes both the production file `lib/ansible/module_utils/network/eos/config/vlans/vlans.py` and the target test method. Therefore checkout-native buggy/fixed runs would use different test bytes and are blocked. Before either run, apply the prospective, byte-identical test-overlay rule documented in [TEST_PAIR_IDENTITY_RULE_ADDENDUM_2026-10-24.md](TEST_PAIR_IDENTITY_RULE_ADDENDUM_2026-10-24.md); compute and verify identical test SHA-256 in both disposable worktrees. If that overlay cannot be executed without changing the test or the production sources, reject the candidate for test-pair validation. No candidate test has been run and no model inference has been performed.
+
 ## Immediate next actions
 
-1. Re-derive and verify the active queue from the pinned 501-row inventory and `EXPOSURE_UNION_2026-10-24.json`; do not reuse the historical V10 execution order. Verify `BugsInPy-ansible-7` is the first eligible candidate, is absent from all permanent exclusions, and still declares Python 3.6.9. Perform metadata/static checks only; do not download its source or tests until the checks and provenance agree.
-2. If metadata and static gates pass, download the exact pinned source revision and inspect candidate licensing, bug/fix commits, patch, regression-test target, and setup requirements. Do not count any setup/environment failure as a target failure.
-3. Only after those gates, run buggy/fixed test-pair reproduction in the disposable Python 3.6.9 environment, capture raw logs and runtime fingerprint, and preserve hashes. If a candidate is used to debug or modify the runner, permanently exclude it before modifying the runner.
-4. Continue leakage/prior-exposure, root-cause review, E1/E2/E3 evidence construction, and disjoint independent-reviewer gates. A reproduced test pair or static-ready candidate alone is not an accepted scientific case.
+1. Complete the GPL-3.0 attribution and reuse review for `BugsInPy-ansible-7`; retain exact buggy/fixed source revision and license-file hashes.
+2. In disposable source worktrees, verify the target test file hashes at both pinned commits. If they differ, create the prospective fixed-test overlay specified in `TEST_PAIR_IDENTITY_RULE_ADDENDUM_2026-10-24.md`; verify identical test-file hashes, unchanged production source revisions, and a matching Python 3.6.9 runtime before any target test execution.
+3. Freeze dependency/setup commands and capture a case-independent pre-run environment fingerprint. Then perform the paired target test once in each worktree without changing the runner in response to candidate-specific failures. If setup/runner debugging becomes necessary, preserve the logs and permanently exclude this candidate before making runner changes.
+4. After a valid buggy-fail/fixed-pass pair is reproduced, continue independent root-cause review, leakage/prior-exposure review, E1/E2/E3 evidence construction, and two disjoint reviewer panels. No single technical result automatically accepts a case.
 
 ## Inference gate
 
