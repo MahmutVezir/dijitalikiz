@@ -1,0 +1,60 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "black9_dependency_and_import_preflight",
+  "date": "2026-10-24",
+  "candidate_id": "BugsInPy-black-9",
+  "kaggle_report_path": "/kaggle/working/stage3_black9_dependency_preflight_20261024_170813_828314/dependency_preflight_report.json",
+  "kaggle_report_sha256_reported_by_user": "3c0b12e0dc8cb95f6e3869217a021dd7609a4e9781c54c22fb7cc99d309deba8",
+  "python_version": [
+    3,
+    8,
+    3
+  ],
+  "source_worktrees": {
+    "buggy": "/kaggle/working/stage3_black9_overlay_audit_20261024_170107_288273/buggy",
+    "fixed": "/kaggle/working/stage3_black9_overlay_audit_20261024_170107_288273/fixed"
+  },
+  "pinned_package_set": [
+    "pip==23.3.2",
+    "setuptools==67.8.0",
+    "wheel==0.41.3",
+    "appdirs==1.4.3",
+    "attrs==19.3.0",
+    "click==7.0",
+    "toml==0.10.0"
+  ],
+  "checks": {
+    "exact_freeze_set": true,
+    "pip_check": true,
+    "local_import_paths_verified": true,
+    "source_files_unchanged_by_import": true
+  },
+  "imports": {
+    "buggy_black_file": "/kaggle/working/stage3_black9_overlay_audit_20261024_170107_288273/buggy/black.py",
+    "fixed_black_file": "/kaggle/working/stage3_black9_overlay_audit_20261024_170107_288273/fixed/black.py",
+    "buggy_test_module": "/kaggle/working/stage3_black9_overlay_audit_20261024_170107_288273/buggy/tests/test_black.py",
+    "fixed_test_module": "/kaggle/working/stage3_black9_overlay_audit_20261024_170107_288273/fixed/tests/test_black.py",
+    "black_version_both": "19.3b0",
+    "click_version_both": "7.0",
+    "attrs_version_both": "19.3.0",
+    "toml_version_both": "0.10.0"
+  },
+  "worktree_status_after_setup": {
+    "buggy": [
+      "tests/__init__.py",
+      "tests/data/python2_print_function.py",
+      "tests/test_black.py"
+    ],
+    "fixed": [
+      "tests/__init__.py"
+    ]
+  },
+  "minimal_runtime_dependencies_installed": true,
+  "full_historical_requirements_installed": false,
+  "editable_git_black_dependency_installed": false,
+  "candidate_test_executed": false,
+  "model_inference_performed": false,
+  "source_hashes_unchanged_by_import": true,
+  "interpretation": "The report's project_dependencies_installed flag remained false because the candidate package itself was not installed from the project or from editable Git. The seven pinned bootstrap/runtime packages were nevertheless installed; exact freeze, pip check and local source import checks passed.",
+  "status": "passed_dependency_and_import_preflight"
+}
