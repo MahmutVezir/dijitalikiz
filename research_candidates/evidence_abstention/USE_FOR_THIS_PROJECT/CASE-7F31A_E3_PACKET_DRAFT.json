@@ -1,0 +1,10 @@
+{
+  "case_alias": "CASE-7F31A",
+  "evidence_items": [
+    {
+      "id": "EV-FAIL",
+      "text": "Parser exception: InvalidInput\nMessage: Cannot parse: 6:13: print(a, file=sys.stderr)"
+    }
+  ],
+  "model_facing_packet": "Case: CASE-7F31A\n\nA code-formatting library is asked to format a supplied Python source file. The test reports a parsing failure. Use only the evidence items in this packet; do not assume that a failure message alone proves a unique root cause.\n\nEvidence items:\n\n[EV-FAIL]\nParser exception: InvalidInput\nMessage: Cannot parse: 6:13: print(a, file=sys.stderr)"
+}
