@@ -1,39 +1,75 @@
 {
   "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
-  "record_type": "black9_source_overlay_preflight",
+  "record_type": "black9_source_overlay_and_python383_smoke",
   "date": "2026-10-24",
   "candidate_id": "BugsInPy-black-9",
-  "kaggle_report_path": "/kaggle/working/stage3_black9_overlay_audit_20261024_170107_288273/overlay_audit_report.json",
-  "kaggle_report_sha256_reported_by_user": "368f6c301a5219eb9a444603fcb3aafadbe11a1745b63ae23ef2127d9adb65cc",
-  "buggy_commit": "026c81b83454f176a9f9253cbfb70be2c159d822",
-  "fixed_commit": "d6db1c12a8e14833fe22da377cddc2bd1f43dc14",
-  "metadata_test_bundle": [
-    "tests/data/python2_print_function.py",
-    "tests/test_black.py"
-  ],
-  "checks": {
-    "buggy_head_matches": true,
-    "fixed_head_matches": true,
-    "upstream_changed_paths": [
-      "black.py",
+  "source_overlay": {
+    "report_path": "/kaggle/working/stage3_black9_overlay_audit_20261024_170107_288273/overlay_audit_report.json",
+    "user_reported_sha256": "368f6c301a5219eb9a444603fcb3aafadbe11a1745b63ae23ef2127d9adb65cc",
+    "buggy_commit": "026c81b83454f176a9f9253cbfb70be2c159d822",
+    "fixed_commit": "d6db1c12a8e14833fe22da377cddc2bd1f43dc14",
+    "test_bundle": [
       "tests/data/python2_print_function.py",
       "tests/test_black.py"
     ],
-    "test_bundle_identical": true,
-    "target_test_method_present": true,
-    "overlay_scope_ok": true,
-    "production_source_unchanged": true,
-    "mit_license_found": true
+    "checks": {
+      "buggy_head_matches": true,
+      "fixed_head_matches": true,
+      "upstream_changed_paths": [
+        "black.py",
+        "tests/data/python2_print_function.py",
+        "tests/test_black.py"
+      ],
+      "test_bundle_identical": true,
+      "target_test_method_present": true,
+      "overlay_scope_ok": true,
+      "production_source_unchanged": true,
+      "mit_license_found": true
+    }
   },
-  "runtime_discovery": {
-    "python_3_8_3_found": false,
-    "exact_python_3_8_3_paths": [],
-    "required_python_version": "3.8.3"
+  "runtime": {
+    "report_path": "/kaggle/working/stage3_python383_provision_20261024_170344_471848/python383_provision_report.json",
+    "user_reported_sha256": "64fd20f67b09c2781452743557a1a1118ac83dd9582d01a62e5ac96d301eb5a4",
+    "uv_version": "uv 0.13.5 (x86_64-unknown-linux-gnu)",
+    "base_python": {
+      "version": [
+        3,
+        8,
+        3
+      ],
+      "implementation": "cpython",
+      "executable": "/kaggle/working/stage3_python383_provision_20261024_170344_471848/bin/python3.8",
+      "prefix": "/kaggle/working/stage3_python383_provision_20261024_170344_471848/managed_python/cpython-3.8.3-linux-x86_64-gnu",
+      "soabi": "cpython-38-x86_64-linux-gnu",
+      "machine": "x86_64",
+      "platform": "Linux-6.18.55+-x86_64-with-glibc2.2.5"
+    },
+    "isolated_venv": {
+      "version": [
+        3,
+        8,
+        3
+      ],
+      "implementation": "cpython",
+      "executable": "/kaggle/working/stage3_python383_provision_20261024_170344_471848/venv/bin/python",
+      "prefix": "/kaggle/working/stage3_python383_provision_20261024_170344_471848/venv",
+      "base_prefix": "/kaggle/working/stage3_python383_provision_20261024_170344_471848/managed_python/cpython-3.8.3-linux-x86_64-gnu",
+      "soabi": "cpython-38-x86_64-linux-gnu",
+      "machine": "x86_64",
+      "pip_importable": false
+    },
+    "checks": {
+      "base_exact_python_383": true,
+      "venv_exact_python_383": true,
+      "venv_prefix_matches": true,
+      "venv_separate_from_base": true,
+      "pip_not_seeded": true,
+      "interpreter_stays_in_disposable_root": true
+    }
   },
-  "project_dependencies_installed": false,
+  "no_project_dependencies_installed": true,
   "candidate_test_executed": false,
   "model_inference_performed": false,
-  "interpretation": "Source overlay passed with both test bundle files hash-identical and production code unchanged. Python 3.8.3 was not available in the bounded scan. Source overlay is necessary but does not replace exact runtime and test result gates.",
-  "status": "passed_source_overlay_preflight_python383_not_found",
-  "next_step": "Provision exact CPython 3.8.3 in a case-independent uv-managed directory, create a disposable no-pip virtual environment, verify exact version and isolation, and stop before project dependency installation or target test."
+  "status": "passed_source_overlay_and_python383_disposable_venv_smokes",
+  "next_step": "Install only the minimal pinned Black runtime dependencies needed by the exact target test in a case-specific disposable venv; do not install BugsInPy's editable Git dependency or broad dev dependency set, then verify imports resolve from each local checkout before running the paired target test."
 }
