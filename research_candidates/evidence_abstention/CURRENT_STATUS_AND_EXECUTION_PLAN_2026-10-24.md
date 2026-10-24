@@ -6,16 +6,17 @@
 - The confirmatory registry remains empty; model inference remains prohibited.
 - The pinned BugsInPy revision remains `11c5f1eea954a42132cfd06bf257766a7963e0fd`.
 - Four candidates used or inspected during session runner calibration are permanently excluded: `BugsInPy-ansible-4`, `BugsInPy-fastapi-8`, `BugsInPy-httpie-5`, and `BugsInPy-keras-7`. This decision is outcome-independent.
+- The model candidate remains the pinned `Qwen/Qwen2.5-3B-Instruct` revision recorded in the project plan. This phase screens benchmark cases and runtime infrastructure; it is not a comparison among base models and not model training.
 
 ## Keras-7 screen outcome
 
-The Keras-7 technical preflight verified the pinned dataset revision, the candidate inventory/static-audit/queue hashes, case metadata and patch hashes, upstream commit availability, the common fixed-test overlay, and intersection with the then-current 93-ID exposure union. The target test itself was not executed.
+The Keras-7 technical preflight verified the pinned dataset revision, candidate inventory/static-audit/queue hashes, case metadata and patch hashes, upstream commit availability, the common fixed-test overlay, and intersection with the then-current 93-ID exposure union. The target test itself was not executed.
 
 The screen stopped before environment creation because a pre-existing Python 3.7.3 virtual environment reported a null `sys._base_executable`. No package installation, environment modification, candidate test, or model inference took place. Since the source/test patch was inspected while diagnosing the runner, Keras-7 is permanently excluded from confirmatory analysis.
 
 The fixed commit changes `np.squeeze(self.model.predict(x, **kwargs))` to `np.squeeze(self.model.predict(x, **kwargs), axis=-1)` and adds the single-example regression test. This explains the candidate's upstream bug, but is not a test-pair reproduction result for this session.
 
-## Python runtime discovery — case-independent diagnostic
+## Python runtime discovery and disposable venv smoke
 
 The no-install/no-mutation discovery step identified executable Python 3.7.3 paths:
 - `/kaggle/working/stage3_conda_python373_env/bin/python`
@@ -23,20 +24,36 @@ The no-install/no-mutation discovery step identified executable Python 3.7.3 pat
 - `/kaggle/working/stage3_conda_python373_env/bin/python3.7`
 - `/kaggle/working/stage3_conda_python373_env/bin/python3.7m`
 
-The main path ran and reported Python 3.7.3, with its `sys.base_prefix` pointing at the existing environment. Thus the earlier blocker is best classified as a discovery/preflight design defect, not absence of Python 3.7.3. A disposable venv-creation smoke check has **not** yet been performed, so successful creation of isolated per-candidate environments remains unverified. See [RUNNER_PYTHON373_DISCOVERY_2026-10-24.json](RUNNER_PYTHON373_DISCOVERY_2026-10-24.json).
+The main path ran and reported Python 3.7.3, with its `sys.base_prefix` pointing at the existing environment. Thus the earlier blocker is best classified as a discovery/preflight design defect, not absence of Python 3.7.3.
 
-## Exposure decision and queue provenance
+The case-independent disposable venv smoke passed on 2026-10-24 at 15:58:24 UTC. It created and launched a separate Python 3.7.3 environment, verified that `sys.prefix` matched the disposable path and differed from `sys.base_prefix`, and intentionally confirmed `pip` was not importable because the test used `--without-pip`. All three subprocesses returned code 0. No installation, target test, model inference, or existing-environment modification occurred. Evidence: [PYTHON373_VENV_CREATION_SMOKE_2026-10-24.json](PYTHON373_VENV_CREATION_SMOKE_2026-10-24.json).
+
+This result validates only venv creation and interpreter isolation. Pip/toolchain bootstrap and project dependency installation remain unverified.
+
+## Exposure decision and rebuilt queue provenance
 
 The dated addendum `EXPOSURE_EXCLUSION_ADDENDUM_2026-10-24.json` records the four session exclusions. The derived `EXPOSURE_UNION_2026-10-24.json` contains 97 unique IDs (the previous 93-ID union plus four cases); the original 21–23 October records remain unchanged.
 
-The V10 100-candidate files are historical provenance and must not be reused directly as the new execution order. Rebuild the deterministic full metadata queue from the pinned 501-row BugsInPy inventory using the extended 97-ID union. Expected metadata-only queue size is 403 rows across 14 upstream projects, assuming all 4 new exclusions were previously eligible and no other source metadata changed. The rebuild must fail closed if any recorded input hash, dataset revision, or exposure-union Git blob hash disagrees.
+The metadata-only queue rebuild completed successfully from the pinned 501-row / 17-project inventory:
+- Inventory SHA-256: `069e649a37a12cd495ad08a82377f76f0b4518b3fd138380321dc53b15663dcb`
+- Exposure-union raw SHA-256: `887ece481244b432e6f2a89ae7fbbd1c032a71569171a5b714a3a73c66c570f1`
+- Exposure-union Git blob SHA: `c94b7606f5d3a347a2b06e789ba0d7acef5e2855`
+- Queue: 403 rows across 13 projects; SHA-256 `bac3d90f5d4e473645583aa9585a38f6fa44153ac739cacf4e2e7b16600f8e49`
+- Static audit SHA-256: `e23090ec74ce2d1f9fd7feafa69b2d779a1a38e5482b7e18654cacd72fd7245d`
+- Static prescreen readiness: 45 candidates across 7 projects.
+- Excluded-ID reintroduction: none; queue/exposure intersection is 0.
+- One incomplete metadata record was excluded from the queue.
+
+The minimum diversity gate is at least 8 upstream projects; the currently static-ready set covers only 7. Static readiness is a screening priority, not acceptance. The first queue candidate is `BugsInPy-ansible-7` (Python 3.6.9 metadata; 12 direct pins; static risk flags none). It has not been run and must not be run until the next infrastructure smoke passes. The four permanent exclusions remain unavailable for confirmatory analysis.
+
+The V10 100-candidate files are historical provenance and must not be reused directly as the new execution order. The rebuilt queue is the active metadata-screening list.
 
 ## Immediate next actions
 
-1. Rebuild the full inventory and queue from the pinned BugsInPy checkout, verifying the expected 501-row inventory hash and 97-ID union. This is metadata-only; no target tests or inference.
-2. Review the first statically ready candidate in the rebuilt queue, in the predeclared project-interleaved order. Static readiness is only a screening priority, not acceptance.
-3. Run a separate infrastructure-only disposable venv creation check with the discovered Python 3.7.3 executable. Do not install project dependencies during this smoke check.
-4. Only after both queue and disposable-venv smoke checks pass, choose the next unexposed candidate for a test-pair screen. If a candidate is used to debug or modify the runner, add it to the permanent exclusion record before modifying the runner.
+1. Run an infrastructure-only disposable-venv pip/toolchain smoke using the discovered Python 3.7.3 interpreter. It may install only the pinned bootstrap tools `pip==23.3.2`, `setuptools==67.8.0`, and `wheel==0.41.3` inside a newly created disposable venv. Do not install project requirements or run candidate tests.
+2. Inspect the smoke report and verify every command log/hash, exact tool versions, and `pip check`. If the gate fails, diagnose infrastructure without using a benchmark case.
+3. Only after the toolchain smoke passes, screen the next unexposed candidate from the rebuilt queue, preserving the predeclared project-interleaved order. Buggy-fail/fixed-pass must both be reproducible in the recorded runtime. If a candidate is used to debug or modify the runner, permanently exclude it before modifying the runner.
+4. Continue licensing, root-cause, leakage, prior-exposure, evidence-sufficiency, and independent-rater gates. A static-ready candidate is not an accepted case.
 
 ## Inference gate
 
