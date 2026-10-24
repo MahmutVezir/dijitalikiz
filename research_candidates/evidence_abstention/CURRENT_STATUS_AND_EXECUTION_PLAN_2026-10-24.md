@@ -44,17 +44,19 @@ The import-order-safe rerun passed on 2026-10-24 at 16:07:33 UTC. A fresh dispos
 
 This closes the disposable Python 3.7.3 toolchain-bootstrap smoke only. It does not authorize running a benchmark candidate under a mismatched interpreter. The next queued candidate is `BugsInPy-ansible-7`, whose pinned metadata requires Python 3.6.9, so Python 3.7.3 cannot be used to run it unless an explicit protocol amendment is justified and frozen beforehand. Current next step is a case-independent, read-only search for Python 3.6.9 and environment managers; no candidate source download or test is allowed during this discovery.
 
-## Python 3.6.9 runtime discovery — found, smoke pending
+## Python 3.6.9 runtime discovery and disposable toolchain smoke — passed
 
-The read-only discovery report returned `python_3_6_9_found` and identified:
+The read-only discovery report identified the Python 3.6.9 executable paths:
 - `/kaggle/working/stage3_conda_python369_env/bin/python`
 - `/kaggle/working/stage3_conda_python369_env/bin/python3`
 - `/kaggle/working/stage3_conda_python369_env/bin/python3.6`
 - `/kaggle/working/stage3_conda_python369_env/bin/python3.6m`
 
-The same scan found `mamba 0.11.3` and `uv 0.13.5`; `conda`, `micromamba`, and `pyenv` were not available through the checked commands. Evidence: [RUNNER_PYTHON369_DISCOVERY_2026-10-24.json](RUNNER_PYTHON369_DISCOVERY_2026-10-24.json).
+The scan found `mamba 0.11.3` and `uv 0.13.5`; `conda`, `micromamba`, and `pyenv` were not available through the checked commands. Discovery evidence: [RUNNER_PYTHON369_DISCOVERY_2026-10-24.json](RUNNER_PYTHON369_DISCOVERY_2026-10-24.json).
 
-This confirms that candidate-compatible Python 3.6.9 paths appear to exist, but path discovery does not prove the executable reports exactly 3.6.9 or that an isolated environment can bootstrap the required tooling. The next step is a **case-independent disposable toolchain smoke** using `pip==21.3.1`, `setuptools==59.6.0`, and `wheel==0.37.1`, which are compatible with Python 3.6. The smoke must verify the exact runtime, isolated venv, exact pins, `pip freeze --all`, and `pip check`. It must not download candidate source, install project requirements, run candidate tests, or invoke model inference.
+The disposable toolchain smoke then passed. Exact base and venv versions were Python 3.6.9; the venv prefix was `/kaggle/working/stage3_python369_toolchain_smoke_20261024_164516_822776/venv`, distinct from base prefix `/kaggle/working/stage3_conda_python369_env`. Exact pins passed: `pip==21.3.1`, `setuptools==59.6.0`, and `wheel==0.37.1`. `pip freeze --all` matched the expected three entries and `pip check` passed. Evidence: [PYTHON369_PIP_TOOLCHAIN_SMOKE_2026-10-24.json](PYTHON369_PIP_TOOLCHAIN_SMOKE_2026-10-24.json). User-reported report SHA-256: `360943b3d8a753cb1b38f78929f40723bb1ba9bf2830a00710a7407bb38d8f8d`.
+
+The emitted `datetime.utcnow()` deprecation warning concerns the timestamp helper and did not cause a failed check. No project dependencies, candidate source, or candidate tests were run; no model inference was performed. This result closes only the isolated Python 3.6.9 bootstrap smoke. It does not validate or accept `BugsInPy-ansible-7`.
 
 ## Exposure decision and rebuilt queue provenance
 
@@ -76,10 +78,10 @@ The V10 100-candidate files are historical provenance and must not be reused dir
 
 ## Immediate next actions
 
-1. Run the Python 3.6.9 disposable toolchain smoke recorded in `RUNNER_PYTHON369_DISCOVERY_2026-10-24.json`'s follow-up plan. Do not download candidate source, install project dependencies, or run tests during this step.
-2. If the smoke passes, inspect `BugsInPy-ansible-7` against the active queue, exact runtime metadata, and permanent exclusion union before downloading or executing any test source. If it fails, preserve the failure report and repair the harness without executing a candidate.
-3. Once runtime and static prerequisites pass, reproduce buggy-fail/fixed-pass in the recorded runtime. If a candidate is used to debug or modify the runner, permanently exclude it before modifying the runner.
-4. Continue licensing, root-cause, leakage, prior-exposure, evidence-sufficiency, and independent-rater gates. A static-ready candidate is not an accepted case.
+1. Re-derive and verify the active queue from the pinned 501-row inventory and `EXPOSURE_UNION_2026-10-24.json`; do not reuse the historical V10 execution order. Verify `BugsInPy-ansible-7` is the first eligible candidate, is absent from all permanent exclusions, and still declares Python 3.6.9. Perform metadata/static checks only; do not download its source or tests until the checks and provenance agree.
+2. If metadata and static gates pass, download the exact pinned source revision and inspect candidate licensing, bug/fix commits, patch, regression-test target, and setup requirements. Do not count any setup/environment failure as a target failure.
+3. Only after those gates, run buggy/fixed test-pair reproduction in the disposable Python 3.6.9 environment, capture raw logs and runtime fingerprint, and preserve hashes. If a candidate is used to debug or modify the runner, permanently exclude it before modifying the runner.
+4. Continue leakage/prior-exposure, root-cause review, E1/E2/E3 evidence construction, and disjoint independent-reviewer gates. A reproduced test pair or static-ready candidate alone is not an accepted scientific case.
 
 ## Inference gate
 
