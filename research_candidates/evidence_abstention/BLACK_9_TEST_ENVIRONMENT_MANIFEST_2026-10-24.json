@@ -50,14 +50,25 @@
     "exact_python_3_8_3_venv_smoke_passed": true,
     "dependency_smoke": "passed",
     "test_bundle_import_preflight": "passed",
-    "target_buggy_test": "not_run",
-    "target_fixed_test": "not_run",
+    "target_buggy_test": "returncode_1_target_parser_failure_reviewed",
+    "target_fixed_test": "returncode_0_pass",
     "accepted_for_confirmatory": false,
-    "model_inference_authorized": false
+    "model_inference_authorized": false,
+    "paired_target_test_result": "buggy_nonzero_fixed_zero_observed",
+    "log_sha256": "pending_kaggle_artifact_hash_extraction",
+    "independent_root_cause_review": "pending",
+    "license_attribution_review": "pending",
+    "leakage_prior_exposure_review": "pending",
+    "evidence_levels_reviewed": "pending",
+    "disjoint_independent_review_panels": "pending"
   },
-  "status": "pretest_environment_import_gate_passed_target_test_not_run",
+  "status": "technical_buggy_fail_fixed_pass_reproduced_pending_log_hash_and_independent_review",
   "dependency_smoke_evidence": {
     "path": "research_candidates/evidence_abstention/BLACK_9_DEPENDENCY_IMPORT_PREFLIGHT_2026-10-24.json",
     "user_reported_sha256": "3c0b12e0dc8cb95f6e3869217a021dd7609a4e9781c54c22fb7cc99d309deba8"
+  },
+  "test_result_evidence": {
+    "path": "research_candidates/evidence_abstention/BLACK_9_PAIRED_TEST_RESULT_2026-10-24.json",
+    "user_reported_report_sha256": "d79b7c4fcf98d3bb1b7cfd10947c53b3831dd2df2ce5bfc73f411c2add1ec05b"
   }
 }
