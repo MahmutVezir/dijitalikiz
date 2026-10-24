@@ -1,0 +1,67 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "black9_paired_test_hash_audit",
+  "date": "2026-10-24",
+  "candidate_id": "BugsInPy-black-9",
+  "source_dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "paired_report": {
+    "path": "/kaggle/working/stage3_black9_paired_test_20261024_171135_245020/paired_test_report.json",
+    "sha256": "d79b7c4fcf98d3bb1b7cfd10947c53b3831dd2df2ce5bfc73f411c2add1ec05b",
+    "matches_previous_report_hash": true,
+    "status": "paired_test_runs_completed_pending_log_review",
+    "pretest_gates_passed": true,
+    "pair_pattern": "buggy_nonzero_fixed_zero_requires_failure_signature_review"
+  },
+  "logs": {
+    "buggy_stdout": {
+      "path": "/kaggle/working/stage3_black9_paired_test_20261024_171135_245020/buggy.stdout.log",
+      "exists": true,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "buggy_stderr": {
+      "path": "/kaggle/working/stage3_black9_paired_test_20261024_171135_245020/buggy.stderr.log",
+      "exists": true,
+      "bytes": 1151,
+      "sha256": "89aeac3b022118754c06516ea6e1a4e2692fa24894a34f0aa0eb9fd55a4f70d8",
+      "target_failure_signature_confirmed": true,
+      "failure_signature": "black.InvalidInput: Cannot parse: 6:13: print(a, file=sys.stderr)",
+      "import_error_found": false
+    },
+    "fixed_stdout": {
+      "path": "/kaggle/working/stage3_black9_paired_test_20261024_171135_245020/fixed.stdout.log",
+      "exists": true,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fixed_stderr": {
+      "path": "/kaggle/working/stage3_black9_paired_test_20261024_171135_245020/fixed.stderr.log",
+      "exists": true,
+      "bytes": 96,
+      "sha256": "9d90f78102df533913a53da4d5b61485561b7980010eb5ef9d3a975ff0283742",
+      "unittest_ok_confirmed": true
+    }
+  },
+  "source_integrity": {
+    "current_heads_match_pinned_commits": true,
+    "source_hashes_match_pre_and_posttest": true,
+    "test_bundle_hashes_match_across_worktrees": true,
+    "buggy_fixed_production_hashes_differ": true,
+    "buggy_commit": "026c81b83454f176a9f9253cbfb70be2c159d822",
+    "fixed_commit": "d6db1c12a8e14833fe22da377cddc2bd1f43dc14",
+    "hashes": {
+      "buggy_black_py": "a2a3a17242908ce2db5c562eb2ef36c15e9f1fa5fd0ecedac1d978181119c55e",
+      "fixed_black_py": "8bf5a0d82898d6b174993c9ccc710e61ad37c5fca7785c4750def805b82e32c8",
+      "test_fixture": "7e2a496be164716144c7a96366dcb351ef74c319e8b4ea9faf9b98c9ae71243c",
+      "test_module": "3d24b6340b04555ae6505eeb61bceb6d864c4bfd9ab3b33b1175034a9a9e7e57"
+    }
+  },
+  "candidate_test_executed": true,
+  "model_inference_performed": false,
+  "accepted_for_confirmatory": false,
+  "limits": [
+    "The report, log hashes, and source hash values were supplied by the user as the output of their Kaggle audit cell; this record stores the reported values but does not independently access the Kaggle filesystem.",
+    "The buggy-fail/fixed-pass pair validates technical reproducibility of the candidate regression test only. It does not establish evidence-level validity, absence of training contamination, or confirmatory acceptance."
+  ],
+  "status": "hash_audit_passed_failure_signature_consistent"
+}
