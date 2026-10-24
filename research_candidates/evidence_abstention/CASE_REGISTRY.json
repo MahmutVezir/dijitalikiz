@@ -26,7 +26,8 @@
     "The machine-readable union of all exposure exclusions is EXPOSURE_UNION_2026-10-23.json. It preserves the original historical log and addendum unchanged and must be applied to every new metadata queue.",
     "2026-10-24 runner/environment calibration addendum permanently excludes ansible-4, fastapi-8, httpie-5, and keras-7 irrespective of outcome; see EXPOSURE_EXCLUSION_ADDENDUM_2026-10-24.json. None is accepted.",
     "The V10 metadata intake remains unchanged for provenance but is no longer safe as a direct candidate-execution order after 2026-10-24 session exclusions. Rebuild the next metadata queue using EXPOSURE_UNION_2026-10-24.json (97 unique exclusions) before selecting another candidate.",
-    "The 2026-10-24 extended union is a screening-selection filter; the frozen 2026-10-23 union is retained unchanged as provenance for the V10 intake and current draft design. Keep these roles explicit until the protocol/manifest is deliberately versioned."
+    "The 2026-10-24 extended union is a screening-selection filter; the frozen 2026-10-23 union is retained unchanged as provenance for the V10 intake and current draft design. Keep these roles explicit until the protocol/manifest is deliberately versioned.",
+    "2026-10-24: BugsInPy-black-9 has a reported technical buggy-fail/fixed-pass pair and a passing report/log/source hash audit; its E1/E2/E3 packet drafts are not independently validated. Do not add this case to records until independent root-cause adjudication, license/attribution, leakage/prior-exposure, disjoint evidence-reviewer decisions, evidence-level approval and all other acceptance gates are complete. Model inference remains unperformed and this case is not accepted."
   ],
   "exposure_exclusion_log_path": "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_LOG_2026-10-21.json",
   "current_screening_intake_path": "research_candidates/evidence_abstention/SCREENING_COHORT_100_V10_2026-10-23.json",
