@@ -1,0 +1,54 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "dated_session_runner_exposure_exclusion_addendum",
+  "version": "1.0",
+  "date": "2026-10-24",
+  "rule": "Cases inspected or used during runner/environment calibration are permanently excluded from the confirmatory sample independently of target-test outcome. These exclusions address researcher exposure and infrastructure debugging, not the scientific validity of the upstream bugs.",
+  "accepted_confirmatory_cases_after_exclusions": 0,
+  "model_inference_performed": false,
+  "new_package_installations_for_keras7": false,
+  "case_ids": [
+    "BugsInPy-ansible-4",
+    "BugsInPy-fastapi-8",
+    "BugsInPy-httpie-5",
+    "BugsInPy-keras-7"
+  ],
+  "cases": [
+    {
+      "case_id": "BugsInPy-ansible-4",
+      "exposure_reason": "Used for runner calibration.",
+      "technical_observation": "Python 3.6.9 was verified; the target test failed on the buggy source and passed on the fixed source.",
+      "target_test_executed": true,
+      "accepted_for_confirmatory": false
+    },
+    {
+      "case_id": "BugsInPy-fastapi-8",
+      "exposure_reason": "Used while debugging the technical runner.",
+      "technical_observation": "The target test pair did not produce a valid buggy-fail/fixed-pass result because pytest was unavailable before test execution.",
+      "target_test_executed": false,
+      "accepted_for_confirmatory": false
+    },
+    {
+      "case_id": "BugsInPy-httpie-5",
+      "exposure_reason": "Used for runner preflight/version-gate calibration.",
+      "technical_observation": "After correcting metadata-path verification, the target test failed on buggy source and passed on the fixed-source overlay with Python 3.7.3, pytest 5.4.2, and all 34 direct pins matching.",
+      "target_test_executed": true,
+      "accepted_for_confirmatory": false
+    },
+    {
+      "case_id": "BugsInPy-keras-7",
+      "exposure_reason": "Its technical screen exposed a runner bootstrap/runtime-discovery blocker. Source commits, test overlay, and patch behavior were inspected; the runner must be corrected independently before any case test can proceed.",
+      "technical_observation": "Python 3.7.3 was reported by a pre-existing virtual environment, but its sys._base_executable was null. The screening code then stopped before environment creation, package installation, or target-test execution. No target test ran.",
+      "target_test_executed": false,
+      "package_installation_performed": false,
+      "existing_environment_modified": false,
+      "accepted_for_confirmatory": false
+    }
+  ],
+  "next_action": "Discover a usable Python 3.7.3 base interpreter with a case-independent, no-install diagnostic. Do not use the four excluded cases to debug or retest the corrected runner. Rebuild the candidate queue by applying the updated exclusion union before selecting another candidate.",
+  "notes": [
+    "This addendum is outcome-independent and does not represent any case as accepted.",
+    "The older exposure logs and the 2026-10-23 exposure union remain unchanged for provenance.",
+    "No model inference or confirmatory analysis was performed."
+  ]
+}
