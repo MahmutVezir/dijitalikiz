@@ -86,15 +86,15 @@ The metadata gate and test-file overlay integrity checks passed: exact Python 3.
 
 The overlay integrity result is retained separately as [ANSIBLE_7_TEST_OVERLAY_PREFLIGHT_2026-10-24.json](ANSIBLE_7_TEST_OVERLAY_PREFLIGHT_2026-10-24.json); its successful hash checks do not override the adequacy rejection.
 
-### BugsInPy-black-9 — source overlay, Python 3.8.3, dependency and import gates passed
+### BugsInPy-black-9 — paired buggy-fail/fixed-pass reproduced; independent review pending
 
 At pinned BugsInPy revision `11c5f1eea954a42132cfd06bf257766a7963e0fd`, the candidate requires Python 3.8.3 and lists two test-bundle files: `tests/data/python2_print_function.py` and `tests/test_black.py`. The source preflight succeeded at buggy commit `026c81b83454f176a9f9253cbfb70be2c159d822` and fixed commit `d6db1c12a8e14833fe22da377cddc2bd1f43dc14`. Both test files were overlaid from the fixed revision into the buggy worktree; their hashes match, and only those two paths changed in the buggy worktree. The production file `black.py` remains untouched. The MIT license file was found at both revisions.
 
-The exact CPython 3.8.3 provisioning smoke passed using `uv 0.13.5`; the interpreter and isolated venv versions, prefixes, SOABI and platform were verified. Source/runtime evidence is recorded in [BLACK_9_SOURCE_OVERLAY_PREFLIGHT_2026-10-24.json](BLACK_9_SOURCE_OVERLAY_PREFLIGHT_2026-10-24.json).
+The exact CPython 3.8.3 environment was provisioned with `uv 0.13.5`. The minimal dependency/import preflight passed with an exact seven-package freeze and clean `pip check`. Both worktrees imported `black.py` and `tests.test_black` from their own pinned paths. Evidence: [BLACK_9_DEPENDENCY_IMPORT_PREFLIGHT_2026-10-24.json](BLACK_9_DEPENDENCY_IMPORT_PREFLIGHT_2026-10-24.json).
 
-The minimal dependency/import preflight has also passed. The exact freeze set is `pip==23.3.2`, `setuptools==67.8.0`, `wheel==0.41.3`, `appdirs==1.4.3`, `attrs==19.3.0`, `click==7.0`, and `toml==0.10.0`; `pip check` is clean. Both buggy and fixed import preflights loaded `black.__file__` and `tests.test_black.__file__` from the active respective worktree, with Black version `19.3b0`, Click `7.0`, attrs `19.3.0`, and toml `0.10.0`. Source hashes did not change during import. Evidence: [BLACK_9_DEPENDENCY_IMPORT_PREFLIGHT_2026-10-24.json](BLACK_9_DEPENDENCY_IMPORT_PREFLIGHT_2026-10-24.json). The report's `project_dependencies_installed=false` means the Black project itself was not installed via pip/editable Git; the seven pinned tool/runtime packages were installed successfully.
+The paired target test was run once in each worktree with the same venv, separate caches, matching test bundle, verified pinned commits, and no automatic retries. The buggy run returned exit code 1 with `black.InvalidInput: Cannot parse: 6:13: print(a, file=sys.stderr)`; the fixed run returned exit code 0 and `OK`. Neither run timed out or reported an import error. Source hashes remained unchanged. This is the expected technical `buggy-fail/fixed-pass` pattern for the target parser regression. Report summary and user-reported SHA-256 are preserved in [BLACK_9_PAIRED_TEST_RESULT_2026-10-24.json](BLACK_9_PAIRED_TEST_RESULT_2026-10-24.json).
 
-The preflight worktree statuses are expected for this protocol: buggy contains the two fixed-revision test overlay files plus `tests/__init__.py`; fixed contains `tests/__init__.py`. The target test has not yet been executed. The next permitted step is exactly one unittest invocation in each source worktree using the shared venv and separate cache directories. Preserve both logs and do not retry/repair a candidate-specific failure.
+The output is not yet a fully closed evidence package: raw stdout/stderr SHA-256 hashes and a compact consistency check from the Kaggle report remain to be recorded. After that, the two core validation tasks are (1) independent root-cause/license/leakage review and (2) construction and blinded assessment of E1/E2/E3 evidence packets. The candidate is **not yet accepted for confirmatory analysis**, and model inference remains closed.
 
 ### Candidate test-integrity rule
 
@@ -102,10 +102,11 @@ Apply [TEST_ADEQUACY_AND_BUNDLE_IDENTITY_GATE_2026-10-24.md](TEST_ADEQUACY_AND_B
 
 ## Immediate next actions
 
-1. Run the exact target unittest once in the pinned buggy worktree and once in the fixed worktree using the same Python 3.8.3 venv, the seven-item freeze set, `PYTHONPATH` for the active worktree and separate cache/home directories. Verify all pinned source/test hashes before execution; do not retry either run.
-2. Preserve raw stdout/stderr, exit codes, interpreter fingerprint, dependency freeze, source/test hashes and cache-separated command metadata. Classify the buggy result by failure signature: a setup/import/collection error is not a target failure. The fixed run must pass.
-3. If and only if the test pair produces interpretable buggy-fail/fixed-pass, continue independent root-cause, license/attribution, leakage/prior-exposure, E1/E2/E3 evidence and disjoint-reviewer gates. Otherwise record a no-go for this case without repairing the runner midstream.
-4. Keep the confirmatory registry empty until the global minimum 60 accepted cases across 8 projects, frozen preregistration and all remaining gates pass. Model inference remains blocked.
+1. Run the compact hash extraction against the preserved Kaggle paired-test report, stdout/stderr logs and source/test bundle; verify the report SHA-256 and the test/source hashes. Preserve all raw artifacts without rerunning either test.
+2. Complete a preliminary technical root-cause note from the pinned code change and error signature. Then obtain independent ground-truth review and license/attribution review; do not treat the assistant's own technical analysis as two independent reviewers.
+3. Prepare E1/E2/E3 evidence packets without including the fixed patch, issue/PR text, or answer-revealing filenames in model-facing inputs. Hash the packets and have a disjoint blinded panel assess whether E1 is sufficient, E2 partially discriminative, and E3 insufficient before any model output is generated.
+4. Continue candidate screening from the rebuilt queue with all 97 permanent exclusions applied. Keep the registry empty until at least 60 cases across at least 8 projects pass all individual gates and the global preregistration/model/runtime gates. Model inference remains blocked.
+
 
 ## Inference gate
 
