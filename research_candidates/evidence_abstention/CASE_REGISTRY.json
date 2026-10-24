@@ -2,7 +2,7 @@
   "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
   "registry_version": "0.1-draft",
   "status": "empty_no_confirmatory_cases_accepted",
-  "as_of": "2026-10-23",
+  "as_of": "2026-10-24",
   "records": [],
   "notes": [
     "An empty registry is not evidence of zero observed model errors or zero eligible upstream bugs.",
@@ -23,12 +23,17 @@
     "Exposure addendum dated 2026-10-22 permanently excludes the first eight V8 technical-screen candidates and the second eight candidates run in workflow 39830777415. The second batch was executed during workflow verification; all eight are excluded independent of technical outcome. V8 remains historical provenance; V9 is the current metadata-only intake.",
     "Exploratory human-review leads from both exposed V8 batches are recorded in STAGE1_EXPLORATORY_REVIEW_HANDOFF_2026-10-22.json. They must not be promoted into the confirmatory registry.",
     "The V9 intake remains historical provenance. The current metadata-only intake path is SCREENING_COHORT_100_V10_2026-10-23.json: 100 candidate IDs across 14 upstream projects from a locally rebuilt 407-row queue. It applies 61 IDs from the historical exposure log plus 32 IDs from the 2026-10-22 addendum (93 unique permanent exclusions). The remote builder CI run is still unverified; none of these IDs is accepted.",
-    "The machine-readable union of all exposure exclusions is EXPOSURE_UNION_2026-10-23.json. It preserves the original historical log and addendum unchanged and must be applied to every new metadata queue."
+    "The machine-readable union of all exposure exclusions is EXPOSURE_UNION_2026-10-23.json. It preserves the original historical log and addendum unchanged and must be applied to every new metadata queue.",
+    "2026-10-24 runner/environment calibration addendum permanently excludes ansible-4, fastapi-8, httpie-5, and keras-7 irrespective of outcome; see EXPOSURE_EXCLUSION_ADDENDUM_2026-10-24.json. None is accepted.",
+    "The V10 metadata intake remains unchanged for provenance but is no longer safe as a direct candidate-execution order after 2026-10-24 session exclusions. Rebuild the next metadata queue using EXPOSURE_UNION_2026-10-24.json (97 unique exclusions) before selecting another candidate.",
+    "The 2026-10-24 extended union is a screening-selection filter; the frozen 2026-10-23 union is retained unchanged as provenance for the V10 intake and current draft design. Keep these roles explicit until the protocol/manifest is deliberately versioned."
   ],
   "exposure_exclusion_log_path": "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_LOG_2026-10-21.json",
   "current_screening_intake_path": "research_candidates/evidence_abstention/SCREENING_COHORT_100_V10_2026-10-23.json",
   "exposure_exclusion_addenda": [
-    "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json"
+    "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json",
+    "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-24.json"
   ],
-  "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
+  "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
+  "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json"
 }

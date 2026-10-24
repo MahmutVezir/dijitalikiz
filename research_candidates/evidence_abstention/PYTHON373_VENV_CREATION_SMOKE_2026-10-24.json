@@ -1,0 +1,61 @@
+{
+  "audit_type": "case_independent_python373_disposable_venv_smoke_no_install_no_tests_no_inference",
+  "provenance": "Kaggle smoke report pasted by project owner in conversation; the raw report remains in the stated Kaggle working directory.",
+  "purpose": "Verify the discovered Python 3.7.3 interpreter can create and run a disposable isolated venv without pip or project dependency installation.",
+  "base_python": "/kaggle/working/stage3_conda_python373_env/bin/python",
+  "output_dir": "/kaggle/working/stage3_python373_venv_smoke_20261024_155824_227392",
+  "disposable_venv_path": "/kaggle/working/stage3_python373_venv_smoke_20261024_155824_227392/disposable_venv",
+  "disposable_venv_python": "/kaggle/working/stage3_python373_venv_smoke_20261024_155824_227392/disposable_venv/bin/python",
+  "created_at_utc": "2026-10-24T15:58:24.227980+00:00",
+  "completed_at_utc": "2026-10-24T15:58:24.323202+00:00",
+  "status": "passed_disposable_venv_creation_only",
+  "candidate_test_executed": false,
+  "package_installation_performed": false,
+  "existing_environment_modified": false,
+  "model_inference_performed": false,
+  "accepted_confirmatory_cases": 0,
+  "base_runtime": {
+    "version": "3.7.3",
+    "executable": "/kaggle/working/stage3_conda_python373_env/bin/python",
+    "prefix": "/kaggle/working/stage3_conda_python373_env",
+    "base_prefix": "/kaggle/working/stage3_conda_python373_env",
+    "realpath": "/kaggle/working/stage3_conda_python373_env/bin/python3.7"
+  },
+  "disposable_venv_runtime": {
+    "version": "3.7.3",
+    "executable": "/kaggle/working/stage3_python373_venv_smoke_20261024_155824_227392/disposable_venv/bin/python",
+    "prefix": "/kaggle/working/stage3_python373_venv_smoke_20261024_155824_227392/disposable_venv",
+    "base_prefix": "/kaggle/working/stage3_conda_python373_env",
+    "realpath": "/kaggle/working/stage3_conda_python373_env/bin/python3.7",
+    "pip_importable": false
+  },
+  "checks": {
+    "base_python_probe": {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 0.027,
+      "log_sha256": "87ebfa191055520476d3c6b322f1fb4ae9e631e3997508c54ec31d3f08c499d6",
+      "log_size_bytes": 613
+    },
+    "create_disposable_venv": {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 0.042,
+      "log_sha256": "a8395e6cb725793d12046116f76ab26b38cca103d776253b465696aa56390325",
+      "log_size_bytes": 233
+    },
+    "disposable_venv_runtime_probe": {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 0.026,
+      "log_sha256": "f13eb1a207a5b7e100002c3fec9901d472cf4b17640e842e51980385ca85e960",
+      "log_size_bytes": 837
+    },
+    "venv_python_version_3_7_3": true,
+    "venv_prefix_matches_disposable_path": true,
+    "venv_isolated_from_base_prefix": true,
+    "pip_absent_as_requested": true
+  },
+  "report_path": "/kaggle/working/stage3_python373_venv_smoke_20261024_155824_227392/python373_venv_smoke_report.json",
+  "scope_limit": "This proves disposable venv creation and interpreter isolation only. It does not prove pip bootstrap, dependency installation, buggy-fail/fixed-pass reproduction, or candidate acceptance."
+}
