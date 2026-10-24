@@ -1,0 +1,34 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "black9_source_overlay_preflight",
+  "date": "2026-10-24",
+  "candidate_id": "BugsInPy-black-9",
+  "kaggle_report_path": "/kaggle/working/stage3_black9_overlay_audit_20261024_170107_288273/overlay_audit_report.json",
+  "kaggle_report_sha256_reported_by_user": "368f6c301a5219eb9a444603fcb3aafadbe11a1745b63ae23ef2127d9adb65cc",
+  "buggy_commit": "026c81b83454f176a9f9253cbfb70be2c159d822",
+  "fixed_commit": "d6db1c12a8e14833fe22da377cddc2bd1f43dc14",
+  "checks": {
+    "buggy_head_matches": true,
+    "fixed_head_matches": true,
+    "upstream_changed_paths": [
+      "black.py",
+      "tests/data/python2_print_function.py",
+      "tests/test_black.py"
+    ],
+    "test_bundle_identical": true,
+    "target_test_method_present": true,
+    "overlay_scope_ok": true,
+    "production_source_unchanged": true,
+    "mit_license_found": true
+  },
+  "runtime_discovery": {
+    "python_3_8_3_found": false,
+    "exact_python_3_8_3_paths": [],
+    "candidate_python_required": "3.8.3"
+  },
+  "candidate_test_executed": false,
+  "model_inference_performed": false,
+  "project_dependencies_installed": false,
+  "interpretation": "Source and two-file test-bundle overlay passed. Exact Python 3.8.3 was not found in the bounded interpreter scan. The next isolated step is to use uv-managed CPython 3.8.3 in a new case-independent directory, then validate the venv version only; no project dependencies or target tests yet.",
+  "status": "passed_source_overlay_python383_provisioning_pending"
+}
