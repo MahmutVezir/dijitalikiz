@@ -1,0 +1,61 @@
+{
+  "audit_type": "case_independent_python373_pip_toolchain_smoke_disposable_venv_only_v2_import_order_safe",
+  "provenance": "Kaggle report provided by project owner in conversation",
+  "created_at_utc": "2026-10-24T16:07:26.686484+00:00",
+  "completed_at_utc": "2026-10-24T16:07:33.439806+00:00",
+  "status": "passed_toolchain_smoke_only",
+  "base_python": "/kaggle/working/stage3_conda_python373_env/bin/python",
+  "disposable_venv_path": "/kaggle/working/stage3_python373_pip_toolchain_smoke_20261024_160726_686484/disposable_venv",
+  "expected_toolchain": [
+    "pip==23.3.2",
+    "setuptools==67.8.0",
+    "wheel==0.41.3"
+  ],
+  "observed_toolchain_versions": {
+    "pip": "23.3.2",
+    "setuptools": "67.8.0",
+    "wheel": "0.41.3"
+  },
+  "checks": {
+    "create_disposable_venv_with_ensurepip": {
+      "returncode": 0,
+      "log_sha256": "3b882d2295c91bd02b3a4687fd10a86b4fc7722ad80ed6ff0bb0c8a70ab3a72a"
+    },
+    "disposable_venv_runtime_probe": {
+      "returncode": 0,
+      "log_sha256": "11309b1669667166302a6a6852e9754142c8ded83ad6d667faea04d63943c1b0"
+    },
+    "bootstrap_pinned_toolchain": {
+      "returncode": 0,
+      "log_sha256": "f8e056452ba9e8176cd0fd2188d0502d8c85ab08c5c2eca5c7cf5025453cf32b"
+    },
+    "final_setuptools_wheel_versions": {
+      "returncode": 0,
+      "log_sha256": "b2c3f404cb733f3cb27ec12354bf50640e7794fe4ba59dd002a81bff0700c3c6"
+    },
+    "final_pip_version_cli": {
+      "returncode": 0,
+      "log_sha256": "fe37bacd825a454dc00e739d67b6905147c88cb7320ce3095470464b60160e58"
+    },
+    "toolchain_pip_freeze_all": {
+      "returncode": 0,
+      "stdout": "pip==23.3.2\nsetuptools==67.8.0\nwheel==0.41.3\n",
+      "log_sha256": "b19227df95887a6b6872066d65f0a900ba2be3801c3ab1e6ba919e5f419d6475"
+    },
+    "toolchain_pip_check": {
+      "returncode": 0,
+      "stdout": "No broken requirements found.\n",
+      "log_sha256": "e510592d63e8f01f553d9f8130da1a4b01d32280613ddfbf8f0036884a5df1b3"
+    }
+  },
+  "scope": {
+    "candidate_test_executed": false,
+    "candidate_source_downloaded": false,
+    "project_dependency_installation_performed": false,
+    "existing_environment_modified": false,
+    "model_inference_performed": false,
+    "accepted_confirmatory_cases": 0
+  },
+  "limitation": "This proves disposable Python 3.7.3 toolchain bootstrap only. It does not establish a matching Python 3.6.9 runtime for BugsInPy-ansible-7, project dependencies, test reproduction, or case acceptance.",
+  "next_gate": "Case-independent runtime discovery for Python 3.6.9 and environment managers; no candidate source or tests."
+}

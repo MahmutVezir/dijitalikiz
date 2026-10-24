@@ -1,0 +1,26 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "python369_runtime_discovery_no_case_no_install_no_inference",
+  "date": "2026-10-24",
+  "source_report_path": "/kaggle/working/stage3_python369_runtime_discovery_20261024_161132_189927/python369_runtime_discovery_report.json",
+  "discovery_status": "python_3_6_9_found",
+  "python_3_6_9_found": true,
+  "python_3_6_9_paths": [
+    "/kaggle/working/stage3_conda_python369_env/bin/python",
+    "/kaggle/working/stage3_conda_python369_env/bin/python3",
+    "/kaggle/working/stage3_conda_python369_env/bin/python3.6",
+    "/kaggle/working/stage3_conda_python369_env/bin/python3.6m"
+  ],
+  "environment_managers": [
+    {"manager": "conda", "available": false, "version": null},
+    {"manager": "mamba", "available": true, "version": "0.11.3"},
+    {"manager": "micromamba", "available": false, "version": null},
+    {"manager": "uv", "available": true, "version": "0.13.5 (x86_64-unknown-linux-gnu)"},
+    {"manager": "pyenv", "available": false, "version": null}
+  ],
+  "candidate_test_executed": false,
+  "model_inference_performed": false,
+  "project_dependencies_installed": false,
+  "interpretation": "The expected Python 3.6.9 executable paths were discovered. This is path discovery only; exact interpreter version and disposable virtual-environment/toolchain compatibility still require a separate smoke test.",
+  "status": "python369_discovered_toolchain_smoke_pending"
+}

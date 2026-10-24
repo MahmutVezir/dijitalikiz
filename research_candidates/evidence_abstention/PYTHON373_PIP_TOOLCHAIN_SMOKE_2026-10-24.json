@@ -1,0 +1,79 @@
+{
+  "audit_type": "case_independent_python373_pip_toolchain_smoke_disposable_venv_only",
+  "provenance": "Owner-pasted Kaggle report dated 2026-10-24",
+  "output_dir": "/kaggle/working/stage3_python373_pip_toolchain_smoke_20261024_160206_200053",
+  "created_at_utc": "2026-10-24T16:02:06.200053+00:00",
+  "completed_at_utc": "2026-10-24T16:02:13.076736+00:00",
+  "status": "blocked_toolchain_postcheck",
+  "base_python": "/kaggle/working/stage3_conda_python373_env/bin/python",
+  "disposable_venv_path": "/kaggle/working/stage3_python373_pip_toolchain_smoke_20261024_160206_200053/disposable_venv",
+  "expected_toolchain": [
+    "pip==23.3.2",
+    "setuptools==67.8.0",
+    "wheel==0.41.3"
+  ],
+  "observed_toolchain_versions": null,
+  "outcomes": {
+    "base_python_probe": {
+      "returncode": 0,
+      "log_sha256": "f8ee576f1151ff68de340c96f9e39181e0268498b5a9e71e6cc17ee9e9cf8a98"
+    },
+    "create_disposable_venv_with_ensurepip": {
+      "returncode": 0,
+      "log_sha256": "ef75748fde4cbfc829e2d5265d4b15a07a33c5f20200156655bf08bcfe9ea7ce"
+    },
+    "disposable_venv_runtime_probe": {
+      "returncode": 0,
+      "log_sha256": "85734b649de284e887c3a1adf0fdde6d7b75a3db9ef6db9280d8a4c9794404a8"
+    },
+    "initial_pip_probe": {
+      "returncode": 0,
+      "stdout": "pip 19.0.3",
+      "log_sha256": "212ee225706ea7948cee75d548550a6c18ffeada0db0b72f5e4dabfa73af46e2"
+    },
+    "bootstrap_pinned_toolchain": {
+      "returncode": 0,
+      "installed": [
+        "pip==23.3.2",
+        "setuptools==67.8.0",
+        "wheel==0.41.3"
+      ],
+      "log_sha256": "c5687ed799ac620bbb363930d990870d8ea8b155b6ec22bebc43c968c8f6fa62"
+    },
+    "final_toolchain_versions": {
+      "returncode": 1,
+      "error": "AssertionError: /kaggle/working/stage3_conda_python373_env/lib/python3.7/distutils/core.py",
+      "log_sha256": "4ba1dc01743499448e1763bbab76dbbb40fa63649e666e4bde531d06eb535d43"
+    },
+    "toolchain_pip_freeze": {
+      "returncode": 0,
+      "stdout": "",
+      "log_sha256": "e1c2cdabcd5e52c31beec5afaed6722694895494548b7c7862746490635e7e9d"
+    },
+    "toolchain_pip_check": {
+      "returncode": 0,
+      "stdout": "No broken requirements found.",
+      "log_sha256": "5cbfae3acde560e4436b2dd396c3e522faa12fcd1356e0eaa5438fcbabcf02a4"
+    }
+  },
+  "key_diagnostic": {
+    "original_version_probe_import_order": [
+      "json",
+      "pip",
+      "setuptools",
+      "wheel"
+    ],
+    "likely_test_harness_issue": "The version-check code imported pip before setuptools; upstream setuptools issues document a matching distutils assertion when pip is imported first.",
+    "certainty": "Likely cause; must be verified with corrected follow-up probe, not yet treated as confirmed root cause."
+  },
+  "scope": {
+    "candidate_test_executed": false,
+    "candidate_source_downloaded": false,
+    "project_dependency_installation_performed": false,
+    "toolchain_package_installation_attempted": true,
+    "existing_environment_modified": false,
+    "model_inference_performed": false,
+    "accepted_confirmatory_cases": 0
+  },
+  "next_action": "Repeat the disposable toolchain smoke with an import-order-safe version check (setuptools/wheel probe separate from pip CLI probe) and pip freeze --all exact-entry validation. Do not install project requirements or execute a candidate test before the smoke passes."
+}
