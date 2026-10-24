@@ -1,0 +1,51 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "preliminary_root_cause_note_not_independent_adjudication",
+  "date": "2026-10-24",
+  "candidate_id": "BugsInPy-black-9",
+  "dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "source_repository": "https://github.com/psf/black",
+  "commits": {
+    "buggy": "026c81b83454f176a9f9253cbfb70be2c159d822",
+    "fixed": "d6db1c12a8e14833fe22da377cddc2bd1f43dc14",
+    "fixed_parent_equals_buggy": true
+  },
+  "relevant_production_code": "black.py:get_grammars; black.py:lib2to3_parse",
+  "upstream_patch_url": "https://github.com/psf/black/commit/d6db1c12a8e14833fe22da377cddc2bd1f43dc14",
+  "test": {
+    "name": "tests.test_black.BlackTestCase.test_python2_print_function",
+    "target_versions": [
+      "PY27"
+    ],
+    "input_fixture": "tests/data/python2_print_function.py",
+    "distinguishing_input_line": "print(a, file=sys.stderr)",
+    "test_added_in_fixed_commit": true,
+    "fixture_added_in_fixed_commit": true
+  },
+  "preliminary_mechanism": {
+    "buggy_behavior": "For target sets that include Python 2, get_grammars returns only pygram.python_grammar, which rejects the regression input containing print_function syntax with a file= argument.",
+    "fixed_behavior": "The fixed code first tries pygram.python_grammar_no_print_statement and then pygram.python_grammar, allowing Python 2 print_function syntax to be parsed without dropping support for print statements.",
+    "observed_buggy_failure": "black.InvalidInput: Cannot parse: 6:13: print(a, file=sys.stderr)",
+    "observed_fixed_result": "One test ran and unittest returned OK.",
+    "source_change_targeted_by_test": true
+  },
+  "paired_test_result_path": "research_candidates/evidence_abstention/BLACK_9_PAIRED_TEST_RESULT_2026-10-24.json",
+  "observed_test_pair": "buggy returncode 1 with expected parser failure signature; fixed returncode 0",
+  "log_integrity": {
+    "paired_report_sha256_reported_by_user": "d79b7c4fcf98d3bb1b7cfd10947c53b3831dd2df2ce5bfc73f411c2add1ec05b",
+    "raw_per_log_hashes": "pending",
+    "current_worktree_and_artifact_hash_crosscheck": "pending"
+  },
+  "confidence_scope": "Preliminary technical interpretation only; not an independent human ground-truth adjudication and not proof that this case is clean of model-training contamination.",
+  "required_review": {
+    "independent_root_cause_reviewers": 2,
+    "root_cause_review_status": "pending",
+    "license_attribution_review": "MIT license found; exact attribution/reuse note pending",
+    "leakage_prior_exposure_review": "pending",
+    "evidence_sufficiency_panel": "pending",
+    "reviewer_panels_must_be_disjoint": true
+  },
+  "model_inference_performed": false,
+  "accepted_for_confirmatory": false,
+  "status": "preliminary_root_cause_consistent_with_reproduced_test_pair_pending_independent_review"
+}
