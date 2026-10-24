@@ -1,0 +1,96 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "evidence_packet_manifest_draft",
+  "date": "2026-10-24",
+  "case_alias": "CASE-7F31A",
+  "candidate_id_for_research_audit_only": "BugsInPy-black-9",
+  "status": "draft_pending_independent_evidence_sufficiency_review",
+  "model_facing_text_contains": [
+    "opaque case alias",
+    "evidence item IDs",
+    "input snippet where included",
+    "observed parser failure where included",
+    "target mode where included",
+    "generic parse flow where included",
+    "buggy grammar selector where included in E1 only"
+  ],
+  "model_facing_text_excludes": [
+    "fixed source code",
+    "fixed commit identifier",
+    "upstream issue/PR identity and title",
+    "gold root-cause statement",
+    "evidence level label",
+    "policy label P0/P1"
+  ],
+  "packets": [
+    {
+      "level": "E1",
+      "path": "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/CASE-7F31A_E1_PACKET_DRAFT.json",
+      "git_blob_sha": "80e3d8f2a32e6da1143430990b43d1bd5b5bae61",
+      "packet_document_sha256": "a85b5003e747d31dbd3a83eb8e21f40785ff9f70f093fbe0bf55d15abae7be6d",
+      "model_facing_packet_sha256": "e2407fe4ba06ef939b8ef612d43703673bcfb1392f110bbc04dc788dc7a42c54",
+      "included_evidence_ids": [
+        "EV-INPUT",
+        "EV-FAIL",
+        "EV-MODE",
+        "EV-PARSER-FLOW",
+        "EV-GRAMMAR-SELECTOR"
+      ],
+      "intended_level": "candidate_sufficient_pending_panel_confirmation"
+    },
+    {
+      "level": "E2",
+      "path": "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/CASE-7F31A_E2_PACKET_DRAFT.json",
+      "git_blob_sha": "5cc0e78b6312fbf3f70eef51143eea6ac8fb9b20",
+      "packet_document_sha256": "62a27d82f19c928c1243158517e40f0d63d82f0dd2a84f67393843166879d806",
+      "model_facing_packet_sha256": "96350935950d71421a2dc099f6bab7e0ea3506654c1bc8498bc2893b6ca10e82",
+      "included_evidence_ids": [
+        "EV-INPUT",
+        "EV-FAIL",
+        "EV-MODE",
+        "EV-PARSER-FLOW"
+      ],
+      "omitted_from_E1": [
+        "EV-GRAMMAR-SELECTOR"
+      ],
+      "intended_level": "candidate_partial_pending_panel_confirmation"
+    },
+    {
+      "level": "E3",
+      "path": "research_candidates/evidence_abstention/USE_FOR_THIS_PROJECT/CASE-7F31A_E3_PACKET_DRAFT.json",
+      "git_blob_sha": "065e48e4cddee32ea9ae7b4ddd4f7ea8cc6ee792",
+      "packet_document_sha256": "bba51a8de47a3a84272e3959ed85ab7e2e247b4c2a2b2c4c2737480364b0c478",
+      "model_facing_packet_sha256": "abe6d42d731695cfe84a8753ff18a36bbae7301b50f8c291f1d608946e0460aa",
+      "included_evidence_ids": [
+        "EV-FAIL"
+      ],
+      "omitted_from_E1": [
+        "EV-INPUT",
+        "EV-MODE",
+        "EV-PARSER-FLOW",
+        "EV-GRAMMAR-SELECTOR"
+      ],
+      "intended_level": "candidate_insufficient_pending_panel_confirmation"
+    }
+  ],
+  "source_provenance": {
+    "bugsinpy_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+    "buggy_source_commit": "026c81b83454f176a9f9253cbfb70be2c159d822",
+    "fixed_source_commit": "d6db1c12a8e14833fe22da377cddc2bd1f43dc14",
+    "test_fixture_sha256": "7e2a496be164716144c7a96366dcb351ef74c319e8b4ea9faf9b98c9ae71243c",
+    "test_module_sha256": "3d24b6340b04555ae6505eeb61bceb6d864c4bfd9ab3b33b1175034a9a9e7e57",
+    "buggy_production_sha256": "a2a3a17242908ce2db5c562eb2ef36c15e9f1fa5fd0ecedac1d978181119c55e",
+    "fixed_production_sha256": "8bf5a0d82898d6b174993c9ccc710e61ad37c5fca7785c4750def805b82e32c8"
+  },
+  "required_before_use": [
+    "Two evidence-sufficiency reviewers independently classify E1/E2/E3 without seeing gold root cause or fixed patch.",
+    "Reviewer panels must be disjoint from ground-truth/root-cause reviewers.",
+    "Preserve each reviewer's initial judgment and adjudicate disagreements without overwriting originals.",
+    "If any packet level is rejected or revised, create a new packet revision and re-hash all affected files before model inference.",
+    "Run model input construction using only model_facing_packet, never the packet metadata, level label, root-cause file, source links or this manifest."
+  ],
+  "model_inference_performed": false,
+  "accepted_for_confirmatory": false,
+  "public_code_contamination_risk": "cannot be ruled out; this repository's public upstream case may have appeared in pretraining",
+  "final_note": "These are proposed packet contrasts, not validated E1/E2/E3 levels. No model outputs may be generated from this case until independent evidence-sufficiency review and the global preregistration/acceptance gates pass."
+}
