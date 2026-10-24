@@ -48,12 +48,16 @@
   "gates": {
     "source_overlay_passed": true,
     "exact_python_3_8_3_venv_smoke_passed": true,
-    "dependency_smoke": "pending",
-    "test_bundle_import_preflight": "pending",
+    "dependency_smoke": "passed",
+    "test_bundle_import_preflight": "passed",
     "target_buggy_test": "not_run",
     "target_fixed_test": "not_run",
     "accepted_for_confirmatory": false,
     "model_inference_authorized": false
   },
-  "status": "frozen_minimal_runtime_pins_pre_target_test"
+  "status": "pretest_environment_import_gate_passed_target_test_not_run",
+  "dependency_smoke_evidence": {
+    "path": "research_candidates/evidence_abstention/BLACK_9_DEPENDENCY_IMPORT_PREFLIGHT_2026-10-24.json",
+    "user_reported_sha256": "3c0b12e0dc8cb95f6e3869217a021dd7609a4e9781c54c22fb7cc99d309deba8"
+  }
 }
