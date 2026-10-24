@@ -1,0 +1,22 @@
+{
+  "case_alias": "CASE-7F31A",
+  "evidence_items": [
+    {
+      "id": "EV-INPUT",
+      "text": "#!/usr/bin/env python2\nfrom __future__ import print_function\n\nprint('hello')\nprint(u'hello')\nprint(a, file=sys.stderr)"
+    },
+    {
+      "id": "EV-FAIL",
+      "text": "Parser exception: InvalidInput\nMessage: Cannot parse: 6:13: print(a, file=sys.stderr)"
+    },
+    {
+      "id": "EV-MODE",
+      "text": "The test creates a formatting mode with target_versions={TargetVersion.PY27}, then calls the formatter on the input source."
+    },
+    {
+      "id": "EV-PARSER-FLOW",
+      "text": "def lib2to3_parse(src_txt, target_versions=()):\n    if src_txt[-1:] != \"\\n\":\n        src_txt += \"\\n\"\n\n    for grammar in get_grammars(set(target_versions)):\n        drv = driver.Driver(grammar, pytree.convert)\n        try:\n            result = drv.parse_string(src_txt, True)\n            break\n        except ParseError as pe:\n            lineno, column = pe.context[1]\n            faulty_line = src_txt.splitlines()[lineno - 1]\n            exc = InvalidInput(\n                f\"Cannot parse: {lineno}:{column}: {faulty_line}\"\n            )\n    else:\n        raise exc from None\n\n    return result"
+    }
+  ],
+  "model_facing_packet": "Case: CASE-7F31A\n\nA code-formatting library is asked to format a supplied Python source file. The test reports a parsing failure. Use only the evidence items in this packet; do not assume that a failure message alone proves a unique root cause.\n\nEvidence items:\n\n[EV-INPUT]\n#!/usr/bin/env python2\nfrom __future__ import print_function\n\nprint('hello')\nprint(u'hello')\nprint(a, file=sys.stderr)\n\n[EV-FAIL]\nParser exception: InvalidInput\nMessage: Cannot parse: 6:13: print(a, file=sys.stderr)\n\n[EV-MODE]\nThe test creates a formatting mode with target_versions={TargetVersion.PY27}, then calls the formatter on the input source.\n\n[EV-PARSER-FLOW]\ndef lib2to3_parse(src_txt, target_versions=()):\n    if src_txt[-1:] != \"\\n\":\n        src_txt += \"\\n\"\n\n    for grammar in get_grammars(set(target_versions)):\n        drv = driver.Driver(grammar, pytree.convert)\n        try:\n            result = drv.parse_string(src_txt, True)\n            break\n        except ParseError as pe:\n            lineno, column = pe.context[1]\n            faulty_line = src_txt.splitlines()[lineno - 1]\n            exc = InvalidInput(\n                f\"Cannot parse: {lineno}:{column}: {faulty_line}\"\n            )\n    else:\n        raise exc from None\n\n    return result"
+}
