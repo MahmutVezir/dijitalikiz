@@ -30,6 +30,14 @@ The case-independent disposable venv smoke passed on 2026-10-24 at 15:58:24 UTC.
 
 This result validates only venv creation and interpreter isolation. Pip/toolchain bootstrap and project dependency installation remain unverified.
 
+## Pinned toolchain smoke — first attempt blocked
+
+The 24 October disposable toolchain smoke successfully created a fresh Python 3.7.3 venv and installed the expected wheels `pip==23.3.2`, `setuptools==67.8.0`, and `wheel==0.41.3`. `pip check` returned code 0 with “No broken requirements found.” However, the exact-version probe failed while importing `setuptools`, with an assertion pointing to the base environment's `distutils/core.py`. The first report is recorded in [PYTHON373_PIP_TOOLCHAIN_SMOKE_2026-10-24.json](PYTHON373_PIP_TOOLCHAIN_SMOKE_2026-10-24.json).
+
+The probe used `import json, pip, setuptools, wheel`, which imports `pip` before `setuptools`. Upstream Setuptools reports document this import-order pattern as a cause of the same assertion (see https://github.com/pypa/setuptools/issues/3044). Treat this as a likely test-harness defect, not a confirmed project-runtime failure, until a corrected probe passes. The original output is preserved; no candidate source or test was executed.
+
+Next smoke uses an import-order-safe check: import `setuptools` and `wheel` without first importing `pip`, query pip's version through the CLI separately, and verify the three exact entries using `pip freeze --all`. A successful rerun is required before candidate execution.
+
 ## Exposure decision and rebuilt queue provenance
 
 The dated addendum `EXPOSURE_EXCLUSION_ADDENDUM_2026-10-24.json` records the four session exclusions. The derived `EXPOSURE_UNION_2026-10-24.json` contains 97 unique IDs (the previous 93-ID union plus four cases); the original 21–23 October records remain unchanged.
