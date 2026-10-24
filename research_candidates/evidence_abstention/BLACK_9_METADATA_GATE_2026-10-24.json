@@ -1,0 +1,69 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "candidate_metadata_and_static_test_review",
+  "date": "2026-10-24",
+  "candidate_id": "BugsInPy-black-9",
+  "dataset_repository": "https://github.com/soarsmu/BugsInPy",
+  "dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "metadata_source_url": "https://github.com/soarsmu/BugsInPy/blob/11c5f1eea954a42132cfd06bf257766a7963e0fd/projects/black/bugs/9/bug.info",
+  "metadata": {
+    "python_version": "3.8.3",
+    "buggy_commit_id": "026c81b83454f176a9f9253cbfb70be2c159d822",
+    "fixed_commit_id": "d6db1c12a8e14833fe22da377cddc2bd1f43dc14",
+    "test_file_paths": [
+      "tests/data/python2_print_function.py",
+      "tests/test_black.py"
+    ],
+    "run_test_command": "python -m unittest -q tests.test_black.BlackTestCase.test_python2_print_function"
+  },
+  "exposure_gate": {
+    "union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json",
+    "union_unique_count": 97,
+    "candidate_in_exclusion_union": false,
+    "union_blob_sha": "c94b7606f5d3a347a2b06e789ba0d7acef5e2855"
+  },
+  "upstream_static_review": {
+    "repository": "https://github.com/psf/black",
+    "buggy_commit_message": "v19.3b0",
+    "fixed_commit_message": "Fix print() function on Python 2 (#754)",
+    "fixed_commit_parent_equals_buggy_commit": true,
+    "production_file_changed": "black.py",
+    "production_change": "For target sets that include Python 2, try python_grammar_no_print_statement before python_grammar, rather than only python_grammar.",
+    "regression_test_method": "BlackTestCase.test_python2_print_function",
+    "regression_test_added_in_fixed_commit": true,
+    "regression_fixture_added_in_fixed_commit": true,
+    "regression_test_sets_target_versions": [
+      "PY27"
+    ],
+    "regression_test_uses_print_function_syntax": true,
+    "test_bundle_complete_from_metadata": true,
+    "semantic_test_adequacy": "promising_static_match; requires execution to verify buggy-fail/fixed-pass",
+    "bug_patch_url": "https://github.com/soarsmu/BugsInPy/blob/11c5f1eea954a42132cfd06bf257766a7963e0fd/projects/black/bugs/9/bug_patch.txt",
+    "fixed_commit_url": "https://github.com/psf/black/commit/d6db1c12a8e14833fe22da377cddc2bd1f43dc14"
+  },
+  "license": {
+    "name": "MIT License",
+    "license_file": "LICENSE",
+    "checked_at_buggy_and_fixed_commits": true,
+    "attribution_review": "pending"
+  },
+  "runtime": {
+    "metadata_python_version": "3.8.3",
+    "local_python_383_found": "not_yet_checked",
+    "runtime_smoke_passed": false
+  },
+  "gates": {
+    "metadata_complete": true,
+    "exposure_gate_passed": true,
+    "license_file_found": true,
+    "source_overlay_preflight": "pending",
+    "test_bundle_hash_identity": "pending",
+    "production_source_unchanged": "pending",
+    "target_test_executed": false,
+    "buggy_fail_fixed_pass_reproduced": false,
+    "accepted_for_confirmatory": false
+  },
+  "candidate_test_executed": false,
+  "model_inference_performed": false,
+  "status": "metadata_and_static_test_review_passed_overlay_and_runtime_pending"
+}
