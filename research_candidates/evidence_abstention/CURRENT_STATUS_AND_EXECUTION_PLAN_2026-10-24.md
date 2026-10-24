@@ -86,11 +86,11 @@ The metadata gate and test-file overlay integrity checks passed: exact Python 3.
 
 The overlay integrity result is retained separately as [ANSIBLE_7_TEST_OVERLAY_PREFLIGHT_2026-10-24.json](ANSIBLE_7_TEST_OVERLAY_PREFLIGHT_2026-10-24.json); its successful hash checks do not override the adequacy rejection.
 
-### BugsInPy-black-9 — next candidate, runtime/overlay pending
+### BugsInPy-black-9 — source overlay passed; Python 3.8.3 provisioning pending
 
-The next metadata row reviewed is `BugsInPy-black-9`. At pinned BugsInPy revision `11c5f1eea954a42132cfd06bf257766a7963e0fd`, it specifies Python 3.8.3, buggy commit `026c81b83454f176a9f9253cbfb70be2c159d822`, fixed commit `d6db1c12a8e14833fe22da377cddc2bd1f43dc14`, and test bundle `tests/data/python2_print_function.py;tests/test_black.py`. The fixed commit adds the regression method `BlackTestCase.test_python2_print_function` and its data fixture, and changes `black.py`'s grammar selection. The BugsInPy case is not in the 97-ID exclusion union. The upstream `LICENSE` is MIT at both revisions; attribution review remains pending. Evidence: [BLACK_9_METADATA_GATE_2026-10-24.json](BLACK_9_METADATA_GATE_2026-10-24.json).
+At pinned BugsInPy revision `11c5f1eea954a42132cfd06bf257766a7963e0fd`, the candidate requires Python 3.8.3 and lists two test-bundle files: `tests/data/python2_print_function.py` and `tests/test_black.py`. The static preflight succeeded at buggy commit `026c81b83454f176a9f9253cbfb70be2c159d822` and fixed commit `d6db1c12a8e14833fe22da377cddc2bd1f43dc14`. Both test files were overlaid from the fixed revision into the buggy worktree; their hashes match across both worktrees, and the only changed buggy-worktree paths are those two test files. The production file `black.py` remains untouched in each worktree. The MIT license file was found at both revisions. Report summary and user-reported SHA-256 are recorded in [BLACK_9_SOURCE_OVERLAY_PREFLIGHT_2026-10-24.json](BLACK_9_SOURCE_OVERLAY_PREFLIGHT_2026-10-24.json).
 
-This candidate needs a source-only overlay preflight that copies both metadata-listed test-bundle files from the fixed revision to the buggy worktree, verifies both SHA-256 hashes match across worktrees, and confirms that no production file changes. The exact Python 3.8.3 runtime must also be discovered or reproducibly provisioned before any target test is executed. Neither the candidate test nor model inference has run.
+The bounded interpreter scan did not find exact Python 3.8.3. No candidate test has been executed and no project dependencies have been installed. The next case-independent step is to use the available `uv` manager to provision an exact CPython 3.8.3 build in a new, disposable tool directory and create an isolated virtual environment, then verify `sys.version_info == (3, 8, 3)`, `sys.prefix`, and `sys.base_prefix`. This phase must not install Black's dependencies or run the target test. If uv cannot provision 3.8.3 exactly, preserve the failure output; do not silently substitute another Python patch version.
 
 ### Candidate test-integrity rule
 
@@ -98,11 +98,10 @@ Apply [TEST_ADEQUACY_AND_BUNDLE_IDENTITY_GATE_2026-10-24.md](TEST_ADEQUACY_AND_B
 
 ## Immediate next actions
 
-1. Run a case-independent discovery for an exact Python 3.8.3 interpreter and record existing `uv`/environment-manager state. Do not install project dependencies or run candidate tests during discovery.
-2. Run a source-only overlay preflight for `BugsInPy-black-9` at the pinned commits. Overlay both metadata-listed test-bundle paths from the fixed revision into the buggy worktree, hash both files on both sides, and verify production files are unchanged.
-3. If source-overlay and Python-runtime gates pass, review the MIT attribution/reuse note and inspect the upstream project/test dependency pins before installing anything. Use disposable, separate environments for the paired runs or rigorously verify equivalent packages in one shared environment.
-4. Only then run the exact target test in both snapshots, preserve stdout/stderr and environment fingerprints, and check the required buggy-fail/fixed-pass. Setup/import/collection errors are environment failures, not target failures.
-5. Keep the confirmatory registry empty until the independent root-cause, leakage, E1/E2/E3 evidence, disjoint reviewer, minimum 60-case/8-project and other frozen study gates pass.
+1. Use `uv` to provision exact Python 3.8.3 inside a new disposable directory and verify an isolated venv. Do not install project dependencies or execute the candidate yet.
+2. If exact-runtime provisioning passes, review the MIT attribution/reuse note and inspect the pinned test's complete runtime dependency requirements before deciding whether a reproducible setup is feasible.
+3. Only after dependency feasibility, source/test overlay integrity, and exact runtime gates pass, execute the exact target test in both snapshots and record raw logs. Setup/import/collection errors must not be classified as target failures.
+4. Keep the confirmatory registry empty until the independent root-cause, leakage, E1/E2/E3 evidence, disjoint reviewer, minimum 60-case/8-project and all other frozen study gates pass.
 
 ## Inference gate
 
