@@ -1,0 +1,40 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "python369_disposable_toolchain_smoke",
+  "date": "2026-10-24",
+  "report_path": "/kaggle/working/stage3_python369_toolchain_smoke_20261024_164516_822776/python369_toolchain_smoke_report.json",
+  "report_sha256_reported_by_user": "360943b3d8a753cb1b38f78929f40723bb1ba9bf2830a00710a7407bb38d8f8d",
+  "base_python_version": [
+    3,
+    6,
+    9
+  ],
+  "isolated_python": {
+    "version": [
+      3,
+      6,
+      9
+    ],
+    "prefix": "/kaggle/working/stage3_python369_toolchain_smoke_20261024_164516_822776/venv",
+    "base_prefix": "/kaggle/working/stage3_conda_python369_env"
+  },
+  "toolchain_pins": {
+    "pip": "21.3.1",
+    "setuptools": "59.6.0",
+    "wheel": "0.37.1"
+  },
+  "checks": {
+    "pip_version": true,
+    "setuptools_version": true,
+    "wheel_version": true,
+    "freeze_exact_match": true,
+    "pip_check": true
+  },
+  "non_blocking_warning": "datetime.datetime.utcnow() deprecation warning in timestamp construction; smoke checks passed.",
+  "candidate_test_executed": false,
+  "model_inference_performed": false,
+  "project_dependencies_installed": false,
+  "interpretation": "The candidate-compatible Python 3.6.9 interpreter and a disposable isolated environment with the three pinned bootstrap tools passed the case-independent smoke. This does not validate BugsInPy-ansible-7, reproduce its tests, accept a scientific case, or authorize model inference.",
+  "status": "passed_python369_disposable_toolchain_smoke",
+  "provenance_note": "The report summary and SHA-256 were supplied by the user in the conversation; the report JSON itself was not fetched from the Kaggle filesystem by this connector."
+}
