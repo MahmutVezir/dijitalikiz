@@ -58,7 +58,7 @@
   "kaggle_report_path": "/kaggle/working/stage3_black9_paired_test_20261024_171135_245020/paired_test_report.json",
   "kaggle_report_sha256_reported_by_user": "d79b7c4fcf98d3bb1b7cfd10947c53b3831dd2df2ce5bfc73f411c2add1ec05b",
   "result_classification": "buggy_target_parser_failure_fixed_pass",
-  "status": "technical_buggy_fail_fixed_pass_reproduced_pending_artifact_hash_and_independent_review",
+  "status": "technical_buggy_fail_fixed_pass_reproduced_hash_audit_passed_independent_review_pending",
   "candidate_test_executed": true,
   "model_inference_performed": false,
   "accepted_for_confirmatory": false,
@@ -67,5 +67,30 @@
     "This technical reproduction does not by itself establish final scientific case acceptance.",
     "Root-cause adjudication, license/attribution record, contamination/leakage review, E1/E2/E3 evidence construction, evidence sufficiency ratings, and disjoint independent reviewer panels remain pending.",
     "Public repository/model pretraining contamination cannot be claimed absent; it must be described as a residual risk."
-  ]
+  ],
+  "log_integrity": {
+    "paired_report_sha256": "d79b7c4fcf98d3bb1b7cfd10947c53b3831dd2df2ce5bfc73f411c2add1ec05b",
+    "report_hash_matches_previous": true,
+    "buggy_stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "buggy_stderr": {
+      "bytes": 1151,
+      "sha256": "89aeac3b022118754c06516ea6e1a4e2692fa24894a34f0aa0eb9fd55a4f70d8",
+      "expected_parser_error_present": true,
+      "import_error_present": false
+    },
+    "fixed_stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fixed_stderr": {
+      "bytes": 96,
+      "sha256": "9d90f78102df533913a53da4d5b61485561b7980010eb5ef9d3a975ff0283742",
+      "unittest_ok_present": true
+    },
+    "source_integrity_audit": "research_candidates/evidence_abstention/BLACK_9_HASH_AUDIT_2026-10-24.json",
+    "note": "Hashes were reported by the user from the Kaggle audit output; raw Kaggle bytes were not independently fetched by this connector."
+  }
 }
