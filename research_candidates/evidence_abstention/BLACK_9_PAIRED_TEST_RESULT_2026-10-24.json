@@ -1,0 +1,71 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "black9_paired_target_test_result",
+  "date": "2026-10-24",
+  "candidate_id": "BugsInPy-black-9",
+  "dataset_revision": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "buggy_commit": "026c81b83454f176a9f9253cbfb70be2c159d822",
+  "fixed_commit": "d6db1c12a8e14833fe22da377cddc2bd1f43dc14",
+  "target_test": "tests.test_black.BlackTestCase.test_python2_print_function",
+  "test_bundle": [
+    "tests/data/python2_print_function.py",
+    "tests/test_black.py"
+  ],
+  "runtime": {
+    "python": "3.8.3",
+    "implementation": "CPython",
+    "toolchain_and_runtime_pins": [
+      "pip==23.3.2",
+      "setuptools==67.8.0",
+      "wheel==0.41.3",
+      "appdirs==1.4.3",
+      "attrs==19.3.0",
+      "click==7.0",
+      "toml==0.10.0"
+    ]
+  },
+  "source_overlay_and_import_gates": {
+    "pretest_gates_passed": true,
+    "buggy_head_matches": true,
+    "fixed_head_matches": true,
+    "test_bundle_identical_before_runs": true,
+    "black_imported_from_active_buggy_or_fixed_worktree": true,
+    "test_module_imported_from_active_worktree": true,
+    "production_and_test_source_hashes_unchanged_after_runs": true
+  },
+  "outcomes": {
+    "buggy": {
+      "returncode": 1,
+      "timed_out": false,
+      "test_name_in_output": true,
+      "import_error_reported": false,
+      "target_parser_error_reported": true,
+      "failure_signature": "black.InvalidInput: Cannot parse: 6:13: print(a, file=sys.stderr)",
+      "raw_stdout_path": "/kaggle/working/stage3_black9_paired_test_20261024_171135_245020/buggy.stdout.log",
+      "raw_stderr_path": "/kaggle/working/stage3_black9_paired_test_20261024_171135_245020/buggy.stderr.log",
+      "invocation_count": 1
+    },
+    "fixed": {
+      "returncode": 0,
+      "timed_out": false,
+      "import_error_reported": false,
+      "unittest_result": "Ran 1 test ... OK",
+      "raw_stdout_path": "/kaggle/working/stage3_black9_paired_test_20261024_171135_245020/fixed.stdout.log",
+      "raw_stderr_path": "/kaggle/working/stage3_black9_paired_test_20261024_171135_245020/fixed.stderr.log",
+      "invocation_count": 1
+    }
+  },
+  "kaggle_report_path": "/kaggle/working/stage3_black9_paired_test_20261024_171135_245020/paired_test_report.json",
+  "kaggle_report_sha256_reported_by_user": "d79b7c4fcf98d3bb1b7cfd10947c53b3831dd2df2ce5bfc73f411c2add1ec05b",
+  "result_classification": "buggy_target_parser_failure_fixed_pass",
+  "status": "technical_buggy_fail_fixed_pass_reproduced_pending_artifact_hash_and_independent_review",
+  "candidate_test_executed": true,
+  "model_inference_performed": false,
+  "accepted_for_confirmatory": false,
+  "caveats": [
+    "Return codes and log excerpts are user-reported summaries; raw log bytes and per-log SHA-256 values still need a compact extraction from the Kaggle workspace.",
+    "This technical reproduction does not by itself establish final scientific case acceptance.",
+    "Root-cause adjudication, license/attribution record, contamination/leakage review, E1/E2/E3 evidence construction, evidence sufficiency ratings, and disjoint independent reviewer panels remain pending.",
+    "Public repository/model pretraining contamination cannot be claimed absent; it must be described as a residual risk."
+  ]
+}
