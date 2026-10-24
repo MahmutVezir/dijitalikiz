@@ -1,0 +1,48 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "blinded_evidence_review_bundle_manifest",
+  "date": "2026-10-24",
+  "case_alias": "CASE-7F31A",
+  "reviewer_bundle": {
+    "artifact_filename": "black9_blinded_evidence_review_bundle.zip",
+    "artifact_sha256": "151d41b05046223176baed4408423d3614ef306927f17cf9581a33bb1f58cdfc",
+    "contents": [
+      "README_for_reviewers.md",
+      "packets/PACKET-16M8.txt",
+      "packets/PACKET-73R5.txt",
+      "packets/PACKET-84Q2.txt",
+      "review_form_template.csv"
+    ],
+    "zip_integrity_check": "passed",
+    "contains_evidence_level_key": false,
+    "contains_gold_root_cause": false,
+    "contains_fixed_patch": false
+  },
+  "review_protocol": {
+    "reviewers_required": 2,
+    "panel_must_be_disjoint_from_root_cause_panel": true,
+    "each_reviewer_must_submit_independent_initial_ratings": true,
+    "external_lookup_prohibited_for_packet_review": true,
+    "prior_familiarity_self_report_required": true,
+    "judgments_allowed": [
+      "sufficient",
+      "partially_sufficient",
+      "insufficient",
+      "uncertain"
+    ],
+    "reviewer_packet_ids": [
+      "PACKET-16M8",
+      "PACKET-73R5",
+      "PACKET-84Q2"
+    ]
+  },
+  "study_lead_key": {
+    "filename": "black9_study_lead_packet_key.json",
+    "sha256": "a2d998c91ddbec3d88c4a5a2228e8f06467bf75cb60f81873f735cc352e02645",
+    "sharing_rule": "Do not share this separate file with evidence-sufficiency reviewers."
+  },
+  "status": "reviewer_bundle_prepared_waiting_for_two_independent_reviews",
+  "model_inference_performed": false,
+  "accepted_for_confirmatory": false,
+  "limitation": "The source project and code are public upstream material; reviewers must self-report prior familiarity, and absence of pretraining contamination cannot be asserted."
+}
