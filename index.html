@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b2e">
+  <meta name="description" content="Yazılım hata teşhisinde kanıt yeterliliğinin büyük dil modellerinin cevap vermekten kaçınma davranışına etkisini inceleyen TÜBİTAK 2204-A araştırma projesi.">
+  <title>Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ</title>
+  <style>
+    :root{color-scheme:light;--ink:#15233a;--muted:#5d6b7d;--paper:#f5f7fa;--white:#fff;--line:#dce3ec;--accent:#0b806c;--accent-light:#e3f4ef;--navy:#101b2e;--gold:#d6a85f}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65}
+    a{color:var(--accent);text-underline-offset:4px}
+    a:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+    .wrap{width:min(1100px,calc(100% - 40px));margin-inline:auto}
+    header{background:var(--navy);color:#f7f9fc;overflow:hidden}
+    nav{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 0;border-bottom:1px solid #ffffff24}
+    .brand{font-size:.88rem;font-weight:750;letter-spacing:.04em;color:#fff;text-decoration:none}
+    .navlinks{display:flex;gap:22px;flex-wrap:wrap}
+    .navlinks a{color:#cbd5e3;font-size:.88rem;text-decoration:none}
+    .hero{padding:76px 0 82px;max-width:850px}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;color:#a8e0d3;text-transform:uppercase;letter-spacing:.12em;font-size:.76rem;font-weight:800}
+    .dot{width:8px;height:8px;border-radius:50%;background:#66d4b7;display:inline-block}
+    h1{font-size:clamp(2.4rem,6.2vw,4.8rem);line-height:1.08;letter-spacing:-.045em;margin:22px 0 22px;max-width:850px}
+    .lead{font-size:clamp(1.05rem,2vw,1.25rem);color:#c5d0df;max-width:760px;margin:0}
+    .status{display:inline-block;margin-top:30px;border:1px solid #e2b76b80;border-radius:5px;padding:10px 14px;color:#ffe4ad;background:#ffffff08;font-size:.9rem;font-weight:650}
+    main{padding:42px 0 70px}
+    .notice{border:1px solid #ead8b6;background:#fffaf0;border-radius:10px;padding:18px 20px;margin-bottom:46px;color:#594b32}
+    .notice strong{display:block;color:#493a22;margin-bottom:4px}
+    section{padding:30px 0 42px;scroll-margin-top:24px}
+    .section-label{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:800;margin:0 0 10px}
+    h2{font-size:clamp(1.65rem,3vw,2.3rem);line-height:1.2;letter-spacing:-.025em;margin:0 0 16px}
+    h3{font-size:1.08rem;line-height:1.3;margin:0 0 8px}
+    p{margin:0 0 14px}
+    .prose{max-width:790px;color:#39485c}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-top:24px}
+    .card{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:22px}
+    .card p{color:var(--muted);font-size:.94rem;margin:0}
+    .step{font-size:.78rem;letter-spacing:.08em;color:var(--accent);font-weight:800;margin-bottom:14px}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:22px 0 20px}
+    .stat{border:1px solid var(--line);border-radius:10px;background:#fff;padding:20px}
+    .stat strong{display:block;font-size:2rem;letter-spacing:-.04em;line-height:1.2}
+    .stat span{display:block;font-size:.84rem;color:var(--muted);margin-top:8px}
+    .stat small{display:block;color:var(--accent);font-size:.74rem;margin-top:9px}
+    .pill{display:inline-block;background:var(--accent-light);color:#075d4e;border-radius:4px;padding:4px 8px;font-size:.79rem;font-weight:750;margin:0 0 10px}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .checklist{list-style:none;margin:12px 0 0;padding:0}
+    .checklist li{padding:10px 0 10px 27px;border-bottom:1px solid var(--line);position:relative;color:#3f4e61}
+    .checklist li::before{content:"";position:absolute;left:2px;top:19px;width:10px;height:6px;border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
+    .resource-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .resource{display:block;padding:19px;background:#fff;border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--ink);font-weight:750}
+    .resource span{display:block;font-weight:400;font-size:.88rem;color:var(--muted);margin-top:6px}
+    footer{background:#e9edf3;border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-size:.84rem}
+    footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+    @media(max-width:760px){.navlinks{display:none}.hero{padding:55px 0 60px}.grid,.stats,.resource-list{grid-template-columns:1fr 1fr}.split{grid-template-columns:1fr}}
+    @media(max-width:480px){.wrap{width:min(100% - 28px,1100px)}.grid,.stats,.resource-list{grid-template-columns:1fr}.stat{padding:17px}.hero{padding-top:46px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <nav aria-label="Ana gezinme">
+        <a class="brand" href="#top">ARAŞTIRMA DOSYASI / 2027</a>
+        <div class="navlinks">
+          <a href="#soru">Araştırma sorusu</a>
+          <a href="#yontem">Yöntem</a>
+          <a href="#durum">Güncel durum</a>
+          <a href="#kaynaklar">Kaynaklar</a>
+        </div>
+      </nav>
+      <div class="hero" id="top">
+        <div class="eyebrow"><span class="dot" aria-hidden="true"></span> TÜBİTAK 2204-A · Araştırma süreci</div>
+        <h1>Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ</h1>
+        <p class="lead">Bir yapay zekâ, yazılım hatasının nedenini yeterli kanıt olmadan kesin biçimde söylemek yerine ne zaman cevap vermekten kaçınmalı? Bu çalışma, seçici kaçınma politikasının güvenilirliğe etkisini kontrollü koşullarda incelemeyi amaçlıyor.</p>
+        <div class="status">Araştırma devam ediyor · Doğrulayıcı sonuç henüz yok</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="notice" role="note">
+      <strong>Bilimsel şeffaflık notu</strong>
+      Bu sayfa araştırmanın sorusunu, planını ve gerçek ilerleme durumunu açıklar. Doğrulayıcı deney henüz çalıştırılmadı; aşağıdaki sayılar araştırma sonucu değil, mevcut durum ve önceden belirlenen plan bilgileridir. Herhangi bir başarı veya performans artışı iddiası yapılmamaktadır.
+    </div>
+
+    <section id="soru">
+      <p class="section-label">01 / Problem</p>
+      <h2>Kesin bir cevap, doğru bir cevap demek değildir.</h2>
+      <div class="prose">
+        <p>Büyük dil modelleri, yazılım hatalarının kök nedenini açıklarken kanıtın desteklemediği bir teşhisi de güvenle ifade edebilir. Bu araştırmanın odağı yalnızca doğru tahmin üretmek değil; verilen teşhisin eldeki kanıtla desteklenip desteklenmediğini ve kanıt yetersizken kaçınmanın ne zaman uygun olduğunu değerlendirmektir.</p>
+        <p><strong>Araştırma sorusu:</strong> Kanıtı yetersiz yazılım hata vakalarında, teşhisten kaçınmaya izin veren bir politika; teşhisi zorunlu kılan politikaya kıyasla kanıtla desteklenmeyen kesin teşhisleri azaltıyor mu? Bunun yeterli kanıt bulunan vakalarda yanıt kapsamı ve gereksiz kaçınma bakımından maliyeti nedir?</p>
+      </div>
+    </section>
+
+    <section id="yontem">
+      <p class="section-label">02 / Deney tasarımı</p>
+      <h2>Kanıt seviyesi ve cevap politikası ayrı ayrı karşılaştırılacak.</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="step">DEĞİŞKEN A</div>
+          <h3>Kanıt seviyesi</h3>
+          <p><strong>E1:</strong> yeterli kanıt<br><strong>E2:</strong> kısmi kanıt<br><strong>E3:</strong> yetersiz kanıt</p>
+        </article>
+        <article class="card">
+          <div class="step">DEĞİŞKEN B</div>
+          <h3>Cevap politikası</h3>
+          <p><strong>P0:</strong> teşhis vermek zorunlu<br><strong>P1:</strong> kanıt yetersizse seçici kaçınmaya izin var</p>
+        </article>
+        <article class="card">
+          <div class="step">KARŞILAŞTIRMA</div>
+          <h3>Eşleştirilmiş koşullar</h3>
+          <p>Her bağımsız vaka için 3 kanıt seviyesi × 2 politika = 6 planlanmış koşul. Vaka tekrarları bağımsız örnek sayılmayacak.</p>
+        </article>
+      </div>
+      <div class="split" style="margin-top:20px">
+        <article class="card">
+          <span class="pill">Birincil ölçüt</span>
+          <h3>Desteklenmeyen kesin teşhis oranı</h3>
+          <p>Özellikle E3 koşulunda P0 ile P1 karşılaştırılacak. “Doğru tahmin” ile “kanıtın desteklediği teşhis” aynı şey kabul edilmeyecek.</p>
+        </article>
+        <article class="card">
+          <span class="pill">Önceden planlanan analiz</span>
+          <h3>Eşleştirilmiş istatistiksel karşılaştırma</h3>
+          <p>İki taraflı exact McNemar testi, eşleştirilmiş risk farkı ve %95 güven aralığı planlanmıştır. Bunlar henüz hesaplanmış sonuçlar değildir.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="durum">
+      <p class="section-label">03 / Doğrulanmış ilerleme</p>
+      <h2>Mevcut durum</h2>
+      <p class="prose">27 Ekim 2026 itibarıyla ana deneyin veri kabulü ve doğrulama kapıları açık. Araştırma, aşağıdaki koşullar kapanmadan sonuç üretmiş gibi sunulmayacaktır.</p>
+      <div class="stats" aria-label="Araştırmanın mevcut durumu">
+        <div class="stat"><strong>0</strong><span>Kabul edilmiş bağımsız vaka</span><small>Mevcut kayıt</small></div>
+        <div class="stat"><strong>0</strong><span>Doğrulayıcı model çıktısı</span><small>Mevcut kayıt</small></div>
+        <div class="stat"><strong>60</strong><span>Planlanan asgari vaka sayısı</span><small>Hedef eşik, sonuç değil</small></div>
+        <div class="stat"><strong>8</strong><span>Gerekli asgari bağımsız proje sayısı</span><small>Hedef eşik, sonuç değil</small></div>
+      </div>
+      <div class="split">
+        <article class="card">
+          <h3>Sonraki doğrulama kapıları</h3>
+          <ul class="checklist">
+            <li>En az 60 kabul edilmiş bağımsız vaka ve en az 8 kaynak proje</li>
+            <li>Hata veren ve düzeltilmiş sürümlerin testlerle doğrulanması; lisans kontrolü</li>
+            <li>İki bağımsız değerlendiriciyle kör puanlama ve rubriğin dondurulması</li>
+            <li>Model/runtime, istemler, veri ve analiz planı için hash dondurma ve doğrulanabilir ön kayıt</li>
+            <li>Bu koşullar tamamlandıktan sonra ayrı izinle doğrulayıcı deney</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Ne iddia edilmiyor?</h3>
+          <ul class="checklist">
+            <li>Kaçınma politikasının işe yaradığı henüz gösterilmedi</li>
+            <li>Modelin kalibre olduğu veya insan değerlendirmesiyle doğrulandığı söylenmiyor</li>
+            <li>Özgünlük veya “ilk çalışma” iddiası yapılmıyor</li>
+            <li>Önceki CCDG araştırmasının verileri bu deneyin sonucu olarak kullanılmıyor</li>
+            <li>TÜBİTAK finalistliği garanti edilmiyor</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="kaynaklar">
+      <p class="section-label">04 / Açık kaynaklar</p>
+      <h2>Belgeler ve izlenebilirlik</h2>
+      <p class="prose">Kod, araştırma protokolü taslakları ve ilerleme kayıtları herkese açık depoda tutulur. Belgelerdeki planların sonuçlardan ayrılması ve eksik durumların açıkça belirtilmesi temel ilkedir.</p>
+      <div class="resource-list">
+        <a class="resource" href="https://github.com/MahmutVezir/dijitalikiz">GitHub deposu <span>Kod, README ve güncel araştırma kayıtları</span></a>
+        <a class="resource" href="https://github.com/MahmutVezir/dijitalikiz/blob/main/research_candidates/evidence_abstention/PREREGISTRATION_DRAFT_V1_1.md">Ön kayıt taslağı <span>Önceden planlanan yöntem; doğrulanmış ön kayıt değildir</span></a>
+        <a class="resource" href="https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi">TÜBİTAK 2204-A <span>Resmî çağrı ve başvuru bilgileri</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ</span>
+      <span>Son durum güncellemesi: 27 Ekim 2026 · Araştırma devam ediyor</span>
+    </div>
+  </footer>
+</body>
+</html>
