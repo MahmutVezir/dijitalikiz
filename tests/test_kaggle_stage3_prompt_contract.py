@@ -26,7 +26,7 @@ class Stage3PromptContractTests(unittest.TestCase):
             and any(isinstance(target, ast.Name) and target.id == "SYSTEM_PROMPT" for target in node.targets)
         )
         prompt = ast.literal_eval(node.value)
-        self.assertIn("user message.\\nBase factual claims only", prompt)
+        self.assertIn("user message.\nBase factual claims only", prompt)
 
     def test_prompt_spec_documents_the_output_schema_placeholder(self):
         prompt_spec = (ROOT / "research_candidates" / "evidence_abstention" / "PROMPT_CONDITIONS.md").read_text(encoding="utf-8")
