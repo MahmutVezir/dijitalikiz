@@ -1,26 +1,23 @@
-# Kanıt Tabanlı Hata Teşhisçisi — prototip
+# Kanıt Tabanlı Hata Teşhisçisi — keşifsel prototip
 
-Bu klasör, önceden eğitilmiş Qwen/Qwen2.5-3B-Instruct modelini sabit revision ile yükleyen ve kanıt paketini değerlendirerek yapılandırılmış teşhis/kaçınma çıktısı veren mühendislik prototipidir. Sıfırdan eğitilmiş bir model değil, önceden eğitilmiş LLM etrafında kurulmuş bir uygulamadır.
+Bu arayüz, araştırma sorusuna bağlı tek-vaka mühendislik demosudur. Çıktıları doğrulayıcı örnekleme girmez ve TÜBİTAK raporunda ana deney sonucu olarak kullanılamaz.
 
-## Neler yapar?
+## Projeyle uyum
 
-- Kod, traceback ve ek bağlam alır.
-- Kanıt parçalarına CODE_1, TRACE_1, CONTEXT_1 kimlikleri verir.
-- P0 (teşhis vermeye çalış) ve P1 (yetersiz kanıtta kaçın) politikasını destekler.
-- Sabit Qwen revision'ı ve deterministik decoding kullanır.
-- JSON şeması ile kanıt kimliklerini denetler; P1'de kaynak gösteremeyen teşhisi yayımlamaz.
-- Semantik doğruluğu otomatik kanıtladığını iddia etmez.
+- Ana Stage 3 runner ile aynı sabit system prompt, P0/P1 politika metinleri, kanıt öğesi kimlikleri ve kanonik OUTPUT_SCHEMA.json kullanılır.
+- Kanıt yeterliliği etiketi (E1/E2/E3) prompt'a eklenmez; model yalnızca kanıt paketini görür.
+- Tek örnek üzerinden modelin ham yanıtı korunur. Geçersiz JSON veya kanıt ID'si otomatik düzeltilmez; gözlenen karar otomatik olarak abstain'e çevrilmez.
+- JSON biçimi ve referans denetimi semantik destek anlamına gelmez; bu boyut not_assessed olarak kalır.
+- Her raporda model revision, prompt/packet/raw-output SHA-256 ve gözlemlenebilen runtime bilgisi bulunur.
 
 ## Çalıştırma
 
-GPU'lu Python ortamında `torch`, `transformers`, `accelerate` ve `gradio` hazırsa proje kökünden:
+GPU'lu Python ortamında torch, transformers, accelerate ve gradio hazırsa depo kökünden:
 
-```bash
-python prototype/gradio_app.py
-```
+    python prototype/gradio_app.py
 
-Model ağırlıkları sabit Hugging Face revision'ından indirilir; Hub erişimi gerekir. GPU yoksa uygulama sessizce CPU'ya geçmez. İsteğe bağlı CPU denemesi `EVIDENCE_ALLOW_CPU=1` ile etkinleştirilebilir.
+Model ağırlıkları sabit Hugging Face revision'ından indirilir; Hub erişimi gerekir. GPU yoksa uygulama sessizce CPU'ya geçmez. İsteğe bağlı CPU denemesi EVIDENCE_ALLOW_CPU=1 ile etkinleştirilebilir.
 
 ## Bilimsel sınır
 
-Bu prototip doğrulayıcı deney runner'ından ayrıdır. Vaka sicilini okumaz/değiştirmez, manifest izinlerini açmaz ve deney sonucu üretmez. JSON/atıf biçim kontrolü, kök nedenin gerçekten kanıtlandığı anlamına gelmez. Halüsinasyon azaltımı iddiası için bağımsız vaka ve kör insan değerlendirmeleri gerekir.
+Bu prototip, resmi araştırma runner'ının yerine geçmez. Ana deney için her bağımsız kabul edilmiş vaka E1/E2/E3 × P0/P1 koşullarında çalıştırılır; yalnızca research_candidates/evidence_abstention/kaggle_stage3_p0_p1.py resmi çıktı runner'ıdır. Manifestteki yürütme kapısı açıkça yetkilendirilmeden doğrulayıcı çıkarım başlatılamaz. Prototipin çalışması hipotezi kanıtlamaz.

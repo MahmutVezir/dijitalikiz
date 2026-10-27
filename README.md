@@ -4,16 +4,16 @@
 
 **Bilimsel rapor için önerilen başlık:** *Yazılım Hata Teşhisinde Kanıt Yeterliliğinin Büyük Dil Modellerinin Cevap Vermekten Kaçınma Davranışına Etkisi*
 
-## Güncel durum — 23 Ekim 2026
+## Güncel durum — 27 Ekim 2026
 
-**Bilimsel durum: tamamlanmadı; doğrulayıcı model çıkarımı kapalı.** Araştırma sorusu, deney tasarımı ve yazılım prototipi mevcut; ancak kabul edilmiş bağımsız vaka sayısı **0**, yeni çalışmanın formal model çıktısı **0**, kalibrasyon gözlemi **0** ve exact CUDA/model-runtime doğrulaması tamamlanmış değil.
+**Bilimsel durum: tamamlanmadı; doğrulayıcı model çıkarımı kapalı.** Ana soru ve eşleştirilmiş deney tasarımı tanımlı; kabul edilmiş bağımsız vaka sayısı **0**, ana çalışmanın doğrulayıcı model çıktısı **0**, kalibrasyon verisi **0** ve tam model/tokenizer/CUDA runtime doğrulaması tamamlanmış değil. Gradio arayüzü tek-vaka keşifsel demosudur; ana araştırmanın sonucu değildir.
 
 | Bileşen | Durum |
 |---|---|
 | Kaynak envanteri | BugsInPy sabit sürümünde 501 ham metadata kaydı / 17 proje; bu sayı kabul edilmiş vaka sayısı değildir. |
 | Güncel intake | V10 yerel metadata sırası: 100 aday / 14 upstream proje; 407 adaylık yenilenmiş kuyruğun ardından oluşturuldu. 61 tarihsel + 32 güncel teknik/maruziyet kaydı = 93 kalıcı dışlama; seçilen V10 listesiyle kesişim 0. Uzak CI doğrulaması hâlâ bekliyor. |
 | Kabul edilmiş doğrulayıcı vakalar | **0**; vaka sicili bilerek boş. |
-| Yazılım prototipi | Qwen adapter'ı, yapılandırılmış çıktı ayrıştırma, belirsizlik/politika katmanı, paket hash/referans denetimi, inference kapısı ve sentetik birim testleri var. |
+| Yazılım prototipi | prototype/ altındaki Gradio demo, Stage 3 system prompt/P0-P1 politika metni/çıktı şemasıyla eşleştirildi; ham karar otomatik değiştirilmez ve prompt/packet/output hash'leri raporlanır. Canlı model runtime testi henüz doğrulanmadı. Resmî araştırma çıktıları yalnızca Stage 3 runner'ından üretilebilir. |
 | Semantik kanıt desteği | Prompt/parser, adapter arayüzü ve hash-bağlı paket giriş noktası mevcut. 12 temel sentetik test, hash-bağlama regresyon testleri eklenmeden önce yerelde geçmişti; yeni birleşik test paketinin tamamı için doğrulanmış geçiş sonucu yok. Son GitHub Actions denemeleri adım kaydetmeden başarısız oldu. Gerçek Qwen denetçi çağrısı ve insan puanlarıyla geçerlik de henüz doğrulanmadı. |
 | Keşifsel smoke | 10 çıktı; P0 ve P1 koşullarının ikisinde de 0/5 açık kaçınma. Maruziyet, prompt sızıntısı ve runtime uyumsuzluğu nedeniyle doğrulayıcı sonuç değil. |
 | Kalibrasyon / ön kayıt / runtime | Kalibrasyon verisi boş; doğrulanabilir ön kayıt yok; tam model/tokenizer/CUDA runtime denetimi tamamlanmadı. |
@@ -24,6 +24,10 @@ Güncel ön kayıt taslağı: [PREREGISTRATION_DRAFT_V1_1.md](research_candidate
 **Üç aşamalı plan:** (1) ana istem-politikası deneyi için en az 60 kabul edilmiş bağımsız vaka/8 upstream proje, iki ayrık insan paneli, exact model-runtime, hash dondurma ve ön kayıt kapılarını kapat; (2) yalnızca bu kapılar kapanırsa E1/E2/E3 × P0/P1 deneyini yürüt, kör puanla ve önceden planlanan istatistiği hesapla; (3) gerçek sonuçları ve sınırlılıkları resmi TÜBİTAK raporuna aktar. Beş adaylı entropi/semantik-auditor prototipi ayrı bir mühendislik koludur; bu ana karşılaştırmaya dahil değildir ve onun hakkında etkinlik/kalibrasyon iddiası için ayrı validasyon gerekir.
 
 TÜBİTAK'ın 2026–2027 çağrısında başvuru son tarihi **4 Ocak 2027 saat 17.30 (Türkiye saati)** olarak duyurulmuştur: [resmî çağrı](https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi). Finalistlik hedefi korunur; sonuç garanti edilemez. Eski CCDG verileri ve sonuçları bu yeni araştırmaya taşınmayacaktır.
+
+## TÜBİTAK 2027 finalist odaklı yürütme planı
+
+27 Ekim 2026 tarihinde resmî 2027 proje rehberi ve sayfada bağlı değerlendirme formları yeniden kontrol edildi. Güncel iş paketleri, karar tarihi, örneklem riskleri ve başvuru takvimi için [TÜBİTAK finalist hedefli yürütme planına](research_candidates/evidence_abstention/TUBITAK_2027_FINALIST_PRIORITY_PLAN_2026-10-27.md) bakın. Öncelik ürün ekranını genişletmek değil, bağımsız vaka kabul kapısını ve tekrarlanabilir bilimsel sonuç üretimini tamamlamaktır.
 
 ## Araştırma sorusu
 
