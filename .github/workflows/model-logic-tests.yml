@@ -1,0 +1,35 @@
+name: Model logic tests
+
+on:
+  pull_request:
+    paths:
+      - "prototype/**"
+      - "tests/test_evidence_abstention_model_logic.py"
+      - "research_candidates/evidence_abstention/OUTPUT_SCHEMA.json"
+      - ".github/workflows/model-logic-tests.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "prototype/**"
+      - "tests/test_evidence_abstention_model_logic.py"
+      - "research_candidates/evidence_abstention/OUTPUT_SCHEMA.json"
+      - ".github/workflows/model-logic-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  model-logic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: false
+
+      - name: Run model contract and validation tests
+        run: python -m unittest discover -s tests -p "test_evidence_abstention_model_logic.py" -v
