@@ -1,0 +1,164 @@
+{
+  "bundle_schema_version": 1,
+  "bundle_name": "kaggle_validation_source_bundle_2026-10-27",
+  "source_repository": "MahmutVezir/dijitalikiz",
+  "source_branch": "main",
+  "source_commit": "e153e12f58b3148dfc0d3e525233aeaf9ba3edd6",
+  "source_commit_url": "https://github.com/MahmutVezir/dijitalikiz/commit/e153e12f58b3148dfc0d3e525233aeaf9ba3edd6",
+  "purpose": "Kaggle no-inference code validation",
+  "model_loaded_by_bundle": false,
+  "model_inference_performed_by_bundle": false,
+  "upstream_buggy_fixed_tests_performed_by_bundle": false,
+  "case_registry_modified_by_bundle": false,
+  "file_count_excluding_manifest_and_readme": 29,
+  "files": [
+    {
+      "path": ".github/workflows/kaggle-pilot.yml",
+      "git_blob_sha1": "b2823637ec9939a43bea7b97b4550696430d1b82",
+      "byte_length": 32695
+    },
+    {
+      "path": "README.md",
+      "git_blob_sha1": "5fde48b622e8a695875fea9ef2273d41ef5c6cd8",
+      "byte_length": 10029
+    },
+    {
+      "path": "research_candidates/evidence_abstention/ANALYSIS_PLAN_STAGE3.md",
+      "git_blob_sha1": "84cf183caf1da2822418ca449b3b4593cb7009d2",
+      "byte_length": 4535
+    },
+    {
+      "path": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
+      "git_blob_sha1": "cbe526d35a6fdf4a07804ce8f8ab3b29fc06c9da",
+      "byte_length": 6219
+    },
+    {
+      "path": "research_candidates/evidence_abstention/EXPERIMENT_MANIFEST_STAGE3.json",
+      "git_blob_sha1": "2619b1299419fbf6184db4cb6a1c7bb569e82fef",
+      "byte_length": 2484
+    },
+    {
+      "path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
+      "git_blob_sha1": "cabfa0a49a0212eb0d47a0cc839de93b25e8a1b1",
+      "byte_length": 9246
+    },
+    {
+      "path": "research_candidates/evidence_abstention/implementation/evidence_packet_audit.py",
+      "git_blob_sha1": "a4275bc9bab024b5be0d27cbe8188ecd09e8dbe2",
+      "byte_length": 10457
+    },
+    {
+      "path": "research_candidates/evidence_abstention/kaggle_stage3_p0_p1.py",
+      "git_blob_sha1": "7eb3e3e07e34c9f69cd91e5a3f42cd5f58d91bd8",
+      "byte_length": 29400
+    },
+    {
+      "path": "research_candidates/evidence_abstention/OUTPUT_SCHEMA.json",
+      "git_blob_sha1": "700c34f3f48472842c21f2c316fcaa185d2f8073",
+      "byte_length": 1636
+    },
+    {
+      "path": "research_candidates/evidence_abstention/PROMPT_CONDITIONS.md",
+      "git_blob_sha1": "2c5da4f0ec8ceefa25c17707b14ed7ca6c1f2a0b",
+      "byte_length": 2476
+    },
+    {
+      "path": "research_candidates/evidence_abstention/RUBRIC_AND_ADJUDICATION.md",
+      "git_blob_sha1": "e00c66017daab4c6b9ec40d3bfd3774ee212dd18",
+      "byte_length": 3625
+    },
+    {
+      "path": "research_candidates/evidence_abstention/RUNTIME_LOCK.json",
+      "git_blob_sha1": "e1e3630302bcaa74cb27505ebe8727fada4cb50d",
+      "byte_length": 1445
+    },
+    {
+      "path": "research_candidates/evidence_abstention/STAGE3_EXPERIMENT_DESIGN.md",
+      "git_blob_sha1": "a4223b98f5e3d766f910b029f5173607efd5544d",
+      "byte_length": 11524
+    },
+    {
+      "path": "scripts/analyze_evidence_abstention_results.py",
+      "git_blob_sha1": "421e2f9fda6f59b6a42fd14849176798d7cd75ac",
+      "byte_length": 20761
+    },
+    {
+      "path": "scripts/build_evidence_abstention_intake.py",
+      "git_blob_sha1": "14f950e9ede95d83bc10bd01520d995b5599e210",
+      "byte_length": 7488
+    },
+    {
+      "path": "scripts/build_evidence_abstention_screening_queue.py",
+      "git_blob_sha1": "faf1ea07d383d59dd0b78260041e9a1068672cd7",
+      "byte_length": 12220
+    },
+    {
+      "path": "scripts/evidence_abstention_preflight.py",
+      "git_blob_sha1": "9aedf3fe7a61687e60faa074a12db76c9aa5dc7b",
+      "byte_length": 13242
+    },
+    {
+      "path": "scripts/evidence_abstention_requires_pytest.py",
+      "git_blob_sha1": "3af9ac240c9a5eda3629856d709bcedf82456fef",
+      "byte_length": 1105
+    },
+    {
+      "path": "scripts/inventory_bugsinpy_candidates.py",
+      "git_blob_sha1": "785ae68b4cb88aa71d065bf8d47a5439f431a707",
+      "byte_length": 7983
+    },
+    {
+      "path": "scripts/verify_evidence_abstention_v10_intake.py",
+      "git_blob_sha1": "df7df9aae71e62d9c596ca849c097eb3c00ee684",
+      "byte_length": 12283
+    },
+    {
+      "path": "tests/test_build_evidence_abstention_intake.py",
+      "git_blob_sha1": "2a6fb3a93f1b353a07a91e4c60f0ebcc30ef1c22",
+      "byte_length": 7127
+    },
+    {
+      "path": "tests/test_build_evidence_abstention_screening_queue.py",
+      "git_blob_sha1": "51ac402b144ba47dd6fb9c5cdf3e3cbc06ba1b15",
+      "byte_length": 10257
+    },
+    {
+      "path": "tests/test_evidence_abstention_preflight.py",
+      "git_blob_sha1": "73927971b71fc3e9545bbfb71bca8dcbdf6aff5e",
+      "byte_length": 13404
+    },
+    {
+      "path": "tests/test_evidence_abstention_requires_pytest.py",
+      "git_blob_sha1": "1725b931d26b11c25636a57fae009d968ca4f7e5",
+      "byte_length": 1093
+    },
+    {
+      "path": "tests/test_evidence_packet_audit.py",
+      "git_blob_sha1": "43d903f925c1973701b6e84088f8f2504c31051a",
+      "byte_length": 5652
+    },
+    {
+      "path": "tests/test_inventory_bugsinpy_candidates.py",
+      "git_blob_sha1": "85d1c746e4f234827c4d278df5fb789638814055",
+      "byte_length": 2819
+    },
+    {
+      "path": "tests/test_kaggle_stage3_prompt_contract.py",
+      "git_blob_sha1": "d58df54adb1b53c4ae9727a23ecdaf83e51cc389",
+      "byte_length": 5068
+    },
+    {
+      "path": "tests/test_kaggle_workflow_safety.py",
+      "git_blob_sha1": "460c59de2356da83e3c6d1a4bb84b8c7718c150b",
+      "byte_length": 7006
+    },
+    {
+      "path": "tests/test_verify_evidence_abstention_v10_intake.py",
+      "git_blob_sha1": "ec6e9e3a3556b41099f81dd34ef47a52126d62b6",
+      "byte_length": 7496
+    }
+  ],
+  "zip_sha256": null,
+  "zip_bytes": 273344,
+  "zip_blob_sha": "003811f2c8eb41334a390b82b6a40cb90937fb0d"
+}
