@@ -76,3 +76,7 @@ TÜBİTAK’ın resmî 2026–2027 sayfasına göre başvuru aralığı 23 Eylü
 - [Ön kontrol betiği](scripts/evidence_abstention_preflight.py) — yalnızca salt-okunur hazır olma denetimi yapar; model çalıştırmaz.
 
 **Bilimsel kural:** Gerçek veri, doğrulama ve sonuç yoksa varmış gibi yazılmaz. Bir kapı tamamlanmadığında proje durumu açıkça eksik olarak kalır.
+
+## Web tanıtım sayfası
+
+Araştırmanın amacı, deney tasarımı, mevcut durum ve açık kaynak bağlantıları için statik tanıtım sayfası depo kökündeki [`index.html`](index.html) dosyasındadır. Sayfa, doğrulayıcı deney henüz yapılmadığını ve mevcut vaka/model çıktısı sayılarının sıfır olduğunu açıkça belirtir. Web yayınının durumu ayrıca barındırma sağlayıcısında doğrulanmalıdır.
