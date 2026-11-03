@@ -110,3 +110,25 @@ Bu branch'te:
 - Test başarısı veya bilimsel sonuç iddiası üretilmedi.
 
 Bu not, doğrulanmış mevcut durumu ve bir sonraki güvenli yürütme adımını tanımlar; tamamlanmış proje raporu değildir.
+
+
+## 8. 3 Kasım CI incelemesi ve test düzeltmesi
+
+PR açılışının tetiklediği 3 Kasım 2026 tarihli CI çalışmasında iki farklı sonuç alındı:
+
+- `Evidence Abstention Preflight (No Inference)` başarılı oldu. Fail-closed preflight ve kanıt paketi denetleyicisinin birim testleri çalıştı; bu yalnızca preflight kodunun test kapsamıdır.
+- `Research Validation (No Inference)` içinde tarihsel artifact integrity işi başarılı oldu. Repository/configuration işinde 367 test ve 48 subtest geçti; bir test başarısız oldu.
+
+Tek başarısız test: `CohortMatrixTests.test_v2_fails_closed_if_source_queue_partially_filters_exposure_ids`. Uygulama, aktif cohort içinde dışlama listesinde bulunan bir vaka gördüğü için daha erken ve daha spesifik `A prior-exposed ID appears in the active screening cohort` hatasını doğru biçimde verdi. Test fixture'ı ise aynı vakayı aktif cohort'a koymasına rağmen daha sonraki `mixes pre-filtered and unfiltered` hatasını bekliyordu. Dolayısıyla mevcut test, adının tarif ettiği karma filtre senaryosunu izole etmiyordu.
+
+Test fixture'ı, uygulama güvenlik kontrolünü gevşetmeden düzeltildi: aktif cohort yalnızca dışlama listesindeki olmayan c/d vakalarını içeriyor; kaynak kuyrukta ise dışlama listesindeki a bulunmuyor ve b hâlâ mevcut. Böylece test artık doğrudan karma filtre provenance kontrolünü sınar. Bu düzeltmenin sonucu, yeni CI çalışması tamamlanmadan başarılı kabul edilmemelidir.
+
+İlgili ilk CI çalışması:
+- Research Validation: https://github.com/MahmutVezir/dijitalikiz/actions/runs/41644196184
+- Evidence Abstention Preflight: https://github.com/MahmutVezir/dijitalikiz/actions/runs/41644196029
+
+Düzeltme sonrası doğrulama:
+- Commit: `0a0fe98684792a590d28ef430207746a6f2f1047`
+- Yeni CI çalışmaları: PR değişikliğinden sonra tetiklendi; sonuçları ayrıca kontrol edilmelidir.
+
+Bu test düzeltmesi yalnızca test senaryosunu daha doğru kurar. Vaka sicilini, maruziyet dışlama kurallarını, deney kapısını veya bilimsel sonuçları değiştirmez.
