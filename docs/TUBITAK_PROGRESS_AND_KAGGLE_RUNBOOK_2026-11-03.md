@@ -183,3 +183,52 @@ Dolayısıyla CI'nin yeşil olması inference yetkisini açmaz. Bu kapılar anca
 Yeni `02_kaggle_source_integrity_and_tests_no_inference.ipynb` notebook'u GitHub CI'da statik olarak doğrulandı; **Kaggle GPU/runtime üzerinde henüz yürütülmedi**. Kullanıcı tarafındaki Kaggle Input'a tam olarak 27 Ekim v2 kaynak manifesti ve 31 kaynak dosyası eklenmeli. Notebook çalıştırıldığında bir ZIP denetim paketi üretir. ZIP'in hash, test ve preflight raporu incelenmeden Kaggle ortamı doğrulandı denmemelidir.
 
 Bu çalışma sürümünde `main` değişmemiştir; değişiklikler PR #157 taslak dalındadır. PR'ın yeşil CI'si merge veya bilimsel deney izni anlamına gelmez.
+
+
+## 10. En ileri aday vakanın (Black-9 / CASE-7F31A) durum denetimi
+
+Mevcut metadata-only adaylar içinde en ileri teknik kanıt Black-9'dur. Kayıtlar birlikte okunduğunda:
+
+- BugsInPy sabit revision: `11c5f1eea954a42132cfd06bf257766a7963e0fd`.
+- Buggy commit: `026c81b83454f176a9f9253cbfb70be2c159d822`.
+- Fixed commit: `d6db1c12a8e14833fe22da377cddc2bd1f43dc14`.
+- Metadata/runtime Python: **3.8.3**; disposable venv ve import preflight kayıtları başarılı.
+- Aynı hedef test: `tests.test_black.BlackTestCase.test_python2_print_function`.
+- Buggy sürüm sonucu: beklenen `black.InvalidInput: Cannot parse: 6:13: print(a, file=sys.stderr)` parser hatası.
+- Fixed sürüm sonucu: `Ran 1 test ... OK`.
+- Hedef koşudan önce buggy/fixed commit HEAD kontrolleri, ortak test bundle hash'i ve aktif worktree import yolları doğrulanmış; koşu sonrası kaynak/test hash'leri değişmemiş.
+- MIT `LICENSE` dosyası iki commit'te de bulunmuş; lisans/atıf yeniden kullanım kararı henüz bağımsız olarak onaylanmamış.
+- Ön root-cause açıklaması kod farkı ve hata imzasıyla tutarlı; iki bağımsız kök neden değerlendiricisinin onayı bekleniyor.
+
+İlgili kayıtlar:
+- `BLACK_9_METADATA_GATE_2026-10-24.json`
+- `BLACK_9_SOURCE_OVERLAY_PREFLIGHT_2026-10-24.json`
+- `BLACK_9_DEPENDENCY_IMPORT_PREFLIGHT_2026-10-24.json`
+- `BLACK_9_TEST_ENVIRONMENT_MANIFEST_2026-10-24.json`
+- `BLACK_9_PAIRED_TEST_RESULT_2026-10-24.json`
+- `BLACK_9_HASH_AUDIT_2026-10-24.json`
+- `BLACK_9_PRELIMINARY_ROOT_CAUSE_2026-10-24.json`
+
+### Kanıt paketi ve insan incelemesi
+
+Black-9 için CASE-7F31A takma adıyla üç kanıt paketi taslağı hazırlanmıştır. Dondurulmuş olmayan taslak manifestinde kayıtlı model-facing SHA-256 değerleri:
+
+| Taslak seviye | Model-facing packet SHA-256 | Şu anki durum |
+|---|---|---|
+| E1 | `e2407fe4ba06ef939b8ef612d43703673bcfb1392f110bbc04dc788dc7a42c54` | Yeterli olması bekleniyor; panel onayı yok |
+| E2 | `96350935950d71421a2dc099f6bab7e0ea3506654c1bc8498bc2893b6ca10e82` | Kısmen yeterli olması bekleniyor; panel onayı yok |
+| E3 | `abe6d42d731695cfe84a8753ff18a36bbae7301b50f8c291f1d608946e0460aa` | Yetersiz olması bekleniyor; panel onayı yok |
+
+Bunlar taslak etiketleridir; bilimsel olarak doğrulanmış E1/E2/E3 sınıfları değildir. Kör inceleme ZIP'i için manifestte ZIP bütünlüğü başarılı, E-level anahtarı ve gold root-cause metni reviewer paketinden çıkarılmış, iki bağımsız reviewer gereksinimi yazılmıştır. Ancak manifest durumu hâlâ `reviewer_bundle_prepared_waiting_for_two_independent_reviews` ve `accepted_for_confirmatory=false) şeklindedir.
+
+29 Ekim notundaki m8/r5/q2 kodlu üç kategori bildirimi tek değerlendiriciden aracılı olarak alınmıştır. Puanlar (96/90/88) ile kategorik kararlar ayrı veriler olarak saklanır; kriter bazlı döküm bulunmaz. Bu bildirim tek başına iki kişilik Panel B, inter-rater agreement, rubrik kalibrasyonu veya vaka kabulü oluşturmaz. Reviewer paketindeki gizli eşleştirme anahtarı açılmadan bu kategori bildirimlerini E1/E2/E3 etiketleriyle eşleştirip sonuç üretmek yasaktır.
+
+### Black-9 için kalan kabul kararları
+
+1. Panel A'dan iki farklı değerlendirici kaynak, lisans/atıf, hedef test çiftinin geçerliliği ve gerçek kök nedeni bağımsız incelemeli.
+2. Panel B'den Panel A'dan farklı iki değerlendirici, yalnızca anonim E1/E2/E3 paketlerini dondurulmuş rubrikle bağımsız puanlamalı.
+3. İlk puanlar ve gerekçeler saklanmalı; adjudication ve inter-rater agreement raporlanmalı.
+4. Ham Kaggle logları ve rapor arşivi doğrudan alınarak hash'leri bağımsız yeniden doğrulanmalı; repo'daki kullanıcı-raporlu SHA kayıtları tek başına yeterli sayılmamalı.
+5. Vaka ancak bütün bireysel ve genel kapılar geçtikten sonra kapalı `CASE_REGISTRY` içine eklenebilir. Bu işlemden önce inference yapılamaz.
+
+**Sonuç:** Black-9, teknik buggy-fail/fixed-pass eşleşmesi bulunan ve insan incelemesine hazırlanmış bir adaydır; kabul edilmiş doğrulayıcı vaka değildir. Şu anki sicil sayısı 0 olarak kalır.
