@@ -91,3 +91,39 @@ def test_notebook_pins_the_reviewed_source_snapshot_and_fails_closed():
     assert "'model_training_performed': False" in source
     assert "'case_registry_modified': False" in source
     assert "'experiment_manifest_modified': False" in source
+
+
+
+def test_notebook_supports_only_canonically_pinned_bundle_manifest_fallback():
+    source = code_source(load_notebook())
+    assert "BUNDLE_MANIFEST.json" in source
+    assert "85008f1ab3c85eb751c7b7d8f671c233669bbd15" in source
+    assert "EXPECTED_FILE_RECORDS" in source
+    assert "fallback_manifest_semantically_pinned_to_canonical_file_records" in source
+    assert "failed_fallback_manifest_not_canonical" in source
+    assert "actual_records != EXPECTED_FILE_RECORDS" in source
+
+
+def test_notebook_embeds_exactly_31_frozen_source_file_records():
+    notebook = load_notebook()
+    code_cells = [
+        cell for cell in notebook["cells"]
+        if cell.get("cell_type") == "code"
+    ]
+    assignments = []
+    for cell in code_cells:
+        tree = ast.parse("".join(cell.get("source", [])))
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Assign):
+                if any(
+                    isinstance(target, ast.Name)
+                    and target.id == "EXPECTED_FILE_RECORDS"
+                    for target in node.targets
+                ):
+                    assignments.append(ast.literal_eval(node.value))
+    assert len(assignments) == 1
+    assert len(assignments[0]) == 31
+    assert all(
+        set(value) == {"git_blob_sha1", "byte_length"}
+        for value in assignments[0].values()
+    )
