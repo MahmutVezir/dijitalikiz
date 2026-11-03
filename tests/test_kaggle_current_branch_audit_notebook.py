@@ -10,6 +10,7 @@ NOTEBOOK = (
     / "evidence_abstention"
     / "03_kaggle_current_branch_no_inference_audit.ipynb"
 )
+PREFLIGHT_SCRIPT = ROOT / "scripts" / "evidence_abstention_preflight.py"
 
 
 def test_current_branch_kaggle_notebook_is_valid_and_compiles():
@@ -80,7 +81,14 @@ def test_current_branch_kaggle_notebook_audits_both_exposure_unions():
         for cell in notebook.get("cells", [])
         if cell.get("cell_type") == "code"
     )
-    assert "EXPOSURE_UNION_2026-10-23.json" in source
-    assert "EXPOSURE_UNION_2026-10-24.json" in source
+    preflight_source = PREFLIGHT_SCRIPT.read_text(encoding="utf-8")
+
+    # The notebook delegates the read-only exposure-union gate to the
+    # canonical preflight script and runs that script's dedicated test module.
     assert "scripts/evidence_abstention_preflight.py" in source
+    assert "tests/test_evidence_abstention_preflight.py" in source
+    assert "BASE_EXPOSURE_UNION_PATH" in preflight_source
+    assert "SCREENING_EXPOSURE_UNION_PATH" in preflight_source
+    assert "EXPOSURE_UNION_2026-10-23.json" in preflight_source
+    assert "EXPOSURE_UNION_2026-10-24.json" in preflight_source
     assert "pytest" in source
