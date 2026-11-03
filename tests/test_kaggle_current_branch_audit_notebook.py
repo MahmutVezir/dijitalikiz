@@ -25,7 +25,7 @@ def test_current_branch_kaggle_notebook_is_valid_and_compiles():
 
 def test_current_branch_kaggle_notebook_is_strictly_no_inference():
     notebook = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
-    source = "\\n".join(
+    source = "\n".join(
         "".join(cell.get("source", []))
         for cell in notebook.get("cells", [])
         if cell.get("cell_type") == "code"
@@ -49,7 +49,7 @@ def test_current_branch_kaggle_notebook_is_strictly_no_inference():
 
 def test_current_branch_kaggle_notebook_audits_both_exposure_unions():
     notebook = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
-    source = "\\n".join(
+    source = "\n".join(
         "".join(cell.get("source", []))
         for cell in notebook.get("cells", [])
         if cell.get("cell_type") == "code"
