@@ -56,7 +56,7 @@ def test_no_inference_audit_notebook_code_cells_have_executable_ast_and_line_bou
             f"Code cell {index} is empty or comment-only"
         )
         assert all(
-            fragment.endswith("\\n")
+            fragment.endswith("\n")
             for fragment in fragments[:-1]
         ), (
             f"Code cell {index} has missing line terminators between source fragments"
