@@ -232,3 +232,57 @@ Bunlar taslak etiketleridir; bilimsel olarak doğrulanmış E1/E2/E3 sınıflar�
 5. Vaka ancak bütün bireysel ve genel kapılar geçtikten sonra kapalı `CASE_REGISTRY` içine eklenebilir. Bu işlemden önce inference yapılamaz.
 
 **Sonuç:** Black-9, teknik buggy-fail/fixed-pass eşleşmesi bulunan ve insan incelemesine hazırlanmış bir adaydır; kabul edilmiş doğrulayıcı vaka değildir. Şu anki sicil sayısı 0 olarak kalır.
+
+
+## 11. 3 Kasım 2026 — 97-ID ek maruziyet filtresi ve tekrar doğrulama
+
+### Tarihsel 93-ID birleşimi ile güncel 97-ID birleşiminin rolleri
+
+İki dışlama dosyası da değiştirilmeden korunur:
+
+- `EXPOSURE_UNION_2026-10-23.json`: 93 kimlikli tarihsel birleşim; V10 intake/provenance kaydıdır.
+- `EXPOSURE_UNION_2026-10-24.json`: tarihsel 93 kimliğe dört oturum/runner maruziyetini ekleyen 97 kimlikli screening birleşimidir: `ansible-4`, `fastapi-8`, `httpie-5`, `keras-7`.
+
+24 Ekim tarihli kayıt bu dört vakayı sonuçtan bağımsız ve kalıcı olarak dışlar. Tarihsel v23 dosyasını 97 kimlikli dosyayla değiştirmek V10 provenance'ını geriye dönük bozardı. Bunun yerine Stage 3 manifesti sürüm 0.2'ye çıkarıldı; yeni `screening_exposure_union_path` alanı v24'ü işaret eder. CASE_REGISTRY'deki mevcut iki yol korunur.
+
+Fail-closed koruma üç yerde eklendi:
+1. `scripts/evidence_abstention_preflight.py` her iki dosyayı okur, kendi benzersiz kimlik/sayım kontrollerini yapar, v23'ün tamamının v24'te bulunduğunu doğrular ve iki kümenin birleşimini kabul siciline karşı kullanır.
+2. Kaggle confirmatory runner, model yüklemeden önce iki kanonik yolu ve iki listeyi doğrular; v24 içinde bulunan herhangi bir vaka için durur.
+3. Sonuç analiz betiği aynı iki dosyayı zorunlu hash kümesine alır, iki birleşimi tekrar doğrular ve sonuç CSV'sinden önce kabul edilmiş sicili ikisine karşı sınar.
+
+Her iki dosya da diğer 10 protokol/kod girdisiyle birlikte toplam **12 ayrı SHA-256** girdisidir. Henüz bu hash'ler dondurulmadı; gerçek insan protokolü, ön kayıt, model/runtime ve vaka seti son hâline geldikten sonra tek bir kontrollü sürümde dondurulmalıdır. Hash değerlerini bugün doldurmak bilimsellik sağlamaz; yalnızca taslak dosyaları erken kilitler.
+
+### Yeni regresyon testleri ve CI
+
+İlk çalıştırmada eski test, v23 için önceki hata metnini beklediğinden bir assertion başarısız oldu; üretim kodu/koruma doğruydu. Test beklentisi yeni açık hata mesajına göre düzeltildi.
+
+Son tam CI commit'i `280b9ba6562c2e7daa5a3204c0d58886773d4ec9`:
+- Research Validation (No Inference): **376 passed, 48 subtests passed**.
+- Evidence Abstention Preflight: **başarılı**; preflight birim testleri ve kanıt paketi denetimi geçti.
+- Analysis Helper Tests (Synthetic Data Only): **18 + 7 test başarılı**.
+- Cohort builder tests: **başarılı**.
+- Historical artifact integrity: **başarılı**.
+
+Run bağlantıları:
+- https://github.com/MahmutVezir/dijitalikiz/actions/runs/41647392996
+- https://github.com/MahmutVezir/dijitalikiz/actions/runs/41647393000
+- https://github.com/MahmutVezir/dijitalikiz/actions/runs/41647393308
+- https://github.com/MahmutVezir/dijitalikiz/actions/runs/41647392998
+
+### Güncel no-inference hazır olma raporu
+
+Run `41647393000` içindeki `readiness-report.json` doğrudan incelendi:
+
+- `ready=false`
+- Kabul edilmiş bağımsız vaka: **0**
+- Kabul edilmiş upstream proje: **0**
+- Blokaj: **21**
+- Model inference: **false**
+
+Önceki 20 blokaja ek olarak, 97-ID screening birleşimi için ayrı SHA-256 dondurma girdisi zorunlu hâle geldi. 21 engelin mevcut içeriği: inference yetkisi kapalı; dataset gate açık; doğrulanabilir preregistration URI yok; iki değerlendiricili rubrik/adjudication protokolü dondurulmamış; değerlendirici kalibrasyonu bitmemiş; model/tokenizer/runtime preflight geçmemiş; 12 protokol/kod dosyasının SHA-256'sı eksik; en az 60 vaka ve 8 proje şartı karşılanmamış; runtime lock doğrulanmamış.
+
+CI'nin yeşil olması yalnızca kaynak kodu, regresyon testleri ve no-inference kapısının yazılım doğrulamasıdır. Bilimsel veri kümesi kabulü veya hipotez sonucu değildir.
+
+### Kaggle notebook kapsam notu
+
+`02_kaggle_source_integrity_and_tests_no_inference.ipynb`, 27 Ekim v2 tarihsel kaynak paketini denetlemek için sabitlenmiştir (`99663c2874424feb9cec1d965432030f5cdb3ef8)); v24 dışlama uzantısı ve bu PR'daki 3 Kasım güncellemeleri o tarihsel pakette bulunmaz. Dolayısıyla bu notebook'un geçmiş paket üzerindeki denetimini, güncel PR kodunun Kaggle'da çalıştığının kanıtı olarak sunma. Güncel PR'ın kod testleri GitHub CI üzerinde doğrulandı. Kaggle'da güncel kaynakla çalışma ayrıca güncel branch kaynak ağacının Input'a eklenmesini ve aynı no-inference preflight'ın o kaynak üzerinde çalıştırılmasını gerektirir.
