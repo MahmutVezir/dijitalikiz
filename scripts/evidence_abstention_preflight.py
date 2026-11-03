@@ -7,6 +7,9 @@ import re
 import sys
 from pathlib import Path
 
+BASE_EXPOSURE_UNION_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
+SCREENING_EXPOSURE_UNION_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json"
+
 HASHES = {
     "prompt_conditions": "research_candidates/evidence_abstention/PROMPT_CONDITIONS.md",
     "output_schema": "research_candidates/evidence_abstention/OUTPUT_SCHEMA.json",
@@ -15,7 +18,8 @@ HASHES = {
     "scoring_rubric": "research_candidates/evidence_abstention/RUBRIC_AND_ADJUDICATION.md",
     "runtime_lock": "research_candidates/evidence_abstention/RUNTIME_LOCK.json",
     "case_registry": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
-    "exposure_union": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
+    "exposure_union": BASE_EXPOSURE_UNION_PATH,
+    "screening_exposure_union": SCREENING_EXPOSURE_UNION_PATH,
     "analysis_code": "scripts/analyze_evidence_abstention_results.py",
     "inference_runner": "research_candidates/evidence_abstention/kaggle_stage3_p0_p1.py",
     "preflight_code": "scripts/evidence_abstention_preflight.py",
@@ -40,13 +44,33 @@ def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def read_exclusion_ids(document, label, blockers):
+    if document is None:
+        return set()
+    values = document.get("excluded_case_ids")
+    if (
+        not isinstance(values, list)
+        or any(not isinstance(value, str) or not value.strip() for value in values)
+        or len(values) != len(set(values))
+    ):
+        blockers.append(label + " has a missing, malformed, or duplicate ID list.")
+        return set()
+    if document.get("unique_exclusion_count") != len(values):
+        blockers.append(label + " count does not match the unique ID list.")
+        return set()
+    return set(values)
+
+
 def evaluate(root):
     project = root / "research_candidates" / "evidence_abstention"
     blockers, warnings = [], []
     manifest = read_json(project / "EXPERIMENT_MANIFEST_STAGE3.json", "experiment manifest", blockers)
     registry = read_json(project / "CASE_REGISTRY.json", "case registry", blockers)
     exposure_union = read_json(
-        project / "EXPOSURE_UNION_2026-10-23.json", "exposure exclusion union", blockers
+        root / BASE_EXPOSURE_UNION_PATH, "frozen base exposure exclusion union", blockers
+    )
+    screening_exposure_union = read_json(
+        root / SCREENING_EXPOSURE_UNION_PATH, "extended screening exposure exclusion union", blockers
     )
     runtime = read_json(project / "RUNTIME_LOCK.json", "runtime lock", blockers)
     schema = read_json(project / "OUTPUT_SCHEMA.json", "output schema", blockers)
@@ -55,19 +79,15 @@ def evaluate(root):
         if not (root / relpath).is_file():
             blockers.append("Required hash target missing: " + relpath)
 
-    excluded_case_ids = set()
-    if exposure_union is not None:
-        raw_excluded_ids = exposure_union.get("excluded_case_ids")
-        if (
-            not isinstance(raw_excluded_ids, list)
-            or any(not isinstance(value, str) or not value.strip() for value in raw_excluded_ids)
-            or len(raw_excluded_ids) != len(set(raw_excluded_ids))
-        ):
-            blockers.append("Exposure exclusion union has a missing, malformed, or duplicate ID list.")
-        elif exposure_union.get("unique_exclusion_count") != len(raw_excluded_ids):
-            blockers.append("Exposure exclusion union count does not match the unique ID list.")
-        else:
-            excluded_case_ids = set(raw_excluded_ids)
+    base_excluded_ids = read_exclusion_ids(
+        exposure_union, "Frozen base exposure exclusion union", blockers
+    )
+    screening_excluded_ids = read_exclusion_ids(
+        screening_exposure_union, "Extended screening exposure exclusion union", blockers
+    )
+    if not base_excluded_ids.issubset(screening_excluded_ids):
+        blockers.append("Extended screening exposure union must preserve every ID in the frozen base union.")
+    excluded_case_ids = base_excluded_ids | screening_excluded_ids
 
     if manifest is not None:
         checks = (
@@ -77,7 +97,8 @@ def evaluate(root):
             (manifest.get("two_rater_protocol_frozen") is True, "Two-rater rubric/adjudication protocol is not frozen."),
             (manifest.get("reviewer_calibration_complete") is True, "Independent reviewer calibration is incomplete."),
             (manifest.get("case_registry_path") == "research_candidates/evidence_abstention/CASE_REGISTRY.json", "Manifest case_registry_path is not the canonical confirmatory registry."),
-            (manifest.get("exposure_union_path") == "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json", "Manifest exposure_union_path is not the canonical dated exclusion union."),
+            (manifest.get("exposure_union_path") == BASE_EXPOSURE_UNION_PATH, "Manifest exposure_union_path is not the immutable 23 October base union."),
+            (manifest.get("screening_exposure_union_path") == SCREENING_EXPOSURE_UNION_PATH, "Manifest screening_exposure_union_path is not the 24 October extended screening union."),
         )
         blockers.extend(message for ok, message in checks if not ok)
 
@@ -104,6 +125,12 @@ def evaluate(root):
                 blockers.append("Frozen SHA-256 missing/invalid: " + name)
             elif path.is_file() and sha256(path) != expected:
                 blockers.append("Frozen SHA-256 mismatch: " + name)
+
+    if registry is not None:
+        if registry.get("exposure_union_path") != BASE_EXPOSURE_UNION_PATH:
+            blockers.append("Case registry exposure_union_path is not the immutable 23 October base union.")
+        if registry.get("screening_exposure_union_path") != SCREENING_EXPOSURE_UNION_PATH:
+            blockers.append("Case registry screening_exposure_union_path is not the 24 October extended screening union.")
 
     accepted = []
     if registry is not None:
