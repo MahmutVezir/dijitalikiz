@@ -477,13 +477,38 @@ def runtime_preflight(root):
 def run_study(root, manifest):
     project = root / "research_candidates" / "evidence_abstention"
     registry = read_json(project / "CASE_REGISTRY.json")
-    union = read_json(project / "EXPOSURE_UNION_2026-10-23.json")
-    excluded = union.get("excluded_case_ids")
-    if not isinstance(excluded, list) or len(excluded) != len(set(excluded)):
-        raise RuntimeError("Canonical exposure exclusion union is malformed.")
+    base_union = read_json(project / "EXPOSURE_UNION_2026-10-23.json")
+    screening_union = read_json(project / "EXPOSURE_UNION_2026-10-24.json")
+
+    def checked_exclusion_ids(document, label):
+        values = document.get("excluded_case_ids") if isinstance(document, dict) else None
+        if (
+            not isinstance(values, list)
+            or any(not isinstance(value, str) or not value.strip() for value in values)
+            or len(values) != len(set(values))
+            or document.get("unique_exclusion_count") != len(values)
+        ):
+            raise RuntimeError(label + " is malformed or has an inconsistent unique count.")
+        return set(values)
+
+    base_excluded = checked_exclusion_ids(base_union, "Immutable 23 October base exposure union")
+    screening_excluded = checked_exclusion_ids(screening_union, "24 October extended screening exposure union")
+    if not base_excluded.issubset(screening_excluded):
+        raise RuntimeError("Extended screening exposure union drops IDs from the immutable base union.")
+    if manifest.get("exposure_union_path") != "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json":
+        raise RuntimeError("Manifest does not reference the immutable base exposure union.")
+    if manifest.get("screening_exposure_union_path") != "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json":
+        raise RuntimeError("Manifest does not reference the 24 October extended screening union.")
+    if registry.get("exposure_union_path") != manifest.get("exposure_union_path"):
+        raise RuntimeError("Case registry base exposure-union path differs from the manifest.")
+    if registry.get("screening_exposure_union_path") != manifest.get("screening_exposure_union_path"):
+        raise RuntimeError("Case registry screening exposure-union path differs from the manifest.")
+
     schema = read_json(project / "OUTPUT_SCHEMA.json")
     validate_schema_contract(schema)
-    cases = validate_cases(read_json(CASES_PATH), manifest, registry, set(excluded))
+    cases = validate_cases(
+        read_json(CASES_PATH), manifest, registry, base_excluded | screening_excluded
+    )
 
     outputs = (RAW_OUTPUTS_PATH, BLIND_REVIEW_PATH, CONDITION_MAP_PATH, ANSWER_KEY_PATH, RUN_METADATA_PATH)
     existing = [str(path) for path in outputs if path.exists()]
