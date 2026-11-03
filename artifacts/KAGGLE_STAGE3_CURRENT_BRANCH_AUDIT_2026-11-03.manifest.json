@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Kaggle no-inference audit snapshot for the current TÜBİTAK Stage 3 P0/P1 source after the supplemental exposure exclusion gate.",
+  "source_branch": "research/2026-11-03-kaggle-single-pass-validation",
+  "source_commit": "429c9ed1ad410a1dcd2d395a885f9ac71f42de13",
+  "generated_at": "2026-11-03",
+  "model_execution_performed": false,
+  "files": [
+    {
+      "path": "research_candidates/evidence_abstention/EXPERIMENT_MANIFEST_STAGE3.json",
+      "git_blob_sha1": "d11fe6e4b2c20502f17937a83be214a893dc9522",
+      "byte_length": 2633
+    },
+    {
+      "path": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
+      "git_blob_sha1": "cbe526d35a6fdf4a07804ce8f8ab3b29fc06c9da",
+      "byte_length": 6219
+    },
+    {
+      "path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
+      "git_blob_sha1": "cabfa0a49a0212eb0d47a0cc839de93b25e8a1b1",
+      "byte_length": 9246
+    },
+    {
+      "path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json",
+      "git_blob_sha1": "c94b7606f5d3a347a2b06e789ba0d7acef5e2855",
+      "byte_length": 11180
+    },
+    {
+      "path": "research_candidates/evidence_abstention/RUNTIME_LOCK.json",
+      "git_blob_sha1": "e1e3630302bcaa74cb27505ebe8727fada4cb50d",
+      "byte_length": 1445
+    },
+    {
+      "path": "research_candidates/evidence_abstention/OUTPUT_SCHEMA.json",
+      "git_blob_sha1": "700c34f3f48472842c21f2c316fcaa185d2f8073",
+      "byte_length": 1636
+    },
+    {
+      "path": "research_candidates/evidence_abstention/PROMPT_CONDITIONS.md",
+      "git_blob_sha1": "2c5da4f0ec8ceefa25c17707b14ed7ca6c1f2a0b",
+      "byte_length": 2476
+    },
+    {
+      "path": "research_candidates/evidence_abstention/ANALYSIS_PLAN_STAGE3.md",
+      "git_blob_sha1": "84cf183caf1da2822418ca449b3b4593cb7009d2",
+      "byte_length": 4535
+    },
+    {
+      "path": "research_candidates/evidence_abstention/STAGE3_EXPERIMENT_DESIGN.md",
+      "git_blob_sha1": "a4223b98f5e3d766f910b029f5173607efd5544d",
+      "byte_length": 11524
+    },
+    {
+      "path": "research_candidates/evidence_abstention/RUBRIC_AND_ADJUDICATION.md",
+      "git_blob_sha1": "e00c66017daab4c6b9ec40d3bfd3774ee212dd18",
+      "byte_length": 3625
+    },
+    {
+      "path": "research_candidates/evidence_abstention/kaggle_stage3_p0_p1.py",
+      "git_blob_sha1": "f350910e9ebed6df76eb437f303f6de2f0f92ec8",
+      "byte_length": 31039
+    },
+    {
+      "path": "scripts/evidence_abstention_preflight.py",
+      "git_blob_sha1": "610856bcf7161a080063bf3b5f62ac4a5381d4ce",
+      "byte_length": 14576
+    },
+    {
+      "path": "scripts/analyze_evidence_abstention_results.py",
+      "git_blob_sha1": "ee951f0a9b1ef38354aa49d8ab8c9deca2ad1430",
+      "byte_length": 22165
+    },
+    {
+      "path": "tests/test_evidence_abstention_preflight.py",
+      "git_blob_sha1": "1a77f0f26b08287d3ee31ba43e973ac24e95cb84",
+      "byte_length": 18001
+    },
+    {
+      "path": "tests/test_evidence_packet_audit.py",
+      "git_blob_sha1": "43d903f925c1973701b6e84088f8f2504c31051a",
+      "byte_length": 5652
+    },
+    {
+      "path": "tests/test_analyze_evidence_abstention_results.py",
+      "git_blob_sha1": "ba0e2d18de0cbc3009db58c0be5516127f2b0ee7",
+      "byte_length": 13895
+    },
+    {
+      "path": "tests/test_kaggle_stage3_prompt_contract.py",
+      "git_blob_sha1": "fbd3f050ba959a344a461c3ad6c4c75c7d560ffc",
+      "byte_length": 5443
+    },
+    {
+      "path": "tests/test_kaggle_no_inference_audit_notebook.py",
+      "git_blob_sha1": "0b723ef9c5e60f0c9802786ab20ff7c8ff067fb1",
+      "byte_length": 2096
+    },
+    {
+      "path": "tests/test_build_evidence_abstention_cohort_matrix.py",
+      "git_blob_sha1": "e4fcfc8eaa7485af9854ea8af50fb378a0e6a596",
+      "byte_length": 13000
+    }
+  ]
+}
