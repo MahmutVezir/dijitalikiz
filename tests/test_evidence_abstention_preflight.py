@@ -338,7 +338,7 @@ class PreflightTests(unittest.TestCase):
             report = MODULE.evaluate(root)
 
             self.assertFalse(report["ready"])
-            self.assertTrue(any("not the canonical dated exclusion union" in b for b in report["blockers"]))
+            self.assertTrue(any("Manifest exposure_union_path is not the immutable 23 October base union." in b for b in report["blockers"]))
 
 
 if __name__ == "__main__":
