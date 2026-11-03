@@ -22,9 +22,11 @@ COLUMNS = {
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 CASE_REGISTRY_RELATIVE_PATH = "research_candidates/evidence_abstention/CASE_REGISTRY.json"
 EXPOSURE_UNION_RELATIVE_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
+SCREENING_EXPOSURE_UNION_RELATIVE_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json"
 REQUIRED_FROZEN_PATHS = {
     "research_candidates/evidence_abstention/CASE_REGISTRY.json",
     EXPOSURE_UNION_RELATIVE_PATH,
+    SCREENING_EXPOSURE_UNION_RELATIVE_PATH,
     "research_candidates/evidence_abstention/OUTPUT_SCHEMA.json",
     "research_candidates/evidence_abstention/PROMPT_CONDITIONS.md",
     "research_candidates/evidence_abstention/ANALYSIS_PLAN_STAGE3.md",
@@ -121,6 +123,14 @@ def load_exposure_union(path):
     if document.get("unique_exclusion_count") != len(ids):
         raise ValueError("exposure union unique_exclusion_count does not match its IDs")
     return set(ids)
+
+
+def load_combined_exposure_unions(base_path, screening_path):
+    base_ids = load_exposure_union(base_path)
+    screening_ids = load_exposure_union(screening_path)
+    if not base_ids.issubset(screening_ids):
+        raise ValueError("extended screening exposure union must preserve every ID in the immutable base union")
+    return base_ids | screening_ids
 
 
 def validate_registry_path(registry_path, manifest, repository_root):
@@ -362,12 +372,21 @@ def analyze(registry_path, manifest_path, ratings_path):
 
     exposure_path_value = manifest.get("exposure_union_path")
     if exposure_path_value != EXPOSURE_UNION_RELATIVE_PATH:
-        raise ValueError("analysis blocked: exposure_union_path must match the canonical dated exposure union")
-    exposure_relative = Path(exposure_path_value)
-    exposure_path = repository_root / exposure_relative
-    excluded_case_ids = load_exposure_union(exposure_path)
+        raise ValueError("analysis blocked: exposure_union_path must match the immutable 23 October base union")
+    screening_path_value = manifest.get("screening_exposure_union_path")
+    if screening_path_value != SCREENING_EXPOSURE_UNION_RELATIVE_PATH:
+        raise ValueError("analysis blocked: screening_exposure_union_path must match the 24 October extended union")
+
+    exposure_path = repository_root / Path(exposure_path_value)
+    screening_exposure_path = repository_root / Path(screening_path_value)
+    excluded_case_ids = load_combined_exposure_unions(exposure_path, screening_exposure_path)
 
     expected_registry_path = validate_registry_path(registry_path, manifest, repository_root)
+    registry_document = json.loads(expected_registry_path.read_text(encoding="utf-8"))
+    if registry_document.get("exposure_union_path") != EXPOSURE_UNION_RELATIVE_PATH:
+        raise ValueError("analysis blocked: CASE_REGISTRY base exposure path is not canonical")
+    if registry_document.get("screening_exposure_union_path") != SCREENING_EXPOSURE_UNION_RELATIVE_PATH:
+        raise ValueError("analysis blocked: CASE_REGISTRY screening exposure path is not canonical")
 
     _, accepted = load_accepted_registry(expected_registry_path, excluded_case_ids)
     ids = manifest.get("case_ids")
@@ -382,6 +401,7 @@ def analyze(registry_path, manifest_path, ratings_path):
         "adjudicated_ratings_sha256": sha256_file(ratings_path),
         "analysis_code_sha256": sha256_file(Path(__file__)),
         "exposure_union_sha256": sha256_file(exposure_path),
+        "screening_exposure_union_sha256": sha256_file(screening_exposure_path),
         "frozen_hashes_verified": True,
     }
     return result
