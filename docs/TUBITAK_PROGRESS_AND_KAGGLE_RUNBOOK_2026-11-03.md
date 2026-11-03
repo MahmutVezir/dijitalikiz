@@ -132,3 +132,54 @@ Düzeltme sonrası doğrulama:
 - Yeni CI çalışmaları: PR değişikliğinden sonra tetiklendi; sonuçları ayrıca kontrol edilmelidir.
 
 Bu test düzeltmesi yalnızca test senaryosunu daha doğru kurar. Vaka sicilini, maruziyet dışlama kurallarını, deney kapısını veya bilimsel sonuçları değiştirmez.
+
+
+## 9. Son doğrulama — 3 Kasım 2026, 16:30 TRT itibarıyla
+
+Önceki bölümdeki “sonuçları ayrıca kontrol edilmelidir” ifadesi artık güncel değildir. En son PR head commit'i `8d00932f378d75d4f48b349bca7dee11af8228b4` için üç CI hattının tamamı başarılıdır:
+
+| Kontrol | Sonuç | Kapsam |
+|---|---|---|
+| Research Validation (No Inference) | **PASS** | 371 test + 48 subtest; 6,23 saniye |
+| Evidence Abstention Preflight (No Inference) | **PASS** | Fail-closed kapı testleri ve kanıt paketi auditor testleri |
+| Evidence abstention cohort builder tests | **PASS** | Metadata-only kuyruk/cohort regression testleri |
+| Tarihsel deney artifact bütünlüğü | **PASS** | Sabit ID, bayt uzunluğu, SHA-256, ZIP bütünlüğü ve kayıt denetimi |
+| Yeni Kaggle audit notebook statik testi | **PASS** | Notebook JSON, bütün Python hücrelerinin derlenmesi ve no-inference güvenlik koşulları |
+
+Run bağlantıları:
+- [Research Validation — 41644754017](https://github.com/MahmutVezir/dijitalikiz/actions/runs/41644754017)
+- [Evidence Abstention Preflight — 41644753993](https://github.com/MahmutVezir/dijitalikiz/actions/runs/41644753993)
+- [Cohort builder tests — 41644753927](https://github.com/MahmutVezir/dijitalikiz/actions/runs/41644753927)
+
+Bu yeşil CI sonuçları yazılım ve konfigürasyon doğrulamasıdır. **Bilimsel veri kümesinin hazır olduğunu veya hipotezin desteklendiğini göstermez.**
+
+### Son no-inference kapısının gerçek çıktısı
+
+Run `41644753993` içindeki `readiness-report.json` yeniden okunmuştur. Sonuç:
+
+- `ready=false`
+- Kabul edilmiş bağımsız vaka: **0**
+- Kabul edilmiş upstream proje: **0**
+- Blokaj sayısı: **20**
+- `model_inference_performed=false`
+
+Yirmi blokajın tam dökümü:
+
+1. Deney manifesti inference için açık yetki vermiyor.
+2. Veri doğrulama kapısı `CLOSED` değil.
+3. Denetlenebilir ön kayıt URI'si yok.
+4. İki değerlendiricili rubrik ve adjudication protokolü dondurulmamış.
+5. Bağımsız değerlendirici kalibrasyonu tamamlanmamış.
+6. Tam model/tokenizer/runtime yükleme ön kontrolü geçmemiş.
+7–17. Aşağıdaki on bir dosyanın SHA-256 değeri eksik veya geçersiz: prompt koşulları, çıktı şeması, analiz planı, deney tasarımı, puanlama rubriği, runtime lock, vaka sicili, maruziyet dışlama birliği, analiz kodu, inference runner ve preflight kodu.
+18. Kabul edilmiş vaka sayısı 0; alt sınır 60, hedef 80.
+19. Upstream proje sayısı 0; alt sınır 8.
+20. Runtime lock bu çalışma için doğrulanmamış.
+
+Dolayısıyla CI'nin yeşil olması inference yetkisini açmaz. Bu kapılar ancak gerçek kanıt ve insan değerlendirmesiyle giderilebilir; manifestteki bayrakları elle değiştirerek kapatılamaz.
+
+### Kaggle çalıştırmasının durumu
+
+Yeni `02_kaggle_source_integrity_and_tests_no_inference.ipynb` notebook'u GitHub CI'da statik olarak doğrulandı; **Kaggle GPU/runtime üzerinde henüz yürütülmedi**. Kullanıcı tarafındaki Kaggle Input'a tam olarak 27 Ekim v2 kaynak manifesti ve 31 kaynak dosyası eklenmeli. Notebook çalıştırıldığında bir ZIP denetim paketi üretir. ZIP'in hash, test ve preflight raporu incelenmeden Kaggle ortamı doğrulandı denmemelidir.
+
+Bu çalışma sürümünde `main` değişmemiştir; değişiklikler PR #157 taslak dalındadır. PR'ın yeşil CI'si merge veya bilimsel deney izni anlamına gelmez.
