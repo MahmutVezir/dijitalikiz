@@ -83,8 +83,13 @@ class Stage3PromptContractTests(unittest.TestCase):
             preflight,
         )
         self.assertIn('"preflight_code": "scripts/evidence_abstention_preflight.py"', preflight)
+        self.assertIn('"exposure_union": BASE_EXPOSURE_UNION_PATH', preflight)
+        self.assertIn('"screening_exposure_union": SCREENING_EXPOSURE_UNION_PATH', preflight)
+        self.assertIn('EXPOSURE_UNION_2026-10-24.json', SOURCE)
         self.assertIn('"research_candidates/evidence_abstention/kaggle_stage3_p0_p1.py"', analyzer)
         self.assertIn('"scripts/evidence_abstention_preflight.py"', analyzer)
+        self.assertIn('SCREENING_EXPOSURE_UNION_RELATIVE_PATH', analyzer)
+        self.assertIn('load_combined_exposure_unions', analyzer)
 
     def test_gold_root_cause_is_bound_to_canonical_registry_hash(self):
         self.assertIn('record.get("reference_root_cause_sha256")', SOURCE)

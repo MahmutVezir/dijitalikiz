@@ -203,6 +203,11 @@ class ExactMcNemarTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "required frozen file hashes are missing"):
                 MODULE.validate_frozen_hashes(root, missing)
 
+            missing_screening = dict(frozen)
+            missing_screening.pop(MODULE.SCREENING_EXPOSURE_UNION_RELATIVE_PATH)
+            with self.assertRaisesRegex(ValueError, "required frozen file hashes are missing"):
+                MODULE.validate_frozen_hashes(root, missing_screening)
+
             extra = dict(frozen)
             extra["research_candidates/evidence_abstention/CALIBRATION_DATA.json"] = "a" * 64
             with self.assertRaisesRegex(ValueError, "unexpected frozen file hash paths"):
@@ -212,6 +217,41 @@ class ExactMcNemarTests(unittest.TestCase):
             target.write_text("tampered", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "SHA-256 mismatch"):
                 MODULE.validate_frozen_hashes(root, frozen)
+
+    def test_combined_exposure_unions_require_extended_list_to_preserve_base(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            base = root / "base.json"
+            screening = root / "screening.json"
+            base.write_text(json.dumps({
+                "excluded_case_ids": ["historic-1", "historic-2"],
+                "unique_exclusion_count": 2,
+            }), encoding="utf-8")
+            screening.write_text(json.dumps({
+                "excluded_case_ids": ["historic-1", "historic-2", "session-1"],
+                "unique_exclusion_count": 3,
+            }), encoding="utf-8")
+            self.assertEqual(
+                MODULE.load_combined_exposure_unions(base, screening),
+                {"historic-1", "historic-2", "session-1"},
+            )
+
+            screening.write_text(json.dumps({
+                "excluded_case_ids": ["historic-1", "session-1"],
+                "unique_exclusion_count": 2,
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "preserve every ID"):
+                MODULE.load_combined_exposure_unions(base, screening)
+
+    def test_screening_exposure_union_is_part_of_the_frozen_hash_contract(self):
+        self.assertIn(
+            "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json",
+            MODULE.REQUIRED_FROZEN_PATHS,
+        )
+        self.assertIn(
+            "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json",
+            PREFLIGHT_MODULE.HASHES.values(),
+        )
 
     def test_full_analysis_refuses_unopened_scientific_gates(self):
         with tempfile.TemporaryDirectory() as temp:

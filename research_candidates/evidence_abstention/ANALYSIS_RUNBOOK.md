@@ -4,12 +4,18 @@
 
 ## Çalıştırma kapısı
 
-Yalnızca `CASE_REGISTRY.json` içinde en az 60 `accepted_for_confirmatory=true` vaka ve en az 8 farklı upstream proje bulunursa analiz yürütülür (hedef 80). `EXPERIMENT_MANIFEST_STAGE3.json` içindeki `case_ids`, kabul edilmiş sicil kayıtlarıyla birebir eşleşmelidir. CSV, her vaka için E1/E2/E3 × P0/P1 altı hücrenin tamamını ve yalnızca son/adjudike edilmiş puanları içermelidir. Eski sabit dışlama listesine ek olarak, `EXPOSURE_UNION_2026-10-23.json` içindeki bütün kalıcı dışlama kimlikleri de her analiz öncesi dinamik biçimde kontrol edilir. Bu birleşim okunamaz, yinelenen kimlik içerir veya sayım alanı tutarsızsa analiz durur.
+Yalnızca `CASE_REGISTRY.json` içinde en az 60 `accepted_for_confirmatory=true` vaka ve en az 8 farklı upstream proje bulunursa analiz yürütülür (hedef 80). `EXPERIMENT_MANIFEST_STAGE3.json` içindeki `case_ids`, kabul edilmiş sicil kayıtlarıyla birebir eşleşmelidir. CSV, her vaka için E1/E2/E3 × P0/P1 altı hücrenin tamamını ve yalnızca son/adjudike edilmiş puanları içermelidir.
+
+Maruziyet dışlaması iki katmanlıdır ve iki dosya da korunur:
+- `EXPOSURE_UNION_2026-10-23.json`: ilk 93 dışlamanın değiştirilmeyen tarihsel/V10 provenance birleşimi.
+- `EXPOSURE_UNION_2026-10-24.json`: ilk birleşimin 97 kimlikli uzantısı; dört ek runner/environment kalibrasyon maruziyetini de içerir.
+
+Her yeni aday seçimi, kabul sicili, Kaggle runner ve analiz her iki dosyayı da okuyup 97 kimliğin tamamını dışlamalıdır. Uzatılmış birleşim, 93 kimlikli temel birleşimin bütün üyelerini içermelidir. Manifest ve CASE_REGISTRY her iki kanonik yolu da göstermelidir. Bu dosyalardan biri okunamaz, yinelenen kimlik içerir, sayım alanı tutarsızdır veya 97 kimlikli dosya temel 93 kimliği kapsamıyorsa tüm akış durur. Tarihsel v23 dosyası geriye dönük değiştirilmez.
 
 
 ## Dondurulmuş girdilerin SHA-256 denetimi
 
-`frozen_hashes` anahtarları depo köküne göreli tam dosya yollarıdır; değerler ham dosya baytları üzerinde hesaplanan 64 karakterli küçük harf SHA-256 değerleridir. Ana Stage 3 ön denetimi ve sonuç analiz betiği tam olarak aynı on bir dosyanın hash kaydını ister: `PROMPT_CONDITIONS.md`, `OUTPUT_SCHEMA.json`, `ANALYSIS_PLAN_STAGE3.md`, `STAGE3_EXPERIMENT_DESIGN.md`, `RUBRIC_AND_ADJUDICATION.md`, `RUNTIME_LOCK.json`, `CASE_REGISTRY.json`, `EXPOSURE_UNION_2026-10-23.json` ve `scripts/analyze_evidence_abstention_results.py`, `research_candidates/evidence_abstention/kaggle_stage3_p0_p1.py` ve `scripts/evidence_abstention_preflight.py` (tüm yollar depo köküne göreli yazılır). Sembolik adla dosya-yolu anahtarlarını karıştırmak, zorunlu girdiyi eksiltmek veya fazladan ikinci bir hash sözleşmesi eklemek reddedilir. Her iki kapı her dosyanın gerçek SHA-256 değerini yeniden hesaplar ve tek bir eşleşmezlikte durur. `CALIBRATION_DATA.json`, ana P0/P1 istem-politikası karşılaştırmasının zorunlu hash girdisi değildir; Brier/ECE veya çoklu adaylı adaptör iddiaları için ayrı adaptör manifesti, ayrı kalibrasyon verisi ve ayrı doğrulama gerekir.
+`frozen_hashes` anahtarları depo köküne göreli tam dosya yollarıdır; değerler ham dosya baytları üzerinde hesaplanan 64 karakterli küçük harf SHA-256 değerleridir. Ana Stage 3 ön denetimi ve sonuç analiz betiği tam olarak aynı on iki dosyanın hash kaydını ister: `PROMPT_CONDITIONS.md`, `OUTPUT_SCHEMA.json`, `ANALYSIS_PLAN_STAGE3.md`, `STAGE3_EXPERIMENT_DESIGN.md`, `RUBRIC_AND_ADJUDICATION.md`, `RUNTIME_LOCK.json`, `CASE_REGISTRY.json`, `EXPOSURE_UNION_2026-10-23.json`, `EXPOSURE_UNION_2026-10-24.json` ve `scripts/analyze_evidence_abstention_results.py`, `research_candidates/evidence_abstention/kaggle_stage3_p0_p1.py` ve `scripts/evidence_abstention_preflight.py` (tüm yollar depo köküne göreli yazılır). Sembolik adla dosya-yolu anahtarlarını karıştırmak, zorunlu girdiyi eksiltmek veya fazladan ikinci bir hash sözleşmesi eklemek reddedilir. Her iki kapı her dosyanın gerçek SHA-256 değerini yeniden hesaplar ve tek bir eşleşmezlikte durur. `CALIBRATION_DATA.json`, ana P0/P1 istem-politikası karşılaştırmasının zorunlu hash girdisi değildir; Brier/ECE veya çoklu adaylı adaptör iddiaları için ayrı adaptör manifesti, ayrı kalibrasyon verisi ve ayrı doğrulama gerekir.
 
 ## CSV alan sözleşmesi
 
@@ -42,7 +48,7 @@ Birincil E3 endpoint'i insan tarafından adjudike edilmiş unsupported definitiv
 
 ## Doğrulayıcı çalıştırıcı sözleşmesi — 23 Ekim 2026
 
-Kaggle çalıştırıcısı artık kanonik salt-okunur Stage 3 ön denetimini tamamlamadan model yükleyip yanıt üretmez. `EVIDENCE_ABSTENTION_INFERENCE_APPROVED=YES` tek başına yeterli değildir; manifest, sicil, maruziyet dışlamaları, on bir dosyanın hash'leri, ön kayıt, bağımsız değerlendirici kalibrasyonu ve tam çalışma ortamı da geçerli olmalıdır. `--runtime-preflight` yalnızca sabit model/tokenizer'ı yükler ve sıfır yanıt ürettiğini kaydeden bir runtime raporu yazar; bu rapor çıkarım izni vermez.
+Kaggle çalıştırıcısı artık kanonik salt-okunur Stage 3 ön denetimini tamamlamadan model yükleyip yanıt üretmez. `EVIDENCE_ABSTENTION_INFERENCE_APPROVED=YES` tek başına yeterli değildir; manifest, sicil, maruziyet dışlamaları, on iki dosyanın hash'leri, ön kayıt, bağımsız değerlendirici kalibrasyonu ve tam çalışma ortamı da geçerli olmalıdır. `--runtime-preflight` yalnızca sabit model/tokenizer'ı yükler ve sıfır yanıt ürettiğini kaydeden bir runtime raporu yazar; bu rapor çıkarım izni vermez.
 
 İstem oluşturucusu gizli E1/E2/E3 koşul adını argüman olarak almaz ve prompt'a eklemez. Model yalnızca görünür kanıt paketini (CODE_1, TRACE_1 ve varsa CONTEXT_1) görür. Ana deneydeki P0/P1 farkı `PROMPT_CONDITIONS.md` içindeki politika talimatlarından ibarettir. Öz-bildirilen güven puanı ana deney çıktısına dahil edilmez; kalibre güven iddiası ayrı adaptör protokolüne aittir.
 
@@ -51,3 +57,8 @@ Paket SHA-256'sı, modele gösterilen UTF-8 paket metninin baytları üzerinden 
 Çalışma zamanı kilidi ayrıca tam Python/PyTorch/Transformers/Accelerate sürümlerini ve model/tokenizer'ın çözülmüş commit kimliklerini doğrular; bu değerler beklenen pinlerle uyuşmazsa yükleme/çıkarım engellenir. Prompt sözleşmesi ortak user şablonundaki OUTPUT_SCHEMA JSON metninin de her iki politika için aynı biçimde eklendiğini kaydeder.
 
 Bu kod değişikliği deney çalıştırma iznini açmaz. Mevcut manifestte inference hâlâ kapalı ve kabul edilmiş vaka sayısı sıfırdır.
+
+
+## 2026-11-03 sürüm 0.2 — ek maruziyet dışlama kapısı
+
+Stage 3 manifesti 3 Kasım 2026'da sürüm 0.2'ye yükseltildi. Bu güncelleme hipotezi, P0/P1 prompt koşullarını, örneklem alt sınırını veya sonlanımı değiştirmez. Yalnızca 24 Ekim'de kayda alınan dört ek runner/environment maruziyetinin, tarihsel V10 tasarımını değiştirmeden doğrulayıcı kabul ve analizden de dışlanmasını zorunlu kılar. v23 temel birleşim tarihsel referans olarak aynen kalır; v24 uzantısı ise yeni eleme/kabul ve analiz için ek zorunlu filtredir. Her ikisi de ayrı SHA-256 girdisidir.

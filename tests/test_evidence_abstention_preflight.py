@@ -23,16 +23,27 @@ def fixture(root, excluded_case_ids=None):
         "frozen_hashes": {}, "case_ids": [],
         "case_registry_path": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
         "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
+        "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json",
         "minimum_confirmatory_cases": 60,
         "minimum_upstream_projects": 8, "target_independent_cases": 80,
         "cells_per_case": 6, "planned_model_outputs_at_target": 480
     }
     (project / "EXPERIMENT_MANIFEST_STAGE3.json").write_text(json.dumps(manifest), encoding="utf-8")
-    (project / "CASE_REGISTRY.json").write_text(json.dumps({"records": []}), encoding="utf-8")
+    (project / "CASE_REGISTRY.json").write_text(json.dumps({
+        "records": [],
+        "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
+        "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json",
+    }), encoding="utf-8")
     (project / "EXPOSURE_UNION_2026-10-23.json").write_text(json.dumps({
         "record_type": "synthetic_test_fixture",
         "excluded_case_ids": excluded_case_ids,
         "unique_exclusion_count": len(excluded_case_ids),
+    }), encoding="utf-8")
+    screening_ids = list(dict.fromkeys(excluded_case_ids + ["BugsInPy-session-only-1"]))
+    (project / "EXPOSURE_UNION_2026-10-24.json").write_text(json.dumps({
+        "record_type": "synthetic_extended_test_fixture",
+        "excluded_case_ids": screening_ids,
+        "unique_exclusion_count": len(screening_ids),
     }), encoding="utf-8")
     (project / "RUNTIME_LOCK.json").write_text(json.dumps({"status": "draft", "inference_performed": False}), encoding="utf-8")
     required = ["decision", "root_cause", "evidence_refs", "rationale", "alternative_hypotheses", "missing_evidence"]
@@ -72,6 +83,76 @@ class PreflightTests(unittest.TestCase):
             self.assertEqual(report["mode"], "read_only_preflight_no_model_execution")
             self.assertIs(report["model_inference_performed"], False)
 
+
+    def test_rejects_case_excluded_only_by_extended_screening_union(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fixture(root)
+            project = root / "research_candidates" / "evidence_abstention"
+            screening_path = project / "EXPOSURE_UNION_2026-10-24.json"
+            screening = json.loads(screening_path.read_text(encoding="utf-8"))
+            screening["excluded_case_ids"].append("BugsInPy-demo-session-1")
+            screening["unique_exclusion_count"] = len(screening["excluded_case_ids"])
+            screening_path.write_text(json.dumps(screening), encoding="utf-8")
+
+            registry = {
+                "records": [{
+                    "case_id": "BugsInPy-demo-session-1",
+                    "accepted_for_confirmatory": True,
+                }],
+                "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
+                "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json",
+            }
+            (project / "CASE_REGISTRY.json").write_text(json.dumps(registry), encoding="utf-8")
+            manifest_path = project / "EXPERIMENT_MANIFEST_STAGE3.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["case_ids"] = ["BugsInPy-demo-session-1"]
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            report = MODULE.evaluate(root)
+            self.assertFalse(report["ready"])
+            self.assertTrue(any(
+                "BugsInPy-demo-session-1: accepted case appears in the permanent exposure exclusion union."
+                in blocker for blocker in report["blockers"]
+            ))
+
+    def test_rejects_extended_union_that_drops_historical_exclusions(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fixture(root, excluded_case_ids=["BugsInPy-historic-1"])
+            project = root / "research_candidates" / "evidence_abstention"
+            screening_path = project / "EXPOSURE_UNION_2026-10-24.json"
+            screening_path.write_text(json.dumps({
+                "excluded_case_ids": ["BugsInPy-session-only-1"],
+                "unique_exclusion_count": 1,
+            }), encoding="utf-8")
+
+            report = MODULE.evaluate(root)
+            self.assertFalse(report["ready"])
+            self.assertTrue(any(
+                "Extended screening exposure union must preserve every ID in the frozen base union."
+                in blocker for blocker in report["blockers"]
+            ))
+
+    def test_requires_canonical_extended_union_paths_in_manifest_and_registry(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fixture(root)
+            project = root / "research_candidates" / "evidence_abstention"
+            manifest_path = project / "EXPERIMENT_MANIFEST_STAGE3.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["screening_exposure_union_path"] = "alternate-screening-union.json"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            registry_path = project / "CASE_REGISTRY.json"
+            registry = json.loads(registry_path.read_text(encoding="utf-8"))
+            registry["screening_exposure_union_path"] = "alternate-screening-union.json"
+            registry_path.write_text(json.dumps(registry), encoding="utf-8")
+
+            report = MODULE.evaluate(root)
+            self.assertFalse(report["ready"])
+            self.assertTrue(any("Manifest screening_exposure_union_path" in blocker for blocker in report["blockers"]))
+            self.assertTrue(any("Case registry screening_exposure_union_path" in blocker for blocker in report["blockers"]))
 
     def test_rejects_accepted_case_with_unreproduced_bug_or_runtime_mismatch(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -257,7 +338,7 @@ class PreflightTests(unittest.TestCase):
             report = MODULE.evaluate(root)
 
             self.assertFalse(report["ready"])
-            self.assertTrue(any("not the canonical dated exclusion union" in b for b in report["blockers"]))
+            self.assertTrue(any("Manifest exposure_union_path is not the immutable 23 October base union." in b for b in report["blockers"]))
 
 
 if __name__ == "__main__":
