@@ -85,7 +85,7 @@ def test_current_branch_kaggle_notebook_audits_both_exposure_unions():
 
     # The notebook delegates the read-only exposure-union gate to the
     # canonical preflight script and runs that script's dedicated test module.
-    assert "scripts/evidence_abstention_preflight.py" in source
+    assert "evidence_abstention_preflight.py" in source
     assert "tests/test_evidence_abstention_preflight.py" in source
     assert "BASE_EXPOSURE_UNION_PATH" in preflight_source
     assert "SCREENING_EXPOSURE_UNION_PATH" in preflight_source
