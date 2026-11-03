@@ -1,6 +1,6 @@
 {
   "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
-  "protocol_version": "0.1",
+  "protocol_version": "0.2",
   "phase_3_design_status": "documented_not_yet_preregistered",
   "design_date": "2026-10-20",
   "inference_allowed": false,
@@ -55,5 +55,7 @@
   "reviewer_calibration_complete": false,
   "frozen_hashes": {},
   "case_registry_path": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
-  "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
+  "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
+  "protocol_update_date": "2026-11-03",
+  "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json"
 }
