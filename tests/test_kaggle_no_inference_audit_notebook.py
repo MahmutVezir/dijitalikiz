@@ -1,3 +1,4 @@
+import ast
 import json
 from pathlib import Path
 
@@ -33,8 +34,33 @@ def test_no_inference_audit_notebook_is_valid_and_code_cells_compile():
     ]
     assert code_cells
     for index, cell in enumerate(code_cells):
-        source = "".join(cell.get("source", []))
+        fragments = cell.get("source", [])
+        source = "".join(fragments)
         compile(source, f"{NOTEBOOK_PATH.name}:cell-{index}", "exec")
+
+
+def test_no_inference_audit_notebook_code_cells_have_executable_ast_and_line_boundaries():
+    notebook = load_notebook()
+    code_cells = [
+        cell for cell in notebook["cells"]
+        if cell.get("cell_type") == "code"
+    ]
+    assert code_cells
+
+    for index, cell in enumerate(code_cells):
+        fragments = cell.get("source", [])
+        source = "".join(fragments)
+        tree = ast.parse(source, filename=f"{NOTEBOOK_PATH.name}:cell-{index}")
+
+        assert tree.body, (
+            f"Code cell {index} is empty or comment-only"
+        )
+        assert all(
+            fragment.endswith("\\n")
+            for fragment in fragments[:-1]
+        ), (
+            f"Code cell {index} has missing line terminators between source fragments"
+        )
 
 
 def test_no_inference_notebook_does_not_load_generate_or_train_a_model():
