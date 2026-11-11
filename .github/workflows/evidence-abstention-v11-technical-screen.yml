@@ -353,8 +353,9 @@ jobs:
               return 0
             fi
             git -C "$work_dir" rev-parse HEAD > "$RUNNER_TEMP/case-artifact/$side-actual-commit.txt"
+            git -C "$work_dir" diff --binary > "$RUNNER_TEMP/case-artifact/$side-worktree.diff"
             git -C "$work_dir" diff --stat > "$RUNNER_TEMP/case-artifact/$side-worktree-diff-stat.txt"
-            git -C "$work_dir" diff --binary | sha256sum | cut -d ' ' -f 1 > "$RUNNER_TEMP/case-artifact/$side-worktree-diff-sha256.txt"
+            sha256sum "$RUNNER_TEMP/case-artifact/$side-worktree.diff" | cut -d ' ' -f 1 > "$RUNNER_TEMP/case-artifact/$side-worktree-diff-sha256.txt"
             git -C "$work_dir" status --short > "$RUNNER_TEMP/case-artifact/$side-worktree-status.txt"
             {
               echo "bash_flags=$-"
