@@ -167,7 +167,10 @@ def prepare(queue_path, cohort_path, matrix_path, summary_path, batch_size=8, ba
             "test_file": row["test_file"],
             "raw_test_commands": raw_commands,
             "execution_test_commands": execution_commands,
-            "install_worktree_package": row["project"].lower()=="black",
+            # Black's test imports the source checkout; Matplotlib's tests import
+            # numpy, which is declared by its source setup.py but not the
+            # case-level BugsInPy requirements.txt for this candidate.
+            "install_worktree_package": row["project"].lower() in {"black", "matplotlib"},
             "expected_setup_sha256": row.get("setup_sha256",""),
         })
 

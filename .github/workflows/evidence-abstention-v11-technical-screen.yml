@@ -5,7 +5,7 @@ name: Evidence Abstention V11 Technical Case Screen (No Inference)
 on:
   push:
     branches:
-      - "research/2026-11-11-v11-ubuntu2404-runner"
+      - "research/2026-11-11-v11-runner-preflight-pipe-fix"
     paths:
       - ".github/workflows/evidence-abstention-v11-technical-screen.yml"
   workflow_dispatch:
@@ -261,9 +261,9 @@ jobs:
           for tool in gcc g++ make; do
             command -v "$tool" >/dev/null
           done
-          gcc --version | head -n 1
-          g++ --version | head -n 1
-          make --version | head -n 1
+          gcc --version | sed -n '1p'
+          g++ --version | sed -n '1p'
+          make --version | sed -n '1p'
           dos2unix --version
 
           python3 - <<'PY'
@@ -305,9 +305,9 @@ jobs:
           test "$(sha256sum "$run_test" | cut -d ' ' -f 1)" = "${{ matrix.run_test_sha256 }}"
           # Metadata uses inconsistent whitespace around assignment operators.
           # Parse all quoted values with a whitespace-tolerant pattern.
-          recorded_python="$(sed -n 's/^[[:space:]]*python_version[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
-          recorded_buggy="$(sed -n 's/^[[:space:]]*buggy_commit_id[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
-          recorded_fixed="$(sed -n 's/^[[:space:]]*fixed_commit_id[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' "$meta" | head -n 1)"
+          recorded_python="$(sed -n 's/^[[:space:]]*python_version[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' "$meta" | sed -n '1p')"
+          recorded_buggy="$(sed -n 's/^[[:space:]]*buggy_commit_id[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' "$meta" | sed -n '1p')"
+          recorded_fixed="$(sed -n 's/^[[:space:]]*fixed_commit_id[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' "$meta" | sed -n '1p')"
           test "$recorded_python" = "${{ matrix.python_version }}"
           test "$recorded_buggy" = "${{ matrix.buggy_commit }}"
           test "$recorded_fixed" = "${{ matrix.fixed_commit }}"
@@ -322,9 +322,9 @@ jobs:
             python --version
             python -c 'import sys,platform; print("executable="+sys.executable); print("platform="+platform.platform()); print("implementation="+platform.python_implementation())'
             cat /etc/os-release
-            gcc --version | head -n 1
-            g++ --version | head -n 1
-            make --version | head -n 1
+            gcc --version | sed -n '1p'
+            g++ --version | sed -n '1p'
+            make --version | sed -n '1p'
             conda list
             python -m pip freeze
           } > "$RUNNER_TEMP/case-artifact/runner-runtime-fingerprint.txt"
