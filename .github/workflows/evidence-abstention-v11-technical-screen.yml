@@ -154,7 +154,7 @@ jobs:
           name: evidence-abstention-v11-batch-${{ github.event.inputs.batch_offset || '0' }}-freeze
           path: ${{ runner.temp }}/v11-screen-freeze/
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 90
 
   technical_case_screen:
     name: ${{ matrix.case_id }} (Python ${{ matrix.python_version }})
@@ -631,4 +631,4 @@ jobs:
           name: evidence-abstention-cohort-${{ matrix.case_id }}-technical-screen
           path: ${{ runner.temp }}/case-artifact/
           if-no-files-found: warn
-          retention-days: 30
+          retention-days: 90
