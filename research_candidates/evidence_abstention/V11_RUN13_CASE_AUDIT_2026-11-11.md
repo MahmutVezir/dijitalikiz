@@ -49,6 +49,10 @@ GitHub Actions arşivlerinin tamamı 11 Aralık 2026 tarihinde sona erecek. Kal�
 
 Bu nedenle “sekiz vaka sonsuza dek ham dosyalarıyla saklandı” denemez. Şu anda garanti edilen şey, seçim ve sürüm provenansının, test komutlarının, teknik durumun ve arşiv SHA-256 referanslarının tek özel depo içindeki kalıcı kaydıdır. Ham GitHub artifact dosyaları son kullanma tarihinden önce indirilmelidir.
 
+## Maruziyet sicili düzeltmesi
+
+11 Kasım'daki daha geniş denetim, 24 Ekim tarihli vaka sicilinde Black-9'un daha önce teknik olarak incelendiğinin ve E1/E2/E3 taslaklarının hazırlandığının yazılı olduğunu, ancak bu vakanın 97 kimlikli 24 Ekim dışlama birleşiminde yer almadığını ortaya çıkardı. Black-9 bu nedenle V11 seçim listesine hatalı biçimde girdi. Hata gizlenmeden kayda alındı: Black-9 ve V11'de çalıştırılan diğer yedi vaka, sonuçtan bağımsız olarak doğrulayıcı örneklemden kalıcı biçimde çıkarıldı. Yeni dışlama toplamı 105 kimliktir; yeni alımlar yalnızca `EXPOSURE_UNION_2026-11-11.json` üzerinden oluşturulmalıdır. Eski 97 kimlikli dosya değiştirilmedi; tarihsel kanıt olarak korunuyor.
+
 ## Bilimsel kapı
 
 Mevcut durumda hiçbir vaka doğrulayıcı veri kümesine alınmamıştır. Sıradaki kapılar: (i) lisans ve yeniden dağıtım kontrolü, (ii) iki bağımsız inceleyicinin buggy/fixed commit ve kök neden onayı, (iii) hedef testin gerçekten hata mekanizmasını ölçtüğünün doğrulanması, (iv) E1/E2/E3 kanıt seviyelerinin kör değerlendirme ile sınıflandırılması, (v) sızıntı ve önceki maruziyet kontrolü, (vi) protokol ve prompt hash'lerinin ön kayıtla dondurulmasıdır.
