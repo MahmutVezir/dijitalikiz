@@ -5,7 +5,7 @@ name: Evidence Abstention V11 Technical Case Screen (No Inference)
 on:
   push:
     branches:
-      - "research/2026-11-11-v11-technical-screen-once"
+      - "research/2026-11-11-v11-ubuntu2404-runner"
     paths:
       - ".github/workflows/evidence-abstention-v11-technical-screen.yml"
   workflow_dispatch:
@@ -26,7 +26,7 @@ permissions:
 jobs:
   freeze_batch:
     name: Rebuild V11 intake and freeze selected batch
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     outputs:
       matrix: ${{ steps.export.outputs.matrix }}
@@ -156,7 +156,7 @@ jobs:
   technical_case_screen:
     name: ${{ matrix.case_id }} (Python ${{ matrix.python_version }})
     needs: freeze_batch
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     strategy:
       fail-fast: false
@@ -222,13 +222,61 @@ jobs:
           channel-priority: strict
           use-only-tar-bz2: true
 
-      - name: Install minimal operating-system test prerequisites
+      - name: Prepare pinned runner compatibility tools
         run: |
           set -euo pipefail
-          sudo apt-get update
-          sudo apt-get install -y dos2unix build-essential
+          mkdir -p "$RUNNER_TEMP/compat-bin"
+          cat > "$RUNNER_TEMP/compat-bin/dos2unix" <<'PY'
+          #!/usr/bin/env python3
+          import pathlib
+          import sys
+
+          if sys.argv[1:] == ["--version"]:
+              print("dos2unix 0.0.0-study-compat")
+              raise SystemExit(0)
+
+          if len(sys.argv) < 2:
+              raise SystemExit("usage: dos2unix FILE [FILE ...]")
+
+          for name in sys.argv[1:]:
+              path = pathlib.Path(name)
+              raw = path.read_bytes()
+              if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
+                  text = raw.decode("utf-16")
+              elif raw.count(b"\x00") > len(raw) // 5:
+                  text = raw.decode("utf-16-le")
+              else:
+                  text = raw.decode("utf-8-sig")
+              text = text.replace("\r\n", "\n").replace("\r", "\n")
+              path.write_bytes(text.encode("utf-8"))
+              print(f"converted {path} to UTF-8 Unix line endings")
+          PY
+          chmod +x "$RUNNER_TEMP/compat-bin/dos2unix"
+          export PATH="$RUNNER_TEMP/compat-bin:$PATH"
+          echo "$RUNNER_TEMP/compat-bin" >> "$GITHUB_PATH"
+
+          # Ubuntu 24.04 runner images provide the compiler toolchain needed
+          # for legacy Python packages; fail explicitly if a required tool
+          # is unexpectedly absent instead of installing packages via apt.
+          for tool in gcc g++ make; do
+            command -v "$tool" >/dev/null
+          done
+          gcc --version | head -n 1
+          g++ --version | head -n 1
+          make --version | head -n 1
+          dos2unix --version
+
+          python3 - <<'PY'
+          import pathlib, subprocess, tempfile
+          with tempfile.TemporaryDirectory() as directory:
+              path = pathlib.Path(directory) / "requirements.txt"
+              path.write_bytes("alpha==1.0\r\nbeta==2.0\r\n".encode("utf-16"))
+              subprocess.run(["dos2unix", str(path)], check=True)
+              assert path.read_bytes() == b"alpha==1.0\nbeta==2.0\n"
+          print("DOS2UNIX_COMPAT_SELF_TEST=PASS")
+          PY
+
           # Upstream BugsInPy tooling edits and sources ~/.bashrc during compile.
-          # The GitHub runner's home may not have this file by default.
           touch "$HOME/.bashrc"
           python - <<'PY'
           import os, platform, sys
@@ -273,6 +321,10 @@ jobs:
           {
             python --version
             python -c 'import sys,platform; print("executable="+sys.executable); print("platform="+platform.platform()); print("implementation="+platform.python_implementation())'
+            cat /etc/os-release
+            gcc --version | head -n 1
+            g++ --version | head -n 1
+            make --version | head -n 1
             conda list
             python -m pip freeze
           } > "$RUNNER_TEMP/case-artifact/runner-runtime-fingerprint.txt"
