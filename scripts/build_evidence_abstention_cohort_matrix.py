@@ -38,6 +38,10 @@ KNOWN_PRIOR_EXPOSURE_IDS = {
     "BugsInPy-luigi-4", "BugsInPy-matplotlib-3", "BugsInPy-pandas-3",
     "BugsInPy-sanic-4", "BugsInPy-scrapy-4", "BugsInPy-spacy-3",
     "BugsInPy-thefuck-4", "BugsInPy-tornado-4",
+    # V11 technical-screen cases permanently excluded after inspecting runner outcomes.
+    "BugsInPy-ansible-7", "BugsInPy-black-9", "BugsInPy-fastapi-9",
+    "BugsInPy-keras-8", "BugsInPy-luigi-8", "BugsInPy-matplotlib-7",
+    "BugsInPy-pandas-6", "BugsInPy-scrapy-7",
 }
 COMMIT = re.compile(r"^[0-9a-fA-F]{7,64}$")
 REQUIRED = {
