@@ -56,6 +56,39 @@ class TriageArtifactAuditTests(unittest.TestCase):
             self.assertFalse(result["accepted_for_confirmatory"])
             self.assertFalse(result["confirmatory_eligible"])
 
+    def test_abbreviated_buggy_commit_matches_verified_full_sha(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make_artifact(root)
+            summary_path = root / "summary.json"
+            summary = json.loads(summary_path.read_text(encoding="utf-8"))
+            summary["expected_buggy_commit"] = "ccccccc"
+            summary["observed_buggy_base_commit"] = "c" * 40
+            summary_path.write_text(json.dumps(summary, indent=2) + "\\n", encoding="utf-8")
+            files = sorted(p for p in root.iterdir() if p.is_file() and p.name != "SHA256SUMS")
+            (root / "SHA256SUMS").write_text(
+                "".join(f"{digest(p)}  ./{p.name}\\n" for p in files), encoding="utf-8"
+            )
+            result = MODULE.audit(root)
+            self.assertTrue(result["integrity_pass"], result["blockers"])
+            self.assertFalse(any("observed buggy base commit" in w for w in result["warnings"]))
+
+    def test_nonmatching_buggy_commit_prefix_remains_a_warning(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            make_artifact(root)
+            summary_path = root / "summary.json"
+            summary = json.loads(summary_path.read_text(encoding="utf-8"))
+            summary["expected_buggy_commit"] = "ddddddd"
+            summary["observed_buggy_base_commit"] = "c" * 40
+            summary_path.write_text(json.dumps(summary, indent=2) + "\\n", encoding="utf-8")
+            files = sorted(p for p in root.iterdir() if p.is_file() and p.name != "SHA256SUMS")
+            (root / "SHA256SUMS").write_text(
+                "".join(f"{digest(p)}  ./{p.name}\\n" for p in files), encoding="utf-8"
+            )
+            result = MODULE.audit(root)
+            self.assertTrue(any("observed buggy base commit" in w for w in result["warnings"]))
+
     def test_changed_file_fails_checksum(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
