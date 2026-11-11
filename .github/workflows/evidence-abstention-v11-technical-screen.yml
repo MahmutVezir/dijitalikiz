@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - "research/2026-11-11-v11-runner-preflight-pipe-fix"
+      - "research/2026-11-11-v11-final-clean-screen"
     paths:
       - ".github/workflows/evidence-abstention-v11-technical-screen.yml"
   workflow_dispatch:
