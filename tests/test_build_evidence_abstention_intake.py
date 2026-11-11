@@ -93,6 +93,18 @@ class MetadataIntakeTests(unittest.TestCase):
         self.assertEqual(output["source_queue_sha256"], hashlib.sha256(self.queue_path.read_bytes()).hexdigest())
         self.assertIn("BugsInPy-demo-1", output["excluded_prior_exposure"])
 
+
+    def test_records_explicit_creation_date_and_exposure_manifest_name(self):
+        output = MODULE.build_intake(
+            self.inventory_path, self.queue_path, self.output_path,
+            cohort_size=8, exposure_addendum_path=self.exposure_path,
+            created_on="2026-11-11",
+        )
+        self.assertEqual(output["created_on"], "2026-11-11")
+        self.assertEqual(output["exposure_manifest_filename"], "exposure.json")
+        self.assertEqual(output["documented_exposure_exclusion_count"], 2)
+        self.assertEqual(output["total_documented_exposure_exclusion_count"], 2)
+
     def test_rejects_exposed_case_reintroduced_into_queue(self):
         self.queue_rows[0] = queue_row("BugsInPy-demo-1", "project3")
         write_csv(self.queue_path, [
