@@ -37,7 +37,7 @@ def read_csv(path, required):
         return list(reader)
 
 
-def build_intake(inventory_path, queue_path, output_path, cohort_size=100, exposure_addendum_path=None, minimum_projects=8):
+def build_intake(inventory_path, queue_path, output_path, cohort_size=100, exposure_addendum_path=None, minimum_projects=8, created_on="2026-10-23"):
     inventory_path = Path(inventory_path)
     queue_path = Path(queue_path)
     output_path = Path(output_path)
@@ -113,7 +113,10 @@ def build_intake(inventory_path, queue_path, output_path, cohort_size=100, expos
 
     output = {
         "record_type": "metadata_only_screening_intake_not_confirmatory_dataset",
-        "created_on": "2026-10-23",
+        "created_on": created_on,
+        "exposure_manifest_filename": exposure_path.name,
+        "documented_exposure_exclusion_count": len(dynamic_exclusions),
+        "total_documented_exposure_exclusion_count": len(documented_exclusions),
         "selection_rule": (
             "First N rows of the deterministic, interleaved queue rebuilt from the pinned BugsInPy inventory "
             "after applying the recorded permanent-exposure and metadata validity exclusions."
@@ -135,7 +138,7 @@ def build_intake(inventory_path, queue_path, output_path, cohort_size=100, expos
             "This file freezes a metadata-only screening order, not an accepted or labeled experiment dataset.",
             "No buggy/fixed test pair has been run by this builder.",
             "No license, root-cause, evidence sufficiency, leakage or independent-review gate is passed by this builder.",
-            "The complete historical exposure log and the newer dated addendum are both applied; technical/debug candidates remain excluded irrespective of outcome.",
+            "The selected exposure manifest and historical exposure log are both applied; technical/debug candidates remain excluded irrespective of outcome.",
             "Every subsequent eight-case screen must record raw artifacts; an automated technical signal never auto-accepts a case.",
             "No model inference is performed or authorized by this file.",
         ],
@@ -153,6 +156,7 @@ def main(argv=None):
     parser.add_argument("--size", type=int, default=100)
     parser.add_argument("--minimum-projects", type=int, default=8)
     parser.add_argument("--exposure-addendum", type=Path, default=None)
+    parser.add_argument("--created-on", default="2026-10-23", help="ISO date recorded in the generated metadata-only intake")
     args = parser.parse_args(argv)
     try:
         result = build_intake(
@@ -162,6 +166,7 @@ def main(argv=None):
             args.size,
             args.exposure_addendum,
             args.minimum_projects,
+            args.created_on,
         )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         parser.exit(2, "ERROR: " + str(exc) + "\n")
