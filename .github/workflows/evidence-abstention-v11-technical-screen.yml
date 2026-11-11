@@ -355,6 +355,7 @@ jobs:
             fi
             git -C "$work_dir" rev-parse HEAD > "$RUNNER_TEMP/case-artifact/$side-actual-commit.txt"
             git -C "$work_dir" diff --stat > "$RUNNER_TEMP/case-artifact/$side-worktree-diff-stat.txt"
+            git -C "$work_dir" diff --binary > "$RUNNER_TEMP/case-artifact/$side-worktree.diff"
             git -C "$work_dir" diff --binary | sha256sum | cut -d ' ' -f 1 > "$RUNNER_TEMP/case-artifact/$side-worktree-diff-sha256.txt"
             git -C "$work_dir" status --short > "$RUNNER_TEMP/case-artifact/$side-worktree-status.txt"
             {
@@ -410,6 +411,17 @@ jobs:
                 set +u
                 source env/bin/activate nondestructive
                 set -u
+                # Pandas defines --strict-data-files in pandas.conftest.py.
+                # Load that plugin before pytest parses setup.cfg addopts.
+                if [ "$PROJECT" = "pandas" ]; then
+                  export PYTHONPATH="$work_dir${PYTHONPATH:+:$PYTHONPATH}"
+                  export PYTEST_PLUGINS=pandas.conftest
+                fi
+                # Luigi's selected test does not require pytest-sanic; prevent
+                # its optional plugin from loading and failing on missing Sanic.
+                if [ "$PROJECT" = "luigi" ]; then
+                  export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
+                fi
                 # Preserve the candidate's declared pytest pin. Install the
                 # fallback only when the selected test runner is unavailable.
                 if python -m pytest --version >/dev/null 2>&1; then
@@ -443,6 +455,15 @@ jobs:
             set +u
             source env/bin/activate nondestructive
             set -u
+            # Keep project-specific pytest configuration available before
+            # the target command starts; no test command or case is changed.
+            if [ "$PROJECT" = "pandas" ]; then
+              export PYTHONPATH="$work_dir${PYTHONPATH:+:$PYTHONPATH}"
+              export PYTEST_PLUGINS=pandas.conftest
+            fi
+            if [ "$PROJECT" = "luigi" ]; then
+              export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
+            fi
             for command in "${commands[@]}"; do
               command_index=$((command_index+1))
               printf '\n### command_%s: %s\n' "$command_index" "$command" >> "$aggregate"
