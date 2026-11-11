@@ -63,6 +63,17 @@ class CohortMatrixTests(unittest.TestCase):
             self.assertEqual(out["summary"]["accepted_confirmatory_cases"],0)
             self.assertFalse(out["summary"]["llm_inference_performed"])
 
+    def test_installs_source_checkouts_with_required_package_dependencies(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            rows=[row(1,"black"),row(2,"matplotlib"),row(3,"ordinary")]
+            q,c=self.setup_files(root,rows)
+            out=MODULE.prepare(q,c,root/"matrix.json",root/"summary.json",3)
+            flags={x["project"]:x["install_worktree_package"] for x in out["matrix"]["include"]}
+            self.assertEqual(flags,{"black":True,"matplotlib":True,"ordinary":False})
+            self.assertEqual(out["summary"]["accepted_confirmatory_cases"],0)
+            self.assertFalse(out["summary"]["llm_inference_performed"])
+
     def test_converts_tox_to_metadata_python_environment(self):
         with tempfile.TemporaryDirectory() as td:
             root=Path(td)
