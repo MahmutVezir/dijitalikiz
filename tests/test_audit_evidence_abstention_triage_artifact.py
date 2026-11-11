@@ -64,7 +64,7 @@ class TriageArtifactAuditTests(unittest.TestCase):
             summary = json.loads(summary_path.read_text(encoding="utf-8"))
             summary["expected_buggy_commit"] = "ccccccc"
             summary["observed_buggy_base_commit"] = "c" * 40
-            summary_path.write_text(json.dumps(summary, indent=2) + "\\n", encoding="utf-8")
+            summary_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
             files = sorted(p for p in root.iterdir() if p.is_file() and p.name != "SHA256SUMS")
             (root / "SHA256SUMS").write_text(
                 "".join(f"{digest(p)}  ./{p.name}\\n" for p in files), encoding="utf-8"
@@ -81,7 +81,7 @@ class TriageArtifactAuditTests(unittest.TestCase):
             summary = json.loads(summary_path.read_text(encoding="utf-8"))
             summary["expected_buggy_commit"] = "ddddddd"
             summary["observed_buggy_base_commit"] = "c" * 40
-            summary_path.write_text(json.dumps(summary, indent=2) + "\\n", encoding="utf-8")
+            summary_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
             files = sorted(p for p in root.iterdir() if p.is_file() and p.name != "SHA256SUMS")
             (root / "SHA256SUMS").write_text(
                 "".join(f"{digest(p)}  ./{p.name}\\n" for p in files), encoding="utf-8"
