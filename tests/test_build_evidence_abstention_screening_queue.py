@@ -162,6 +162,43 @@ class ScreeningQueueTests(unittest.TestCase):
             self.assertEqual(summary["documented_exposure_exclusion_count"], 1)
             self.assertEqual(summary["exposure_addendum_sha256"], hashlib.sha256(addendum.read_bytes()).hexdigest())
 
+
+    def test_97_id_current_exposure_union_is_supported_and_applied(self):
+        repo_root = Path(__file__).resolve().parents[1]
+        exposure_union = (
+            repo_root / "research_candidates" / "evidence_abstention"
+            / "EXPOSURE_UNION_2026-10-24.json"
+        )
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "inventory.csv"
+            output = root / "queue.csv"
+            summary_path = root / "summary.json"
+            rows = [
+                row("ansible", 4),
+                row("fastapi", 8),
+                row("httpie", 5),
+                row("keras", 7),
+                row("newproject", 1),
+            ]
+            with source.open("w", newline="", encoding="utf-8") as handle:
+                writer = csv.DictWriter(handle, fieldnames=FIELDS)
+                writer.writeheader()
+                writer.writerows(rows)
+
+            summary = MODULE.build_queue(
+                source, output, summary_path, first_batch_per_project=1,
+                exposure_addendum_path=exposure_union,
+            )
+            with output.open(newline="", encoding="utf-8") as handle:
+                queued_ids = {item["case_id"] for item in csv.DictReader(handle)}
+
+            self.assertEqual(summary["documented_exposure_exclusion_count"], 97)
+            self.assertEqual(summary["total_documented_exposure_exclusion_count"], 97)
+            self.assertEqual(queued_ids, {"BugsInPy-newproject-1"})
+            self.assertEqual(summary["accepted_confirmatory_cases"], 0)
+            self.assertFalse(summary["llm_inference_performed"])
+
     def test_inconsistent_exposure_addendum_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
