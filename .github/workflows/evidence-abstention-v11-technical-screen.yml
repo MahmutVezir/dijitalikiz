@@ -1,7 +1,7 @@
-name: Evidence Abstention V11 Technical Case Screen (No Inference)
+name: Evidence Abstention V12 Clean Intake and No-Inference Preflight
 
-# One-shot run against the frozen V11 intake, using the current 97-ID exposure union.
-# A technical signal is not case acceptance. All human and research gates remain closed.
+# Rebuild a new V12 metadata intake using the corrected 105-ID exposure union.
+# Do not reuse any V11 test-exposed cases. No model inference is performed.
 on:
   push:
     branches:
@@ -11,10 +11,17 @@ on:
       - "research/2026-11-11-v11-durable-case-audit-fixes"
     paths:
       - ".github/workflows/evidence-abstention-v11-technical-screen.yml"
+      - "scripts/build_evidence_abstention_cohort_matrix.py"
+      - "scripts/audit_evidence_abstention_triage_artifact.py"
+      - "tests/test_build_evidence_abstention_cohort_matrix.py"
+      - "tests/test_audit_evidence_abstention_triage_artifact.py"
+      - "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json"
+      - "research_candidates/evidence_abstention/EXPERIMENT_MANIFEST_STAGE3.json"
+      - "research_candidates/evidence_abstention/CASE_REGISTRY.json"
   workflow_dispatch:
     inputs:
       batch_offset:
-        description: "V11 cohort offset; use multiples of 8. Offset 0 is the first batch."
+        description: "V12 metadata intake offset; use multiples of 8. Offset 0 is the first batch."
         required: true
         type: number
         default: 0
@@ -28,7 +35,7 @@ permissions:
 
 jobs:
   freeze_batch:
-    name: Rebuild V11 intake and freeze selected batch
+    name: Rebuild V12 intake and freeze selected batch
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     outputs:
