@@ -66,7 +66,7 @@ class CohortMatrixTests(unittest.TestCase):
     def test_installs_source_checkouts_with_required_package_dependencies(self):
         with tempfile.TemporaryDirectory() as td:
             root=Path(td)
-            rows=[row(1,"black"),row(2,"matplotlib"),row(3,"ordinary")]
+            rows=[row(1,"black"),row(2,"matplotlib"),row(3,"luigi"),row(4,"pandas"),row(5,"ordinary")]
             q=root/"queue.csv"
             with q.open("w",newline="",encoding="utf-8") as f:
                 w=csv.DictWriter(f,fieldnames=FIELDS);w.writeheader();w.writerows(rows)
@@ -82,9 +82,9 @@ class CohortMatrixTests(unittest.TestCase):
             }
             cohort_path=root/"cohort.json"
             cohort_path.write_text(json.dumps(cohort),encoding="utf-8")
-            out=MODULE.prepare(q,cohort_path,root/"matrix.json",root/"summary.json",3)
+            out=MODULE.prepare(q,cohort_path,root/"matrix.json",root/"summary.json",5)
             flags={x["project"]:x["install_worktree_package"] for x in out["matrix"]["include"]}
-            self.assertEqual(flags,{"black":True,"matplotlib":True,"ordinary":False})
+            self.assertEqual(flags,{"black":True,"matplotlib":True,"luigi":True,"pandas":False,"ordinary":False})
             self.assertEqual(out["summary"]["accepted_confirmatory_cases"],0)
             self.assertFalse(out["summary"]["llm_inference_performed"])
 
