@@ -416,6 +416,12 @@ jobs:
                   export PYTHONPATH="$work_dir${PYTHONPATH:+:$PYTHONPATH}"
                   export PYTEST_PLUGINS=pandas.conftest
                 fi
+                # Luigi's selected unittest-based target does not use pytest-sanic.
+                # Prevent an unrelated optional plugin with an unavailable Sanic
+                # dependency from breaking pytest startup; preserve pinned pytest.
+                if [ "$PROJECT" = "luigi" ]; then
+                  export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
+                fi
                 # Preserve the candidate's declared pytest pin. Install the
                 # fallback only when the selected test runner is unavailable.
                 if python -m pytest --version >/dev/null 2>&1; then
@@ -453,6 +459,9 @@ jobs:
             if [ "$PROJECT" = "pandas" ]; then
               export PYTHONPATH="$work_dir${PYTHONPATH:+:$PYTHONPATH}"
               export PYTEST_PLUGINS=pandas.conftest
+            fi
+            if [ "$PROJECT" = "luigi" ]; then
+              export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
             fi
             for command in "${commands[@]}"; do
               command_index=$((command_index+1))
