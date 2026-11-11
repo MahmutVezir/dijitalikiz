@@ -252,6 +252,7 @@ jobs:
               print(f"converted {path} to UTF-8 Unix line endings")
           PY
           chmod +x "$RUNNER_TEMP/compat-bin/dos2unix"
+          export PATH="$RUNNER_TEMP/compat-bin:$PATH"
           echo "$RUNNER_TEMP/compat-bin" >> "$GITHUB_PATH"
 
           # Ubuntu 24.04 runner images provide the compiler toolchain needed
