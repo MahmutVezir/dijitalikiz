@@ -8,6 +8,7 @@ on:
       - "research/2026-11-11-v11-runner-preflight-pipe-fix"
       - "research/2026-11-11-v11-final-clean-screen"
       - "research/2026-11-11-v11-mainline-runner-repair"
+      - "research/2026-11-11-v11-durable-case-audit-fixes"
     paths:
       - ".github/workflows/evidence-abstention-v11-technical-screen.yml"
   workflow_dispatch:
@@ -379,7 +380,16 @@ jobs:
             # Bash process. Some runner environments export SHELLOPTS=nounset;
             # its virtualenv activate script reads $1 and aborts before tests.
             set +e
-            ( cd "$work_dir" && env -u SHELLOPTS -u BASH_ENV bash --noprofile --norc "$RUNNER_TEMP/BugsInPy/framework/bin/bugsinpy-compile" ) > "$RUNNER_TEMP/$side-compile.log" 2>&1
+            compile_cflags="${CFLAGS:-}"
+            if [ "$PROJECT" = "pandas" ]; then
+              # This 2020 source tree treats GCC 13's array-bounds warning as
+              # fatal (-Werror). Demote only that warning for both paired builds;
+              # all other compiler warnings remain errors and this override is
+              # written into each raw case artifact.
+              compile_cflags="${compile_cflags} -Wno-error=array-bounds"
+              printf '%s\\n' "$compile_cflags" > "$RUNNER_TEMP/case-artifact/$side-compiler-flags.txt"
+            fi
+            ( cd "$work_dir" && env -u SHELLOPTS -u BASH_ENV CFLAGS="$compile_cflags" bash --noprofile --norc "$RUNNER_TEMP/BugsInPy/framework/bin/bugsinpy-compile" ) > "$RUNNER_TEMP/$side-compile.log" 2>&1
             compile_rc=$?
             set -e
             cp "$RUNNER_TEMP/$side-compile.log" "$RUNNER_TEMP/case-artifact/$side-compile.log"
