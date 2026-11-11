@@ -2,7 +2,7 @@
   "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
   "registry_version": "0.1-draft",
   "status": "empty_no_confirmatory_cases_accepted",
-  "as_of": "2026-10-24",
+  "as_of": "2026-11-11",
   "records": [],
   "notes": [
     "An empty registry is not evidence of zero observed model errors or zero eligible upstream bugs.",
@@ -27,14 +27,17 @@
     "2026-10-24 runner/environment calibration addendum permanently excludes ansible-4, fastapi-8, httpie-5, and keras-7 irrespective of outcome; see EXPOSURE_EXCLUSION_ADDENDUM_2026-10-24.json. None is accepted.",
     "The V10 metadata intake remains unchanged for provenance but is no longer safe as a direct candidate-execution order after 2026-10-24 session exclusions. Rebuild the next metadata queue using EXPOSURE_UNION_2026-10-24.json (97 unique exclusions) before selecting another candidate.",
     "The 2026-10-24 extended union is a screening-selection filter; the frozen 2026-10-23 union is retained unchanged as provenance for the V10 intake and current draft design. Keep these roles explicit until the protocol/manifest is deliberately versioned.",
-    "2026-10-24: BugsInPy-black-9 has a reported technical buggy-fail/fixed-pass pair and a passing report/log/source hash audit; its E1/E2/E3 packet drafts are not independently validated. Do not add this case to records until independent root-cause adjudication, license/attribution, leakage/prior-exposure, disjoint evidence-reviewer decisions, evidence-level approval and all other acceptance gates are complete. Model inference remains unperformed and this case is not accepted."
+    "2026-10-24: BugsInPy-black-9 has a reported technical buggy-fail/fixed-pass pair and a passing report/log/source hash audit; its E1/E2/E3 packet drafts are not independently validated. Do not add this case to records until independent root-cause adjudication, license/attribution, leakage/prior-exposure, disjoint evidence-reviewer decisions, evidence-level approval and all other acceptance gates are complete. Model inference remains unperformed and this case is not accepted.",
+    "2026-11-11: V11 technical-screen batch (ansible-7, black-9, fastapi-9, keras-8, luigi-8, matplotlib-7, pandas-6, scrapy-7) is permanently excluded from confirmatory analysis because target outcomes/setup logs were inspected while debugging the runner and audit. See EXPOSURE_EXCLUSION_ADDENDUM_2026-11-11.json.",
+    "2026-11-11 ledger defect: BugsInPy-black-9 had already been recorded as exposed on 2026-10-24 with exploratory E1/E2/E3 packet drafts, but it was missing from the 97-ID EXPOSURE_UNION_2026-10-24.json. It was mistakenly included in the V11 metadata batch. It remains excluded and must not be accepted."
   ],
   "exposure_exclusion_log_path": "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_LOG_2026-10-21.json",
-  "current_screening_intake_path": "research_candidates/evidence_abstention/SCREENING_COHORT_100_V10_2026-10-23.json",
+  "current_screening_intake_path": "research_candidates/evidence_abstention/SCREENING_COHORT_100_V12_2026-11-11.json",
   "exposure_exclusion_addenda": [
     "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json",
-    "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-24.json"
+    "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-24.json",
+    "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-11-11.json"
   ],
   "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
-  "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json"
+  "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json"
 }
