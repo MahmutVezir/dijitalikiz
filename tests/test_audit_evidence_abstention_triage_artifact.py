@@ -67,7 +67,7 @@ class TriageArtifactAuditTests(unittest.TestCase):
             summary_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
             files = sorted(p for p in root.iterdir() if p.is_file() and p.name != "SHA256SUMS")
             (root / "SHA256SUMS").write_text(
-                "".join(f"{digest(p)}  ./{p.name}\\n" for p in files), encoding="utf-8"
+                "".join(f"{digest(p)}  ./{p.name}\n" for p in files), encoding="utf-8"
             )
             result = MODULE.audit(root)
             self.assertTrue(result["integrity_pass"], result["blockers"])
@@ -84,7 +84,7 @@ class TriageArtifactAuditTests(unittest.TestCase):
             summary_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
             files = sorted(p for p in root.iterdir() if p.is_file() and p.name != "SHA256SUMS")
             (root / "SHA256SUMS").write_text(
-                "".join(f"{digest(p)}  ./{p.name}\\n" for p in files), encoding="utf-8"
+                "".join(f"{digest(p)}  ./{p.name}\n" for p in files), encoding="utf-8"
             )
             result = MODULE.audit(root)
             self.assertTrue(any("observed buggy base commit" in w for w in result["warnings"]))
