@@ -77,23 +77,23 @@ jobs:
             --output "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
             --summary "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" \
             --first-batch-per-project 5 \
-            --exposure-addendum research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json
+            --exposure-addendum research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json
           python scripts/build_evidence_abstention_intake.py \
             --inventory "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" \
             --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
-            --output "$RUNNER_TEMP/SCREENING_COHORT_100_V11_2026-11-11.json" \
+            --output "$RUNNER_TEMP/SCREENING_COHORT_100_V12_2026-11-11.json" \
             --size 100 \
             --minimum-projects 8 \
-            --exposure-addendum research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json \
+            --exposure-addendum research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json \
             --created-on 2026-11-11
 
-      - name: Freeze the requested V11 technical-screen matrix
+      - name: Freeze the V12 matrix after corrected exposure exclusions
         shell: bash
         run: |
           set -euo pipefail
           python scripts/build_evidence_abstention_cohort_matrix.py \
             --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
-            --cohort "$RUNNER_TEMP/SCREENING_COHORT_100_V11_2026-11-11.json" \
+            --cohort "$RUNNER_TEMP/SCREENING_COHORT_100_V12_2026-11-11.json" \
             --matrix-output "$RUNNER_TEMP/cohort-screen-matrix.json" \
             --summary-output "$RUNNER_TEMP/cohort-screen-summary.json" \
             --batch-size 8 \
@@ -103,7 +103,7 @@ jobs:
           root = pathlib.Path(os.environ["RUNNER_TEMP"])
           inventory = json.loads((root / "bugsinpy-metadata-inventory-summary.json").read_text(encoding="utf-8"))
           queue = json.loads((root / "bugsinpy-screening-queue-summary.json").read_text(encoding="utf-8"))
-          cohort = json.loads((root / "SCREENING_COHORT_100_V11_2026-11-11.json").read_text(encoding="utf-8"))
+          cohort = json.loads((root / "SCREENING_COHORT_100_V12_2026-11-11.json").read_text(encoding="utf-8"))
           summary = json.loads((root / "cohort-screen-summary.json").read_text(encoding="utf-8"))
           matrix = json.loads((root / "cohort-screen-matrix.json").read_text(encoding="utf-8"))
           rows = matrix.get("include", [])
@@ -141,7 +141,7 @@ jobs:
           cp "$RUNNER_TEMP/bugsinpy-metadata-inventory-summary.json" "$RUNNER_TEMP/v11-screen-freeze/"
           cp "$RUNNER_TEMP/bugsinpy-screening-queue.csv" "$RUNNER_TEMP/v11-screen-freeze/"
           cp "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" "$RUNNER_TEMP/v11-screen-freeze/"
-          cp "$RUNNER_TEMP/SCREENING_COHORT_100_V11_2026-11-11.json" "$RUNNER_TEMP/v11-screen-freeze/"
+          cp "$RUNNER_TEMP/SCREENING_COHORT_100_V12_2026-11-11.json" "$RUNNER_TEMP/v11-screen-freeze/"
           cp "$RUNNER_TEMP/cohort-screen-matrix.json" "$RUNNER_TEMP/v11-screen-freeze/"
           cp "$RUNNER_TEMP/cohort-screen-summary.json" "$RUNNER_TEMP/v11-screen-freeze/"
           cd "$RUNNER_TEMP/v11-screen-freeze"
