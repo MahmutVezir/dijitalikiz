@@ -57,3 +57,25 @@ A previous run produced five raw buggy-fail/fixed-pass signals for Ansible-7, Bl
 ## Current gate state
 
 No candidate has been promoted to the confirmatory case registry. A job-level Actions success, artifact upload success, checksum pass, or technical signal is not equivalent to case acceptance. Acceptance requires independent review of the license, ground truth, evidence level, leakage/prior exposure, and the complete buggy-fail/fixed-pass evidence. The inference gate remains closed.
+
+## Luigi-8: pytest plugin bootstrap blocker
+
+The run-8 artifact is [artifact 13874255123](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43058520834/artifacts/13874255123).
+
+Observed evidence:
+
+- The pinned BugsInPy requirements specify `pytest==5.4.3`, `pytest-sanic==1.6.1`, and `sanic==20.3.0`.
+- The environment build log shows that the `uvloop` wheel build failed. During the later pytest bootstrap, automatic loading of the `pytest-sanic` entry point failed with `ModuleNotFoundError: No module named 'sanic'`.
+- The runner misinterpreted the failed `python -m pytest --version` probe as a missing test runner and installed `pytest==6.2.5`. That violates the pinned pytest-sanic constraint (`pytest<6.0,>=5.2`) and still does not repair the missing optional Sanic module.
+- The selected target test is a `unittest.TestCase` method in `test/contrib/redshift_test.py`; its imports are Luigi and `mock`, not Sanic or pytest-sanic. Pytest's built-in unittest support is sufficient for this specific target.
+- Neither buggy nor fixed target test was executed. The artifact checksum manifest contains 26 entries and all passed independent SHA-256 verification. No technical pair can be claimed.
+
+The next consolidated workflow revision sets `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1` only for the Luigi case, both during the pytest version probe and target invocation. This retains the declared pytest 5.4.3 and prevents an unrelated third-party entry-point plugin from aborting startup. The environment variable is present in the pinned pytest 5.4.3 source and disables setuptools entry-point autoload while preserving explicitly specified plugins. No target command, test source, candidate selection or expected outcome is changed.
+
+Sources:
+- [Pinned Luigi requirements](https://github.com/soarsmu/BugsInPy/blob/11c5f1eea954a42132cfd06bf257766a7963e0fd/projects/luigi/bugs/8/requirements.txt)
+- [Pinned Luigi test command](https://github.com/soarsmu/BugsInPy/blob/11c5f1eea954a42132cfd06bf257766a7963e0fd/projects/luigi/bugs/8/run_test.sh)
+- [Selected unittest-based target](https://github.com/spotify/luigi/blob/61ee32e9968978c32be12a6af0affa3a5750e87e/test/contrib/redshift_test.py)
+- [pytest 5.4.3 plugin autoload implementation](https://github.com/pytest-dev/pytest/blob/5.4.3/src/_pytest/config/__init__.py)
+
+Decision: keep Luigi-8 blocked until the corrected runner produces raw buggy-fail/fixed-pass results and both raw worktree patches are reviewed. Do not treat the bootstrap failure as a bug outcome or accept the case.
