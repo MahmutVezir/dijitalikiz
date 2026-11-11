@@ -409,6 +409,12 @@ jobs:
                 set +u
                 source env/bin/activate nondestructive
                 set -u
+                # Pandas registers --strict-data-files in pandas.conftest.py,
+                # which must be imported before pytest parses setup.cfg addopts.
+                if [ "$PROJECT" = "pandas" ]; then
+                  export PYTHONPATH="$work_dir${PYTHONPATH:+:$PYTHONPATH}"
+                  export PYTEST_PLUGINS=pandas.conftest
+                fi
                 # Preserve the candidate's declared pytest pin. Install the
                 # fallback only when the selected test runner is unavailable.
                 if python -m pytest --version >/dev/null 2>&1; then
@@ -442,6 +448,11 @@ jobs:
             set +u
             source env/bin/activate nondestructive
             set -u
+            # Keep the Pandas conftest option registered before pytest reads setup.cfg.
+            if [ "$PROJECT" = "pandas" ]; then
+              export PYTHONPATH="$work_dir${PYTHONPATH:+:$PYTHONPATH}"
+              export PYTEST_PLUGINS=pandas.conftest
+            fi
             for command in "${commands[@]}"; do
               command_index=$((command_index+1))
               printf '\n### command_%s: %s\n' "$command_index" "$command" >> "$aggregate"
