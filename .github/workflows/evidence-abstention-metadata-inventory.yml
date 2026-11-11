@@ -138,6 +138,38 @@ jobs:
           }, ensure_ascii=False, indent=2))
           PY
 
+      - name: Freeze the first eight-case technical screening selection (selection only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_evidence_abstention_cohort_matrix.py \
+            --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
+            --cohort "$RUNNER_TEMP/SCREENING_COHORT_100_V11_2026-11-11.json" \
+            --matrix-output "$RUNNER_TEMP/v11-first-batch-matrix.json" \
+            --summary-output "$RUNNER_TEMP/v11-first-batch-summary.json" \
+            --batch-size 8 \
+            --batch-offset 0
+          python - <<'PY'
+          import json, pathlib, os
+          root = pathlib.Path(os.environ["RUNNER_TEMP"])
+          matrix = json.loads((root / "v11-first-batch-matrix.json").read_text(encoding="utf-8"))
+          summary = json.loads((root / "v11-first-batch-summary.json").read_text(encoding="utf-8"))
+          rows = matrix.get("include", [])
+          assert len(rows) == 8, len(rows)
+          assert len({row["project"] for row in rows}) == 8, rows
+          assert summary["distinct_upstream_projects"] == 8, summary
+          assert summary["accepted_confirmatory_cases"] == 0, summary
+          assert summary["llm_inference_performed"] is False, summary
+          print(json.dumps({
+              "status": "PASS_FROZEN_SELECTION_ONLY",
+              "batch_offset": summary["batch_offset"],
+              "case_ids": summary["case_ids"],
+              "upstream_projects": summary["upstream_projects"],
+              "accepted_confirmatory_cases": summary["accepted_confirmatory_cases"],
+              "llm_inference_performed": summary["llm_inference_performed"],
+          }, ensure_ascii=False, indent=2))
+          PY
+
       - name: Upload metadata inventory diagnostics
         if: always()
         uses: actions/upload-artifact@v4
@@ -157,5 +189,7 @@ jobs:
             ${{ runner.temp }}/bugsinpy-screening-queue.csv
             ${{ runner.temp }}/bugsinpy-screening-queue-summary.json
             ${{ runner.temp }}/SCREENING_COHORT_100_V11_2026-11-11.json
+            ${{ runner.temp }}/v11-first-batch-matrix.json
+            ${{ runner.temp }}/v11-first-batch-summary.json
           if-no-files-found: error
           retention-days: 30
