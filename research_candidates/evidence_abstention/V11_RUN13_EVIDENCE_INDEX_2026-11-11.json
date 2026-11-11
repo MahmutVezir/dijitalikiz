@@ -44,7 +44,9 @@
     "two_reviewer_ground_truth_check_complete": false,
     "evidence_level_review_complete": false,
     "leakage_and_prior_exposure_review_complete": false,
-    "confirmatory_gate": "CLOSED"
+    "confirmatory_gate": "CLOSED",
+    "prior_exposure_ledger_defect_found": true,
+    "confirmatory_eligibility_of_v11_batch": "permanently_excluded"
   },
   "cases": [
     {
@@ -65,7 +67,10 @@
         "zip_sha256": "8a0251e2013989332a00114201ebbc918ea7cfac15cf5810d6bc02e55632b494",
         "size_bytes": 299899,
         "expires_at_utc": "2026-12-11T17:08:55Z"
-      }
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
     },
     {
       "case_id": "BugsInPy-black-9",
@@ -85,7 +90,10 @@
         "zip_sha256": "d5d266181f61f4f71ddc049d16a189babbbcc69f060857cc716607e61156bdbc",
         "size_bytes": 44234,
         "expires_at_utc": "2026-12-11T17:10:15Z"
-      }
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
     },
     {
       "case_id": "BugsInPy-fastapi-9",
@@ -105,7 +113,10 @@
         "zip_sha256": "d817560f2671b8f7712583c2ac91b39fb6ca43f82d1226c7b52ebd44f7df644a",
         "size_bytes": 65705,
         "expires_at_utc": "2026-12-11T17:12:36Z"
-      }
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
     },
     {
       "case_id": "BugsInPy-keras-8",
@@ -125,7 +136,10 @@
         "zip_sha256": "eebd71954370b774f4273de9874b81dc41ffc8942ce672c992ac974ec93def32",
         "size_bytes": 33092,
         "expires_at_utc": "2026-12-11T17:09:38Z"
-      }
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
     },
     {
       "case_id": "BugsInPy-luigi-8",
@@ -145,7 +159,10 @@
         "zip_sha256": "3fb430d5de2797ced232f16ca42f7f27983cc222e2e2322e8b5486395d131b05",
         "size_bytes": 97228,
         "expires_at_utc": "2026-12-11T17:19:48Z"
-      }
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
     },
     {
       "case_id": "BugsInPy-matplotlib-7",
@@ -165,7 +182,10 @@
         "zip_sha256": "07ca970883cda9862a6a050d46c1194a135ae15f8edefcee4bbd674fed3ba34f",
         "size_bytes": 13512,
         "expires_at_utc": "2026-12-11T17:11:52Z"
-      }
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
     },
     {
       "case_id": "BugsInPy-pandas-6",
@@ -186,7 +206,10 @@
         "zip_sha256": "841c158e567fb1ac865ccb81ad25917d67637ec8ef8833e79c6c7dea7f39f867",
         "size_bytes": 27527,
         "expires_at_utc": "2026-12-11T17:31:03Z"
-      }
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
     },
     {
       "case_id": "BugsInPy-scrapy-7",
@@ -206,10 +229,19 @@
         "zip_sha256": "ff25be8bfed8f4423efbdd92381e8a4a91f9af7633ffd6526cd523f41ca8b783",
         "size_bytes": 38454,
         "expires_at_utc": "2026-12-11T17:15:29Z"
-      }
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
     }
   ],
-  "retention_notice": "All raw GitHub Actions artifacts are temporary and are due to expire on 2026-12-11 (individual UTC times are recorded above). This committed index preserves selection, upstream repository URLs, commit identities, target-test commands, technical status, artifact IDs and archive SHA-256 digests. It does not preserve third-party source trees or raw worktree patches. Those are intentionally not copied into this repository until license review. Re-run the frozen workflow or download the raw artifacts before expiry if the complete logs are needed.",
+  "retention_notice": "All raw GitHub Actions artifacts are temporary and are due to expire on 2026-12-11 (individual UTC times are recorded above). This committed index preserves selection, upstream repository URLs, commit identities, target-test commands, technical status, artifact IDs and archive SHA-256 digests. It does not preserve third-party source trees or raw worktree patches. Those are intentionally not copied into this repository until license review. Re-run the frozen workflow or download the raw artifacts before expiry if the complete logs are needed. All eight cases in this batch have also been appended to the new 2026-11-11 exposure union and must not enter future confirmatory analysis. BugsInPy-black-9 was already recorded as prior-exposed in the historical CASE_REGISTRY, but was omitted from the previous 97-ID union; this defect is corrected by the new append-only union.",
   "integrity_claim": "All eight case artifact archives were downloaded and their embedded SHA256SUMS manifests verified in the audit session. Their reported ZIP digests match GitHub artifact metadata.",
-  "scope_warning": "These are engineering triage results, not an accepted confirmatory dataset. The batch is deterministic and predeclared, not a random sample. It must not be used to claim model performance."
+  "scope_warning": "These are engineering triage results, not an accepted confirmatory dataset. The batch is deterministic and predeclared, not a random sample. It must not be used to claim model performance.",
+  "exposure_ledger_defect": {
+    "case_id": "BugsInPy-black-9",
+    "prior_registry_record": "CASE_REGISTRY.json states 2026-10-24 technical exposure and draft E1/E2/E3 packets",
+    "missing_from_old_union": true,
+    "correction_addendum": "EXPOSURE_EXCLUSION_ADDENDUM_2026-11-11.json"
+  }
 }
