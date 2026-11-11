@@ -241,14 +241,14 @@ jobs:
           for name in sys.argv[1:]:
               path = pathlib.Path(name)
               raw = path.read_bytes()
-              if raw.startswith((b"\\xff\\xfe", b"\\xfe\\xff")):
+              if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
                   text = raw.decode("utf-16")
-              elif raw.count(b"\\x00") > len(raw) // 5:
+              elif raw.count(b"\x00") > len(raw) // 5:
                   text = raw.decode("utf-16-le")
               else:
                   text = raw.decode("utf-8-sig")
-              text = text.replace("\\r\\n", "\\n").replace("\\r", "\\n")
-              path.write_text(text, encoding="utf-8", newline="\\n")
+              text = text.replace("\r\n", "\n").replace("\r", "\n")
+              path.write_text(text, encoding="utf-8", newline="\n")
               print(f"converted {path} to UTF-8 Unix line endings")
           PY
           chmod +x "$RUNNER_TEMP/compat-bin/dos2unix"
@@ -269,9 +269,9 @@ jobs:
           import pathlib, subprocess, tempfile
           with tempfile.TemporaryDirectory() as directory:
               path = pathlib.Path(directory) / "requirements.txt"
-              path.write_bytes("alpha==1.0\\r\\nbeta==2.0\\r\\n".encode("utf-16"))
+              path.write_bytes("alpha==1.0\r\nbeta==2.0\r\n".encode("utf-16"))
               subprocess.run(["dos2unix", str(path)], check=True)
-              assert path.read_bytes() == b"alpha==1.0\\nbeta==2.0\\n"
+              assert path.read_bytes() == b"alpha==1.0\nbeta==2.0\n"
           print("DOS2UNIX_COMPAT_SELF_TEST=PASS")
           PY
 
