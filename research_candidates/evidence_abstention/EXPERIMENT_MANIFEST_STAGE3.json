@@ -1,6 +1,6 @@
 {
   "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
-  "protocol_version": "0.2",
+  "protocol_version": "0.3",
   "phase_3_design_status": "documented_not_yet_preregistered",
   "design_date": "2026-10-20",
   "inference_allowed": false,
@@ -47,7 +47,7 @@
     ]
   },
   "primary_endpoint": "case-level unsupported definitive diagnosis rate under E3; paired P0 vs P1; RD=P1-P0; exact two-sided McNemar plus confidence intervals",
-  "no_inference_reason": "Inference remains prohibited until at least 60 independently accepted cases across at least 8 upstream projects (target 80), case-level buggy-fail/fixed-pass logs in recorded environments, licensing/ground-truth/evidence-sufficiency/leakage/prior-exposure reviews, frozen two-rater protocol and calibration, exact model/tokenizer/runtime verification, verified SHA-256 hashes, and auditable preregistration are complete. The non-quantized model/revision is a candidate, not a verified runtime.",
+  "no_inference_reason": "Inference remains prohibited until at least 60 independently accepted cases across at least 8 upstream projects (target 80), case-level buggy-fail/fixed-pass logs in recorded environments, licensing/ground-truth/evidence-sufficiency/leakage/prior-exposure reviews, frozen two-rater protocol and calibration, exact model/tokenizer/runtime verification, verified SHA-256 hashes, and auditable preregistration are complete. The non-quantized model/revision is a candidate, not a verified runtime. The 2026-11-11 V11 technical-screen batch is permanently excluded from confirmatory use. The previous 97-ID exposure union omitted BugsInPy-black-9 despite its 2026-10-24 prior exposure note; the corrected append-only 105-ID union is now the required filter for new intakes.",
   "phase_4_technical_status": "scaffolding_added_no_inference",
   "preregistration_status": "draft",
   "preregistration_uri": "",
@@ -56,6 +56,6 @@
   "frozen_hashes": {},
   "case_registry_path": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
   "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
-  "protocol_update_date": "2026-11-03",
-  "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json"
+  "protocol_update_date": "2026-11-11",
+  "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json"
 }
