@@ -89,9 +89,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python scripts/select_swe_rebench_project_cohort.py \\
-            --input "$RUNNER_TEMP/swe-rebench-v2-metadata-candidates.csv" \\
-            --output-dir "$RUNNER_TEMP/swe-rebench-v2-cohort" \\
+          python scripts/select_swe_rebench_project_cohort.py \
+            --input "$RUNNER_TEMP/swe-rebench-v2-metadata-candidates.csv" \
+            --output-dir "$RUNNER_TEMP/swe-rebench-v2-cohort" \
             | tee "$RUNNER_TEMP/swe-rebench-v2-cohort-summary.stdout.json"
           python - "$RUNNER_TEMP/swe-rebench-v2-cohort/SWE_REBENCH_V2_COHORT_96_MANIFEST_2026-11-12.json" <<'PY'
           import json, sys
