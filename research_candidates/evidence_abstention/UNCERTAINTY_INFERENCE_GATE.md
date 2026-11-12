@@ -45,6 +45,6 @@ To make an open gate fail the shell command:
 The report-only form prints every blocker and exits successfully without importing PyTorch or Transformers. The require-ready form exits non-zero when any blocker remains. Neither command loads the model or runs inference.
 
 
-## Remote-runner status — 12 November 2026
+## Remote-runner status — 23 October 2026
 
 GitHub Actions attempts associated with the recent inference-gate and analysis-helper changes repeatedly ended before any step was recorded. Raw job metadata for run `39985336539`, attempt 3, reports job `120546618992`, `runner_id=0`, empty `runner_name`, `steps=[]`, and no uploaded artifacts. Runs `39991977270` / job `120545733659` and `39991977312` / job `120545733724` show the same pre-step pattern. These are **not evidence that the tests passed or failed in Python**; the jobs were not assigned a runner in the recorded attempts. The root cause is unconfirmed. Check the repository's Actions enablement/workflow policy and the owner account's Actions usage, billing method and budget stop settings; if those settings do not explain it, provide the run/job IDs and raw metadata to GitHub Support.
