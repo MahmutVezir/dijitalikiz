@@ -1,7 +1,8 @@
-name: Evidence Abstention V12 Clean Intake and No-Inference Preflight
+name: ARCHIVED V11 Technical Screen (97-ID historical; do not dispatch)
 
-# Rebuild a new V12 metadata intake using the corrected 105-ID exposure union.
-# Do not reuse any V11 test-exposed cases. No model inference is performed.
+# ARCHIVED V11 workflow. Historical 97-ID screening only; no manual dispatch.
+# Use evidence-abstention-v12-technical-screen.yml after license/protocol gates are cleared.
+# Do not use this workflow for current V12 cases.
 on:
   push:
     branches:
@@ -18,13 +19,6 @@ on:
       - "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json"
       - "research_candidates/evidence_abstention/EXPERIMENT_MANIFEST_STAGE3.json"
       - "research_candidates/evidence_abstention/CASE_REGISTRY.json"
-  workflow_dispatch:
-    inputs:
-      batch_offset:
-        description: "V12 metadata intake offset; use multiples of 8. Offset 0 is the first batch."
-        required: true
-        type: number
-        default: 0
 
 concurrency:
   group: evidence-abstention-v11-technical-screen-${{ github.ref }}-${{ github.event.inputs.batch_offset || '0' }}
