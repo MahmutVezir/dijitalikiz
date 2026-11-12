@@ -245,11 +245,11 @@ class ExactMcNemarTests(unittest.TestCase):
 
     def test_screening_exposure_union_is_part_of_the_frozen_hash_contract(self):
         self.assertIn(
-            "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json",
+            "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json",
             MODULE.REQUIRED_FROZEN_PATHS,
         )
         self.assertIn(
-            "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json",
+            "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json",
             PREFLIGHT_MODULE.HASHES.values(),
         )
 

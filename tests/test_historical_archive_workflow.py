@@ -5,27 +5,24 @@ RESEARCH_WORKFLOW = ROOT / ".github" / "workflows" / "research-validation.yml"
 ARCHIVE_WORKFLOW = ROOT / ".github" / "workflows" / "persist-historical-archive.yml"
 SAFETY_WORKFLOW = ROOT / ".github" / "workflows" / "persist-historical-archive-safety.yml"
 ARCHIVE_SHA256 = "e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd"
-ARCHIVE_ID = "11640450681"
 
 
 def test_workflow_runs_repository_and_historical_archive_gates_separately():
     workflow = RESEARCH_WORKFLOW.read_text(encoding="utf-8")
     assert "validate-repository:" in workflow
     assert "validate-historical-archive:" in workflow
-    assert "data/historical/confirmatory_artifact_2026-10-09.zip" not in workflow
-    assert f'ARTIFACT_ID: "{ARCHIVE_ID}"' in workflow
+    assert "data/historical/confirmatory_artifact_2026-10-09.zip" in workflow
+    assert "11640450681" not in workflow
     assert 'EXPECTED_BYTES: "292742"' in workflow
     assert f'EXPECTED_SHA256: "{ARCHIVE_SHA256}"' in workflow
-    assert "size_in_bytes" in workflow
-    assert '"expired"' in workflow
-    assert "expires_at" in workflow
-    assert '"digest"' in workflow
-    assert 'archive_path="$RUNNER_TEMP/confirmatory_artifact_2026-10-09.zip"' in workflow
+    assert "size_in_bytes" not in workflow
+    assert "expires_at" not in workflow
+    assert "ARCHIVE_PATH: ${{ github.workspace }}/data/historical/confirmatory_artifact_2026-10-09.zip" in workflow
     assert "sha256sum --check --status -" in workflow
     assert 'python -m zipfile -t "$ARCHIVE_PATH"' in workflow
     assert "python scripts/audit_historical_artifact.py" in workflow
     assert '--expected-run-record-count "$EXPECTED_RECORDS"' in workflow
-    assert "historical_archive_status=BLOCKED/UNAVAILABLE" in workflow
+    assert "historical_archive_status=BLOCKED/REPOSITORY_UPLOAD_REQUIRED" in workflow
     assert "repository_validation_status=PASS" in workflow
     assert "repository_validation_status=FAIL" in workflow
     assert "This job checks repository code/configuration only" in workflow
@@ -41,7 +38,6 @@ def test_historical_archive_changes_still_trigger_repository_ci():
 def test_research_validation_uses_read_only_permissions_and_no_upload():
     workflow = RESEARCH_WORKFLOW.read_text(encoding="utf-8")
     assert "contents: read" in workflow
-    assert "actions: read" in workflow
     assert "contents: write" not in workflow
     assert "actions: write" not in workflow
     assert "pull-requests: write" not in workflow

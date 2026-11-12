@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 BASE_EXPOSURE_UNION_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
-SCREENING_EXPOSURE_UNION_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json"
+SCREENING_EXPOSURE_UNION_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json"
 
 HASHES = {
     "prompt_conditions": "research_candidates/evidence_abstention/PROMPT_CONDITIONS.md",
@@ -98,7 +98,7 @@ def evaluate(root):
             (manifest.get("reviewer_calibration_complete") is True, "Independent reviewer calibration is incomplete."),
             (manifest.get("case_registry_path") == "research_candidates/evidence_abstention/CASE_REGISTRY.json", "Manifest case_registry_path is not the canonical confirmatory registry."),
             (manifest.get("exposure_union_path") == BASE_EXPOSURE_UNION_PATH, "Manifest exposure_union_path is not the immutable 23 October base union."),
-            (manifest.get("screening_exposure_union_path") == SCREENING_EXPOSURE_UNION_PATH, "Manifest screening_exposure_union_path is not the 24 October extended screening union."),
+            (manifest.get("screening_exposure_union_path") == SCREENING_EXPOSURE_UNION_PATH, "Manifest screening_exposure_union_path is not the 11 November corrected screening union."),
         )
         blockers.extend(message for ok, message in checks if not ok)
 
@@ -130,7 +130,7 @@ def evaluate(root):
         if registry.get("exposure_union_path") != BASE_EXPOSURE_UNION_PATH:
             blockers.append("Case registry exposure_union_path is not the immutable 23 October base union.")
         if registry.get("screening_exposure_union_path") != SCREENING_EXPOSURE_UNION_PATH:
-            blockers.append("Case registry screening_exposure_union_path is not the 24 October extended screening union.")
+            blockers.append("Case registry screening_exposure_union_path is not the 11 November corrected screening union.")
 
     accepted = []
     if registry is not None:

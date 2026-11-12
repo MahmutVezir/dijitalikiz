@@ -9,6 +9,7 @@ on:
       - ".github/workflows/heldout-lead-red-green.yml"
       - "scripts/**"
       - "tests/**"
+      - "data/historical/confirmatory_artifact_2026-10-09.zip"
       - "schemas/**"
       - "dijitalikiz/**"
       - "data/calibration/**"
@@ -118,14 +119,12 @@ jobs:
           echo "Historical archive integrity is reported by the separate validate-historical-archive job." >> "$GITHUB_STEP_SUMMARY"
 
   validate-historical-archive:
-    name: Historical artifact integrity (no inference; separate gate)
+    name: Historical archive integrity (no inference; repository-local gate)
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
-      actions: read
       contents: read
     env:
-      ARTIFACT_ID: "11640450681"
       EXPECTED_BYTES: "292742"
       EXPECTED_SHA256: "e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd"
       EXPECTED_RECORDS: "160"
@@ -152,108 +151,27 @@ jobs:
           print("Historical audit imports: PASS")
           PY
 
-      - name: Fetch and fail-closed validate historical artifact metadata
-        id: metadata
+      - name: Require recovered historical ZIP in the canonical repository
+        id: archive
         shell: bash
         env:
-          GH_TOKEN: ${{ github.token }}
+          ARCHIVE_PATH: ${{ github.workspace }}/data/historical/confirmatory_artifact_2026-10-09.zip
         run: |
           set -euo pipefail
-          metadata_path="$RUNNER_TEMP/historical-artifact-metadata.json"
-          http_status="$(curl --silent --show-error --location \
-            --output "$metadata_path" --write-out '%{http_code}' \
-            --header "Authorization: Bearer $GH_TOKEN" \
-            --header "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID")" || {
-              echo "historical_archive_status=BLOCKED/UNAVAILABLE" >> "$GITHUB_STEP_SUMMARY"
-              echo "Reason: artifact metadata endpoint was unreachable." >> "$GITHUB_STEP_SUMMARY"
-              echo "::error::Historical artifact metadata is unavailable; verification is blocked."
-              exit 1
-            }
-          if [[ "$http_status" != "200" ]]; then
-            echo "historical_archive_status=BLOCKED/UNAVAILABLE" >> "$GITHUB_STEP_SUMMARY"
-            echo "Reason: artifact metadata endpoint returned HTTP $http_status." >> "$GITHUB_STEP_SUMMARY"
-            echo "::error::Historical artifact metadata is unavailable; verification is blocked."
+          if [[ ! -f "$ARCHIVE_PATH" ]]; then
+            echo "historical_archive_status=BLOCKED/REPOSITORY_UPLOAD_REQUIRED" >> "$GITHUB_STEP_SUMMARY"
+            echo "The original Actions artifact is no longer available. A byte-identical recovery was found in the user's ChatGPT Library and independently verified, but the ZIP has not yet been committed to data/historical/." >> "$GITHUB_STEP_SUMMARY"
+            echo "Expected repository path: data/historical/confirmatory_artifact_2026-10-09.zip" >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Historical archive recovered but not stored in the canonical GitHub repository."
             exit 1
           fi
-          set +e
-          python - "$metadata_path" "$ARTIFACT_ID" "$EXPECTED_BYTES" "$EXPECTED_SHA256" <<'PY'
-          import json, sys
-          from datetime import datetime, timezone
-          path, expected_id, expected_size, expected_digest = sys.argv[1:]
-          try:
-              with open(path, encoding="utf-8") as stream:
-                  value = json.load(stream)
-              if not isinstance(value, dict) or value.get("id") != int(expected_id):
-                  raise ValueError
-              expires_at = datetime.fromisoformat(str(value.get("expires_at", "")).replace("Z", "+00:00"))
-              if value.get("expired") is True or expires_at <= datetime.now(timezone.utc):
-                  print("unavailable")
-                  raise SystemExit(10)
-              if value.get("expired") is not False:
-                  raise ValueError
-              if value.get("size_in_bytes") != int(expected_size):
-                  raise ValueError
-              if value.get("digest") != "sha256:" + expected_digest:
-                  raise ValueError
-          except SystemExit:
-              raise
-          except Exception:
-              raise SystemExit(11)
-          print("valid")
-          PY
-          validation_code=$?
-          set -e
-          if [[ "$validation_code" -eq 10 ]]; then
-            echo "historical_archive_status=BLOCKED/UNAVAILABLE" >> "$GITHUB_STEP_SUMMARY"
-            echo "Reason: source artifact has expired or is past its expiry time." >> "$GITHUB_STEP_SUMMARY"
-            echo "::error::Historical source artifact has expired; verification is blocked."
-            exit 1
-          elif [[ "$validation_code" -ne 0 ]]; then
-            echo "historical_archive_status=FAIL" >> "$GITHUB_STEP_SUMMARY"
-            echo "Reason: source artifact metadata did not match the pinned contract." >> "$GITHUB_STEP_SUMMARY"
-            echo "::error::Historical source artifact metadata failed integrity checks."
-            exit 1
-          fi
-          expires_at="$(python - "$metadata_path" <<'PY'
-          import json, sys
-          with open(sys.argv[1], encoding="utf-8") as stream:
-              print(json.load(stream)["expires_at"])
-          PY
-          )"
-          echo "Artifact metadata: PASS (ID, expiry, size, SHA-256 digest)." >> "$GITHUB_STEP_SUMMARY"
-          echo "Artifact expires at: $expires_at (UTC)." >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Download the original ZIP to runner temporary storage only
-        id: download
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          archive_path="$RUNNER_TEMP/confirmatory_artifact_2026-10-09.zip"
-          http_status="$(curl --silent --show-error --location --fail \
-            --output "$archive_path" --write-out '%{http_code}' \
-            --header "Authorization: Bearer $GH_TOKEN" \
-            --header "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip")" || {
-              echo "historical_archive_status=BLOCKED/UNAVAILABLE" >> "$GITHUB_STEP_SUMMARY"
-              echo "Reason: source artifact download was unavailable." >> "$GITHUB_STEP_SUMMARY"
-              echo "::error::Historical source artifact download is unavailable; verification is blocked."
-              exit 1
-            }
-          if [[ "$http_status" != "200" || ! -s "$archive_path" ]]; then
-            echo "historical_archive_status=BLOCKED/UNAVAILABLE" >> "$GITHUB_STEP_SUMMARY"
-            echo "Reason: source artifact download did not return a usable archive." >> "$GITHUB_STEP_SUMMARY"
-            echo "::error::Historical source artifact download is unavailable; verification is blocked."
-            exit 1
-          fi
-          echo "archive_path=$archive_path" >> "$GITHUB_OUTPUT"
+          echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
+          echo "historical_archive_status=REPOSITORY_COPY_FOUND" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Check archive size, digest and ZIP integrity
         shell: bash
         env:
-          ARCHIVE_PATH: ${{ steps.download.outputs.archive_path }}
+          ARCHIVE_PATH: ${{ github.workspace }}/data/historical/confirmatory_artifact_2026-10-09.zip
         run: |
           set -euo pipefail
           actual_bytes="$(stat -c '%s' "$ARCHIVE_PATH")"
@@ -282,7 +200,7 @@ jobs:
       - name: Audit historical records with sanitized output
         shell: bash
         env:
-          ARCHIVE_PATH: ${{ steps.download.outputs.archive_path }}
+          ARCHIVE_PATH: ${{ github.workspace }}/data/historical/confirmatory_artifact_2026-10-09.zip
         run: |
           set -euo pipefail
           audit_json="$RUNNER_TEMP/historical-audit-result.json"

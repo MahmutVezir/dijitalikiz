@@ -104,17 +104,19 @@ jobs:
               assert "actions/upload-artifact@" not in source, f"artifact re-upload forbidden in {source_name} workflow"
               assert "gh pr create" not in source and "git push" not in source, f"write command found in {source_name} workflow"
 
-          # Repository CI must not depend on a checked-in ZIP; the archive is
-          # downloaded to runner temp, audited in place, and never uploaded.
+          # Repository CI now expects the recovered ZIP in the canonical repository path.
+          # Until it is uploaded, the separate historical gate must remain explicitly blocked.
           assert "validate-repository:" in research and "validate-historical-archive:" in research, "repository and archive checks must be separate jobs"
-          assert "actions: read" in research and "contents: read" in research
-          assert "data/historical/confirmatory_artifact_2026-10-09.zip" not in research, "no archive path may be required in the checkout"
-          assert "BLOCKED/UNAVAILABLE" in research and "Historical archive verification: PASS" not in research, "unavailable archive must remain a failed/blocked gate"
+          assert "contents: read" in research
+          assert "data/historical/confirmatory_artifact_2026-10-09.zip" in research, "repository-local archive path must be explicit"
+          assert "11640450681" not in research, "expired Actions artifact ID must not be the source of truth"
+          assert "BLOCKED/REPOSITORY_UPLOAD_REQUIRED" in research and "Historical archive verification: PASS" not in research, "missing repository archive must remain a blocked gate"
           assert "python scripts/audit_historical_artifact.py" in research
           assert "sha256sum --check --status" in research
           assert "python -m zipfile -t" in research
           assert "workflow_dispatch:" in research
-          assert "archive_path=\"$RUNNER_TEMP/confirmatory_artifact_2026-10-09.zip\"" in research
+          assert "ARCHIVE_PATH:" in research and "data/historical/confirmatory_artifact_2026-10-09.zip" in research
+          assert "steps.download.outputs.archive_path" not in research
           assert '> "$audit_json" 2> "$audit_log"' in research
           assert ' > "$RUNNER_TEMP/zip-integrity-check.log" 2>&1' in archive
           assert "Historical archive record audit: FAIL (diagnostic log kept out of public workflow output)." in archive

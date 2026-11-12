@@ -23,7 +23,7 @@ def fixture(root, excluded_case_ids=None):
         "frozen_hashes": {}, "case_ids": [],
         "case_registry_path": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
         "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
-        "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json",
+        "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json",
         "minimum_confirmatory_cases": 60,
         "minimum_upstream_projects": 8, "target_independent_cases": 80,
         "cells_per_case": 6, "planned_model_outputs_at_target": 480
@@ -32,7 +32,7 @@ def fixture(root, excluded_case_ids=None):
     (project / "CASE_REGISTRY.json").write_text(json.dumps({
         "records": [],
         "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
-        "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json",
+        "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json",
     }), encoding="utf-8")
     (project / "EXPOSURE_UNION_2026-10-23.json").write_text(json.dumps({
         "record_type": "synthetic_test_fixture",
@@ -40,7 +40,7 @@ def fixture(root, excluded_case_ids=None):
         "unique_exclusion_count": len(excluded_case_ids),
     }), encoding="utf-8")
     screening_ids = list(dict.fromkeys(excluded_case_ids + ["BugsInPy-session-only-1"]))
-    (project / "EXPOSURE_UNION_2026-10-24.json").write_text(json.dumps({
+    (project / "EXPOSURE_UNION_2026-11-11.json").write_text(json.dumps({
         "record_type": "synthetic_extended_test_fixture",
         "excluded_case_ids": screening_ids,
         "unique_exclusion_count": len(screening_ids),
@@ -89,7 +89,7 @@ class PreflightTests(unittest.TestCase):
             root = Path(tmp)
             fixture(root)
             project = root / "research_candidates" / "evidence_abstention"
-            screening_path = project / "EXPOSURE_UNION_2026-10-24.json"
+            screening_path = project / "EXPOSURE_UNION_2026-11-11.json"
             screening = json.loads(screening_path.read_text(encoding="utf-8"))
             screening["excluded_case_ids"].append("BugsInPy-demo-session-1")
             screening["unique_exclusion_count"] = len(screening["excluded_case_ids"])
@@ -101,7 +101,7 @@ class PreflightTests(unittest.TestCase):
                     "accepted_for_confirmatory": True,
                 }],
                 "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
-                "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json",
+                "screening_exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json",
             }
             (project / "CASE_REGISTRY.json").write_text(json.dumps(registry), encoding="utf-8")
             manifest_path = project / "EXPERIMENT_MANIFEST_STAGE3.json"
@@ -121,7 +121,7 @@ class PreflightTests(unittest.TestCase):
             root = Path(tmp)
             fixture(root, excluded_case_ids=["BugsInPy-historic-1"])
             project = root / "research_candidates" / "evidence_abstention"
-            screening_path = project / "EXPOSURE_UNION_2026-10-24.json"
+            screening_path = project / "EXPOSURE_UNION_2026-11-11.json"
             screening_path.write_text(json.dumps({
                 "excluded_case_ids": ["BugsInPy-session-only-1"],
                 "unique_exclusion_count": 1,
@@ -339,6 +339,24 @@ class PreflightTests(unittest.TestCase):
 
             self.assertFalse(report["ready"])
             self.assertTrue(any("Manifest exposure_union_path is not the immutable 23 October base union." in b for b in report["blockers"]))
+
+
+    def test_canonical_screening_union_is_the_105_id_append_only_extension(self):
+        project = Path(__file__).resolve().parents[1] / "research_candidates" / "evidence_abstention"
+        old_union = json.loads((project / "EXPOSURE_UNION_2026-10-24.json").read_text(encoding="utf-8"))
+        new_union = json.loads((project / "EXPOSURE_UNION_2026-11-11.json").read_text(encoding="utf-8"))
+        addendum = json.loads((project / "EXPOSURE_EXCLUSION_ADDENDUM_2026-11-11.json").read_text(encoding="utf-8"))
+        old_ids = set(old_union["excluded_case_ids"])
+        new_ids = set(new_union["excluded_case_ids"])
+        added_ids = set(addendum["case_ids"])
+        self.assertEqual(MODULE.SCREENING_EXPOSURE_UNION_PATH,
+                         "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json")
+        self.assertEqual(len(old_ids), 97)
+        self.assertEqual(len(new_ids), 105)
+        self.assertEqual(new_ids, old_ids | added_ids)
+        self.assertIn("BugsInPy-black-9", new_ids)
+        self.assertTrue(old_ids.issubset(new_ids))
+
 
 
 if __name__ == "__main__":

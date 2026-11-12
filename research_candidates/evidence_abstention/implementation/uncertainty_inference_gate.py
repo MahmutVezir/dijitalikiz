@@ -13,7 +13,7 @@ EXPECTED_MODEL_ID = "Qwen/Qwen2.5-3B-Instruct"
 EXPECTED_MODEL_REVISION = "aa8e72537993ba99e69dfaafa59ed015b17504d1"
 EXPECTED_ARTIFACT_PATHS = {
     "case_registry": "research_candidates/evidence_abstention/CASE_REGISTRY.json",
-    "exposure_union": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
+    "exposure_union": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json",
     "output_schema": "research_candidates/evidence_abstention/OUTPUT_SCHEMA.json",
     "prompt_template": "research_candidates/evidence_abstention/PROMPT_CONDITIONS.md",
     "analysis_plan": "research_candidates/evidence_abstention/ANALYSIS_PLAN_STAGE3.md",
@@ -23,6 +23,8 @@ EXPECTED_ARTIFACT_PATHS = {
 }
 REQUIRED_ARTIFACTS = tuple(EXPECTED_ARTIFACT_PATHS)
 EVIDENCE_LEVELS = ("E1_sufficient", "E2_partial", "E3_insufficient")
+EXPECTED_EXPOSURE_UNION_SHA256 = "9f41451bb06582ea65647f67829e97ac190cb884946b1f4f09c75d8167acb7c1"
+EXPECTED_EXPOSURE_EXCLUSION_COUNT = 105
 
 
 def sha256_file(path: Path) -> str:
@@ -131,6 +133,10 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
 
     checks = (
         (manifest.get("inference_allowed") is True, "Manifest does not explicitly authorize inference."),
+        (manifest.get("dataset_license_status") == "cleared", "Dataset-level license/permission is not cleared."),
+        (manifest.get("upstream_project_license_status") == "cleared", "Exact upstream project licenses are not cleared."),
+        (manifest.get("human_reviewer_approval_status") == "approved", "Required human-review institutional approval is not recorded."),
+        (manifest.get("human_reviewer_consent_status") == "complete", "Required human-review consent is not complete."),
         (manifest.get("dataset_validation_gate") == "CLOSED", "Dataset validation gate is not CLOSED."),
         (manifest.get("preregistration_status") == "registered" and bool(manifest.get("preregistration_uri")), "A verifiable preregistration record is missing."),
         (manifest.get("reviewer_protocol_frozen") is True, "Independent reviewer and adjudication protocol is not frozen."),
@@ -146,6 +152,8 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
             blockers.append("Model ID/revision differs from the reviewed immutable checkpoint.")
         if model.get("tokenizer_id") != EXPECTED_MODEL_ID or model.get("tokenizer_revision") != EXPECTED_MODEL_REVISION:
             blockers.append("Tokenizer ID/revision differs from the reviewed immutable checkpoint.")
+        if model.get("license_review_status") != "cleared_for_noncommercial_research":
+            blockers.append("Exact model revision license has not been cleared for this non-commercial research use.")
         if model.get("runtime_verification") != "passed":
             blockers.append("Exact model/tokenizer/runtime preflight has not passed.")
         if model.get("dtype") != "float16" or model.get("quantization", "none") != "none":
@@ -163,7 +171,7 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
     exposure_ids = set()
     try:
         exposure_union_path_value = manifest.get("exposure_union_path")
-        if exposure_union_path_value != "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json":
+        if exposure_union_path_value != EXPECTED_ARTIFACT_PATHS["exposure_union"]:
             raise ValueError("exposure_union_path must point to the canonical dated exposure union")
         exposure_union_relative = Path(exposure_union_path_value)
         if exposure_union_relative.is_absolute() or ".." in exposure_union_relative.parts:
@@ -179,6 +187,14 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
             raise ValueError("excluded_case_ids must be a unique list of non-empty strings")
         if exposure_document.get("unique_exclusion_count") != len(raw_excluded_ids):
             raise ValueError("unique_exclusion_count does not match excluded_case_ids")
+        if len(raw_excluded_ids) != EXPECTED_EXPOSURE_EXCLUSION_COUNT:
+            raise ValueError(f"canonical exposure union must contain {EXPECTED_EXPOSURE_EXCLUSION_COUNT} unique IDs")
+        if sha256_file(exposure_union_path) != EXPECTED_EXPOSURE_UNION_SHA256:
+            raise ValueError("canonical exposure union SHA-256 does not match the reviewed 105-ID snapshot")
+        if manifest.get("exposure_union_sha256") != EXPECTED_EXPOSURE_UNION_SHA256:
+            raise ValueError("manifest exposure_union_sha256 does not match the reviewed 105-ID snapshot")
+        if manifest.get("permanent_exclusion_count") != EXPECTED_EXPOSURE_EXCLUSION_COUNT:
+            raise ValueError("manifest permanent_exclusion_count must equal 105")
         exposure_ids = set(raw_excluded_ids)
     except (OSError, json.JSONDecodeError, TypeError, ValueError) as exc:
         blockers.append("Exposure exclusion union missing or invalid: " + str(exc))
