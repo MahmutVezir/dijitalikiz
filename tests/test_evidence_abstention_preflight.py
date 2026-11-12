@@ -348,7 +348,7 @@ class PreflightTests(unittest.TestCase):
         addendum = json.loads((project / "EXPOSURE_EXCLUSION_ADDENDUM_2026-11-11.json").read_text(encoding="utf-8"))
         old_ids = set(old_union["excluded_case_ids"])
         new_ids = set(new_union["excluded_case_ids"])
-        added_ids = set(addendum["excluded_case_ids"])
+        added_ids = set(addendum["case_ids"])
         self.assertEqual(MODULE.SCREENING_EXPOSURE_UNION_PATH,
                          "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json")
         self.assertEqual(len(old_ids), 97)
