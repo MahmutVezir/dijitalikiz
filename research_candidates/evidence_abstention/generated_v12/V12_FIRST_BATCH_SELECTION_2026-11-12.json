@@ -131,7 +131,7 @@
       "python_version": "3.8.3",
       "buggy_commit": "27f365d",
       "fixed_commit": "64336ff8414f8977ff94adb9a5bc000a3a4ef454",
-      "run_test_sha256": "6fea090169ec5d4624e4b8c4d421fd3805df5d4fcbab509ee49d0b6411123",
+      "run_test_sha256": "6fea090169ec5d4624e4b8c4d421fd3805df5d4fcbab509485ee49d0b6411123",
       "bug_info_sha256": "aa02ec537524163d803775b13be015ae238a70cbe5dae3f5c62e8a8f3fea5cda",
       "project_info_sha256": "d7930a4f9732f741bbd561d9bd882b686a6c8da298307860e6272123a5c9ebd7",
       "test_file": "pandas/tests/frame/indexing/test_indexing.py",
