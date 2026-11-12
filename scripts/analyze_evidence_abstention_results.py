@@ -22,7 +22,7 @@ COLUMNS = {
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 CASE_REGISTRY_RELATIVE_PATH = "research_candidates/evidence_abstention/CASE_REGISTRY.json"
 EXPOSURE_UNION_RELATIVE_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
-SCREENING_EXPOSURE_UNION_RELATIVE_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json"
+SCREENING_EXPOSURE_UNION_RELATIVE_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json"
 REQUIRED_FROZEN_PATHS = {
     "research_candidates/evidence_abstention/CASE_REGISTRY.json",
     EXPOSURE_UNION_RELATIVE_PATH,
@@ -375,7 +375,7 @@ def analyze(registry_path, manifest_path, ratings_path):
         raise ValueError("analysis blocked: exposure_union_path must match the immutable 23 October base union")
     screening_path_value = manifest.get("screening_exposure_union_path")
     if screening_path_value != SCREENING_EXPOSURE_UNION_RELATIVE_PATH:
-        raise ValueError("analysis blocked: screening_exposure_union_path must match the 24 October extended union")
+        raise ValueError("analysis blocked: screening_exposure_union_path must match the 11 November corrected screening union")
 
     exposure_path = repository_root / Path(exposure_path_value)
     screening_exposure_path = repository_root / Path(screening_path_value)
