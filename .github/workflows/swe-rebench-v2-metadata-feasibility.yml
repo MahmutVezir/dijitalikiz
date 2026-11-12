@@ -1,0 +1,90 @@
+name: SWE-rebench V2 Filtered-Verified Metadata Feasibility (No Inference)
+
+on:
+  push:
+    branches:
+      - "research/2026-11-12-swe-rebench-metadata-inventory"
+    paths:
+      - ".github/workflows/swe-rebench-v2-metadata-feasibility.yml"
+      - "scripts/audit_swe_rebench_filtered_verified.py"
+      - "tests/test_audit_swe_rebench_filtered_verified.py"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/swe-rebench-v2-metadata-feasibility.yml"
+      - "scripts/audit_swe_rebench_filtered_verified.py"
+      - "tests/test_audit_swe_rebench_filtered_verified.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: swe-rebench-v2-metadata-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  metadata-feasibility:
+    name: Verify pinned dataset and count metadata candidates only
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    env:
+      DATASET_URL: "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet"
+      EXPECTED_SHA256: "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+      EXPECTED_BYTES: "226272977"
+      EXPECTED_ROWS: "6272"
+    steps:
+      - name: Checkout exact repository commit
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11"
+
+      - name: Install pinned Parquet reader
+        run: python -m pip install --disable-pip-version-check "pyarrow==19.0.1"
+
+      - name: Run synthetic metadata audit tests
+        run: python -m unittest discover -s tests -p "test_audit_swe_rebench_filtered_verified.py" -v
+
+      - name: Download exact public Parquet snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/swe-rebench-v2"
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "$DATASET_URL" \
+            --output "$RUNNER_TEMP/swe-rebench-v2/train-00000-of-00001.parquet"
+          actual_bytes="$(stat -c '%s' "$RUNNER_TEMP/swe-rebench-v2/train-00000-of-00001.parquet")"
+          actual_sha="$(sha256sum "$RUNNER_TEMP/swe-rebench-v2/train-00000-of-00001.parquet" | awk '{print $1}')"
+          test "$actual_bytes" = "$EXPECTED_BYTES"
+          test "$actual_sha" = "$EXPECTED_SHA256"
+          echo "verified_bytes=$actual_bytes" >> "$GITHUB_STEP_SUMMARY"
+          echo "verified_sha256=$actual_sha" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Build no-inference metadata inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/audit_swe_rebench_filtered_verified.py \
+            --input "$RUNNER_TEMP/swe-rebench-v2/train-00000-of-00001.parquet" \
+            --output-json "$RUNNER_TEMP/swe-rebench-v2-metadata-summary.json" \
+            --output-csv "$RUNNER_TEMP/swe-rebench-v2-metadata-candidates.csv" \
+            | tee "$RUNNER_TEMP/swe-rebench-v2-metadata-summary.stdout.json"
+          cat "$RUNNER_TEMP/swe-rebench-v2-metadata-summary.json" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload metadata-only outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: swe-rebench-v2-metadata-feasibility-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/swe-rebench-v2-metadata-summary.json
+            ${{ runner.temp }}/swe-rebench-v2-metadata-candidates.csv
+            ${{ runner.temp }}/swe-rebench-v2-metadata-summary.stdout.json
+          if-no-files-found: error
+          retention-days: 90
