@@ -1,6 +1,6 @@
 # Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ
 
-**Tek aktif hedef:** 2027 TÜBİTAK 2204-A’da finalistlik düzeyinde, tamamlanmış ve bilimsel olarak savunulabilir bir araştırma sunmak. Finalistlik garanti edilemez; ölçütümüz gerçek kanıt ve dürüst raporlamadır.
+**Güncel bilimsel durum:** SWE-rebench V2 metadata fizibilitesi ve deterministik 96 projelik aday cohort tamamlandı. İlk 32 adayın PR/base-commit eşleşmeleri 32/32; ilk 16 adayın exact base commit kök lisansları 16/16 Apache-2.0 olarak doğrulandı. Vaka tipi taramasında 18/32 geçici bug adayı, 14/32 kapsam dışı kayıt bulundu. Kabul edilmiş bağımsız vaka/proje sayısı 0/0; ana deney modeli çıktısı 0 ve inference kapalıdır. Son no-inference CI denetiminde 13 preflight + 12 evidence-packet testi geçti; readiness false ve 21 engel sürüyor.
 
 **Güncel bilimsel durum (12 Kasım 2026):** SWE-rebench V2 metadata fizibilitesi ve deterministik 96 projelik aday cohort tamamlandı. İlk 16 adayın PR/base-commit eşleşmeleri 16/16; exact base commit kök lisans kontrolleri 16/16 Apache-2.0 olarak doğrulandı. Vaka tipi taramasında 8/16 geçici bug adayı, 8/16 feature/enhancement/test-only dışlaması bulundu. Henüz kabul edilmiş bağımsız vaka/proje sayısı 0/0; ana deney modeli çıktısı 0 ve inference kapalıdır. Son no-inference CI'da 13 preflight + 12 evidence-packet testi geçti; readiness false ve 21 engel sürüyor.
 
