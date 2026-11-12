@@ -177,7 +177,7 @@ jobs:
           PY
 
       - name: Persist V12 inventory, queue, cohort and evidence manifest in the canonical repository
-        if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
         shell: bash
         env:
           TARGET_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
