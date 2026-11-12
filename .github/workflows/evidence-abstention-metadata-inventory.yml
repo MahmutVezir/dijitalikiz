@@ -21,6 +21,7 @@ on:
       - "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json"
       - "scripts/build_evidence_abstention_intake.py"
       - "tests/test_build_evidence_abstention_intake.py"
+      - "tests/test_v12_metadata_workflow_contract.py"
       - ".github/workflows/evidence-abstention-metadata-inventory.yml"
   pull_request:
     branches:
@@ -37,6 +38,7 @@ on:
       - "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json"
       - "scripts/build_evidence_abstention_intake.py"
       - "tests/test_build_evidence_abstention_intake.py"
+      - "tests/test_v12_metadata_workflow_contract.py"
       - ".github/workflows/evidence-abstention-metadata-inventory.yml"
   workflow_dispatch:
 
@@ -72,7 +74,8 @@ jobs:
             "test_inventory_bugsinpy_candidates.py" \
             "test_build_evidence_abstention_screening_queue.py" \
             "test_audit_evidence_abstention_triage_artifact.py" \
-            "test_build_evidence_abstention_intake.py"; do
+            "test_build_evidence_abstention_intake.py" \\
+            "test_v12_metadata_workflow_contract.py"; do
             log="$log_dir/$spec.log"
             python -m unittest discover -s tests -p "$spec" -v >"$log" 2>&1
             rc=$?
