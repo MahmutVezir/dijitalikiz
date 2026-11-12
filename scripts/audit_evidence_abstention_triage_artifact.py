@@ -18,6 +18,25 @@ def sha256(path):
     return h.hexdigest()
 
 
+def commit_reference_matches(expected, observed):
+    """Match full SHAs or a >=7-character metadata prefix.
+
+    The checkout step must already have resolved the candidate commit through
+    Git. This helper only avoids treating a valid abbreviated dataset SHA as
+    different from the full SHA reported by the checked-out worktree.
+    """
+    if not isinstance(expected, str) or not isinstance(observed, str):
+        return False
+    expected = expected.lower()
+    observed = observed.lower()
+    if not COMMIT.fullmatch(expected) or not COMMIT.fullmatch(observed):
+        return False
+    if expected == observed:
+        return True
+    shorter, longer = sorted((expected, observed), key=len)
+    return len(shorter) >= 7 and longer.startswith(shorter)
+
+
 def audit(root):
     root = Path(root).resolve()
     blockers = []
@@ -103,7 +122,7 @@ def audit(root):
         observed_buggy = summary.get("observed_buggy_base_commit")
         if not isinstance(expected_buggy, str) or not COMMIT.fullmatch(expected_buggy):
             blockers.append("expected buggy commit is missing or malformed")
-        if observed_buggy != expected_buggy:
+        if not commit_reference_matches(expected_buggy, observed_buggy):
             warnings.append("observed buggy base commit does not match the expected buggy commit")
         expected_fixed = summary.get("expected_fixed_commit_reference")
         if not isinstance(expected_fixed, str) or not COMMIT.fullmatch(expected_fixed):

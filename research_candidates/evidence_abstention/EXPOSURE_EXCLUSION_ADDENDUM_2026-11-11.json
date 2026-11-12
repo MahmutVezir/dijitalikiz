@@ -1,0 +1,83 @@
+{
+  "project": "Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ",
+  "record_type": "dated_session_researcher_exposure_exclusion_addendum",
+  "version": "1.0",
+  "date": "2026-11-11",
+  "rule": "Any candidate used to validate or debug the no-inference technical runner, where target-test results, setup logs, or source behavior are inspected while the pipeline is being repaired, is permanently excluded from the confirmatory sample independently of technical outcome.",
+  "workflow_run": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/43064678818",
+  "accepted_confirmatory_cases_after_exclusions": 0,
+  "model_inference_performed": false,
+  "case_ids": [
+    "BugsInPy-ansible-7",
+    "BugsInPy-black-9",
+    "BugsInPy-fastapi-9",
+    "BugsInPy-keras-8",
+    "BugsInPy-luigi-8",
+    "BugsInPy-matplotlib-7",
+    "BugsInPy-pandas-6",
+    "BugsInPy-scrapy-7"
+  ],
+  "cases": [
+    {
+      "case_id": "BugsInPy-ansible-7",
+      "exposure_reason": "Included in the 2026-11-11 V11 technical-screen batch; case-level test/setup outcomes were inspected while repairing and validating the technical pipeline.",
+      "technical_screen_only": true,
+      "accepted_for_confirmatory": false
+    },
+    {
+      "case_id": "BugsInPy-black-9",
+      "exposure_reason": "Previously inspected on 2026-10-24 and explicitly recorded in CASE_REGISTRY.json; the preceding 97-ID exposure union omitted it, and the 2026-11-11 batch repeated the exposure.",
+      "technical_screen_only": true,
+      "accepted_for_confirmatory": false
+    },
+    {
+      "case_id": "BugsInPy-fastapi-9",
+      "exposure_reason": "Included in the 2026-11-11 V11 technical-screen batch; case-level test/setup outcomes were inspected while repairing and validating the technical pipeline.",
+      "technical_screen_only": true,
+      "accepted_for_confirmatory": false
+    },
+    {
+      "case_id": "BugsInPy-keras-8",
+      "exposure_reason": "Included in the 2026-11-11 V11 technical-screen batch; case-level test/setup outcomes were inspected while repairing and validating the technical pipeline.",
+      "technical_screen_only": true,
+      "accepted_for_confirmatory": false
+    },
+    {
+      "case_id": "BugsInPy-luigi-8",
+      "exposure_reason": "Included in the 2026-11-11 V11 technical-screen batch; case-level test/setup outcomes were inspected while repairing and validating the technical pipeline.",
+      "technical_screen_only": true,
+      "accepted_for_confirmatory": false
+    },
+    {
+      "case_id": "BugsInPy-matplotlib-7",
+      "exposure_reason": "Included in the 2026-11-11 V11 technical-screen batch; case-level test/setup outcomes were inspected while repairing and validating the technical pipeline.",
+      "technical_screen_only": true,
+      "accepted_for_confirmatory": false
+    },
+    {
+      "case_id": "BugsInPy-pandas-6",
+      "exposure_reason": "Included in the 2026-11-11 V11 technical-screen batch; case-level test/setup outcomes were inspected while repairing and validating the technical pipeline.",
+      "technical_screen_only": true,
+      "accepted_for_confirmatory": false
+    },
+    {
+      "case_id": "BugsInPy-scrapy-7",
+      "exposure_reason": "Included in the 2026-11-11 V11 technical-screen batch; case-level test/setup outcomes were inspected while repairing and validating the technical pipeline.",
+      "technical_screen_only": true,
+      "accepted_for_confirmatory": false
+    }
+  ],
+  "ledger_defect": {
+    "case_id": "BugsInPy-black-9",
+    "discovered_on": "2026-11-11",
+    "source": "research_candidates/evidence_abstention/CASE_REGISTRY.json historical note dated 2026-10-24",
+    "defect": "The 97-ID EXPOSURE_UNION_2026-10-24.json omitted a case that the registry explicitly said had already been technically inspected and had exploratory E1/E2/E3 packet drafts.",
+    "correction": "Append BugsInPy-black-9 to the 2026-11-11 exposure union and prevent future reuse."
+  },
+  "notes": [
+    "This addendum is outcome-independent and is not evidence of acceptance.",
+    "Do not alter the frozen 2026-10-24 union; use the new 2026-11-11 append-only union for future intake creation.",
+    "All eight V11 batch IDs are excluded from confirmatory analysis even where a buggy-fail/fixed-pass signal was observed.",
+    "The new V12 intake must be regenerated from the pinned BugsInPy inventory using the new 105-ID exclusion union before any additional tests are run."
+  ]
+}

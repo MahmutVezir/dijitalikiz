@@ -1,19 +1,27 @@
-name: Evidence Abstention V11 Technical Case Screen (No Inference)
+name: Evidence Abstention V12 Clean Intake and No-Inference Preflight
 
-# One-shot run against the frozen V11 intake, using the current 97-ID exposure union.
-# A technical signal is not case acceptance. All human and research gates remain closed.
+# Rebuild a new V12 metadata intake using the corrected 105-ID exposure union.
+# Do not reuse any V11 test-exposed cases. No model inference is performed.
 on:
   push:
     branches:
       - "research/2026-11-11-v11-runner-preflight-pipe-fix"
       - "research/2026-11-11-v11-final-clean-screen"
       - "research/2026-11-11-v11-mainline-runner-repair"
+      - "research/2026-11-11-v11-durable-case-audit-fixes"
     paths:
       - ".github/workflows/evidence-abstention-v11-technical-screen.yml"
+      - "scripts/build_evidence_abstention_cohort_matrix.py"
+      - "scripts/audit_evidence_abstention_triage_artifact.py"
+      - "tests/test_build_evidence_abstention_cohort_matrix.py"
+      - "tests/test_audit_evidence_abstention_triage_artifact.py"
+      - "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json"
+      - "research_candidates/evidence_abstention/EXPERIMENT_MANIFEST_STAGE3.json"
+      - "research_candidates/evidence_abstention/CASE_REGISTRY.json"
   workflow_dispatch:
     inputs:
       batch_offset:
-        description: "V11 cohort offset; use multiples of 8. Offset 0 is the first batch."
+        description: "V12 metadata intake offset; use multiples of 8. Offset 0 is the first batch."
         required: true
         type: number
         default: 0
@@ -27,7 +35,7 @@ permissions:
 
 jobs:
   freeze_batch:
-    name: Rebuild V11 intake and freeze selected batch
+    name: Rebuild V12 intake and freeze selected batch
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     outputs:
@@ -76,23 +84,23 @@ jobs:
             --output "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
             --summary "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" \
             --first-batch-per-project 5 \
-            --exposure-addendum research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json
+            --exposure-addendum research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json
           python scripts/build_evidence_abstention_intake.py \
             --inventory "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" \
             --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
-            --output "$RUNNER_TEMP/SCREENING_COHORT_100_V11_2026-11-11.json" \
+            --output "$RUNNER_TEMP/SCREENING_COHORT_100_V12_2026-11-11.json" \
             --size 100 \
             --minimum-projects 8 \
-            --exposure-addendum research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json \
+            --exposure-addendum research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json \
             --created-on 2026-11-11
 
-      - name: Freeze the requested V11 technical-screen matrix
+      - name: Freeze the V12 matrix after corrected exposure exclusions
         shell: bash
         run: |
           set -euo pipefail
           python scripts/build_evidence_abstention_cohort_matrix.py \
             --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
-            --cohort "$RUNNER_TEMP/SCREENING_COHORT_100_V11_2026-11-11.json" \
+            --cohort "$RUNNER_TEMP/SCREENING_COHORT_100_V12_2026-11-11.json" \
             --matrix-output "$RUNNER_TEMP/cohort-screen-matrix.json" \
             --summary-output "$RUNNER_TEMP/cohort-screen-summary.json" \
             --batch-size 8 \
@@ -102,7 +110,7 @@ jobs:
           root = pathlib.Path(os.environ["RUNNER_TEMP"])
           inventory = json.loads((root / "bugsinpy-metadata-inventory-summary.json").read_text(encoding="utf-8"))
           queue = json.loads((root / "bugsinpy-screening-queue-summary.json").read_text(encoding="utf-8"))
-          cohort = json.loads((root / "SCREENING_COHORT_100_V11_2026-11-11.json").read_text(encoding="utf-8"))
+          cohort = json.loads((root / "SCREENING_COHORT_100_V12_2026-11-11.json").read_text(encoding="utf-8"))
           summary = json.loads((root / "cohort-screen-summary.json").read_text(encoding="utf-8"))
           matrix = json.loads((root / "cohort-screen-matrix.json").read_text(encoding="utf-8"))
           rows = matrix.get("include", [])
@@ -140,7 +148,7 @@ jobs:
           cp "$RUNNER_TEMP/bugsinpy-metadata-inventory-summary.json" "$RUNNER_TEMP/v11-screen-freeze/"
           cp "$RUNNER_TEMP/bugsinpy-screening-queue.csv" "$RUNNER_TEMP/v11-screen-freeze/"
           cp "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" "$RUNNER_TEMP/v11-screen-freeze/"
-          cp "$RUNNER_TEMP/SCREENING_COHORT_100_V11_2026-11-11.json" "$RUNNER_TEMP/v11-screen-freeze/"
+          cp "$RUNNER_TEMP/SCREENING_COHORT_100_V12_2026-11-11.json" "$RUNNER_TEMP/v11-screen-freeze/"
           cp "$RUNNER_TEMP/cohort-screen-matrix.json" "$RUNNER_TEMP/v11-screen-freeze/"
           cp "$RUNNER_TEMP/cohort-screen-summary.json" "$RUNNER_TEMP/v11-screen-freeze/"
           cd "$RUNNER_TEMP/v11-screen-freeze"
@@ -153,7 +161,7 @@ jobs:
           name: evidence-abstention-v11-batch-${{ github.event.inputs.batch_offset || '0' }}-freeze
           path: ${{ runner.temp }}/v11-screen-freeze/
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 90
 
   technical_case_screen:
     name: ${{ matrix.case_id }} (Python ${{ matrix.python_version }})
@@ -379,7 +387,16 @@ jobs:
             # Bash process. Some runner environments export SHELLOPTS=nounset;
             # its virtualenv activate script reads $1 and aborts before tests.
             set +e
-            ( cd "$work_dir" && env -u SHELLOPTS -u BASH_ENV bash --noprofile --norc "$RUNNER_TEMP/BugsInPy/framework/bin/bugsinpy-compile" ) > "$RUNNER_TEMP/$side-compile.log" 2>&1
+            compile_cflags="${CFLAGS:-}"
+            if [ "$PROJECT" = "pandas" ]; then
+              # This 2020 source tree treats GCC 13's array-bounds warning as
+              # fatal (-Werror). Demote only that warning for both paired builds;
+              # all other compiler warnings remain errors and this override is
+              # written into each raw case artifact.
+              compile_cflags="${compile_cflags} -Wno-error=array-bounds"
+              printf '%s\n' "$compile_cflags" > "$RUNNER_TEMP/case-artifact/$side-compiler-flags.txt"
+            fi
+            ( cd "$work_dir" && env -u SHELLOPTS -u BASH_ENV CFLAGS="$compile_cflags" bash --noprofile --norc "$RUNNER_TEMP/BugsInPy/framework/bin/bugsinpy-compile" ) > "$RUNNER_TEMP/$side-compile.log" 2>&1
             compile_rc=$?
             set -e
             cp "$RUNNER_TEMP/$side-compile.log" "$RUNNER_TEMP/case-artifact/$side-compile.log"
@@ -621,4 +638,4 @@ jobs:
           name: evidence-abstention-cohort-${{ matrix.case_id }}-technical-screen
           path: ${{ runner.temp }}/case-artifact/
           if-no-files-found: warn
-          retention-days: 30
+          retention-days: 90

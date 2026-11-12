@@ -1,0 +1,247 @@
+{
+  "record_type": "metadata_only_technical_screen_evidence_index_not_confirmatory_dataset",
+  "created_utc": "2026-11-11T17:55:00Z",
+  "repository": {
+    "canonical": "https://github.com/MahmutVezir/dijitalikiz",
+    "visibility": "private",
+    "source_of_truth": true
+  },
+  "workflow": {
+    "name": "Evidence Abstention V11 Technical Case Screen (No Inference)",
+    "run_id": 43064678818,
+    "run_number": 13,
+    "url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/43064678818",
+    "head_sha": "542c8e37d8857af1f70531025a322c2d3f46d587",
+    "branch": "research/2026-11-11-v11-mainline-runner-repair",
+    "conclusion": "success",
+    "interpretation": "Workflow and artifact-generation jobs completed. This does not mean all target tests passed or any candidate was accepted."
+  },
+  "frozen_selection": {
+    "dataset": "BugsInPy",
+    "dataset_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+    "inventory_metadata_cases": 501,
+    "screening_queue_candidates": 100,
+    "upstream_projects_in_cohort": 13,
+    "documented_prior_exposure_exclusions": 97,
+    "batch_offset": 0,
+    "batch_size": 8,
+    "distinct_projects_in_batch": 8,
+    "queue_sha256": "60be1b69ba912c43f11a9c7d2a902753685a2976ec159c2f3cae613b2bcdacb0",
+    "cohort_sha256": "f0cf46005c181eb63d04ec08fcaf7a48696ba84db938ba86c010f42e2703f325",
+    "freeze_artifact": {
+      "id": 13875890888,
+      "name": "evidence-abstention-v11-batch-0-freeze",
+      "sha256": "3b18b13877c27b8b11ab63e282948f03d681ef7df580dff9b2635210fdca292c",
+      "expires_at_utc": "2026-12-11T17:05:23Z"
+    }
+  },
+  "scientific_status": {
+    "accepted_confirmatory_cases": 0,
+    "inference_performed": false,
+    "model_training_performed": false,
+    "all_cases_accepted": false,
+    "human_license_review_complete": false,
+    "two_reviewer_ground_truth_check_complete": false,
+    "evidence_level_review_complete": false,
+    "leakage_and_prior_exposure_review_complete": false,
+    "confirmatory_gate": "CLOSED",
+    "prior_exposure_ledger_defect_found": true,
+    "confirmatory_eligibility_of_v11_batch": "permanently_excluded"
+  },
+  "cases": [
+    {
+      "case_id": "BugsInPy-ansible-7",
+      "project": "ansible",
+      "upstream_repository": "https://github.com/ansible/ansible",
+      "python": "3.6.9",
+      "buggy_commit": "cd146b836e032df785ecd9eb711c6ef23c2228b8",
+      "fixed_commit": "4ec1437212b2fb3c313e44ed5a76b105f2151622",
+      "target_test": "pytest test/units/modules/network/eos/test_eos_vlans.py::TestEosVlansModule::test_eos_vlan_replaced",
+      "buggy_exit": 1,
+      "fixed_exit": 0,
+      "technical_signal": "buggy-fail/fixed-pass",
+      "observed_behavior": "Buggy VLAN replacement emitted an unwanted extra 'no name' command; fixed checkout passed the selected test.",
+      "artifact": {
+        "id": 13875226704,
+        "name": "evidence-abstention-cohort-BugsInPy-ansible-7-technical-screen",
+        "zip_sha256": "8a0251e2013989332a00114201ebbc918ea7cfac15cf5810d6bc02e55632b494",
+        "size_bytes": 299899,
+        "expires_at_utc": "2026-12-11T17:08:55Z"
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
+    },
+    {
+      "case_id": "BugsInPy-black-9",
+      "project": "black",
+      "upstream_repository": "https://github.com/psf/black",
+      "python": "3.8.3",
+      "buggy_commit": "026c81b83454f176a9f9253cbfb70be2c159d822",
+      "fixed_commit": "d6db1c12a8e14833fe22da377cddc2bd1f43dc14",
+      "target_test": "python -m unittest -q tests.test_black.BlackTestCase.test_python2_print_function",
+      "buggy_exit": 1,
+      "fixed_exit": 0,
+      "technical_signal": "buggy-fail/fixed-pass",
+      "observed_behavior": "Buggy parser failed to parse Python 2-style print(a, file=sys.stderr); fixed checkout passed the selected test.",
+      "artifact": {
+        "id": 13874763503,
+        "name": "evidence-abstention-cohort-BugsInPy-black-9-technical-screen",
+        "zip_sha256": "d5d266181f61f4f71ddc049d16a189babbbcc69f060857cc716607e61156bdbc",
+        "size_bytes": 44234,
+        "expires_at_utc": "2026-12-11T17:10:15Z"
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
+    },
+    {
+      "case_id": "BugsInPy-fastapi-9",
+      "project": "fastapi",
+      "upstream_repository": "https://github.com/tiangolo/fastapi",
+      "python": "3.8.3",
+      "buggy_commit": "a7a92bc63768ccee3f3afc2b73b2c581928dfe75",
+      "fixed_commit": "c5817912d2be25bb310bf9da517882f57bbe7bb5",
+      "target_test": "pytest tests/test_request_body_parameters_media_type.py::test_openapi_schema",
+      "buggy_exit": 1,
+      "fixed_exit": 0,
+      "technical_signal": "buggy-fail/fixed-pass",
+      "observed_behavior": "OpenAPI request-body schema used application/json instead of the expected application/vnd.api+json; fixed checkout passed.",
+      "artifact": {
+        "id": 13876071661,
+        "name": "evidence-abstention-cohort-BugsInPy-fastapi-9-technical-screen",
+        "zip_sha256": "d817560f2671b8f7712583c2ac91b39fb6ca43f82d1226c7b52ebd44f7df644a",
+        "size_bytes": 65705,
+        "expires_at_utc": "2026-12-11T17:12:36Z"
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
+    },
+    {
+      "case_id": "BugsInPy-keras-8",
+      "project": "keras",
+      "upstream_repository": "https://github.com/keras-team/keras",
+      "python": "3.7.3",
+      "buggy_commit": "87540a2a2f42e00c4a2ca7ca35d19f96e62e6cb0",
+      "fixed_commit": "d78c982b326adeed6ac25200dc6892ff8f518ca6",
+      "target_test": "pytest tests/keras/engine/test_topology.py::test_layer_sharing_at_heterogeneous_depth_order",
+      "buggy_exit": 1,
+      "fixed_exit": 0,
+      "technical_signal": "buggy-fail/fixed-pass",
+      "observed_behavior": "Shared-layer graph at heterogeneous depth produced incompatible concatenate shapes (None, 12) and (None, 1, 12); fixed checkout passed.",
+      "artifact": {
+        "id": 13875266750,
+        "name": "evidence-abstention-cohort-BugsInPy-keras-8-technical-screen",
+        "zip_sha256": "eebd71954370b774f4273de9874b81dc41ffc8942ce672c992ac974ec93def32",
+        "size_bytes": 33092,
+        "expires_at_utc": "2026-12-11T17:09:38Z"
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
+    },
+    {
+      "case_id": "BugsInPy-luigi-8",
+      "project": "luigi",
+      "upstream_repository": "https://github.com/spotify/luigi",
+      "python": "3.8.3",
+      "buggy_commit": "61ee32e9968978c32be12a6af0affa3a5750e87e",
+      "fixed_commit": "8874b93165953c4f6bbe7b747804654d13290018",
+      "target_test": "pytest test/contrib/redshift_test.py::TestS3CopyToSchemaTable::test_s3_copy_to_table",
+      "buggy_exit": null,
+      "fixed_exit": null,
+      "technical_signal": "environment-blocked",
+      "observed_behavior": "Both sides failed test collection because the luigi package was not installed in the created virtualenv; no target test outcome was produced.",
+      "artifact": {
+        "id": 13875978115,
+        "name": "evidence-abstention-cohort-BugsInPy-luigi-8-technical-screen",
+        "zip_sha256": "3fb430d5de2797ced232f16ca42f7f27983cc222e2e2322e8b5486395d131b05",
+        "size_bytes": 97228,
+        "expires_at_utc": "2026-12-11T17:19:48Z"
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
+    },
+    {
+      "case_id": "BugsInPy-matplotlib-7",
+      "project": "matplotlib",
+      "upstream_repository": "https://github.com/matplotlib/matplotlib",
+      "python": "3.8.1",
+      "buggy_commit": "969513e2a5227331a2eb9e4bc4ba8448a0f9831d",
+      "fixed_commit": "ac400b51bb31b91920ee9aae02a0606a67983a8f",
+      "target_test": "pytest lib/matplotlib/tests/test_colors.py::test_light_source_shading_empty_mask",
+      "buggy_exit": null,
+      "fixed_exit": null,
+      "technical_signal": "environment-blocked",
+      "observed_behavior": "Legacy setup tried to obtain NumPy 2.5.4 from a source archive; the old easy_install path could not find setup.py, so the target test did not start.",
+      "artifact": {
+        "id": 13875987282,
+        "name": "evidence-abstention-cohort-BugsInPy-matplotlib-7-technical-screen",
+        "zip_sha256": "07ca970883cda9862a6a050d46c1194a135ae15f8edefcee4bbd674fed3ba34f",
+        "size_bytes": 13512,
+        "expires_at_utc": "2026-12-11T17:11:52Z"
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
+    },
+    {
+      "case_id": "BugsInPy-pandas-6",
+      "project": "pandas",
+      "upstream_repository": "https://github.com/pandas-dev/pandas",
+      "python": "3.8.3",
+      "buggy_commit_metadata_prefix": "21a10d1",
+      "observed_buggy_commit": "21a10d14df778999faad31107bed01074cac974a",
+      "fixed_commit": "8cd8ed3657e52ad9f67e17b7f5c20f7340ab6a2c",
+      "target_test": "pytest pandas/tests/groupby/test_size.py::test_size_period_index",
+      "buggy_exit": null,
+      "fixed_exit": null,
+      "technical_signal": "environment-blocked",
+      "observed_behavior": "The 2020 C-extension build encountered GCC 13 -Werror=array-bounds and failed; the subsequent pandas pytest plugin could not import pandas._libs.tslibs.timezones. The target test did not start.",
+      "artifact": {
+        "id": 13877091653,
+        "name": "evidence-abstention-cohort-BugsInPy-pandas-6-technical-screen",
+        "zip_sha256": "841c158e567fb1ac865ccb81ad25917d67637ec8ef8833e79c6c7dea7f39f867",
+        "size_bytes": 27527,
+        "expires_at_utc": "2026-12-11T17:31:03Z"
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
+    },
+    {
+      "case_id": "BugsInPy-scrapy-7",
+      "project": "scrapy",
+      "upstream_repository": "https://github.com/scrapy/scrapy",
+      "python": "3.8.3",
+      "buggy_commit": "e1ceaf3b5fa29326f032c4ed3f50943384b9e63d",
+      "fixed_commit": "074caf434e255bc96f106e57e3e288028f372485",
+      "target_test": "python -m unittest -q tests.test_http_request.FormRequestTest.test_spaces_in_action",
+      "buggy_exit": 1,
+      "fixed_exit": 0,
+      "technical_signal": "buggy-fail/fixed-pass",
+      "observed_behavior": "Buggy URL parsing kept an encoded space in http://example.com/%20path instead of http://example.com/path; fixed checkout passed.",
+      "artifact": {
+        "id": 13875138210,
+        "name": "evidence-abstention-cohort-BugsInPy-scrapy-7-technical-screen",
+        "zip_sha256": "ff25be8bfed8f4423efbdd92381e8a4a91f9af7633ffd6526cd523f41ca8b783",
+        "size_bytes": 38454,
+        "expires_at_utc": "2026-12-11T17:15:29Z"
+      },
+      "accepted_for_confirmatory": false,
+      "confirmatory_eligible": false,
+      "permanent_exclusion_from_confirmatory": true
+    }
+  ],
+  "retention_notice": "All raw GitHub Actions artifacts are temporary and are due to expire on 2026-12-11 (individual UTC times are recorded above). This committed index preserves selection, upstream repository URLs, commit identities, target-test commands, technical status, artifact IDs and archive SHA-256 digests. It does not preserve third-party source trees or raw worktree patches. Those are intentionally not copied into this repository until license review. Re-run the frozen workflow or download the raw artifacts before expiry if the complete logs are needed. All eight cases in this batch have also been appended to the new 2026-11-11 exposure union and must not enter future confirmatory analysis. BugsInPy-black-9 was already recorded as prior-exposed in the historical CASE_REGISTRY, but was omitted from the previous 97-ID union; this defect is corrected by the new append-only union.",
+  "integrity_claim": "All eight case artifact archives were downloaded and their embedded SHA256SUMS manifests verified in the audit session. Their reported ZIP digests match GitHub artifact metadata.",
+  "scope_warning": "These are engineering triage results, not an accepted confirmatory dataset. The batch is deterministic and predeclared, not a random sample. It must not be used to claim model performance.",
+  "exposure_ledger_defect": {
+    "case_id": "BugsInPy-black-9",
+    "prior_registry_record": "CASE_REGISTRY.json states 2026-10-24 technical exposure and draft E1/E2/E3 packets",
+    "missing_from_old_union": true,
+    "correction_addendum": "EXPOSURE_EXCLUSION_ADDENDUM_2026-11-11.json"
+  }
+}

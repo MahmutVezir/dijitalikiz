@@ -38,6 +38,10 @@ KNOWN_PRIOR_EXPOSURE_IDS = {
     "BugsInPy-luigi-4", "BugsInPy-matplotlib-3", "BugsInPy-pandas-3",
     "BugsInPy-sanic-4", "BugsInPy-scrapy-4", "BugsInPy-spacy-3",
     "BugsInPy-thefuck-4", "BugsInPy-tornado-4",
+    # V11 technical-screen cases permanently excluded after inspecting runner outcomes.
+    "BugsInPy-ansible-7", "BugsInPy-black-9", "BugsInPy-fastapi-9",
+    "BugsInPy-keras-8", "BugsInPy-luigi-8", "BugsInPy-matplotlib-7",
+    "BugsInPy-pandas-6", "BugsInPy-scrapy-7",
 }
 COMMIT = re.compile(r"^[0-9a-fA-F]{7,64}$")
 REQUIRED = {
@@ -167,10 +171,10 @@ def prepare(queue_path, cohort_path, matrix_path, summary_path, batch_size=8, ba
             "test_file": row["test_file"],
             "raw_test_commands": raw_commands,
             "execution_test_commands": execution_commands,
-            # Black's test imports the source checkout; Matplotlib's tests import
-            # numpy, which is declared by its source setup.py but not the
-            # case-level BugsInPy requirements.txt for this candidate.
-            "install_worktree_package": row["project"].lower() in {"black", "matplotlib"},
+            # Black and Matplotlib need the source checkout installed for their
+            # test imports. Luigi's selected test imports the project package,
+            # which is not installed by this candidate's BugsInPy setup.
+            "install_worktree_package": row["project"].lower() in {"black", "matplotlib", "luigi"},
             "expected_setup_sha256": row.get("setup_sha256",""),
         })
 
