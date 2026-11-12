@@ -87,7 +87,7 @@ Ayrıntılar:
 
 ## 5. Son no-inference CI kapısı
 
-PR #174 başındaki commit için [Evidence Abstention Preflight run #324](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43259061950) başarılı tamamlandı.
+Güncel PR #175 başındaki commit için [Evidence Abstention Preflight run #326](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43261986388) başarılı tamamlandı.
 
 - Preflight unit tests: 13/13 geçti.
 - Evidence packet audit tests: 12/12 geçti.
@@ -96,7 +96,7 @@ PR #174 başındaki commit için [Evidence Abstention Preflight run #324](https:
 - Açık engel: 21.
 - model_inference_performed=false.
 
-Bu CI sonucu, kodun kapıları doğru biçimde denetlediğini gösterir; deneyin hazır olduğunu göstermez. Başlıca engeller: dataset gate açık, doğrulanabilir ön kayıt yok, iki değerlendiricili rubrik/adjudication ve kalibrasyon dondurulmadı, exact model/tokenizer/runtime yükleme ön kontrolü geçmedi, zorunlu SHA-256 freeze kayıtları eksik, 60 vaka/8 proje eşiği karşılanmadı ve inference için açık yetki yok.
+Bu CI sonucu, kapı denetimlerinin testlerini geçtiğini gösterir; deneyin hazır olduğunu göstermez. Başlıca engeller: dataset gate açık, doğrulanabilir ön kayıt yok, iki değerlendiricili rubrik/adjudication ve kalibrasyon dondurulmadı, exact model/tokenizer/runtime yükleme ön kontrolü geçmedi, zorunlu SHA-256 freeze kayıtları eksik, 60 vaka/8 proje eşiği karşılanmadı ve inference için açık yetki yok.
 
 ## 6. Aşamalı yol haritası
 
