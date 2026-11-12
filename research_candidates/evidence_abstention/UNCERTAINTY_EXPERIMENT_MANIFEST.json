@@ -63,8 +63,8 @@
       "sha256": ""
     },
     "exposure_union": {
-      "path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json",
-      "sha256": ""
+      "path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json",
+      "sha256": "9f41451bb06582ea65647f67829e97ac190cb884946b1f4f09c75d8167acb7c1"
     }
   },
   "explicit_authorization_environment_variable": "EVIDENCE_UNCERTAINTY_INFERENCE_APPROVED",
@@ -75,5 +75,7 @@
     "Repeated sampling and generation-score entropy require this separate experiment to be reviewed, preregistered, frozen, and separately authorized.",
     "The candidate runtime lock is separate from the historical deterministic-generation runtime lock. A no-output checkpoint load may be verified independently, but it does not authorize any response generation."
   ],
-  "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
+  "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json",
+  "exposure_union_sha256": "9f41451bb06582ea65647f67829e97ac190cb884946b1f4f09c75d8167acb7c1",
+  "permanent_exclusion_count": 105
 }
