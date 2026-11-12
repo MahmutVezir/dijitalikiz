@@ -8,13 +8,16 @@ Before any model loading or generation, the read-only gate requires:
 
 - Explicit manifest authorization and a CLOSED case-validation gate.
 - A verifiable preregistration URI and frozen reviewer/adjudication protocol.
+- Dataset-level BugsInPy permission/license clearance and exact upstream project license review.
+- Exact Qwen model-revision license clearance for the non-commercial research use.
+- Required institutional approval and written reviewer consent.
 - At least 60 independently accepted cases across at least eight upstream projects.
 - Exact model/tokenizer/runtime verification.
 - The canonical `EXPOSURE_UNION_2026-11-11.json` must be readable, have exactly 105 unique permanent exclusions, and match the manifest's reviewed SHA-256. No accepted case may intersect that full exclusion union.
 - Every frozen artifact must use its canonical repository-relative path; the case registry may not be redirected to another file. All frozen hashes must match actual file bytes.
 - Separate explicit authorization through EVIDENCE_UNCERTAINTY_INFERENCE_APPROVED=YES.
 
-The current manifest deliberately fails these gates: no accepted case IDs, open validation gate, draft preregistration, unverified model runtime, empty frozen hashes, empty calibration data, and no authorization. Unit tests use synthetic sample objects only; they do not load a model or generate research outputs.
+The current manifest deliberately fails these gates: no accepted case IDs, open validation gate, draft preregistration, unresolved dataset/upstream/model licenses, pending human-review approval and consent, unverified model runtime, incomplete frozen hashes, empty calibration data, and no authorization. Unit tests use synthetic sample objects only; they do not load a model or generate research outputs.
 
 The selected answer is candidate zero from a predeclared seed policy. Outputs are not cherry-picked based on self-reported confidence. Missing independent evidence-support or contradiction audits cause abstention. This prototype does not estimate pure epistemic uncertainty: generation-score entropy and response dispersion can also reflect decoding variability.
 
