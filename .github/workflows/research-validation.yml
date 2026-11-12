@@ -200,7 +200,7 @@ jobs:
       - name: Audit historical records with sanitized output
         shell: bash
         env:
-          ARCHIVE_PATH: ${{ steps.download.outputs.archive_path }}
+          ARCHIVE_PATH: ${{ github.workspace }}/data/historical/confirmatory_artifact_2026-10-09.zip
         run: |
           set -euo pipefail
           audit_json="$RUNNER_TEMP/historical-audit-result.json"
