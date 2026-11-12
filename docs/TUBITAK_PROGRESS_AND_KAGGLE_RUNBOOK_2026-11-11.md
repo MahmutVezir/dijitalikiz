@@ -156,3 +156,40 @@ The ZIP is recovered but **not yet committed** to `data/historical/confirmatory_
 6. Complete statistical analysis, limitations, AI-use declaration, consent/approval appendix and the final report before the TÜBİTAK deadline.
 
 **Status on 12 November:** repository/code and metadata intake are substantially improved, but the scientific dataset, legal clearance, confirmatory labels, model experiment, and final report are not complete. Do not submit or claim a completed project yet.
+
+
+## 11. 12 Kasım 2026 — Kaggle snapshot, inference gate and training decision
+
+### 31/19 Kaggle source-count mismatch
+
+The 31-file and 19-file counts belong to two different, versioned source snapshots:
+- 27 October v2 bundle: 31 files, `BUNDLE_MANIFEST.json`, source commit `99663c2874424feb9cec1d965432030f5cdb3ef8`, consumed by notebook 02.
+- 3 November current-branch audit: 19 allow-listed files, consumed by notebook 03.
+
+The 19-file audit package is not the complete repository. The exact "v2 source-bundle manifest found 0" error means the running notebook did not find the manifest path/name it expected; a stale notebook copy or the wrong dataset/notebook pairing is the likely cause. Do not rename manifests manually. See `docs/KAGGLE_SOURCE_BUNDLE_COMPATIBILITY_2026-11-12.md`.
+
+V12 metadata intake now runs directly in GitHub Actions from the canonical repository and no longer depends on either historical Kaggle bundle.
+
+### Inference gate repaired
+
+The separate uncertainty inference gate previously hard-coded the 23 October 93-ID exposure union. It now pins:
+- `EXPOSURE_UNION_2026-11-11.json`
+- exactly 105 unique exclusion IDs
+- SHA-256 `9f41451bb06582ea65647f67829e97ac190cb884946b1f4f09c75d8167acb7c1`
+
+The inference gate now also requires explicit dataset-level license clearance, exact upstream project license clearance, exact model revision license clearance, institutional approval and reviewer consent. The manifest remains deliberately closed.
+
+### Model training decision
+
+The current `qwen_uncertainty_adapter.py` is an inference adapter, not a fine-tuning script. The `uncertainty_policy.py` component is a pure-Python decision/calibration layer, not a neural training loop. No training script or training dataset is currently present.
+
+The primary confirmatory study should compare P0 and P1 using the same frozen base model. Fine-tuning before this comparison would change the model and confound the effect of the abstention policy. A separate fine-tuning study is optional and requires its own licensed labeled dataset, project-disjoint splits, preregistration, and independent test set. See `research_candidates/evidence_abstention/MODEL_TRAINING_DECISION_2026-11-12.md`.
+
+### Current hard stops
+
+- BugsInPy dataset-level license/permission unresolved.
+- Per-project license review incomplete.
+- Qwen2.5-3B-Instruct exact revision license review pending; model is marked Qwen Research License, not Apache-2.0.
+- Human reviewer institutional approval and written consent not obtained.
+- 100 V12 candidates are metadata only; zero accepted confirmatory cases.
+- No inference, fine-tuning, or model training performed.
