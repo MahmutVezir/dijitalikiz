@@ -49,6 +49,8 @@ class V12TechnicalScreenWorkflowContractTests(unittest.TestCase):
 
     def test_workflow_is_read_only_and_legacy_v11_manual_dispatch_is_removed(self):
         self.assertIn("contents: read", self.v12)
+        self.assertIn("uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09", self.v12)
+        self.assertIn("uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1", self.v12)
         self.assertNotIn("contents: write", self.v12)
         self.assertNotIn("git push", self.v12.lower())
         self.assertNotIn("workflow_dispatch:", self.v11)
