@@ -18,7 +18,7 @@ class V12MetadataWorkflowContractTests(unittest.TestCase):
 
     def test_generates_v12_metadata_only_intake(self):
         self.assertIn("SCREENING_COHORT_100_V12_2026-11-12.json", self.source)
-        self.assertIn('"accepted_confirmatory_cases"] == 0', self.source)
+        self.assertIn('intake.get("accepted_confirmatory_cases") != 0', self.source)
         self.assertIn('"llm_inference_performed"] is not False', self.source)
 
     def test_commits_generated_inventory_and_evidence_to_canonical_repository(self):
