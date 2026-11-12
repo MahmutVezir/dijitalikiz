@@ -13,7 +13,6 @@
   "artifact_expires_at": "2027-02-10T14:22:01Z",
   "artifact_zip_crc": "passed",
   "artifact_contents_verified": true,
-  "bug_s_in_py_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
   "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json",
   "exposure_union_sha256": "9f41451bb06582ea65647f67829e97ac190cb884946b1f4f09c75d8167acb7c1",
   "inventory_rows": 501,
@@ -63,5 +62,6 @@
     "The inventory and full queue CSVs are reproducible from the pinned BugsInPy commit and project-owned scripts; their exact byte hashes are recorded above. They are not copied into this repository as upstream source code.",
     "The cohort index and first-batch selection are metadata only. The eight first-batch cases have not had technical tests run by this V12 workflow.",
     "No case is accepted for confirmatory analysis. No inference or model training is authorized."
-  ]
+  ],
+  "bugsinpy_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd"
 }
