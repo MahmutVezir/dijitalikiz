@@ -78,17 +78,21 @@ FastMCP için cohort'taki eski repo adı jlowin/fastmcp artık GitHub tarafında
 
 ### Lisans ve lineage durumu
 
-- İlk 8'in kök lisans metinleri Apache-2.0 olarak doğrulandı. ANTA NOTICE, python-tuf ek MIT lisansı ve earthkit-data ECMWF ek rezerv notu ayrıca kayıtlı.
-- **9–16 kayıtlarının exact base commit lisansları henüz incelenmedi.** Metadata'daki Apache-2.0 alanı tek başına hukuki temizlik sayılmaz.
-- Google ilişkili iki depo için bağımsızlıkta kurumsal kümeleme notu korunuyor.
+- **İlk 16 adayın exact base commit kök lisansları 16/16 Apache-2.0** olarak doğrulandı.
+- İlk sekiz için ANTA NOTICE, python-tuf ek MIT lisansı ve earthkit-data ECMWF ek rezerv notu kayıtlı.
+- 9–16 grubunda D-Wave ve Kafka dokümantasyon lisans dosyaları kök Apache-2.0 lisansına referans/kopya. EODAG NOTICE belgesi Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause ve PSF lisanslı bileşenler listeliyor; ayrıca test kaynakları için katalog/veri provenance bildirimi bulunuyor.
+- FastMCP cohort kaydı `jlowin/fastmcp` artık `PrefectHQ/fastmcp` deposuna yönlendiriliyor; sabit base SHA ve PR eşleşmesi korunmuş.
+- İlk 16 repo için GitHub fork/archive taraması: 16/16 fork değil, 16/16 arşivlenmemiş.
+- EODAG PR #1536, geodes_s3 yapılandırma anahtarı düzeltmesinin yanında `StacListAssets` kontrolü değişikliği de içeriyor. Bu ek değişikliğin aynı vaka kök nedenine ait olup olmadığı inceleme dosyasında ayrı risk olarak tutulmalı.
 - İlk 16 kayıt bilinen BugsInPy dört depo dışlama listesiyle ad eşleşmesi göstermiyor; bu, geniş model pretraining kontaminasyonunu dışlamaz.
 
 Ayrıntılı raporlar:
 - [İlk 8 kök lisans ve lineage denetimi](SWE_REBENCH_V2_FIRST8_SOURCE_LICENSE_LINEAGE_AUDIT_2026-11-12.md)
 - [İlk 8 PR/issue kapsam denetimi](SWE_REBENCH_V2_FIRST8_CASE_SCOPE_AUDIT_2026-11-12.md)
 - [9–16 PR/issue kapsam denetimi](SWE_REBENCH_V2_CASE_SCOPE_AUDIT_09_16_2026-11-12.md)
+- [9–16 kaynak lisansı ve lineage denetimi](SWE_REBENCH_V2_SOURCE_LICENSE_LINEAGE_AUDIT_09_16_2026-11-12.md)
 
-**Aşama 3 tamamlanmadı.** Cohort'un kalan kayıtları aynı sabit kuralla taranmalı; 9–16 lisans kontrolü de bekliyor. Kök lisans taraması, her vaka içindeki patch dosyaları, üçüncü taraf bileşenler, issue/PR metinleri ve test bağımlılıklarının tam kullanım değerlendirmesinin yerine geçmez. Kaynak/test kapısı hâlâ kapalıdır.
+**Aşama 3 tamamlanmadı.** İlk 16/96 adayın PR/issue tipi tarandı ve kök lisansları 16/16 Apache-2.0 olarak doğrulandı. Bunlar hâlâ aday havuzu, kabul edilmiş vaka değil. Kök lisans taraması, her vaka içindeki patch dosyaları, üçüncü taraf bileşenler, issue/PR metinleri ve test bağımlılıklarının tam kullanım değerlendirmesinin yerine geçmez. Kaynak/test kapısı hâlâ kapalıdır.
 
 ## 5. Son no-inference CI kapısı
 
@@ -135,4 +139,4 @@ Bu CI sonucu, kapı denetimlerinin testlerini geçtiğini gösterir; deneyin haz
 - İnsan etik/onay gerekliliği, değerlendirici onamı ve veri kullanım sınırları yazılı olarak netleştirilir.
 - Olumsuz veya sonuçsuz sonuçlar değiştirilmeden raporlanır.
 
-**Bir sonraki tek iş paketi:** 9–16. adayların exact base commit'lerindeki kök lisans dosyalarını, LICENSE/NOTICE/COPYING eklerini ve fork/transfer lineage durumlarını kontrol etmek. Bu lisans kapısı kapanmadan upstream kaynak kodu veya testleri çalıştırılmayacak.
+**Bir sonraki tek iş paketi:** PR/base-commit/issue tipi taramasını cohort'un 17–24. adaylarına aynı sabit kuralla uygulamak. Feature/enhancement/test-only değişikliklerini ayırmak; lisans ve vaka kabul kapıları kapanmadan upstream testlerini çalıştırmamak.
