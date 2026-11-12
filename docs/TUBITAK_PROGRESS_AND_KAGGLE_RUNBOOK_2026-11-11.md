@@ -105,8 +105,10 @@ Bu raporun tarihi itibarıyla çalışma, **altyapı ve teknik tarama aşamasın
 ### V12 metadata-only intake
 
 - GitHub Actions workflow: `Evidence Abstention V12 Metadata Inventory`
-- Run: `43236394154` — successful.
-- Actions artifact: `13953036165`; 189,494 bytes; SHA-256 `ca9ee364c947d944cbaae74f85bb6402f3fa7a12eb767c64972e1cf3bf72a20e`; 90-day expiry.
+- Initial run: `43236394154` — successful.
+- Latest verified rerun: `43239530779` — successful.
+- Latest Actions artifact: `13953987822`; 189,493 bytes; SHA-256 `cb75583d1a3309033acc34a0494674e0d7ba5a4f64d8c82ad1b20ad0e5f9a539`; expires `2027-02-10T14:40:01Z`.
+- The latest artifact ZIP CRC passed and all seven internal file SHA-256/byte-length records matched. The 501-row inventory, 395-row queue, 100-case index and eight-project first batch reproduced identically to the initial successful run.
 - Pinned BugsInPy metadata revision: `11c5f1eea954a42132cfd06bf257766a7963e0fd`.
 - Inventory: 501 metadata rows. Queue after exclusions: 395 candidate rows.
 - V12 intake: 100 unique candidate IDs across 13 upstream projects.
