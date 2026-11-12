@@ -79,7 +79,8 @@
     "Repeated sampling and generation-score entropy require this separate experiment to be reviewed, preregistered, frozen, and separately authorized.",
     "The candidate runtime lock is separate from the historical deterministic-generation runtime lock. A no-output checkpoint load may be verified independently, but it does not authorize any response generation.",
     "2026-11-12 legal gate: BugsInPy has no dataset-wide LICENSE at the checked repository root; written permission or a clearly licensed replacement is required before confirmatory data use/redistribution.",
-    "2026-11-12 model gate: Qwen2.5-3B-Instruct is marked Qwen Research License, not Apache-2.0; exact revision license review is pending. The primary experiment is a frozen-model P0/P1 policy comparison, not fine-tuning."
+    "2026-11-12 model gate: Qwen2.5-3B-Instruct is marked Qwen Research License, not Apache-2.0; exact revision license review is pending. The primary experiment is a frozen-model P0/P1 policy comparison, not fine-tuning.",
+    "Technical target-test screening is disabled until dataset and upstream licenses are cleared, the technical-screen protocol is frozen, and an explicit manual authorization is recorded."
   ],
   "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json",
   "exposure_union_sha256": "9f41451bb06582ea65647f67829e97ac190cb884946b1f4f09c75d8167acb7c1",
@@ -89,5 +90,7 @@
   "human_reviewer_approval_status": "pending",
   "human_reviewer_consent_status": "pending",
   "ai_use_disclosure_status": "pending_final_report",
-  "training_decision": "fixed_base_model_policy_comparison_primary; fine_tuning_not_authorized"
+  "training_decision": "fixed_base_model_policy_comparison_primary; fine_tuning_not_authorized",
+  "technical_screen_protocol_status": "not_frozen",
+  "technical_screen_authorized": false
 }
