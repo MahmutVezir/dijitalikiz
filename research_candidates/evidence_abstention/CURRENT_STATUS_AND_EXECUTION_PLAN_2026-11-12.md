@@ -63,27 +63,32 @@ Qwen2.5-3B-Instruct'ın yayımlanma tarihinden sonraki kayıtları seçmek, olas
 
 İlk 8 adayın sabit base commit'lerinde kök lisans dosyaları exact commit SHA üzerinden okundu; 8/8 Apache-2.0 metni. Recursive Git tree sorguları truncated=false döndürdü.
 
-Bunun ardından aday kimliklerinin bağlandığı GitHub pull request'leri ve ilgili issue'lar eşleştirildi. **8/8 PR'nin base commit'i, cohort'taki base_commit ile birebir eşleşti.** Bu, kayıtların PR provenance zincirini doğrular; tek başına vaka kabulü anlamına gelmez.
+İlk 16 adayın GitHub PR'leri cohort metadata'sıyla eşleştirildi. **16/16 PR base SHA, cohort'taki base_commit ile birebir eşleşti.** Dolayısıyla seçilen commit ve upstream PR provenance bağı bu ilk 16 kayıtta doğrulandı; bu eşleşme tek başına vaka kabulü anlamına gelmez.
 
-İlk sekiz için vaka tipi sonucu:
-- **4 geçici bug adayı:** reagento/dishka (issue bug etiketi ve açık yeniden üretim), ecmwf/earthkit-data (bug etiketi; tek değişkenli GRIB→xarray dönüşümünde units kaybı), wntrblm/nox (bug etiketi; pyenv uv shim kaynaklı ortam hatası), databricks/dbt-databricks (bug etiketi; geçersiz temp-table adı nedeniyle cleanup sorunu).
-- **4 katı bug-kök-neden havuzundan dışlandı:** aristanetworks/anta PR'si yalnızca test dosyalarını değiştiriyor; python-tuf issue'su enhancement; python-bigquery issue'su feature request; Cloud SQL connector issue'su feature request.
+### Vaka tipi taraması
 
-Bu dört geçici aday da kabul edilmiş değildir. Test patch'lerinin hatayı gerçekten yakalayıp yakalamadığı, testin buggy sürümde başarısız/fixed sürümde başarılı olup olmadığı ve her değişen dosyanın lisans kapsamı ayrıca kanıtlanmalıdır. dbt-databricks için özellikle eklenen suffix testlerinin issue'da anlatılan gerçek drop/cleanup yolunu kapsayıp kapsamadığı henüz belirsizdir.
+- **İlk 8 kayıtta 4 geçici bug adayı:** reagento/dishka, ecmwf/earthkit-data, wntrblm/nox, databricks/dbt-databricks.
+- **İlk 8 kayıtta 4 dışlama:** aristanetworks/anta yalnızca test kodu değişikliği; python-tuf enhancement; python-bigquery feature request; Cloud SQL connector feature request.
+- **9–16 kayıtlarında 4 geçici bug adayı:** getmoto/moto (çoklu ECR image tag'lerinin listelenmemesi), pyro-ppl/numpyro (AIES warmup sonrası MCMC.run hatası), OpenMDAO/dymos (add_control/set_control_options varsayılan değerlerinin uygulanmaması), CS-SI/eodag (provider config anahtarının çakışması).
+- **9–16 kayıtlarında 4 dışlama:** D-Wave samplers için yeni close() API'si; FastMCP resource template optional arg desteği; kafka-python timeout_ms API parametreleri; PennyLane GroverOperator work_wires property.
 
-Ek lisans ve lineage notları:
-- aristanetworks/anta: NOTICE dosyası aio-eapi bileşenini ayrıca bildiriyor; bildirim korunmalı.
-- theupdateframework/python-tuf: ayrıca bir MIT lisans dosyası var; hangi bileşene uygulandığı belirlenmeli.
-- ecmwf/earthkit-data: Apache lisans belgesine ECMWF'nin imtiyaz ve dokunulmazlıklarını saklı tuttuğuna ilişkin ek ifade eşlik ediyor; hukuki değerlendirme notu olarak tutulmalı.
-- googleapis/python-bigquery: GitHub API'sinde şu anda arşivlenmiş görünüyor; teknik yeniden üretilebilirlik ayrıca kontrol edilmeli.
-- googleapis/python-bigquery ile GoogleCloudPlatform/cloud-sql-python-connector farklı depolar ve fork olarak işaretli değiller; ancak ihtiyatlı bağımsızlık analizinde aynı Google kurumsal ailesinde kümelenmeli.
-- İlk sekiz repo, bilinen BugsInPy maruziyet dışlama adlarıyla eşleşmiyor. Bu, daha geniş model eğitim verisi kontaminasyonunu dışlamaz.
+İlk 16'da toplam **8 geçici bug adayı / 8 dışlanan kayıt** var. Bu küçük sıralı batch'in oranı tüm 96 adaya genellenemez. Adaylar, test yeterliliği ve buggy-fail/fixed-pass yeniden üretimi tamamlanmadığı için kabul edilmiş vaka değildir.
 
-Ayrıntılar:
-- [İlk sekiz kök lisans ve lineage denetimi](SWE_REBENCH_V2_FIRST8_SOURCE_LICENSE_LINEAGE_AUDIT_2026-11-12.md)
-- [İlk sekiz PR/issue kapsam ve vaka tipi denetimi](SWE_REBENCH_V2_FIRST8_CASE_SCOPE_AUDIT_2026-11-12.md)
+FastMCP için cohort'taki eski repo adı jlowin/fastmcp artık GitHub tarafından PrefectHQ/fastmcp deposuna yönlendiriliyor. PR #164'ün base SHA'sı cohort commit'iyle eşleşiyor; bu repo transferi/isim sahipliği değişimi olarak kaydedildi, commit uyuşmazlığı değil.
 
-**Aşama 3 tamamlanmadı.** İlk 8/96 adayın PR/issue tipi tarandı; yalnızca 4'ü katı bug tanımına geçici olarak uydu. Cohort'un geri kalanı aynı sabit kuralla taranmalı. Kök lisans taraması da vaka içindeki her patch dosyası, üçüncü taraf bileşeni, issue/PR metni ve test bağımlılığının tam hukuki/teknik kullanım değerlendirmesinin yerine geçmez. Kaynak/test kapısı hâlâ kapalıdır.
+### Lisans ve lineage durumu
+
+- İlk 8'in kök lisans metinleri Apache-2.0 olarak doğrulandı. ANTA NOTICE, python-tuf ek MIT lisansı ve earthkit-data ECMWF ek rezerv notu ayrıca kayıtlı.
+- **9–16 kayıtlarının exact base commit lisansları henüz incelenmedi.** Metadata'daki Apache-2.0 alanı tek başına hukuki temizlik sayılmaz.
+- Google ilişkili iki depo için bağımsızlıkta kurumsal kümeleme notu korunuyor.
+- İlk 16 kayıt bilinen BugsInPy dört depo dışlama listesiyle ad eşleşmesi göstermiyor; bu, geniş model pretraining kontaminasyonunu dışlamaz.
+
+Ayrıntılı raporlar:
+- [İlk 8 kök lisans ve lineage denetimi](SWE_REBENCH_V2_FIRST8_SOURCE_LICENSE_LINEAGE_AUDIT_2026-11-12.md)
+- [İlk 8 PR/issue kapsam denetimi](SWE_REBENCH_V2_FIRST8_CASE_SCOPE_AUDIT_2026-11-12.md)
+- [9–16 PR/issue kapsam denetimi](SWE_REBENCH_V2_CASE_SCOPE_AUDIT_09_16_2026-11-12.md)
+
+**Aşama 3 tamamlanmadı.** Cohort'un kalan kayıtları aynı sabit kuralla taranmalı; 9–16 lisans kontrolü de bekliyor. Kök lisans taraması, her vaka içindeki patch dosyaları, üçüncü taraf bileşenler, issue/PR metinleri ve test bağımlılıklarının tam kullanım değerlendirmesinin yerine geçmez. Kaynak/test kapısı hâlâ kapalıdır.
 
 ## 5. Son no-inference CI kapısı
 
@@ -104,7 +109,7 @@ Bu CI sonucu, kapı denetimlerinin testlerini geçtiğini gösterir; deneyin haz
 |---|---|---|---|
 | 1 | Araştırma sorusu, literatür sınırı, P0/P1 × E1/E2/E3 protokolü | Önceden belirlenmiş ölçütler ve adil karşılaştırma | Taslak olarak hazır; sistematik literatür ve prereg tamamlanmalı |
 | 2 | Kaynak veri metadata fizibilitesi ve cohort oluşturma | Sabit veri revizyonu, hash, kurallar ve deterministik seçim | Metadata aşaması tamamlandı |
-| 3 | Kaynak lisansı, repo lineage, PR/issue tipi, exposure ve case-level provenance | Her aday için exact commit, dosya lisansı, issue tipi, notice, fork/upstream ve maruziyet incelemesi | Devam ediyor; ilk 8/96 PR eşleşti, 4/8 geçici bug adayı |
+| 3 | Kaynak lisansı, repo lineage, PR/issue tipi, exposure ve case-level provenance | Her aday için exact commit, dosya lisansı, issue tipi, notice, fork/upstream ve maruziyet incelemesi | Devam ediyor; ilk 16/96 PR eşleşti, 8/16 geçici bug adayı |
 | 4 | Buggy/fixed teknik yeniden üretim | Exact environment; buggy hedef test başarısız, fixed aynı test başarılı; tüm log/hash'ler saklı | Başlamadı; lisans kapısına bağlı |
 | 5 | Gold root-cause ve evidence-tier etiketleme | Model çıktısını görmeyen en az iki bağımsız inceleyici; uyuşmazlık/adjudication kaydı | Başlamadı |
 | 6 | Protokolü kilitleme ve preregistration | Prompt, schema, model, tokenizer, runtime, rubrik, analiz ve vaka hash'leri; prereg URI | Başlamadı |
@@ -130,4 +135,4 @@ Bu CI sonucu, kapı denetimlerinin testlerini geçtiğini gösterir; deneyin haz
 - İnsan etik/onay gerekliliği, değerlendirici onamı ve veri kullanım sınırları yazılı olarak netleştirilir.
 - Olumsuz veya sonuçsuz sonuçlar değiştirilmeden raporlanır.
 
-**Bir sonraki tek iş paketi:** Aynı sabit PR/base-commit/issue tipi taramasını cohort'un 9–16. adaylarına uygulamak. Katı bug-kök-neden kriterini değiştirmeden, feature/enhancement ve test-only düzeltmeleri ana aday havuzundan ayırmak.
+**Bir sonraki tek iş paketi:** 9–16. adayların exact base commit'lerindeki kök lisans dosyalarını, LICENSE/NOTICE/COPYING eklerini ve fork/transfer lineage durumlarını kontrol etmek. Bu lisans kapısı kapanmadan upstream kaynak kodu veya testleri çalıştırılmayacak.
