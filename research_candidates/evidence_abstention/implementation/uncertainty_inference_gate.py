@@ -133,6 +133,10 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
 
     checks = (
         (manifest.get("inference_allowed") is True, "Manifest does not explicitly authorize inference."),
+        (manifest.get("dataset_license_status") == "cleared", "Dataset-level license/permission is not cleared."),
+        (manifest.get("upstream_project_license_status") == "cleared", "Exact upstream project licenses are not cleared."),
+        (manifest.get("human_reviewer_approval_status") == "approved", "Required human-review institutional approval is not recorded."),
+        (manifest.get("human_reviewer_consent_status") == "complete", "Required human-review consent is not complete."),
         (manifest.get("dataset_validation_gate") == "CLOSED", "Dataset validation gate is not CLOSED."),
         (manifest.get("preregistration_status") == "registered" and bool(manifest.get("preregistration_uri")), "A verifiable preregistration record is missing."),
         (manifest.get("reviewer_protocol_frozen") is True, "Independent reviewer and adjudication protocol is not frozen."),
@@ -148,6 +152,8 @@ def evaluate_gate(root: Path, manifest_path: Path, env: Mapping[str, str] | None
             blockers.append("Model ID/revision differs from the reviewed immutable checkpoint.")
         if model.get("tokenizer_id") != EXPECTED_MODEL_ID or model.get("tokenizer_revision") != EXPECTED_MODEL_REVISION:
             blockers.append("Tokenizer ID/revision differs from the reviewed immutable checkpoint.")
+        if model.get("license_review_status") != "cleared_for_noncommercial_research":
+            blockers.append("Exact model revision license has not been cleared for this non-commercial research use.")
         if model.get("runtime_verification") != "passed":
             blockers.append("Exact model/tokenizer/runtime preflight has not passed.")
         if model.get("dtype") != "float16" or model.get("quantization", "none") != "none":
