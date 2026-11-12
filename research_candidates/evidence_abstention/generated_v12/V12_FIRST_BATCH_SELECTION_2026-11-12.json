@@ -1,0 +1,165 @@
+{
+  "record_type": "v12_first_batch_metadata_selection_only",
+  "created_on": "2026-11-12",
+  "selection_only": true,
+  "technical_tests_performed": false,
+  "accepted_confirmatory_cases": 0,
+  "model_inference_performed": false,
+  "source_matrix_sha256": "43ece0031f0e73175449cc63dde8212e72d708409435fece44d87dad944290fa",
+  "cases": [
+    {
+      "queue_rank": 1,
+      "case_id": "BugsInPy-ansible-8",
+      "project": "ansible",
+      "bug_id": "8",
+      "source_repository": "https://github.com/ansible/ansible",
+      "python_version": "3.6.9",
+      "buggy_commit": "81378b3e744cd0d13b33d18a4f8a38aeb8a6e97a",
+      "fixed_commit": "fc7980af9a42676913b4054163570ee438b82e9c",
+      "run_test_sha256": "e2476a310a74d643d388b898338ddd57e65eefb03f582ac689469421cad4790a",
+      "bug_info_sha256": "d6ff8990e8e0e7d0b66cfc242f0cb98d127fbc39e490a26f9ed6cc6901144f09",
+      "project_info_sha256": "f670bc1ee75b15444c2855afec08753228cdc25c9267b20d1840e85614c49bf6",
+      "test_file": "test/units/plugins/shell/test_powershell.py",
+      "execution_test_commands": [
+        "pytest test/units/plugins/shell/test_powershell.py::test_join_path_unc"
+      ],
+      "install_worktree_package": false,
+      "expected_setup_sha256": "a2d3d0b58b25eb6a2db1f7048ae9e09d045452b0f24f268e9b90e21b05789b7a"
+    },
+    {
+      "queue_rank": 2,
+      "case_id": "BugsInPy-black-10",
+      "project": "black",
+      "bug_id": "10",
+      "source_repository": "https://github.com/psf/black",
+      "python_version": "3.8.3",
+      "buggy_commit": "f6643c4f0cfbae1f2493fdfce46cfbae3d26f46b",
+      "fixed_commit": "66aa676278948368dff251dffd58c850cb8b889e",
+      "run_test_sha256": "b4e7e20372742ed6618e446423c63bcd87c0a64702542266a474974b48949be9",
+      "bug_info_sha256": "d6554da2f1ca3be4cef7d4d1b748b271d52c2d2d03f485009ac52b383a9ac966",
+      "project_info_sha256": "a03b008c4335dd0fd539ae83f1da00a1bd65e1dfbd038ea1326169f19cb7fdb8",
+      "test_file": "tests/test_black.py",
+      "execution_test_commands": [
+        "python -m unittest -q tests.test_black.BlackTestCase.test_comment_indentation"
+      ],
+      "install_worktree_package": true,
+      "expected_setup_sha256": "5ebfe240917e30d1dcb9c5d19ad85af36a29ae5c33d6d4a768863069b0a3329b"
+    },
+    {
+      "queue_rank": 3,
+      "case_id": "BugsInPy-fastapi-10",
+      "project": "fastapi",
+      "bug_id": "10",
+      "source_repository": "https://github.com/tiangolo/fastapi",
+      "python_version": "3.8.3",
+      "buggy_commit": "b77a43bcac3ec8e7edbe82543e777c60ae85c178",
+      "fixed_commit": "38495fffa560fa57a8f0e6437d8e43c36c8e5612",
+      "run_test_sha256": "3bf5a3304fc50d8c1848e78dd97b11a05c1243cc720bacef75da80216479381b",
+      "bug_info_sha256": "30954d475cbc1c5a307a3a390a75081b40379f61698f1318a3d4efed67307f61",
+      "project_info_sha256": "4f7ee4b8497b40ddedf7376056fbf021c46f735623547b80c4c0355e48cfcd7f",
+      "test_file": "tests/test_skip_defaults.py",
+      "execution_test_commands": [
+        "pytest tests/test_skip_defaults.py::test_return_defaults"
+      ],
+      "install_worktree_package": false,
+      "expected_setup_sha256": ""
+    },
+    {
+      "queue_rank": 4,
+      "case_id": "BugsInPy-keras-9",
+      "project": "keras",
+      "bug_id": "9",
+      "source_repository": "https://github.com/keras-team/keras",
+      "python_version": "3.7.3",
+      "buggy_commit": "0cd3b07eb5de1aaaad84d1ff7f7c2ed7dab4b23c",
+      "fixed_commit": "0505393746d56ddacc34bb1c016dba79429c9ac9",
+      "run_test_sha256": "adf6c34b5eaf5701ea1c5cf87629bf1f00f21595352fc29f27e34128c2242414",
+      "bug_info_sha256": "231f883add811c5a94b626594992f4edb09caccab25e9d896ea733ad6fe374a4",
+      "project_info_sha256": "09984ebb32e44deee1f0a8374c39c86df5ad31dc48b8c40261b10d0149e2d59d",
+      "test_file": "tests/test_doc_auto_generation.py",
+      "execution_test_commands": [
+        "pytest tests/test_doc_auto_generation.py::test_doc_lists[docs_descriptor1]"
+      ],
+      "install_worktree_package": false,
+      "expected_setup_sha256": ""
+    },
+    {
+      "queue_rank": 5,
+      "case_id": "BugsInPy-luigi-9",
+      "project": "luigi",
+      "bug_id": "9",
+      "source_repository": "https://github.com/spotify/luigi",
+      "python_version": "3.8.3",
+      "buggy_commit": "f7e0b7710fd8b12f27625b1efb62a8fde6e206c4",
+      "fixed_commit": "b7115974c3deadf77113686248b39567cb67e38f",
+      "run_test_sha256": "3a93791b186ec83c785cb307e451d70de3d16a5f7e1e7dca791b2e49b8f8e728",
+      "bug_info_sha256": "2fdb4ea9d0df154293d6689479200c95dba5e249a7d8e10eb23ce46268b3c501",
+      "project_info_sha256": "560e68c53eb64c9e9fe402201bf4dffad6283c4d6928e25059d1bed389b1a6a4",
+      "test_file": "test/execution_summary_test.py",
+      "execution_test_commands": [
+        "pytest test/execution_summary_test.py::ExecutionSummaryTest::test_status_with_task_retry"
+      ],
+      "install_worktree_package": true,
+      "expected_setup_sha256": ""
+    },
+    {
+      "queue_rank": 6,
+      "case_id": "BugsInPy-matplotlib-8",
+      "project": "matplotlib",
+      "bug_id": "8",
+      "source_repository": "https://github.com/matplotlib/matplotlib",
+      "python_version": "3.8.1",
+      "buggy_commit": "54bd6f19b23dc940a4d572583c449613b6b1ae3c",
+      "fixed_commit": "2f41868de465b86d2fc357f7ed58ff323d58030f",
+      "run_test_sha256": "d636d7d1baf9a9bc9c929203bc9ca7b00275c84aef074791736e9971518c5567",
+      "bug_info_sha256": "999c5848e3f8ab896f7d027522f8225aeccf91c264498a3306edcc6ed9f203a6",
+      "project_info_sha256": "a6b8593fd32c593beff4b4e78cb03628459717d4292a87cfb4013017bcfffdd1",
+      "test_file": "lib/matplotlib/tests/test_axes.py",
+      "execution_test_commands": [
+        "pytest lib/matplotlib/tests/test_axes.py::test_unautoscaley",
+        "pytest lib/matplotlib/tests/test_axes.py::test_unautoscalex"
+      ],
+      "install_worktree_package": true,
+      "expected_setup_sha256": ""
+    },
+    {
+      "queue_rank": 7,
+      "case_id": "BugsInPy-pandas-7",
+      "project": "pandas",
+      "bug_id": "7",
+      "source_repository": "https://github.com/pandas-dev/pandas",
+      "python_version": "3.8.3",
+      "buggy_commit": "27f365d",
+      "fixed_commit": "64336ff8414f8977ff94adb9a5bc000a3a4ef454",
+      "run_test_sha256": "6fea090169ec5d4624e4b8c4d421fd3805df5d4fcbab509ee49d0b6411123",
+      "bug_info_sha256": "aa02ec537524163d803775b13be015ae238a70cbe5dae3f5c62e8a8f3fea5cda",
+      "project_info_sha256": "d7930a4f9732f741bbd561d9bd882b686a6c8da298307860e6272123a5c9ebd7",
+      "test_file": "pandas/tests/frame/indexing/test_indexing.py",
+      "execution_test_commands": [
+        "pytest pandas/tests/frame/indexing/test_indexing.py::TestDataFrameIndexing::test_reindex_nearest_tz"
+      ],
+      "install_worktree_package": false,
+      "expected_setup_sha256": "ff73b2d1cd9f55125c64a1dfbabf43bb479b963f9e9a7ddd076a975a13d349dc"
+    },
+    {
+      "queue_rank": 8,
+      "case_id": "BugsInPy-scrapy-8",
+      "project": "scrapy",
+      "bug_id": "8",
+      "source_repository": "https://github.com/scrapy/scrapy",
+      "python_version": "3.8.3",
+      "buggy_commit": "f2f9350c47db73bdfb60773601b59b0633e1595a",
+      "fixed_commit": "4e765acaed7a914630ee5320fa6f6523890a2b9d",
+      "run_test_sha256": "3270914534c5799d088f097fcbb5302887933935895609fa1705cdca22b1c685",
+      "bug_info_sha256": "938736a1c653e03948c0631f6400ded86d93a041d9d6b5ae921fa7316401f9e7",
+      "project_info_sha256": "32e7b621a1df6bf2fa994483d2973c8d5d99b8e72b6c22ee3f6410f736b03c72",
+      "test_file": "tests/test_item.py",
+      "execution_test_commands": [
+        "python -m unittest -q tests.test_item.ItemMetaTest.test_new_method_propagates_classcell",
+        "python -m unittest -q tests.test_item.ItemMetaClassCellRegression.test_item_meta_classcell_regression"
+      ],
+      "install_worktree_package": false,
+      "expected_setup_sha256": "ac53eb0b7d65de4384775c993e7c912179980fb46ec18673385c30a0bd69a6d6"
+    }
+  ]
+}
