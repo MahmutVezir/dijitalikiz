@@ -8,6 +8,8 @@ on:
       - ".github/workflows/swe-rebench-v2-metadata-feasibility.yml"
       - "scripts/audit_swe_rebench_filtered_verified.py"
       - "tests/test_audit_swe_rebench_filtered_verified.py"
+      - "scripts/select_swe_rebench_project_cohort.py"
+      - "tests/test_select_swe_rebench_project_cohort.py"
   pull_request:
     branches:
       - main
@@ -15,6 +17,8 @@ on:
       - ".github/workflows/swe-rebench-v2-metadata-feasibility.yml"
       - "scripts/audit_swe_rebench_filtered_verified.py"
       - "tests/test_audit_swe_rebench_filtered_verified.py"
+      - "scripts/select_swe_rebench_project_cohort.py"
+      - "tests/test_select_swe_rebench_project_cohort.py"
 
 permissions:
   contents: read
@@ -78,13 +82,42 @@ jobs:
             | tee "$RUNNER_TEMP/swe-rebench-v2-metadata-summary.stdout.json"
           cat "$RUNNER_TEMP/swe-rebench-v2-metadata-summary.json" >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload metadata-only outputs
+      - name: Run deterministic cohort sampler tests
+        run: python -m unittest discover -s tests -p "test_select_swe_rebench_project_cohort.py" -v
+
+      - name: Build 96-project pre-review cohort and reserves
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/select_swe_rebench_project_cohort.py \
+            --input "$RUNNER_TEMP/swe-rebench-v2-metadata-candidates.csv" \
+            --output-dir "$RUNNER_TEMP/swe-rebench-v2-cohort" \
+            | tee "$RUNNER_TEMP/swe-rebench-v2-cohort-summary.stdout.json"
+          python - "$RUNNER_TEMP/swe-rebench-v2-cohort/SWE_REBENCH_V2_COHORT_96_MANIFEST_2026-11-12.json" <<'PY'
+          import json, sys
+          m = json.load(open(sys.argv[1], encoding="utf-8"))
+          assert m["eligible_metadata_candidates_after_rechecks"] == 261, m
+          assert m["eligible_distinct_projects"] == 113, m
+          assert m["primary_cases"] == 96 and m["primary_distinct_projects"] == 96, m
+          assert m["project_reserve_cases"] == 17 and m["project_reserve_distinct_projects"] == 17, m
+          assert m["accepted_confirmatory_cases"] == 0, m
+          assert m["model_inference_performed"] is False, m
+          assert m["fine_tuning_performed"] is False, m
+          print("PASS: 96 distinct project candidates + 17 project reserves; no case accepted.")
+          PY
+
+      - name: Upload metadata inventory and deterministic cohort outputs
         uses: actions/upload-artifact@v4
         with:
-          name: swe-rebench-v2-metadata-feasibility-${{ github.run_id }}-${{ github.run_attempt }}
+          name: swe-rebench-v2-metadata-cohort-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/swe-rebench-v2-metadata-summary.json
             ${{ runner.temp }}/swe-rebench-v2-metadata-candidates.csv
             ${{ runner.temp }}/swe-rebench-v2-metadata-summary.stdout.json
+            ${{ runner.temp }}/swe-rebench-v2-cohort/SWE_REBENCH_V2_COHORT_96_PRIMARY_2026-11-12.csv
+            ${{ runner.temp }}/swe-rebench-v2-cohort/SWE_REBENCH_V2_PROJECT_RESERVES_2026-11-12.csv
+            ${{ runner.temp }}/swe-rebench-v2-cohort/SWE_REBENCH_V2_WITHIN_PROJECT_ALTERNATES_2026-11-12.csv
+            ${{ runner.temp }}/swe-rebench-v2-cohort/SWE_REBENCH_V2_COHORT_96_MANIFEST_2026-11-12.json
+            ${{ runner.temp }}/swe-rebench-v2-cohort-summary.stdout.json
           if-no-files-found: error
           retention-days: 90
