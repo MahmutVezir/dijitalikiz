@@ -206,3 +206,12 @@ The primary confirmatory study should compare P0 and P1 using the same frozen ba
 - It rebuilds the 100-case cohort and first batch, then compares them with the committed V12 case index and first-batch selection.
 - The old `evidence-abstention-v11-technical-screen.yml` is archived and its manual dispatch has been removed. Its historical 97-ID logic must not be used for V12.
 - The V12 technical-screen workflow has not been dispatched. The manifest currently says `not_frozen` and `technical_screen_authorized=false`; it will deliberately stop before any upstream checkout.
+
+
+### Latest CI result (12 November, run 43240541558)
+
+- Repository/configuration validation: **PASS**. The full repository test/contract suite, including the new V12 technical-screen workflow contract, passed.
+- Historical archive integrity: **BLOCKED/FAIL** only because `data/historical/confirmatory_artifact_2026-10-09.zip` has not yet been uploaded to the repository. The workflow now reports this exact storage condition instead of depending on the expired Actions artifact ID.
+- V12 metadata inventory, Qwen adapter CPU tests, uncertainty unit tests, analysis-helper tests, preflight workflow, and historical archive safety workflow: **PASS**.
+- The preflight report is still `preflight_ready=false`, with 21 blockers, 0 accepted confirmatory cases, and `model_inference_performed=false`. A green no-inference CI run is not authorization to run the model.
+- The V12 technical-screen workflow is manual-only and has not been dispatched. Its license/protocol/authorization inputs default to false and the current manifest blocks it.
