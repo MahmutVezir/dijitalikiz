@@ -3,14 +3,14 @@
   "created_on": "2026-11-12",
   "repository": "MahmutVezir/dijitalikiz",
   "pull_request": 168,
-  "source_commit": "4fb96d586e9782f6c3eb9b7723eac3ba5648b6a7",
-  "workflow_run_id": 43236394154,
+  "source_commit": "1512827003af093dc5e27fe72c5fa3a431211da5",
+  "workflow_run_id": 43239530779,
   "workflow_run_attempt": 1,
-  "artifact_id": 13953036165,
-  "artifact_name": "evidence-abstention-bugsinpy-105-exclusion-v12-intake-43236394154-1",
-  "artifact_size_bytes": 189494,
-  "artifact_sha256": "ca9ee364c947d944cbaae74f85bb6402f3fa7a12eb767c64972e1cf3bf72a20e",
-  "artifact_expires_at": "2027-02-10T14:22:01Z",
+  "artifact_id": 13953987822,
+  "artifact_name": "evidence-abstention-bugsinpy-105-exclusion-v12-intake-43239530779-1",
+  "artifact_size_bytes": 189493,
+  "artifact_sha256": "cb75583d1a3309033acc34a0494674e0d7ba5a4f64d8c82ad1b20ad0e5f9a539",
+  "artifact_expires_at": "2027-02-10T14:40:01Z",
   "artifact_zip_crc": "passed",
   "artifact_contents_verified": true,
   "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json",
@@ -63,5 +63,29 @@
     "The cohort index and first-batch selection are metadata only. The eight first-batch cases have not had technical tests run by this V12 workflow.",
     "No case is accepted for confirmatory analysis. No inference or model training is authorized."
   ],
-  "bugsinpy_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd"
+  "bugsinpy_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "previous_successful_validation": {
+    "workflow_run_id": 43236394154,
+    "artifact_id": 13953036165,
+    "artifact_name": "evidence-abstention-bugsinpy-105-exclusion-v12-intake-43236394154-1",
+    "artifact_size_bytes": 189494,
+    "artifact_sha256": "ca9ee364c947d944cbaae74f85bb6402f3fa7a12eb767c64972e1cf3bf72a20e",
+    "artifact_expires_at": "2027-02-10T14:22:01Z",
+    "source_commit": "4fb96d586e9782f6c3eb9b7723eac3ba5648b6a7"
+  },
+  "latest_artifact_verification": {
+    "zip_sha256": "cb75583d1a3309033acc34a0494674e0d7ba5a4f64d8c82ad1b20ad0e5f9a539",
+    "zip_size_bytes": 189493,
+    "zip_crc": "passed",
+    "all_seven_internal_file_sha256_and_byte_lengths_match": true,
+    "inventory_rows": 501,
+    "queue_rows": 395,
+    "cohort_size": 100,
+    "upstream_project_count": 13,
+    "permanent_exclusion_count": 105,
+    "first_batch_size": 8,
+    "first_batch_distinct_upstream_projects": 8,
+    "accepted_confirmatory_cases": 0,
+    "model_inference_performed": false
+  }
 }
