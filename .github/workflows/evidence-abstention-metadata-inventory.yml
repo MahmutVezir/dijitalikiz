@@ -241,7 +241,7 @@ jobs:
               "files": files,
           }
           (root / "V12_METADATA_EVIDENCE_MANIFEST_2026-11-12.json").write_text(
-              json.dumps(manifest, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+              json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
           )
           PY
           cp "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" "$output_dir/BUGSINPY_METADATA_INVENTORY_2026-11-12.csv"
