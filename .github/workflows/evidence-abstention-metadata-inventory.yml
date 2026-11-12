@@ -1,9 +1,10 @@
-name: Evidence Abstention Metadata Inventory (No Tests, No Inference)
+name: Evidence Abstention V12 Metadata Inventory and Durable Freeze (No Tests, No Inference)
 
 on:
   push:
     branches:
       - "research/evidence-abstention-draft-2026-10-19"
+      - "research/2026-11-11-v11-durable-case-audit-fixes"
     paths:
       - "scripts/inventory_bugsinpy_candidates.py"
       - "tests/test_inventory_bugsinpy_candidates.py"
@@ -15,7 +16,9 @@ on:
       - "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_LOG_2026-10-21.json"
       - "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json"
       - "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-24.json"
-      - "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json"
+      - "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-11-11.json"
+      - "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json"
+      - "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json"
       - "scripts/build_evidence_abstention_intake.py"
       - "tests/test_build_evidence_abstention_intake.py"
       - ".github/workflows/evidence-abstention-metadata-inventory.yml"
@@ -31,14 +34,14 @@ on:
       - "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_LOG_2026-10-21.json"
       - "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-22.json"
       - "research_candidates/evidence_abstention/EXPOSURE_EXCLUSION_ADDENDUM_2026-10-24.json"
-      - "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json"
+      - "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json"
       - "scripts/build_evidence_abstention_intake.py"
       - "tests/test_build_evidence_abstention_intake.py"
       - ".github/workflows/evidence-abstention-metadata-inventory.yml"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   metadata-inventory:
@@ -47,8 +50,11 @@ jobs:
     env:
       BUGSINPY_COMMIT: "11c5f1eea954a42132cfd06bf257766a7963e0fd"
     steps:
-      - name: Checkout research branch
+      - name: Checkout the exact PR or dispatch branch
         uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -100,31 +106,31 @@ jobs:
             --output "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
             --summary "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" \
             --first-batch-per-project 5 \
-            --exposure-addendum research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json
+            --exposure-addendum research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json
 
-      - name: Freeze a new metadata-only 100-candidate V11 intake
+      - name: Freeze a new metadata-only 100-candidate V12 intake
         shell: bash
         run: |
           set -euo pipefail
           python scripts/build_evidence_abstention_intake.py \
             --inventory "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" \
             --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
-            --output "$RUNNER_TEMP/SCREENING_COHORT_100_V11_2026-11-11.json" \
+            --output "$RUNNER_TEMP/SCREENING_COHORT_100_V12_2026-11-12.json" \
             --size 100 \
             --minimum-projects 8 \
-            --exposure-addendum research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json \
+            --exposure-addendum research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json \
             --created-on 2026-11-11
           python - <<'PY'
           import json, pathlib, os
           root = pathlib.Path(os.environ["RUNNER_TEMP"])
           queue = json.loads((root / "bugsinpy-screening-queue-summary.json").read_text(encoding="utf-8"))
           intake = json.loads((root / "SCREENING_COHORT_100_V11_2026-11-11.json").read_text(encoding="utf-8"))
-          assert queue["documented_exposure_exclusion_count"] == 97, queue
-          assert queue["total_documented_exposure_exclusion_count"] == 97, queue
+          assert queue["documented_exposure_exclusion_count"] == 105, queue
+          assert queue["total_documented_exposure_exclusion_count"] == 105, queue
           assert intake["cohort_size"] == 100, intake
           assert intake["upstream_project_count"] >= 8, intake
-          assert intake["documented_exposure_exclusion_count"] == 97, intake
-          assert intake["total_documented_exposure_exclusion_count"] == 97, intake
+          assert intake["documented_exposure_exclusion_count"] == 105, intake
+          assert intake["total_documented_exposure_exclusion_count"] == 105, intake
           assert intake["exposure_manifest_filename"] == "EXPOSURE_UNION_2026-10-24.json", intake
           assert intake["accepted_confirmatory_cases"] == 0, intake
           assert intake["llm_inference_performed"] is False, intake
@@ -145,15 +151,15 @@ jobs:
           python scripts/build_evidence_abstention_cohort_matrix.py \
             --queue "$RUNNER_TEMP/bugsinpy-screening-queue.csv" \
             --cohort "$RUNNER_TEMP/SCREENING_COHORT_100_V11_2026-11-11.json" \
-            --matrix-output "$RUNNER_TEMP/v11-first-batch-matrix.json" \
-            --summary-output "$RUNNER_TEMP/v11-first-batch-summary.json" \
+            --matrix-output "$RUNNER_TEMP/v12-first-batch-matrix.json" \
+            --summary-output "$RUNNER_TEMP/v12-first-batch-summary.json" \
             --batch-size 8 \
             --batch-offset 0
           python - <<'PY'
           import json, pathlib, os
           root = pathlib.Path(os.environ["RUNNER_TEMP"])
-          matrix = json.loads((root / "v11-first-batch-matrix.json").read_text(encoding="utf-8"))
-          summary = json.loads((root / "v11-first-batch-summary.json").read_text(encoding="utf-8"))
+          matrix = json.loads((root / "v12-first-batch-matrix.json").read_text(encoding="utf-8"))
+          summary = json.loads((root / "v12-first-batch-summary.json").read_text(encoding="utf-8"))
           rows = matrix.get("include", [])
           assert len(rows) == 8, len(rows)
           assert len({row["project"] for row in rows}) == 8, rows
@@ -170,6 +176,92 @@ jobs:
           }, ensure_ascii=False, indent=2))
           PY
 
+      - name: Persist V12 inventory, queue, cohort and evidence manifest in the canonical repository
+        if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+        shell: bash
+        env:
+          TARGET_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          output_dir="research_candidates/evidence_abstention/generated_v12"
+          mkdir -p "$output_dir"
+          python - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          root = pathlib.Path(os.environ["RUNNER_TEMP"])
+          names = [
+              "bugsinpy-metadata-inventory.csv",
+              "bugsinpy-metadata-inventory-summary.json",
+              "bugsinpy-screening-queue.csv",
+              "bugsinpy-screening-queue-summary.json",
+              "SCREENING_COHORT_100_V12_2026-11-12.json",
+              "v12-first-batch-matrix.json",
+              "v12-first-batch-summary.json",
+          ]
+          files = {}
+          for name in names:
+              path = root / name
+              if not path.is_file():
+                  raise SystemExit(f"Missing required V12 output: {name}")
+              raw = path.read_bytes()
+              files[name] = {"sha256": hashlib.sha256(raw).hexdigest(), "byte_length": len(raw)}
+          intake = json.loads((root / names[4]).read_text(encoding="utf-8"))
+          queue = json.loads((root / names[3]).read_text(encoding="utf-8"))
+          matrix = json.loads((root / names[5]).read_text(encoding="utf-8"))
+          summary = json.loads((root / names[6]).read_text(encoding="utf-8"))
+          if intake.get("cohort_size") != 100 or intake.get("accepted_confirmatory_cases") != 0:
+              raise SystemExit("V12 intake did not satisfy the metadata-only 100-case contract.")
+          if intake.get("documented_exposure_exclusion_count") != 105 or intake.get("total_documented_exposure_exclusion_count") != 105:
+              raise SystemExit("V12 intake did not apply exactly 105 permanent exposure exclusions.")
+          if intake.get("exposure_manifest_filename") != "EXPOSURE_UNION_2026-11-11.json":
+              raise SystemExit("V12 intake references the wrong exposure union.")
+          if intake.get("llm_inference_performed") is not False or summary.get("llm_inference_performed") is not False:
+              raise SystemExit("V12 metadata stage must not perform model inference.")
+          manifest = {
+              "record_type": "durable_metadata_only_v12_provenance",
+              "created_on": "2026-11-12",
+              "repository": os.environ["GITHUB_REPOSITORY"],
+              "source_commit_before_generated_outputs": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
+              "workflow_run_id": int(os.environ["RUN_ID"]),
+              "workflow_run_attempt": int(os.environ["RUN_ATTEMPT"]),
+              "bugsinpy_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+              "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json",
+              "exposure_union_sha256": hashlib.sha256((pathlib.Path("research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json")).read_bytes()).hexdigest(),
+              "inventory_rows": 501,
+              "cohort_size": intake["cohort_size"],
+              "upstream_project_count": intake["upstream_project_count"],
+              "documented_exposure_exclusion_count": intake["documented_exposure_exclusion_count"],
+              "total_documented_exposure_exclusion_count": intake["total_documented_exposure_exclusion_count"],
+              "selected_case_ids": intake["case_ids"],
+              "first_batch_case_ids": summary["case_ids"],
+              "first_batch_upstream_projects": summary["upstream_projects"],
+              "accepted_confirmatory_cases": 0,
+              "model_inference_performed": False,
+              "files": files,
+          }
+          (root / "V12_METADATA_EVIDENCE_MANIFEST_2026-11-12.json").write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+          )
+          PY
+          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory.csv" "$output_dir/BUGSINPY_METADATA_INVENTORY_2026-11-12.csv"
+          cp "$RUNNER_TEMP/bugsinpy-metadata-inventory-summary.json" "$output_dir/BUGSINPY_METADATA_INVENTORY_SUMMARY_2026-11-12.json"
+          cp "$RUNNER_TEMP/bugsinpy-screening-queue.csv" "$output_dir/BUGSINPY_SCREENING_QUEUE_2026-11-12.csv"
+          cp "$RUNNER_TEMP/bugsinpy-screening-queue-summary.json" "$output_dir/BUGSINPY_SCREENING_QUEUE_SUMMARY_2026-11-12.json"
+          cp "$RUNNER_TEMP/SCREENING_COHORT_100_V12_2026-11-12.json" "$output_dir/SCREENING_COHORT_100_V12_2026-11-12.json"
+          cp "$RUNNER_TEMP/v12-first-batch-matrix.json" "$output_dir/V12_FIRST_BATCH_MATRIX_2026-11-12.json"
+          cp "$RUNNER_TEMP/v12-first-batch-summary.json" "$output_dir/V12_FIRST_BATCH_SUMMARY_2026-11-12.json"
+          cp "$RUNNER_TEMP/V12_METADATA_EVIDENCE_MANIFEST_2026-11-12.json" "$output_dir/V12_METADATA_EVIDENCE_MANIFEST_2026-11-12.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$output_dir"
+          if ! git diff --cached --quiet; then
+            git commit -m "research: freeze V12 metadata intake and provenance"
+            git push origin "HEAD:$TARGET_BRANCH"
+          else
+            echo "V12 outputs already match the committed canonical files."
+          fi
+
       - name: Upload metadata inventory diagnostics
         if: always()
         uses: actions/upload-artifact@v4
@@ -177,19 +269,19 @@ jobs:
           name: metadata-inventory-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/metadata-inventory-diagnostics/
           if-no-files-found: warn
-          retention-days: 14
+          retention-days: 90
 
       - name: Upload metadata inventory and manual screening queue (not accepted experiment data)
         uses: actions/upload-artifact@v4
         with:
-          name: evidence-abstention-bugsinpy-97-exclusion-intake-${{ github.run_id }}-${{ github.run_attempt }}
+          name: evidence-abstention-bugsinpy-105-exclusion-v12-intake-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/bugsinpy-metadata-inventory.csv
             ${{ runner.temp }}/bugsinpy-metadata-inventory-summary.json
             ${{ runner.temp }}/bugsinpy-screening-queue.csv
             ${{ runner.temp }}/bugsinpy-screening-queue-summary.json
             ${{ runner.temp }}/SCREENING_COHORT_100_V11_2026-11-11.json
-            ${{ runner.temp }}/v11-first-batch-matrix.json
-            ${{ runner.temp }}/v11-first-batch-summary.json
+            ${{ runner.temp }}/v12-first-batch-matrix.json
+            ${{ runner.temp }}/v12-first-batch-summary.json
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 90
