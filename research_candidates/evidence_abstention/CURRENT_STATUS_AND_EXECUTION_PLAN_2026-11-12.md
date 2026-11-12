@@ -92,7 +92,7 @@ Ayrıntılı raporlar:
 
 ## 5. Son no-inference CI kapısı
 
-Güncel PR #175 başındaki commit için [Evidence Abstention Preflight run #326](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43261986388) başarılı tamamlandı.
+Güncel PR #175 başındaki commit için [Evidence Abstention Preflight run #330](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43265860360) başarılı tamamlandı.
 
 - Preflight unit tests: 13/13 geçti.
 - Evidence packet audit tests: 12/12 geçti.
