@@ -59,25 +59,40 @@ Veri kartındaki CC BY 4.0 beyanı, upstream depolardaki kaynak kod lisansların
 
 Qwen2.5-3B-Instruct'ın yayımlanma tarihinden sonraki kayıtları seçmek, olası ezberleme/maruziyet riskini azaltmaya dönük bir önlemdir; sıfır kontaminasyon kanıtı değildir.
 
-## 4. Şu anki aşama: kaynak lisansı, lineage ve exposure denetimi
+## 4. Şu anki aşama: kaynak lisansı, lineage, PR/issue kapsamı ve exposure denetimi
 
-İlk 8 adayın denetimi tamamlandı. Her birinin sabit base commit'i çözümlendi; recursive Git tree sorgusu truncated=false döndürdü; kök lisans dosyası exact commit SHA üzerinden okundu. 8/8 kök dosya Apache-2.0 metni.
+İlk 8 adayın sabit base commit'lerinde kök lisans dosyaları exact commit SHA üzerinden okundu; 8/8 Apache-2.0 metni. Recursive Git tree sorguları truncated=false döndürdü.
 
-Ek bulgular:
-- aristanetworks/anta: NOTICE dosyası aio-eapi bileşenini ayrıca bildiriyor; bildirim korunmalı.
-- theupdateframework/python-tuf: ayrıca bir MIT lisans dosyası var; hangi bileşene uygulandığı belirlenmeli.
-- ecmwf/earthkit-data: Apache lisans belgesine ECMWF'nin imtiyaz ve dokunulmazlıklarını saklı tuttuğuna ilişkin ek ifade eşlik ediyor; hukuki değerlendirme notu olarak tutulmalı.
-- googleapis/python-bigquery: GitHub API'sinde şu anda arşivlenmiş görünüyor; teknik yeniden üretilebilirlik ayrıca kontrol edilmeli.
-- googleapis/python-bigquery ile GoogleCloudPlatform/cloud-sql-python-connector farklı depolar ve fork olarak işaretli değiller; fakat ihtiyatlı proje-küme analizinde aynı Google kurumsal ailesi sayılmaları gerekir.
-- İlk sekiz repo, bilinen BugsInPy maruziyet dışlama adlarıyla eşleşmiyor. Bu, daha geniş model eğitim verisi kontaminasyonunu dışlamaz.
+İlk 16 adayın GitHub PR'leri cohort metadata'sıyla eşleştirildi. **16/16 PR base SHA, cohort'taki base_commit ile birebir eşleşti.** Dolayısıyla seçilen commit ve upstream PR provenance bağı bu ilk 16 kayıtta doğrulandı; bu eşleşme tek başına vaka kabulü anlamına gelmez.
 
-Bu bulgular [ilk sekiz kaynak/lisans/lineage denetim raporunda](SWE_REBENCH_V2_FIRST8_SOURCE_LICENSE_LINEAGE_AUDIT_2026-11-12.md) kayıtlıdır. Rapor GitHub PR #174 üzerinde taslak durumundadır.
+### Vaka tipi taraması
 
-**Bu aşama tamamlanmış değildir.** Kök lisans kontrolü, vaka içindeki her dosyanın lisansını, patch'in kapsadığı dosyaları, üçüncü taraf bileşenleri, issue/PR metinlerinin yeniden kullanım koşullarını veya test bağımlılıklarını tek başına temizlemez. Kaynak/test kapısı hâlâ kapalıdır.
+- **İlk 8 kayıtta 4 geçici bug adayı:** reagento/dishka, ecmwf/earthkit-data, wntrblm/nox, databricks/dbt-databricks.
+- **İlk 8 kayıtta 4 dışlama:** aristanetworks/anta yalnızca test kodu değişikliği; python-tuf enhancement; python-bigquery feature request; Cloud SQL connector feature request.
+- **9–16 kayıtlarında 4 geçici bug adayı:** getmoto/moto (çoklu ECR image tag'lerinin listelenmemesi), pyro-ppl/numpyro (AIES warmup sonrası MCMC.run hatası), OpenMDAO/dymos (add_control/set_control_options varsayılan değerlerinin uygulanmaması), CS-SI/eodag (provider config anahtarının çakışması).
+- **9–16 kayıtlarında 4 dışlama:** D-Wave samplers için yeni close() API'si; FastMCP resource template optional arg desteği; kafka-python timeout_ms API parametreleri; PennyLane GroverOperator work_wires property.
+
+İlk 16'da toplam **8 geçici bug adayı / 8 dışlanan kayıt** var. Bu küçük sıralı batch'in oranı tüm 96 adaya genellenemez. Adaylar, test yeterliliği ve buggy-fail/fixed-pass yeniden üretimi tamamlanmadığı için kabul edilmiş vaka değildir.
+
+FastMCP için cohort'taki eski repo adı jlowin/fastmcp artık GitHub tarafından PrefectHQ/fastmcp deposuna yönlendiriliyor. PR #164'ün base SHA'sı cohort commit'iyle eşleşiyor; bu repo transferi/isim sahipliği değişimi olarak kaydedildi, commit uyuşmazlığı değil.
+
+### Lisans ve lineage durumu
+
+- İlk 8'in kök lisans metinleri Apache-2.0 olarak doğrulandı. ANTA NOTICE, python-tuf ek MIT lisansı ve earthkit-data ECMWF ek rezerv notu ayrıca kayıtlı.
+- **9–16 kayıtlarının exact base commit lisansları henüz incelenmedi.** Metadata'daki Apache-2.0 alanı tek başına hukuki temizlik sayılmaz.
+- Google ilişkili iki depo için bağımsızlıkta kurumsal kümeleme notu korunuyor.
+- İlk 16 kayıt bilinen BugsInPy dört depo dışlama listesiyle ad eşleşmesi göstermiyor; bu, geniş model pretraining kontaminasyonunu dışlamaz.
+
+Ayrıntılı raporlar:
+- [İlk 8 kök lisans ve lineage denetimi](SWE_REBENCH_V2_FIRST8_SOURCE_LICENSE_LINEAGE_AUDIT_2026-11-12.md)
+- [İlk 8 PR/issue kapsam denetimi](SWE_REBENCH_V2_FIRST8_CASE_SCOPE_AUDIT_2026-11-12.md)
+- [9–16 PR/issue kapsam denetimi](SWE_REBENCH_V2_CASE_SCOPE_AUDIT_09_16_2026-11-12.md)
+
+**Aşama 3 tamamlanmadı.** Cohort'un kalan kayıtları aynı sabit kuralla taranmalı; 9–16 lisans kontrolü de bekliyor. Kök lisans taraması, her vaka içindeki patch dosyaları, üçüncü taraf bileşenler, issue/PR metinleri ve test bağımlılıklarının tam kullanım değerlendirmesinin yerine geçmez. Kaynak/test kapısı hâlâ kapalıdır.
 
 ## 5. Son no-inference CI kapısı
 
-PR #174 başındaki commit için [Evidence Abstention Preflight run #324](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43259061950) başarılı tamamlandı.
+Güncel PR #175 başındaki commit için [Evidence Abstention Preflight run #330](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43265860360) başarılı tamamlandı.
 
 - Preflight unit tests: 13/13 geçti.
 - Evidence packet audit tests: 12/12 geçti.
@@ -86,7 +101,7 @@ PR #174 başındaki commit için [Evidence Abstention Preflight run #324](https:
 - Açık engel: 21.
 - model_inference_performed=false.
 
-Bu CI sonucu, kodun kapıları doğru biçimde denetlediğini gösterir; deneyin hazır olduğunu göstermez. Başlıca engeller: dataset gate açık, doğrulanabilir ön kayıt yok, iki değerlendiricili rubrik/adjudication ve kalibrasyon dondurulmadı, exact model/tokenizer/runtime yükleme ön kontrolü geçmedi, zorunlu SHA-256 freeze kayıtları eksik, 60 vaka/8 proje eşiği karşılanmadı ve inference için açık yetki yok.
+Bu CI sonucu, kapı denetimlerinin testlerini geçtiğini gösterir; deneyin hazır olduğunu göstermez. Başlıca engeller: dataset gate açık, doğrulanabilir ön kayıt yok, iki değerlendiricili rubrik/adjudication ve kalibrasyon dondurulmadı, exact model/tokenizer/runtime yükleme ön kontrolü geçmedi, zorunlu SHA-256 freeze kayıtları eksik, 60 vaka/8 proje eşiği karşılanmadı ve inference için açık yetki yok.
 
 ## 6. Aşamalı yol haritası
 
@@ -94,7 +109,7 @@ Bu CI sonucu, kodun kapıları doğru biçimde denetlediğini gösterir; deneyin
 |---|---|---|---|
 | 1 | Araştırma sorusu, literatür sınırı, P0/P1 × E1/E2/E3 protokolü | Önceden belirlenmiş ölçütler ve adil karşılaştırma | Taslak olarak hazır; sistematik literatür ve prereg tamamlanmalı |
 | 2 | Kaynak veri metadata fizibilitesi ve cohort oluşturma | Sabit veri revizyonu, hash, kurallar ve deterministik seçim | Metadata aşaması tamamlandı |
-| 3 | Kaynak lisansı, repo lineage, exposure ve case-level provenance | Her aday için exact commit, dosya lisansı, notice, fork/upstream ve maruziyet incelemesi | Devam ediyor; ilk 8/96 kök lisans tarandı |
+| 3 | Kaynak lisansı, repo lineage, PR/issue tipi, exposure ve case-level provenance | Her aday için exact commit, dosya lisansı, issue tipi, notice, fork/upstream ve maruziyet incelemesi | Devam ediyor; ilk 16/96 PR eşleşti, 8/16 geçici bug adayı |
 | 4 | Buggy/fixed teknik yeniden üretim | Exact environment; buggy hedef test başarısız, fixed aynı test başarılı; tüm log/hash'ler saklı | Başlamadı; lisans kapısına bağlı |
 | 5 | Gold root-cause ve evidence-tier etiketleme | Model çıktısını görmeyen en az iki bağımsız inceleyici; uyuşmazlık/adjudication kaydı | Başlamadı |
 | 6 | Protokolü kilitleme ve preregistration | Prompt, schema, model, tokenizer, runtime, rubrik, analiz ve vaka hash'leri; prereg URI | Başlamadı |
@@ -120,4 +135,4 @@ Bu CI sonucu, kodun kapıları doğru biçimde denetlediğini gösterir; deneyin
 - İnsan etik/onay gerekliliği, değerlendirici onamı ve veri kullanım sınırları yazılı olarak netleştirilir.
 - Olumsuz veya sonuçsuz sonuçlar değiştirilmeden raporlanır.
 
-**Bir sonraki tek iş paketi:** İlk sekiz vakadaki değişen/etkilenen dosya yollarını ve case-level materyali, kaynak/test çalıştırmadan inceleyip ilgili lisans/notice kapsamını eşlemek. Bunun ardından ancak temiz vakalarda exact environment ve buggy-fail/fixed-pass test fizibilitesine geçilir.
+**Bir sonraki tek iş paketi:** 9–16. adayların exact base commit'lerindeki kök lisans dosyalarını, LICENSE/NOTICE/COPYING eklerini ve fork/transfer lineage durumlarını kontrol etmek. Bu lisans kapısı kapanmadan upstream kaynak kodu veya testleri çalıştırılmayacak.
