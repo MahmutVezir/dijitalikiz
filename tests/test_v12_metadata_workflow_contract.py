@@ -18,8 +18,8 @@ class V12MetadataWorkflowContractTests(unittest.TestCase):
 
     def test_generates_metadata_only_v12_and_never_accepts_cases(self):
         self.assertIn("SCREENING_COHORT_100_V12_2026-11-12.json", self.source)
-        self.assertIn('intake.get("accepted_confirmatory_cases") != 0', self.source)
-        self.assertIn('intake.get("llm_inference_performed") is not False', self.source)
+        self.assertIn('assert intake["accepted_confirmatory_cases"] == 0', self.source)
+        self.assertIn('assert intake["llm_inference_performed"] is False', self.source)
         self.assertIn('"model_inference_performed": False', self.source)
 
     def test_artifact_contains_inventory_queue_cohort_selection_and_hash_manifest(self):
