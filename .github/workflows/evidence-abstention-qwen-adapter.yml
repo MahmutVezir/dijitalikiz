@@ -9,12 +9,14 @@ on:
       - "research_candidates/evidence_abstention/implementation/**"
       - "research_candidates/evidence_abstention/UNCERTAINTY_EXPERIMENT_MANIFEST.json"
       - "research_candidates/evidence_abstention/UNCERTAINTY_INFERENCE_GATE.md"
+      - "tests/test_uncertainty_inference_gate.py"
       - ".github/workflows/evidence-abstention-qwen-adapter.yml"
   pull_request:
     paths:
       - "research_candidates/evidence_abstention/implementation/**"
       - "research_candidates/evidence_abstention/UNCERTAINTY_EXPERIMENT_MANIFEST.json"
       - "research_candidates/evidence_abstention/UNCERTAINTY_INFERENCE_GATE.md"
+      - "tests/test_uncertainty_inference_gate.py"
       - ".github/workflows/evidence-abstention-qwen-adapter.yml"
   workflow_dispatch:
 
@@ -39,6 +41,12 @@ jobs:
           cat qwen-unit-test.log
           echo "Qwen unit-test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
           exit "$test_status"
+      - name: Test canonical exposure-union and closed inference gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_uncertainty_inference_gate.py' -v
+
       - name: Upload unit-test log even on failure
         if: always()
         uses: actions/upload-artifact@v4
