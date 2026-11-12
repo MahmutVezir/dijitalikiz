@@ -90,5 +90,5 @@ def test_current_branch_kaggle_notebook_audits_both_exposure_unions():
     assert "BASE_EXPOSURE_UNION_PATH" in preflight_source
     assert "SCREENING_EXPOSURE_UNION_PATH" in preflight_source
     assert "EXPOSURE_UNION_2026-10-23.json" in preflight_source
-    assert "EXPOSURE_UNION_2026-10-24.json" in preflight_source
+    assert "EXPOSURE_UNION_2026-11-11.json" in preflight_source
     assert "pytest" in source
