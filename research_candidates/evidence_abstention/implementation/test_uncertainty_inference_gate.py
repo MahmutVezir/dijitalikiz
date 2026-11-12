@@ -4,6 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import uncertainty_inference_gate as gate
 from uncertainty_inference_gate import EXPECTED_ARTIFACT_PATHS, evaluate_gate, load_authorized_qwen
 
 
@@ -67,8 +68,17 @@ def write_ready_gate_fixture(root: Path, record: dict, excluded_case_ids=None) -
             "sha256": hashlib.sha256(target.read_bytes()).hexdigest(),
         }
 
+    exposure_target = root / EXPECTED_ARTIFACT_PATHS["exposure_union"]
+    gate.EXPECTED_EXPOSURE_EXCLUSION_COUNT = len(excluded_case_ids)
+    gate.EXPECTED_EXPOSURE_UNION_SHA256 = hashlib.sha256(exposure_target.read_bytes()).hexdigest()
     manifest = {
         "inference_allowed": True,
+        "dataset_license_status": "cleared",
+        "upstream_project_license_status": "cleared",
+        "human_reviewer_approval_status": "approved",
+        "human_reviewer_consent_status": "complete",
+        "permanent_exclusion_count": len(excluded_case_ids),
+        "exposure_union_sha256": gate.EXPECTED_EXPOSURE_UNION_SHA256,
         "dataset_validation_gate": "CLOSED",
         "preregistration_status": "registered",
         "preregistration_uri": "https://example.org/preregistration",
@@ -80,6 +90,7 @@ def write_ready_gate_fixture(root: Path, record: dict, excluded_case_ids=None) -
             "tokenizer_id": "Qwen/Qwen2.5-3B-Instruct",
             "tokenizer_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
             "runtime_verification": "passed",
+            "license_review_status": "cleared_for_noncommercial_research",
             "dtype": "float16",
             "quantization": "none",
         },
@@ -96,6 +107,14 @@ def write_ready_gate_fixture(root: Path, record: dict, excluded_case_ids=None) -
 
 
 class InferenceGateTests(unittest.TestCase):
+    def setUp(self):
+        self.original_exposure_count = gate.EXPECTED_EXPOSURE_EXCLUSION_COUNT
+        self.original_exposure_sha256 = gate.EXPECTED_EXPOSURE_UNION_SHA256
+
+    def tearDown(self):
+        gate.EXPECTED_EXPOSURE_EXCLUSION_COUNT = self.original_exposure_count
+        gate.EXPECTED_EXPOSURE_UNION_SHA256 = self.original_exposure_sha256
+
     def test_current_manifest_stays_closed(self):
         root = Path(__file__).resolve().parents[3]
         report = evaluate_gate(
