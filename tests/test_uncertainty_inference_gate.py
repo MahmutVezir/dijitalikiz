@@ -37,6 +37,11 @@ class UncertaintyInferenceGateTests(unittest.TestCase):
         self.assertFalse(report["ready"])
         self.assertFalse(report["model_inference_performed"])
         self.assertIn("Manifest does not explicitly authorize inference.", report["blockers"])
+        self.assertIn("Dataset-level license/permission is not cleared.", report["blockers"])
+        self.assertIn("Exact upstream project licenses are not cleared.", report["blockers"])
+        self.assertIn("Exact model revision license has not been cleared for this non-commercial research use.", report["blockers"])
+        self.assertIn("Required human-review institutional approval is not recorded.", report["blockers"])
+        self.assertIn("Required human-review consent is not complete.", report["blockers"])
         self.assertNotIn(
             "Exposure exclusion union missing or invalid: exposure_union_path must point to the canonical dated exposure union",
             report["blockers"],
