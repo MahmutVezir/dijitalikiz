@@ -104,7 +104,7 @@ Ayrıntılı raporlar:
 
 ## 5. Son no-inference CI kapısı
 
-Güncel PR #176 başındaki commit için [Evidence Abstention Preflight run #332](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43267702021) başarılı tamamlandı.
+PR #176 başındaki commit için [Evidence Abstention Preflight run #333](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43267946906) başarılı tamamlandı.
 
 - Preflight unit tests: 13/13 geçti.
 - Evidence packet audit tests: 12/12 geçti.
@@ -121,7 +121,7 @@ Bu CI sonucu, kapı denetimlerinin testlerini geçtiğini gösterir; deneyin haz
 |---|---|---|---|
 | 1 | Araştırma sorusu, literatür sınırı, P0/P1 × E1/E2/E3 protokolü | Önceden belirlenmiş ölçütler ve adil karşılaştırma | Taslak olarak hazır; sistematik literatür ve prereg tamamlanmalı |
 | 2 | Kaynak veri metadata fizibilitesi ve cohort oluşturma | Sabit veri revizyonu, hash, kurallar ve deterministik seçim | Metadata aşaması tamamlandı |
-| 3 | Kaynak lisansı, repo lineage, PR/issue tipi, exposure ve case-level provenance | Her aday için exact commit, dosya lisansı, issue tipi, notice, fork/upstream ve maruziyet incelemesi | Devam ediyor; ilk 16/96 PR eşleşti, 8/16 geçici bug adayı |
+| 3 | Kaynak lisansı, repo lineage, PR/issue tipi, exposure ve case-level provenance | Her aday için exact commit, dosya lisansı, issue tipi, notice, fork/upstream ve maruziyet incelemesi | Devam ediyor; ilk 32/96 PR eşleşti, 18/32 geçici bug adayı |
 | 4 | Buggy/fixed teknik yeniden üretim | Exact environment; buggy hedef test başarısız, fixed aynı test başarılı; tüm log/hash'ler saklı | Başlamadı; lisans kapısına bağlı |
 | 5 | Gold root-cause ve evidence-tier etiketleme | Model çıktısını görmeyen en az iki bağımsız inceleyici; uyuşmazlık/adjudication kaydı | Başlamadı |
 | 6 | Protokolü kilitleme ve preregistration | Prompt, schema, model, tokenizer, runtime, rubrik, analiz ve vaka hash'leri; prereg URI | Başlamadı |
