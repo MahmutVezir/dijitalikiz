@@ -63,7 +63,7 @@ Qwen2.5-3B-Instruct'ın yayımlanma tarihinden sonraki kayıtları seçmek, olas
 
 İlk 8 adayın sabit base commit'lerinde kök lisans dosyaları exact commit SHA üzerinden okundu; 8/8 Apache-2.0 metni. Recursive Git tree sorguları truncated=false döndürdü.
 
-İlk 48 adayın GitHub PR'leri cohort metadata'sıyla eşleştirildi. **48/48 PR base SHA, cohort'taki base_commit ile birebir eşleşti.** Bu, seçilen commit ile upstream PR provenance bağını ilk 48 kayıtta doğrular; tek başına vaka kabulü anlamına gelmez.
+İlk 56 adayın GitHub PR'leri cohort metadata'sıyla eşleştirildi. **56/56 PR base SHA, cohort'taki base_commit ile birebir eşleşti.** Bu, seçilen commit ile upstream PR provenance bağını ilk 56 kayıtta doğrular; tek başına vaka kabulü anlamına gelmez.
 
 ### Vaka tipi taraması
 
@@ -72,7 +72,7 @@ Qwen2.5-3B-Instruct'ın yayımlanma tarihinden sonraki kayıtları seçmek, olas
 - **9–16 kayıtlarında 4 geçici bug adayı:** getmoto/moto (çoklu ECR image tag'lerinin listelenmemesi), pyro-ppl/numpyro (AIES warmup sonrası MCMC.run hatası), OpenMDAO/dymos (add_control/set_control_options varsayılan değerlerinin uygulanmaması), CS-SI/eodag (provider config anahtarının çakışması).
 - **9–16 kayıtlarında 4 dışlama:** D-Wave samplers için yeni close() API'si; FastMCP resource template optional arg desteği; kafka-python timeout_ms API parametreleri; PennyLane GroverOperator work_wires property.
 
-İlk 16'da toplam **8 geçici bug adayı / 8 dışlanan kayıt** vardı. 17–24 grubunda 5/8, 25–32 grubunda 5/8, 33–40 grubunda 6/8 ve 41–48 grubunda 6/8 geçici bug adayı belirlendi. İlk 48 toplamında **30 geçici bug adayı / 18 dışlanan kayıt** var. Bu tarama oranı kalan 48 adaya genellenemez. Hiçbir aday, test yeterliliği ve buggy-fail/fixed-pass yeniden üretimi tamamlanmadığı için kabul edilmiş vaka değildir.
+İlk 16'da toplam **8 geçici bug adayı / 8 dışlanan kayıt** vardı. 17–24 grubunda 5/8, 25–32 grubunda 5/8, 33–40 grubunda 6/8 ve 41–48 grubunda 6/8 geçici bug adayı belirlendi. 49–56 grubunda 7/8 geçici bug adayı belirlendi. İlk 56 toplamında **37 geçici bug adayı / 19 dışlanan kayıt** var. Bu tarama oranı kalan 40 adaya genellenemez. Hiçbir aday, test yeterliliği ve buggy-fail/fixed-pass yeniden üretimi tamamlanmadığı için kabul edilmiş vaka değildir.
 
 FastMCP için cohort'taki eski repo adı jlowin/fastmcp artık GitHub tarafından PrefectHQ/fastmcp deposuna yönlendiriliyor. PR #164'ün base SHA'sı cohort commit'iyle eşleşiyor; bu repo transferi/isim sahipliği değişimi olarak kaydedildi, commit uyuşmazlığı değil.
 
@@ -91,6 +91,13 @@ FastMCP için cohort'taki eski repo adı jlowin/fastmcp artık GitHub tarafında
 - İlk 48 kayıtta toplam **30/48 geçici bug adayı** var; bu sayı kabul edilmiş vaka değildir.
 - Ayrıntılı kayıtlar: [33–40 vaka kapsamı](SWE_REBENCH_V2_CASE_SCOPE_AUDIT_33_40_2026-11-12.md), [41–48 vaka kapsamı](SWE_REBENCH_V2_CASE_SCOPE_AUDIT_41_48_2026-11-12.md).
 
+### 49–56 kayıtlarının vaka kapsamı denetimi
+
+- 8/8 exact PR/base SHA eşleşmesi; 7 geçici bug adayı (geofileops, Lektor, music21, GeoPandas, Babel, Gammapy, django-bird), 1 kapsam dışı takvim-verisi düzeltmesi (Holidays).
+- Lektor issue'sindeki group-readable izin talebi ile PR'ın normal umask dosya kipine dönme davranışı birebir aynı değil; aday bu nedenle issue–patch uyum riskiyle tutuluyor.
+- İlk 56 kayıtta birleşik ön sınıflandırma: **37 geçici bug adayı / 19 dışlama**. Kabul edilmiş vaka sayısı hâlâ 0.
+- Ayrıntılı kayıt: [49–56 vaka kapsamı](SWE_REBENCH_V2_CASE_SCOPE_AUDIT_49_56_2026-11-12.md).
+
 ### Lisans ve lineage durumu
 
 - **İlk 16 adayın exact base commit kök lisansları 16/16 Apache-2.0** olarak doğrulandı.
@@ -107,7 +114,7 @@ Ayrıntılı raporlar:
 - [9–16 PR/issue kapsam denetimi](SWE_REBENCH_V2_CASE_SCOPE_AUDIT_09_16_2026-11-12.md)
 - [9–16 kaynak lisansı ve lineage denetimi](SWE_REBENCH_V2_SOURCE_LICENSE_LINEAGE_AUDIT_09_16_2026-11-12.md)
 
-**Aşama 3 tamamlanmadı.** İlk 48/96 adayın PR/base SHA eşleşmesi doğrulandı; ilk 48'de 30 geçici bug adayı ve 18 kapsam dışı kayıt var. İlk 16 adayın exact base commit kök lisansları 16/16 Apache-2.0 olarak doğrulandı; 17–48 için aynı lisans/NOTICE/lineage denetimi bekliyor. Kök lisans taraması bile değişen dosyalar, üçüncü taraf bileşenler ve test bağımlılıklarının tam kullanım değerlendirmesinin yerine geçmez. Hiçbir vaka kabul edilmedi; kaynak/test kapısı kapalıdır.
+**Aşama 3 tamamlanmadı.** İlk 56/96 adayın PR/base SHA eşleşmesi doğrulandı; ilk 56'da 37 geçici bug adayı ve 19 kapsam dışı kayıt var. İlk 16 adayın exact base commit kök lisansları 16/16 Apache-2.0 olarak doğrulandı; 17–56 için aynı lisans/NOTICE/lineage denetimi bekliyor. Kök lisans taraması bile değişen dosyalar, üçüncü taraf bileşenler ve test bağımlılıklarının tam kullanım değerlendirmesinin yerine geçmez. Hiçbir vaka kabul edilmedi; kaynak/test kapısı kapalıdır.
 
 ## 5. Son no-inference CI kapısı
 
@@ -128,7 +135,7 @@ Bu CI sonucu, kapı denetimlerinin testlerini geçtiğini gösterir; deneyin haz
 |---|---|---|---|
 | 1 | Araştırma sorusu, literatür sınırı, P0/P1 × E1/E2/E3 protokolü | Önceden belirlenmiş ölçütler ve adil karşılaştırma | Taslak olarak hazır; sistematik literatür ve prereg tamamlanmalı |
 | 2 | Kaynak veri metadata fizibilitesi ve cohort oluşturma | Sabit veri revizyonu, hash, kurallar ve deterministik seçim | Metadata aşaması tamamlandı |
-| 3 | Kaynak lisansı, repo lineage, PR/issue tipi, exposure ve case-level provenance | Her aday için exact commit, dosya lisansı, issue tipi, notice, fork/upstream ve maruziyet incelemesi | Devam ediyor; ilk 48/96 PR eşleşti, 30/48 geçici bug adayı |
+| 3 | Kaynak lisansı, repo lineage, PR/issue tipi, exposure ve case-level provenance | Her aday için exact commit, dosya lisansı, issue tipi, notice, fork/upstream ve maruziyet incelemesi | Devam ediyor; ilk 56/96 PR eşleşti, 37/56 geçici bug adayı |
 | 4 | Buggy/fixed teknik yeniden üretim | Exact environment; buggy hedef test başarısız, fixed aynı test başarılı; tüm log/hash'ler saklı | Başlamadı; lisans kapısına bağlı |
 | 5 | Gold root-cause ve evidence-tier etiketleme | Model çıktısını görmeyen en az iki bağımsız inceleyici; uyuşmazlık/adjudication kaydı | Başlamadı |
 | 6 | Protokolü kilitleme ve preregistration | Prompt, schema, model, tokenizer, runtime, rubrik, analiz ve vaka hash'leri; prereg URI | Başlamadı |
@@ -155,4 +162,4 @@ Bu CI sonucu, kapı denetimlerinin testlerini geçtiğini gösterir; deneyin haz
 - İnsan etik/onay gerekliliği, değerlendirici onamı ve veri kullanım sınırları yazılı olarak netleştirilir.
 - Olumsuz veya sonuçsuz sonuçlar değiştirilmeden raporlanır.
 
-**Bir sonraki tek iş paketi:** PR/base-commit/issue tipi taramasını cohort'un 49–56. adaylarına aynı sabit kuralla uygulamak. İlk 48'deki 30/48 geçici aday oranı, 60 kabul edilmiş vaka hedefinin risk altında olduğunu gösterir. 96 ana aday tamamlandığında mevcut 17 bağımsız proje yedeği ek tarama için kullanılacak; 148 aynı-proje alternatifi, seçili projelerdeki zayıf/özellik niteliğindeki vakaların yerine geçebilir ancak yeni bağımsız proje sayılmaz. Eşik düşürülmeyecek. Lisans ve vaka kabul kapıları kapanmadan upstream testleri çalıştırılmayacak.
+**Bir sonraki tek iş paketi:** PR/base-commit/issue tipi taramasını cohort'un 57–64. adaylarına aynı sabit kuralla uygulamak. İlk 56'da 37/56 geçici aday belirlenmiş olsa da bunlar henüz doğrulanmış vaka değil; 60 kabul edilmiş vaka hedefi hâlâ ciddi risk altında. 96 ana aday tamamlandığında 17 proje yedeği ve 148 aynı-proje alternatifi açık kurallarla kullanılacak. Alternatifler yeni bağımsız proje sayılmaz ve eşik düşürülmeyecek. Lisans ve vaka kabul kapıları kapanmadan upstream testleri çalıştırılmayacak.
