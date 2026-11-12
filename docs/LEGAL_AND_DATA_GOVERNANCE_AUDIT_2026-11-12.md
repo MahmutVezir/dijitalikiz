@@ -31,7 +31,7 @@ The pinned BugsInPy repository used by the V12 workflow is `https://github.com/s
 - The BugsInPy research paper is a scholarly publication; its publication license does not automatically license the separately maintained benchmark database, patches, metadata, or bundled source projects.
 - Do not describe BugsInPy as MIT/Apache licensed. No dataset-wide license clearance has been established.
 - Do not copy or redistribute the BugsInPy source tree, patches, or full metadata bundle in this repository or the final report.
-- The current private repository stores only a limited metadata-only case index, source links, commit identifiers, and hashes. This reduces redistribution but is not a substitute for permission or legal clearance.
+- The current private repository stores only a limited metadata-only case index, source links, commit identifiers, and hashes. This reduces redistribution but is not a substitute for permission or legal clearance. The dataset-level license issue remains open even when individual upstream repositories have permissive licenses.
 
 **Required before confirmatory data collection:** obtain written permission/clarification from the benchmark maintainers, or replace the dataset-level dependency with an independently curated case set sourced directly from upstream repositories with verified licenses. Until then, V12 remains a provisional candidate index only.
 
@@ -39,22 +39,22 @@ The pinned BugsInPy repository used by the V12 workflow is `https://github.com/s
 
 The 13 projects represented in V12 are not governed by one common license. The exact license must be checked at each pinned source commit and for the exact files used.
 
-Initial checks for the first eight selected projects:
+Initial checks for the first eight selected projects (project-level information; not yet a per-file legal opinion):
 
 | Project | Initial license evidence | Status |
 |---|---|---|
-| Ansible | Root `LICENSE` path not found by the initial check; inspect `COPYING`/license files at the pinned commit | Open |
+| Ansible | Official repository states GPL-3.0-or-later and identifies `COPYING` | Project-level license identified; exact buggy/fixed commit review remains open |
 | Black | MIT license file found | Initial check only |
 | FastAPI | Official repository states MIT; verify exact pinned commit | Initial check only |
 | Keras | Apache-2.0 license file found | Initial check only |
 | Luigi | Apache-2.0 license file found | Initial check only |
-| Matplotlib | Root `LICENSE` path not found by initial check; inspect repository license directory and file-level notices | Open |
+| Matplotlib | Custom Matplotlib license agreement based on the PSF license; project states BSD-compatible code | Project-level license identified; exact pinned revision and bundled file exceptions remain open |
 | Pandas | BSD 3-Clause license file found | Initial check only |
 | Scrapy | BSD-style license file found; verify exact SPDX identifier and pinned revision | Initial check only |
 
 The remaining V12 projects (spaCy, thefuck, Tornado, tqdm, youtube-dl) also require exact-revision review before use. Some repositories contain file-level exceptions or mixed licensing (for example tqdm's license documentation identifies MIT and MPL-2.0 exceptions).
 
-No upstream source code is to be copied into `MahmutVezir/dijitalikiz`. Tests should execute in temporary checkouts. Store only our own scripts, test harnesses, metadata references, commit IDs, hashes, and lawful research outputs.
+Official project references: [Ansible](https://github.com/ansible/ansible) · [Matplotlib license agreement](https://github.com/matplotlib/matplotlib/blob/main/LICENSE/LICENSE) · [FastAPI](https://github.com/fastapi/fastapi) · [Black](https://github.com/psf/black). No upstream source code is to be copied into `MahmutVezir/dijitalikiz`. Tests should execute in temporary checkouts. Store only our own scripts, test harnesses, metadata references, commit IDs, hashes, and lawful research outputs.
 
 ## 5. Model license: Qwen2.5-3B-Instruct
 
