@@ -195,3 +195,14 @@ The primary confirmatory study should compare P0 and P1 using the same frozen ba
 - Human reviewer institutional approval and written consent not obtained.
 - 100 V12 candidates are metadata only; zero accepted confirmatory cases.
 - No inference, fine-tuning, or model training performed.
+
+
+### V12 technical-screen workflow safety
+
+- Added `.github/workflows/evidence-abstention-v12-technical-screen.yml`.
+- It is manual-dispatch only; there are no push or pull-request triggers.
+- All four explicit manual confirmations default to false: dataset permission, upstream licenses, frozen protocol, and technical-screen authorization.
+- Before cloning BugsInPy or running target tests, the workflow also checks the experiment manifest for cleared dataset/upstream license statuses, frozen technical-screen protocol, explicit authorization, the 105-ID union path and its SHA-256.
+- It rebuilds the 100-case cohort and first batch, then compares them with the committed V12 case index and first-batch selection.
+- The old `evidence-abstention-v11-technical-screen.yml` is archived and its manual dispatch has been removed. Its historical 97-ID logic must not be used for V12.
+- The V12 technical-screen workflow has not been dispatched. The manifest currently says `not_frozen` and `technical_screen_authorized=false`; it will deliberately stop before any upstream checkout.
