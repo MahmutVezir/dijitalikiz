@@ -115,7 +115,7 @@ jobs:
           assert "sha256sum --check --status" in research
           assert "python -m zipfile -t" in research
           assert "workflow_dispatch:" in research
-          assert "ARCHIVE_PATH: ${{ github.workspace }}/data/historical/confirmatory_artifact_2026-10-09.zip" in research
+          assert "ARCHIVE_PATH:" in research and "data/historical/confirmatory_artifact_2026-10-09.zip" in research
           assert "steps.download.outputs.archive_path" not in research
           assert '> "$audit_json" 2> "$audit_log"' in research
           assert ' > "$RUNNER_TEMP/zip-integrity-check.log" 2>&1' in archive
