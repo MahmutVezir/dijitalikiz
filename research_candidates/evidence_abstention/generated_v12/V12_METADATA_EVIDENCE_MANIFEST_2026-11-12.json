@@ -1,0 +1,67 @@
+{
+  "record_type": "v12_metadata_evidence_manifest",
+  "created_on": "2026-11-12",
+  "repository": "MahmutVezir/dijitalikiz",
+  "pull_request": 168,
+  "source_commit": "4fb96d586e9782f6c3eb9b7723eac3ba5648b6a7",
+  "workflow_run_id": 43236394154,
+  "workflow_run_attempt": 1,
+  "artifact_id": 13953036165,
+  "artifact_name": "evidence-abstention-bugsinpy-105-exclusion-v12-intake-43236394154-1",
+  "artifact_size_bytes": 189494,
+  "artifact_sha256": "ca9ee364c947d944cbaae74f85bb6402f3fa7a12eb767c64972e1cf3bf72a20e",
+  "artifact_expires_at": "2027-02-10T14:22:01Z",
+  "artifact_zip_crc": "passed",
+  "artifact_contents_verified": true,
+  "bug_s_in_py_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "exposure_union_path": "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json",
+  "exposure_union_sha256": "9f41451bb06582ea65647f67829e97ac190cb884946b1f4f09c75d8167acb7c1",
+  "inventory_rows": 501,
+  "screening_queue_rows": 395,
+  "cohort_size": 100,
+  "upstream_project_count": 13,
+  "permanent_exclusion_count": 105,
+  "accepted_confirmatory_cases": 0,
+  "model_inference_performed": false,
+  "original_artifact_files": {
+    "bugsinpy-metadata-inventory.csv": {
+      "sha256": "069e649a37a12cd495ad08a82377f76f0b4518b3fd138380321dc53b15663dcb",
+      "byte_length": 356135
+    },
+    "bugsinpy-metadata-inventory-summary.json": {
+      "sha256": "c248f556399b2c229ac47b5824479509c984bac8b0d4570b408eabfca52fe4c0",
+      "byte_length": 900
+    },
+    "bugsinpy-screening-queue.csv": {
+      "sha256": "7381ea54c666f4247c53edaa82e74447bd750f3e9774634dce92610d9fd952a1",
+      "byte_length": 305417
+    },
+    "bugsinpy-screening-queue-summary.json": {
+      "sha256": "6ad9975b694c28afa667aade95987348469b12a5070a2c10217425cb10c491d1",
+      "byte_length": 8651
+    },
+    "SCREENING_COHORT_100_V12_2026-11-12.json": {
+      "sha256": "784dfe8d01ad9b3183c07b9f47bf3481ec00dc67e10049fc5f7a8c4deaa408d5",
+      "byte_length": 8932
+    },
+    "v12-first-batch-matrix.json": {
+      "sha256": "43ece0031f0e73175449cc63dde8212e72d708409435fece44d87dad944290fa",
+      "byte_length": 8783
+    },
+    "v12-first-batch-summary.json": {
+      "sha256": "e722e5262f58bad58d7533a968baaade538cbe907f533959cd97a1d5381e36b9",
+      "byte_length": 1281
+    }
+  },
+  "durable_repository_files": [
+    "research_candidates/evidence_abstention/generated_v12/SCREENING_COHORT_100_V12_2026-11-12.json",
+    "research_candidates/evidence_abstention/generated_v12/V12_FIRST_BATCH_SELECTION_2026-11-12.json",
+    "research_candidates/evidence_abstention/generated_v12/V12_METADATA_EVIDENCE_MANIFEST_2026-11-12.json"
+  ],
+  "notes": [
+    "The exact original workflow artifact ZIP passed size, SHA-256 and ZIP CRC checks; all seven internal file hash/length records matched.",
+    "The inventory and full queue CSVs are reproducible from the pinned BugsInPy commit and project-owned scripts; their exact byte hashes are recorded above. They are not copied into this repository as upstream source code.",
+    "The cohort index and first-batch selection are metadata only. The eight first-batch cases have not had technical tests run by this V12 workflow.",
+    "No case is accepted for confirmatory analysis. No inference or model training is authorized."
+  ]
+}
