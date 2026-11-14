@@ -124,7 +124,7 @@ Her aşamanın **çıkış koşulu** sağlanmadan sonraki aşamaya geçilmez.
 
 ## 7. Bir sonraki tek iş paketi
 
-**73–80. adayların exact PR/base SHA ve bug/feature ayrımı**; eş zamanlı olarak 17–56 adaylar için exact commit lisans/NOTICE dosyası kontrollerinin eksiklerini tamamla ve 64. adayın repository redirect/base/license doğrulamasını kapat. 65–72 aralığında yalnızca 66, 67, 70, 71 ve 72 teknik yeniden üretim için öncelikli adaylardır; 69 koşullu, 65 kapsam bekletmesinde, 68 ise hata örnekleminden dışlanmıştır. Bu işlem metadata/statik inceleme sınırında kalacak; henüz upstream test veya model inference yok.
+**81–88. adayların exact PR/base SHA ve bug/feature ayrımı**; eş zamanlı olarak 17–56 adaylar için exact commit lisans/NOTICE dosyası kontrollerinin eksiklerini tamamla ve 64. adayın repository redirect/base/license doğrulamasını kapat. 73–80 aralığında 73 (CrewAI) ve 78 (Narwhals) güçlü hata adayları; 80 (Dynaconf) exit-code sözleşmesi ön kayıtla dondurulursa aday; 79 (bump-my-version) commit-log kanıtı güçlendirilirse adaydır. 74–77 özellik/iyileştirme niteliği nedeniyle dışlanmıştır. Teknik yeniden üretime veya inference'a geçiş yok.
 
 **Son karar:** Proje teknik altyapı ve aday veri araştırması bakımından ilerledi; araştırma sonucu bakımından henüz tamamlanmadı. Bu yol haritasının amacı daha fazla altyapı üretmek değil, her aday için gerçek kanıt toplayıp doğrulayıcı deneyin geçiş koşullarını sırasıyla kapatmaktır.
 
@@ -180,3 +180,29 @@ Merge commit: `7296e8cdcffd193c5347d3ffb398c9725240ea91`.
 - Tarihsel ZIP engeli hâlâ açıktır; doğru arşiv geri yüklenip sabit SHA-256 ve ZIP bütünlüğü doğrulanmadan tarihsel archive job başarılı sayılmayacaktır.
 
 **Sonuç:** Kod/konfigürasyon ve no-inference preflight kontrolleri geçti; genel Research Validation durumu arşiv dosyası eksikliği nedeniyle başarısızdır. Bilimsel veri kapısı ve inference izni kapalı kalır.
+
+
+## 12. Cohort rows 73–80 denetimi — 14 Kasım 2026
+
+Detaylı kayıt: [SWE-rebench V2 case scope audit 73–80](../research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_73_80_2026-11-14.md).
+
+- Sabit cohort CSV SHA-256 `84552868fc2914ebe2421b6b2ce5b6afaabe6a032f9cf9441a6251d2611248db`, manifest SHA-256 `77ccd2746e77a0e0d0bb7c7aeaafd8a8c694da8973469fb126708377d4ebcadf`; Actions ZIP CRC kontrolü geçti.
+- Sekiz PR base SHA'sı cohort'taki pinned base commit ile **8/8** eşleşti.
+- Sekiz adayın exact-base root LICENSE dosyası bulundu. Root `NOTICE` yalnızca APIFlask'ta bulundu; APIFairy, Flask ve Flask-Marshmallow üçüncü taraf kayıtları içeriyor.
+- CrewAI #2408 (73) ve Narwhals #1869 (78) güçlü hata adayları olarak teknik yeniden üretim kuyruğuna alındı.
+- Dynaconf #1293 (80) için missing-key exit status sözleşmesi açıkça sabitlenmeli; bump-my-version #325 (79) için Mercurial commit log'unu doğrulayan daha güçlü assertion hazırlanmalı.
+- AzureTRE #4352, aiogram #1657, APIFlask #642 ve XKNX #1663 özellik/iyileştirme/entegrasyon genişletmesi olarak defect örnekleminden çıkarıldı.
+- Upstream target testleri çalıştırılmadı; vaka kabul edilmedi (**0**); insan adjudication ve model inference yapılmadı.
+
+
+## 13. PR #183 doğrulaması — 14 Kasım 2026
+
+PR #183: https://github.com/MahmutVezir/dijitalikiz/pull/183  
+Merge commit: `e17eb6a107f3c9dee6dc7dc107ad0d0647ae1724`.
+
+- PR #183'ün Research Validation run **43621956695** içinde repository/configuration validation işi başarılı tamamlandı.
+- Ayrı Historical archive integrity işi yine `data/historical/confirmatory_artifact_2026-10-09.zip` dosyasını canonical repository yolunda bulamadığı için başarısız oldu; arşiv size/SHA-256/CRC adımları atlandı.
+- PR #183 yalnızca README ve yürütme yol haritasını güncelledi; deney protokolü, case registry, inference authorization veya model runtime değiştirilmedi.
+- En son mevcut preflight artefaktı PR #182 run **43621535584**'tür: `ready=false`, 21 blocker, 0 accepted case/project, `model_inference_performed=false`. PR #183 dokümantasyon-only olduğundan bu bilimsel kapıları değiştirmez.
+
+**Sonuç:** Repository/configuration doğrulaması geçti; genel workflow tarihsel arşiv eksikliği yüzünden başarısızdır. Bu iki sonucu tek bir “CI geçti” veya “CI tamamen bozuk” hükmünde birleştirme.
