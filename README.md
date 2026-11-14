@@ -13,20 +13,20 @@
 | Güncel bileşen | Doğrulanmış durum |
 |---|---|
 | Ana aday veri kaynağı | SWE-rebench V2 Filtered-Verified; metadata fizibilitesi ve 96 proje aday cohort'u mevcut |
-| Aday kapsam denetimi | 1–56: PR/base SHA 56/56; 57–64: 7/8; 65–72: 8/8. 65–72 aralığında 5 teknik yeniden üretime hazır hata adayı, 1 koşullu aday, 1 kapsam bekletmesi ve 1 API tutarlılığı dışlaması |
-| Lisans | İlk 16: 16/16 Apache-2.0; 57–63: 7/7 MIT; 65–72: 8/8 exact-base root license dosyası bulundu. 17–56 ve 64 için inceleme sürüyor; nested NOTICE/üçüncü taraf ve dosya kapsamı ayrıca denetlenmeli |
+| Aday kapsam denetimi | 1–56: PR/base SHA 56/56; 57–64: 7/8; 65–72: 8/8; 73–80: 8/8. 73–80 aralığında 2 güçlü hata adayı, 2 koşullu aday ve 4 özellik/iyileştirme dışlaması |
+| Lisans | İlk 16: 16/16 Apache-2.0; 57–63: 7/7 MIT; 65–72: 8/8; 73–80: 8/8 exact-base root LICENSE dosyası bulundu. 73–80'de 1/8 root NOTICE bulundu (APIFlask). 17–56 ve 64 için inceleme sürüyor; nested NOTICE/üçüncü taraf ve dosya kapsamı ayrıca denetlenmeli |
 | Doğrulayıcı vaka | 0 kabul edilmiş vaka; metadata veya statik patch eşleşmesi kabul anlamına gelmez |
 | Model/runtime | Qwen2.5-3B-Instruct aday revizyonu kayıtlı; exact revision lisansı ve çalışma zamanı yükleme kontrolü tamamlanmadı |
 | Ana deney | P0/P1 × E1/E2/E3 tasarımı; inference izni kapalı |
 | Ayrı prototip | Beş adaylı entropy/uncertainty adaptörü ana deneyden ayrıdır; ana sonuca dahil değildir |
 
-**Cohort denetimleri:** [57–64. satırlar](research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md) ve [65–72. satırlar](research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_65_72_2026-11-14.md) — bu kayıtlar aday taramasıdır, vaka kabulü değildir.
+**Cohort denetimleri:** [57–64. satırlar](research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md), [65–72. satırlar](research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_65_72_2026-11-14.md) ve [73–80. satırlar](research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_73_80_2026-11-14.md) — bu kayıtlar aday taramasıdır, vaka kabulü değildir.
 
 **Veri kaynağı ayrımı:** Eski BugsInPy V10/V12 ve 105-ID dışlama kayıtları tarihsel/ayrı bir akıştır. Eski Stage 3 manifesti hâlâ BugsInPy referansı taşır; SWE-rebench deneyinin manifesti olarak kullanılmayacaktır. Yeni veri kaynağı için yeni sürümlü protokol/manifest gerekir. Tarihsel CCDG sonuçları da yeni araştırma verisi değildir.
 
 **Kaggle notu:** BUNDLE_MANIFEST.json uyumluluğu PR #158 ile düzeltildi. 31 dosyalı 27 Ekim snapshot'ı ile 19 dosyalı 3 Kasım allowlist snapshot'ı farklı notebook/amaçlara aittir; karıştırılmamalıdır. Metadata intake için Kaggle gerekmiyor.
 
-**En güncel no-inference doğrulaması:** PR [#182](https://github.com/MahmutVezir/dijitalikiz/pull/182) main'e merge edilmiştir. Evidence Abstention Preflight run [43621535584](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43621535584) başarılıdır: fail-closed preflight testleri 13/13, evidence-packet auditor testleri 12/12 geçti. Research Validation run [43621535481](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43621535481) içinde repository/configuration validation işi geçti; ayrı Historical archive integrity işi, `data/historical/confirmatory_artifact_2026-10-09.zip` dosyası main'de bulunmadığı için başarısız oldu ve arşiv hash/CRC denetimi çalışmadı. Hazır olma raporu `ready=false`, 21 engel, 0 kabul edilmiş vaka/proje ve `model_inference_performed=false` gösteriyor. Detaylar: [14 Kasım denetim ve yol haritası](docs/PROJECT_AUDIT_AND_EXECUTION_ROADMAP_2026-11-14.md).
+**En güncel no-inference doğrulaması:** PR [#184](https://github.com/MahmutVezir/dijitalikiz/pull/184) 73–80 aday denetimini main'e taşıdı. Preflight run [43625694605](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43625694605) başarılıdır: fail-closed preflight **13/13**, evidence-packet auditor **12/12** geçti. Readiness artefaktı `ready=false`, **21** engel, **0** kabul edilmiş vaka/proje ve `model_inference_performed=false` gösteriyor. Son tam repository/configuration validation run [43621956695](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43621956695) içinde repository/configuration işi geçti; ayrı Historical archive integrity işi, `data/historical/confirmatory_artifact_2026-10-09.zip` dosyası main'de bulunmadığı için başarısız oldu ve arşiv hash/CRC denetimi çalışmadı. Detaylar: [14 Kasım denetim ve yol haritası](docs/PROJECT_AUDIT_AND_EXECUTION_ROADMAP_2026-11-14.md).
 
 ---
 
