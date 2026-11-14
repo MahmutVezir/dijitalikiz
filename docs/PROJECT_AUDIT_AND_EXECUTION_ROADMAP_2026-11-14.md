@@ -127,3 +127,16 @@ Her aşamanın **çıkış koşulu** sağlanmadan sonraki aşamaya geçilmez.
 **57–64. adayların exact PR/base SHA ve bug/feature ayrımı**; eş zamanlı olarak 17–56 adaylar için exact commit lisans/NOTICE dosyası kontrollerinin eksiklerini tamamla. Bu işlem metadata/statik inceleme sınırında kalacak; henüz upstream test veya model inference yok.
 
 **Son karar:** Proje teknik altyapı ve aday veri araştırması bakımından ilerledi; araştırma sonucu bakımından henüz tamamlanmadı. Bu yol haritasının amacı daha fazla altyapı üretmek değil, her aday için gerçek kanıt toplayıp doğrulayıcı deneyin geçiş koşullarını sırasıyla kapatmaktır.
+
+
+## 8. PR #179 doğrulaması — 14 Kasım 2026
+
+PR #179: https://github.com/MahmutVezir/dijitalikiz/pull/179
+
+- Evidence Abstention Preflight (No Inference), run 43618110359: **başarılı**. Fail-closed preflight ve evidence packet test adımları geçti.
+- Repository/configuration validation, run 43618110310: **başarılı**. Tüm pytest paketi, compileall, tarihsel/yapılandırma kontrolleri ve no-inference güvenlik kontrolü geçti.
+- Genel Research Validation workflow'u yine de **failure** olarak sonuçlandı; sebep ayrı Historical archive integrity job'ındaki eksik dosya kontrolüdür. Beklenen tarihsel ZIP dosyası main ağacında yoktur. Bu, kod/test job'ının başarısız olduğu anlamına gelmez.
+- PR #179 main'e birleştirilmiştir. Kod düzeltmesi CI'da denenmiştir; genel workflow'un arşiv işi ayrı açık kalmıştır.
+- PR #179'un kod işi no-inference kapsamındadır; model yüklenmedi, yanıt üretilmedi, vaka kabul edilmedi ve inference manifesti değiştirilmedi.
+
+Eksik tarihsel dosya yolu: data/historical/confirmatory_artifact_2026-10-09.zip. Kütüphane kopyasının dosya boyutu **292,742 bayt**, SHA-256 değeri **e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd** ve ZIP CRC kontrolü başarılıdır. Bu arşiv yalnızca eski CCDG çalışmasının tarihsel kayıt bütünlüğü içindir; yeni belirsizlik/çekimserlik araştırmasının veri seti veya sonucu değildir.
