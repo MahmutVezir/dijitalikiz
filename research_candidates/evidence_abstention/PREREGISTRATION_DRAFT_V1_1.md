@@ -1,3 +1,5 @@
+> **TARİHSEL TASLAK — AKTİF SWE-REbench PROTOKOLÜ DEĞİL (14 Kasım 2026):** Bu v1.1 metni BugsInPy kaynaklı önceki tasarım için yazılmıştır. Güncel aday kaynak SWE-rebench V2'ye yöneldiği için bu dosya yalnızca yöntem geçmişi olarak korunur; yeni veri kaynağıyla doğrulayıcı deney veya ön kayıt için kullanılmamalıdır. Yeni sürümlü preregistration, veri lisansı/izin kararı ve yeni manifest ile birlikte hazırlanmalıdır.
+
 # Ön kayıt taslağı v1.1 — Yazılım hata teşhisinde kanıt yeterliliği ve cevap vermekten kaçınma
 
 **Sürüm:** 1.1-draft  
