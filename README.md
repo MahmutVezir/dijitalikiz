@@ -13,12 +13,14 @@
 | Güncel bileşen | Doğrulanmış durum |
 |---|---|
 | Ana aday veri kaynağı | SWE-rebench V2 Filtered-Verified; metadata fizibilitesi ve 96 proje aday cohort'u mevcut |
-| Aday kapsam denetimi | İlk 56/96 kaydın PR/base SHA eşleşmesi 56/56; 37 geçici bug adayı, 19 kapsam dışı kayıt |
-| Lisans | İlk 16 adayın exact base commit kök lisansı 16/16 Apache-2.0; kalan adayların ve dosya/NOTICE kapsamının incelenmesi sürüyor |
+| Aday kapsam denetimi | İlk 56/96 kayıtta PR/base SHA 56/56; 37 geçici bug adayı, 19 kapsam dışı. 57–64. satırlarda 7/8 base eşleşmesi; 5 defect adayı, 2 feature dışlaması, 1 base/lisans doğrulaması bekleyen aday |
+| Lisans | İlk 16 adayın exact-base kök lisansı 16/16 Apache-2.0; 57–63. satırların exact-base kök lisansı 7/7 MIT. 17–56 ve 64 için inceleme sürüyor; dosya/NOTICE kapsamı ayrıca denetlenmeli |
 | Doğrulayıcı vaka | 0 kabul edilmiş vaka; metadata veya statik patch eşleşmesi kabul anlamına gelmez |
 | Model/runtime | Qwen2.5-3B-Instruct aday revizyonu kayıtlı; exact revision lisansı ve çalışma zamanı yükleme kontrolü tamamlanmadı |
 | Ana deney | P0/P1 × E1/E2/E3 tasarımı; inference izni kapalı |
 | Ayrı prototip | Beş adaylı entropy/uncertainty adaptörü ana deneyden ayrıdır; ana sonuca dahil değildir |
+
+**Cohort denetimleri:** [57–64. satırlar](research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md) — bu kayıt aday taramasıdır, vaka kabulü değildir.
 
 **Veri kaynağı ayrımı:** Eski BugsInPy V10/V12 ve 105-ID dışlama kayıtları tarihsel/ayrı bir akıştır. Eski Stage 3 manifesti hâlâ BugsInPy referansı taşır; SWE-rebench deneyinin manifesti olarak kullanılmayacaktır. Yeni veri kaynağı için yeni sürümlü protokol/manifest gerekir. Tarihsel CCDG sonuçları da yeni araştırma verisi değildir.
 
