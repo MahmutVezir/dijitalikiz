@@ -212,3 +212,14 @@ Detaylı kayıt: [SWE-rebench V2 case scope audit 81–88](../research_candidate
 - No target tests, human adjudication, model inference, or training were performed. Newly accepted confirmatory cases remain **0**.
 
 **Çıkış durumu:** Statik aday taraması **96/96** satıra ulaştı. 89–96 aralığında 3 güçlü aday, 4 koşullu aday ve 1 dışlama belirlendi; doğrulayıcı kabul edilen vaka hâlâ **0**. 17–56 lisans/NOTICE ve tüm aralıklardaki nested NOTICE/üçüncü taraf/dosya düzeyi provenance incelemesi açık kalır.
+
+### PR #187 CI and readiness snapshot — 14 November 2026
+
+- PR: [#187 — Audit SWE-rebench V2 cohort rows 89–96](https://github.com/MahmutVezir/dijitalikiz/pull/187), draft/open; not merged at the time of this snapshot.
+- No-inference preflight run [43631185613](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43631185613): 13/13 fail-closed preflight tests passed; 12/12 evidence-packet/citation-auditor tests passed.
+- Readiness JSON from that run: `ready=false`; `blocker_count=21`; `accepted_case_count=0`; `accepted_project_count=0`; `model_inference_performed=false`.
+- Repository/configuration validation in run [43631185664](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43631185664): **414 tests and 56 subtests passed**.
+- The separate Historical archive integrity job in the same run failed at the canonical-file presence gate: `data/historical/confirmatory_artifact_2026-10-09.zip` was not present in the repository. Archive size/hash/CRC and historical-record audit steps were skipped. This remains an unresolved reproducibility/evidence blocker.
+- CI success confirms the tested repository/configuration and no-inference safety checks only. It does not establish dataset validity, accepted cases, human agreement, preregistration, model/runtime readiness, or permission to run inference.
+
+
