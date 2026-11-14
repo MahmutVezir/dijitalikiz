@@ -238,3 +238,13 @@ Detaylı rapor: [SWE-rebench V2 rows 17–56 exact-base license and file-provena
 - Bu denetim hiçbir vakayı CASE_REGISTRY'ye eklemez; kabul edilmiş vaka sayısı **0** ve inference izni kapalıdır.
 
 **Tarihsel arşiv notu:** 9 Ekim 2026 CCDG ZIP'inin iki ayrı Library kopyası 14 Kasım'da yerel olarak doğrulandı: her biri 292,742 bayt, SHA-256 `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`, 214 ZIP girdisi, 214 benzersiz ad ve CRC hatası yok. Arşiv GitHub çalışma ağacında hâlâ bulunmuyor; bu nedenle Research Validation historical archive job'ı henüz başarılı sayılamaz. Bu eski CCDG arşivi yeni çekimserlik çalışmasının verisi değildir.
+
+
+## 18. Napalm row 19 fixture identity/provenance follow-up — 14 November 2026
+
+- Issue [#2151](https://github.com/napalm-automation/napalm/issues/2151) comment contains the user's raw NX-OS output; PR [#2152](https://github.com/napalm-automation/napalm/pull/2152) adds a 50-line mock fixture.
+- Both contain `NXOS: version 10.3(5) [Maintenance Release]`, which is the parser-relevant line.
+- They are not the same full output: issue comment reports Cisco copyright 2002–2024, Nexus9000 C93180YC-FX3, serial ABC12345DE, uptime 1d 1h 11m 11s, System version 10.2(6); PR fixture reports copyright 2002–2017, Nexus 3048, serial TM6012EC74B, uptime 50d 5h 9m 7s, System version 7.0(3)I4(7).
+- The fixture's source/redistribution basis and exact relation to the reported device output are unestablished. Row 19 is therefore a **conditional bug candidate with provenance/test-identity hold**, not an unqualified temporary candidate.
+- Do not redistribute the 50-line fixture in a case packet. A minimal synthetic fixture may be designed around the parser-relevant line, but it must independently reproduce failure at the frozen base and pass at the exact fix commit before the case can proceed.
+- No upstream test or model inference was run during this follow-up.
