@@ -20,6 +20,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 MODEL_ID = "Qwen/Qwen2.5-3B-Instruct"
 MODEL_REVISION = "aa8e72537993ba99e69dfaafa59ed015b17504d1"
 DEFAULT_ROOT = Path(__file__).resolve().parents[2]
+BASE_EXPOSURE_UNION_RELATIVE_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json"
+SCREENING_EXPOSURE_UNION_RELATIVE_PATH = "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-11-11.json"
 CASES_PATH = Path(os.getenv("EVIDENCE_CASES_PATH", "/kaggle/input/evidence-abstention/cases.json"))
 RAW_OUTPUTS_PATH = Path(os.getenv("EVIDENCE_RAW_OUTPUTS_PATH", "/kaggle/working/raw_model_outputs.jsonl"))
 BLIND_REVIEW_PATH = Path(os.getenv("EVIDENCE_BLIND_REVIEW_PATH", "/kaggle/working/blind_review_packet.jsonl"))
@@ -477,8 +479,8 @@ def runtime_preflight(root):
 def run_study(root, manifest):
     project = root / "research_candidates" / "evidence_abstention"
     registry = read_json(project / "CASE_REGISTRY.json")
-    base_union = read_json(project / "EXPOSURE_UNION_2026-10-23.json")
-    screening_union = read_json(project / "EXPOSURE_UNION_2026-10-24.json")
+    base_union = read_json(root / BASE_EXPOSURE_UNION_RELATIVE_PATH)
+    screening_union = read_json(root / SCREENING_EXPOSURE_UNION_RELATIVE_PATH)
 
     def checked_exclusion_ids(document, label):
         values = document.get("excluded_case_ids") if isinstance(document, dict) else None
@@ -492,13 +494,13 @@ def run_study(root, manifest):
         return set(values)
 
     base_excluded = checked_exclusion_ids(base_union, "Immutable 23 October base exposure union")
-    screening_excluded = checked_exclusion_ids(screening_union, "24 October extended screening exposure union")
+    screening_excluded = checked_exclusion_ids(screening_union, "11 November corrected screening exposure union")
     if not base_excluded.issubset(screening_excluded):
         raise RuntimeError("Extended screening exposure union drops IDs from the immutable base union.")
-    if manifest.get("exposure_union_path") != "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-23.json":
+    if manifest.get("exposure_union_path") != BASE_EXPOSURE_UNION_RELATIVE_PATH:
         raise RuntimeError("Manifest does not reference the immutable base exposure union.")
-    if manifest.get("screening_exposure_union_path") != "research_candidates/evidence_abstention/EXPOSURE_UNION_2026-10-24.json":
-        raise RuntimeError("Manifest does not reference the 24 October extended screening union.")
+    if manifest.get("screening_exposure_union_path") != SCREENING_EXPOSURE_UNION_RELATIVE_PATH:
+        raise RuntimeError("Manifest does not reference the 11 November corrected screening union.")
     if registry.get("exposure_union_path") != manifest.get("exposure_union_path"):
         raise RuntimeError("Case registry base exposure-union path differs from the manifest.")
     if registry.get("screening_exposure_union_path") != manifest.get("screening_exposure_union_path"):
