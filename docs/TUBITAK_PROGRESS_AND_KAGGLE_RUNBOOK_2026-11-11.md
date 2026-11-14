@@ -1,4 +1,7 @@
 # TÜBİTAK 2204-A — proje durumu ve çalışma planı
+
+> **TARİHSEL / AKTİF YOL DEĞİL (14 Kasım 2026):** Bu belge 11–12 Kasım tarihli BugsInPy/V12 yürütme durumunu korumak için saklanır. Güncel birincil aday kaynak SWE-rebench V2'dir; güncel durum ve adım adım çalışma sırası için [12 Kasım güncel durum dosyasını](../research_candidates/evidence_abstention/CURRENT_STATUS_AND_EXECUTION_PLAN_2026-11-12.md) ve [14 Kasım denetim/yol haritasını](PROJECT_AUDIT_AND_EXECUTION_ROADMAP_2026-11-14.md) kullanın. Bu belgedeki BugsInPy V12 önerileri yeni confirmatory veri kaynağına otomatik uygulanmamalıdır.
+
 **Denetim tarihi:** 12 Kasım 2026  
 **Proje:** Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ
 
