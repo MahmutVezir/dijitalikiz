@@ -1,3 +1,5 @@
+> **TARİHSEL TASARIM TASLAĞI — SWE-REbench İÇİN DOĞRUDAN KULLANILMAZ (14 Kasım 2026):** Bu Stage 3 taslağı BugsInPy tabanlı örneklem kaynağı ve eski manifest ile oluşturulmuştur. Araştırma kaynağı SWE-rebench V2 olarak sürdürülürse aynı hipotez/koşul mantığı yeni bir protokol sürümünde yeniden gözden geçirilmeli; eski dosya ve hash geçmişi korunmalıdır.
+
 # Aşama 3 — Deney tasarımı ve önceden belirlenmiş analiz
 
 **Proje:** Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ  
