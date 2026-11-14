@@ -124,7 +124,7 @@ Her aşamanın **çıkış koşulu** sağlanmadan sonraki aşamaya geçilmez.
 
 ## 7. Bir sonraki tek iş paketi
 
-**57–64. adayların exact PR/base SHA ve bug/feature ayrımı**; eş zamanlı olarak 17–56 adaylar için exact commit lisans/NOTICE dosyası kontrollerinin eksiklerini tamamla. Bu işlem metadata/statik inceleme sınırında kalacak; henüz upstream test veya model inference yok.
+**65–72. adayların exact PR/base SHA ve bug/feature ayrımı**; eş zamanlı olarak 17–56 adaylar için exact commit lisans/NOTICE dosyası kontrollerinin eksiklerini tamamla ve 64. adayın repository redirect/base/license doğrulamasını kapat. Bu işlem metadata/statik inceleme sınırında kalacak; henüz upstream test veya model inference yok.
 
 **Son karar:** Proje teknik altyapı ve aday veri araştırması bakımından ilerledi; araştırma sonucu bakımından henüz tamamlanmadı. Bu yol haritasının amacı daha fazla altyapı üretmek değil, her aday için gerçek kanıt toplayıp doğrulayıcı deneyin geçiş koşullarını sırasıyla kapatmaktır.
 
@@ -140,3 +140,14 @@ PR #179: https://github.com/MahmutVezir/dijitalikiz/pull/179
 - PR #179'un kod işi no-inference kapsamındadır; model yüklenmedi, yanıt üretilmedi, vaka kabul edilmedi ve inference manifesti değiştirilmedi.
 
 Eksik tarihsel dosya yolu: data/historical/confirmatory_artifact_2026-10-09.zip. Kütüphane kopyasının dosya boyutu **292,742 bayt**, SHA-256 değeri **e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd** ve ZIP CRC kontrolü başarılıdır. Bu arşiv yalnızca eski CCDG çalışmasının tarihsel kayıt bütünlüğü içindir; yeni belirsizlik/çekimserlik araştırmasının veri seti veya sonucu değildir.
+
+
+## 9. Cohort rows 57–64 denetimi — 14 Kasım 2026
+
+Detaylı kayıt: [SWE-rebench V2 case scope audit 57–64](../research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md).
+
+- Sabit cohort CSV ve manifest hash'leri doğrulandı; GitHub Actions artifact 13960884569 indirildi, ZIP CRC kontrolü geçti ve iç CSV/manifest SHA değerleri beklenen değerlerle eşleşti.
+- 57–63 satırlarında PR base SHA 7/7 eşleşti ve exact-base root LICENSE 7/7 incelendi.
+- Bu yedi satırın beşi defect candidate olarak tutuldu, ikisi feature/usability isteği olduğu için dışlandı.
+- 64. satır için resmi release note bugfix kaydı bulundu; repository redirect nedeniyle base SHA ve exact-base root license henüz doğrulanamadı. Provisional olarak tutulur.
+- Satır 57–64 için upstream target test çalıştırılmadı; kabul edilen vaka hâlâ 0; insan adjudication ve model inference yapılmadı.
