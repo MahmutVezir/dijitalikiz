@@ -1,3 +1,5 @@
+> **TARİHSEL ANALİZ TASLAĞI — SWE-REbench İÇİN DONDURULMAMIŞTIR (14 Kasım 2026):** Bu plan, eski Stage 3/BugsInPy protokolünün analiz taslağıdır. Yeni SWE-rebench veri kaynağı için kullanılmadan önce veri birimi, kümeleme, dışlama sözleşmesi ve örneklem tanımları yeni sürümde yeniden dondurulmalıdır. Mevcut dosyanın hash'i ve geçmişi geriye dönük değiştirilmemelidir.
+
 # Aşama 3 analiz planı — v0.1
 
 **Durum:** Sonuçtan önce yazılmış taslak; model çıkarımı yok. Bu dosya model çıktıları görülmeden dondurulacak ve SHA-256'sı yürütme manifestine eklenecektir.
