@@ -24,7 +24,7 @@
 
 **Kaggle notu:** BUNDLE_MANIFEST.json uyumluluğu PR #158 ile düzeltildi. 31 dosyalı 27 Ekim snapshot'ı ile 19 dosyalı 3 Kasım allowlist snapshot'ı farklı notebook/amaçlara aittir; karıştırılmamalıdır. Metadata intake için Kaggle gerekmiyor.
 
-**Son doğrulanmış no-inference kapısı:** PR #176 doğrulama kaydı 13/13 preflight ve 12/12 evidence-packet testinin geçtiğini; buna karşın ready=false, 21 engel, 0 kabul edilmiş vaka ve model inference yapılmadığını bildirdi. CI başarısı bilimsel sonuç değildir.
+**En güncel no-inference doğrulaması:** PR #179'da tam depo/kod doğrulama işi ve preflight işi başarılı oldu; pytest, compileall, aday/veri yapılandırma ve no-inference kontrolleri geçti. Genel Research Validation workflow'u yalnızca ayrı tarihsel arşiv işi, eski ZIP dosyası depo yolunda bulunmadığı için başarısız oldu. Bu kayıt 0 kabul edilmiş vaka ve 0 model inference gerçeğini değiştirmez. Detaylar: [14 Kasım denetim ve yol haritası](docs/PROJECT_AUDIT_AND_EXECUTION_ROADMAP_2026-11-14.md).
 
 ---
 
