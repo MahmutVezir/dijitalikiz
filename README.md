@@ -26,7 +26,7 @@
 
 **Kaggle notu:** BUNDLE_MANIFEST.json uyumluluğu PR #158 ile düzeltildi. 31 dosyalı 27 Ekim snapshot'ı ile 19 dosyalı 3 Kasım allowlist snapshot'ı farklı notebook/amaçlara aittir; karıştırılmamalıdır. Metadata intake için Kaggle gerekmiyor.
 
-**En güncel no-inference doğrulaması:** PR #179'da tam depo/kod doğrulama işi ve preflight işi başarılı oldu; pytest, compileall, aday/veri yapılandırma ve no-inference kontrolleri geçti. Genel Research Validation workflow'u yalnızca ayrı tarihsel arşiv işi, eski ZIP dosyası depo yolunda bulunmadığı için başarısız oldu. Bu kayıt 0 kabul edilmiş vaka ve 0 model inference gerçeğini değiştirmez. Detaylar: [14 Kasım denetim ve yol haritası](docs/PROJECT_AUDIT_AND_EXECUTION_ROADMAP_2026-11-14.md).
+**En güncel no-inference doğrulaması:** PR [#182](https://github.com/MahmutVezir/dijitalikiz/pull/182) main'e merge edilmiştir. Evidence Abstention Preflight run [43621535584](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43621535584) başarılıdır: fail-closed preflight testleri 13/13, evidence-packet auditor testleri 12/12 geçti. Research Validation run [43621535481](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43621535481) içinde repository/configuration validation işi geçti; ayrı Historical archive integrity işi, `data/historical/confirmatory_artifact_2026-10-09.zip` dosyası main'de bulunmadığı için başarısız oldu ve arşiv hash/CRC denetimi çalışmadı. Hazır olma raporu `ready=false`, 21 engel, 0 kabul edilmiş vaka/proje ve `model_inference_performed=false` gösteriyor. Detaylar: [14 Kasım denetim ve yol haritası](docs/PROJECT_AUDIT_AND_EXECUTION_ROADMAP_2026-11-14.md).
 
 ---
 

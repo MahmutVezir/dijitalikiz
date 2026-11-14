@@ -165,3 +165,18 @@ Detaylı kayıt: [SWE-rebench V2 case scope audit 65–72](../research_candidate
 - trimesh #2312 issue düzeltmesini içeriyor, ancak geniş ve çok konulu release PR'ı olduğundan tek görevli doğrulayıcı örneklem için bekletildi.
 - pydap #481, mevcut hatanın tekrarı yerine DAP2/DAP4 API tutarlılığı ve `dimensions` → `dims` değişikliğidir; defect örnekleminden çıkarıldı.
 - Upstream target testleri çalıştırılmadı; kabul edilen vaka sayısı değişmedi (**0**); insan adjudication ve model inference yapılmadı.
+
+
+## 11. PR #182 doğrulaması — 14 Kasım 2026
+
+PR #182: https://github.com/MahmutVezir/dijitalikiz/pull/182  
+Merge commit: `7296e8cdcffd193c5347d3ffb398c9725240ea91`.
+
+- Evidence Abstention Preflight (No Inference), run **43621535584**: başarılı. Fail-closed preflight testleri **13/13**, evidence-packet auditor testleri **12/12** geçti.
+- Research Validation (No Inference), run **43621535481**: Repository/configuration validation işi başarılı tamamlandı.
+- Aynı workflow'un ayrı Historical archive integrity işi, `data/historical/confirmatory_artifact_2026-10-09.zip` dosyası main çalışma ağacında bulunmadığı için başarısız oldu. Bu nedenle arşiv boyutu/hash/ZIP CRC ve içerik denetimi adımları atlandı. Bu, repository/configuration testlerinin başarısız olduğu anlamına gelmez.
+- Preflight artefaktındaki `readiness-report.json`: `ready=false`, **21** blokaj, **0** kabul edilmiş vaka, **0** kabul edilmiş proje ve `model_inference_performed=false`.
+- PR değişiklikleri yalnızca README/yol haritası/denetim raporu dokümantasyonudur. Upstream target test, insan adjudication, model load, inference veya training yapılmadı.
+- Tarihsel ZIP engeli hâlâ açıktır; doğru arşiv geri yüklenip sabit SHA-256 ve ZIP bütünlüğü doğrulanmadan tarihsel archive job başarılı sayılmayacaktır.
+
+**Sonuç:** Kod/konfigürasyon ve no-inference preflight kontrolleri geçti; genel Research Validation durumu arşiv dosyası eksikliği nedeniyle başarısızdır. Bilimsel veri kapısı ve inference izni kapalı kalır.
