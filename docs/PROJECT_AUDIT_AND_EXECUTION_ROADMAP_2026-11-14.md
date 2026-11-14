@@ -211,15 +211,27 @@ Detaylı kayıt: [SWE-rebench V2 case scope audit 81–88](../research_candidate
 - Repository redirects were resolved: FastCRUD now lives at `benavlabs/fastcrud`; PyDESeq2 now lives at `scverse/PyDESeq2`. In both cases the exact pinned base SHA still matched.
 - No target tests, human adjudication, model inference, or training were performed. Newly accepted confirmatory cases remain **0**.
 
-**Çıkış durumu:** Statik aday taraması **96/96** satıra ulaştı. 89–96 aralığında 3 güçlü aday, 4 koşullu aday ve 1 dışlama belirlendi; doğrulayıcı kabul edilen vaka hâlâ **0**. 17–56 lisans/NOTICE ve tüm aralıklardaki nested NOTICE/üçüncü taraf/dosya düzeyi provenance incelemesi açık kalır.
+**Çıkış durumu:** Statik aday taraması **96/96** satıra ulaştı. 89–96 aralığında 3 güçlü aday, 4 koşullu aday ve 1 dışlama belirlendi; doğrulayıcı kabul edilen vaka hâlâ **0**. Cohort genelinde exact-base root LICENSE envanteri **96/96**; 17–56'da iki root NOTICE ve nested/dosya düzeyi provenans konuları kayda alındı. Row 19 Napalm Cisco fixture için kaynak/yeniden dağıtım dayanağı açık kalır.
 
 ### PR #187 CI and readiness snapshot — 14 November 2026
 
-- PR: [#187 — Audit SWE-rebench V2 cohort rows 89–96](https://github.com/MahmutVezir/dijitalikiz/pull/187), draft/open; not merged at the time of this snapshot.
-- No-inference preflight run [43631185613](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43631185613): 13/13 fail-closed preflight tests passed; 12/12 evidence-packet/citation-auditor tests passed.
+- PR [#187 — Audit SWE-rebench V2 cohort rows 89–96](https://github.com/MahmutVezir/dijitalikiz/pull/187) was merged into `main` on 14 November 2026.
+- Latest no-inference preflight run [43631700266](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43631700266): 13/13 fail-closed preflight tests and 12/12 evidence-packet/citation-auditor tests passed.
 - Readiness JSON from that run: `ready=false`; `blocker_count=21`; `accepted_case_count=0`; `accepted_project_count=0`; `model_inference_performed=false`.
-- Repository/configuration validation in run [43631185664](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43631185664): **414 tests and 56 subtests passed**.
+- Latest repository/configuration validation in run [43631700302](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43631700302): **414 tests and 56 subtests passed**.
 - The separate Historical archive integrity job in the same run failed at the canonical-file presence gate: `data/historical/confirmatory_artifact_2026-10-09.zip` was not present in the repository. Archive size/hash/CRC and historical-record audit steps were skipped. This remains an unresolved reproducibility/evidence blocker.
-- CI success confirms the tested repository/configuration and no-inference safety checks only. It does not establish dataset validity, accepted cases, human agreement, preregistration, model/runtime readiness, or permission to run inference.
+- CI success confirms tested repository/configuration and no-inference safety checks only. It does not establish dataset validity, accepted cases, human agreement, preregistration, model/runtime readiness, or permission to run inference.
 
+## 18. Cohort rows 17–56 exact-base license and file-provenance audit — 14 November 2026
 
+Detailed evidence: [SWE-rebench V2 license/provenance audit 17–56](../research_candidates/evidence_abstention/SWE_REBENCH_V2_LICENSE_PROVENANCE_AUDIT_17_56_2026-11-14.md).
+
+- The 40 frozen cohort PRs (rows 17–56) were rechecked: PR `base.sha` matched the frozen cohort `base_commit` **40/40**.
+- Exact-base Git trees contained a root `LICENSE` file or an explicitly resolved root license symlink **40/40**. The license strata were 12 Apache-2.0, 2 BSD-2-Clause, 24 BSD-3-Clause and 2 MIT.
+- Root NOTICE files were present in **2/40**: Napalm row 19 (Spotify AB attribution) and Modin row 22 (Modin Developers attribution).
+- The 40 PR changed-file inventories covered **151 paths**. No PR changed a root/nested LICENSE, NOTICE, COPYING or third_party path. This is a path/diff screen, not complete per-line legal clearance.
+- Repository transfers were resolved without changing pinned commits: `TobikoData/sqlmesh` → `SQLMesh/sqlmesh` (row 18) and `jcrist/msgspec` → `msgspec/msgspec` (row 44); both PR base SHAs match exactly.
+- Row 19 is on file-level provenance hold: PR #2152 adds a Cisco NX-OS `show_version.txt` fixture with Cisco copyright and GPL/LGPL component notices. Its issue sample and fixture also show different copyright year ranges. The root Apache-2.0 license does not settle that fixture's redistribution basis.
+- Nested license inventory flags include SkyPilot, PyThaiNLP corpus/model assets, CTFd theme, Meltano templates, JAX third-party source, Werkzeug icons, Skrub templates, Cogent3/QuTiP docs, ccdproc license/credit files, ASDF JSONSchema/JSON components, scikit-rf docs, jsonpickleJS, Lektor theme/ICC data, Music21 corpus/Scala assets and Babel Unicode data.
+- In particular, Music21's root `LICENSE` is a symlink to `music21/license.txt`, which limits BSD-3-Clause to Python files; corpus and Scala files have separate notices and possible non-commercial restrictions. These assets were not changed by PR #1736.
+- No row was added to `CASE_REGISTRY.json`; accepted confirmatory cases remain **0**. No upstream target tests, human adjudication, inference or training were performed.
