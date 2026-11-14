@@ -124,7 +124,7 @@ Her aşamanın **çıkış koşulu** sağlanmadan sonraki aşamaya geçilmez.
 
 ## 7. Bir sonraki tek iş paketi
 
-**65–72. adayların exact PR/base SHA ve bug/feature ayrımı**; eş zamanlı olarak 17–56 adaylar için exact commit lisans/NOTICE dosyası kontrollerinin eksiklerini tamamla ve 64. adayın repository redirect/base/license doğrulamasını kapat. Bu işlem metadata/statik inceleme sınırında kalacak; henüz upstream test veya model inference yok.
+**73–80. adayların exact PR/base SHA ve bug/feature ayrımı**; eş zamanlı olarak 17–56 adaylar için exact commit lisans/NOTICE dosyası kontrollerinin eksiklerini tamamla ve 64. adayın repository redirect/base/license doğrulamasını kapat. 65–72 aralığında yalnızca 66, 67, 70, 71 ve 72 teknik yeniden üretim için öncelikli adaylardır; 69 koşullu, 65 kapsam bekletmesinde, 68 ise hata örnekleminden dışlanmıştır. Bu işlem metadata/statik inceleme sınırında kalacak; henüz upstream test veya model inference yok.
 
 **Son karar:** Proje teknik altyapı ve aday veri araştırması bakımından ilerledi; araştırma sonucu bakımından henüz tamamlanmadı. Bu yol haritasının amacı daha fazla altyapı üretmek değil, her aday için gerçek kanıt toplayıp doğrulayıcı deneyin geçiş koşullarını sırasıyla kapatmaktır.
 
@@ -151,3 +151,17 @@ Detaylı kayıt: [SWE-rebench V2 case scope audit 57–64](../research_candidate
 - Bu yedi satırın beşi defect candidate olarak tutuldu, ikisi feature/usability isteği olduğu için dışlandı.
 - 64. satır için resmi release note bugfix kaydı bulundu; repository redirect nedeniyle base SHA ve exact-base root license henüz doğrulanamadı. Provisional olarak tutulur.
 - Satır 57–64 için upstream target test çalıştırılmadı; kabul edilen vaka hâlâ 0; insan adjudication ve model inference yapılmadı.
+
+
+## 10. Cohort rows 65–72 denetimi — 14 Kasım 2026
+
+Detaylı kayıt: [SWE-rebench V2 case scope audit 65–72](../research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_65_72_2026-11-14.md).
+
+- Sabit 96 satırlı cohort CSV/manifest hash'leri yeniden doğrulandı; indirilen Actions artifact ZIP CRC kontrolünden geçti.
+- Sekiz adayın PR base SHA'sı cohort'taki pinned base commit ile **8/8** eşleşti.
+- Sekiz adayın exact-base root license dosyası bulundu; MIT veya MIT-style permission metinleri kaydedildi. Root `NOTICE` dosyası hiçbirinde bulunmadı; nested NOTICE, dosya-bazlı lisans ve üçüncü taraf kapsamı ayrıca açık.
+- Beş aday (polyfactory #728, Pyccel #2038, Stingray #858, softlayer-python #2214, virtualenv #2907) izole teknik yeniden üretim için önceliklendirildi.
+- attrs #1417 koşullu tutuldu; PR regresyon testi issue'daki inherited-subclass MCVE'yi tam temsil etmiyor.
+- trimesh #2312 issue düzeltmesini içeriyor, ancak geniş ve çok konulu release PR'ı olduğundan tek görevli doğrulayıcı örneklem için bekletildi.
+- pydap #481, mevcut hatanın tekrarı yerine DAP2/DAP4 API tutarlılığı ve `dimensions` → `dims` değişikliğidir; defect örnekleminden çıkarıldı.
+- Upstream target testleri çalıştırılmadı; kabul edilen vaka sayısı değişmedi (**0**); insan adjudication ve model inference yapılmadı.
