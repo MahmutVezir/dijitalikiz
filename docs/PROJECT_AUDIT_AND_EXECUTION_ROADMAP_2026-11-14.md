@@ -124,7 +124,7 @@ Her aşamanın **çıkış koşulu** sağlanmadan sonraki aşamaya geçilmez.
 
 ## 7. Bir sonraki tek iş paketi
 
-**73–80. adayların exact PR/base SHA ve bug/feature ayrımı**; eş zamanlı olarak 17–56 adaylar için exact commit lisans/NOTICE dosyası kontrollerinin eksiklerini tamamla ve 64. adayın repository redirect/base/license doğrulamasını kapat. 65–72 aralığında yalnızca 66, 67, 70, 71 ve 72 teknik yeniden üretim için öncelikli adaylardır; 69 koşullu, 65 kapsam bekletmesinde, 68 ise hata örnekleminden dışlanmıştır. Bu işlem metadata/statik inceleme sınırında kalacak; henüz upstream test veya model inference yok.
+**89–96. adayların exact PR/base SHA ve bug/feature ayrımı**; eş zamanlı olarak 17–56 adaylar için exact commit LICENSE/NOTICE ve changed-file provenance kontrollerini tamamla. 64. adayın repository redirect/base/license engeli çözüldü; Parcels #1723 artık exact-base metadata bakımından doğrulandı. 81–88 aralığında 82 (python-tabulate), 84 (Copier) ve 87 (markdownify) güçlü hata adayları; 81 (subliminal), 86 (Packit) ve 88 (cloudpathlib) koşullu adaylardır; 83 ve 85 özellik talepleri nedeniyle dışlandı. Upstream target test veya inference başlatma; önce lisans/changed-file provenance kapısını tamamla.
 
 **Son karar:** Proje teknik altyapı ve aday veri araştırması bakımından ilerledi; araştırma sonucu bakımından henüz tamamlanmadı. Bu yol haritasının amacı daha fazla altyapı üretmek değil, her aday için gerçek kanıt toplayıp doğrulayıcı deneyin geçiş koşullarını sırasıyla kapatmaktır.
 
@@ -180,3 +180,24 @@ Merge commit: `7296e8cdcffd193c5347d3ffb398c9725240ea91`.
 - Tarihsel ZIP engeli hâlâ açıktır; doğru arşiv geri yüklenip sabit SHA-256 ve ZIP bütünlüğü doğrulanmadan tarihsel archive job başarılı sayılmayacaktır.
 
 **Sonuç:** Kod/konfigürasyon ve no-inference preflight kontrolleri geçti; genel Research Validation durumu arşiv dosyası eksikliği nedeniyle başarısızdır. Bilimsel veri kapısı ve inference izni kapalı kalır.
+
+
+## 16. Cohort rows 81–88 ve row 64 redirect çözümü — 14 Kasım 2026
+
+Detaylı kayıt: [SWE-rebench V2 case scope audit 81–88](../research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_81_88_2026-11-14.md).
+
+- Sabit 96 satırlı CSV: 17.409 byte, SHA-256 `84552868fc2914ebe2421b6b2ce5b6afaabe6a032f9cf9441a6251d2611248db`; manifest: 2.711 byte, SHA-256 `77ccd2746e77a0e0d0bb7c7aeaafd8a8c694da8973469fb126708377d4ebcadf`; cohort ZIP SHA-256 `d9d1fc04cb84233c021006f13205623ea9aa390caa6eb54ca4bc9d974e9a4c6c`; ZIP CRC check passed.
+- Sekiz PR base SHA'sı pinned cohort base commit ile **8/8** eşleşti. Sekiz exact-base root LICENSE dosyası bulundu; root NOTICE **0/8**.
+- python-tabulate #362 (82), Copier #1998 (84) ve markdownify #202 (87) güçlü hata adaylarıdır.
+- subliminal #1218 (81), Packit #2556 (86) ve cloudpathlib #474 (88) koşullu tutuldu; sırasıyla issue/enhancement kapsam karışımı, `--config`/ `--config-path` long-option farkı ve geniş Python 3.13 uyumluluk patch'i giderilmeden kabul edilmeyecek.
+- pyjanitor #1451 (83) ve frictionless-py #1729 (85) özellik/iyileştirme talepleri olduğundan hata örnekleminden çıkarıldı.
+- Upstream target tests, human adjudication, inference veya training yapılmadı; kabul edilen yeni vaka **0**.
+
+### Row 64 transfer/redirect resolution
+
+- Eski `OceanParcels/Parcels` repository adresi yeni owner `Parcels-code/Parcels` üzerinden doğrulandı.
+- PR #1723 base SHA, cohort'taki `a1f76d2f7ca4b50de874e61b752ec8ccaf50283e` ile birebir eşleşti.
+- Linked bug issue #1722 bulundu; exact-base `LICENSE.md` (MIT) blob `ad992e728bfe484b4e761b455a2d2adce29a0a7f` doğrulandı; root NOTICE yok.
+- Bu işlem row64'ün repository redirect/base/root-license metadata blocker'ını kapatır. Row64 hâlâ yalnızca adaydır; fail/pass execution ve insan adjudication yapılmadı.
+
+**Çıkış durumu:** Aday taraması 88/96. Sıradaki tek cohort paketi 89–96'dır. 17–56 lisans/NOTICE ve file-level provenance eksikleri açık kalır.
