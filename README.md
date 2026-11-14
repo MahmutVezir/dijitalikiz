@@ -4,6 +4,30 @@
 
 **Bilimsel rapor için önerilen başlık:** *Yazılım Hata Teşhisinde Kanıt Yeterliliğinin Büyük Dil Modellerinin Cevap Vermekten Kaçınma Davranışına Etkisi*
 
+## Güncel durum — 14 Kasım 2026
+
+> **Bu bölüm güncel kaynak durumudur.** Aşağıdaki 27 Ekim ve önceki bölümler tarihsel kayıttır; aktif veri kaynağı/örneklem durumu olarak okunmamalıdır. Güncel tek yürütme planı: [14 Kasım proje denetimi ve yol haritası](docs/PROJECT_AUDIT_AND_EXECUTION_ROADMAP_2026-11-14.md) ve [12 Kasım güncel aşamalı durum](research_candidates/evidence_abstention/CURRENT_STATUS_AND_EXECUTION_PLAN_2026-11-12.md).
+
+**Bilimsel durum:** Henüz doğrulayıcı deney yapılmadı. Kabul edilmiş vaka/proje **0/0**, ana deney modeli çıktısı **0**, insan panelleri ve kalibrasyon tamamlanmadı, haricî ön kayıt yok ve model çıkarımı kapalıdır.
+
+| Güncel bileşen | Doğrulanmış durum |
+|---|---|
+| Ana aday veri kaynağı | SWE-rebench V2 Filtered-Verified; metadata fizibilitesi ve 96 proje aday cohort'u mevcut |
+| Aday kapsam denetimi | İlk 56/96 kaydın PR/base SHA eşleşmesi 56/56; 37 geçici bug adayı, 19 kapsam dışı kayıt |
+| Lisans | İlk 16 adayın exact base commit kök lisansı 16/16 Apache-2.0; kalan adayların ve dosya/NOTICE kapsamının incelenmesi sürüyor |
+| Doğrulayıcı vaka | 0 kabul edilmiş vaka; metadata veya statik patch eşleşmesi kabul anlamına gelmez |
+| Model/runtime | Qwen2.5-3B-Instruct aday revizyonu kayıtlı; exact revision lisansı ve çalışma zamanı yükleme kontrolü tamamlanmadı |
+| Ana deney | P0/P1 × E1/E2/E3 tasarımı; inference izni kapalı |
+| Ayrı prototip | Beş adaylı entropy/uncertainty adaptörü ana deneyden ayrıdır; ana sonuca dahil değildir |
+
+**Veri kaynağı ayrımı:** Eski BugsInPy V10/V12 ve 105-ID dışlama kayıtları tarihsel/ayrı bir akıştır. Eski Stage 3 manifesti hâlâ BugsInPy referansı taşır; SWE-rebench deneyinin manifesti olarak kullanılmayacaktır. Yeni veri kaynağı için yeni sürümlü protokol/manifest gerekir. Tarihsel CCDG sonuçları da yeni araştırma verisi değildir.
+
+**Kaggle notu:** BUNDLE_MANIFEST.json uyumluluğu PR #158 ile düzeltildi. 31 dosyalı 27 Ekim snapshot'ı ile 19 dosyalı 3 Kasım allowlist snapshot'ı farklı notebook/amaçlara aittir; karıştırılmamalıdır. Metadata intake için Kaggle gerekmiyor.
+
+**Son doğrulanmış no-inference kapısı:** PR #176 doğrulama kaydı 13/13 preflight ve 12/12 evidence-packet testinin geçtiğini; buna karşın ready=false, 21 engel, 0 kabul edilmiş vaka ve model inference yapılmadığını bildirdi. CI başarısı bilimsel sonuç değildir.
+
+---
+
 ## Güncel durum — 27 Ekim 2026
 
 **Bilimsel durum: tamamlanmadı; doğrulayıcı model çıkarımı kapalı.** Ana soru ve eşleştirilmiş deney tasarımı tanımlı; kabul edilmiş bağımsız vaka sayısı **0**, ana çalışmanın doğrulayıcı model çıktısı **0**, kalibrasyon verisi **0** ve tam model/tokenizer/CUDA runtime doğrulaması tamamlanmış değil. Gradio arayüzü tek-vaka keşifsel demosudur; ana araştırmanın sonucu değildir.
