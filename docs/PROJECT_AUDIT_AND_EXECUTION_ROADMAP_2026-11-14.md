@@ -124,7 +124,7 @@ Her aşamanın **çıkış koşulu** sağlanmadan sonraki aşamaya geçilmez.
 
 ## 7. Bir sonraki tek iş paketi
 
-**89–96. adayların exact PR/base SHA ve bug/feature ayrımı**; eş zamanlı olarak 17–56 adaylar için exact commit LICENSE/NOTICE ve changed-file provenance kontrollerini tamamla. 64. adayın repository redirect/base/license engeli çözüldü; Parcels #1723 artık exact-base metadata bakımından doğrulandı. 81–88 aralığında 82 (python-tabulate), 84 (Copier) ve 87 (markdownify) güçlü hata adayları; 81 (subliminal), 86 (Packit) ve 88 (cloudpathlib) koşullu adaylardır; 83 ve 85 özellik talepleri nedeniyle dışlandı. Upstream target test veya inference başlatma; önce lisans/changed-file provenance kapısını tamamla.
+**17–56 lisans/provenans denetimi sonuçlarını vaka düzeyinde kapat; ardından güçlü adaylar için fail-to-pass test yeniden üretim planı hazırla.** 17–56 için exact-base root lisans 40/40, PR/base SHA 40/40, root NOTICE 2/40 ve 151 changed-file path statik taraması tamamlandı. Ancak row 19 Napalm #2152'de eklenen Cisco NX-OS `show_version.txt` fixture'ının kaynağı/yeniden dağıtım izni açıklığa kavuşmadı; bu fixture kullanılmamalı ve vaka provenans hold'da kalmalı. Diğer aralıklarda da seçilecek her vakanın gerçek changed source/test dosyaları ve nested lisansları ayrıca kontrol edilmeli. 64. adayın repository redirect/base/license engeli çözüldü. 89–96 statik taraması tamamlandı. Upstream target test veya inference başlatma; önce seçilecek adayların lisans/provenans ve test-oracle kapılarını kapat.
 
 **Son karar:** Proje teknik altyapı ve aday veri araştırması bakımından ilerledi; araştırma sonucu bakımından henüz tamamlanmadı. Bu yol haritasının amacı daha fazla altyapı üretmek değil, her aday için gerçek kanıt toplayıp doğrulayıcı deneyin geçiş koşullarını sırasıyla kapatmaktır.
 
@@ -223,3 +223,18 @@ Detaylı kayıt: [SWE-rebench V2 case scope audit 81–88](../research_candidate
 - CI success confirms the tested repository/configuration and no-inference safety checks only. It does not establish dataset validity, accepted cases, human agreement, preregistration, model/runtime readiness, or permission to run inference.
 
 
+
+
+## 17. Rows 17–56 lisans/provenans durumu düzeltmesi — 14 Kasım 2026
+
+Detaylı rapor: [SWE-rebench V2 rows 17–56 exact-base license and file-provenance audit](../research_candidates/evidence_abstention/SWE_REBENCH_V2_LICENSE_PROVENANCE_AUDIT_17_56_2026-11-14.md).
+
+- Exact PR/base SHA eşleşmesi: **40/40**.
+- Exact-base root LICENSE veya license symlink: **40/40**.
+- Root NOTICE: **2/40** (Napalm row 19, Modin row 22).
+- PR changed-file paths: **151**; hiçbir PR LICENSE/NOTICE/COPYING/third_party adlı bir path değiştirmedi.
+- Row 19 Napalm #2152, Cisco NX-OS copyright ve GPL/LGPL bileşen notları içeren `show_version.txt` test fixture'ı ekliyor. Bu fixture için kaynak ve yeniden dağıtım dayanağı netleşmedi; benchmark evidence packet'e kopyalanmamalı. Aday vaka bu provenance hold çözülmeden kabul edilmemeli.
+- Nested lisanslar ve dosya düzeyi köken kayıtları seçilecek her vaka için ayrıca incelenmeli; root LICENSE tek başına yeterli değil.
+- Bu denetim hiçbir vakayı CASE_REGISTRY'ye eklemez; kabul edilmiş vaka sayısı **0** ve inference izni kapalıdır.
+
+**Tarihsel arşiv notu:** 9 Ekim 2026 CCDG ZIP'inin iki ayrı Library kopyası 14 Kasım'da yerel olarak doğrulandı: her biri 292,742 bayt, SHA-256 `e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd`, 214 ZIP girdisi, 214 benzersiz ad ve CRC hatası yok. Arşiv GitHub çalışma ağacında hâlâ bulunmuyor; bu nedenle Research Validation historical archive job'ı henüz başarılı sayılamaz. Bu eski CCDG arşivi yeni çekimserlik çalışmasının verisi değildir.
