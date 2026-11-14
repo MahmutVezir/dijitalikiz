@@ -200,4 +200,15 @@ Detaylı kayıt: [SWE-rebench V2 case scope audit 81–88](../research_candidate
 - Linked bug issue #1722 bulundu; exact-base `LICENSE.md` (MIT) blob `ad992e728bfe484b4e761b455a2d2adce29a0a7f` doğrulandı; root NOTICE yok.
 - Bu işlem row64'ün repository redirect/base/root-license metadata blocker'ını kapatır. Row64 hâlâ yalnızca adaydır; fail/pass execution ve insan adjudication yapılmadı.
 
-**Çıkış durumu:** Aday taraması 88/96. Sıradaki tek cohort paketi 89–96'dır. 17–56 lisans/NOTICE ve file-level provenance eksikleri açık kalır.
+### Rows 89–96 candidate screen — 14 November 2026
+
+- Static audit report: [SWE-rebench V2 rows 89–96](../research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_89_96_2026-11-14.md).
+- All eight PR base commits match the frozen cohort base SHA (**8/8**); all eight pinned base commits contain an identifiable root LICENSE (**8/8**).
+- Root NOTICE is present in **1/8** repositories: cfn-lint (row 96), attributing cfn-flip to Amazon. The other seven have no root NOTICE in the exact-base tree; this is not proof that nested or per-file third-party notices are absent.
+- Strong static defect candidates: pyfar #722 (90), PyDESeq2 #349 (94), and pdoc #813 (95).
+- Conditional candidates: pyairtable #422 (91), DSPy #1853 (92), Faker #2203 (93), and cfn-lint #3991 (96). Conditions: issue-contract ambiguity; broad serializer/enum changes; missing explicit uniqueness assertions; and incomplete handling of the second validation condition in the cfn-lint issue, respectively.
+- FastCRUD #190 (89) is excluded because the PR combines multiple unrelated behaviors/root causes.
+- Repository redirects were resolved: FastCRUD now lives at `benavlabs/fastcrud`; PyDESeq2 now lives at `scverse/PyDESeq2`. In both cases the exact pinned base SHA still matched.
+- No target tests, human adjudication, model inference, or training were performed. Newly accepted confirmatory cases remain **0**.
+
+**Çıkış durumu:** Statik aday taraması **96/96** satıra ulaştı. 89–96 aralığında 3 güçlü aday, 4 koşullu aday ve 1 dışlama belirlendi; doğrulayıcı kabul edilen vaka hâlâ **0**. 17–56 lisans/NOTICE ve tüm aralıklardaki nested NOTICE/üçüncü taraf/dosya düzeyi provenance incelemesi açık kalır.
