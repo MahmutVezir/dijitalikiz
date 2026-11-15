@@ -71,24 +71,92 @@ Exact-base `LICENSE` içeriği, copyright satırı ve izin verme paragrafının 
 
 **Karar:** Bu dar kapsamlı lisans sınıflandırma sorunu kapatıldı. Bu, hukuki görüş değildir ve diğer kaynak dosyalarının/bağımlılıkların provenance denetiminin yerine geçmez. Bu çalışma için upstream kodu yeniden dağıtmayacağız; teknik reproduksiyon raporu commit kimlikleri, test tanımı, log ve hash'lerden oluşacaktır. Herhangi bir kaynak dosyası veya fixture daha sonra paket içine kopyalanacaksa applicable copyright/license attribution ayrıca incelenmelidir.
 
-## 6. Mevcut karar
+## 6. Teknik yeniden üretim sonucu — 15 Kasım 2026
 
-**Statik ön karar:** Güçlü hata adayı; teknik reproduksiyon ve lisans/provenans kapıları açık.
+<badge>Base-fail / Fix-pass başarılı</badge>
 
-Henüz:
-- exact-base/fix test çalıştırması yapılmadı;
-- buggy-fail/fixed-pass sonucu doğrulanmadı;
-- Panel A kök neden / kaynak / lisans onayı alınmadı;
-- Panel B E1/E2/E3 yeterlilik değerlendirmesi yapılmadı;
-- vaka `CASE_REGISTRY.json` içine eklenmedi.
+Adayın issue'ya özgü davranışı, gerçek pdoc CLI üzerinden ve exact base/fix commit'lerinde yeniden üretildi.
 
-Bu nedenle kabul edilmiş doğrulayıcı vaka sayısı **0** olarak kalır. Bu kayıt, ana deney için başarı veya hipotez desteği değildir.
+### Sabit upstream kimlikleri
 
-## 7. Devam koşulları
+- Repository: `mitmproxy/pdoc`
+- Issue: [#812](https://github.com/mitmproxy/pdoc/issues/812)
+- Fix PR: [#813](https://github.com/mitmproxy/pdoc/pull/813)
+- Base: `57ee1d628027feffbd734180287e74294ddab7df`
+- Fix: `75863d3abac0843a4ca0f3d562db2bc21d6ba6dc`
+- Merge commit: `7391e8a5fb966d4c2c98fe6030c1d3b552949e54`
 
-1. MIT-0 metaverisi ile kök MIT lisans metni arasındaki farkı provenance incelemesiyle açıklığa kavuştur.
-2. Yalnızca geçerli Python paket dizinini kullanan, issue'ya özgü exact CLI reproducer'ını önceden yaz ve test kimliğini dondur.
-3. Aynı sabit runtime altında exact base ve exact fix üzerinde aynı testi çalıştır; ham log, ortam fingerprint'i ve SHA-256 kaydet.
-4. Sonuçları ancak bundan sonra teknik aday olarak raporla; insan panelleri ve kanıt paketi onayı olmadan vaka kabulü yapma.
+### Ortam
 
-**Önemli sınır:** Bu statik inceleme tek başına `CASE_REGISTRY`, deney manifesti veya inference yetkisini değiştirmez. Model inference/training yapılmamıştır.
+- GitHub Actions run: [43712582477](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43712582477)
+- Upstream pdoc job: `132807166042`
+- Runner: Ubuntu 24.04
+- Python: **3.11.5** (pdoc upstream CI matrix ile aynı)
+- uv: **0.6.7** (upstream exact-base `uv.lock` içindeki sürüm)
+- Dependency installation: `uv sync --python "$(command -v python)" --frozen --all-extras --dev`
+- `uv pip check`: başarılı
+- Aynı sanal ortam, aynı sentetik proje ve aynı CLI komutu base ve fix commitlerinde sırayla kullanıldı.
+- Upstream `uv.lock` SHA-256, runtime freeze SHA-256 ve base/fix CLI log SHA-256 değerleri GitHub Actions job summary içinde kaydedildi.
+
+### Dondurulmuş sentetik proje
+
+Çalışma anında geçici dizinde şu minimal proje üretildi:
+- `pyproject.toml`: `pdoc-issue-812-project`
+- `__init__.py`: paket kökü, helper fonksiyonunu dışa aktarıyor
+- `helper.py`: dokümantasyonda gösterilecek tek fonksiyon
+
+Bu klasör içeriği upstream kaynaktan kopyalanmadı; test için sentetik olarak oluşturuldu ve repository'ye eklenmedi.
+
+### Aynı CLI çağrısının sonucu
+
+Aynı komut iki committe çalıştırıldı:
+
+`python -m pdoc . --output-directory <temp-dir>`
+
+`--output-directory` seçeneği, fix sürümünde uzun süreli web sunucusu başlatmak yerine HTML çıktısını deterministik olarak doğrulamak içindir; kusuru tetikleyen modül argümanı `.` aynıdır.
+
+**Exact base** `57ee1d628027feffbd734180287e74294ddab7df`:
+- CLI sıfır dışı çıkış koduyla sonlandı.
+- Beklenen issue-specific hata görüldü: `ValueError: No modules found matching spec: .`
+- CI adımı bu hatayı özel olarak doğruladı: `BASE_EXPECTED_FAILURE=PASS`.
+
+**Exact fix** `75863d3abac0843a4ca0f3d562db2bc21d6ba6dc`:
+- Aynı sanal ortamda aynı komut başarıyla tamamlandı.
+- Çıktı klasöründe en az bir HTML dosyası bulundu.
+- CI adımı bunu doğruladı: `FIX_EXPECTED_PASS=PASS`.
+
+Bu nedenle issue'ya özgü teknik reproduksiyon **başarılıdır**. Bu, base/fix test çiftinin belirli koşulda çalıştığını gösterir; tek başına genel vaka geçerliliğini veya model hipotezini kanıtlamaz.
+
+### Araştırma repository ve güvenlik kontrolleri
+
+Aynı PR için:
+- Repository/configuration validation: **414 test + 56 subtest başarılı**.
+- No-inference preflight run: [43712582464](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43712582464).
+- Fail-closed testleri: **13/13 başarılı**.
+- Evidence-packet/citation auditor: **12/12 başarılı**.
+- Readiness: `ready=false`, **21 blokaj**, 0 kabul edilmiş vaka, 0 kabul edilmiş upstream proje, `model_inference_performed=false`.
+- Ayrı tarihsel arşiv kontrolü, eski CCDG ZIP dosyası `data/historical/confirmatory_artifact_2026-10-09.zip` ana depoda bulunmadığı için başarısız; bu pdoc reproduksiyon job'ından ve yeni çekimserlik deneyinin verisinden bağımsızdır.
+
+## 7. Bilimsel karar
+
+**Teknik karar:** pdoc #812 için base-fail/fix-pass reproduksiyonu başarılı.
+
+**Örneklem kararı:** Bu aday üzerinde teknik hata ayıklama ve reproduksiyon yapıldığı için, proje protokolündeki maruziyet kuralı gereği ana doğrulayıcı örneklemden çıkarılmıştır. Sonuç başarılı olsa da confirmatory vaka olarak kullanılamaz. Yalnızca teknik fizibilite/kalibrasyon kaydı olarak saklanacaktır.
+
+- `CASE_REGISTRY.json` değiştirilmedi.
+- Kabul edilmiş bağımsız doğrulayıcı vaka sayısı **0**.
+- İnsan Panel A kök neden/provenans onayı ve Panel B E1/E2/E3 kanıt yeterliliği değerlendirmesi yapılmadı.
+- Model yükleme, inference, fine-tuning veya eğitim yapılmadı.
+- P0/P1 hipotezi lehine bir sonuç iddiası çıkarılmadı.
+
+MIT-0 sınıflandırma sorunu Bölüm 5'teki commit/dosya kanıtıyla kapatılmıştır. Buna rağmen bu, Panel A'nın bağımsız kaynak/provenans kontrolünün yerini almaz.
+
+## 8. Sonraki aday ve devam koşulları
+
+Bir sonraki statik inceleme adayı cohort row 90, `pyfar/pyfar` PR #722'dir. Önce:
+1. frozen base/fix SHA ve issue kapsamını yeniden teyit et;
+2. test oracle'ının enerji/power/RMS normalizasyon sözleşmesiyle gerçekten eşleştiğini incele;
+3. değişen kaynak/test dosyalarının exact-base provenance ve nested license kapsamını denetle;
+4. ancak bu koşullar temizse issue-specific fail-to-pass reproducer tasarla.
+
+**Genel sınır:** pdoc ve Robocop teknik olarak yeniden üretilmiş mühendislik kayıtlarıdır; ikisi de confirmatory örnekleme dahil değildir. Ana çalışma için kabul edilmiş vaka sayısı hâlâ **0** ve inference izni kapalıdır.
