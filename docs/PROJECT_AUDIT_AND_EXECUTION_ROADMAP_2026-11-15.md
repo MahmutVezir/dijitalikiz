@@ -287,3 +287,19 @@ These two examples are successful engineering reproductions, not accepted confir
 ### Next single work package
 
 Start static scope/oracle/provenance review for SWE-rebench V2 row 90 (`pyfar/pyfar` PR #722). Verify issue contract, expected normalization semantics, exact base SHA, changed-file list, nested/file-level license provenance, and the upstream test's sensitivity to the reported bug. Do not run upstream tests/build or model inference until the static and rights gates are closed. If row 90 is exposed by technical debugging, apply the same confirmatory exclusion rule. Do not reduce the minimum sample size of 60 independent cases across at least 8 upstream projects.
+
+
+## 20. Row 90 pyfar #721/#722 — static review on 15 November 2026
+
+Detailed record: [PYFAR_722_STATIC_CANDIDATE_REVIEW_2026-11-15.md](../research_candidates/evidence_abstention/PYFAR_722_STATIC_CANDIDATE_REVIEW_2026-11-15.md).
+
+- Frozen cohort row **90**; instance `pyfar__pyfar-722`.
+- Issue [#721](https://github.com/pyfar/pyfar/issues/721); upstream PR [#722](https://github.com/pyfar/pyfar/pull/722).
+- Exact base `648dda4c60c5a6f74acf335f7808c590c9d23929`; exact PR head/fix `a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e`; merge commit `ecd0589a3fef83ec17e8d72a4bd5a3c64ef7c445`.
+- Changed paths are exactly `pyfar/dsp/dsp.py` and `tests/test_dsp_normalize.py`. Exact-base root LICENSE is MIT, blob `430184952c6fcb292ee01cb114bb9c39f32f78ff`; exact-base setup.py declares MIT; root NOTICE was not present.
+- Static mathematics supports the fix: energy/power are quadratic in signal amplitude, so the scale factor must be `sqrt(target/reference)`; the patch square-roots the energy/power reference and target after applying channel handling.
+- New tests cover 3 reference methods (energy/power/RMS) × 3 scalar targets (0.5/1/2) × 4 channel handling modes = **36 combinations**. A maintainer review explicitly clarified that mean channel handling averages energy/power first, then square-roots the aggregate.
+- **Residual test questions:** the new fixture is a three-sample impulse with two channel amplitudes rather than the issue's exact different-length signal example; array-valued target behavior and `return_reference=True` for energy/power are not specifically asserted in the new matrix.
+- **Disposition:** strong static candidate, not technically reproduced, not human-adjudicated, not accepted. No upstream tests/build were run, no source/fixture was copied, `CASE_REGISTRY.json` remains unchanged, and the candidate has not been excluded by technical exposure. The accepted confirmatory case count remains **0**.
+
+**Next decision:** Preserve row 90 in the unexecuted candidate queue while static screening continues across other untouched cohort rows. Do not run upstream tests or builds just to increase candidate count. If technical debugging is later authorized for this row, the predeclared exposure rule will exclude it from confirmatory use regardless of result.
