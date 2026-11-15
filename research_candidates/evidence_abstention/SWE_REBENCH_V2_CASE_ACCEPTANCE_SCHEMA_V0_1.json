@@ -13,7 +13,8 @@
     "license_review",
     "technical_reproduction",
     "gold_standard",
-    "evidence_tiers"
+    "evidence_tiers",
+    "external_audit"
   ],
   "properties": {
     "case_id": {
@@ -865,6 +866,58 @@
           "additionalProperties": false
         },
         "panel_b_consensus_record": {
+          "type": "object",
+          "required": [
+            "artifact_uri",
+            "sha256"
+          ],
+          "properties": {
+            "artifact_uri": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "external_audit": {
+      "type": "object",
+      "required": [
+        "status",
+        "auditor_id",
+        "reviewed_after_panel_b_lock",
+        "artifact_authenticity_review",
+        "semantic_record_review",
+        "license_and_reproduction_record_review",
+        "review_record"
+      ],
+      "properties": {
+        "status": {
+          "const": "passed"
+        },
+        "auditor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewed_after_panel_b_lock": {
+          "const": true
+        },
+        "artifact_authenticity_review": {
+          "const": "passed"
+        },
+        "semantic_record_review": {
+          "const": "passed"
+        },
+        "license_and_reproduction_record_review": {
+          "const": "passed"
+        },
+        "review_record": {
           "type": "object",
           "required": [
             "artifact_uri",
