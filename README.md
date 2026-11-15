@@ -42,7 +42,9 @@
 - Tarihsel CCDG/160 kayıtlı deney bu yeni araştırmanın veri seti, kalibrasyon verisi veya sonucu değildir.
 - Kaggle metadata intake için gerekmiyor. 27 Ekim 31 dosyalı snapshot ile 3 Kasım 19 dosyalı allowlist snapshot birbirinden ayrıdır.
 
-**Sonraki tek araştırma adımı:** Cohort row 90, pyfar #722 için issue/test oracle ve exact-base provenance statik denetimini yap; lisans, değişen dosya ve test sözleşmesi açık değilse upstream test/build çalıştırma. Sonraki aday da teknik olarak açılırsa exposure kuralı uygulanır; 60 vaka eşiği düşürülmez.
+**15 Kasım ek statik incelemesi — pyfar #722 (row 90):** [PYFAR_722_STATIC_CANDIDATE_REVIEW_2026-11-15.md](research_candidates/evidence_abstention/PYFAR_722_STATIC_CANDIDATE_REVIEW_2026-11-15.md). Issue sözleşmesi, exact base/fix kimlikleri, iki değişen dosya, MIT lisansı ve 36 kombinasyonluk yeni test matrisi incelendi. Aday güçlü statik aday olarak kalıyor; upstream test/build çalıştırılmadı, vaka kabul edilmedi ve teknik maruziyet oluşmadı. Açık test noktaları: issue'daki farklı sinyal uzunluklarının örneği ve `return_reference=True` davranışı.
+
+**Sonraki tek araştırma adımı:** Row 90'ı henüz çalıştırılmamış aday kuyruğunda koru; diğer untouched cohort adaylarında issue kapsamı/test oracle/lisans statik taramasını sürdür. 60 vaka ve 8 proje eşiği düşürülmez.
 
 
 ## Güncel durum — 27 Ekim 2026
