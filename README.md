@@ -1,34 +1,47 @@
 # Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ
 
-**Tek aktif hedef: 2027 TÜBİTAK 2204-A’da finalistlik düzeyinde, tamamlanmış ve bilimsel olarak savunulabilir bir araştırma sunmak.** Bu hedef bir çalışma yönüdür; finalistlik sonucu garanti edilemez.
+**Tek aktif hedef:** 2027 TÜBİTAK 2204-A için tamamlanmış, tekrarlanabilir ve bilimsel olarak savunulabilir bir araştırma sunmak. Finalistlik hedefi korunur; sonuç garanti edilmez.
 
 **Bilimsel rapor için önerilen başlık:** *Yazılım Hata Teşhisinde Kanıt Yeterliliğinin Büyük Dil Modellerinin Cevap Vermekten Kaçınma Davranışına Etkisi*
 
-## Güncel durum — 14 Kasım 2026
+## Güncel durum — 15 Kasım 2026
 
-> **Bu bölüm güncel kaynak durumudur.** Aşağıdaki 27 Ekim ve önceki bölümler tarihsel kayıttır; aktif veri kaynağı/örneklem durumu olarak okunmamalıdır. Güncel tek yürütme planı: [14 Kasım proje denetimi ve yol haritası](docs/PROJECT_AUDIT_AND_EXECUTION_ROADMAP_2026-11-14.md) ve [12 Kasım güncel aşamalı durum](research_candidates/evidence_abstention/CURRENT_STATUS_AND_EXECUTION_PLAN_2026-11-12.md).
+**Bilimsel durum:** Doğrulayıcı ana deney henüz çalıştırılmadı. Kabul edilmiş bağımsız doğrulayıcı vaka **0**, kabul edilmiş upstream proje **0**, ana deney modeli çıktısı **0**. İnsan panelleri, kalibrasyon, dışarıdan doğrulanabilir ön kayıt ve exact model/runtime kapıları tamamlanmadı. **Model inference kapalıdır.**
 
-**Bilimsel durum:** Henüz doğrulayıcı deney yapılmadı. Kabul edilmiş vaka/proje **0/0**, ana deney modeli çıktısı **0**, insan panelleri ve kalibrasyon tamamlanmadı, haricî ön kayıt yok ve model çıkarımı kapalıdır.
-
-| Güncel bileşen | Doğrulanmış durum |
+| Bileşen | Doğrulanmış durum |
 |---|---|
-| Ana aday veri kaynağı | SWE-rebench V2 Filtered-Verified; metadata fizibilitesi ve 96 proje aday cohort'u mevcut |
-| Aday kapsam denetimi | 1–56: PR/base SHA 56/56; 57–64: 8/8; 65–72: 8/8; 73–80: 8/8; 81–88: 8/8; 89–96: 8/8. 89–96 aralığında 3 güçlü hata adayı, 4 koşullu aday ve 1 kapsam dışı kayıt |
-| Lisans | 1–16: 16/16 Apache-2.0; 17–56: 40/40 exact-base root lisans, 2 root NOTICE (Napalm ve Modin), 151 PR changed-file path denetimi; 57–64: 8/8; 65–72: 8/8; 73–80: 8/8 (1 root NOTICE); 81–88: 8/8 (0 root NOTICE); 89–96: 8/8 (1 root NOTICE). Row 19 Napalm Cisco fixture için provenans hold açık; seçilen vakalarda nested/per-file lisans incelemesi yine gerekli |
-| Doğrulayıcı vaka | 0 kabul edilmiş vaka; metadata veya statik patch eşleşmesi kabul anlamına gelmez |
-| Model/runtime | Qwen2.5-3B-Instruct aday revizyonu kayıtlı; exact revision lisansı ve çalışma zamanı yükleme kontrolü tamamlanmadı |
-| Ana deney | P0/P1 × E1/E2/E3 tasarımı; inference izni kapalı |
-| Ayrı prototip | Beş adaylı entropy/uncertainty adaptörü ana deneyden ayrıdır; ana sonuca dahil değildir |
+| Aday veri kaynağı | SWE-rebench V2 Filtered-Verified; 12 Kasım tarihinde sabitlenmiş 96 proje aday cohort'u |
+| Aday kapsam taraması | Cohort satırları 1–96 statik olarak incelendi; 89–96 aralığında 3 güçlü, 4 koşullu aday ve 1 dışlama belirlendi |
+| Teknik yeniden üretim | 2 adayda base-fail/fix-pass: Robocop issue #1371 (row 24) ve pdoc issue #812 (row 95) |
+| Confirmatory örneklem | Her iki teknik aday da araştırma protokolündeki maruziyet kuralı nedeniyle ana örneklemden çıkarıldı; kabul edilen vaka sayısı **0** |
+| Lisans/provenans | pdoc row 95 exact-base root license MIT-0 olarak düzeltildi; Napalm row 19 Cisco fixture provenans hold sürüyor; seçilecek her aday için nested/per-file provenance ayrıca incelenmeli |
+| Ana deney | E1/E2/E3 kanıt yeterliliği × P0 zorunlu teşhis / P1 seçici teşhis-kaçınma; inference yetkisi kapalı |
+| Model/runtime | Qwen2.5-3B-Instruct aday revizyonu kayıtlı; exact model/tokenizer/runtime yükleme preflight'ı tamamlanmadı |
+| Readiness | `ready=false`, 21 blokaj, 0 kabul edilmiş vaka, 0 kabul edilmiş proje |
+| Ayrı entropy prototipi | Beş adaylı belirsizlik/entropy prototipi ana P0/P1 deneyine dahil değildir |
 
-**Cohort denetimleri:** [57–64. satırlar](research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md), [65–72. satırlar](research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_65_72_2026-11-14.md), [73–80. satırlar](research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_73_80_2026-11-14.md), [81–88. satırlar](research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_81_88_2026-11-14.md) ve [89–96. satırlar](research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_89_96_2026-11-14.md) — bunlar aday taramalarıdır, vaka kabulü değildir. [17–56 lisans/provenans raporu](research_candidates/evidence_abstention/SWE_REBENCH_V2_LICENSE_PROVENANCE_AUDIT_17_56_2026-11-14.md) ayrıca kök lisans, NOTICE ve 151 değişen dosya yolunu kaydeder; row 19 için provenans hold sürer.
+### 15 Kasım teknik doğrulama kayıtları
 
-**Veri kaynağı ayrımı:** Eski BugsInPy V10/V12 ve 105-ID dışlama kayıtları tarihsel/ayrı bir akıştır. Eski Stage 3 manifesti hâlâ BugsInPy referansı taşır; SWE-rebench deneyinin manifesti olarak kullanılmayacaktır. Yeni veri kaynağı için yeni sürümlü protokol/manifest gerekir. Tarihsel CCDG sonuçları da yeni araştırma verisi değildir.
+- **Robocop #1371:** [PR #193](https://github.com/MahmutVezir/dijitalikiz/pull/193) birleştirildi. Sabit upstream base ve fix commitleri, aynı uv kilidi ve aynı test ortamında dört parametrik testle karşılaştırıldı. Base'de issue'ya özgü tek assertion beklenen şekilde başarısız; fix'te 4/4 test başarılı. Teknik reproduksiyon raporu: [ROBOCOP_1371_TECHNICAL_REPRODUCTION_RECORD_2026-11-15.md](research_candidates/evidence_abstention/ROBOCOP_1371_TECHNICAL_REPRODUCTION_RECORD_2026-11-15.md).
+- **pdoc #812 / PR #813:** [PR #195](https://github.com/MahmutVezir/dijitalikiz/pull/195) birleştirildi. Gerçek `python -m pdoc . --output-directory ...` CLI çağrısı exact base'de `ValueError: No modules found matching spec: .` hatasını verdi; exact fix aynı sentetik paket ve aynı ortamda HTML üretti. Ortam Python 3.11.5 ve uv 0.6.7'dir. Lisans sınıflandırması MIT-0 olarak düzeltildi. Ayrıntılı teknik kayıt: [PDOC_813_PRE_REPRODUCTION_REVIEW_2026-11-15.md](research_candidates/evidence_abstention/PDOC_813_PRE_REPRODUCTION_REVIEW_2026-11-15.md).
 
-**Kaggle notu:** BUNDLE_MANIFEST.json uyumluluğu PR #158 ile düzeltildi. 31 dosyalı 27 Ekim snapshot'ı ile 19 dosyalı 3 Kasım allowlist snapshot'ı farklı notebook/amaçlara aittir; karıştırılmamalıdır. Metadata intake için Kaggle gerekmiyor.
+**Önemli örneklem kuralı:** Bir aday üzerinde teknik hata ayıklama/reproduksiyon yapıldıysa, sonuç base-fail/fix-pass olsa bile confirmatory örnekleme alınmaz. Robocop ve pdoc bu nedenle mühendislik/kalibrasyon kayıtlarıdır; vaka sayısına eklenmez ve P0/P1 hipotezine kanıt oluşturmaz.
 
-**En güncel no-inference doğrulaması:** PR [#184](https://github.com/MahmutVezir/dijitalikiz/pull/184) ve PR [#186](https://github.com/MahmutVezir/dijitalikiz/pull/186) main'e merge edilmiştir. PR [#187](https://github.com/MahmutVezir/dijitalikiz/pull/187), 89–96 denetimini ve README/yol haritası güncellemesini taşıyan PR'dır; 14 Kasım 2026'da merge edilmiştir. PR #187 preflight run [43631185613](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43631185613): fail-closed preflight testleri **13/13**, evidence-packet/citation auditor testleri **12/12** geçti. Aynı run'ın readiness raporu `ready=false`, **21 engel**, 0 kabul edilmiş vaka, 0 kabul edilmiş proje ve `model_inference_performed=false` bildiriyor. PR #187 Research Validation run [43631185664](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43631185664) içindeki repository/configuration işi **414 test + 56 subtest** ile geçti; ayrı Historical archive integrity işi, `data/historical/confirmatory_artifact_2026-10-09.zip` canonical depoda bulunmadığı için başarısız oldu; arşiv boyutu/hash/CRC denetimleri ve tarihsel audit bu nedenle atlandı. Önceki PR #184 preflight [43625694605](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43625694605) de 13/13 ve 12/12 test geçmişti. **Bu CI sonuçları kod ve güvenlik kapısı testlerini doğrular; araştırma hazır demek değildir. Model çıkarımı kapalıdır.**
+### Son CI ve güvenlik kontrolleri
 
----
+- Research Validation run [43712582477](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43712582477): pdoc reproduksiyon job'ı başarılı; repository/configuration işi **414 test + 56 subtest** ile başarılı.
+- No-inference preflight run [43712582464](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43712582464): fail-closed testleri **13/13**, kanıt paketi/atıf auditor testleri **12/12** başarılı. Readiness raporu `ready=false`, **21 blokaj**, 0 vaka, 0 proje ve `model_inference_performed=false` bildiriyor.
+- Ayrı Historical archive integrity işi, eski CCDG arşivi `data/historical/confirmatory_artifact_2026-10-09.zip` ana depoda bulunmadığı için başarısız. Bu eski arşiv yeni belirsizlik/çekimserlik araştırmasının verisi değildir; pdoc veya Robocop reproduksiyonlarının sonucu değildir.
+
+### Veri kaynağı ve kapsam ayrımı
+
+- Birincil aday kaynağı: SWE-rebench V2 Filtered-Verified; sabit Parquet revision ve 96-row cohort hash'leri mevcut.
+- Eski BugsInPy V10/V12 ve 105-ID dışlama kayıtları tarihsel/ayrı bir akıştır; eski Stage 3 manifesti SWE-rebench deneyi için kullanılmayacaktır.
+- Tarihsel CCDG/160 kayıtlı deney bu yeni araştırmanın veri seti, kalibrasyon verisi veya sonucu değildir.
+- Kaggle metadata intake için gerekmiyor. 27 Ekim 31 dosyalı snapshot ile 3 Kasım 19 dosyalı allowlist snapshot birbirinden ayrıdır.
+
+**Sonraki tek araştırma adımı:** Cohort row 90, pyfar #722 için issue/test oracle ve exact-base provenance statik denetimini yap; lisans, değişen dosya ve test sözleşmesi açık değilse upstream test/build çalıştırma. Sonraki aday da teknik olarak açılırsa exposure kuralı uygulanır; 60 vaka eşiği düşürülmez.
+
 
 ## Güncel durum — 27 Ekim 2026
 
