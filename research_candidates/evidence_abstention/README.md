@@ -166,3 +166,20 @@ The original 120-case intake file is preserved as a historical record, but eight
 - [V3 teknik tanılama kohortu](SCREENING_COHORT_120_V3_2026-10-21.json) — metadata parser/runner debug sırası; ilk sekiz adayı kalıcı dışlandı.
 - [V4 teknik tanılama kohortu](SCREENING_COHORT_120_V4_2026-10-21.json) — test bağımlılıkları ve runner davranışını incelemek için kullanılan tarihsel sıra; ilk sekiz adayı kalıcı dışlandı.
 - [Tarihsel V5 tarama sırası](SCREENING_COHORT_120_V5_2026-10-21.json) — V6 öncesi sürüm; 32 maruziyet vakası atlanmıştı ve V5'in ilk sekiz vakası workflow doğrulamasında kullanıldığı için artık ana örneklemde kullanılamaz.
+
+
+## SWE-rebench V2 — separate versioned study scaffold (15 November 2026)
+
+The new filtered-verified dataset track has its own draft protocol, case registry, output schema, analysis plan, and no-inference prompt/response contract. These files are deliberately separate from the historical BugsInPy Stage 3 files and from the five-candidate uncertainty prototype:
+
+- [Protocol v0.1 draft](SWE_REBENCH_V2_PROTOCOL_V0_1_DRAFT_2026-11-15.md)
+- [Closed draft manifest](SWE_REBENCH_V2_EXPERIMENT_MANIFEST_V0_1.json)
+- [Empty SWE-rebench case registry](SWE_REBENCH_V2_CASE_REGISTRY_V0_1.json)
+- [P0/P1 prompts](SWE_REBENCH_V2_PROMPT_CONDITIONS_V0_1.md)
+- [Common response schema](SWE_REBENCH_V2_OUTPUT_SCHEMA_V0_1.json)
+- [Analysis plan](SWE_REBENCH_V2_ANALYSIS_PLAN_V0_1.md)
+- [No-inference contract implementation](implementation/swe_rebench_v2_contract.py)
+
+The new contract validates externally hash-pinned nested E1/E2/E3 packet sets, constructs a prompt from exactly one selected inner packet, and audits a supplied raw response without repairing or rewriting it. It contains no model loader, generation call, dataset download, or upstream test execution.
+
+Current SWE-rebench status remains **0 accepted cases / 0 accepted projects**. The dataset/source-license, human Panel A/Panel B, protocol-freeze, exact model revision-license, runtime, and preregistration gates remain open. This scaffold is not a confirmatory runner and does not authorize model inference.
