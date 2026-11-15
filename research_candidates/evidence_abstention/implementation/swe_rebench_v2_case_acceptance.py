@@ -163,6 +163,18 @@ def validate_case_record(record: Any) -> dict[str, Any]:
         blockers.append("license_review.research_use_decision must be approved.")
     if not _nonempty(license_review.get("reviewer_id")):
         blockers.append("license_review.reviewer_id is required.")
+    root_license = _mapping(license_review.get("root_license_file"), "license_review.root_license_file", blockers)
+    if not _nonempty(root_license.get("path")):
+        blockers.append("license_review.root_license_file.path is required.")
+    if root_license.get("commit_sha") != source.get("base_commit_sha"):
+        blockers.append("root license file must be pinned to the exact buggy base commit.")
+    if not isinstance(root_license.get("blob_sha"), str) or re.fullmatch(r"[0-9a-f]{40}", root_license.get("blob_sha", "")) is None:
+        blockers.append("license_review.root_license_file.blob_sha must be a full Git blob SHA.")
+    if not isinstance(root_license.get("content_sha256"), str) or SHA256_RE.fullmatch(root_license.get("content_sha256", "")) is None:
+        blockers.append("license_review.root_license_file.content_sha256 must be a SHA-256 digest.")
+    if root_license.get("license_expression") != license_review.get("source_license_expression"):
+        blockers.append("root license file expression must match the reviewed source_license_expression.")
+    _artifact(license_review.get("changed_file_license_manifest"), "license_review.changed_file_license_manifest", blockers)
     _artifact(license_review.get("review_record"), "license_review.review_record", blockers)
 
     technical = _mapping(record.get("technical_reproduction"), "technical_reproduction", blockers)
@@ -261,7 +273,7 @@ def validate_case_record(record: Any) -> dict[str, Any]:
         blockers.append("confirmatory analyst must be identified and separate from every source-exposed reviewer and both panels.")
     if not _nonempty(packet_preparer_id) or packet_preparer_id in all_reviewers or packet_preparer_id in {analyst_id, license_id, adjudicator_id}:
         blockers.append("packet preparer must be identified and separate from both blinded panels, legal reviewer, analyst, and adjudicator.")
-    required_source_exposed = set(panel_a_ids) | {technical_id, packet_preparer_id}
+    required_source_exposed = set(panel_a_ids) | {technical_id, license_id, packet_preparer_id}
     if adjudicator_id:
         required_source_exposed.add(adjudicator_id)
     if not required_source_exposed.issubset(set(source_exposed)):
