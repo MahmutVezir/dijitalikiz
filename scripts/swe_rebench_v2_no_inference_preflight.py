@@ -56,6 +56,7 @@ def evaluate(root: Path = ROOT) -> dict[str, Any]:
         "output_schema": track / "SWE_REBENCH_V2_OUTPUT_SCHEMA_V0_1.json",
         "case_acceptance_schema": track / "SWE_REBENCH_V2_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
         "analysis_plan": track / "SWE_REBENCH_V2_ANALYSIS_PLAN_V0_1.md",
+        "output_adjudication_rubric": track / "SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md",
         "protocol": track / "SWE_REBENCH_V2_PROTOCOL_V0_1_DRAFT_2026-11-15.md",
         "prompt_conditions": track / "SWE_REBENCH_V2_PROMPT_CONDITIONS_V0_1.md",
         "response_contract": implementation / "swe_rebench_v2_contract.py",
