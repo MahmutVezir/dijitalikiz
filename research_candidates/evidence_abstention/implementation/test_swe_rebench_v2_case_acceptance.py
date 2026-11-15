@@ -156,6 +156,16 @@ class SweRebenchV2CaseAcceptanceTests(unittest.TestCase):
         self.assertEqual(result["accepted_project_count"], 0)
         self.assertFalse(result["inference_authorized"])
 
+    def test_committed_case_acceptance_schema_is_strict_and_parseable(self):
+        root = Path(__file__).resolve().parents[1]
+        schema = json.loads(
+            (root / "SWE_REBENCH_V2_CASE_ACCEPTANCE_SCHEMA_V0_1.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(schema["$schema"], "https://json-schema.org/draft/2020-12/schema")
+        self.assertIs(schema["additionalProperties"], False)
+        self.assertIn("exposure", schema["required"])
+        self.assertIn("prior_pipeline_debug_exposure_status", schema["properties"]["exposure"]["required"])
+
     def test_complete_synthetic_record_passes_only_structural_gate(self):
         result = validate_case_record(valid_case())
         self.assertEqual(
