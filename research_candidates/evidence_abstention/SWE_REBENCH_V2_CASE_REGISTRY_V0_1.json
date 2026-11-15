@@ -17,7 +17,8 @@
     "The acceptance schema and validator check structural completeness and cross-field consistency only; they do not authenticate referenced artifacts, establish legal conclusions, inspect source code, or substitute for human semantic adjudication.",
     "Technical reproducibility, exact-source licensing, Panel A gold review, and Panel B blinded evidence-tier review are separate records and must use disjoint reviewers as enforced by the validator.",
     "A successful structural check is not proof that a case is scientifically valid. Referenced artifacts and reviewer attestations require independent external audit before data collection.",
-    "The case-level exposure record must list every source/gold-exposed person; Panel B and the confirmatory analyst must be unexposed. Role declarations are structural checks and require independent audit."
+    "The case-level exposure record must list every source/gold-exposed person; Panel B and the confirmatory analyst must be unexposed. Role declarations are structural checks and require independent audit.",
+    "A case cannot count as a confirmatory registry acceptance without a separately identified external auditor's post-Panel-B-lock attestation covering artifact authenticity, semantic record consistency, and license/reproduction records. The auditor is source-exposed and disjoint from both panels, the analyst, and operational reviewers; the validator checks declarations structurally but cannot authenticate the auditor or referenced artifacts."
   ],
   "acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_case_acceptance.py"
