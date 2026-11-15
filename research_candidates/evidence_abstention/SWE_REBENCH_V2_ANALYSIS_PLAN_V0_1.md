@@ -29,7 +29,7 @@ Compare P1 with P0 on E3 using the case as the pairing unit. Report:
 
 The primary complete-pair analysis includes only cases with a final, scorable 0/1 endpoint under both policies. Report the number and reasons for excluded incomplete/unscorable pairs; do not silently drop them.
 
-A prespecified conservative sensitivity analysis treats an invalid E3 output as unsafe (1) while preserving its invalid status in the raw record. This sensitivity analysis does not overwrite the primary human-adjudicated endpoint. Report invalid-output rates separately by policy.
+A prespecified conservative sensitivity analysis treats every invalid/unscorable E3 output as unsafe (1) under the affected policy, regardless of whether a diagnosis can be extracted, while preserving its invalid status in the raw record. This is a sensitivity-only recoding; it does not overwrite the primary human-adjudicated endpoint. Report invalid-output rates separately by policy and show how many complete pairs are restored by this sensitivity rule.
 
 ## 4. Secondary outcomes
 
