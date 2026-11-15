@@ -3,7 +3,7 @@ name: Evidence Abstention Preflight (No Inference)
 on:
   push:
     branches:
-      - "research/evidence-abstention-draft-2026-10-19"
+      - "research/**"
     paths:
       - "research_candidates/evidence_abstention/**"
       - "scripts/evidence_abstention_preflight.py"
