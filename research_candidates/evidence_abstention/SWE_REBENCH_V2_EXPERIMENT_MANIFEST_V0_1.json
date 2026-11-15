@@ -67,7 +67,10 @@
     "license_review_status": "pending_exact_revision_review",
     "runtime_verification": "not_run",
     "training_mode": "frozen_base_model_policy_comparison",
-    "fine_tuning_allowed": false
+    "fine_tuning_allowed": false,
+    "license_identifier": "qwen-research",
+    "license_evidence_uri": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/aa8e72537993ba99e69dfaafa59ed015b17504d1/LICENSE",
+    "license_scope_review_status": "pending_human_noncommercial_assessment"
   },
   "generation": {
     "status": "draft_not_frozen",
@@ -139,6 +142,11 @@
       "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md",
       "sha256": null,
       "status": "requires_independent_panel_review"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_MODEL_LICENSE_REVIEW_V0_1.md",
+      "sha256": null,
+      "status": "preliminary_source_inspection_pending_legal_review"
     }
   ],
   "case_registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_REGISTRY_V0_1.json",
@@ -156,6 +164,7 @@
     "The manifest must not be edited to claim readiness. A later version requires independent review, frozen artifacts, a verifiable external preregistration URI, and a separate explicit execution authorization.",
     "The registry enforces one accepted confirmatory case per upstream project. The minimum is 60 distinct independent upstream projects, not 60 cases clustered within 8 projects.",
     "The N=60 floor and N=80 target are feasibility thresholds, not a power guarantee. Hypothetical exact paired-McNemar power sensitivity scenarios are documented separately and are not empirical effect estimates.",
-    "The primary endpoint's assertion and evidence-support scoring rules are specified in SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md; decision=diagnose is treated as an asserted diagnosis even when hedged, and diagnosis leakage in an abstention is separately adjudicated."
+    "The primary endpoint's assertion and evidence-support scoring rules are specified in SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md; decision=diagnose is treated as an asserted diagnosis even when hedged, and diagnosis leakage in an abstention is separately adjudicated.",
+    "The exact pinned model revision identifies its license as qwen-research, not Apache-2.0. Its license evidence and non-commercial scope require human/legal review before model use."
   ]
 }
