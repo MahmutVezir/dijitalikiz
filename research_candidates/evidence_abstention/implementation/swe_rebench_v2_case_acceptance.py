@@ -317,7 +317,6 @@ def validate_case_record(record: Any) -> dict[str, Any]:
     _artifact(tiers.get("packet_set"), "evidence_tiers.packet_set", blockers)
     _artifact(tiers.get("panel_b_consensus_record"), "evidence_tiers.panel_b_consensus_record", blockers)
 
-    external_audit = _mapping(record.get("external_audit"), "external_audit", blockers)
     if external_audit.get("status") != "passed":
         blockers.append("external_audit.status must be passed.")
     external_auditor_id = external_audit.get("auditor_id")
