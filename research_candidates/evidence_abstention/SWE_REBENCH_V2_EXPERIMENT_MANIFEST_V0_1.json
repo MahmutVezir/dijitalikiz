@@ -24,18 +24,20 @@
     "project_reserve_count": 17,
     "within_project_alternate_count": 148,
     "previously_exposed_repositories_excluded": [
+      "MarketSquare/robotframework-robocop",
       "keras-team/keras",
+      "mitmproxy/pdoc",
       "pandas-dev/pandas",
       "scrapy/scrapy",
       "tornadoweb/tornado"
     ],
     "created_at_inclusive_cutoff_utc": "2024-09-20T00:00:00Z",
     "created_at_representation": "Filtered Parquet/filtered card describe a string; embedded upstream card describes int64 Unix milliseconds. The transformation/serialization lineage and timezone semantics remain unresolved.",
-    "created_at_timezone_assumption_review": "UNRESOLVED_FAIL_CLOSED",
+    "created_at_timezone_assumption_review": "RECONCILED_FOR_SELECTED_113_ROWS_USING_GITHUB_ISSUE_PR_CREATED_AT",
     "underlying_source_license_review": "OPEN_EXACT_BASE_AND_CHANGED_FILE_REVIEW",
     "status": "candidate_snapshot_metadata_feasibility_only",
     "created_at_provenance_audit": {
-      "status": "empirical_screen_confirms_all_rows_are_timezone_naive_strings_but_authoritative_timezone_lineage_unresolved",
+      "status": "selected_primary_and_project_reserve_rows_reconciled_via_github_issue_pr_metadata; raw_filtered_dataset_field_remains_timezone_naive",
       "filtered_dataset_card_type": "string",
       "filtered_parquet_schema_type_observed_in_prior_audit": "string",
       "embedded_upstream_card_type": "int64",
@@ -61,6 +63,90 @@
         "cohort_generation": "skipped_by_timestamp_gate",
         "artifact_id": 14166229237,
         "artifact_sha256": "92904f74309eb9c8dc48ad8c327de6d0103304aa7ebe448c6f86f8004f0deb79"
+      },
+      "selected_cohort_api_reconciliation": {
+        "status": "completed_with_one_second_source_serialization_discrepancy_and_two_prior_exposure_exclusions",
+        "retrieved_via": "Connected GitHub integration; GitHub issue/PR metadata for the identifier encoded in each instance_id",
+        "retrieval_date": "2026-11-15",
+        "primary_rows_queried": 96,
+        "project_reserve_rows_queried": 17,
+        "unique_upstream_repositories": 113,
+        "api_timestamp_records_returned": 113,
+        "exact_timestamp_matches": 112,
+        "one_second_differences": 1,
+        "unresolved_timestamp_lookups": 0,
+        "all_api_timestamps_on_or_after_cutoff_utc": "2024-09-20T00:00:00Z",
+        "exact_primary_matches": 95,
+        "primary_one_second_difference": 1,
+        "exact_project_reserve_matches": 17,
+        "prior_exposure_exclusions": [
+          {
+            "repository": "MarketSquare/robotframework-robocop",
+            "candidate_number": 1374,
+            "disposition": "permanently_excluded_from_confirmatory_pool",
+            "rationale": "PR #1374 is the fix PR for issue #1371; PR 193 records target debugging/reproduction and explicitly states the candidate is excluded under the prior-exposure rule.",
+            "evidence_url": "https://github.com/MahmutVezir/dijitalikiz/pull/193"
+          },
+          {
+            "repository": "mitmproxy/pdoc",
+            "candidate_number": 813,
+            "disposition": "permanently_excluded_from_confirmatory_pool",
+            "rationale": "PR 194 records a static pre-reproduction source/fix review of the cohort row; the candidate's mechanism and fix were exposed before blinded confirmatory validation. No upstream test was executed in that review.",
+            "evidence_url": "https://github.com/MahmutVezir/dijitalikiz/pull/194"
+          }
+        ],
+        "timestamp_discrepancy_review": [
+          {
+            "repository": "simpeg/simpeg",
+            "candidate_number": 1633,
+            "legacy_timestamp_utc_assumed": "2025-03-20T23:46:00Z",
+            "github_api_created_at_utc": "2025-03-20T23:46:01Z",
+            "difference_seconds": 1,
+            "disposition": "retain discrepancy; use explicit GitHub API timestamp if selected; not a cutoff-boundary case"
+          }
+        ],
+        "repositories_resolved_by_stable_repository_id_after_http_301": [
+          {
+            "repository": "jlowin/fastmcp",
+            "repository_id": 896296825
+          },
+          {
+            "repository": "TobikoData/sqlmesh",
+            "repository_id": 540527604
+          },
+          {
+            "repository": "jcrist/msgspec",
+            "repository_id": 332952543
+          },
+          {
+            "repository": "ethereum/web3.py",
+            "repository_id": 56251096
+          },
+          {
+            "repository": "OceanParcels/Parcels",
+            "repository_id": 43358723
+          },
+          {
+            "repository": "igorbenav/fastcrud",
+            "repository_id": 740300919
+          },
+          {
+            "repository": "owkin/PyDESeq2",
+            "repository_id": 569371342
+          }
+        ],
+        "counts_after_known_exposure_review": {
+          "primary_exact_timestamp_rows_excluding_known_exposures": 93,
+          "project_reserve_exact_timestamp_rows": 17,
+          "primary_one_second_discrepancy_rows_held_for_review": 1,
+          "prior_exposure_exclusions": 2,
+          "total_date_verified_rows_pending_other_gates": 110
+        },
+        "row_level_register": {
+          "file": "swe_rebench_v2_timestamp_reconciliation_register_2026-11-15.csv",
+          "sha256": "029c67679fcb704a6cb9be247fbdd5a5e3971580838be84b9ba495e22d4c7057",
+          "rows": 113
+        }
       }
     },
     "primary_candidate_count_status": "historical_output_created_under_unverified_naive_UTC_assumption_not_eligible_for_confirmatory_use_until_rebuilt"
@@ -165,6 +251,8 @@
     "No source tests, model loading, generation, fine-tuning, or training are authorized by this draft manifest.",
     "The manifest must not be edited to claim readiness. A later version requires independent review, frozen artifacts, a verifiable external preregistration URI, and a separate explicit execution authorization.",
     "The 96-row primary cohort and associated reserves/alternates were generated by a metadata screen that interpreted timezone-naive created_at strings as UTC. This assumption is not supported by the current source-card/filtered-schema lineage evidence. Treat the old cohort outputs as historical, quarantined screening artifacts; rebuild a new versioned cohort after date provenance is resolved. The updated metadata auditor rejects naive timestamps by default.",
-    "The 15 November 2026 fail-closed metadata audit re-read the exact pinned Parquet file: all 6,272 created_at values were timezone-naive strings; zero values were assigned UTC; zero rows entered the post-cutoff metadata candidate pool; cohort generation was skipped. This confirms the ambiguity is present across the full pinned snapshot, but does not establish that the true timezone is not UTC. Authoritative GitHub API timestamp reconciliation is required."
+    "The 15 November 2026 fail-closed metadata audit re-read the exact pinned Parquet file: all 6,272 created_at values were timezone-naive strings; zero values were assigned UTC; zero rows entered the post-cutoff metadata candidate pool; cohort generation was skipped. This confirms the ambiguity is present across the full pinned snapshot, but does not establish that the true timezone is not UTC. Authoritative GitHub API timestamp reconciliation is required.",
+    "A connected-GitHub row-level reconciliation queried all 96 primary and 17 project-reserve identifiers. 112/113 historical timestamps exactly matched their GitHub issue/PR created_at values; SimPEG #1633 differed by one second. Seven repositories had moved and were resolved by stable repository IDs after 301 responses. All 113 API timestamps fall after the inclusive cutoff. This resolves timestamp interpretation for this selected 113-row set only; it does not validate every row in the full 6,272-row dataset or the 148 within-project alternates.",
+    "The historical primary cohort also contained two known source-exposed repositories that were not in the earlier four-repository exclusion list: MarketSquare/robotframework-robocop (PR #1374, previously reproduced through PR #193) and mitmproxy/pdoc (PR #813, static source/fix review in PR #194). Both are now explicitly excluded from confirmatory use. The historical cohort outputs are not overwritten; any new versioned candidate snapshot must apply these exclusions."
   ]
 }
