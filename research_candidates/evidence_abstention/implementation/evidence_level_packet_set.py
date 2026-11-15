@@ -81,19 +81,30 @@ def _item_map(packet: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
     }
 
 
+def invalid_packet_set_report(blocker: str) -> dict[str, Any]:
+    """Return the same fail-closed report schema for every invalid input path."""
+    return {
+        "status": "invalid",
+        "blockers": [blocker],
+        "packet_set_id": None,
+        "packet_set_sha256": None,
+        "packet_sha256_by_level": {},
+        "available_evidence_ids_by_level": {},
+        "additional_evidence_ids": {},
+        "strictly_nested": False,
+        "semantic_sufficiency_assessed": False,
+        "gold_root_cause_read": False,
+        "model_inference_performed": False,
+    }
+
+
 def validate_packet_set(
     packet_set: Any,
     expected_sha256: str | None = None,
 ) -> dict[str, Any]:
     blockers: list[str] = []
     if not isinstance(packet_set, Mapping):
-        return {
-            "status": "invalid",
-            "blockers": ["Packet set must be a JSON object."],
-            "available_evidence_ids_by_level": {},
-            "semantic_sufficiency_assessed": False,
-            "model_inference_performed": False,
-        }
+        return invalid_packet_set_report("Packet set must be a JSON object.")
 
     fields = set(packet_set)
     missing = sorted(PACKET_SET_FIELDS - fields)
@@ -240,14 +251,7 @@ def main(argv=None) -> int:
         value = json.loads(args.packet_set.read_text(encoding="utf-8"))
         report = validate_packet_set(value, expected_sha256=args.expected_sha256)
     except (OSError, json.JSONDecodeError) as exc:
-        report = {
-            "status": "invalid",
-            "blockers": [type(exc).__name__ + ": " + str(exc)],
-            "available_evidence_ids_by_level": {},
-            "semantic_sufficiency_assessed": False,
-            "gold_root_cause_read": False,
-            "model_inference_performed": False,
-        }
+        report = invalid_packet_set_report(type(exc).__name__ + ": " + str(exc))
 
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0 if report["status"] == "valid" else 2
