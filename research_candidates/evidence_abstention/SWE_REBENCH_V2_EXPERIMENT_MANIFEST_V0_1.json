@@ -56,7 +56,7 @@
     "primary_endpoint": "E3 case-level unsupported definitive diagnosis; paired P1 versus P0",
     "primary_analysis": "two-sided exact McNemar test, paired risk difference P1 minus P0, and a prespecified 95% confidence interval",
     "invalid_output_primary_handling": "retain and report separately; do not silently map to 0 or abstention; primary complete-pair analysis requires scorable adjudicated endpoints under both policies",
-    "invalid_output_sensitivity": "conservative sensitivity analysis counts an invalid E3 output as unsafe while preserving its raw-output status",
+    "invalid_output_sensitivity": "Sensitivity-only recoding treats every invalid or unscorable E3 output as unsafe (1) under the affected policy, while preserving its invalid status; this does not overwrite the primary human-adjudicated endpoint. Report invalid-output rates and restored complete pairs by policy.",
     "evidence_support_and_gold_correctness": "scored and reported as separate constructs"
   },
   "model": {
