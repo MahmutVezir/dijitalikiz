@@ -139,6 +139,10 @@ def validate_case_record(record: Any) -> dict[str, Any]:
         blockers.append("exposure review must pass.")
     if exposure.get("confirmatory_analyst_saw_gold_or_fix") is not False:
         blockers.append("confirmatory analyst must attest they did not see the gold cause or fix.")
+    if not _nonempty(exposure.get("confirmatory_analyst_id")):
+        blockers.append("exposure.confirmatory_analyst_id is required.")
+    if not _nonempty(exposure.get("packet_preparer_id")):
+        blockers.append("exposure.packet_preparer_id is required.")
     _artifact(exposure.get("review_record"), "exposure.review_record", blockers)
 
     license_review = _mapping(record.get("license_review"), "license_review", blockers)
@@ -170,6 +174,14 @@ def validate_case_record(record: Any) -> dict[str, Any]:
         blockers.append("fixed_revision.exit_code must be zero.")
     if not _nonempty(baseline.get("failure_signature")):
         blockers.append("buggy_baseline.failure_signature is required.")
+    if baseline.get("test_selector") is None or not _nonempty(baseline.get("test_selector")):
+        blockers.append("buggy_baseline.test_selector is required.")
+    if fixed.get("test_selector") != baseline.get("test_selector"):
+        blockers.append("the exact same test_selector must be run on buggy and fixed revisions.")
+    if baseline.get("failure_is_targeted_regression") is not True:
+        blockers.append("buggy baseline failure must be confirmed as the targeted regression, not an unrelated command failure.")
+    if fixed.get("same_test_passed") is not True:
+        blockers.append("the same targeted regression test must pass on the fixed revision.")
     for key, path in ((baseline, "technical_reproduction.buggy_baseline"), (fixed, "technical_reproduction.fixed_revision")):
         _artifact(key.get("run_record"), path + ".run_record", blockers)
     if not _nonempty(technical.get("reviewer_id")):
@@ -186,10 +198,12 @@ def validate_case_record(record: Any) -> dict[str, Any]:
     mechanism_ids = [
         item.get("mechanism_id")
         for item in mechanisms
-        if isinstance(item, Mapping) and _nonempty(item.get("mechanism_id"))
+        if isinstance(item, Mapping)
+        and _nonempty(item.get("mechanism_id"))
+        and _nonempty(item.get("description"))
     ]
     if len(mechanism_ids) != len(mechanisms) or len(mechanism_ids) != len(set(mechanism_ids)):
-        blockers.append("candidate mechanism IDs must be present and unique.")
+        blockers.append("candidate mechanism IDs and descriptions must be present and IDs unique.")
     gold_id = gold.get("final_gold_mechanism_id")
     if gold_id not in mechanism_ids:
         blockers.append("gold_standard.final_gold_mechanism_id must identify one candidate mechanism.")
@@ -227,10 +241,20 @@ def validate_case_record(record: Any) -> dict[str, Any]:
     all_reviewers = set(panel_a_ids) | set(panel_b_ids)
     technical_id = technical.get("reviewer_id")
     license_id = license_review.get("reviewer_id")
+    analyst_id = exposure.get("confirmatory_analyst_id")
+    packet_preparer_id = exposure.get("packet_preparer_id")
+    adjudication = gold.get("adjudication") if gold.get("agreement_status") == "adjudicated" else {}
+    adjudicator_id = adjudication.get("reviewer_id") if isinstance(adjudication, Mapping) else None
     if technical_id in all_reviewers or license_id in all_reviewers:
         blockers.append("technical and legal reviewers must be separate from blinded scientific panels.")
     if technical_id == license_id:
         blockers.append("technical reproduction and license review must have different reviewers.")
+    if not _nonempty(analyst_id) or analyst_id in all_reviewers or analyst_id in {technical_id, license_id, packet_preparer_id, adjudicator_id}:
+        blockers.append("confirmatory analyst must be identified and separate from every source-exposed reviewer and both panels.")
+    if not _nonempty(packet_preparer_id) or packet_preparer_id in all_reviewers or packet_preparer_id in {analyst_id, license_id, adjudicator_id}:
+        blockers.append("packet preparer must be identified and separate from both blinded panels, legal reviewer, analyst, and adjudicator.")
+    if adjudicator_id in panel_b_ids or adjudicator_id in {technical_id, license_id, analyst_id, packet_preparer_id}:
+        blockers.append("Panel A adjudicator must be separate from Panel B and other operational roles.")
 
     decisions = _mapping(tiers.get("final_tier_decisions"), "evidence_tiers.final_tier_decisions", blockers)
     tier_survivors: dict[str, set[str]] = {}
@@ -344,6 +368,7 @@ def validate_registry(registry: Any) -> dict[str, Any]:
         "blockers": blockers,
         "accepted_case_count": len(records),
         "accepted_project_count": actual_projects,
+        "minimum_sample_thresholds_met": len(records) >= 60 and actual_projects >= 8,
         "structural_only": True,
         "inference_authorized": False,
     }
