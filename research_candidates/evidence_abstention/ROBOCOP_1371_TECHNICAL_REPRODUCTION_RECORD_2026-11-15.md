@@ -113,3 +113,25 @@ Proje protokolünün teknik tarama/hata ayıklama maruziyeti kuralı gereği, bu
 4. Yeni adayda aynı exact-base/fix, lisans/provenans ve runtime koşullarını sıfırdan uygulamak.
 
 **Nihai kayıt:** Robocop #1371 teknik olarak yeniden üretildi; doğrulayıcı vaka olarak kabul edilmedi ve ana deneyde kullanılmayacaktır.
+
+
+## 7. Aynı günkü araştırma-geneli no-inference kapısı
+
+15 Kasım 2026 tarihli bağımsız preflight çalışması:
+- Workflow run: [43710537747](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43710537747)
+- Job: `132800899879`
+- Fail-closed preflight testleri: **13/13 başarılı**
+- Kanıt paketi/atıf bütünlüğü testleri: **12/12 başarılı**
+- Artifact: `evidence-abstention-preflight-logs-43710537747-1.zip`
+- Artifact SHA-256: `bc910df5e290a18db0c73aefa614639232d9af1b4128099ff01085c16b083252`
+
+Readiness raporu:
+- `ready=false`
+- Kabul edilmiş bağımsız vaka: **0**
+- Kabul edilmiş upstream proje: **0**
+- Blokaj: **21**
+- `model_inference_performed=false`
+
+Blokaj grupları: inference yetkisi kapalı ve veri kapısı açık; doğrulanabilir ön kayıt URI'si yok; iki değerlendiricili rubrik/adjudication ve bağımsız kalibrasyon tamamlanmamış; exact model/tokenizer/runtime yükleme preflight'ı geçmemiş; 12 protokol/veri/kod girdisinin SHA-256 dondurması eksik; minimum 60 vaka/8 upstream proje sağlanmamış; çalışma runtime lock henüz doğrulanmamış.
+
+Bu no-inference sonucu Robocop teknik tekrarını doğrulayıcı vaka hâline getirmez. Robocop kaydı ve CASE_REGISTRY'nin boş kalması birbiriyle tutarlıdır.
