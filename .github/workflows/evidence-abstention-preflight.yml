@@ -61,7 +61,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          PYTHONPATH=research_candidates/evidence_abstention/implementation python -m unittest test_operational_packet_validator test_evidence_level_packet_set -v > operational-packet-tests.log 2>&1
+          PYTHONPATH=research_candidates/evidence_abstention/implementation python -m unittest test_operational_packet_validator test_evidence_level_packet_set test_swe_rebench_v2_contract -v > operational-packet-tests.log 2>&1
           test_status=$?
           cat operational-packet-tests.log
           echo "Operational packet tests exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
