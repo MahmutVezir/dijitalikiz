@@ -211,7 +211,8 @@ class SweRebenchV2ContractTests(unittest.TestCase):
         self.assertEqual(result["raw_output"], raw)
 
     def test_markdown_fences_are_not_silently_removed(self):
-        raw = "'''json\n" + response() + "\n'''"
+        fence = chr(96) * 3
+        raw = fence + "json\n" + response() + "\n" + fence
         result = audit_raw_response(raw, {"TRACE_A"}, "P1")
         self.assertEqual(result["status"], "invalid_json")
         self.assertEqual(result["raw_output"], raw)
