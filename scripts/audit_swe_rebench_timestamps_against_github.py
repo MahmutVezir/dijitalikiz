@@ -12,7 +12,6 @@ from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 import csv
 from datetime import datetime, timezone
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -45,7 +44,6 @@ except ImportError:
         sha256_file,
     )
 
-COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40}$")
 REPO_PATTERN = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 OUTPUT_FIELDS = [
     "instance_id",
