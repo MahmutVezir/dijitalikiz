@@ -415,7 +415,7 @@ def validate_registry(registry: Any) -> dict[str, Any]:
         "blockers": blockers,
         "accepted_case_count": len(records),
         "accepted_project_count": actual_projects,
-        "minimum_sample_thresholds_met": len(records) >= 60 and actual_projects >= 8,
+        "minimum_sample_thresholds_met": len(records) >= 60 and actual_projects >= 60,
         "structural_only": True,
         "inference_authorized": False,
     }
