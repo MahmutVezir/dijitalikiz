@@ -1,0 +1,9 @@
+instance_id,selection_role,dataset_repo,issue_number,dataset_created_at_utc,github_api_created_at_utc,delta_seconds,match_status,issue_url,is_pull_request,fetch_mode,error
+"pallets__click-2788","primary","pallets/click","2788","2024-10-13T20:47:53Z","2024-10-13T20:47:53Z","0","exact_match","https://github.com/pallets/click/pull/2788","true","repository_full_name",""
+"kozea__weasyprint-2416","primary","Kozea/WeasyPrint","2416","2025-03-24T16:54:52Z","2025-03-24T16:54:52Z","0","exact_match","https://github.com/Kozea/WeasyPrint/pull/2416","true","repository_full_name",""
+"python-control__python-control-1145","primary","python-control/python-control","1145","2025-04-17T03:16:40Z","2025-04-17T03:16:40Z","0","exact_match","https://github.com/python-control/python-control/pull/1145","true","repository_full_name",""
+"stfc__psyclone-2767","primary","stfc/PSyclone","2767","2024-11-05T14:18:14Z","2024-11-05T14:18:14Z","0","exact_match","https://github.com/stfc/PSyclone/pull/2767","true","repository_full_name",""
+"skrub-data__skrub-1445","primary","skrub-data/skrub","1445","2025-06-17T09:12:48Z","2025-06-17T09:12:48Z","0","exact_match","https://github.com/skrub-data/skrub/pull/1445","true","repository_full_name",""
+"cogent3__cogent3-2050","primary","cogent3/cogent3","2050","2024-10-20T06:22:13Z","2024-10-20T06:22:13Z","0","exact_match","https://github.com/cogent3/cogent3/pull/2050","true","repository_full_name",""
+"qutip__qutip-2694","primary","qutip/qutip","2694","2025-05-15T15:48:33Z","2025-05-15T15:48:33Z","0","exact_match","https://github.com/qutip/qutip/pull/2694","true","repository_full_name",""
+"mpmath__mpmath-902","primary","mpmath/mpmath","902","2025-01-19T09:35:21Z","2025-01-19T09:35:21Z","0","exact_match","https://github.com/mpmath/mpmath/pull/902","true","repository_full_name",""
