@@ -133,6 +133,16 @@ class SweRebenchV2ContractTests(unittest.TestCase):
         self.assertEqual(result["policy_compliance_status"], "not_assessed")
         self.assertEqual(result["raw_output"], raw)
 
+    def test_committed_swe_rebench_registry_is_empty_and_unaccepted(self):
+        project_root = Path(__file__).resolve().parents[1]
+        registry = json.loads(
+            (project_root / "SWE_REBENCH_V2_CASE_REGISTRY_V0_1.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(registry["status"], "empty_no_confirmatory_cases_accepted")
+        self.assertEqual(registry["accepted_case_count"], 0)
+        self.assertEqual(registry["accepted_project_count"], 0)
+        self.assertEqual(registry["records"], [])
+
     def test_manifest_is_valid_draft_but_never_authorizes_inference(self):
         result = validate_manifest(manifest())
         self.assertEqual(result["status"], "valid_draft_no_inference")
