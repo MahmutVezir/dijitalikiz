@@ -350,6 +350,12 @@ jobs:
             echo "- Test: same four parameterized cases executed at both commits in one locked environment"
             echo "- Model inference/training: not invoked"
           } >> "$GITHUB_STEP_SUMMARY"
+          echo "PYTHON_VERSION=$(cat /tmp/pdoc-python-version.txt 2>/dev/null || echo unavailable)"
+          echo "UV_VERSION=$(cat /tmp/pdoc-uv-version.txt 2>/dev/null || echo unavailable)"
+          echo "UV_LOCK_SHA256=$(awk '{print $1}' /tmp/pdoc-lock-sha256.txt 2>/dev/null || echo unavailable)"
+          echo "RUNTIME_FREEZE_SHA256=$(sha256sum /tmp/pdoc-runtime-freeze.txt 2>/dev/null | awk '{print $1}' || echo unavailable)"
+          echo "BASE_CLI_LOG_SHA256=$(sha256sum /tmp/pdoc-base-cli.log 2>/dev/null | awk '{print $1}' || echo unavailable)"
+          echo "FIX_CLI_LOG_SHA256=$(sha256sum /tmp/pdoc-fix-cli.log 2>/dev/null | awk '{print $1}' || echo unavailable)"
 
 
   reproduce-pdoc-813-cli:
@@ -391,10 +397,11 @@ jobs:
         run: |
           set -euo pipefail
           cd upstream
-          uv sync --frozen --all-extras --dev
+          uv sync --python "$(command -v python)" --frozen --all-extras --dev
           uv pip check
           uv --version > /tmp/pdoc-uv-version.txt
           .venv/bin/python --version > /tmp/pdoc-python-version.txt
+          test "$(.venv/bin/python -c 'import platform; print(platform.python_version())')" = "3.11.5"
           uv pip freeze --python .venv/bin/python > /tmp/pdoc-runtime-freeze.txt
           sha256sum uv.lock > /tmp/pdoc-lock-sha256.txt
           mkdir -p "$RUNNER_TEMP/pdoc_issue_812_project" "$RUNNER_TEMP/pdoc_issue_812_output"
