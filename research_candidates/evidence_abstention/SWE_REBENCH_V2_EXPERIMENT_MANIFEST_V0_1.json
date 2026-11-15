@@ -134,6 +134,11 @@
       "path": "research_candidates/evidence_abstention/implementation/test_swe_rebench_v2_power.py",
       "sha256": null,
       "status": "draft_not_frozen"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md",
+      "sha256": null,
+      "status": "requires_independent_panel_review"
     }
   ],
   "case_registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_REGISTRY_V0_1.json",
