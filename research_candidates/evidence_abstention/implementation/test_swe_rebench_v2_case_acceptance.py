@@ -81,6 +81,14 @@ def valid_case():
             "third_party_content_review": "passed",
             "research_use_decision": "approved",
             "reviewer_id": "LEGAL_01",
+            "root_license_file": {
+                "path": "LICENSE",
+                "commit_sha": COMMIT_A,
+                "blob_sha": "3" * 40,
+                "content_sha256": SHA_A,
+                "license_expression": "MIT",
+            },
+            "changed_file_license_manifest": artifact("changed-file-license-manifest", SHA_B),
             "review_record": artifact("license"),
         },
         "technical_reproduction": {
@@ -181,6 +189,20 @@ class SweRebenchV2CaseAcceptanceTests(unittest.TestCase):
         result = validate_case_record(record)
         self.assertEqual(result["status"], "invalid")
         self.assertTrue(any("changed_file_license_review" in item for item in result["blockers"]))
+
+    def test_root_license_must_be_pinned_to_exact_buggy_base(self):
+        record = valid_case()
+        record["license_review"]["root_license_file"]["commit_sha"] = COMMIT_B
+        result = validate_case_record(record)
+        self.assertEqual(result["status"], "invalid")
+        self.assertTrue(any("exact buggy base commit" in item for item in result["blockers"]))
+
+    def test_license_reviewer_must_be_in_source_exposure_list(self):
+        record = valid_case()
+        record["exposure"]["source_exposed_person_ids"].remove("PANEL_A_02")
+        result = validate_case_record(record)
+        self.assertEqual(result["status"], "invalid")
+        self.assertTrue(any("source_exposed_person_ids must include" in item for item in result["blockers"]))
 
     def test_buggy_baseline_must_fail_and_fixed_revision_must_pass(self):
         record = valid_case()
