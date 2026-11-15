@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SWE-rebench V2 confirmatory case acceptance record",
+  "description": "Structural record contract. Passing it does not independently verify referenced artifacts, licenses, reviewer identity, or semantic judgments.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "acceptance_state",
+    "dataset",
+    "source",
+    "independence",
+    "exposure",
+    "license_review",
+    "technical_reproduction",
+    "gold_standard",
+    "evidence_tiers"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "pattern": "^SRV2-[A-Z0-9_-]{1,48}$"
+    },
+    "acceptance_state": {
+      "const": "accepted_confirmatory"
+    },
+    "dataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset_id",
+        "file_revision",
+        "file_sha256",
+        "cohort_role",
+        "row_locator",
+        "row_sha256"
+      ],
+      "properties": {
+        "dataset_id": {
+          "const": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified"
+        },
+        "file_revision": {
+          "const": "fb9aa226b2ce37c708ea7732e7b980abacdadb67"
+        },
+        "file_sha256": {
+          "const": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+        },
+        "cohort_role": {
+          "enum": [
+            "primary",
+            "project_reserve"
+          ]
+        },
+        "row_locator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "field",
+            "value"
+          ],
+          "properties": {
+            "field": {
+              "type": "string",
+              "minLength": 1
+            },
+            "value": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "row_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "description": "Exact upstream provenance, immutable revisions and source snapshot digests; see validator for required fields."
+    },
+    "independence": {
+      "type": "object",
+      "description": "Independent project and defect-cluster review with a hashed review record."
+    },
+    "exposure": {
+      "type": "object",
+      "description": "Exposure and blinding audit; confirmatory analyst must not have seen gold cause/fix."
+    },
+    "license_review": {
+      "type": "object",
+      "description": "Exact base and changed-file/source license review, including third-party content."
+    },
+    "technical_reproduction": {
+      "type": "object",
+      "description": "Recorded buggy-baseline failure and fixed-revision pass under a locked environment."
+    },
+    "gold_standard": {
+      "type": "object",
+      "description": "Two independent Panel A ratings plus documented consensus/adjudication and alternatives."
+    },
+    "evidence_tiers": {
+      "type": "object",
+      "description": "Two disjoint, blinded Panel B ratings and locked E1/E2/E3 survivor sets with nestedness."
+    }
+  }
+}
