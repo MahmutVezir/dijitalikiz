@@ -1,12 +1,22 @@
 import unittest
 
-import pyarrow as pa
+try:
+    import pyarrow as pa
+except ModuleNotFoundError as exc:
+    if exc.name != "pyarrow":
+        raise
+    pa = None
 
-from scripts.extract_swe_rebench_v2_environment_metadata import (
-    EXPECTED_PARQUET_SHA256,
-    build_output,
-    extract_environment_record,
-)
+if pa is not None:
+    from scripts.extract_swe_rebench_v2_environment_metadata import (
+        EXPECTED_PARQUET_SHA256,
+        build_output,
+        extract_environment_record,
+    )
+else:
+    EXPECTED_PARQUET_SHA256 = "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+    build_output = None
+    extract_environment_record = None
 
 
 def row(instance_id, install_config=None):
@@ -27,6 +37,10 @@ def row(instance_id, install_config=None):
     }
 
 
+@unittest.skipUnless(
+    pa is not None,
+    "pyarrow is installed only in the dedicated pinned-Parquet metadata workflow",
+)
 class ExtractSweRebenchEnvironmentMetadataTests(unittest.TestCase):
     def test_extracts_only_environment_identity_fields_and_config(self):
         table = pa.Table.from_pylist([row("pyfar__pyfar-722")])
