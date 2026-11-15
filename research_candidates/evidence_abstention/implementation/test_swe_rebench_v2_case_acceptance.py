@@ -67,7 +67,9 @@ def valid_case():
         },
         "exposure": {
             "review_status": "passed",
+            "confirmatory_analyst_id": "ANALYST_01",
             "confirmatory_analyst_saw_gold_or_fix": False,
+            "packet_preparer_id": "PACKET_PREPARER_01",
             "review_record": artifact("exposure"),
         },
         "license_review": {
@@ -86,12 +88,16 @@ def valid_case():
             "buggy_baseline": {
                 "commit_sha": COMMIT_A,
                 "exit_code": 1,
+                "test_selector": "tests/test_module.py::test_regression",
+                "failure_is_targeted_regression": True,
                 "failure_signature": "expected assertion failure in regression test",
                 "run_record": artifact("buggy-run", SHA_A),
             },
             "fixed_revision": {
                 "commit_sha": COMMIT_B,
                 "exit_code": 0,
+                "test_selector": "tests/test_module.py::test_regression",
+                "same_test_passed": True,
                 "run_record": artifact("fixed-run", SHA_B),
             },
             "review_record": artifact("technical-review", SHA_C),
@@ -170,6 +176,20 @@ class SweRebenchV2CaseAcceptanceTests(unittest.TestCase):
         result = validate_case_record(record)
         self.assertEqual(result["status"], "invalid")
         self.assertTrue(any("buggy_baseline.exit_code" in item for item in result["blockers"]))
+
+    def test_buggy_and_fixed_runs_must_use_same_targeted_regression(self):
+        record = valid_case()
+        record["technical_reproduction"]["fixed_revision"]["test_selector"] = "tests/test_other.py::test_other"
+        result = validate_case_record(record)
+        self.assertEqual(result["status"], "invalid")
+        self.assertTrue(any("same test_selector" in item for item in result["blockers"]))
+
+    def test_confirmatory_analyst_cannot_be_source_exposed_or_on_review_panels(self):
+        record = valid_case()
+        record["exposure"]["confirmatory_analyst_id"] = "PANEL_B_01"
+        result = validate_case_record(record)
+        self.assertEqual(result["status"], "invalid")
+        self.assertTrue(any("confirmatory analyst" in item for item in result["blockers"]))
 
     def test_panel_a_and_panel_b_must_be_disjoint(self):
         record = valid_case()
