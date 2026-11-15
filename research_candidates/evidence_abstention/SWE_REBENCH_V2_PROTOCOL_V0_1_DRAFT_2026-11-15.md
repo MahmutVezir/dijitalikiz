@@ -75,7 +75,7 @@ Root-cause correctness, evidence support, abstention rate, coverage, policy comp
 
 ## 7. Model and runtime
 
-Candidate model: `Qwen/Qwen2.5-3B-Instruct`, immutable revision `aa8e72537993ba99e69dfaafa59ed015b17504d1`. Exact revision license review is pending. Runtime load verification has not been performed. Draft deterministic settings are recorded in the manifest but are not frozen.
+Candidate model: `Qwen/Qwen2.5-3B-Instruct`, immutable revision `aa8e72537993ba99e69dfaafa59ed015b17504d1`. The exact pinned revision identifies its license as `qwen-research` (Qwen Research License Agreement), not Apache-2.0. The agreement limits the grant to non-commercial purposes and includes redistribution/attribution and other conditions. The exact-revision source record is `SWE_REBENCH_V2_MODEL_LICENSE_REVIEW_V0_1.md`; legal/mentor assessment of the intended competition use and dissemination remains pending. Runtime load verification has not been performed. Draft deterministic settings are recorded in the manifest but are not frozen.
 
 The primary comparison does not fine-tune model weights. A training change would confound the prompt-policy comparison and requires a separate research question and protocol.
 
