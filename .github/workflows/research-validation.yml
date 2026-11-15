@@ -301,7 +301,7 @@ jobs:
           set -euo pipefail
           cd upstream
           git checkout --detach 271e73253a70710cc80374128efa9eabb549b5f2
-          uv sync --locked --all-extras --dev
+          uv sync --frozen --all-extras --dev
           uv pip install robotframework==6.1.1
           uv pip check
           uv pip freeze --python .venv/bin/python > /tmp/robocop-runtime-freeze.txt
