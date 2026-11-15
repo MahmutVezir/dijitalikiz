@@ -221,7 +221,7 @@ class SweRebenchV2CaseAcceptanceTests(unittest.TestCase):
 
     def test_registry_rejects_count_mismatch_and_duplicate_project(self):
         registry = valid_registry()
-        registry["accepted_case_count"] = 2
+        registry["accepted_case_count"] = 1
         registry["records"].append(copy.deepcopy(registry["records"][0]))
         result = validate_registry(registry)
         self.assertEqual(result["status"], "invalid")
