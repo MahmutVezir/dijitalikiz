@@ -139,10 +139,18 @@ def validate_case_record(record: Any) -> dict[str, Any]:
         blockers.append("exposure review must pass.")
     if exposure.get("confirmatory_analyst_saw_gold_or_fix") is not False:
         blockers.append("confirmatory analyst must attest they did not see the gold cause or fix.")
+    if exposure.get("prior_pipeline_debug_exposure_status") != "none":
+        blockers.append("candidate with prior pipeline/debug exposure is permanently excluded.")
     if not _nonempty(exposure.get("confirmatory_analyst_id")):
         blockers.append("exposure.confirmatory_analyst_id is required.")
     if not _nonempty(exposure.get("packet_preparer_id")):
         blockers.append("exposure.packet_preparer_id is required.")
+    source_exposed = exposure.get("source_exposed_person_ids")
+    if not isinstance(source_exposed, list) or any(not _nonempty(x) for x in source_exposed):
+        blockers.append("exposure.source_exposed_person_ids must list every person who saw restricted source/gold material.")
+        source_exposed = []
+    if len(source_exposed) != len(set(source_exposed)):
+        blockers.append("exposure.source_exposed_person_ids must be unique.")
     _artifact(exposure.get("review_record"), "exposure.review_record", blockers)
 
     license_review = _mapping(record.get("license_review"), "license_review", blockers)
@@ -253,6 +261,15 @@ def validate_case_record(record: Any) -> dict[str, Any]:
         blockers.append("confirmatory analyst must be identified and separate from every source-exposed reviewer and both panels.")
     if not _nonempty(packet_preparer_id) or packet_preparer_id in all_reviewers or packet_preparer_id in {analyst_id, license_id, adjudicator_id}:
         blockers.append("packet preparer must be identified and separate from both blinded panels, legal reviewer, analyst, and adjudicator.")
+    required_source_exposed = set(panel_a_ids) | {technical_id, packet_preparer_id}
+    if adjudicator_id:
+        required_source_exposed.add(adjudicator_id)
+    if not required_source_exposed.issubset(set(source_exposed)):
+        blockers.append("source_exposed_person_ids must include technical reviewer, packet preparer, Panel A raters, and any gold adjudicator.")
+    if set(source_exposed) & set(panel_b_ids):
+        blockers.append("no source-exposed person may serve on blinded Panel B.")
+    if analyst_id in set(source_exposed):
+        blockers.append("confirmatory analyst must not appear in the source-exposed person list.")
     if adjudicator_id in panel_b_ids or adjudicator_id in {technical_id, license_id, analyst_id, packet_preparer_id}:
         blockers.append("Panel A adjudicator must be separate from Panel B and other operational roles.")
 
