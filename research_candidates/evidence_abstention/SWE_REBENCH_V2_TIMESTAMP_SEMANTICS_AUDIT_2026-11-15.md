@@ -60,3 +60,25 @@ After resolution, rebuild into a **new** versioned cohort snapshot with new outp
 - Model inference remains unauthorized.
 
 **Decision:** Keep the date/timezone gate open. Fail closed for timezone-naive timestamp values. Rebuild the eligible candidate cohort only after authoritative timestamp provenance has been reconciled.
+
+
+## 7. Full pinned-snapshot check (15 November 2026)
+
+The updated fail-closed auditor was run against the exact pinned Parquet file in GitHub Actions run [43726530902](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43726530902), on repository head `91fb65cbf76eabcb6ecf84ce9e66a843698b45c4`.
+
+Observed report:
+
+- Rows read: **6,272**.
+- Arrow/Parquet `created_at` type: **string**.
+- Date representations: **6,272 `string_naive_timezone_unverified`**.
+- Naive values assigned UTC: **0**.
+- Timezone-unverified values: **6,272**.
+- Python rows eligible after the UTC cutoff: **0**.
+- Metadata candidates after required-field and duplicate checks: **0**.
+- Cohort generation: **skipped by timestamp gate**.
+- Synthetic parser tests: **14 passed**; deterministic sampler tests: **6 passed**.
+- No upstream project tests, model loading, inference, fine-tuning, or training were performed.
+
+The retained workflow artifact is [artifact 14166229237](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43726530902/artifacts/14166229237), SHA-256 `92904f74309eb9c8dc48ad8c327de6d0103304aa7ebe448c6f86f8004f0deb79`.
+
+This empirical result confirms that the timezone-naive representation is present in every row of the pinned filtered snapshot. It does **not** prove that the original source timestamps are in a non-UTC timezone, nor does it establish the transform used to serialize them. The prior 96-row cohort remains quarantined. The next admissible step is an authoritative row-to-GitHub-record reconciliation, not restoring the naive-UTC assumption.
