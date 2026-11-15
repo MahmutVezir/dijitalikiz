@@ -49,8 +49,8 @@
     "cells_per_case": 6,
     "minimum_independent_cases": 60,
     "target_independent_cases": 80,
-    "minimum_upstream_projects": 8,
-    "independent_unit": "one independently verified defect/root-cause mechanism",
+    "minimum_upstream_projects": 60,
+    "independent_unit": "one independently verified defect/root-cause mechanism, with exactly one accepted case per genuinely independent upstream project",
     "planned_outputs_at_minimum": 360,
     "planned_outputs_at_target": 480,
     "primary_endpoint": "E3 case-level unsupported definitive diagnosis; paired P1 versus P0",
@@ -133,6 +133,8 @@
     "A repository name is not automatically an independent project; forks, transfers, shared upstreams, issue duplicates, and common root-cause families require review.",
     "The dataset CC-BY-4.0 card declaration does not relicense code in the underlying repositories.",
     "No source tests, model loading, generation, fine-tuning, or training are authorized by this draft manifest.",
-    "The manifest must not be edited to claim readiness. A later version requires independent review, frozen artifacts, a verifiable external preregistration URI, and a separate explicit execution authorization."
+    "The manifest must not be edited to claim readiness. A later version requires independent review, frozen artifacts, a verifiable external preregistration URI, and a separate explicit execution authorization.",
+    "The registry enforces one accepted confirmatory case per upstream project. The minimum is 60 distinct independent upstream projects, not 60 cases clustered within 8 projects.",
+    "The N=60 floor and N=80 target are feasibility thresholds, not a power guarantee. Hypothetical exact paired-McNemar power sensitivity scenarios are documented separately and are not empirical effect estimates."
   ]
 }
