@@ -17,10 +17,12 @@
       "enum": [
         "diagnose",
         "abstain"
-      ]
+      ],
+      "description": "diagnose means the model asserts a specific root-cause diagnosis for scoring even if prose is hedged; abstain means it does not assert a specific cause. Human reviewers separately flag any diagnosis leakage in rationale."
     },
     "root_cause": {
-      "type": "string"
+      "type": "string",
+      "description": "Required non-empty causal claim when decision is diagnose; empty when decision is abstain. A causal claim asserted elsewhere in an abstention rationale may still be scored as diagnosis leakage."
     },
     "evidence_refs": {
       "type": "array",
@@ -33,7 +35,8 @@
     },
     "rationale": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "Reasoning based only on visible evidence; for abstention, do not state a specific cause as established fact."
     },
     "alternative_hypotheses": {
       "type": "array",
