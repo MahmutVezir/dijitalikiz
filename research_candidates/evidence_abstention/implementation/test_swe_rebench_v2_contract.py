@@ -12,6 +12,7 @@ from swe_rebench_v2_contract import (
     audit_raw_response,
     build_messages_from_packet_set,
     validate_manifest,
+    validate_output_schema,
 )
 
 OUTPUT_SCHEMA = {
@@ -107,6 +108,31 @@ def response(decision="diagnose", root_cause="The parser passes the wrong object
 
 
 class SweRebenchV2ContractTests(unittest.TestCase):
+    def test_committed_draft_manifest_and_output_schema_validate(self):
+        project_root = Path(__file__).resolve().parents[1]
+        actual_manifest = json.loads(
+            (project_root / "SWE_REBENCH_V2_EXPERIMENT_MANIFEST_V0_1.json").read_text(encoding="utf-8")
+        )
+        actual_schema = json.loads(
+            (project_root / "SWE_REBENCH_V2_OUTPUT_SCHEMA_V0_1.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(validate_manifest(actual_manifest)["status"], "valid_draft_no_inference")
+        validate_output_schema(actual_schema)
+
+    def test_malformed_non_string_decision_fails_closed(self):
+        raw = json.dumps({
+            "decision": [],
+            "root_cause": "",
+            "evidence_refs": [],
+            "rationale": "synthetic malformed fixture",
+            "alternative_hypotheses": [],
+            "missing_evidence": [],
+        })
+        result = audit_raw_response(raw, {"TRACE_A"}, "P1")
+        self.assertEqual(result["status"], "invalid_schema")
+        self.assertEqual(result["policy_compliance_status"], "not_assessed")
+        self.assertEqual(result["raw_output"], raw)
+
     def test_manifest_is_valid_draft_but_never_authorizes_inference(self):
         result = validate_manifest(manifest())
         self.assertEqual(result["status"], "valid_draft_no_inference")
