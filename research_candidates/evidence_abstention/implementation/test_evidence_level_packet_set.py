@@ -57,13 +57,6 @@ class EvidenceLevelPacketSetTests(unittest.TestCase):
         common = ("TRACE_A", "stack_trace", "Traceback: ValueError", "a" * 64)
         e2 = ("TEST_B", "test_output", "Expected 3, got 2", "b" * 64)
         e1 = ("SRC_C", "source_excerpt", "return value is truncated", "c" * 64)
-        packet_set = create_packet_set(
-            make_packet("PACKET_E1_002", [common, e2, e1]),
-            make_packet("PACKET_E2_002", [e2]),
-            make_packet("PACKET_E3_002", [common]),
-            "PACKETSET_7F31A_002",
-        ) if False else None
-        # A deliberately non-nested set must be rejected rather than auto-repaired.
         packet_set = {
             "schema_version": "1.0",
             "packet_set_id": "PACKETSET_7F31A_BAD",
