@@ -224,6 +224,19 @@ def build_messages_from_packet_set(
     ]
 
 
+def _unique_object_pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate JSON object key: " + key)
+        result[key] = value
+    return result
+
+
+def _reject_non_json_constant(value: str) -> None:
+    raise ValueError("non-standard JSON constant is not allowed: " + value)
+
+
 def _invalid_report(raw_output: str, status: str, error: str, policy: str) -> dict[str, Any]:
     return {
         "status": status,
@@ -255,8 +268,12 @@ def audit_raw_response(
         raise ValueError("policy must be P0 or P1")
 
     try:
-        parsed = json.loads(raw_output)
-    except json.JSONDecodeError as exc:
+        parsed = json.loads(
+            raw_output,
+            object_pairs_hook=_unique_object_pairs,
+            parse_constant=_reject_non_json_constant,
+        )
+    except (json.JSONDecodeError, ValueError) as exc:
         return _invalid_report(raw_output, "invalid_json", str(exc), policy)
 
     if not isinstance(parsed, dict) or set(parsed) != RESPONSE_FIELDS:
@@ -279,8 +296,8 @@ def audit_raw_response(
         errors.append("decision must be diagnose or abstain")
     if not isinstance(root_cause, str):
         errors.append("root_cause must be a string")
-    if not isinstance(rationale, str):
-        errors.append("rationale must be a string")
+    if not isinstance(rationale, str) or not rationale.strip():
+        errors.append("rationale must be a non-empty string")
 
     for field_name, value in (
         ("evidence_refs", refs),
@@ -314,7 +331,12 @@ def audit_raw_response(
     references_valid = not unknown_refs
 
     if policy == "P0":
-        compliance = "noncompliant" if decision == "abstain" else "instruction_followed"
+        if decision == "abstain":
+            compliance = "noncompliant"
+        elif not references_valid:
+            compliance = "invalid_citation_reference"
+        else:
+            compliance = "instruction_followed"
     else:
         # Whether P1 should answer or abstain depends on human-adjudicated evidence
         # sufficiency. The parser must not infer that from hidden E-level labels.
