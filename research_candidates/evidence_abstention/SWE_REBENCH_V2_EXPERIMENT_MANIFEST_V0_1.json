@@ -119,6 +119,21 @@
       "path": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_contract.py",
       "sha256": null,
       "status": "draft_not_frozen"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_POWER_SENSITIVITY_V0_1.md",
+      "sha256": null,
+      "status": "draft_not_frozen"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_power.py",
+      "sha256": null,
+      "status": "draft_not_frozen"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/implementation/test_swe_rebench_v2_power.py",
+      "sha256": null,
+      "status": "draft_not_frozen"
     }
   ],
   "case_registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_REGISTRY_V0_1.json",
