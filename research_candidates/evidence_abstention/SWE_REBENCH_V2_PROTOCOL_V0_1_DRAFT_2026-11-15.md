@@ -79,11 +79,11 @@ Candidate model: `Qwen/Qwen2.5-3B-Instruct`, immutable revision `aa8e72537993ba9
 
 The primary comparison does not fine-tune model weights. A training change would confound the prompt-policy comparison and requires a separate research question and protocol.
 
-## 8. Sample and stopping rules
+## 8. Sample, power, and stopping rules
 
-Target: 80 accepted independent defects. Confirmatory minimum: 60 defects across at least 8 genuinely independent upstream projects. Each defect contributes six repeated policy/evidence cells; repeated generations or variants do not increase the independent case count.
+Target: 80 accepted independent defects from 80 distinct upstream projects. Confirmatory minimum: 60 defects from 60 distinct, genuinely independent upstream projects. The registry enforces one accepted case per upstream project; this avoids treating multiple defects from one repository/project as independent observations in the primary paired analysis. Forks, transfers, shared upstreams, duplicate issues, and common root-cause families still require adjudication. Each case contributes six repeated policy/evidence cells; repeated generations or variants do not increase the independent case count. If fewer than 60 qualifying projects survive review, the study is feasibility/exploratory, not confirmatory.
 
-If the exact licenses, valid test pairs, independent ground truth, evidence tiers, exposure checks, review calibration, sample minimum, runtime, preregistration, or frozen hashes remain open, no model inference is allowed. If the final sample does not meet the minimum, report a feasibility/exploratory study; do not relax case eligibility after seeing results.
+The paired exact-McNemar sensitivity calculations are illustrative planning scenarios, not empirical effect estimates or a power guarantee. Under the explicitly hypothetical moderate discordance scenario (P0 unsafe/P1 safe = 0.30; P0 safe/P1 unsafe = 0.10), the exact unconditional power is approximately 0.635 at N=60 and 0.779 at N=80 for two-sided alpha 0.05. Under a weaker scenario (0.20 versus 0.12), it is approximately 0.138 at N=60 and 0.181 at N=80. The assumptions must be justified and frozen before preregistration; do not select them after observing confirmatory outcomes. This demonstrates that the 60-case minimum is a feasibility floor, not proof of adequate power.\n\nIf the exact licenses, valid test pairs, independent ground truth, evidence tiers, exposure checks, review calibration, sample minimum, runtime, preregistration, or frozen hashes remain open, no model inference is allowed. If the final sample does not meet the minimum, report a feasibility/exploratory study; do not relax case eligibility after seeing results.
 
 ## 9. Current state
 
