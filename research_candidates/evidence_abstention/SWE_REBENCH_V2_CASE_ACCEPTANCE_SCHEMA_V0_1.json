@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "SWE-rebench V2 confirmatory case acceptance record",
-  "description": "Structural record contract. Passing it does not independently verify referenced artifacts, licenses, reviewer identity, technical outcomes, or semantic judgments.",
+  "description": "Full case-record shape plus structural conditions. Passing the schema/validator does not independently verify referenced artifacts, licenses, reviewer identity, technical outcomes, or semantic judgments.",
   "type": "object",
   "required": [
     "case_id",
@@ -229,7 +229,9 @@
         "review_status",
         "confirmatory_analyst_id",
         "confirmatory_analyst_saw_gold_or_fix",
+        "prior_pipeline_debug_exposure_status",
         "packet_preparer_id",
+        "source_exposed_person_ids",
         "review_record"
       ],
       "properties": {
@@ -264,6 +266,17 @@
             }
           },
           "additionalProperties": false
+        },
+        "prior_pipeline_debug_exposure_status": {
+          "const": "none"
+        },
+        "source_exposed_person_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       },
       "additionalProperties": false
