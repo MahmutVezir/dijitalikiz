@@ -46,7 +46,7 @@
 - Robocop #1371 (row 24) passed a controlled base-fail/fix-pass technical reproduction. pdoc #812 / PR #813 (row 95) also passed a controlled real-CLI base-fail/fix-pass reproduction. Both are excluded from confirmatory sampling under the predeclared source-exposure/debugging rule. They are technical feasibility evidence only.
 - PR #206 merged the E1 coverage non-inferiority guardrail proposal. Its 10-percentage-point margin and paired bootstrap are provisional and require independent mentor/Panel B approval before preregistration.
 - PR #207 merged a no-network integrity auditor for the committed timestamp register. It verifies internal CSV consistency only; it does not authenticate original API payloads.
-- The timestamp register currently contains 104 rows: 96 primary and 8 of 17 declared reserves; 103 exact-to-second matches and one one-second difference (`simpeg/simpeg#1633`). This is partial register evidence, not a complete API-provenance audit.
+- The expanded timestamp register now contains 113 rows: all 96 primary candidates and all 17 declared reserves. All 113 upstream GitHub records were re-fetched successfully; 112 dataset timestamps match exactly and one (`simpeg/simpeg#1633`) differs by one second. This is field-level normalized API evidence, not raw-payload cryptographic authentication. See `SWE_REBENCH_V2_FULL_TIMESTAMP_RECONCILIATION_2026-11-15.md`.
 - PR #202 is still open and not mergeable. Its own timestamp workflow explicitly states that the cross-repository GitHub API reconciliation was **not executed** in that workflow. Do not call that workflow a completed API audit or merge the branch wholesale.
 - Main commit `35b3da29e82c9020159b29369ada15b41620174c` has Research Validation run 43746393823: repository/configuration validation passed (**418 tests + 56 subtests**); the separate historical archive job failed because `data/historical/confirmatory_artifact_2026-10-09.zip` is not in the canonical repository. The archive is an old CCDG record, not current V2 data.
 - Vercel status failures on recent PRs point to a build-rate limit; they are not Python research-test failures.
@@ -59,7 +59,7 @@
 | Static candidate audits | Rows 1–96 screened | Useful triage; not technical reproduction or semantic adjudication |
 | Robocop and pdoc reproductions | Base-fail/fix-pass technically reproduced | Exclude from confirmatory sample due exposure; do not report as P0/P1 results |
 | pyfar row 90 | Strong static candidate only | Next candidate for careful pre-reproduction provenance/test-oracle review; no test yet |
-| Timestamp CSV register | 104 rows, 103 exact, one +1 second | Partial internal consistency only; 9 declared reserves missing; raw API payload provenance not authenticated |
+| Timestamp CSV register | 113 rows, 112 exact, one +1 second; all 17 reserves present | All rows re-fetched through GitHub connector; raw API payload provenance not authenticated; simpeg exception unresolved |
 | PR #202 timestamp workflow | Synthetic/parser tests and exact Parquet snapshot passed; cross-repository API query explicitly not run | Do not describe as full timestamp audit; branch not mergeable |
 | PR #206 E1 guardrail | Merged; implementation and tests exist | Provisional method; mentor/Panel B approval still required |
 | PR #207 timestamp register audit | Merged; no-network audit added | Does not close dataset gate |
@@ -74,7 +74,7 @@
 ## 3. Resolve the design contradictions before execution
 
 1. **Independent-project threshold:** V2 manifest and analysis plan require 60 cases from 60 distinct upstream projects (target 80). Older roadmap/preflight text saying 8 projects belongs to the earlier Stage 3 route. Update or label those legacy references; never lower the V2 threshold to 8.
-2. **Timestamp provenance:** the 104-row register is incomplete and not raw-API authenticated. The one-second case must be handled under a written, pre-outcome rule; missing reserve rows must either be added with provenance or formally retired in a versioned cohort amendment. Do not infer all 6,272 timestamps from a 104-row sample.
+2. **Timestamp provenance:** the 113-row register now covers all 96 primary candidates and all 17 declared project reserves, and every upstream GitHub record was re-fetched. This is normalized field-level evidence, not raw-response authentication. The one-second case must be handled under a written, pre-outcome rule; do not infer dataset timestamp-generation semantics without authoritative documentation.
 3. **Exposure:** any candidate opened for target-test debugging or technical reproduction is excluded from confirmatory sampling under the current exposure rule. Robocop and pdoc remain excluded.
 4. **Licensing:** dataset-card license and upstream-code license are separate. No code/fixture should be redistributed without exact-base, changed-file and nested provenance review.
 5. **Human independence:** Panel A and Panel B must be disjoint, each with at least two reviewers; Panel B must be blinded to identity, patch, gold cause, evidence tier and policy until independent ratings are locked. The adjudicator preserves original ratings.
@@ -86,7 +86,7 @@
 | Order | Work package | Exact exit evidence | Owner type |
 |---:|---|---|---|
 | 0 | Consolidate version control | One V2 manifest/registry/preflight; mark BugsInPy Stage 3 and entropy track as legacy; remove stale 8-project references from active V2 status | Repository maintainer |
-| 1 | Close V2 source/time metadata | Full row-level source identity and timestamp provenance for the 96 primary + reserve pool; resolve or formally exclude timestamp exception; immutable report and hashes | Automated audit + independent review |
+| 1 | Close V2 source/time metadata | 113/113 upstream timestamp re-fetch complete (96 primary + 17 reserves); document simpeg precision exception, raw API provenance limits and source/license provenance; immutable report and hashes | Automated audit + independent review |
 | 2 | Select one untouched candidate | Static scope, exact base/fix SHA, linked issue, changed-file map, no prior exposure, no duplicate/fork/shared upstream | Source-exposed reviewer |
 | 3 | Complete license/provenance | Exact-base and fix license texts, per-changed-file provenance, NOTICE/nested dependency review, permitted evidence-packet extraction | Source-exposed reviewer |
 | 4 | Freeze technical reproduction plan | One issue-specific failing test, expected base failure and fixed pass, exact environment and commands specified before running | Technical reviewer |
