@@ -49,11 +49,11 @@
     "cells_per_case": 6,
     "minimum_independent_cases": 60,
     "target_independent_cases": 80,
-    "minimum_upstream_projects": 8,
-    "independent_unit": "one independently verified defect/root-cause mechanism",
+    "minimum_upstream_projects": 60,
+    "independent_unit": "one independently verified defect/root-cause mechanism, with exactly one accepted case per genuinely independent upstream project",
     "planned_outputs_at_minimum": 360,
     "planned_outputs_at_target": 480,
-    "primary_endpoint": "E3 case-level unsupported definitive diagnosis; paired P1 versus P0",
+    "primary_endpoint": "E3 case-level unsupported asserted root-cause diagnosis; paired P1 versus P0",
     "primary_analysis": "two-sided exact McNemar test, paired risk difference P1 minus P0, and a prespecified 95% confidence interval",
     "invalid_output_primary_handling": "retain and report separately; do not silently map to 0 or abstention; primary complete-pair analysis requires scorable adjudicated endpoints under both policies",
     "invalid_output_sensitivity": "Sensitivity-only recoding treats every invalid or unscorable E3 output as unsafe (1) under the affected policy, while preserving its invalid status; this does not overwrite the primary human-adjudicated endpoint. Report invalid-output rates and restored complete pairs by policy.",
@@ -67,7 +67,10 @@
     "license_review_status": "pending_exact_revision_review",
     "runtime_verification": "not_run",
     "training_mode": "frozen_base_model_policy_comparison",
-    "fine_tuning_allowed": false
+    "fine_tuning_allowed": false,
+    "license_identifier": "qwen-research",
+    "license_evidence_uri": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/aa8e72537993ba99e69dfaafa59ed015b17504d1/LICENSE",
+    "license_scope_review_status": "pending_human_noncommercial_assessment"
   },
   "generation": {
     "status": "draft_not_frozen",
@@ -119,6 +122,31 @@
       "path": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_contract.py",
       "sha256": null,
       "status": "draft_not_frozen"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_POWER_SENSITIVITY_V0_1.md",
+      "sha256": null,
+      "status": "draft_not_frozen"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_power.py",
+      "sha256": null,
+      "status": "draft_not_frozen"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/implementation/test_swe_rebench_v2_power.py",
+      "sha256": null,
+      "status": "draft_not_frozen"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md",
+      "sha256": null,
+      "status": "requires_independent_panel_review"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_MODEL_LICENSE_REVIEW_V0_1.md",
+      "sha256": null,
+      "status": "preliminary_source_inspection_pending_legal_review"
     }
   ],
   "case_registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_REGISTRY_V0_1.json",
@@ -133,6 +161,10 @@
     "A repository name is not automatically an independent project; forks, transfers, shared upstreams, issue duplicates, and common root-cause families require review.",
     "The dataset CC-BY-4.0 card declaration does not relicense code in the underlying repositories.",
     "No source tests, model loading, generation, fine-tuning, or training are authorized by this draft manifest.",
-    "The manifest must not be edited to claim readiness. A later version requires independent review, frozen artifacts, a verifiable external preregistration URI, and a separate explicit execution authorization."
+    "The manifest must not be edited to claim readiness. A later version requires independent review, frozen artifacts, a verifiable external preregistration URI, and a separate explicit execution authorization.",
+    "The registry enforces one accepted confirmatory case per upstream project. The minimum is 60 distinct independent upstream projects, not 60 cases clustered within 8 projects.",
+    "The N=60 floor and N=80 target are feasibility thresholds, not a power guarantee. Hypothetical exact paired-McNemar power sensitivity scenarios are documented separately and are not empirical effect estimates.",
+    "The primary endpoint's assertion and evidence-support scoring rules are specified in SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md; decision=diagnose is treated as an asserted diagnosis even when hedged, and diagnosis leakage in an abstention is separately adjudicated.",
+    "The exact pinned model revision identifies its license as qwen-research, not Apache-2.0. Its license evidence and non-commercial scope require human/legal review before model use."
   ]
 }

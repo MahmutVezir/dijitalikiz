@@ -312,6 +312,46 @@ class SweRebenchV2CaseAcceptanceTests(unittest.TestCase):
         self.assertTrue(any("accepted_case_count" in item for item in result["blockers"]))
         self.assertTrue(any("upstream_project_id values must be unique" in item for item in result["blockers"]))
 
+    def test_confirmatory_minimum_requires_60_distinct_projects(self):
+        registry = valid_registry()
+        records = []
+        for index in range(59):
+            record = copy.deepcopy(valid_case())
+            suffix = f"{index + 1:03d}"
+            repository = "example/project-" + suffix
+            record["case_id"] = "SRV2-CASE_" + suffix
+            record["dataset"]["row_locator"]["value"] = "example-instance-" + suffix
+            record["source"]["repository_full_name"] = repository
+            record["source"]["issue_or_pr_url"] = "https://github.com/" + repository + "/pull/" + str(index + 1)
+            record["source"]["pull_request_number"] = index + 1
+            record["independence"]["upstream_project_id"] = repository
+            record["independence"]["defect_cluster_id"] = repository + "#mechanism-1"
+            records.append(record)
+        registry["records"] = records
+        registry["accepted_case_count"] = 59
+        registry["accepted_project_count"] = 59
+        result = validate_registry(registry)
+        self.assertEqual(result["status"], "structurally_valid_pending_external_audit")
+        self.assertEqual(result["accepted_project_count"], 59)
+        self.assertFalse(result["minimum_sample_thresholds_met"])
+        self.assertFalse(result["inference_authorized"])
+
+        extra = copy.deepcopy(records[-1])
+        extra["case_id"] = "SRV2-CASE_060"
+        extra["dataset"]["row_locator"]["value"] = "example-instance-060"
+        extra["source"]["repository_full_name"] = "example/project-060"
+        extra["source"]["issue_or_pr_url"] = "https://github.com/example/project-060/pull/60"
+        extra["source"]["pull_request_number"] = 60
+        extra["independence"]["upstream_project_id"] = "example/project-060"
+        extra["independence"]["defect_cluster_id"] = "example/project-060#mechanism-1"
+        registry["records"].append(extra)
+        registry["accepted_case_count"] = 60
+        registry["accepted_project_count"] = 60
+        result = validate_registry(registry)
+        self.assertEqual(result["status"], "structurally_valid_pending_external_audit")
+        self.assertTrue(result["minimum_sample_thresholds_met"])
+        self.assertFalse(result["inference_authorized"])
+
     def test_record_cannot_enter_registry_without_confirmatory_acceptance_state(self):
         record = valid_case()
         record["acceptance_state"] = "candidate"
