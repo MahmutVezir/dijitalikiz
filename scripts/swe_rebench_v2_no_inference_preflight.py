@@ -62,6 +62,8 @@ def evaluate(root: Path = ROOT) -> dict[str, Any]:
         "case_acceptance_validator": implementation / "swe_rebench_v2_case_acceptance.py",
         "response_contract_tests": implementation / "test_swe_rebench_v2_contract.py",
         "case_acceptance_tests": implementation / "test_swe_rebench_v2_case_acceptance.py",
+        "power_sensitivity": implementation / "swe_rebench_v2_power.py",
+        "power_sensitivity_tests": implementation / "test_swe_rebench_v2_power.py",
     }
     blockers: list[str] = []
     hashes: dict[str, str | None] = {}
