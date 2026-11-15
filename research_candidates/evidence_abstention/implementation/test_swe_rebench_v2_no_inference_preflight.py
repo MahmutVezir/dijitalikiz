@@ -1,13 +1,11 @@
-import copy
-import json
+import sys
 import unittest
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT / "scripts"))
 from swe_rebench_v2_no_inference_preflight import evaluate
 
-
-ROOT = Path(__file__).resolve().parents[3]
-TRACK = ROOT / "research_candidates" / "evidence_abstention"
 
 
 class SweRebenchV2NoInferencePreflightTests(unittest.TestCase):
