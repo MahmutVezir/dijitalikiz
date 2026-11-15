@@ -265,24 +265,29 @@ def validate_case_record(record: Any) -> dict[str, Any]:
     packet_preparer_id = exposure.get("packet_preparer_id")
     adjudication = gold.get("adjudication") if gold.get("agreement_status") == "adjudicated" else {}
     adjudicator_id = adjudication.get("reviewer_id") if isinstance(adjudication, Mapping) else None
+    external_auditor_id = external_audit.get("auditor_id")
     if technical_id in all_reviewers or license_id in all_reviewers:
         blockers.append("technical and legal reviewers must be separate from blinded scientific panels.")
     if technical_id == license_id:
         blockers.append("technical reproduction and license review must have different reviewers.")
-    if not _nonempty(analyst_id) or analyst_id in all_reviewers or analyst_id in {technical_id, license_id, packet_preparer_id, adjudicator_id}:
+    if not _nonempty(analyst_id) or analyst_id in all_reviewers or analyst_id in {technical_id, license_id, packet_preparer_id, adjudicator_id, external_auditor_id}:
         blockers.append("confirmatory analyst must be identified and separate from every source-exposed reviewer and both panels.")
-    if not _nonempty(packet_preparer_id) or packet_preparer_id in all_reviewers or packet_preparer_id in {analyst_id, license_id, adjudicator_id}:
+    if not _nonempty(packet_preparer_id) or packet_preparer_id in all_reviewers or packet_preparer_id in {analyst_id, license_id, adjudicator_id, external_auditor_id}:
         blockers.append("packet preparer must be identified and separate from both blinded panels, legal reviewer, analyst, and adjudicator.")
     required_source_exposed = set(panel_a_ids) | {technical_id, license_id, packet_preparer_id}
     if adjudicator_id:
         required_source_exposed.add(adjudicator_id)
+    if external_auditor_id:
+        required_source_exposed.add(external_auditor_id)
     if not required_source_exposed.issubset(set(source_exposed)):
         blockers.append("source_exposed_person_ids must include technical reviewer, packet preparer, Panel A raters, and any gold adjudicator.")
     if set(source_exposed) & set(panel_b_ids):
         blockers.append("no source-exposed person may serve on blinded Panel B.")
     if analyst_id in set(source_exposed):
         blockers.append("confirmatory analyst must not appear in the source-exposed person list.")
-    if adjudicator_id in panel_b_ids or adjudicator_id in {technical_id, license_id, analyst_id, packet_preparer_id}:
+    if not _nonempty(external_auditor_id) or external_auditor_id in all_reviewers or external_auditor_id in {technical_id, license_id, analyst_id, packet_preparer_id, adjudicator_id}:
+        blockers.append("external auditor must be separate from both panels, analyst, and all operational reviewers.")
+    if adjudicator_id in panel_b_ids or adjudicator_id in {technical_id, license_id, analyst_id, packet_preparer_id, external_auditor_id}:
         blockers.append("Panel A adjudicator must be separate from Panel B and other operational roles.")
 
     decisions = _mapping(tiers.get("final_tier_decisions"), "evidence_tiers.final_tier_decisions", blockers)
@@ -311,9 +316,22 @@ def validate_case_record(record: Any) -> dict[str, Any]:
     _artifact(tiers.get("packet_set"), "evidence_tiers.packet_set", blockers)
     _artifact(tiers.get("panel_b_consensus_record"), "evidence_tiers.panel_b_consensus_record", blockers)
 
+    external_audit = _mapping(record.get("external_audit"), "external_audit", blockers)
+    if external_audit.get("status") != "passed":
+        blockers.append("external_audit.status must be passed.")
+    external_auditor_id = external_audit.get("auditor_id")
+    if not _nonempty(external_auditor_id):
+        blockers.append("external_audit.auditor_id is required.")
+    if external_audit.get("reviewed_after_panel_b_lock") is not True:
+        blockers.append("external audit must occur after Panel B ratings are locked.")
+    for field in ("artifact_authenticity_review", "semantic_record_review", "license_and_reproduction_record_review"):
+        if external_audit.get(field) != "passed":
+            blockers.append("external_audit." + field + " must be passed.")
+    _artifact(external_audit.get("review_record"), "external_audit.review_record", blockers)
+
     if not blockers:
         return {
-            "status": "structurally_complete_pending_external_authenticity_and_semantic_audit",
+            "status": "structurally_complete_with_external_audit_attestation",
             "blockers": [],
             "case_id": case_id,
             "upstream_project_id": independence.get("upstream_project_id"),
@@ -361,7 +379,7 @@ def validate_registry(registry: Any) -> dict[str, Any]:
     defect_ids: list[str] = []
     for index, record in enumerate(records):
         result = validate_case_record(record)
-        if result["status"] != "structurally_complete_pending_external_authenticity_and_semantic_audit":
+        if result["status"] != "structurally_complete_with_external_audit_attestation":
             blockers.append("records[" + str(index) + "] failed case acceptance validation.")
             blockers.extend("records[" + str(index) + "]: " + item for item in result["blockers"])
             continue
@@ -386,8 +404,8 @@ def validate_registry(registry: Any) -> dict[str, Any]:
             blockers.append("empty registry status must be empty_no_confirmatory_cases_accepted.")
         status = "valid_empty_registry"
     else:
-        if registry.get("status") != "contains_documented_acceptances_pending_external_audit":
-            blockers.append("non-empty registry status must disclose pending external authenticity and semantic audit.")
+        if registry.get("status") != "contains_cases_with_documented_external_audit_attestation":
+            blockers.append("non-empty registry status must disclose documented external audit attestations.")
         status = "structurally_valid_pending_external_audit"
 
     if blockers:
