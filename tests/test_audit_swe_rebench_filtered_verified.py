@@ -10,7 +10,7 @@ class SweRebenchMetadataAuditTests(unittest.TestCase):
             "instance_id": "org_repo-123",
             "repo": "org/repo",
             "base_commit": "a" * 40,
-            "created_at": "2024-09-20 00:00:00",
+            "created_at": "2024-09-20T00:00:00Z",
             "language": "Python",
             "license": "MIT",
             "FAIL_TO_PASS": ["test_one"],
@@ -19,11 +19,30 @@ class SweRebenchMetadataAuditTests(unittest.TestCase):
         row.update(updates)
         return row
 
-    def test_naive_date_string_is_reported_and_explicitly_assumed_utc(self):
+    def test_naive_date_string_is_rejected_without_utc_assumption(self):
         parsed, representation, assumed = parse_created_at("2024-09-20 00:00:00")
+        self.assertIsNone(parsed)
+        self.assertEqual(representation, "string_naive_timezone_unverified")
+        self.assertFalse(assumed)
+
+    def test_naive_datetime_is_rejected_without_utc_assumption(self):
+        parsed, representation, assumed = parse_created_at(datetime(2024, 9, 20))
+        self.assertIsNone(parsed)
+        self.assertEqual(representation, "datetime_naive_timezone_unverified")
+        self.assertFalse(assumed)
+
+    def test_historical_utc_assumption_requires_explicit_nonconfirmatory_opt_in(self):
+        parsed, representation, assumed = parse_created_at(
+            "2024-09-20 00:00:00",
+            naive_policy="assume_utc_historical_only",
+        )
         self.assertEqual(parsed, datetime(2024, 9, 20, tzinfo=timezone.utc))
-        self.assertEqual(representation, "string_naive")
+        self.assertEqual(representation, "string_naive_assumed_utc_historical_only")
         self.assertTrue(assumed)
+
+    def test_unknown_naive_policy_fails_closed(self):
+        with self.assertRaisesRegex(ValueError, "naive_policy"):
+            parse_created_at("2024-09-20 00:00:00", naive_policy="guess_timezone")
 
     def test_utc_z_string_is_parsed_without_assumption(self):
         parsed, representation, assumed = parse_created_at("2024-09-20T00:00:00Z")
@@ -31,10 +50,42 @@ class SweRebenchMetadataAuditTests(unittest.TestCase):
         self.assertEqual(representation, "string_tz")
         self.assertFalse(assumed)
 
-    def test_only_python_post_cutoff_with_required_metadata_enters_candidate_pool(self):
+    def test_offset_aware_string_is_normalized_to_utc(self):
+        parsed, representation, assumed = parse_created_at("2024-09-20T03:00:00+03:00")
+        self.assertEqual(parsed, datetime(2024, 9, 20, tzinfo=timezone.utc))
+        self.assertEqual(representation, "string_tz")
+        self.assertFalse(assumed)
+
+    def test_numeric_unix_milliseconds_are_interpreted_as_utc(self):
+        parsed, representation, assumed = parse_created_at(1726790400000)
+        self.assertEqual(parsed, datetime(2024, 9, 20, tzinfo=timezone.utc))
+        self.assertEqual(representation, "unix_ms")
+        self.assertFalse(assumed)
+
+    def test_cutoff_is_inclusive_for_explicit_utc_timestamp(self):
+        summary, candidates = audit_records([self.row()], {"created_at": "string"})
+        self.assertEqual(len(candidates), 1)
+        self.assertEqual(candidates[0]["created_at_utc"], "2024-09-20T00:00:00Z")
+        self.assertEqual(summary["python_rows_on_or_after_cutoff"], 1)
+
+    def test_naive_timestamps_are_excluded_from_candidate_pool(self):
+        summary, candidates = audit_records(
+            [self.row(created_at="2024-09-20 00:00:00")],
+            {"created_at": "string"},
+        )
+        self.assertEqual(candidates, [])
+        self.assertEqual(summary["timezone_unverified_created_at_count"], 1)
+        self.assertEqual(
+            summary["exclusion_reason_counts_nonexclusive"]["created_at_timezone_unverified"],
+            1,
+        )
+        self.assertEqual(summary["created_at_timezone_review"], "UNRESOLVED_SOURCE_SCHEMA_LINEAGE")
+        self.assertEqual(summary["naive_timestamp_assumed_utc_count"], 0)
+
+    def test_only_explicit_utc_python_post_cutoff_with_required_metadata_enters_candidate_pool(self):
         records = [
             self.row(),
-            self.row(instance_id="old-1", created_at="2024-09-19 23:59:59"),
+            self.row(instance_id="old-1", created_at="2024-09-19T23:59:59Z"),
             self.row(instance_id="js-1", language="JavaScript"),
             self.row(instance_id="bad-sha", base_commit="not-a-sha"),
         ]
@@ -45,6 +96,17 @@ class SweRebenchMetadataAuditTests(unittest.TestCase):
         self.assertEqual(candidates[0]["instance_id"], "org_repo-123")
         self.assertEqual(summary["accepted_confirmatory_cases"], 0)
         self.assertIs(summary["model_inference_performed"], False)
+
+    def test_historical_policy_is_explicitly_audited_and_never_confirmatory(self):
+        summary, candidates = audit_records(
+            [self.row(created_at="2024-09-20 00:00:00")],
+            {"created_at": "string"},
+            naive_policy="assume_utc_historical_only",
+        )
+        self.assertEqual(len(candidates), 1)
+        self.assertEqual(summary["naive_timestamp_assumed_utc_count"], 1)
+        self.assertEqual(summary["created_at_parser_policy"], "assume_utc_historical_only")
+        self.assertIs(summary["created_at_naive_utc_assumptions_permitted_for_confirmatory_use"], False)
 
     def test_duplicate_instance_ids_are_not_candidates(self):
         records = [self.row(), self.row(repo="other/repo")]

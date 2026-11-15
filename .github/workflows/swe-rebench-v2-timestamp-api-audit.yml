@@ -1,0 +1,91 @@
+name: SWE-rebench V2 Timestamp Audit Tests and Metadata Gate (No Inference)
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/swe-rebench-v2-timestamp-api-audit.yml"
+      - "scripts/audit_swe_rebench_filtered_verified.py"
+      - "scripts/audit_swe_rebench_timestamps_against_github.py"
+      - "tests/test_audit_swe_rebench_filtered_verified.py"
+      - "tests/test_swe_rebench_timestamp_api_audit.py"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_TIMESTAMP_SEMANTICS_AUDIT_2026-11-15.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: swe-rebench-v2-timestamp-api-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  reconcile:
+    name: Validate timestamp parser and preserve safe metadata inventory
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    env:
+      DATASET_URL: "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet"
+      EXPECTED_SHA256: "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+      EXPECTED_BYTES: "226272977"
+      EXPECTED_ROWS: "6272"
+    steps:
+      - name: Checkout exact repository commit
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11"
+
+      - name: Install pinned Parquet reader
+        run: python -m pip install --disable-pip-version-check "pyarrow==19.0.1"
+
+      - name: Run synthetic timestamp parser and reconciliation tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p "test_audit_swe_rebench_filtered_verified.py" -v
+          python -m unittest discover -s tests -p "test_swe_rebench_timestamp_api_audit.py" -v
+
+      - name: Download and verify exact Parquet snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/swe-rebench-v2-timestamp"
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "$DATASET_URL" \
+            --output "$RUNNER_TEMP/swe-rebench-v2-timestamp/train-00000-of-00001.parquet"
+          actual_bytes="$(stat -c '%s' "$RUNNER_TEMP/swe-rebench-v2-timestamp/train-00000-of-00001.parquet")"
+          actual_sha="$(sha256sum "$RUNNER_TEMP/swe-rebench-v2-timestamp/train-00000-of-00001.parquet" | awk '{print $1}')"
+          test "$actual_bytes" = "$EXPECTED_BYTES"
+          test "$actual_sha" = "$EXPECTED_SHA256"
+          echo "verified_bytes=$actual_bytes" >> "$GITHUB_STEP_SUMMARY"
+          echo "verified_sha256=$actual_sha" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Record external API reconciliation boundary
+        shell: bash
+        run: |
+          {
+            echo "### GitHub issue API reconciliation"
+            echo "Not executed in this workflow. The built-in GITHUB_TOKEN is scoped to this repository and is not used to query other repositories."
+            echo "Cross-repository issue metadata must be reconciled through the connected GitHub integration or a separately reviewed, provenance-preserving API cache."
+            echo "This job validates only the pinned data snapshot, parser tests, and fail-closed metadata behavior. It does not authorize candidate admission."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload full timestamp reconciliation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: swe-rebench-v2-timestamp-test-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/swe-rebench-v2-metadata-summary.json
+            ${{ runner.temp }}/swe-rebench-v2-metadata-candidates.csv
+            ${{ runner.temp }}/swe-rebench-v2-timestamp/train-00000-of-00001.parquet
+          if-no-files-found: warn
+          retention-days: 90

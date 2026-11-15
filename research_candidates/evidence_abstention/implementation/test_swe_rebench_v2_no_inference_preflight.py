@@ -51,6 +51,11 @@ class SweRebenchV2NoInferencePreflightTests(unittest.TestCase):
         report = evaluate(ROOT)
         self.assertRegex(report["artifact_sha256"]["case_acceptance_schema"], r"^[0-9a-f]{64}$")
         self.assertRegex(report["artifact_sha256"]["case_acceptance_validator"], r"^[0-9a-f]{64}$")
+        self.assertRegex(report["artifact_sha256"]["timestamp_semantics_audit"], r"^[0-9a-f]{64}$")
+        self.assertRegex(report["artifact_sha256"]["timestamp_reconciliation_runner"], r"^[0-9a-f]{64}$")
+        self.assertRegex(report["artifact_sha256"]["timestamp_reconciliation_tests"], r"^[0-9a-f]{64}$")
+        self.assertRegex(report["artifact_sha256"]["metadata_timestamp_audit_script"], r"^[0-9a-f]{64}$")
+        self.assertRegex(report["artifact_sha256"]["metadata_timestamp_audit_tests"], r"^[0-9a-f]{64}$")
 
     def test_nonexistent_root_fails_closed(self):
         report = evaluate(ROOT / "does-not-exist")

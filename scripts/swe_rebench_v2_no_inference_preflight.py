@@ -62,6 +62,11 @@ def evaluate(root: Path = ROOT) -> dict[str, Any]:
         "case_acceptance_validator": implementation / "swe_rebench_v2_case_acceptance.py",
         "response_contract_tests": implementation / "test_swe_rebench_v2_contract.py",
         "case_acceptance_tests": implementation / "test_swe_rebench_v2_case_acceptance.py",
+        "timestamp_semantics_audit": track / "SWE_REBENCH_V2_TIMESTAMP_SEMANTICS_AUDIT_2026-11-15.md",
+        "timestamp_reconciliation_runner": root / "scripts" / "audit_swe_rebench_timestamps_against_github.py",
+        "timestamp_reconciliation_tests": root / "tests" / "test_swe_rebench_timestamp_api_audit.py",
+        "metadata_timestamp_audit_script": root / "scripts" / "audit_swe_rebench_filtered_verified.py",
+        "metadata_timestamp_audit_tests": root / "tests" / "test_audit_swe_rebench_filtered_verified.py",
     }
     blockers: list[str] = []
     hashes: dict[str, str | None] = {}
