@@ -64,6 +64,10 @@ def audit_register(root: Path) -> dict:
     if len(ids) != len(set(ids)):
         raise ValueError("duplicate instance_id values in reconciliation register")
 
+    repositories = [row["dataset_repo"].casefold() for row in rows]
+    if len(repositories) != len(set(repositories)):
+        raise ValueError("duplicate repository identities in reconciliation register")
+
     counts = Counter(row["match_status"] for row in rows)
     role_counts = Counter(row["selection_role"] for row in rows)
     deltas = Counter()
