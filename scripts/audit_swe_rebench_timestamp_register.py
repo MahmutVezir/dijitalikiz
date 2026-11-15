@@ -18,11 +18,11 @@ import sys
 
 TRACK = Path("research_candidates/evidence_abstention")
 PART_PATTERN = "timestamp_reconciliation_part_{:02d}_2026-11-15.csv"
-EXPECTED_PARTS = 13
-EXPECTED_TOTAL = 104
+EXPECTED_PARTS = 14
+EXPECTED_TOTAL = 113
 EXPECTED_PRIMARY = 96
-EXPECTED_RESERVE = 8
-EXPECTED_EXACT = 103
+EXPECTED_RESERVE = 17
+EXPECTED_EXACT = 112
 EXPECTED_ONE_SECOND = 1
 REQUIRED_FIELDS = {
     "instance_id", "selection_role", "dataset_repo", "issue_number",
@@ -119,8 +119,8 @@ def audit_register(root: Path) -> dict:
     ]
     return {
         "audit_type": "stored_timestamp_reconciliation_register_integrity",
-        "status": "PARTIAL_PASS_ONE_SECOND_CASE_REQUIRES_HUMAN_REVIEW",
-        "scope": "104 stored rows across 13 committed CSV parts; no new GitHub API requests",
+        "status": "FULL_REGISTER_PASS_ONE_SECOND_CASE_REQUIRES_HUMAN_REVIEW",
+        "scope": "113 stored rows across 14 committed CSV parts; no new GitHub API requests",
         "row_count": len(rows),
         "unique_instance_count": len(set(ids)),
         "unique_repository_count": len({row["dataset_repo"].casefold() for row in rows}),
@@ -132,7 +132,7 @@ def audit_register(root: Path) -> dict:
         "limitations": [
             "This audit validates CSV structure and internal consistency only.",
             "It does not independently authenticate the original GitHub API response payloads.",
-            "The committed register contains 96 primary rows and only 8 of 17 declared project reserves.",
+            "The committed register contains all 96 primary rows and all 17 declared project reserves; timestamp coverage does not establish candidate eligibility.",
             "The one-second difference is not auto-admitted and requires an explicit documented decision.",
             "Timestamp reconciliation does not establish defect validity, independence, source-code licensing, human adjudication, or model execution readiness."
         ],
