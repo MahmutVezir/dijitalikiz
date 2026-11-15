@@ -1,0 +1,9 @@
+instance_id,selection_role,dataset_repo,issue_number,dataset_created_at_utc,github_api_created_at_utc,delta_seconds,match_status,issue_url,is_pull_request,fetch_mode,error
+"skypilot-org__skypilot-5985","primary","skypilot-org/skypilot","5985","2025-06-12T21:52:38Z","2025-06-12T21:52:38Z","0","exact_match","https://github.com/skypilot-org/skypilot/pull/5985","true","repository_full_name",""
+"tobikodata__sqlmesh-3654","primary","TobikoData/sqlmesh","3654","2025-01-17T19:58:56Z","2025-01-17T19:58:56Z","0","exact_match","https://github.com/SQLMesh/sqlmesh/pull/3654","true","repository_id",""
+"napalm-automation__napalm-2152","primary","napalm-automation/napalm","2152","2024-11-04T21:41:29Z","2024-11-04T21:41:29Z","0","exact_match","https://github.com/napalm-automation/napalm/pull/2152","true","repository_full_name",""
+"terrapower__armi-2121","primary","terrapower/armi","2121","2025-04-16T15:04:52Z","2025-04-16T15:04:52Z","0","exact_match","https://github.com/terrapower/armi/pull/2121","true","repository_full_name",""
+"pythainlp__pythainlp-1046","primary","PyThaiNLP/pythainlp","1046","2024-12-25T06:25:09Z","2024-12-25T06:25:09Z","0","exact_match","https://github.com/PyThaiNLP/pythainlp/pull/1046","true","repository_full_name",""
+"modin-project__modin-7554","primary","modin-project/modin","7554","2025-05-02T19:12:19Z","2025-05-02T19:12:19Z","0","exact_match","https://github.com/modin-project/modin/pull/7554","true","repository_full_name",""
+"crossgl__crosstl-201","primary","CrossGL/crosstl","201","2024-10-09T13:55:11Z","2024-10-09T13:55:11Z","0","exact_match","https://github.com/CrossGL/crosstl/pull/201","true","repository_full_name",""
+"marketsquare__robotframework-robocop-1374","primary","MarketSquare/robotframework-robocop","1374","2025-04-02T13:39:40Z","2025-04-02T13:39:40Z","0","exact_match","https://github.com/MarketSquare/robotframework-robocop/pull/1374","true","repository_full_name",""
