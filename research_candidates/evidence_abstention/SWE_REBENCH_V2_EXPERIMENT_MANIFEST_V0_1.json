@@ -31,21 +31,21 @@
     ],
     "created_at_inclusive_cutoff_utc": "2024-09-20T00:00:00Z",
     "created_at_representation": "String in pinned filtered Parquet; naive timestamps were interpreted as UTC in the metadata feasibility run",
-    "created_at_timezone_assumption_review": "PARTIAL_ROW_REGISTER_AUDIT_103_EXACT_1_ONE_SECOND_REQUIRES_REVIEW; API PAYLOAD AUTHENTICATION INCOMPLETE",
+    "created_at_timezone_assumption_review": "FULL_REGISTER_UPSTREAM_REFETCH_112_EXACT_1_ONE_SECOND_REQUIRES_REVIEW; RAW API PAYLOAD AUTHENTICATION INCOMPLETE",
     "underlying_source_license_review": "OPEN_EXACT_BASE_AND_CHANGED_FILE_REVIEW",
     "status": "candidate_snapshot_metadata_feasibility_only",
     "created_at_reconciliation_register": {
       "path_pattern": "research_candidates/evidence_abstention/timestamp_reconciliation_part_XX_2026-11-15.csv",
-      "parts": 13,
-      "rows": 104,
+      "parts": 14,
+      "rows": 113,
       "primary_rows": 96,
-      "project_reserve_rows_present": 8,
+      "project_reserve_rows_present": 17,
       "declared_project_reserve_rows": 17,
-      "exact_matches": 103,
+      "exact_matches": 112,
       "one_second_differences": 1,
       "one_second_case": "simpeg__simpeg-1633",
       "register_integrity_audit": "scripts/audit_swe_rebench_timestamp_register.py",
-      "status": "partial_register_integrity_only_not_authoritative_api_payload_audit"
+      "status": "full_register_field_level_upstream_refetch_not_raw_payload_authenticated"
     }
   },
   "design": {
@@ -179,6 +179,6 @@
     "The N=60 floor and N=80 target are feasibility thresholds, not a power guarantee. Hypothetical exact paired-McNemar power sensitivity scenarios are documented separately and are not empirical effect estimates.",
     "The primary endpoint's assertion and evidence-support scoring rules are specified in SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md; decision=diagnose is treated as an asserted diagnosis even when hedged, and diagnosis leakage in an abstention is separately adjudicated.",
     "The exact pinned model revision identifies its license as qwen-research, not Apache-2.0. Its license evidence and non-commercial scope require human/legal review before model use.",
-    "The committed timestamp reconciliation register currently contains 104 rows: 96 primary and 8 of 17 declared project reserves; 103 are exact-to-second and one (simpeg/simpeg#1633) differs by one second. A new register-integrity auditor validates internal consistency only; it does not authenticate raw GitHub API payloads. Keep dataset_validation_gate OPEN and resolve the one-second case, missing reserve records, and API provenance before any cohort rebuild."
+    "The timestamp reconciliation register contains 113 rows: 96 primary and all 17 declared project reserves. A field-level upstream GitHub re-fetch succeeded for all 113 records; 112 dataset timestamps match exactly and one (simpeg/simpeg#1633) differs by one second. The GitHub connector returned normalized fields, not raw REST payloads or headers. Keep dataset_validation_gate OPEN until the one-second dataset timestamp semantics and broader source provenance are resolved."
   ]
 }
