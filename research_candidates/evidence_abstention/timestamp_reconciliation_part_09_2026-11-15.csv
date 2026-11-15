@@ -1,0 +1,9 @@
+instance_id,selection_role,dataset_repo,issue_number,dataset_created_at_utc,github_api_created_at_utc,delta_seconds,match_status,issue_url,is_pull_request,fetch_mode,error
+"mikedh__trimesh-2312","primary","mikedh/trimesh","2312","2024-10-29T19:31:42Z","2024-10-29T19:31:42Z","0","exact_match","https://github.com/mikedh/trimesh/pull/2312","true","repository_full_name",""
+"litestar-org__polyfactory-728","primary","litestar-org/polyfactory","728","2025-07-05T07:31:38Z","2025-07-05T07:31:38Z","0","exact_match","https://github.com/litestar-org/polyfactory/pull/728","true","repository_full_name",""
+"pyccel__pyccel-2038","primary","pyccel/pyccel","2038","2024-11-05T09:48:01Z","2024-11-05T09:48:01Z","0","exact_match","https://github.com/pyccel/pyccel/pull/2038","true","repository_full_name",""
+"pydap__pydap-481","primary","pydap/pydap","481","2025-04-13T03:52:41Z","2025-04-13T03:52:41Z","0","exact_match","https://github.com/pydap/pydap/pull/481","true","repository_full_name",""
+"python-attrs__attrs-1417","primary","python-attrs/attrs","1417","2025-03-12T16:48:42Z","2025-03-12T16:48:42Z","0","exact_match","https://github.com/python-attrs/attrs/pull/1417","true","repository_full_name",""
+"stingraysoftware__stingray-858","primary","StingraySoftware/stingray","858","2024-11-09T10:41:48Z","2024-11-09T10:41:48Z","0","exact_match","https://github.com/StingraySoftware/stingray/pull/858","true","repository_full_name",""
+"softlayer__softlayer-python-2214","primary","softlayer/softlayer-python","2214","2025-02-20T19:10:08Z","2025-02-20T19:10:08Z","0","exact_match","https://github.com/softlayer/softlayer-python/pull/2214","true","repository_full_name",""
+"pypa__virtualenv-2907","primary","pypa/virtualenv","2907","2025-07-16T17:58:06Z","2025-07-16T17:58:06Z","0","exact_match","https://github.com/pypa/virtualenv/pull/2907","true","repository_full_name",""
