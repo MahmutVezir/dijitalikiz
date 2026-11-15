@@ -71,7 +71,7 @@ def valid_case():
             "confirmatory_analyst_saw_gold_or_fix": False,
             "prior_pipeline_debug_exposure_status": "none",
             "packet_preparer_id": "PACKET_PREPARER_01",
-            "source_exposed_person_ids": ["TECH_01", "LEGAL_01", "PACKET_PREPARER_01", "PANEL_A_01", "PANEL_A_02"],
+            "source_exposed_person_ids": ["TECH_01", "LEGAL_01", "PACKET_PREPARER_01", "PANEL_A_01", "PANEL_A_02", "EXTERNAL_AUDITOR_01"],
             "review_record": artifact("exposure"),
         },
         "license_review": {
@@ -140,6 +140,15 @@ def valid_case():
             "packet_set": artifact("packet-set", SHA_D),
             "panel_b_consensus_record": artifact("panel-b-consensus", SHA_A),
         },
+        "external_audit": {
+            "status": "passed",
+            "auditor_id": "EXTERNAL_AUDITOR_01",
+            "reviewed_after_panel_b_lock": True,
+            "artifact_authenticity_review": "passed",
+            "semantic_record_review": "passed",
+            "license_and_reproduction_record_review": "passed",
+            "review_record": artifact("external-audit", SHA_D),
+        },
     }
 
 
@@ -147,7 +156,7 @@ def valid_registry():
     return {
         "registry_version": "0.1-draft",
         "study_protocol": "swe-rebench-v2-evidence-abstention",
-        "status": "contains_documented_acceptances_pending_external_audit",
+        "status": "contains_cases_with_documented_external_audit_attestation",
         "accepted_case_count": 1,
         "accepted_project_count": 1,
         "records": [valid_case()],
@@ -178,11 +187,31 @@ class SweRebenchV2CaseAcceptanceTests(unittest.TestCase):
         result = validate_case_record(valid_case())
         self.assertEqual(
             result["status"],
-            "structurally_complete_pending_external_authenticity_and_semantic_audit",
+            "structurally_complete_with_external_audit_attestation",
         )
         self.assertTrue(result["structural_only"])
         self.assertFalse(result["inference_authorized"])
 
+    def test_external_audit_attestation_is_required_before_registry_acceptance(self):
+        record = valid_case()
+        del record["external_audit"]
+        result = validate_case_record(record)
+        self.assertEqual(result["status"], "invalid")
+        self.assertTrue(any("external_audit" in item for item in result["blockers"]))
+
+    def test_external_auditor_must_be_independent_and_source_exposure_logged(self):
+        record = valid_case()
+        record["external_audit"]["auditor_id"] = "PANEL_B_01"
+        result = validate_case_record(record)
+        self.assertEqual(result["status"], "invalid")
+        self.assertTrue(any("external auditor must be separate" in item for item in result["blockers"]))
+
+    def test_external_audit_must_follow_panel_b_rating_lock(self):
+        record = valid_case()
+        record["external_audit"]["reviewed_after_panel_b_lock"] = False
+        result = validate_case_record(record)
+        self.assertEqual(result["status"], "invalid")
+        self.assertTrue(any("after Panel B ratings are locked" in item for item in result["blockers"]))
     def test_missing_exact_license_review_blocks_acceptance(self):
         record = valid_case()
         record["license_review"]["changed_file_license_review"] = "pending"
