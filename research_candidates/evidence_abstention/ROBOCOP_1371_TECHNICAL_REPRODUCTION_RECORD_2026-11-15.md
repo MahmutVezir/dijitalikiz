@@ -89,7 +89,7 @@ Bu run, base-fail/fix-pass teknik kapısını aynı kilitli ortamda geçmiştir.
 
 ## 5. Bilimsel karar ve sınırlamalar
 
-<badge>Teknik yeniden üretim başarılı</badge>
+**Teknik karar: Yeniden üretim başarılı.**
 
 Bu sonuç yalnızca belirli upstream kusurunun sabitlenmiş base/fix sürümleri arasında yeniden üretilebildiğini destekler. Aşağıdakileri **kanıtlamaz**:
 - İki bağımsız insan panelinin root cause veya kanıt yeterliliği konusunda uzlaştığını,
