@@ -71,7 +71,7 @@ def valid_case():
             "confirmatory_analyst_saw_gold_or_fix": False,
             "prior_pipeline_debug_exposure_status": "none",
             "packet_preparer_id": "PACKET_PREPARER_01",
-            "source_exposed_person_ids": ["TECH_01", "PACKET_PREPARER_01", "PANEL_A_01", "PANEL_A_02"],
+            "source_exposed_person_ids": ["TECH_01", "LEGAL_01", "PACKET_PREPARER_01", "PANEL_A_01", "PANEL_A_02"],
             "review_record": artifact("exposure"),
         },
         "license_review": {
@@ -199,7 +199,7 @@ class SweRebenchV2CaseAcceptanceTests(unittest.TestCase):
 
     def test_license_reviewer_must_be_in_source_exposure_list(self):
         record = valid_case()
-        record["exposure"]["source_exposed_person_ids"].remove("PANEL_A_02")
+        record["exposure"]["source_exposed_person_ids"].remove("LEGAL_01")
         result = validate_case_record(record)
         self.assertEqual(result["status"], "invalid")
         self.assertTrue(any("source_exposed_person_ids must include" in item for item in result["blockers"]))
