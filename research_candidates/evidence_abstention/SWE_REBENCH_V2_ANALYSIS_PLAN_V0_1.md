@@ -6,7 +6,7 @@
 
 The independent unit is one independently verified upstream defect and root-cause mechanism. Each case contributes six repeated conditions: E1/P0, E1/P1, E2/P0, E2/P1, E3/P0, and E3/P1. These six responses are not six independent cases.
 
-The minimum confirmatory sample is 60 independent cases across at least 8 genuinely independent upstream projects. The target is 80 cases. A repository count alone does not prove project independence; forks, transfers, shared upstream projects, duplicate issues, and common root-cause families must be adjudicated before counting.
+The minimum confirmatory sample is 60 cases from 60 distinct, genuinely independent upstream projects. The target is 80 cases from 80 distinct upstream projects. The registry enforces one accepted case per upstream project, so the primary paired analysis does not treat multiple defects from one project as independent observations. A repository count alone does not prove project independence; forks, transfers, shared upstream projects, duplicate issues, and common root-cause families must be adjudicated before counting. If fewer than 60 qualifying projects survive review, the study is feasibility/exploratory, not confirmatory.
 
 ## 2. Primary endpoint
 
