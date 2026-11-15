@@ -1,0 +1,9 @@
+instance_id,selection_role,dataset_repo,issue_number,dataset_created_at_utc,github_api_created_at_utc,delta_seconds,match_status,issue_url,is_pull_request,fetch_mode,error
+"igorbenav__fastcrud-190","primary","igorbenav/fastcrud","190","2024-12-26T00:53:37Z","2024-12-26T00:53:37Z","0","exact_match","https://github.com/benavlabs/fastcrud/pull/190","true","repository_id",""
+"pyfar__pyfar-722","primary","pyfar/pyfar","722","2024-11-15T08:33:08Z","2024-11-15T08:33:08Z","0","exact_match","https://github.com/pyfar/pyfar/pull/722","true","repository_full_name",""
+"gtalarico__pyairtable-422","primary","gtalarico/pyairtable","422","2025-02-20T08:38:07Z","2025-02-20T08:38:07Z","0","exact_match","https://github.com/gtalarico/pyairtable/pull/422","true","repository_full_name",""
+"stanfordnlp__dspy-1853","primary","stanfordnlp/dspy","1853","2024-11-25T08:53:20Z","2024-11-25T08:53:20Z","0","exact_match","https://github.com/stanfordnlp/dspy/pull/1853","true","repository_full_name",""
+"joke2k__faker-2203","primary","joke2k/faker","2203","2025-04-12T19:54:38Z","2025-04-12T19:54:38Z","0","exact_match","https://github.com/joke2k/faker/pull/2203","true","repository_full_name",""
+"owkin__pydeseq2-349","primary","owkin/PyDESeq2","349","2024-12-09T09:19:04Z","2024-12-09T09:19:04Z","0","exact_match","https://github.com/scverse/PyDESeq2/pull/349","true","repository_id",""
+"mitmproxy__pdoc-813","primary","mitmproxy/pdoc","813","2025-06-04T16:40:46Z","2025-06-04T16:40:46Z","0","exact_match","https://github.com/mitmproxy/pdoc/pull/813","true","repository_full_name",""
+"aws-cloudformation__cfn-lint-3991","primary","aws-cloudformation/cfn-lint","3991","2025-03-05T19:19:53Z","2025-03-05T19:19:53Z","0","exact_match","https://github.com/aws-cloudformation/cfn-lint/pull/3991","true","repository_full_name",""
