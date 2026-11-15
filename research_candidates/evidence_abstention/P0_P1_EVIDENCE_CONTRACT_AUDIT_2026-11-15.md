@@ -136,3 +136,59 @@ Current accepted confirmatory cases remain **0**. Model inference remains **not 
 5. Only after the full case, panel, sample-size, licensing, runtime, hash, and preregistration gates pass, consider a separately authorized inference run.
 
 **Scientific boundary:** this document is a static protocol audit. It is not an amendment to the active protocol and must not be treated as a frozen preregistration.
+
+
+## 6. 15 Kasım ek denetimi — mevcut uygulamaya göre bulguların düzeltilmesi
+
+Bu ek, yukarıdaki ilk statik denetimin kapsamını genişleten bir kod taramasından sonra hazırlanmıştır. Önceki metin tarihsel olarak korunur; aşağıdaki düzeltmeler, özellikle F2–F6'nın kapsamını daraltır. İncelemeye `RATER_RUBRIC_AND_ADJUDICATION_V1.md`, ana Stage 3 runner, yapısal/semantik paket denetçileri, demo adapter'ı ve ilgili testler de dahil edilmiştir.
+
+### F2 düzeltmesi — paket referans doğrulaması zaten mevcut
+
+İlk F2 ifadesi, depoda mevcut doğrulamayı gözden kaçırdığı için **fazla geneldi ve bu haliyle doğru değildir**.
+
+Mevcut doğrulama örnekleri:
+- `implementation/evidence_packet_audit.py::audit_response`, response içindeki her evidence ID'yi doğrulanmış paketin `available_evidence_ids` kümesiyle karşılaştırır.
+- `tests/test_evidence_packet_audit.py::test_response_cannot_cite_unknown_evidence` bilinmeyen referansı reddeder.
+- `semantic_evidence_auditor.py` hem aday yanıt hem semantik denetim iddialarındaki referansları gerçek paket ID'leriyle karşılaştırır.
+- `prototype/evidence_abstention_model.py::validate_output` ve `tests/test_evidence_abstention_model_logic.py` paket dışı referansı işaretler ve gözlenen karar/kök neden metnini otomatik olarak değiştirmez.
+- `kaggle_stage3_p0_p1.py::parse_response`, yanıt referanslarını ilgili legacy paket için üretilmiş `allowed_evidence_ids` kümesiyle karşılaştırır.
+
+**Gerçek kalan problem:** Bu kontroller aynı tekil, sürümlenmiş veri sözleşmesi üzerinden yürümüyor. En az üç uyumsuz paket biçimi bulunuyor: `items/source_uri`, `evidence_items/source_snapshot_sha256` ve runner'ın `code/trace/context` yapısı. Bu nedenle F2, “kontrol yok” değil, **paket biçimi ve doğrulama entegrasyonu parçalı; tek kanonik kontrata bağlanmamış** şeklinde düzeltilmelidir. JSON Schema'nın tek başına paket üyeliğini doğrulamadığı ifadesi doğrudur; fakat çalışma zamanı doğrulayıcıları bu kontrolü zaten yapmaktadır.
+
+Yeni çalışma dalındaki `implementation/evidence_level_packet_set.py`, mevcut operasyonel `evidence_items` paket biçimini değiştirmeden üç inner paketi bir dış manifestte bağlar; her inner paketin hash'ini denetler, E3 ⊂ E2 ⊂ E1 kimlik ilişkisini ve aynı ID'nin içerik/provenans değişmezliğini kontrol eder. Bu yalnızca yapısal kontroldür. Henüz ana Stage 3 runner'a bağlanmamıştır ve gerçek araştırma girdilerinde kullanılmamıştır.
+
+### F3 düzeltmesi — P0 kaçınma ihlali prototipte tanımlı, ana runner'da ayrı kayıt değil
+
+`prototype/evidence_abstention_model.py` P0 koşulunda `decision=abstain` çıktısını `policy_noncompliance` olarak etiketler; bunu doğrulayan birim testi de vardır. Ancak ana `kaggle_stage3_p0_p1.py::parse_response` geçerli şemalı P0 kaçınmasını şu an yalnızca geçerli parse edilmiş karar olarak döndürür; ayrı bir `policy_compliance` alanı veya ayrı analiz oranı üretmez.
+
+Bu yüzden doğru ifade “hiçbir yerde yok” değil: **prototipte mevcut, confirmatory runner/sonuç sözleşmesinde tutarlı ve açık raporlama olarak henüz entegre değil.** Aynı şema P0/P1 için korunmalı; P0 kaçınması ham kararı bozmadan ayrıca politika uyumsuzluğu olarak kaydedilmelidir.
+
+### F4 düzeltmesi — kaçınma kalitesi mevcut insan rubriğinde var
+
+Daha güncel `RATER_RUBRIC_AND_ADJUDICATION_V1.md` kaçınma kalitesini:
+- spesifik/ayırt edici eksik kanıt,
+- genel eksik kanıt ifadesi,
+- yararlı eksik kanıt yok,
+- uygulanamaz
+
+şeklinde ayrı puanlar. Dolayısıyla bu kavram tamamen eksik değildir. Fakat rubrik henüz bağımsız onaylanıp kalibre edilmemiş ve SWE-rebench'e özgü yeni protokolde dondurulmamıştır. JSON şemasının `missing_evidence` alanını zorunlu metinsel içerikle şart koşmaması tek başına hata değildir; boş çıktı da ölçülebilir bir model davranışıdır.
+
+### F5 düzeltmesi — geçersiz çıktı ilkeleri mevcut, fakat güncel protokole taşınmalı
+
+`RATER_RUBRIC_AND_ADJUDICATION_V1.md`, `ANALYSIS_RUNBOOK.md` ve analiz betiği geçersiz/puanlanamayan çıktıları otomatik güvenli saymama ve ayrı muhafazakâr duyarlılık analizi ilkelerini zaten içerir. Analiz kodu E3 invalid çıktıları unsafe sayan ayrı duyarlılık hesabı üretir.
+
+Ancak bu analiz/runbook dosyaları eski Stage 3/BugsInPy tasarımından gelir. SWE-rebench V2 için yeni bir protokol sürümüne payda, complete-pair eksikliği, unscorable ve invalid davranışları açıkça aktarılmadan mevcut sözleşmenin güncel veri akışına eksiksiz uygulandığı iddia edilmemelidir.
+
+### F6 daraltması — politika uyumu türetilebilir ama ayrı raporlanmıyor
+
+Ana runner ham `policy` ve `decision` değerlerini zaten saklar; dolayısıyla P0 kaçınması/P1 kesin teşhisi davranışları sonradan türetilebilir. Eksik olan, bunların önceden dondurulmuş **ayrı policy-compliance endpoint'i** ve özet rapor alanı hâline getirilmemiş olmasıdır. Karar türü, kanıt desteği ve politika uyumu tek bir accuracy puanına indirgenmemelidir.
+
+### F1 kararı
+
+E1/E2/E3'ün karar tanımları hâlâ en kritik protokol açığıdır. Yeni `EVIDENCE_TIER_OPERATIONALIZATION_DRAFT_2026-11-15.md` üç seviyeyi aday nedenlerin Panel B tarafından elenme/hayatta kalma durumuna göre tanımlar. Bu belge yalnızca öneridir; insan panelleri onaylamadan veya örnek kör uygulama görmeden aktif protokol sayılmaz.
+
+### Sonuç ve sınır
+
+Bu ek, mevcut doğrulama kodunu tekrar yazmaz; onu tek sürümlü bir araştırma kontratında birleştirme ihtiyacını tanımlar. Yeni packet-set doğrulayıcısının sentetik testleri yazılımdaki davranışı denetler, gerçek kanıtın semantik yeterliliğini veya insan/LLM uyumunu kanıtlamaz.
+
+Kabul edilmiş confirmatory vaka **0** kalır. Model yükleme, inference, fine-tuning veya eğitim yapılmamıştır; izin hâlâ kapalıdır.
