@@ -1,0 +1,2 @@
+instance_id,selection_role,dataset_repo,issue_number,dataset_created_at_utc,github_api_created_at_utc,delta_seconds,match_status,issue_url,is_pull_request,fetch_mode,error
+"yukinarit__pyserde-618","project_reserve","yukinarit/pyserde","618","2024-12-04T01:47:42Z","2024-12-04T01:47:42Z","0","exact_match","https://github.com/yukinarit/pyserde/pull/618","true","repository_full_name",""
