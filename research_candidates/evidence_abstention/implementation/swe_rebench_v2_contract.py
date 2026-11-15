@@ -102,8 +102,8 @@ def validate_manifest(manifest: Any) -> dict[str, Any]:
         blockers.append("minimum_independent_cases must remain 60.")
     if design.get("target_independent_cases") != 80:
         blockers.append("target_independent_cases must remain 80.")
-    if design.get("minimum_upstream_projects") != 8:
-        blockers.append("minimum_upstream_projects must remain 8.")
+    if design.get("minimum_upstream_projects") != 60:
+        blockers.append("minimum_upstream_projects must remain 60.")
 
     model = manifest.get("model")
     if not isinstance(model, Mapping):
