@@ -1,9 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "SWE-rebench V2 confirmatory case acceptance record",
-  "description": "Structural record contract. Passing it does not independently verify referenced artifacts, licenses, reviewer identity, or semantic judgments.",
+  "description": "Structural record contract. Passing it does not independently verify referenced artifacts, licenses, reviewer identity, technical outcomes, or semantic judgments.",
   "type": "object",
-  "additionalProperties": false,
   "required": [
     "case_id",
     "acceptance_state",
@@ -26,7 +25,6 @@
     },
     "dataset": {
       "type": "object",
-      "additionalProperties": false,
       "required": [
         "dataset_id",
         "file_revision",
@@ -53,7 +51,6 @@
         },
         "row_locator": {
           "type": "object",
-          "additionalProperties": false,
           "required": [
             "field",
             "value"
@@ -67,41 +64,761 @@
               "type": "string",
               "minLength": 1
             }
-          }
+          },
+          "additionalProperties": false
         },
         "row_sha256": {
           "type": "string",
           "pattern": "^[0-9a-f]{64}$"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "source": {
       "type": "object",
-      "description": "Exact upstream provenance, immutable revisions and source snapshot digests; see validator for required fields."
+      "required": [
+        "repository_full_name",
+        "issue_or_pr_url",
+        "pull_request_number",
+        "base_commit_sha",
+        "fixed_commit_sha",
+        "changed_paths",
+        "patch",
+        "base_source_snapshot",
+        "fixed_source_snapshot"
+      ],
+      "properties": {
+        "repository_full_name": {
+          "type": "string",
+          "pattern": "^[^/]+/[^/]+$"
+        },
+        "issue_or_pr_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "pull_request_number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "base_commit_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "fixed_commit_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "changed_paths": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "patch": {
+          "type": "object",
+          "required": [
+            "artifact_uri",
+            "sha256"
+          ],
+          "properties": {
+            "artifact_uri": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "additionalProperties": false
+        },
+        "base_source_snapshot": {
+          "type": "object",
+          "required": [
+            "artifact_uri",
+            "sha256"
+          ],
+          "properties": {
+            "artifact_uri": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "additionalProperties": false
+        },
+        "fixed_source_snapshot": {
+          "type": "object",
+          "required": [
+            "artifact_uri",
+            "sha256"
+          ],
+          "properties": {
+            "artifact_uri": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "independence": {
       "type": "object",
-      "description": "Independent project and defect-cluster review with a hashed review record."
+      "required": [
+        "review_status",
+        "is_independent",
+        "upstream_project_id",
+        "defect_cluster_id",
+        "same_or_related_case_ids",
+        "review_record"
+      ],
+      "properties": {
+        "review_status": {
+          "const": "passed"
+        },
+        "is_independent": {
+          "const": true
+        },
+        "upstream_project_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "defect_cluster_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "same_or_related_case_ids": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "review_record": {
+          "type": "object",
+          "required": [
+            "artifact_uri",
+            "sha256"
+          ],
+          "properties": {
+            "artifact_uri": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "exposure": {
       "type": "object",
-      "description": "Exposure and blinding audit; confirmatory analyst must not have seen gold cause/fix."
+      "required": [
+        "review_status",
+        "confirmatory_analyst_id",
+        "confirmatory_analyst_saw_gold_or_fix",
+        "packet_preparer_id",
+        "review_record"
+      ],
+      "properties": {
+        "review_status": {
+          "const": "passed"
+        },
+        "confirmatory_analyst_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confirmatory_analyst_saw_gold_or_fix": {
+          "const": false
+        },
+        "packet_preparer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "review_record": {
+          "type": "object",
+          "required": [
+            "artifact_uri",
+            "sha256"
+          ],
+          "properties": {
+            "artifact_uri": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "license_review": {
       "type": "object",
-      "description": "Exact base and changed-file/source license review, including third-party content."
+      "required": [
+        "source_license_expression",
+        "exact_base_license_review",
+        "changed_file_license_review",
+        "third_party_content_review",
+        "research_use_decision",
+        "reviewer_id",
+        "review_record"
+      ],
+      "properties": {
+        "source_license_expression": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exact_base_license_review": {
+          "const": "passed"
+        },
+        "changed_file_license_review": {
+          "const": "passed"
+        },
+        "third_party_content_review": {
+          "const": "passed"
+        },
+        "research_use_decision": {
+          "const": "approved"
+        },
+        "reviewer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "review_record": {
+          "type": "object",
+          "required": [
+            "artifact_uri",
+            "sha256"
+          ],
+          "properties": {
+            "artifact_uri": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "technical_reproduction": {
       "type": "object",
-      "description": "Recorded buggy-baseline failure and fixed-revision pass under a locked environment."
+      "required": [
+        "status",
+        "environment_lock_sha256",
+        "reviewer_id",
+        "buggy_baseline",
+        "fixed_revision",
+        "review_record"
+      ],
+      "properties": {
+        "status": {
+          "const": "passed"
+        },
+        "environment_lock_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "reviewer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "buggy_baseline": {
+          "type": "object",
+          "required": [
+            "commit_sha",
+            "exit_code",
+            "test_selector",
+            "failure_is_targeted_regression",
+            "failure_signature",
+            "run_record"
+          ],
+          "properties": {
+            "commit_sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "exit_code": {
+              "type": "integer"
+            },
+            "test_selector": {
+              "type": "string",
+              "minLength": 1
+            },
+            "failure_is_targeted_regression": {
+              "const": true
+            },
+            "failure_signature": {
+              "type": "string",
+              "minLength": 1
+            },
+            "run_record": {
+              "type": "object",
+              "required": [
+                "artifact_uri",
+                "sha256"
+              ],
+              "properties": {
+                "artifact_uri": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "fixed_revision": {
+          "type": "object",
+          "required": [
+            "commit_sha",
+            "exit_code",
+            "test_selector",
+            "same_test_passed",
+            "run_record"
+          ],
+          "properties": {
+            "commit_sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "exit_code": {
+              "const": 0
+            },
+            "test_selector": {
+              "type": "string",
+              "minLength": 1
+            },
+            "same_test_passed": {
+              "const": true
+            },
+            "run_record": {
+              "type": "object",
+              "required": [
+                "artifact_uri",
+                "sha256"
+              ],
+              "properties": {
+                "artifact_uri": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "review_record": {
+          "type": "object",
+          "required": [
+            "artifact_uri",
+            "sha256"
+          ],
+          "properties": {
+            "artifact_uri": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "gold_standard": {
       "type": "object",
-      "description": "Two independent Panel A ratings plus documented consensus/adjudication and alternatives."
+      "required": [
+        "status",
+        "agreement_status",
+        "final_gold_mechanism_id",
+        "candidate_mechanisms",
+        "panel_a_reviews"
+      ],
+      "properties": {
+        "status": {
+          "const": "approved"
+        },
+        "agreement_status": {
+          "enum": [
+            "unanimous",
+            "adjudicated"
+          ]
+        },
+        "final_gold_mechanism_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidate_mechanisms": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": [
+              "mechanism_id",
+              "description"
+            ],
+            "properties": {
+              "mechanism_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "panel_a_reviews": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": [
+              "reviewer_id",
+              "decision",
+              "review_record",
+              "gold_mechanism_id"
+            ],
+            "properties": {
+              "reviewer_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decision": {
+                "const": "approved"
+              },
+              "review_record": {
+                "type": "object",
+                "required": [
+                  "artifact_uri",
+                  "sha256"
+                ],
+                "properties": {
+                  "artifact_uri": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "gold_mechanism_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "adjudication": {
+          "type": "object",
+          "required": [
+            "reviewer_id",
+            "final_gold_mechanism_id",
+            "review_record"
+          ],
+          "properties": {
+            "reviewer_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "final_gold_mechanism_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "review_record": {
+              "type": "object",
+              "required": [
+                "artifact_uri",
+                "sha256"
+              ],
+              "properties": {
+                "artifact_uri": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "evidence_tiers": {
       "type": "object",
-      "description": "Two disjoint, blinded Panel B ratings and locked E1/E2/E3 survivor sets with nestedness."
+      "required": [
+        "status",
+        "panel_b_blind_to_gold",
+        "panel_b_blind_to_fix",
+        "tier_labels_hidden_until_rating_lock",
+        "rating_lock_before_gold_unblinding",
+        "panel_b_reviews",
+        "final_tier_decisions",
+        "packet_set",
+        "panel_b_consensus_record"
+      ],
+      "properties": {
+        "status": {
+          "const": "approved"
+        },
+        "panel_b_blind_to_gold": {
+          "const": true
+        },
+        "panel_b_blind_to_fix": {
+          "const": true
+        },
+        "tier_labels_hidden_until_rating_lock": {
+          "const": true
+        },
+        "rating_lock_before_gold_unblinding": {
+          "const": true
+        },
+        "panel_b_reviews": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": [
+              "reviewer_id",
+              "decision",
+              "review_record"
+            ],
+            "properties": {
+              "reviewer_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decision": {
+                "const": "approved"
+              },
+              "review_record": {
+                "type": "object",
+                "required": [
+                  "artifact_uri",
+                  "sha256"
+                ],
+                "properties": {
+                  "artifact_uri": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "final_tier_decisions": {
+          "type": "object",
+          "required": [
+            "E1",
+            "E2",
+            "E3"
+          ],
+          "properties": {
+            "E1": {
+              "type": "object",
+              "required": [
+                "surviving_mechanism_ids",
+                "locked_rating_record"
+              ],
+              "properties": {
+                "surviving_mechanism_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "locked_rating_record": {
+                  "type": "object",
+                  "required": [
+                    "artifact_uri",
+                    "sha256"
+                  ],
+                  "properties": {
+                    "artifact_uri": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "E2": {
+              "type": "object",
+              "required": [
+                "surviving_mechanism_ids",
+                "locked_rating_record"
+              ],
+              "properties": {
+                "surviving_mechanism_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "locked_rating_record": {
+                  "type": "object",
+                  "required": [
+                    "artifact_uri",
+                    "sha256"
+                  ],
+                  "properties": {
+                    "artifact_uri": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "E3": {
+              "type": "object",
+              "required": [
+                "surviving_mechanism_ids",
+                "locked_rating_record"
+              ],
+              "properties": {
+                "surviving_mechanism_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "locked_rating_record": {
+                  "type": "object",
+                  "required": [
+                    "artifact_uri",
+                    "sha256"
+                  ],
+                  "properties": {
+                    "artifact_uri": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "packet_set": {
+          "type": "object",
+          "required": [
+            "artifact_uri",
+            "sha256"
+          ],
+          "properties": {
+            "artifact_uri": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "additionalProperties": false
+        },
+        "panel_b_consensus_record": {
+          "type": "object",
+          "required": [
+            "artifact_uri",
+            "sha256"
+          ],
+          "properties": {
+            "artifact_uri": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
-  }
+  },
+  "additionalProperties": false
 }
