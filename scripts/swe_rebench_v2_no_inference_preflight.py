@@ -101,7 +101,7 @@ def evaluate(root: Path = ROOT) -> dict[str, Any]:
             required_sections = {
                 "case_id", "acceptance_state", "dataset", "source", "independence",
                 "exposure", "license_review", "technical_reproduction", "gold_standard",
-                "evidence_tiers",
+                "evidence_tiers", "external_audit",
             }
             if case_schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
                 blockers.append("Case acceptance schema must identify JSON Schema 2020-12.")
@@ -110,8 +110,8 @@ def evaluate(root: Path = ROOT) -> dict[str, Any]:
             if not required_sections.issubset(set(case_schema.get("required", []))):
                 blockers.append("Case acceptance schema is missing one or more required case sections.")
             props = case_schema.get("properties", {})
-            if not isinstance(props, dict) or "prior_pipeline_debug_exposure_status" not in props.get("exposure", {}).get("required", []):
-                blockers.append("Case acceptance schema does not enforce prior pipeline/debug exposure status.")
+            if not isinstance(props, dict) or "prior_pipeline_debug_exposure_status" not in props.get("exposure", {}).get("required", []) or "external_audit" not in props.get("required", []):
+                blockers.append("Case acceptance schema does not enforce prior pipeline/debug exposure and independent external audit attestation.")
 
     if isinstance(manifest, dict):
         dataset = manifest.get("dataset", {})
