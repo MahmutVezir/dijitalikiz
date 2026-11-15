@@ -57,21 +57,19 @@ Bu test, `parse_spec` fonksiyonunun göreli dizinleri doğru modül adına çevi
 
 Issue yorumlarında kullanıcı, dizin adında nokta bulunan bir varyantın Windows/pdoc 15.0.4 üzerinde hâlâ sorunlu göründüğünü bildirmiştir. Upstream maintainer, `__init__.py` bulunan bir dizinin Python modülü olduğunu ve modül adında nokta kullanılmaması gerektiğini açıklamıştır. Bu varyantı ana reproduksiyonla birleştirmemek gerekir: geçerli Python paket adı olan bir proje kökü ve geçersiz modül adı içeren dizin senaryosu farklı koşullardır.
 
-## 5. Lisans / provenans kontrolü — açık hold
+## 5. Lisans / provenans kontrolü — yeniden sınıflandırma
 
-14 Kasım tarihli 89–96 vaka kapsam denetiminde row 95 pdoc için:
-- exact-base root `LICENSE` mevcut;
-- root lisans, audit tablosunda MIT olarak sınıflandırılmış;
-- Git blob SHA-1: `9d75d3de543742e219b1c7301901a95f65ad353a`;
-- root `NOTICE` dosyası bulunmadı.
+İlk taslakta `pyproject.toml` içindeki MIT-0 metaverisi ile kök `LICENSE` dosyası arasında olası uyumsuzluk olduğu yazılmıştı. Daha sonra exact-base dosyanın metni ve lisans geçiş commit'i incelendi; önceki şüphe doğrulanmadı ve bu bölüm düzeltiliyor.
 
-Ek statik incelemede exact-base `pyproject.toml` şu metaveriyi bildiriyor:
+- Exact-base `pyproject.toml`: `license = { text="MIT-0" }`
+- Exact-base root `LICENSE` Git blob SHA-1: `9d75d3de543742e219b1c7301901a95f65ad353a`
+- Fix commit'teki root `LICENSE` blob SHA-1: aynı `9d75d3de543742e219b1c7301901a95f65ad353a`
+- Root `NOTICE`: bulunmadı.
+- Upstream lisans değişikliği commit'i: [65b8242f3b75e0c499135e31f20f01caa70f7a04 — “Unlicense -> MIT-0”](https://github.com/mitmproxy/pdoc/commit/65b8242f3b75e0c499135e31f20f01caa70f7a04). Commit açıklaması, MIT-0'ın standart MIT metnindeki atıf şartını kaldıran varyant olduğunu söyler; diff, kök LICENSE metninin bu değişime göre yenilendiğini gösterir.
 
-`license = { text="MIT-0" }`
+Exact-base `LICENSE` içeriği, copyright satırı ve izin verme paragrafının ardından garanti reddi içerir; standart MIT metnindeki “copyright notice and permission notice shall be included...” koşul cümlesi yoktur. Bu yüzden önceki denetimdeki genel “MIT” etiketi, bu kayıt için **MIT-0** olarak düzeltilmelidir. `pyproject.toml` metaverisi ile kök LICENSE birbiriyle tutarlıdır.
 
-Buna karşılık exact-base kök `LICENSE` dosyasının metni “Copyright 2024 Maximilian Hils” ile başlayan standart MIT izin metnidir. Bu iki ifade aynı şeymiş gibi varsayılmamalıdır. PR #813 bu lisans dosyasını veya `pyproject.toml` dosyasını değiştirmemiştir; dolayısıyla durum fix PR'ından kaynaklanan bir fark değildir, ancak cohort kaydındaki lisans sınıflandırmasıyla dağıtım metaverisi arasında açıklanması gereken bir uyumsuzluktur.
-
-**Karar:** Herhangi bir kaynak/test fixture'ı araştırma paketine kopyalanmadan veya dağıtılmadan önce lisans metaverisi ve kök lisansın ilişkisi bağımsız provenance incelemesiyle netleştirilmelidir. Bu rapor hukuki görüş veya yeniden dağıtım izni değildir.
+**Karar:** Bu dar kapsamlı lisans sınıflandırma sorunu kapatıldı. Bu, hukuki görüş değildir ve diğer kaynak dosyalarının/bağımlılıkların provenance denetiminin yerine geçmez. Bu çalışma için upstream kodu yeniden dağıtmayacağız; teknik reproduksiyon raporu commit kimlikleri, test tanımı, log ve hash'lerden oluşacaktır. Herhangi bir kaynak dosyası veya fixture daha sonra paket içine kopyalanacaksa applicable copyright/license attribution ayrıca incelenmelidir.
 
 ## 6. Mevcut karar
 
