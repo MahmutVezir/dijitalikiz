@@ -69,7 +69,9 @@ def valid_case():
             "review_status": "passed",
             "confirmatory_analyst_id": "ANALYST_01",
             "confirmatory_analyst_saw_gold_or_fix": False,
+            "prior_pipeline_debug_exposure_status": "none",
             "packet_preparer_id": "PACKET_PREPARER_01",
+            "source_exposed_person_ids": ["TECH_01", "PACKET_PREPARER_01", "PANEL_A_01", "PANEL_A_02"],
             "review_record": artifact("exposure"),
         },
         "license_review": {
@@ -197,6 +199,20 @@ class SweRebenchV2CaseAcceptanceTests(unittest.TestCase):
         result = validate_case_record(record)
         self.assertEqual(result["status"], "invalid")
         self.assertTrue(any("Panel A and Panel B" in item for item in result["blockers"]))
+
+    def test_prior_pipeline_debug_exposure_permanently_excludes_case(self):
+        record = valid_case()
+        record["exposure"]["prior_pipeline_debug_exposure_status"] = "present"
+        result = validate_case_record(record)
+        self.assertEqual(result["status"], "invalid")
+        self.assertTrue(any("permanently excluded" in item for item in result["blockers"]))
+
+    def test_source_exposed_person_cannot_join_panel_b(self):
+        record = valid_case()
+        record["exposure"]["source_exposed_person_ids"].append("PANEL_B_01")
+        result = validate_case_record(record)
+        self.assertEqual(result["status"], "invalid")
+        self.assertTrue(any("no source-exposed person" in item for item in result["blockers"]))
 
     def test_panel_b_must_be_blind_to_gold_and_fix(self):
         record = valid_case()
