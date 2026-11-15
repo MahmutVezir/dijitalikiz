@@ -6,7 +6,7 @@
 
 ## Güncel durum — 15 Kasım 2026
 
-**Güncel yürütme planı:** [15 Kasım 2026 proje denetimi ve yol haritası](docs/PROJECT_AUDIT_AND_EXECUTION_ROADMAP_2026-11-15.md).
+**Güncel yürütme planı:** [15 Kasım 2026 ana denetim ve düzeltilmiş yürütme sırası](docs/MASTER_AUDIT_AND_EXECUTION_ORDER_2026-11-15.md).
 
 **Bilimsel durum:** Doğrulayıcı ana deney henüz çalıştırılmadı. Kabul edilmiş bağımsız doğrulayıcı vaka **0**, kabul edilmiş upstream proje **0**, ana deney modeli çıktısı **0**. İnsan panelleri, kalibrasyon, dışarıdan doğrulanabilir ön kayıt ve exact model/runtime kapıları tamamlanmadı. **Model inference kapalıdır.**
 
@@ -19,7 +19,7 @@
 | Lisans/provenans | pdoc row 95 exact-base root license MIT-0 olarak düzeltildi; Napalm row 19 Cisco fixture provenans hold sürüyor; seçilecek her aday için nested/per-file provenance ayrıca incelenmeli |
 | Ana deney | E1/E2/E3 kanıt yeterliliği × P0 zorunlu teşhis / P1 seçici teşhis-kaçınma; inference yetkisi kapalı |
 | Model/runtime | Qwen2.5-3B-Instruct aday revizyonu kayıtlı; exact model/tokenizer/runtime yükleme preflight'ı tamamlanmadı |
-| Readiness | `ready=false`, 21 blokaj, 0 kabul edilmiş vaka, 0 kabul edilmiş proje |
+| Readiness | `ready=false`, 24 V2 blokajı (V2'ye özgü no-inference preflight), 0 kabul edilmiş vaka, 0 kabul edilmiş proje |
 | Ayrı entropy prototipi | Beş adaylı belirsizlik/entropy prototipi ana P0/P1 deneyine dahil değildir |
 
 ### 15 Kasım teknik doğrulama kayıtları
