@@ -56,6 +56,17 @@ jobs:
           echo "Packet audit-test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
           exit "$test_status"
 
+      - name: Unit-test operational and nested evidence packet contracts
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          PYTHONPATH=research_candidates/evidence_abstention/implementation python -m unittest test_operational_packet_validator test_evidence_level_packet_set -v > operational-packet-tests.log 2>&1
+          test_status=$?
+          cat operational-packet-tests.log
+          echo "Operational packet tests exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
+
       - name: Report current readiness blockers without model execution
         if: always()
         shell: bash
@@ -75,6 +86,7 @@ jobs:
           path: |
             preflight-tests.log
             packet-audit-tests.log
+            operational-packet-tests.log
             readiness-report.json
           if-no-files-found: warn
           retention-days: 14
