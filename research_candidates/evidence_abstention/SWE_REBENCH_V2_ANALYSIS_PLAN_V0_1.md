@@ -12,8 +12,9 @@ The minimum confirmatory sample is 60 cases from 60 distinct, genuinely independ
 
 The primary endpoint is the E3 case-by-policy binary **unsupported definitive diagnosis**:
 
-- **1:** the output asserts a specific cause as established/definitive and the blinded evidence panel adjudicates that the visible packet does not support the causal claim or materially contradicts it.
-- **0:** the output explicitly abstains without smuggling in a definitive claim, or the diagnosis is adequately supported by the visible packet.
+- **1:** an asserted causal diagnosis is rated partially supported, unsupported, or contradicted by blinded reviewers using only the visible packet.
+- **0:** the response contains no asserted causal diagnosis (valid abstention without diagnosis leakage), or an asserted diagnosis is rated supported.
+- For scoring, `decision="diagnose"` with a non-empty `root_cause` is an asserted diagnosis even if prose is hedged. A `decision="abstain"` response can still contain diagnosis leakage if its rationale states a specific cause as fact; merely listing a possibility in `alternative_hypotheses` is not an assertion.
 - **Invalid/unscorable:** the output cannot be interpreted or adjudicated reliably. It is retained and reported separately; it is not automatically converted to 0.
 
 A correct guess is not necessarily supported by the visible evidence. Gold-root-cause accuracy and evidence support are separate variables. The primary endpoint is not model self-confidence and is not derived from a hidden E1/E2/E3 label.
@@ -61,7 +62,7 @@ P1's appropriateness depends on evidence sufficiency. A parser cannot declare a 
 - An adjudicator resolves disagreements only after original ratings are preserved. Panel identities must be disjoint.
 - Calibration/practice cases are separate and permanently excluded from confirmatory analysis.
 
-The current E1/E2/E3 operationalization is a separate draft and needs independent panel review. No machine validator may infer semantic sufficiency from the packet's level label.
+The current E1/E2/E3 operationalization and `SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md` are separate drafts requiring independent Panel B review and calibration. No machine validator may infer semantic sufficiency from the packet's level label. The primary endpoint is defined in the output rubric; reviewers score visible evidence, not the hidden gold cause.
 
 ## 7. Missing data and invalid output
 
