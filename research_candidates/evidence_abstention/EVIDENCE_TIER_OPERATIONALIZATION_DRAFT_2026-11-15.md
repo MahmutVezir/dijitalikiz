@@ -92,6 +92,6 @@ Bu betikler alternatif mekanizmaların makullüğünü, kanıtın nedensel güc�
 - E1/E2/E3 kriterleri henüz ön kaydedilmedi.
 - Confirmatory vaka sayısı 0.
 - Model inference yapılmadı ve yetkilendirilmedi.
-- Üç seviyeli tasarımın en az 60 kabul edilmiş vaka ve 8 proje sağlayıp sağlayamayacağı henüz bilinmiyor.
+- Üç seviyeli tasarımın en az 60 kabul edilmiş vaka ve 60 farklı bağımsız upstream proje (hedef 80) sağlayıp sağlayamayacağı henüz bilinmiyor.
 
 **Karar:** Bu tanım değerlendiriciler tarafından gözden geçirilene, örnek vaka paketlerinde kör biçimde denenene ve yeni protokol/analiz sürümü hash ile ön kaydedilene kadar taslak kalır.
