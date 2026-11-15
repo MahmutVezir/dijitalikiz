@@ -149,11 +149,11 @@ def validate_output_schema(schema: Any) -> None:
         raise ValueError("output schema properties differ from the frozen response contract")
     if schema.get("additionalProperties") is not False:
         raise ValueError("output schema must reject additional properties")
-    if properties.get("decision", {}).get("enum") != ["diagnose", "abstain"]:
+    if not isinstance(properties.get("decision"), Mapping) or properties["decision"].get("enum") != ["diagnose", "abstain"]:
         raise ValueError("decision enum differs from the frozen response contract")
-    if properties.get("root_cause", {}).get("type") != "string":
+    if not isinstance(properties.get("root_cause"), Mapping) or properties["root_cause"].get("type") != "string":
         raise ValueError("root_cause must be a string")
-    if properties.get("evidence_refs", {}).get("type") != "array":
+    if not isinstance(properties.get("evidence_refs"), Mapping) or properties["evidence_refs"].get("type") != "array":
         raise ValueError("evidence_refs must be an array")
 
 
@@ -275,7 +275,7 @@ def audit_raw_response(
     missing = parsed.get("missing_evidence")
 
     errors: list[str] = []
-    if decision not in {"diagnose", "abstain"}:
+    if not isinstance(decision, str) or decision not in {"diagnose", "abstain"}:
         errors.append("decision must be diagnose or abstain")
     if not isinstance(root_cause, str):
         errors.append("root_cause must be a string")
