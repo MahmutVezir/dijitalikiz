@@ -64,6 +64,17 @@ class TimestampRegisterAuditTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "duplicate"):
                 audit_register(root)
 
+    def test_rejects_duplicate_repository(self):
+        rows = [row(f"org{i}__repo{i}-{i+1}", f"org{i}/repo{i}", i+1) for i in range(113)]
+        rows[1]["instance_id"] = "org0__repo0-2"
+        rows[1]["dataset_repo"] = "org0/repo0"
+        rows[1]["issue_url"] = "https://github.com/org0/repo0/issues/2"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.build_register(root, rows)
+            with self.assertRaisesRegex(ValueError, "duplicate repository"):
+                audit_register(root)
+
     def test_rejects_wrong_delta(self):
         rows = [row(f"org{i}__repo{i}-{i+1}", f"org{i}/repo{i}", i+1) for i in range(113)]
         rows[0]["delta_seconds"] = "2"
