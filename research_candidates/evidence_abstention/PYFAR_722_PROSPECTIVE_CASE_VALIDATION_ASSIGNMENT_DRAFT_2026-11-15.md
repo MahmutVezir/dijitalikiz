@@ -28,7 +28,7 @@ The candidate's timestamp was re-fetched from GitHub and matches the pinned data
 
 Issue #721 reports that `pyfar.dsp.normalize` with `reference_method="energy"` or `"power"` does not produce the requested energy/power target. The issue gives a numerical example: input energy 20 produces output energy 0.05 instead of 1; input energy 5 produces output energy 0.2 instead of 1. A second example compares signals of different lengths and reports output energies 0.05 and 0.025 despite the same requested target.
 
-The static mathematical hypothesis is that energy and power are quadratic in signal amplitude. If a signal with energy (E) is scaled by (T/E), its resulting energy is (T^2/E), not (T). The fix square-roots both the channel-handled energetic reference and the target, yielding a scale factor (sqrt{T/E}). This is a source-grounded hypothesis, not a reproduced result.
+The static mathematical hypothesis is that energy and power are quadratic in signal amplitude. If a signal with energy `E` is scaled by `T/E`, its resulting energy is `T²/E`, not `T`. The fix square-roots both the channel-handled energetic reference and the target, yielding a scale factor `sqrt(T/E)`. This is a source-grounded hypothesis, not a reproduced result.
 
 ## 3. Prospective reproduction design — not yet authorized
 
