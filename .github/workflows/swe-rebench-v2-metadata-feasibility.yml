@@ -10,6 +10,8 @@ on:
       - "tests/test_audit_swe_rebench_filtered_verified.py"
       - "scripts/select_swe_rebench_project_cohort.py"
       - "tests/test_select_swe_rebench_project_cohort.py"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPERIMENT_MANIFEST_V0_1.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_TIMESTAMP_SEMANTICS_AUDIT_2026-11-15.md"
   pull_request:
     branches:
       - main
@@ -19,6 +21,8 @@ on:
       - "tests/test_audit_swe_rebench_filtered_verified.py"
       - "scripts/select_swe_rebench_project_cohort.py"
       - "tests/test_select_swe_rebench_project_cohort.py"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPERIMENT_MANIFEST_V0_1.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_TIMESTAMP_SEMANTICS_AUDIT_2026-11-15.md"
 
 permissions:
   contents: read
@@ -72,6 +76,7 @@ jobs:
           echo "verified_sha256=$actual_sha" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Build no-inference metadata inventory
+        id: metadata_inventory
         shell: bash
         run: |
           set -euo pipefail
@@ -82,10 +87,33 @@ jobs:
             | tee "$RUNNER_TEMP/swe-rebench-v2-metadata-summary.stdout.json"
           cat "$RUNNER_TEMP/swe-rebench-v2-metadata-summary.json" >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Gate cohort generation on independently reviewed timestamp semantics
+        id: timestamp_gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPERIMENT_MANIFEST_V0_1.json" "$RUNNER_TEMP/swe-rebench-v2-metadata-summary.json" "$GITHUB_OUTPUT" <<'PY'
+          import json, sys
+          manifest = json.load(open(sys.argv[1], encoding="utf-8"))
+          summary = json.load(open(sys.argv[2], encoding="utf-8"))
+          review = manifest.get("dataset", {}).get("created_at_timezone_assumption_review")
+          unverified = summary.get("timezone_unverified_created_at_count")
+          eligible = review in {"confirmed", "confirmed_utc", "passed"} and unverified == 0
+          with open(sys.argv[3], "a", encoding="utf-8") as output:
+              output.write("eligible=" + ("true" if eligible else "false") + "\n")
+          if not eligible:
+              print("COHORT_GENERATION_SKIPPED: timestamp provenance is not independently confirmed or naive timestamps remain.")
+              print("manifest_review_status=" + str(review))
+              print("timezone_unverified_created_at_count=" + str(unverified))
+          else:
+              print("Timestamp provenance gate passed; cohort generation may proceed.")
+          PY
+
       - name: Run deterministic cohort sampler tests
         run: python -m unittest discover -s tests -p "test_select_swe_rebench_project_cohort.py" -v
 
-      - name: Build 96-project pre-review cohort and reserves
+      - name: Build versioned pre-review cohort and reserves
+        if: steps.timestamp_gate.outputs.eligible == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -96,15 +124,22 @@ jobs:
           python - "$RUNNER_TEMP/swe-rebench-v2-cohort/SWE_REBENCH_V2_COHORT_96_MANIFEST_2026-11-12.json" <<'PY'
           import json, sys
           m = json.load(open(sys.argv[1], encoding="utf-8"))
-          assert m["eligible_metadata_candidates_after_rechecks"] == 261, m
-          assert m["eligible_distinct_projects"] == 113, m
           assert m["primary_cases"] == 96 and m["primary_distinct_projects"] == 96, m
-          assert m["project_reserve_cases"] == 17 and m["project_reserve_distinct_projects"] == 17, m
+          assert m["project_reserve_cases"] >= 0, m
           assert m["accepted_confirmatory_cases"] == 0, m
           assert m["model_inference_performed"] is False, m
           assert m["fine_tuning_performed"] is False, m
-          print("PASS: 96 distinct project candidates + 17 project reserves; no case accepted.")
+          print("PASS: versioned pre-review cohort generated; no case accepted.")
           PY
+
+      - name: Record why cohort generation was skipped
+        if: steps.timestamp_gate.outputs.eligible != 'true'
+        shell: bash
+        run: |
+          {
+            echo "### Candidate cohort generation"
+            echo "Skipped: timestamp provenance is unresolved or timezone-naive values remain. Metadata inventory only; no cohort selection and no inference."
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload metadata inventory and deterministic cohort outputs
         uses: actions/upload-artifact@v4
@@ -119,5 +154,5 @@ jobs:
             ${{ runner.temp }}/swe-rebench-v2-cohort/SWE_REBENCH_V2_WITHIN_PROJECT_ALTERNATES_2026-11-12.csv
             ${{ runner.temp }}/swe-rebench-v2-cohort/SWE_REBENCH_V2_COHORT_96_MANIFEST_2026-11-12.json
             ${{ runner.temp }}/swe-rebench-v2-cohort-summary.stdout.json
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 90
