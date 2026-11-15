@@ -1,0 +1,9 @@
+instance_id,selection_role,dataset_repo,issue_number,dataset_created_at_utc,github_api_created_at_utc,delta_seconds,match_status,issue_url,is_pull_request,fetch_mode,error
+"crewaiinc__crewai-2408","primary","crewAIInc/crewAI","2408","2025-03-19T17:53:17Z","2025-03-19T17:53:17Z","0","exact_match","https://github.com/crewAIInc/crewAI/pull/2408","true","repository_full_name",""
+"microsoft__azuretre-4352","primary","microsoft/AzureTRE","4352","2025-02-10T22:59:32Z","2025-02-10T22:59:32Z","0","exact_match","https://github.com/microsoft/AzureTRE/pull/4352","true","repository_full_name",""
+"aiogram__aiogram-1657","primary","aiogram/aiogram","1657","2025-03-23T14:24:20Z","2025-03-23T14:24:20Z","0","exact_match","https://github.com/aiogram/aiogram/pull/1657","true","repository_full_name",""
+"apiflask__apiflask-642","primary","apiflask/apiflask","642","2025-01-03T09:22:50Z","2025-01-03T09:22:50Z","0","exact_match","https://github.com/apiflask/apiflask/pull/642","true","repository_full_name",""
+"xknx__xknx-1663","primary","XKNX/xknx","1663","2025-02-18T20:35:56Z","2025-02-18T20:35:56Z","0","exact_match","https://github.com/XKNX/xknx/pull/1663","true","repository_full_name",""
+"narwhals-dev__narwhals-1869","primary","narwhals-dev/narwhals","1869","2025-01-26T17:01:54Z","2025-01-26T17:01:54Z","0","exact_match","https://github.com/narwhals-dev/narwhals/pull/1869","true","repository_full_name",""
+"callowayproject__bump-my-version-325","primary","callowayproject/bump-my-version","325","2025-03-21T17:27:51Z","2025-03-21T17:27:51Z","0","exact_match","https://github.com/callowayproject/bump-my-version/pull/325","true","repository_full_name",""
+"dynaconf__dynaconf-1293","primary","dynaconf/dynaconf","1293","2025-05-06T11:32:03Z","2025-05-06T11:32:03Z","0","exact_match","https://github.com/dynaconf/dynaconf/pull/1293","true","repository_full_name",""

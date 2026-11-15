@@ -1,0 +1,9 @@
+instance_id,selection_role,dataset_repo,issue_number,dataset_created_at_utc,github_api_created_at_utc,delta_seconds,match_status,issue_url,is_pull_request,fetch_mode,error
+"astropy__ccdproc-901","primary","astropy/ccdproc","901","2025-07-13T21:05:06Z","2025-07-13T21:05:06Z","0","exact_match","https://github.com/astropy/ccdproc/pull/901","true","repository_full_name",""
+"pybamm-team__pybamm-4465","primary","pybamm-team/PyBaMM","4465","2024-09-25T06:55:53Z","2024-09-25T06:55:53Z","0","exact_match","https://github.com/pybamm-team/PyBaMM/pull/4465","true","repository_full_name",""
+"asdf-format__asdf-1907","primary","asdf-format/asdf","1907","2025-03-12T17:51:23Z","2025-03-12T17:51:23Z","0","exact_match","https://github.com/asdf-format/asdf/pull/1907","true","repository_full_name",""
+"jcrist__msgspec-772","primary","jcrist/msgspec","772","2024-11-15T17:19:04Z","2024-11-15T17:19:04Z","0","exact_match","https://github.com/msgspec/msgspec/pull/772","true","repository_id",""
+"pallets__jinja-2033","primary","pallets/jinja","2033","2024-10-04T20:28:57Z","2024-10-04T20:28:57Z","0","exact_match","https://github.com/pallets/jinja/pull/2033","true","repository_full_name",""
+"scikit-rf__scikit-rf-1282","primary","scikit-rf/scikit-rf","1282","2025-05-12T21:42:46Z","2025-05-12T21:42:46Z","0","exact_match","https://github.com/scikit-rf/scikit-rf/pull/1282","true","repository_full_name",""
+"jsonpickle__jsonpickle-565","primary","jsonpickle/jsonpickle","565","2025-06-08T19:40:12Z","2025-06-08T19:40:12Z","0","exact_match","https://github.com/jsonpickle/jsonpickle/pull/565","true","repository_full_name",""
+"scikit-activeml__scikit-activeml-504","primary","scikit-activeml/scikit-activeml","504","2025-05-14T12:46:53Z","2025-05-14T12:46:53Z","0","exact_match","https://github.com/scikit-activeml/scikit-activeml/pull/504","true","repository_full_name",""
