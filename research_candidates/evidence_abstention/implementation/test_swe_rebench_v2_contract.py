@@ -86,7 +86,7 @@ def manifest():
             "policies": ["P0", "P1"],
             "minimum_independent_cases": 60,
             "target_independent_cases": 80,
-            "minimum_upstream_projects": 8,
+            "minimum_upstream_projects": 60,
         },
         "model": {
             "id": "Qwen/Qwen2.5-3B-Instruct",
