@@ -258,8 +258,8 @@ class SweRebenchV2ContractTests(unittest.TestCase):
         self.assertIsNone(result["decision"])
 
     def test_non_standard_json_constants_are_rejected(self):
-        raw = response().replace('"rationale":"This is a synthetic test fixture."',
-                                  '"rationale":NaN')
+        raw = response().replace('"rationale": "This is a synthetic test fixture."',
+                                  '"rationale": NaN')
         result = audit_raw_response(raw, {"TRACE_A"}, "P1")
         self.assertEqual(result["status"], "invalid_json")
         self.assertEqual(result["raw_output"], raw)
