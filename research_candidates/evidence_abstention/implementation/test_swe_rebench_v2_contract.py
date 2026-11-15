@@ -92,6 +92,9 @@ def manifest():
             "id": "Qwen/Qwen2.5-3B-Instruct",
             "revision": MODEL_REVISION,
             "license_review_status": "pending_exact_revision_review",
+            "license_identifier": "qwen-research",
+            "license_evidence_uri": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/aa8e72537993ba99e69dfaafa59ed015b17504d1/LICENSE",
+            "license_scope_review_status": "pending_human_noncommercial_assessment",
         },
     }
 
@@ -148,6 +151,18 @@ class SweRebenchV2ContractTests(unittest.TestCase):
         self.assertEqual(result["status"], "valid_draft_no_inference")
         self.assertFalse(result["inference_authorized"])
         self.assertFalse(result["model_inference_performed"])
+
+    def test_manifest_pins_exact_qwen_research_license_and_keeps_review_pending(self):
+        candidate = manifest()
+        result = validate_manifest(candidate)
+        self.assertEqual(result["status"], "valid_draft_no_inference")
+        candidate["model"]["license_identifier"] = "apache-2.0"
+        result = validate_manifest(candidate)
+        self.assertIn("model license identifier must remain pinned to qwen-research.", result["blockers"])
+        candidate = manifest()
+        candidate["model"]["license_scope_review_status"] = "approved"
+        result = validate_manifest(candidate)
+        self.assertIn("model non-commercial scope review must remain pending.", result["blockers"])
 
     def test_manifest_rejects_any_inference_authorization(self):
         value = manifest()
