@@ -82,3 +82,21 @@ Observed report:
 The retained workflow artifact is [artifact 14166229237](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43726530902/artifacts/14166229237), SHA-256 `92904f74309eb9c8dc48ad8c327de6d0103304aa7ebe448c6f86f8004f0deb79`.
 
 This empirical result confirms that the timezone-naive representation is present in every row of the pinned filtered snapshot. It does **not** prove that the original source timestamps are in a non-UTC timezone, nor does it establish the transform used to serialize them. The prior 96-row cohort remains quarantined. The next admissible step is an authoritative row-to-GitHub-record reconciliation, not restoring the naive-UTC assumption.
+
+
+## 8. Independent GitHub REST API spot-check
+
+To test whether the naive strings are derived from GitHub issue creation timestamps, a deterministic random sample of 51 unique candidate issue identifiers was queried using the GitHub issue API through the connected GitHub integration. GitHub's REST documentation states that timestamps returned by the API are UTC ISO 8601 values (`YYYY-MM-DDTHH:MM:SSZ`): https://docs.github.com/en/rest/using-the-rest-api/getting-started-with-the-rest-api.
+
+Results:
+
+- **50/51** dataset time values matched the corresponding API `created_at` value exactly to the second.
+- **1/51** differed by one second: `simpeg/simpeg#1633`, dataset-derived historical value `2025-03-20T23:46:00Z`, API value `2025-03-20T23:46:01Z`.
+- All 51 returned issue objects, not pull-request objects.
+- The queries were sampled from the historical 347-row candidate inventory using fixed deterministic shuffles (seeds `42` and `20261115`); the two samples overlapped on one identifier, leaving 51 unique issue identifiers.
+
+This is strong evidence that the filtered `created_at` strings are likely GitHub issue `created_at` values with the timezone designator omitted during serialization. It does **not** prove this for every row, nor explain the one-second discrepancy or the stale/inconsistent upstream-card type declaration.
+
+### Decision after spot-check
+
+Do not revert the fail-closed parser and do not directly assume UTC for raw strings. Instead, use the authoritative GitHub issue API `created_at` timestamp for the date cutoff after exact repository/issue mapping. A full reconciliation of all historical candidate rows (and every row intended for the new cohort) is still required. Rows with missing issues, wrong mapping, API errors, or material timestamp mismatches remain excluded pending review. The one-second discrepancy is retained as a finding; any tolerance rule must be defined before the full reconciliation and may not silently overwrite the API value.
