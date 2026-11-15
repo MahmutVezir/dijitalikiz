@@ -1,0 +1,53 @@
+{
+  "record_type": "swe_rebench_v2_selected_candidate_timestamp_reconciliation",
+  "audit_date": "2026-11-15",
+  "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+  "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+  "dataset_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+  "historical_primary_rows": 96,
+  "historical_project_reserves": 17,
+  "reconciled_rows": 113,
+  "distinct_repositories": 113,
+  "api_records_returned": 113,
+  "exact_matches": 112,
+  "one_second_differences": 1,
+  "other_mismatches": 0,
+  "unresolved": 0,
+  "all_api_timestamps_on_or_after_cutoff": true,
+  "cutoff_utc": "2024-09-20T00:00:00Z",
+  "one_second_difference": {
+    "repo": "simpeg/simpeg",
+    "issue_number": 1633,
+    "dataset_created_at_utc": "2025-03-20T23:46:00Z",
+    "github_api_created_at_utc": "2025-03-20T23:46:01Z",
+    "delta_seconds": 1,
+    "disposition": "held_for_review_not_auto_admitted"
+  },
+  "prior_exposure_exclusions": [
+    {
+      "repo": "MarketSquare/robotframework-robocop",
+      "issue_number": 1374,
+      "evidence": "https://github.com/MahmutVezir/dijitalikiz/pull/193",
+      "disposition": "permanently_excluded"
+    },
+    {
+      "repo": "mitmproxy/pdoc",
+      "issue_number": 813,
+      "evidence": "https://github.com/MahmutVezir/dijitalikiz/pull/194",
+      "disposition": "permanently_excluded"
+    }
+  ],
+  "date_verified_candidate_projects": 110,
+  "date_verified_primary_candidates": 93,
+  "date_verified_project_reserves": 17,
+  "register_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_TIMESTAMP_RECONCILIATION_REGISTER_2026-11-15.csv",
+  "register_sha256": "01f1ded07230cbb78943cecd00977dc28c411bfd3c7cac376f3d09b815371fde",
+  "register_rows": 113,
+  "status": "selected_candidate_timestamp_crosscheck_passed; case_validation_open",
+  "model_loading_performed": false,
+  "model_inference_performed": false,
+  "fine_tuning_performed": false,
+  "upstream_tests_executed": false,
+  "accepted_confirmatory_cases": 0,
+  "inference_authorized": false
+}
