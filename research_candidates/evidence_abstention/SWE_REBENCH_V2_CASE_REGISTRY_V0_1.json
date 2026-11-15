@@ -1,0 +1,18 @@
+{
+  "registry_version": "0.1-draft",
+  "study_protocol": "swe-rebench-v2-evidence-abstention",
+  "status": "empty_no_confirmatory_cases_accepted",
+  "as_of": "2026-11-15",
+  "candidate_cohort_sha256": "84552868fc2914ebe2421b6b2ce5b6afaabe6a032f9cf9441a6251d2611248db",
+  "accepted_case_count": 0,
+  "accepted_project_count": 0,
+  "records": [],
+  "notes": [
+    "This registry is separate from the historical BugsInPy CASE_REGISTRY.json.",
+    "The 96-row metadata cohort is a screening order only. No row is accepted automatically.",
+    "Do not insert candidate records into this registry until exact-base and changed-file license/provenance review, exposure and independence review, buggy-fail/fixed-pass reproduction, Panel A ground truth review, and Panel B evidence sufficiency review are independently documented.",
+    "A technical candidate that has been opened for debugging or reproduction is permanently excluded from confirmatory use under the project's exposure rule.",
+    "Panel A and Panel B reviewer identities must be disjoint. Preserve original independent ratings and adjudication records.",
+    "No model response may be used to define ground truth or E1/E2/E3."
+  ]
+}
