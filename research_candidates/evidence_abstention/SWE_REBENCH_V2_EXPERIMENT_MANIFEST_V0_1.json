@@ -31,7 +31,7 @@
     ],
     "created_at_inclusive_cutoff_utc": "2024-09-20T00:00:00Z",
     "created_at_representation": "String in pinned filtered Parquet; naive timestamps were interpreted as UTC in the metadata feasibility run",
-    "created_at_timezone_assumption_review": "FULL_REGISTER_UPSTREAM_REFETCH_112_EXACT_1_ONE_SECOND_REQUIRES_REVIEW; RAW API PAYLOAD AUTHENTICATION INCOMPLETE",
+    "created_at_timezone_assumption_review": "FULL_REGISTER_UPSTREAM_REFETCH_112_EXACT_1_ONE_SECOND_REQUIRES_REVIEW; UPSTREAM_MS_TO_FILTERED_STRING_TRANSFORMATION_UNDOCUMENTED; RAW API PAYLOAD AUTHENTICATION INCOMPLETE",
     "underlying_source_license_review": "OPEN_EXACT_BASE_AND_CHANGED_FILE_REVIEW",
     "status": "candidate_snapshot_metadata_feasibility_only",
     "created_at_reconciliation_register": {
@@ -179,6 +179,6 @@
     "The N=60 floor and N=80 target are feasibility thresholds, not a power guarantee. Hypothetical exact paired-McNemar power sensitivity scenarios are documented separately and are not empirical effect estimates.",
     "The primary endpoint's assertion and evidence-support scoring rules are specified in SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md; decision=diagnose is treated as an asserted diagnosis even when hedged, and diagnosis leakage in an abstention is separately adjudicated.",
     "The exact pinned model revision identifies its license as qwen-research, not Apache-2.0. Its license evidence and non-commercial scope require human/legal review before model use.",
-    "The timestamp reconciliation register contains 113 rows: 96 primary and all 17 declared project reserves. A field-level upstream GitHub re-fetch succeeded for all 113 records; 112 dataset timestamps match exactly and one (simpeg/simpeg#1633) differs by one second. The GitHub connector returned normalized fields, not raw REST payloads or headers. Keep dataset_validation_gate OPEN until the one-second dataset timestamp semantics and broader source provenance are resolved."
+    "The timestamp reconciliation register contains 113 rows: 96 primary and all 17 declared project reserves. A field-level upstream GitHub re-fetch succeeded for all 113 records; 112 dataset timestamps match exactly and one (simpeg/simpeg#1633) differs by one second. Public docs describe the upstream created_at field as Unix milliseconds and the filtered dataset field as a string/date, but the exact conversion semantics are undocumented in the inspected sources. The GitHub connector returned normalized fields, not raw REST payloads or headers. Keep dataset_validation_gate OPEN pending authoritative resolution of the one-second case and broader source provenance."
   ]
 }
