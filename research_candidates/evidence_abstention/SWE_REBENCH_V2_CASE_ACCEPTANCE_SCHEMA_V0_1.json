@@ -290,7 +290,9 @@
         "third_party_content_review",
         "research_use_decision",
         "reviewer_id",
-        "review_record"
+        "review_record",
+        "root_license_file",
+        "changed_file_license_manifest"
       ],
       "properties": {
         "source_license_expression": {
@@ -330,6 +332,57 @@
             }
           },
           "additionalProperties": false
+        },
+        "root_license_file": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "commit_sha",
+            "blob_sha",
+            "content_sha256",
+            "license_expression"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "commit_sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "blob_sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "license_expression": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "changed_file_license_manifest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifact_uri",
+            "sha256"
+          ],
+          "properties": {
+            "artifact_uri": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
         }
       },
       "additionalProperties": false
