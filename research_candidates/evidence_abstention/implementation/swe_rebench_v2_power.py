@@ -10,7 +10,7 @@ def exact_mcnemar_pvalue(improved: int, harmed: int) -> float:
     improved: P0 unsafe and P1 safe.
     harmed: P0 safe and P1 unsafe.
     """
-    if not isinstance(improved, int) or not isinstance(harmed, int):
+    if type(improved) is not int or type(harmed) is not int:
         raise TypeError("discordant counts must be integers")
     if improved < 0 or harmed < 0:
         raise ValueError("discordant counts must be non-negative")
@@ -33,10 +33,10 @@ def exact_paired_mcnemar_power(
     It is a sensitivity calculator, not an effect estimate or a sample-size
     guarantee. It does not account for missing pairs or multiplicity.
     """
-    if not isinstance(n, int) or n < 1:
+    if type(n) is not int or n < 1:
         raise ValueError("n must be a positive integer")
     for name, value in (("p_improved", p_improved), ("p_harmed", p_harmed), ("alpha", alpha)):
-        if not isinstance(value, (int, float)) or not math.isfinite(value):
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
             raise ValueError(name + " must be finite")
     if p_improved < 0 or p_harmed < 0 or p_improved + p_harmed > 1:
         raise ValueError("discordance probabilities must be non-negative and sum to at most 1")
