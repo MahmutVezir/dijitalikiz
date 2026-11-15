@@ -229,7 +229,7 @@ jobs:
 
 
   reproduce-robocop-1371:
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'research/2026-11-14-robocop-1371-fail-pass-repro'
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.head.ref, 'robocop-1371-ci-fix')
     name: Upstream Robocop #1371 exact base-fail / fix-pass reproduction
     runs-on: ubuntu-24.04
     timeout-minutes: 20
@@ -297,12 +297,13 @@ jobs:
           cd upstream
           git checkout --detach 271e73253a70710cc80374128efa9eabb549b5f2
           python -m venv /tmp/robocop-base-venv
-          /tmp/robocop-base-venv/bin/python -m pip install --disable-pip-version-check -e . pytest
+          /tmp/robocop-base-venv/bin/python -m pip install --disable-pip-version-check -e . pytest click
           /tmp/robocop-base-venv/bin/python -m pip check
           set +e
-          ROBOCOP_ROOT="$PWD" /tmp/robocop-base-venv/bin/python -m pytest -vv /tmp/test_robocop_issue_1371.py 2>&1 | tee /tmp/base-test.log
-          test_status=\${PIPESTATUS[0]}
+          ROBOCOP_ROOT="$PWD" /tmp/robocop-base-venv/bin/python -m pytest -vv /tmp/test_robocop_issue_1371.py > /tmp/base-test.log 2>&1
+          test_status=$?
           set -e
+          cat /tmp/base-test.log
           if [[ "$test_status" -ne 1 ]] || ! grep -Eq "1 failed, 3 passed" /tmp/base-test.log || ! grep -q "assert 0 == 1" /tmp/base-test.log; then
             echo "::error::Base commit did not fail in the expected issue-specific regression case."
             exit 1
@@ -317,7 +318,7 @@ jobs:
           cd upstream
           git checkout --detach ceb6824fb4d80442937497a740edf60a5b6382e0
           python -m venv /tmp/robocop-fix-venv
-          /tmp/robocop-fix-venv/bin/python -m pip install --disable-pip-version-check -e . pytest
+          /tmp/robocop-fix-venv/bin/python -m pip install --disable-pip-version-check -e . pytest click
           /tmp/robocop-fix-venv/bin/python -m pip check
           ROBOCOP_ROOT="$PWD" /tmp/robocop-fix-venv/bin/python -m pytest -vv /tmp/test_robocop_issue_1371.py 2>&1 | tee /tmp/fix-test.log
           grep -Eq "4 passed" /tmp/fix-test.log
