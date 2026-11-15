@@ -31,7 +31,7 @@ class TimestampRegisterAuditTests(unittest.TestCase):
         folder.mkdir(parents=True)
         fields = list(rows[0])
         for part in range(1, 15):
-            selected = rows[(part - 1) * 8:part * 8]
+            selected = rows[(part - 1) * 8:(part * 8 if part < 14 else len(rows))]
             with (folder / PART_PATTERN.format(part)).open("w", newline="", encoding="utf-8") as handle:
                 writer = csv.DictWriter(handle, fieldnames=fields)
                 writer.writeheader()
