@@ -59,7 +59,7 @@ Issue yorumlarında kullanıcı, dizin adında nokta bulunan bir varyantın Wind
 
 ## 5. Lisans / provenans kontrolü — açık hold
 
-14 Kasım tarihli 17–56 exact-base lisans denetiminde row 55–56 dışında row 95 pdoc için:
+14 Kasım tarihli 89–96 vaka kapsam denetiminde row 95 pdoc için:
 - exact-base root `LICENSE` mevcut;
 - root lisans, audit tablosunda MIT olarak sınıflandırılmış;
 - Git blob SHA-1: `9d75d3de543742e219b1c7301901a95f65ad353a`;
