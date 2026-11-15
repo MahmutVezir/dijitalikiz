@@ -1,7 +1,7 @@
-import copy
 import hashlib
 import json
 import unittest
+from pathlib import Path
 
 from evidence_level_packet_set import create_packet_set, packet_set_digest
 from operational_packet_validator import packet_digest
