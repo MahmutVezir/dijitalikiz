@@ -1,0 +1,25 @@
+{
+  "registry_version": "0.1-draft",
+  "study_protocol": "swe-rebench-v2-evidence-abstention",
+  "status": "empty_no_confirmatory_cases_accepted",
+  "as_of": "2026-11-15",
+  "candidate_cohort_sha256": "84552868fc2914ebe2421b6b2ce5b6afaabe6a032f9cf9441a6251d2611248db",
+  "accepted_case_count": 0,
+  "accepted_project_count": 0,
+  "records": [],
+  "notes": [
+    "This registry is separate from the historical BugsInPy CASE_REGISTRY.json.",
+    "The 96-row metadata cohort is a screening order only. No row is accepted automatically.",
+    "Do not insert candidate records into this registry until exact-base and changed-file license/provenance review, exposure and independence review, buggy-fail/fixed-pass reproduction, Panel A ground truth review, and Panel B evidence sufficiency review are independently documented.",
+    "Any candidate previously used to debug/calibrate the screening or runner pipeline, or opened for target-test troubleshooting before prospective protocol assignment, is permanently excluded. Planned technical reproduction under the frozen protocol is permitted only by designated source-exposed personnel who are excluded from Panel B and the confirmatory analyst role; all source exposure is logged.",
+    "Panel A and Panel B reviewer identities must be disjoint. Preserve original independent ratings and adjudication records.",
+    "No model response may be used to define ground truth or E1/E2/E3.",
+    "The acceptance schema and validator check structural completeness and cross-field consistency only; they do not authenticate referenced artifacts, establish legal conclusions, inspect source code, or substitute for human semantic adjudication.",
+    "Technical reproducibility, exact-source licensing, Panel A gold review, and Panel B blinded evidence-tier review are separate records and must use disjoint reviewers as enforced by the validator.",
+    "A successful structural check is not proof that a case is scientifically valid. Referenced artifacts and reviewer attestations require independent external audit before data collection.",
+    "The case-level exposure record must list every source/gold-exposed person; Panel B and the confirmatory analyst must be unexposed. Role declarations are structural checks and require independent audit.",
+    "A case cannot count as a confirmatory registry acceptance without a separately identified external auditor's post-Panel-B-lock attestation covering artifact authenticity, semantic record consistency, and license/reproduction records. The auditor is source-exposed and disjoint from both panels, the analyst, and operational reviewers; the validator checks declarations structurally but cannot authenticate the auditor or referenced artifacts."
+  ],
+  "acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
+  "acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_case_acceptance.py"
+}
