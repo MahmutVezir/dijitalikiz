@@ -31,7 +31,7 @@
     ],
     "created_at_inclusive_cutoff_utc": "2024-09-20T00:00:00Z",
     "created_at_representation": "String in pinned filtered Parquet; naive timestamps were interpreted as UTC in the metadata feasibility run",
-    "created_at_timezone_assumption_review": "pending_confirmation_before_preregistration",
+    "created_at_timezone_assumption_review": "post_hoc_github_pr_api_spot_check_17_of_17_exact_matches; full_96_row_confirmation_pending",
     "underlying_source_license_review": "OPEN_EXACT_BASE_AND_CHANGED_FILE_REVIEW",
     "status": "candidate_snapshot_metadata_feasibility_only"
   },
@@ -165,6 +165,7 @@
     "The registry enforces one accepted confirmatory case per upstream project. The minimum is 60 distinct independent upstream projects, not 60 cases clustered within 8 projects.",
     "The N=60 floor and N=80 target are feasibility thresholds, not a power guarantee. Hypothetical exact paired-McNemar power sensitivity scenarios are documented separately and are not empirical effect estimates.",
     "The primary endpoint's assertion and evidence-support scoring rules are specified in SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md; decision=diagnose is treated as an asserted diagnosis even when hedged, and diagnosis leakage in an abstention is separately adjudicated.",
+    "The created_at naive-string UTC interpretation matched GitHub PR created_at exactly in a post hoc 17-row spot-check; one additional PR lookup was unresolved because of a repository redirect. This is not a full-cohort confirmation; see SWE_REBENCH_V2_CREATED_AT_UTC_CROSSCHECK_2026-11-15.md and complete all-96 verification before preregistration.",
     "The exact pinned model revision identifies its license as qwen-research, not Apache-2.0. Its license evidence and non-commercial scope require human/legal review before model use."
   ]
 }
