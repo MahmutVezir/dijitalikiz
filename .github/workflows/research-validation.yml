@@ -350,3 +350,145 @@ jobs:
             echo "- Test: same four parameterized cases executed at both commits in one locked environment"
             echo "- Model inference/training: not invoked"
           } >> "$GITHUB_STEP_SUMMARY"
+          echo "PYTHON_VERSION=$(cat /tmp/pdoc-python-version.txt 2>/dev/null || echo unavailable)"
+          echo "UV_VERSION=$(cat /tmp/pdoc-uv-version.txt 2>/dev/null || echo unavailable)"
+          echo "UV_LOCK_SHA256=$(awk '{print $1}' /tmp/pdoc-lock-sha256.txt 2>/dev/null || echo unavailable)"
+          echo "RUNTIME_FREEZE_SHA256=$(sha256sum /tmp/pdoc-runtime-freeze.txt 2>/dev/null | awk '{print $1}' || echo unavailable)"
+          echo "BASE_CLI_LOG_SHA256=$(sha256sum /tmp/pdoc-base-cli.log 2>/dev/null | awk '{print $1}' || echo unavailable)"
+          echo "FIX_CLI_LOG_SHA256=$(sha256sum /tmp/pdoc-fix-cli.log 2>/dev/null | awk '{print $1}' || echo unavailable)"
+
+
+  reproduce-pdoc-813-cli:
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.head.ref, 'pdoc-813-cli-repro')
+    name: Upstream pdoc #812 exact CLI base-fail / fix-pass reproduction
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout audit harness
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11.5 (upstream CI matrix)
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11.5"
+
+      - name: Install the uv version pinned in the upstream lock
+        uses: astral-sh/setup-uv@caf0cab7a618c569241d31dcd442f54681755d39
+        with:
+          version: "0.6.7"
+
+      - name: Clone pdoc and pin exact base and fix commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/mitmproxy/pdoc.git upstream
+          git -C upstream checkout --detach 57ee1d628027feffbd734180287e74294ddab7df
+          test "$(git -C upstream rev-parse HEAD)" = "57ee1d628027feffbd734180287e74294ddab7df"
+          git -C upstream fetch --depth=1 origin 75863d3abac0843a4ca0f3d562db2bc21d6ba6dc
+          git -C upstream cat-file -e 75863d3abac0843a4ca0f3d562db2bc21d6ba6dc^{commit}
+          test "$(git -C upstream show 57ee1d628027feffbd734180287e74294ddab7df:LICENSE | sha256sum | cut -d' ' -f1)" = "$(git -C upstream show 75863d3abac0843a4ca0f3d562db2bc21d6ba6dc:LICENSE | sha256sum | cut -d' ' -f1)"
+
+      - name: Freeze the upstream runtime and create one issue-specific project
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd upstream
+          uv sync --python "$(command -v python)" --frozen --all-extras --dev
+          uv pip check
+          uv --version > /tmp/pdoc-uv-version.txt
+          .venv/bin/python --version > /tmp/pdoc-python-version.txt
+          test "$(.venv/bin/python -c 'import platform; print(platform.python_version())')" = "3.11.5"
+          uv pip freeze --python .venv/bin/python > /tmp/pdoc-runtime-freeze.txt
+          sha256sum uv.lock > /tmp/pdoc-lock-sha256.txt
+          mkdir -p "$RUNNER_TEMP/pdoc_issue_812_project" "$RUNNER_TEMP/pdoc_issue_812_output"
+          cat > "$RUNNER_TEMP/pdoc_issue_812_project/pyproject.toml" <<'TOML'
+          [project]
+          name = "pdoc-issue-812-project"
+          version = "0.0.1"
+          TOML
+          cat > "$RUNNER_TEMP/pdoc_issue_812_project/__init__.py" <<'PY'
+          """Minimal valid package root for issue #812."""
+          from .helper import answer
+
+          __all__ = ["answer"]
+          PY
+          cat > "$RUNNER_TEMP/pdoc_issue_812_project/helper.py" <<'PY'
+          """Small module imported from the package root."""
+
+          def answer() -> int:
+              """Return a fixed value for documentation rendering."""
+              return 42
+          PY
+
+      - name: Prove exact base commit fails the actual python -m pdoc . command
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd upstream
+          git checkout --detach 57ee1d628027feffbd734180287e74294ddab7df
+          rm -rf "$RUNNER_TEMP/pdoc_issue_812_output"
+          mkdir -p "$RUNNER_TEMP/pdoc_issue_812_output"
+          set +e
+          (
+            cd "$RUNNER_TEMP/pdoc_issue_812_project"
+            "$GITHUB_WORKSPACE/upstream/.venv/bin/python" -m pdoc . --output-directory "$RUNNER_TEMP/pdoc_issue_812_output"
+          ) > /tmp/pdoc-base-cli.log 2>&1
+          test_status=$?
+          set -e
+          cat /tmp/pdoc-base-cli.log
+          if [[ "$test_status" -eq 0 ]] || ! grep -Fq "No modules found matching spec: ." /tmp/pdoc-base-cli.log; then
+            echo "::error::Exact base did not reproduce issue #812 through the actual CLI command."
+            exit 1
+          fi
+          echo "BASE_EXPECTED_FAILURE=PASS" >> "$GITHUB_STEP_SUMMARY"
+          echo "Exact base commit reproduces the issue-specific ValueError using python -m pdoc . from a project root containing __init__.py." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Prove exact fix commit passes the identical CLI command in the same environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd upstream
+          git checkout --detach 75863d3abac0843a4ca0f3d562db2bc21d6ba6dc
+          uv pip check
+          rm -rf "$RUNNER_TEMP/pdoc_issue_812_output"
+          mkdir -p "$RUNNER_TEMP/pdoc_issue_812_output"
+          (
+            cd "$RUNNER_TEMP/pdoc_issue_812_project"
+            "$GITHUB_WORKSPACE/upstream/.venv/bin/python" -m pdoc . --output-directory "$RUNNER_TEMP/pdoc_issue_812_output"
+          ) > /tmp/pdoc-fix-cli.log 2>&1
+          cat /tmp/pdoc-fix-cli.log
+          if ! find "$RUNNER_TEMP/pdoc_issue_812_output" -type f -name '*.html' -print -quit | grep -q .; then
+            echo "::error::Fix returned success but produced no HTML documentation."
+            exit 1
+          fi
+          echo "FIX_EXPECTED_PASS=PASS" >> "$GITHUB_STEP_SUMMARY"
+          echo "Exact fix commit successfully rendered HTML from the same python -m pdoc . command and same fixture." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Record source, runtime, fixture, and log identities
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## pdoc #812 CLI reproduction identity"
+            echo "- Repository: mitmproxy/pdoc"
+            echo "- Issue: #812"
+            echo "- Upstream PR: #813"
+            echo "- Base: 57ee1d628027feffbd734180287e74294ddab7df"
+            echo "- Fix: 75863d3abac0843a4ca0f3d562db2bc21d6ba6dc"
+            echo "- Python: $(cat /tmp/pdoc-python-version.txt 2>/dev/null || echo unavailable)"
+            echo "- uv: $(cat /tmp/pdoc-uv-version.txt 2>/dev/null || echo unavailable)"
+            echo "- uv.lock SHA-256:"
+            cat /tmp/pdoc-lock-sha256.txt 2>/dev/null || true
+            echo "- Runtime freeze SHA-256:"
+            sha256sum /tmp/pdoc-runtime-freeze.txt 2>/dev/null || true
+            echo "- Base/fix CLI log SHA-256:"
+            sha256sum /tmp/pdoc-base-cli.log /tmp/pdoc-fix-cli.log 2>/dev/null || true
+            echo "- Fixture: synthetic valid package root with __init__.py, pyproject.toml and helper.py"
+            echo "- Identical CLI invocation: python -m pdoc . --output-directory <temp-dir>"
+            echo "- Base failure must contain the issue-specific ValueError; fix must render at least one HTML file"
+            echo "- Model inference/training: not invoked"
+          } >> "$GITHUB_STEP_SUMMARY"
