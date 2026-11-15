@@ -71,7 +71,7 @@ The primary complete-pair denominator and conservative invalid-output sensitivit
 
 ## 8. Sample-size and interpretation boundary
 
-Target N=80; confirmatory minimum N=60 and at least 8 independent upstream projects. The planned case count is not a power guarantee. Any power analysis must use explicit, labeled assumptions and be frozen before outcomes exist.
+Target N=80 cases from 80 distinct independent upstream projects; confirmatory feasibility floor N=60 cases from 60 distinct independent upstream projects. The registry enforces exactly one accepted case per upstream project. The floor and target are not power guarantees. Exact paired-McNemar sensitivity calculations are documented in `SWE_REBENCH_V2_POWER_SENSITIVITY_V0_1.md` and reproduced by `implementation/swe_rebench_v2_power.py`. These hypothetical scenarios are not empirical effect estimates: under a moderate illustrative discordance assumption (P0 unsafe/P1 safe 0.30; P0 safe/P1 unsafe 0.10), power is approximately 0.635 at N=60 and 0.779 at N=80; under a weaker 0.20/0.12 assumption, it is approximately 0.138 and 0.181. Therefore N=80 is not guaranteed to provide 80% power. Final assumptions and sample target must be justified and frozen before preregistration, never selected after outcomes exist.
 
 Even a favorable result supports only a claim about the tested model, task domain, dataset, evidence construction, and prompt-policy contrast. It does not establish general model self-awareness or universal hallucination reduction.
 
