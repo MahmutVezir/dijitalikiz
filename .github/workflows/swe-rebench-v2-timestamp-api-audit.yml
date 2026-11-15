@@ -1,4 +1,4 @@
-name: SWE-rebench V2 GitHub Timestamp Reconciliation (No Inference)
+name: SWE-rebench V2 Timestamp Audit Tests and Metadata Gate (No Inference)
 
 on:
   pull_request:
@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   reconcile:
-    name: Compare historical candidate dates with GitHub issue API
+    name: Validate timestamp parser and preserve safe metadata inventory
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
@@ -68,44 +68,24 @@ jobs:
           echo "verified_bytes=$actual_bytes" >> "$GITHUB_STEP_SUMMARY"
           echo "verified_sha256=$actual_sha" >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Reconcile all historical metadata candidates with GitHub issue API
-        id: reconcile
-        shell: bash
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          PYTHONPATH=scripts python scripts/audit_swe_rebench_timestamps_against_github.py \
-            --input "$RUNNER_TEMP/swe-rebench-v2-timestamp/train-00000-of-00001.parquet" \
-            --output-csv "$RUNNER_TEMP/swe-rebench-v2-timestamp/api-verified-candidates.csv" \
-            --output-json "$RUNNER_TEMP/swe-rebench-v2-timestamp/reconciliation-summary.json" \
-            --max-workers 6 \
-            | tee "$RUNNER_TEMP/swe-rebench-v2-timestamp/reconciliation-summary.stdout.json"
-          cat "$RUNNER_TEMP/swe-rebench-v2-timestamp/reconciliation-summary.json" >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Keep cohort generation blocked unless every historical candidate matches exactly
+      - name: Record external API reconciliation boundary
         shell: bash
         run: |
-          python - "$RUNNER_TEMP/swe-rebench-v2-timestamp/reconciliation-summary.json" <<'PY'
-          import json, sys
-          summary = json.load(open(sys.argv[1], encoding="utf-8"))
-          print("historical_candidate_rows=" + str(summary["historical_candidate_rows"]))
-          print("exact_matches=" + str(summary["exact_api_timestamp_matches"]))
-          print("one_second_differences=" + str(summary["one_second_differences_requiring_explicit_review"]))
-          print("timestamp_mismatches=" + str(summary["timestamp_mismatches"]))
-          print("cohort_rebuild_gate=" + summary["cohort_rebuild_gate"])
-          if summary["cohort_rebuild_gate"] != "PASS_FOR_HISTORICAL_CANDIDATE_POOL_ONLY":
-              raise SystemExit("Timestamp reconciliation remains blocked; inspect the retained row-level audit artifact.")
-          PY
+          {
+            echo "### GitHub issue API reconciliation"
+            echo "Not executed in this workflow. The built-in GITHUB_TOKEN is scoped to this repository and is not used to query other repositories."
+            echo "Cross-repository issue metadata must be reconciled through the connected GitHub integration or a separately reviewed, provenance-preserving API cache."
+            echo "This job validates only the pinned data snapshot, parser tests, and fail-closed metadata behavior. It does not authorize candidate admission."
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload full timestamp reconciliation evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: swe-rebench-v2-timestamp-api-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          name: swe-rebench-v2-timestamp-test-evidence-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            ${{ runner.temp }}/swe-rebench-v2-timestamp/api-verified-candidates.csv
-            ${{ runner.temp }}/swe-rebench-v2-timestamp/reconciliation-summary.json
-            ${{ runner.temp }}/swe-rebench-v2-timestamp/reconciliation-summary.stdout.json
+            ${{ runner.temp }}/swe-rebench-v2-metadata-summary.json
+            ${{ runner.temp }}/swe-rebench-v2-metadata-candidates.csv
+            ${{ runner.temp }}/swe-rebench-v2-timestamp/train-00000-of-00001.parquet
           if-no-files-found: warn
           retention-days: 90
