@@ -265,6 +265,7 @@ def validate_case_record(record: Any) -> dict[str, Any]:
     packet_preparer_id = exposure.get("packet_preparer_id")
     adjudication = gold.get("adjudication") if gold.get("agreement_status") == "adjudicated" else {}
     adjudicator_id = adjudication.get("reviewer_id") if isinstance(adjudication, Mapping) else None
+    external_audit = _mapping(record.get("external_audit"), "external_audit", blockers)
     external_auditor_id = external_audit.get("auditor_id")
     if technical_id in all_reviewers or license_id in all_reviewers:
         blockers.append("technical and legal reviewers must be separate from blinded scientific panels.")
