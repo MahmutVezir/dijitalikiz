@@ -28,8 +28,10 @@ No row is accepted automatically. Before a case enters the new SWE-rebench regis
 3. Reproducible target test showing the intended failure at the pinned base and the same target passing at the verified fixed state, with matched runtime and raw logs.
 4. Two independent Panel A ground-truth reviews of the causal mechanism, with preserved initial decisions and adjudication.
 5. Three evidence packets constructed before model output and independently reviewed by a disjoint Panel B.
-6. Leakage and prior-exposure audit. Any candidate opened during technical debugging/reproduction is permanently excluded from confirmatory analysis under the exposure rule.
+6. Leakage and prior-exposure audit. Any candidate previously used to debug or calibrate the screening/runner pipeline, or opened for target-test troubleshooting before a prospective case-validation assignment, is permanently excluded regardless of the observed outcome. A planned technical reproduction is a separate protocol-assigned activity: the designated technical validator and packet preparer may inspect restricted source material, but their identities and access are logged; they cannot serve on blinded Panel B or as the confirmatory analyst. Panel A may inspect source/fix material to establish gold truth, but is likewise disjoint from Panel B. The confirmatory analyst must not have seen the gold cause or fix. Every source-exposed person is listed in the case record. A case with prior pipeline-debug exposure is ineligible even if its technical results look favorable.
 7. Complete hashes, review records, and a case-level acceptance decision.
+
+The case acceptance validator checks role separation and the explicit prior-debug exclusion, but it cannot authenticate reviewer identities or prove that access restrictions were observed. A complete structural record remains pending independent audit of the cited artifacts and attestations.
 
 The separate historical BugsInPy registry is not reused or modified for this new source.
 
