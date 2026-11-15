@@ -210,7 +210,9 @@ def load_historical_candidates(parquet_path: Path) -> tuple[list[dict[str, Any]]
     if sha256_file(parquet_path) != EXPECTED_SHA256:
         raise ValueError("Pinned Parquet SHA-256 mismatch")
 
-    import pyarrow.parquet as pq\n\n    parquet = pq.ParquetFile(parquet_path)
+    import pyarrow.parquet as pq
+
+    parquet = pq.ParquetFile(parquet_path)
     if parquet.metadata.num_rows != EXPECTED_ROWS:
         raise ValueError("Pinned Parquet row count mismatch")
     schema_types = {name: str(parquet.schema_arrow.field(name).type) for name in SAFE_COLUMNS}
