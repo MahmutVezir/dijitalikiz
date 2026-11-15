@@ -24,17 +24,26 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
-import pyarrow.parquet as pq
-
-from audit_swe_rebench_filtered_verified import (
-    CUTOFF,
-    EXPECTED_BYTES,
-    EXPECTED_ROWS,
-    EXPECTED_SHA256,
-    SAFE_COLUMNS,
-    audit_records,
-    sha256_file,
-)
+try:
+    from .audit_swe_rebench_filtered_verified import (
+        CUTOFF,
+        EXPECTED_BYTES,
+        EXPECTED_ROWS,
+        EXPECTED_SHA256,
+        SAFE_COLUMNS,
+        audit_records,
+        sha256_file,
+    )
+except ImportError:
+    from audit_swe_rebench_filtered_verified import (
+        CUTOFF,
+        EXPECTED_BYTES,
+        EXPECTED_ROWS,
+        EXPECTED_SHA256,
+        SAFE_COLUMNS,
+        audit_records,
+        sha256_file,
+    )
 
 COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40}$")
 REPO_PATTERN = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
@@ -203,7 +212,7 @@ def load_historical_candidates(parquet_path: Path) -> tuple[list[dict[str, Any]]
     if sha256_file(parquet_path) != EXPECTED_SHA256:
         raise ValueError("Pinned Parquet SHA-256 mismatch")
 
-    parquet = pq.ParquetFile(parquet_path)
+    import pyarrow.parquet as pq\n\n    parquet = pq.ParquetFile(parquet_path)
     if parquet.metadata.num_rows != EXPECTED_ROWS:
         raise ValueError("Pinned Parquet row count mismatch")
     schema_types = {name: str(parquet.schema_arrow.field(name).type) for name in SAFE_COLUMNS}
