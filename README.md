@@ -6,6 +6,8 @@
 
 ## Güncel durum — 15 Kasım 2026
 
+**Güncel yürütme planı:** [15 Kasım 2026 proje denetimi ve yol haritası](docs/PROJECT_AUDIT_AND_EXECUTION_ROADMAP_2026-11-15.md).
+
 **Bilimsel durum:** Doğrulayıcı ana deney henüz çalıştırılmadı. Kabul edilmiş bağımsız doğrulayıcı vaka **0**, kabul edilmiş upstream proje **0**, ana deney modeli çıktısı **0**. İnsan panelleri, kalibrasyon, dışarıdan doğrulanabilir ön kayıt ve exact model/runtime kapıları tamamlanmadı. **Model inference kapalıdır.**
 
 | Bileşen | Doğrulanmış durum |
@@ -23,7 +25,7 @@
 ### 15 Kasım teknik doğrulama kayıtları
 
 - **Robocop #1371:** [PR #193](https://github.com/MahmutVezir/dijitalikiz/pull/193) birleştirildi. Sabit upstream base ve fix commitleri, aynı uv kilidi ve aynı test ortamında dört parametrik testle karşılaştırıldı. Base'de issue'ya özgü tek assertion beklenen şekilde başarısız; fix'te 4/4 test başarılı. Teknik reproduksiyon raporu: [ROBOCOP_1371_TECHNICAL_REPRODUCTION_RECORD_2026-11-15.md](research_candidates/evidence_abstention/ROBOCOP_1371_TECHNICAL_REPRODUCTION_RECORD_2026-11-15.md).
-- **pdoc #812 / PR #813:** [PR #195](https://github.com/MahmutVezir/dijitalikiz/pull/195) birleştirildi. Gerçek `python -m pdoc . --output-directory ...` CLI çağrısı exact base'de `ValueError: No modules found matching spec: .` hatasını verdi; exact fix aynı sentetik paket ve aynı ortamda HTML üretti. Ortam Python 3.11.5 ve uv 0.6.7'dir. Lisans sınıflandırması MIT-0 olarak düzeltildi. Ayrıntılı teknik kayıt: [PDOC_813_PRE_REPRODUCTION_REVIEW_2026-11-15.md](research_candidates/evidence_abstention/PDOC_813_PRE_REPRODUCTION_REVIEW_2026-11-15.md).
+- **pdoc #812 / PR #813:** [PR #195](https://github.com/MahmutVezir/dijitalikiz/pull/195) birleştirildi. Gerçek `python -m pdoc . --output-directory ...` CLI çağrısı exact base'de `ValueError: No modules found matching spec: .` hatasını verdi; exact fix aynı sentetik paket ve aynı ortamda HTML üretti. Ortam Python 3.11.5 ve uv 0.6.7'dir. Lisans sınıflandırması MIT-0 olarak düzeltildi. Ayrıntılı teknik kayıt: [PDOC_813_TECHNICAL_REPRODUCTION_RECORD_2026-11-15.md](research_candidates/evidence_abstention/PDOC_813_TECHNICAL_REPRODUCTION_RECORD_2026-11-15.md) (öncesindeki statik inceleme: [PDOC_813_PRE_REPRODUCTION_REVIEW_2026-11-15.md](research_candidates/evidence_abstention/PDOC_813_PRE_REPRODUCTION_REVIEW_2026-11-15.md)).
 
 **Önemli örneklem kuralı:** Bir aday üzerinde teknik hata ayıklama/reproduksiyon yapıldıysa, sonuç base-fail/fix-pass olsa bile confirmatory örnekleme alınmaz. Robocop ve pdoc bu nedenle mühendislik/kalibrasyon kayıtlarıdır; vaka sayısına eklenmez ve P0/P1 hipotezine kanıt oluşturmaz.
 

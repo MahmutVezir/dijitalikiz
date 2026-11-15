@@ -53,6 +53,8 @@ Bu test, `parse_spec` fonksiyonunun göreli dizinleri doğru modül adına çevi
 
 **Bir sonraki teknik testin zorunlu koşulu:** Dondurulmuş base ve fix commitlerinde aynı sentetik proje dizini oluşturulmalı; proje kökünde `__init__.py` ve en az bir basit modül olmalı; süreç o kökte çalıştırılarak gerçek CLI üzerinden `python -m pdoc .` çağrılmalı. Base sürümde issue'ya özgü hata, fix sürümde başarılı dokümantasyon üretimi gözlenmeli. Ayrıca geçerli bir alt paket / üst paket kontrolü korunmalı. Yalnızca `parse_spec` birim testiyle yetinilmemelidir.
 
+**15 Kasım 2026 sonucu:** Bu açık test-kapsamı sorusu Bölüm 6'da gerçek CLI çağrısıyla kapatıldı: `python -m pdoc . --output-directory <temp-dir>` exact base ve exact fix üzerinde aynı sentetik proje/venv ile çalıştırıldı. Base'de issue-specific ValueError üretildi; fix HTML oluşturdu. Ayrı teknik kayıt: [PDOC_813_TECHNICAL_REPRODUCTION_RECORD_2026-11-15.md](PDOC_813_TECHNICAL_REPRODUCTION_RECORD_2026-11-15.md).
+
 ### Issue yorumlarından gelen kapsam uyarısı
 
 Issue yorumlarında kullanıcı, dizin adında nokta bulunan bir varyantın Windows/pdoc 15.0.4 üzerinde hâlâ sorunlu göründüğünü bildirmiştir. Upstream maintainer, `__init__.py` bulunan bir dizinin Python modülü olduğunu ve modül adında nokta kullanılmaması gerektiğini açıklamıştır. Bu varyantı ana reproduksiyonla birleştirmemek gerekir: geçerli Python paket adı olan bir proje kökü ve geçersiz modül adı içeren dizin senaryosu farklı koşullardır.

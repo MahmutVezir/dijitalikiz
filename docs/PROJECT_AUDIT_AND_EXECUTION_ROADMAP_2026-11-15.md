@@ -271,7 +271,7 @@ Detaylı rapor: [SWE-rebench V2 rows 17–56 exact-base license and file-provena
 - Harness: [PR #195](https://github.com/MahmutVezir/dijitalikiz/pull/195), merged.
 - Run [43712582477](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43712582477), job `132807166042`: real CLI base-fail/fix-pass reproduction passed. Base produced `ValueError: No modules found matching spec: .`; fix generated HTML from the same synthetic package root, same command, same venv. Python 3.11.5 (upstream CI matrix); uv 0.6.7; upstream `uv.lock` used with `--frozen`. Runtime and test-log SHA-256 values were written to the GitHub Actions job summary.
 - Exact-base `pyproject.toml` says MIT-0 and exact-base root LICENSE blob is `9d75d3de543742e219b1c7301901a95f65ad353a`. The same blob is present at the fix commit. Upstream commit [65b8242f3b75e0c499135e31f20f01caa70f7a04](https://github.com/mitmproxy/pdoc/commit/65b8242f3b75e0c499135e31f20f01caa70f7a04) records the explicit Unlicense-to-MIT-0 transition. The earlier MIT-vs-MIT-0 concern is corrected; the root license and metadata are consistent.
-- Detailed technical report: [PDOC_813_PRE_REPRODUCTION_REVIEW_2026-11-15.md](../research_candidates/evidence_abstention/PDOC_813_PRE_REPRODUCTION_REVIEW_2026-11-15.md).
+- Detailed technical report: [PDOC_813_TECHNICAL_REPRODUCTION_RECORD_2026-11-15.md](../research_candidates/evidence_abstention/PDOC_813_TECHNICAL_REPRODUCTION_RECORD_2026-11-15.md).
 
 ### Common scientific disposition
 
