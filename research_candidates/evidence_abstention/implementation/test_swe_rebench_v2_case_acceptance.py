@@ -182,6 +182,7 @@ class SweRebenchV2CaseAcceptanceTests(unittest.TestCase):
         self.assertIs(schema["additionalProperties"], False)
         self.assertIn("exposure", schema["required"])
         self.assertIn("prior_pipeline_debug_exposure_status", schema["properties"]["exposure"]["required"])
+        self.assertIn("external_audit", schema["required"])
 
     def test_complete_synthetic_record_passes_only_structural_gate(self):
         result = validate_case_record(valid_case())
@@ -206,6 +207,12 @@ class SweRebenchV2CaseAcceptanceTests(unittest.TestCase):
         self.assertEqual(result["status"], "invalid")
         self.assertTrue(any("external auditor must be separate" in item for item in result["blockers"]))
 
+    def test_external_auditor_must_be_listed_as_source_exposed(self):
+        record = valid_case()
+        record["exposure"]["source_exposed_person_ids"].remove("EXTERNAL_AUDITOR_01")
+        result = validate_case_record(record)
+        self.assertEqual(result["status"], "invalid")
+        self.assertTrue(any("source_exposed_person_ids must include" in item for item in result["blockers"]))
     def test_external_audit_must_follow_panel_b_rating_lock(self):
         record = valid_case()
         record["external_audit"]["reviewed_after_panel_b_lock"] = False
