@@ -39,7 +39,7 @@ Report all of the following, without collapsing them into a composite score:
 5. Gold-root-cause correctness and evidence-support ratings, separately from coverage.
 6. P1 abstention reasons and whether requested missing evidence is discriminating/useful, as separately adjudicated outcomes.
 
-A P1 diagnosis that is unsupported does not count as an E1 coverage success in the scientific interpretation merely because it is syntactically a diagnosis. Coverage is only the availability-of-diagnosis guardrail; evidence support remains a separate endpoint.
+An unsupported P1 diagnosis may count as syntactic answer coverage, but it does not count as a supported or scientifically successful diagnosis. Coverage is only the availability-of-diagnosis guardrail; evidence support remains a separate endpoint.
 
 ## Decision table
 
