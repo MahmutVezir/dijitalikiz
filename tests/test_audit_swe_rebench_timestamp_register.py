@@ -56,7 +56,7 @@ class TimestampRegisterAuditTests(unittest.TestCase):
         self.assertFalse(result["inference_authorized"])
 
     def test_rejects_duplicate_instance(self):
-        rows = [row(f"org{i}__repo{i}-{i+1}", f"org{i}/repo{i}", i+1) for i in range(104)]
+        rows = [row(f"org{i}__repo{i}-{i+1}", f"org{i}/repo{i}", i+1) for i in range(113)]
         rows[1]["instance_id"] = rows[0]["instance_id"]
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -65,7 +65,7 @@ class TimestampRegisterAuditTests(unittest.TestCase):
                 audit_register(root)
 
     def test_rejects_wrong_delta(self):
-        rows = [row(f"org{i}__repo{i}-{i+1}", f"org{i}/repo{i}", i+1) for i in range(104)]
+        rows = [row(f"org{i}__repo{i}-{i+1}", f"org{i}/repo{i}", i+1) for i in range(113)]
         rows[0]["delta_seconds"] = "2"
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
