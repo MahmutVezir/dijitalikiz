@@ -29,11 +29,12 @@
 
 **Önemli örneklem kuralı:** Bir aday üzerinde teknik hata ayıklama/reproduksiyon yapıldıysa, sonuç base-fail/fix-pass olsa bile confirmatory örnekleme alınmaz. Robocop ve pdoc bu nedenle mühendislik/kalibrasyon kayıtlarıdır; vaka sayısına eklenmez ve P0/P1 hipotezine kanıt oluşturmaz.
 
-### Son CI ve güvenlik kontrolleri
+### Son CI ve güvenlik kontrolleri — 15 Kasım 2026
 
-- Research Validation run [43712582477](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43712582477): pdoc reproduksiyon job'ı başarılı; repository/configuration işi **414 test + 56 subtest** ile başarılı.
-- No-inference preflight run [43712582464](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43712582464): fail-closed testleri **13/13**, kanıt paketi/atıf auditor testleri **12/12** başarılı. Readiness raporu `ready=false`, **21 blokaj**, 0 vaka, 0 proje ve `model_inference_performed=false` bildiriyor.
-- Ayrı Historical archive integrity işi, eski CCDG arşivi `data/historical/confirmatory_artifact_2026-10-09.zip` ana depoda bulunmadığı için başarısız. Bu eski arşiv yeni belirsizlik/çekimserlik araştırmasının verisi değildir; pdoc veya Robocop reproduksiyonlarının sonucu değildir.
+- V2-specific no-inference preflight [run 43746329888](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43746329888): başarılı; V2 readiness JSON `ready=false`, **24 blokaj**, 0 kabul edilmiş vaka/proje ve inference yetkisinin kapalı olduğunu bildiriyor.
+- Latest Research Validation [run 43746393823](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43746393823): repository/configuration job **418 test + 56 subtest** ile başarılı. Ayrı Historical archive integrity job'ı, eski CCDG ZIP'i `data/historical/confirmatory_artifact_2026-10-09.zip` ana depoda bulunmadığı için başarısız. Bu tarihsel bakım engeli V2 vaka doğrulaması değildir.
+- Timestamp parser/API-audit workflow [run 43728880434](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43728880434): 10 sentetik/parser testi ve sabit Parquet hash doğrulaması başarılı; log açıkça cross-repository GitHub API reconciliation'ın bu workflow'da **çalıştırılmadığını** söylüyor.
+- PR [#206](https://github.com/MahmutVezir/dijitalikiz/pull/206) (E1 coverage guardrail proposal) ve [#207](https://github.com/MahmutVezir/dijitalikiz/pull/207) (timestamp register integrity audit) birleştirildi. Vercel'in ayrı build-rate-limit ve Codex review usage-limit bildirimleri araştırma test sonucu değildir.
 
 ### Veri kaynağı ve kapsam ayrımı
 
@@ -44,7 +45,7 @@
 
 **15 Kasım ek statik incelemesi — pyfar #722 (row 90):** [PYFAR_722_STATIC_CANDIDATE_REVIEW_2026-11-15.md](research_candidates/evidence_abstention/PYFAR_722_STATIC_CANDIDATE_REVIEW_2026-11-15.md). Issue sözleşmesi, exact base/fix kimlikleri, iki değişen dosya, MIT lisansı ve 36 kombinasyonluk yeni test matrisi incelendi. Aday güçlü statik aday olarak kalıyor; upstream test/build çalıştırılmadı, vaka kabul edilmedi ve teknik maruziyet oluşmadı. Açık test noktaları: issue'daki farklı sinyal uzunluklarının örneği ve `return_reference=True` davranışı.
 
-**Sonraki tek araştırma adımı:** Row 90'ı henüz çalıştırılmamış aday kuyruğunda koru; diğer untouched cohort adaylarında issue kapsamı/test oracle/lisans statik taramasını sürdür. 60 vaka ve 8 proje eşiği düşürülmez.
+**Sonraki tek araştırma adımı:** Row 90'ı henüz çalıştırılmamış aday kuyruğunda koru; diğer untouched cohort adaylarında issue kapsamı/test oracle/lisans statik taramasını sürdür. 60 vaka / 60 farklı bağımsız upstream proje eşiği düşürülmez.
 
 
 ## Tarihsel durum — 27 Ekim 2026 (SWE-rebench V2 kararıyla geçersiz / arşiv)
