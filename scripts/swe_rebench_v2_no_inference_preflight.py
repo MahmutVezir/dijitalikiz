@@ -110,7 +110,7 @@ def evaluate(root: Path = ROOT) -> dict[str, Any]:
             if not required_sections.issubset(set(case_schema.get("required", []))):
                 blockers.append("Case acceptance schema is missing one or more required case sections.")
             props = case_schema.get("properties", {})
-            if not isinstance(props, dict) or "prior_pipeline_debug_exposure_status" not in props.get("exposure", {}).get("required", []) or "external_audit" not in props.get("required", []):
+            if not isinstance(props, dict) or "prior_pipeline_debug_exposure_status" not in props.get("exposure", {}).get("required", []) or "external_audit" not in case_schema.get("required", []):
                 blockers.append("Case acceptance schema does not enforce prior pipeline/debug exposure and independent external audit attestation.")
 
     if isinstance(manifest, dict):
