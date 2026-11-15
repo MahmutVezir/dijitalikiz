@@ -113,6 +113,12 @@ def validate_manifest(manifest: Any) -> dict[str, Any]:
         blockers.append("model ID or immutable revision differs from the reviewed candidate.")
     if model.get("license_review_status") != "pending_exact_revision_review":
         blockers.append("model license review must remain pending until independently resolved.")
+    if model.get("license_identifier") != "qwen-research":
+        blockers.append("model license identifier must remain pinned to qwen-research.")
+    if model.get("license_evidence_uri") != "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/aa8e72537993ba99e69dfaafa59ed015b17504d1/LICENSE":
+        blockers.append("model license evidence URI must point to the exact pinned revision LICENSE file.")
+    if model.get("license_scope_review_status") != "pending_human_noncommercial_assessment":
+        blockers.append("model non-commercial scope review must remain pending.")
 
     if manifest.get("protocol_version") != "0.1-draft":
         blockers.append("protocol_version must equal 0.1-draft.")
