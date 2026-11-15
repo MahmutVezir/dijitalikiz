@@ -61,7 +61,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          PYTHONPATH=research_candidates/evidence_abstention/implementation python -m unittest test_operational_packet_validator test_evidence_level_packet_set test_swe_rebench_v2_contract test_swe_rebench_v2_case_acceptance -v > operational-packet-tests.log 2>&1
+          PYTHONPATH=research_candidates/evidence_abstention/implementation python -m unittest test_operational_packet_validator test_evidence_level_packet_set test_swe_rebench_v2_contract test_swe_rebench_v2_case_acceptance test_swe_rebench_v2_no_inference_preflight -v > operational-packet-tests.log 2>&1
           test_status=$?
           cat operational-packet-tests.log
           echo "Operational packet tests exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
@@ -78,6 +78,17 @@ jobs:
           echo "Readiness report command exit code: ${report_status}" >> "$GITHUB_STEP_SUMMARY"
           exit "$report_status"
 
+      - name: Report SWE-rebench V2 readiness blockers without model execution
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          PYTHONPATH=research_candidates/evidence_abstention/implementation:scripts python scripts/swe_rebench_v2_no_inference_preflight.py > swe-rebench-v2-readiness-report.json 2>&1
+          report_status=$?
+          cat swe-rebench-v2-readiness-report.json
+          echo "SWE-rebench V2 no-inference readiness report command exit code: ${report_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$report_status"
+
       - name: Upload no-inference preflight logs
         if: always()
         uses: actions/upload-artifact@v4
@@ -88,5 +99,6 @@ jobs:
             packet-audit-tests.log
             operational-packet-tests.log
             readiness-report.json
+            swe-rebench-v2-readiness-report.json
           if-no-files-found: warn
           retention-days: 14
