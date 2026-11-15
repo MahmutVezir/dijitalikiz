@@ -38,25 +38,38 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def parse_created_at(value):
-    """Return (UTC datetime or None, representation, naive_assumed_utc)."""
+def parse_created_at(value, naive_policy="reject"):
+    """Return (UTC datetime or None, representation, naive_assumed_utc).
+
+    Naive timestamps are rejected by default. The only permissive mode is
+    explicitly named for historical reproduction and must never be used for
+    confirmatory cohort construction.
+    """
+    if naive_policy not in {"reject", "assume_utc_historical_only"}:
+        raise ValueError("naive_policy must be reject or assume_utc_historical_only")
     if value is None or value == "":
         return None, "missing", False
     if isinstance(value, datetime):
         if value.tzinfo is None:
-            return value.replace(tzinfo=timezone.utc), "datetime_naive", True
+            if naive_policy == "reject":
+                return None, "datetime_naive_timezone_unverified", False
+            return value.replace(tzinfo=timezone.utc), "datetime_naive_assumed_utc_historical_only", True
         return value.astimezone(timezone.utc), "datetime_tz", False
     if isinstance(value, (int, float)) and not isinstance(value, bool):
         return datetime.fromtimestamp(float(value) / 1000.0, tz=timezone.utc), "unix_ms", False
     if isinstance(value, str):
         parsed = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
         if parsed.tzinfo is None:
-            return parsed.replace(tzinfo=timezone.utc), "string_naive", True
+            if naive_policy == "reject":
+                return None, "string_naive_timezone_unverified", False
+            return parsed.replace(tzinfo=timezone.utc), "string_naive_assumed_utc_historical_only", True
         return parsed.astimezone(timezone.utc), "string_tz", False
-    return None, type(value).__name__, False
+    return None, "unsupported_type:" + type(value).__name__, False
 
 
-def audit_records(records, schema_types):
+def audit_records(records, schema_types, naive_policy="reject"):
+    if naive_policy not in {"reject", "assume_utc_historical_only"}:
+        raise ValueError("naive_policy must be reject or assume_utc_historical_only")
     language_counts = Counter()
     license_counts = Counter()
     date_representation_counts = Counter()
@@ -68,6 +81,7 @@ def audit_records(records, schema_types):
     naive_utc_assumptions = 0
     malformed_dates = 0
     missing_dates = 0
+    timezone_unverified_dates = 0
 
     for row in records:
         language = str(row.get("language") or "<MISSING>").strip()
@@ -75,14 +89,16 @@ def audit_records(records, schema_types):
         language_counts[language] += 1
         license_counts[license_name] += 1
         try:
-            created, representation, naive = parse_created_at(row.get("created_at"))
+            created, representation, naive = parse_created_at(row.get("created_at"), naive_policy=naive_policy)
         except (ValueError, OverflowError, OSError, TypeError):
             created, representation, naive = None, "invalid", False
         date_representation_counts[representation] += 1
         if representation == "missing":
             missing_dates += 1
-        if representation == "invalid":
+        if representation == "invalid" or representation.startswith("unsupported_type:"):
             malformed_dates += 1
+        if representation in {"string_naive_timezone_unverified", "datetime_naive_timezone_unverified"}:
+            timezone_unverified_dates += 1
         if naive:
             naive_utc_assumptions += 1
 
@@ -101,7 +117,9 @@ def audit_records(records, schema_types):
         fail_to_pass = row.get("FAIL_TO_PASS")
         if not is_python:
             reasons.append("not_python")
-        if not is_post_cutoff:
+        if representation in {"string_naive_timezone_unverified", "datetime_naive_timezone_unverified"}:
+            reasons.append("created_at_timezone_unverified")
+        elif not is_post_cutoff:
             reasons.append("missing_or_pre_cutoff_date")
         if not instance_id:
             reasons.append("missing_instance_id")
@@ -151,6 +169,10 @@ def audit_records(records, schema_types):
         "parquet_schema_types_for_read_columns": schema_types,
         "date_representation_counts": dict(sorted(date_representation_counts.items())),
         "naive_timestamp_assumed_utc_count": naive_utc_assumptions,
+        "timezone_unverified_created_at_count": timezone_unverified_dates,
+        "created_at_timezone_review": "UNRESOLVED_SOURCE_SCHEMA_LINEAGE",
+        "created_at_parser_policy": naive_policy,
+        "created_at_naive_utc_assumptions_permitted_for_confirmatory_use": False,
         "missing_created_at_count": missing_dates,
         "malformed_created_at_count": malformed_dates,
         "language_counts": dict(sorted(language_counts.items())),
@@ -175,14 +197,16 @@ def audit_records(records, schema_types):
             "No buggy/fixed test pair was run in this workflow.",
             "No root-cause or E1/E2/E3 human adjudication was performed.",
             "No cross-source exposure, issue duplication, or training-contamination review was performed.",
-            "Naive created_at strings were interpreted as UTC; the count is reported explicitly.",
+            "The upstream dataset card describes created_at as int64 Unix milliseconds, while the filtered dataset card describes it as string; source schema lineage remains unresolved.",
+            "Naive created_at values are rejected by default and cannot enter the candidate cohort until their timezone is independently verified.",
+            "The historical assume_utc_historical_only option exists solely to reproduce the old feasibility screen and is not confirmatory evidence."
             "Only safe metadata columns were read; solution-bearing columns were not loaded into the Arrow table.",
         ],
     }
     return summary, candidate_rows
 
 
-def run_audit(input_path: Path, output_json: Path, output_csv: Path, require_pinned: bool = True):
+def run_audit(input_path: Path, output_json: Path, output_csv: Path, require_pinned: bool = True, naive_policy: str = "reject"):
     if not input_path.is_file():
         raise FileNotFoundError(input_path)
     file_bytes = input_path.stat().st_size
@@ -203,7 +227,7 @@ def run_audit(input_path: Path, output_json: Path, output_csv: Path, require_pin
     if len(records) != parquet.metadata.num_rows:
         raise ValueError("Arrow row count differs from Parquet footer")
 
-    summary, candidates = audit_records(records, schema_types)
+    summary, candidates = audit_records(records, schema_types, naive_policy=naive_policy)
     summary["observed_file_bytes"] = file_bytes
     summary["observed_file_sha256"] = file_hash
     output_json.parent.mkdir(parents=True, exist_ok=True)
