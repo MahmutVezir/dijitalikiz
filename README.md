@@ -6,7 +6,7 @@
 
 ## Güncel durum — 15 Kasım 2026
 
-**Güncel yürütme planı:** [15 Kasım 2026 proje denetimi ve yol haritası](docs/PROJECT_AUDIT_AND_EXECUTION_ROADMAP_2026-11-15.md).
+**Güncel yürütme planı:** [15 Kasım 2026 ana denetim ve düzeltilmiş yürütme sırası](docs/MASTER_AUDIT_AND_EXECUTION_ORDER_2026-11-15.md).
 
 **Bilimsel durum:** Doğrulayıcı ana deney henüz çalıştırılmadı. Kabul edilmiş bağımsız doğrulayıcı vaka **0**, kabul edilmiş upstream proje **0**, ana deney modeli çıktısı **0**. İnsan panelleri, kalibrasyon, dışarıdan doğrulanabilir ön kayıt ve exact model/runtime kapıları tamamlanmadı. **Model inference kapalıdır.**
 
@@ -19,7 +19,7 @@
 | Lisans/provenans | pdoc row 95 exact-base root license MIT-0 olarak düzeltildi; Napalm row 19 Cisco fixture provenans hold sürüyor; seçilecek her aday için nested/per-file provenance ayrıca incelenmeli |
 | Ana deney | E1/E2/E3 kanıt yeterliliği × P0 zorunlu teşhis / P1 seçici teşhis-kaçınma; inference yetkisi kapalı |
 | Model/runtime | Qwen2.5-3B-Instruct aday revizyonu kayıtlı; exact model/tokenizer/runtime yükleme preflight'ı tamamlanmadı |
-| Readiness | `ready=false`, 21 blokaj, 0 kabul edilmiş vaka, 0 kabul edilmiş proje |
+| Readiness | `ready=false`, 24 V2 blokajı (V2'ye özgü no-inference preflight), 0 kabul edilmiş vaka, 0 kabul edilmiş proje |
 | Ayrı entropy prototipi | Beş adaylı belirsizlik/entropy prototipi ana P0/P1 deneyine dahil değildir |
 
 ### 15 Kasım teknik doğrulama kayıtları
@@ -29,11 +29,12 @@
 
 **Önemli örneklem kuralı:** Bir aday üzerinde teknik hata ayıklama/reproduksiyon yapıldıysa, sonuç base-fail/fix-pass olsa bile confirmatory örnekleme alınmaz. Robocop ve pdoc bu nedenle mühendislik/kalibrasyon kayıtlarıdır; vaka sayısına eklenmez ve P0/P1 hipotezine kanıt oluşturmaz.
 
-### Son CI ve güvenlik kontrolleri
+### Son CI ve güvenlik kontrolleri — 15 Kasım 2026
 
-- Research Validation run [43712582477](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43712582477): pdoc reproduksiyon job'ı başarılı; repository/configuration işi **414 test + 56 subtest** ile başarılı.
-- No-inference preflight run [43712582464](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43712582464): fail-closed testleri **13/13**, kanıt paketi/atıf auditor testleri **12/12** başarılı. Readiness raporu `ready=false`, **21 blokaj**, 0 vaka, 0 proje ve `model_inference_performed=false` bildiriyor.
-- Ayrı Historical archive integrity işi, eski CCDG arşivi `data/historical/confirmatory_artifact_2026-10-09.zip` ana depoda bulunmadığı için başarısız. Bu eski arşiv yeni belirsizlik/çekimserlik araştırmasının verisi değildir; pdoc veya Robocop reproduksiyonlarının sonucu değildir.
+- V2-specific no-inference preflight [run 43746329888](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43746329888): başarılı; V2 readiness JSON `ready=false`, **24 blokaj**, 0 kabul edilmiş vaka/proje ve inference yetkisinin kapalı olduğunu bildiriyor.
+- Latest Research Validation [run 43746393823](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43746393823): repository/configuration job **418 test + 56 subtest** ile başarılı. Ayrı Historical archive integrity job'ı, eski CCDG ZIP'i `data/historical/confirmatory_artifact_2026-10-09.zip` ana depoda bulunmadığı için başarısız. Bu tarihsel bakım engeli V2 vaka doğrulaması değildir.
+- Timestamp parser/API-audit workflow [run 43728880434](https://github.com/MahmutVezir/dijitalikiz/actions/runs/43728880434): 10 sentetik/parser testi ve sabit Parquet hash doğrulaması başarılı; log açıkça cross-repository GitHub API reconciliation'ın bu workflow'da **çalıştırılmadığını** söylüyor.
+- PR [#206](https://github.com/MahmutVezir/dijitalikiz/pull/206) (E1 coverage guardrail proposal) ve [#207](https://github.com/MahmutVezir/dijitalikiz/pull/207) (timestamp register integrity audit) birleştirildi. Vercel'in ayrı build-rate-limit ve Codex review usage-limit bildirimleri araştırma test sonucu değildir.
 
 ### Veri kaynağı ve kapsam ayrımı
 
@@ -44,10 +45,10 @@
 
 **15 Kasım ek statik incelemesi — pyfar #722 (row 90):** [PYFAR_722_STATIC_CANDIDATE_REVIEW_2026-11-15.md](research_candidates/evidence_abstention/PYFAR_722_STATIC_CANDIDATE_REVIEW_2026-11-15.md). Issue sözleşmesi, exact base/fix kimlikleri, iki değişen dosya, MIT lisansı ve 36 kombinasyonluk yeni test matrisi incelendi. Aday güçlü statik aday olarak kalıyor; upstream test/build çalıştırılmadı, vaka kabul edilmedi ve teknik maruziyet oluşmadı. Açık test noktaları: issue'daki farklı sinyal uzunluklarının örneği ve `return_reference=True` davranışı.
 
-**Sonraki tek araştırma adımı:** Row 90'ı henüz çalıştırılmamış aday kuyruğunda koru; diğer untouched cohort adaylarında issue kapsamı/test oracle/lisans statik taramasını sürdür. 60 vaka ve 8 proje eşiği düşürülmez.
+**Sonraki tek araştırma adımı:** Row 90'ı henüz çalıştırılmamış aday kuyruğunda koru; diğer untouched cohort adaylarında issue kapsamı/test oracle/lisans statik taramasını sürdür. 60 vaka / 60 farklı bağımsız upstream proje eşiği düşürülmez.
 
 
-## Güncel durum — 27 Ekim 2026
+## Tarihsel durum — 27 Ekim 2026 (SWE-rebench V2 kararıyla geçersiz / arşiv)
 
 **Bilimsel durum: tamamlanmadı; doğrulayıcı model çıkarımı kapalı.** Ana soru ve eşleştirilmiş deney tasarımı tanımlı; kabul edilmiş bağımsız vaka sayısı **0**, ana çalışmanın doğrulayıcı model çıktısı **0**, kalibrasyon verisi **0** ve tam model/tokenizer/CUDA runtime doğrulaması tamamlanmış değil. Gradio arayüzü tek-vaka keşifsel demosudur; ana araştırmanın sonucu değildir.
 
@@ -62,9 +63,9 @@
 | Kalibrasyon / ön kayıt / runtime | Kalibrasyon verisi boş; doğrulanabilir ön kayıt yok; tam model/tokenizer/CUDA runtime denetimi tamamlanmadı. |
 | Başvuru | Gerçek deney, kör puanlama ve analiz tamamlanmadan proje tamamlanmış araştırma olarak sunulamaz. |
 
-Güncel ön kayıt taslağı: [PREREGISTRATION_DRAFT_V1_1.md](research_candidates/evidence_abstention/PREREGISTRATION_DRAFT_V1_1.md); bağımsız değerlendirici bulma ve körleme: [REVIEWER_RECRUITMENT_AND_PANEL_GUIDE_2026-10-23.md](research_candidates/evidence_abstention/REVIEWER_RECRUITMENT_AND_PANEL_GUIDE_2026-10-23.md). V10 aday sırası ve maruziyet denetimi: [STAGE1_V10_METADATA_INTAKE_2026-10-23.md](research_candidates/evidence_abstention/STAGE1_V10_METADATA_INTAKE_2026-10-23.md). Runner çalıştırma sorunu için depo sahibi kontrol listesi: [GITHUB_ACTIONS_RUNNER_RECOVERY_GUIDE_2026-10-23.md](research_candidates/evidence_abstention/GITHUB_ACTIONS_RUNNER_RECOVERY_GUIDE_2026-10-23.md). Tek kaynaklı güncel durum: [CURRENT_STATUS_AND_EXECUTION_PLAN_2026-10-23.md](research_candidates/evidence_abstention/CURRENT_STATUS_AND_EXECUTION_PLAN_2026-10-23.md). Semantik auditor için sınırlar ve doğrulama gereksinimleri: [SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md](research_candidates/evidence_abstention/SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md). Önceki smoke tanılaması: [EXPLORATORY_ENGINEERING_REPORT_2026-10-23.md](research_candidates/evidence_abstention/EXPLORATORY_ENGINEERING_REPORT_2026-10-23.md).
+Tarihsel BugsInPy/Stage 3 ön kayıt taslağı (V2 protokolü değildir): [PREREGISTRATION_DRAFT_V1_1.md](research_candidates/evidence_abstention/PREREGISTRATION_DRAFT_V1_1.md); bağımsız değerlendirici bulma ve körleme: [REVIEWER_RECRUITMENT_AND_PANEL_GUIDE_2026-10-23.md](research_candidates/evidence_abstention/REVIEWER_RECRUITMENT_AND_PANEL_GUIDE_2026-10-23.md). V10 aday sırası ve maruziyet denetimi: [STAGE1_V10_METADATA_INTAKE_2026-10-23.md](research_candidates/evidence_abstention/STAGE1_V10_METADATA_INTAKE_2026-10-23.md). Runner çalıştırma sorunu için depo sahibi kontrol listesi: [GITHUB_ACTIONS_RUNNER_RECOVERY_GUIDE_2026-10-23.md](research_candidates/evidence_abstention/GITHUB_ACTIONS_RUNNER_RECOVERY_GUIDE_2026-10-23.md). Tek kaynaklı güncel durum: [CURRENT_STATUS_AND_EXECUTION_PLAN_2026-10-23.md](research_candidates/evidence_abstention/CURRENT_STATUS_AND_EXECUTION_PLAN_2026-10-23.md). Semantik auditor için sınırlar ve doğrulama gereksinimleri: [SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md](research_candidates/evidence_abstention/SEMANTIC_EVIDENCE_AUDIT_PROTOCOL_2026-10-23.md). Önceki smoke tanılaması: [EXPLORATORY_ENGINEERING_REPORT_2026-10-23.md](research_candidates/evidence_abstention/EXPLORATORY_ENGINEERING_REPORT_2026-10-23.md).
 
-**Üç aşamalı plan:** (1) ana istem-politikası deneyi için en az 60 kabul edilmiş bağımsız vaka/8 upstream proje, iki ayrık insan paneli, exact model-runtime, hash dondurma ve ön kayıt kapılarını kapat; (2) yalnızca bu kapılar kapanırsa E1/E2/E3 × P0/P1 deneyini yürüt, kör puanla ve önceden planlanan istatistiği hesapla; (3) gerçek sonuçları ve sınırlılıkları resmi TÜBİTAK raporuna aktar. Beş adaylı entropi/semantik-auditor prototipi ayrı bir mühendislik koludur; bu ana karşılaştırmaya dahil değildir ve onun hakkında etkinlik/kalibrasyon iddiası için ayrı validasyon gerekir.
+**Tarihsel üç aşamalı plan (BugsInPy/Stage 3; V2 için kullanılmaz):** Bu bölüm 27 Ekim 2026 tarihli eski veri hattını anlatır. SWE-rebench V2 için güncel eşik 60 kabul edilmiş vaka / 60 farklı bağımsız upstream projedir; güncel sıralama yukarıdaki 15 Kasım ana denetim belgesindedir. (1) ana istem-politikası deneyi için en az 60 kabul edilmiş bağımsız vaka/60 farklı upstream proje, iki ayrık insan paneli, exact model-runtime, hash dondurma ve ön kayıt kapılarını kapat; (2) yalnızca bu kapılar kapanırsa E1/E2/E3 × P0/P1 deneyini yürüt, kör puanla ve önceden planlanan istatistiği hesapla; (3) gerçek sonuçları ve sınırlılıkları resmi TÜBİTAK raporuna aktar. Beş adaylı entropi/semantik-auditor prototipi ayrı bir mühendislik koludur; bu ana karşılaştırmaya dahil değildir ve onun hakkında etkinlik/kalibrasyon iddiası için ayrı validasyon gerekir.
 
 TÜBİTAK'ın 2026–2027 çağrısında başvuru son tarihi **4 Ocak 2027 saat 17.30 (Türkiye saati)** olarak duyurulmuştur: [resmî çağrı](https://tubitak.gov.tr/tr/yarismalar/2204-lise-ogrencileri-arastirma-projeleri-yarismasi). Finalistlik hedefi korunur; sonuç garanti edilemez. Eski CCDG verileri ve sonuçları bu yeni araştırmaya taşınmayacaktır.
 
