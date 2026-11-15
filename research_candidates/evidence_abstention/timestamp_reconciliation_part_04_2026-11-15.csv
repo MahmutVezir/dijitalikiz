@@ -1,0 +1,9 @@
+instance_id,selection_role,dataset_repo,issue_number,dataset_created_at_utc,github_api_created_at_utc,delta_seconds,match_status,issue_url,is_pull_request,fetch_mode,error
+"ctfd__ctfd-2767","primary","CTFd/CTFd","2767","2025-06-28T22:07:47Z","2025-06-28T22:07:47Z","0","exact_match","https://github.com/CTFd/CTFd/pull/2767","true","repository_full_name",""
+"meltano__sdk-3091","primary","meltano/sdk","3091","2025-06-12T01:47:30Z","2025-06-12T01:47:30Z","0","exact_match","https://github.com/meltano/sdk/pull/3091","true","repository_full_name",""
+"capitalone__datacompy-404","primary","capitalone/datacompy","404","2025-04-17T23:56:12Z","2025-04-17T23:56:12Z","0","exact_match","https://github.com/capitalone/datacompy/pull/404","true","repository_full_name",""
+"jax-ml__jax-25650","primary","jax-ml/jax","25650","2024-12-20T21:49:51Z","2024-12-20T21:49:51Z","0","exact_match","https://github.com/jax-ml/jax/pull/25650","true","repository_full_name",""
+"sparckles__robyn-1002","primary","sparckles/Robyn","1002","2024-10-28T04:53:09Z","2024-10-28T04:53:09Z","0","exact_match","https://github.com/sparckles/Robyn/pull/1002","true","repository_full_name",""
+"amaranth-lang__amaranth-1519","primary","amaranth-lang/amaranth","1519","2024-09-20T14:00:49Z","2024-09-20T14:00:49Z","0","exact_match","https://github.com/amaranth-lang/amaranth/pull/1519","true","repository_full_name",""
+"cta-observatory__ctapipe-2732","primary","cta-observatory/ctapipe","2732","2025-04-02T17:48:48Z","2025-04-02T17:48:48Z","0","exact_match","https://github.com/cta-observatory/ctapipe/pull/2732","true","repository_full_name",""
+"pallets__werkzeug-2956","primary","pallets/werkzeug","2956","2024-10-10T21:07:05Z","2024-10-10T21:07:05Z","0","exact_match","https://github.com/pallets/werkzeug/pull/2956","true","repository_full_name",""
