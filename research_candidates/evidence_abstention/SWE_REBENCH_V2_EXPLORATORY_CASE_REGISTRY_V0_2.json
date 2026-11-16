@@ -1,0 +1,16 @@
+{
+  "registry_version": "0.2-exploratory-draft",
+  "study_protocol": "swe-rebench-v2-evidence-abstention",
+  "study_type": "exploratory_feasibility",
+  "status": "empty_no_cases_accepted",
+  "target_case_count": 20,
+  "minimum_feasibility_case_count": 15,
+  "target_distinct_upstream_projects": 20,
+  "minimum_distinct_upstream_projects": 15,
+  "one_case_per_upstream_project": true,
+  "accepted_case_count": 0,
+  "accepted_project_count": 0,
+  "records": [],
+  "inference_authorized": false,
+  "note": "Empty by design. Candidate metadata and prior technical reproductions are not accepted cases. This v0.2 registry requires a separately versioned schema and validator before any case can be accepted."
+}
