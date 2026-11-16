@@ -36,9 +36,16 @@
       "pull_request_number": 1633,
       "decision": "excluded_from_strict_bug_shortlist",
       "reason": "Issue/PR test-oracle mismatch; see v0.2 candidate yield review."
+    },
+    {
+      "cohort_rank": 8,
+      "repository": "databricks/dbt-databricks",
+      "pull_request_number": 995,
+      "decision": "excluded_from_strict_bug_shortlist",
+      "reason": "Added uniqueness test already passes on the buggy base; added illegal-character test uses re.match and only checks the first character, which is an allowed underscore, so embedded UUID hyphens are not detected. No cleanup/drop integration assertion. Candidate fails the predeclared defect-specific test-oracle gate; see DBT_DATABRICKS_994_CANDIDATE_REVIEW_2026-11-16.md."
     }
   ],
-  "interpretation": "All 96 primary cohort rows are represented exactly once. Provisional, conditional, held and strong labels are static-screen labels only. They do not mean license clearance, technical reproduction, case acceptance, or inference authorization. The current broad shortlist is 67 rows before the second-pass SimPEG exclusion and 66 afterward; the row-level ledger must be human-reviewed before use as a final cohort statistic.",
+  "interpretation": "All 96 primary cohort rows are represented exactly once. Provisional, conditional, held and strong labels are static-screen labels only. They do not mean license clearance, technical reproduction, case acceptance, or inference authorization. The frozen static shortlist was 67 rows; the second-pass SimPEG #1633 and dbt-databricks #995 test-oracle exclusions leave 65 rows before any later license, reproduction, independence, exposure, or evidence-tier decisions. Row-level outcomes must be human-reviewed before treating the count as a final cohort statistic. This file preserves the original static classifications and records second-pass exclusions separately.",
   "rows": [
     {
       "cohort_rank": 1,
