@@ -1287,3 +1287,185 @@ jobs:
           path: reproduction-evidence/
           if-no-files-found: warn
           retention-days: 90
+
+
+  moto-issue-8269-reproduction:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install pinned Moto ECR reproduction environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -VV
+          python -m venv .venv-tests
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/moto_issue_8269/requirements.lock
+          .venv-tests/bin/python - <<'PY'
+          import importlib.metadata as md
+          names = ["boto3", "botocore", "s3transfer", "jmespath", "urllib3", "requests", "certifi", "charset-normalizer", "idna", "python-dateutil", "six", "cryptography", "cffi", "pycparser", "xmltodict", "Werkzeug", "responses", "Jinja2", "MarkupSafe", "typing-extensions", "pytest", "iniconfig", "packaging", "pluggy", "Pygments"]
+          inventory = {}
+          for name in names:
+              dist = md.metadata(name)
+              classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+              license_text = dist.get("License") or dist.get("License-Expression")
+              if not license_text and not classifiers:
+                  raise SystemExit(f"License metadata missing for {name}; stop before source tests")
+              inventory[name] = {
+                  "version": md.version(name),
+                  "license": license_text,
+                  "license_expression": dist.get("License-Expression"),
+                  "license_classifiers": classifiers,
+              }
+          import json
+          with open("dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Clone exact Moto source and prepare patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          git clone https://github.com/getmoto/moto.git upstream-moto
+          git -C upstream-moto checkout --detach bf49e22f41be7444dc20e05dfa5dd13f25672eba
+          test "$(git -C upstream-moto rev-parse HEAD)" = "bf49e22f41be7444dc20e05dfa5dd13f25672eba"
+          test "$(git -C upstream-moto rev-parse HEAD:LICENSE)" = "90a85e7149454f173dd595bdeb884340cc01e6f6"
+          git -C upstream-moto show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE.txt
+          git -C upstream-moto diff bf49e22f41be7444dc20e05dfa5dd13f25672eba d46db48b4911d84235ef783ddab41b73882530f7 > reproduction-evidence/pr-8296.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/pr-8296.patch > reproduction-evidence/source-provenance-sha256.txt
+          cp dependency-license-inventory.json reproduction-evidence/
+
+      - name: Run independent issue reproducer on buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-moto" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/moto_issue_8269" -p "test_issue_8269.py" -v > reproduction-evidence/base-issue-test.log 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-issue-test.log
+          if [ "$status" -eq 0 ]; then
+            echo "Expected list_images to omit one of the two tags on the buggy base." >&2
+            exit 1
+          fi
+          grep -E "AssertionError: 1 != 2|1 != 2" reproduction-evidence/base-issue-test.log
+
+      - name: Run exact dataset FAIL_TO_PASS selectors on patched buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-moto checkout --detach bf49e22f41be7444dc20e05dfa5dd13f25672eba
+          git -C upstream-moto apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-8296.patch"
+          test -f upstream-moto/tests/test_ecr/test_ecr_boto3.py
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          .venv-dataset/bin/python - <<'PY'
+          import pyarrow.parquet as pq
+          import json
+          import hashlib
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          table = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")])
+          rows = table.to_pylist()
+          assert len(rows) == 1, len(rows)
+          row = rows[0]
+          assert row["repo"] == "getmoto/moto", row
+          assert row["base_commit"] == "bf49e22f41be7444dc20e05dfa5dd13f25672eba", row
+          assert row["language"] == "python", row
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\n")
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
+          print("dataset_row_sha256=" + digest)
+          print("dataset_created_at=" + str(row["created_at"]))
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          PY
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+          .venv-dataset/bin/python - <<'PY'
+          import json
+          import pyarrow.parquet as pq
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")]).to_pylist()[0]
+          selectors = row["FAIL_TO_PASS"]
+          assert selectors, "Dataset row has no FAIL_TO_PASS selectors"
+          command = [".venv-tests/bin/python", "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", *selectors]
+          import subprocess
+          env = dict(__import__("os").environ)
+          env["PYTHONPATH"] = "upstream-moto"
+          result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+          with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(result.stdout)
+          print(result.stdout)
+          if result.returncode == 0:
+              raise SystemExit("Expected all dataset FAIL_TO_PASS selectors to fail on buggy base")
+          if "1 failed" not in result.stdout and "failed" not in result.stdout:
+              raise SystemExit("Base selector run did not report a test failure; collection/setup failure is not accepted")
+          PY
+
+      - name: Run same issue reproducer and dataset selectors on fixed revision (pass required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-moto checkout --detach d46db48b4911d84235ef783ddab41b73882530f7
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-moto" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/moto_issue_8269" -p "test_issue_8269.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
+          cat reproduction-evidence/fixed-issue-test.log
+          .venv-dataset/bin/python - <<'PY'
+          import json
+          import pyarrow.parquet as pq
+          import subprocess
+          import os
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")]).to_pylist()[0]
+          selectors = row["FAIL_TO_PASS"]
+          command = [".venv-tests/bin/python", "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", *selectors]
+          env = dict(os.environ)
+          env["PYTHONPATH"] = "upstream-moto"
+          result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+          with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(result.stdout)
+          print(result.stdout)
+          if result.returncode != 0:
+              raise SystemExit("Dataset FAIL_TO_PASS selectors did not pass on fixed revision")
+          PY
+
+      - name: Prepare and upload raw Moto reproduction evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          if [ -f dependency-license-inventory.json ]; then cp dependency-license-inventory.json reproduction-evidence/; fi
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+          {
+            echo "### Moto #8269 ECR multi-tag reproducer"
+            echo "- Buggy base: bf49e22f41be7444dc20e05dfa5dd13f25672eba"
+            echo "- Fixed revision: d46db48b4911d84235ef783ddab41b73882530f7"
+            echo "- No AWS account or external service used"
+            echo "- No model loading, inference, or training"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload raw Moto reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: moto-issue-8269-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
