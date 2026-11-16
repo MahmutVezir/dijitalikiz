@@ -67,7 +67,14 @@
     "planned_outputs_at_minimum": 90,
     "planned_outputs_at_target": 120,
     "primary_endpoint": "E3 case-level strictly unsupported or contradicted asserted root-cause diagnosis; paired P1 versus P0",
-    "outcome_categories": ["fully_supported", "partially_supported", "unsupported", "contradicted", "valid_abstention", "invalid_or_unscorable"],
+    "outcome_categories": [
+      "fully_supported",
+      "partially_supported",
+      "unsupported",
+      "contradicted",
+      "valid_abstention",
+      "invalid_or_unscorable"
+    ],
     "partial_support_handling": "prespecified separate category; excluded from the strict primary unsafe endpoint and reported separately; also included in a secondary not-fully-supported composite",
     "primary_analysis": "Report paired E3 case-level counts, exploratory exact two-sided McNemar result, paired risk difference, and a 95% uncertainty interval. The interval method must be selected, justified, and tested before outcome scoring is unblinded; no confirmatory inference claim.",
     "invalid_output_primary_handling": "retain and report separately; do not silently map to 0 or abstention; primary complete-pair analysis requires scorable adjudicated endpoints under both policies",
@@ -154,9 +161,11 @@
     "v0.2 exploratory design decision: target 20 cases from 20 distinct upstream projects; feasibility floor 15 cases from 15 distinct upstream projects. One case per upstream project. The earlier v0.1 confirmatory 60-project requirement remains historical and is not the selected working design.",
     "No second human rater is part of the selected working arrangement. No human-human Cohen kappa or inter-rater reliability claim is permitted. ChatGPT critique is advisory AI input, not a human rating or independent external audit.",
     "At one raw output per six condition cells, 15 cases yield 90 outputs and 20 cases yield 120 outputs. These are planned counts, not observed outputs.",
-    "The v0.2 exploratory registry and acceptance rules are not yet implemented or validated. The v0.1 confirmatory validator must not be used to claim v0.2 acceptance.",
+    "The v0.2 exploratory case-acceptance schema and validator are drafted as versioned artifacts; they require CI tests and human review. Passing structural validation does not authenticate artifacts, establish legal clearance, or authorize inference.",
     "The v0.1 confirmatory manifest, case schema/validator, and two-human Panel B rubric are historical artifacts only. They do not govern v0.2 exploratory case acceptance or scoring; do not use them to claim v0.2 readiness.",
     "The v0.2 study remains a draft and is not preregistered. No second human rater, Cohen's kappa, or independent external audit is part of this design. ChatGPT critique is advisory AI input only.",
-    "The v0.2 scoring rubric and case-acceptance schema/validator still require dedicated drafts and tests before any case is accepted or model inference is considered."
-  ]
+    "The v0.2 single-researcher scoring rubric and case-acceptance schema/validator have dedicated drafts; CI validation and human review remain required before any case is accepted or model inference is considered."
+  ],
+  "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
+  "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py"
 }
