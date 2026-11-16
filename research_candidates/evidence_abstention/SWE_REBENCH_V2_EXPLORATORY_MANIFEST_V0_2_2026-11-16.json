@@ -182,7 +182,8 @@
     "Robocop #1371 (primary rank 24) passed static issue/patch alignment and exact-base Apache-2.0 source-license screening. A pinned Robot Framework/Typer test environment and exact dataset FAIL_TO_PASS workflow have been added. The pathspec dependency's license metadata requires explicit compatibility review; reproduction remains pending.",
     "Dymos #1166 (primary rank 15) passed static issue/patch alignment and exact-base Apache-2.0 license screening. The PR fixes ignored add_control/set_control_options val defaults; the fix spans control interpolation and explicit shooting. Reproduction remains pending because a focused OpenMDAO environment and its dependency license inventory are needed.",
     "EODAG #1530 (primary rank 16) passed static issue/patch alignment and exact-base Apache-2.0 root-license screening. PR #1536 also resolves #1517 and adds StacListAssets support, so dataset selectors must be isolated to the duplicate geodes/geodes_s3 YAML key defect before counting this candidate.",
-    "Click #2746 (primary rank 33) and mpmath #511 (primary rank 40) are held out of the primary intake because their exact public issues predate the September 2024 model release, creating elevated potential training-data exposure. This is a precaution, not a claim that either issue was in the training set."
+    "Click #2746 (primary rank 33) and mpmath #511 (primary rank 40) are held out of the primary intake because their exact public issues predate the September 2024 model release, creating elevated potential training-data exposure. This is a precaution, not a claim that either issue was in the training set.",
+    "pyfar #721 (primary rank 90) passed static numerical-contract and exact-base MIT source-license screening. The issue's energy-20-to-target-1 counterexample is explicit; a Python 3.12.4 pinned runtime/test environment and exact dataset FAIL_TO_PASS workflow have been added. Reproduction remains pending."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -213,24 +214,33 @@
     },
     {
       "instance_id": "pyfar__pyfar-722",
-      "cohort_row": 90,
-      "status": "priority_candidate_pending_full_dependency_license_review_and_reproduction",
+      "cohort_rank": 90,
+      "status": "static_numerical_bug_and_root_license_screen_passed_exact_reproduction_pending",
       "issue_url": "https://github.com/pyfar/pyfar/issues/721",
       "pull_request_url": "https://github.com/pyfar/pyfar/pull/722",
       "base_commit": "648dda4c60c5a6f74acf335f7808c590c9d23929",
       "fixed_commit": "a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e",
-      "exact_base_root_license": "MIT",
-      "scope_assessment": "Specific numerical normalization defect with explicit counterexamples; PR changes energy/power reference scaling to square-root scaling and adds parameterized target checks. Existing expected-value rows for energy/power in the old parameterized test were removed, so the replacement test oracle must be checked carefully.",
-      "remaining_gates": [
-        "full_direct_and_transitive_dependency_license_inventory",
-        "environment_lock",
-        "same_test_base_fail_fixed_pass_reproduction",
-        "changed_file_and_fixture_provenance",
-        "independence_and_exposure_review",
-        "gold_standard_and_E1_E2_E3_human_adjudication"
+      "exact_base_setup_license": "MIT",
+      "exact_base_setup_blob_sha": "3c0751c2366f14115d5f6ace603845f85f77bed2",
+      "changed_files": [
+        "pyfar/dsp/dsp.py",
+        "tests/test_dsp_normalize.py"
       ],
+      "issue_patch_alignment": "Issue #721 provides a numerical counterexample: energy 20 normalized to target 1 returns energy 0.05. PR #722 applies square-root scaling for energy/power and adds parameterized target/channel-handling tests for energy, power and RMS.",
+      "dependency_lock_path": "research_candidates/evidence_abstention/reproduction/pyfar_issue_721/dataset_test_requirements.lock",
+      "review_path": "research_candidates/evidence_abstention/PYFAR_721_CANDIDATE_REVIEW_2026-11-16.md",
+      "workflow_path": ".github/workflows/evidence-abstention-preflight.yml#pyfar-issue-721-reproduction",
+      "runtime_scope": "Python 3.12.4; declared pyfar runtime dependencies plus required transitive dependencies; in-memory signals only",
+      "dependency_license_inventory_status": "pending_workflow",
+      "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
       "case_acceptance": "not_accepted",
-      "inference_authorized": false
+      "inference_authorized": false,
+      "remaining_gates": [
+        "dependency_license_metadata_workflow_and_human_review",
+        "dataset_fail_to_pass_base_fail_fixed_pass_reproduction",
+        "independence_and_related_issue_family_review",
+        "gold_standard_and_E1_E2_E3_human_adjudication"
+      ]
     },
     {
       "instance_id": "mitmproxy__pdoc-813",
