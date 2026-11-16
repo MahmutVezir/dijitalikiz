@@ -64,7 +64,7 @@ class TestV02ExploratoryPreflight(unittest.TestCase):
         self.assertFalse(report["fine_tuning_performed"])
         self.assertFalse(report["inference_authorized"])
         self.assertIn("Dataset validation gate remains open", "\n".join(report["blockers"]))
-        self.assertIn("exact immutable model revision", "\n".join(report["blockers"]))
+        self.assertIn("The exact model/tokenizer/runtime environment has not been verified.", report["blockers"])
         self.assertIn("Generation settings are still draft", "\n".join(report["blockers"]))
 
 
