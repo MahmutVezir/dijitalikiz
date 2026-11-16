@@ -12,5 +12,7 @@
   "accepted_project_count": 0,
   "records": [],
   "inference_authorized": false,
-  "note": "Empty by design. Candidate metadata and prior technical reproductions are not accepted cases. This v0.2 registry requires a separately versioned schema and validator before any case can be accepted."
+  "note": "Empty by design. Candidate metadata and prior technical reproductions are not accepted cases. The v0.2-specific schema and validator define structural eligibility checks only; passing them does not authenticate artifacts, establish legal clearance, or authorize model inference.",
+  "acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
+  "acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py"
 }
