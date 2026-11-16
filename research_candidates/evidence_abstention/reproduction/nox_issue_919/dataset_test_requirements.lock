@@ -1,0 +1,15 @@
+# Exact minimal runtime and test-only dependency set for Nox #919.
+# Install with --no-deps; transitive dependencies are explicitly pinned.
+argcomplete==3.5.1
+attrs==24.3.0
+colorlog==6.9.0
+dependency-groups==1.3.0
+packaging==24.2
+virtualenv==20.28.1
+pytest==8.3.5
+iniconfig==2.0.0
+pluggy==1.5.0
+pygments==2.19.1
+distlib==0.3.9
+filelock==3.16.1
+platformdirs==4.3.6

@@ -1,0 +1,176 @@
+{
+  "schema_version": "0.1",
+  "candidate": "wntrblm/nox#919",
+  "source": {
+    "repository": "https://github.com/wntrblm/nox",
+    "base_commit": "97e0fad6a4036d610591a52e9ad0cfbe74a31af3",
+    "fixed_commit": "5c4000550325fd1ad036716d9e600ef7411bed3d",
+    "root_license": "Apache-2.0",
+    "root_license_blob_sha": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+    "pyproject_license": "Apache-2.0",
+    "pyproject_blob_sha": "c52a5e061ef55b5c1bcce55f84c6f8bbcccc74ea",
+    "changed_files": [
+      "nox/virtualenv.py",
+      "tests/test_virtualenv.py"
+    ],
+    "source_test_files_under_repository_license": true
+  },
+  "environment": {
+    "python": "3.11.9",
+    "optional_uv_package_installed": false,
+    "external_fixture_required": false,
+    "requirements_lock": "research_candidates/evidence_abstention/reproduction/nox_issue_919/dataset_test_requirements.lock",
+    "install_mode": "pip install --no-deps using exact version pins",
+    "packages": [
+      {
+        "name": "argcomplete",
+        "version": "3.5.1",
+        "role": "runtime dependency",
+        "license_status": "pending_installed_distribution_metadata"
+      },
+      {
+        "name": "attrs",
+        "version": "24.3.0",
+        "role": "runtime dependency",
+        "license_status": "exact_upstream_source_verified_for_pinned_version; installed_metadata_inventory_not_yet_verified_in_completed_CI",
+        "manual_source_license_evidence": {
+          "exact_version": "24.3.0",
+          "license": "MIT",
+          "source_repository": "https://github.com/python-attrs/attrs",
+          "source_tag": "24.3.0",
+          "source_commit": "598494a618410490cfbe0c896b7a544f6d23e0d9",
+          "license_file": "LICENSE",
+          "license_file_git_blob_sha": "2bd6453d255e19b973f19b128596a8b6dd65b2c3",
+          "pyproject_git_blob_sha": "0b598099fdd945dcb75f3145909a9b4a85a93972",
+          "review_document": "research_candidates/evidence_abstention/ATTRS_24_3_0_LICENSE_REVIEW_2026-11-16.md"
+        }
+      },
+      {
+        "name": "colorlog",
+        "version": "6.9.0",
+        "role": "runtime dependency",
+        "license_status": "pending_installed_distribution_metadata"
+      },
+      {
+        "name": "dependency-groups",
+        "version": "1.3.0",
+        "role": "runtime dependency",
+        "license_status": "exact_upstream_source_verified_for_pinned_version; installed_metadata_inventory_not_yet_verified_in_completed_CI",
+        "manual_source_license_evidence": {
+          "exact_version": "1.3.0",
+          "license": "MIT",
+          "source_repository": "https://github.com/sirosen/dependency-groups",
+          "source_commit": "1c99d4a6e50504354ef501e5f8543a22830c788d",
+          "license_file": "LICENSE.txt",
+          "license_file_git_blob_sha": "b9723b85ed7adb32f8c2b4ee880c06ec3061da50",
+          "pyproject_git_blob_sha": "db86f496d8dc41647df91b76d0b1319b9aa94974",
+          "review_document": "research_candidates/evidence_abstention/DEPENDENCY_GROUPS_1_3_0_LICENSE_REVIEW_2026-11-16.md"
+        }
+      },
+      {
+        "name": "packaging",
+        "version": "24.2",
+        "role": "runtime dependency",
+        "license_status": "pending_installed_distribution_metadata"
+      },
+      {
+        "name": "virtualenv",
+        "version": "20.28.1",
+        "role": "runtime dependency and test helper",
+        "license_status": "pending_installed_distribution_metadata"
+      },
+      {
+        "name": "pytest",
+        "version": "8.3.5",
+        "role": "test runner",
+        "license_status": "pending_installed_distribution_metadata"
+      },
+      {
+        "name": "iniconfig",
+        "version": "2.0.0",
+        "role": "pytest transitive dependency",
+        "license_status": "pending_installed_distribution_metadata"
+      },
+      {
+        "name": "pluggy",
+        "version": "1.5.0",
+        "role": "pytest transitive dependency",
+        "license_status": "pending_installed_distribution_metadata"
+      },
+      {
+        "name": "pygments",
+        "version": "2.19.1",
+        "role": "pytest test-output dependency",
+        "license_status": "pending_installed_distribution_metadata"
+      },
+      {
+        "name": "distlib",
+        "version": "0.3.9",
+        "role": "virtualenv transitive dependency",
+        "license_status": "pending_installed_distribution_metadata"
+      },
+      {
+        "name": "filelock",
+        "version": "3.16.1",
+        "role": "virtualenv transitive dependency",
+        "license_status": "pending_installed_distribution_metadata"
+      },
+      {
+        "name": "platformdirs",
+        "version": "4.3.6",
+        "role": "virtualenv transitive dependency",
+        "license_status": "pending_installed_distribution_metadata"
+      }
+    ],
+    "metadata_gate": "Workflow records each installed distribution's License, License-Expression, and License classifiers before importing or executing Nox source. Missing license metadata stops the job before source tests.",
+    "full_dependency_license_clearance": false,
+    "package_artifact_hash_lock": false,
+    "manual_source_license_resolutions": {
+      "dependency-groups": {
+        "exact_version": "1.3.0",
+        "license": "MIT",
+        "source_repository": "https://github.com/sirosen/dependency-groups",
+        "source_commit": "1c99d4a6e50504354ef501e5f8543a22830c788d",
+        "license_file": "LICENSE.txt",
+        "license_file_git_blob_sha": "b9723b85ed7adb32f8c2b4ee880c06ec3061da50",
+        "pyproject_git_blob_sha": "db86f496d8dc41647df91b76d0b1319b9aa94974",
+        "review_document": "research_candidates/evidence_abstention/DEPENDENCY_GROUPS_1_3_0_LICENSE_REVIEW_2026-11-16.md"
+      },
+      "attrs": {
+        "exact_version": "24.3.0",
+        "license": "MIT",
+        "source_repository": "https://github.com/python-attrs/attrs",
+        "source_tag": "24.3.0",
+        "source_commit": "598494a618410490cfbe0c896b7a544f6d23e0d9",
+        "license_file": "LICENSE",
+        "license_file_git_blob_sha": "2bd6453d255e19b973f19b128596a8b6dd65b2c3",
+        "pyproject_git_blob_sha": "0b598099fdd945dcb75f3145909a9b4a85a93972",
+        "review_document": "research_candidates/evidence_abstention/ATTRS_24_3_0_LICENSE_REVIEW_2026-11-16.md"
+      }
+    }
+  },
+  "dataset": {
+    "id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "instance_id": "wntrblm__nox-922",
+    "row_and_selector_extraction": "workflow validates repository, base commit, language, license, and FAIL_TO_PASS selectors before running upstream tests"
+  },
+  "status": {
+    "source_root_license_screen": "passed_documentary_screen",
+    "dependency_license_inventory": "not_verified_latest_CI_job_did_not_start; two missing-metadata packages have exact source-license records but remaining package inventory and hashes are pending",
+    "technical_reproduction": "not_run_latest_CI_job_did_not_start_runner_id_zero_and_no_steps",
+    "case_acceptance": "not_accepted",
+    "inference_authorized": false,
+    "latest_ci": {
+      "commit": "801332f8a8a0e9a90695e9ba03c20dc07ebb9870",
+      "run_id": 43896853159,
+      "first_attempt_job_id": 133402627435,
+      "second_attempt_job_id": 133404336674,
+      "second_attempt_runner_id": 0,
+      "second_attempt_steps": [],
+      "logs": "BlobNotFound",
+      "artifacts": []
+    }
+  }
+}

@@ -1,0 +1,17 @@
+# Pinned core runtime and test dependencies for Python Control's plotting regression.
+numpy==2.1.3
+scipy==1.14.1
+matplotlib==3.9.2
+contourpy==1.3.1
+cycler==0.12.1
+fonttools==4.55.0
+kiwisolver==1.4.7
+packaging==24.2
+pillow==11.0.0
+pyparsing==3.2.0
+python-dateutil==2.9.0.post0
+six==1.16.0
+pytest==8.3.3
+iniconfig==2.0.0
+pluggy==1.5.0
+Pygments==2.18.0

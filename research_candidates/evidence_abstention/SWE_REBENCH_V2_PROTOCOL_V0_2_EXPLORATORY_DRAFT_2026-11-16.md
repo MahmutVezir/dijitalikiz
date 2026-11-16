@@ -1,4 +1,4 @@
-# SWE-rebench V2 evidence-abstention protocol — v0.2 exploratory draft
+# SWE rebench V2 evidence abstention protocol — v0.2 exploratory draft
 **Date:** 16 November 2026  
 **Status:** Exploratory/feasibility design draft. Supersedes v0.1 only as the proposed working design; v0.1 is retained as historical design record. Not preregistered. Not legal clearance. No inference or upstream execution authorization.
 
@@ -17,11 +17,12 @@ The pinned dataset contains 6,272 rows. The frozen candidate cohort contains 96 
 The timestamp register's one-second `simpeg/simpeg#1633` discrepancy and raw-payload authentication limitation remain open. This metadata issue must be resolved or the affected candidate excluded under a written rule before it can be accepted.
 
 ## 3. Sample and stopping
-- Target: 20 accepted defects from 20 distinct upstream projects.
-- Feasibility floor: 15 accepted defects from 15 distinct upstream projects.
+- Primary target: 15 accepted defects from 15 distinct upstream projects.
+- Stretch target: 20 accepted defects from 20 distinct upstream projects if more candidates pass the same unchanged gates.
+- One valid case is sufficient for case-level feasibility. Fifteen is the primary target and preferred analysis threshold, not an eligibility floor. Any positive number of fully accepted independent cases may be retained.
 - One case per independent upstream project. Forks, mirrors, transfers, duplicate issues, and shared upstreams are not independent.
-- Stop candidate intake when 20 accepted cases are obtained or the available eligible queue is exhausted. Report the actual number; do not relax eligibility to hit the target.
-- If fewer than 15 cases survive, report a pilot/feasibility result and do not make a comparative efficacy claim.
+- Review candidates sequentially in the frozen primary-cohort order, followed by the 17 distinct-project reserves if needed. Use within-project alternatives only to replace an issue in the same project. Stop when 20 cases are accepted or the eligible frozen queue is exhausted; 15 is the primary target and 20 the stretch target. Report the actual N; do not relax eligibility to hit the target.
+- If fewer than 15 cases survive, retain all accepted cases. For N=1–4 report case-level feasibility only; for N=5–14 report paired descriptive results without a hypothesis-test claim; for N=15–20 exploratory paired summaries and exact McNemar may be reported. No band permits a confirmatory efficacy claim.
 
 Each case is one independent unit. Its six condition outputs are repeated measurements, not six independent observations.
 
@@ -96,7 +97,7 @@ Secondary descriptive outcomes, reported separately:
 Do not combine these into a composite accuracy score.
 
 ## 10. Analysis and interpretation
-For E3, report paired case-level P0/P1 outcome counts, discordant pairs, risk difference, and uncertainty interval. An exact McNemar p-value may be reported as an exploratory descriptive inferential statistic, with explicit warning that N=15–20 is small and underpowered for many plausible effects. No definitive efficacy claim, confirmatory power claim, or formal E1 non-inferiority claim is permitted.
+For E3, retain paired case-level P0/P1 outcome counts and descriptive risk differences at any achieved N. With N=1–4, report case-level outcomes only; with N=5–14, report paired descriptive counts and risk differences without a hypothesis-test claim; with N=15–20, an exact McNemar p-value may additionally be reported as exploratory only. No definitive efficacy claim, confirmatory power claim, or formal E1 non-inferiority claim is permitted.
 
 Report E1 coverage descriptively. The earlier −0.10 non-inferiority margin is not adopted as a decision rule in this exploratory design. Invalid outputs are retained and reported separately; do not repair, retry, or silently recode them. Any sensitivity recoding must be specified before outputs are examined and shown separately from the primary observed data.
 

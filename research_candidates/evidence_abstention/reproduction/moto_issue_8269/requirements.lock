@@ -1,0 +1,26 @@
+# Pinned minimal Moto ECR + boto3 test environment; install with --no-deps.
+boto3==1.35.69
+botocore==1.35.69
+s3transfer==0.10.4
+jmespath==1.0.1
+urllib3==2.2.3
+requests==2.32.3
+certifi==2024.8.30
+charset-normalizer==3.4.0
+idna==3.10
+python-dateutil==2.9.0.post0
+six==1.16.0
+cryptography==43.0.3
+cffi==1.17.1
+pycparser==2.22
+xmltodict==0.14.2
+Werkzeug==3.0.6
+responses==0.25.3
+Jinja2==3.1.4
+MarkupSafe==3.0.2
+typing-extensions==4.12.2
+pytest==8.3.3
+iniconfig==2.0.0
+packaging==24.2
+pluggy==1.5.0
+Pygments==2.18.0

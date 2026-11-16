@@ -119,3 +119,23 @@ def test_case_rejects_different_buggy_and_fixed_test_selectors():
     result = validate_case_record(record)
     assert result["status"] == "invalid"
     assert any("exact same defect-specific test selector" in item for item in result["blockers"])
+
+
+def test_registry_accepts_valid_smaller_sample_below_primary_target():
+    registry = json.loads((RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text())
+    record = _minimal_case()
+    registry["records"] = [record]
+    registry["accepted_case_count"] = 1
+    registry["accepted_project_count"] = 1
+    registry["status"] = "contains_structurally_complete_candidates"
+
+    result = validate_registry(registry)
+
+    assert result["status"] == "structurally_valid_candidate_registry"
+    assert result["accepted_case_count"] == 1
+    assert result["accepted_project_count"] == 1
+    assert result["minimum_feasibility_count_met"] is True
+    assert result["primary_target_met"] is False
+    assert result["stretch_target_met"] is False
+    assert result["inference_authorized"] is False
+    assert result["comparative_efficacy_claim_permitted"] is False

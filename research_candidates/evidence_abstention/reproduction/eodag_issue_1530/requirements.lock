@@ -1,0 +1,3 @@
+# Minimal YAML-template reproducer only; no EODAG runtime is imported.
+# PyYAML is also a declared EODAG dependency and is listed as MIT in upstream NOTICE.
+PyYAML==6.0.2
