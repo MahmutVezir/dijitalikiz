@@ -1,6 +1,6 @@
 # Timestamp source recheck — bounded sample, 15 November 2026
 
-**Status: PARTIAL RECHECK ONLY. This does not close the timestamp provenance gate.**
+**Historical bounded check only; superseded by the full 113-row reconciliation in `SWE_REBENCH_V2_FULL_TIMESTAMP_RECONCILIATION_2026-11-15.md`.**
 
 ## Scope and method
 
@@ -37,5 +37,6 @@ A separate fresh fetch of [simpeg/simpeg#1633](https://github.com/simpeg/simpeg/
 
 - The 10-row bounded sample supports the correctness of those ten stored timestamp pairs only.
 - It does not validate the other 93 register rows, prove timestamp semantics for the dataset, or authenticate original API payloads.
-- The nine missing declared reserve rows remain unaccounted for.
+- This note records only the first 10 primary rows checked at that point in time. It is not the current aggregate register status.
+- The later full recheck covers 96 primary candidates plus all 17 reserves (113/113 fetched), with 112 exact dataset timestamp matches and the same one-second simpeg exception.
 - Keep `dataset_validation_gate = OPEN`; accepted cases remain 0; inference remains unauthorized.

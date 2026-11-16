@@ -1,39 +1,45 @@
 # Timestamp reconciliation register audit — 15 November 2026
 
-**Status: PARTIAL PASS — not a dataset-validation gate closure.**
+**Status: FULL REGISTER STRUCTURAL PASS WITH ONE OPEN TIMESTAMP EXCEPTION — not a dataset-validation gate closure.**
 
 ## Recomputed register inventory
 
-The 13 committed CSV parts were read and reconciled structurally:
+The 14 committed CSV parts were read and reconciled structurally:
 
 | Check | Result |
 |---|---:|
-| CSV parts present | 13 |
-| Rows | 104 |
-| Unique instance IDs | 104 |
-| Unique repositories | 104 |
+| CSV parts present | 14 |
+| Rows | 113 |
+| Unique instance IDs | 113 |
+| Unique repositories | 113 |
 | Primary candidates | 96 |
-| Project reserves present | 8 of 17 declared |
-| Exact timestamp matches | 103 |
+| Project reserves present | 17 of 17 declared |
+| Exact timestamp matches | 112 |
 | One-second differences | 1 |
 | Other mismatches / API errors recorded | 0 |
 
-The sole one-second difference is `simpeg/simpeg#1633`: dataset value `2025-03-20T23:46:00Z`, recorded GitHub API value `2025-03-20T23:46:01Z`. It remains a manual-review exception and is not automatically admitted.
+The sole one-second difference is `simpeg/simpeg#1633`: dataset value `2025-03-20T23:46:00Z`, fresh GitHub value `2025-03-20T23:46:01Z`. It remains a manual-review exception and is not automatically admitted.
 
-## Why the gate remains open
+## Independent source re-fetch
 
-1. The stored register is internally consistent but does not preserve raw GitHub API response payloads or a cryptographically verifiable capture of those responses.
-2. Only 8 of the 17 declared project-level reserves appear in the committed parts.
-3. The one-second discrepancy has not been resolved under a documented predeclared rule.
-4. A timestamp match does not validate defect correctness, test reproduction, exact-base licensing, project independence, exposure, or evidence-tier judgments.
+On 15 November 2026, all 113 upstream GitHub records represented by the expanded register were individually fetched through the GitHub connector. All fetches succeeded. The fresh GitHub `created_at` field matched the dataset timestamp for 112/113 records. For the original 104 register rows, the fresh GitHub value also matched the previously stored API value in 104/104 cases. The nine previously omitted reserve records were newly fetched and all nine matched the pinned dataset timestamp exactly.
 
-## Code added
+The connector returned normalized issue/PR fields, not unmodified REST response bodies or headers. This is field-level source re-fetch, not raw-payload cryptographic authentication.
 
-- `scripts/audit_swe_rebench_timestamp_register.py` — deterministic, no-network audit of the committed CSV parts.
-- `tests/test_audit_swe_rebench_timestamp_register.py` — tests for expected counts, duplicates, incorrect deltas, and missing parts.
+## Why the overall gate remains open
 
-The audit script's report explicitly states that it does not make API requests or authenticate original API payloads. Its success means only that the stored register is structurally coherent.
+1. The one-second dataset/GitHub discrepancy remains unexplained; do not infer truncation or rounding without authoritative dataset-generation documentation.
+2. Timestamp agreement does not validate defect correctness, test reproduction, exact-base licensing, project independence, exposure status, or evidence-tier judgments.
+3. All 17 reserve rows are now represented in the timestamp register, but all remain metadata candidates until separately reviewed for case eligibility.
+4. The GitHub connector did not preserve raw REST response bodies, response headers, request IDs, or cryptographic hashes of individual responses.
+
+## Code updated
+
+- `scripts/audit_swe_rebench_timestamp_register.py` — deterministic, no-network structural audit of all 14 CSV parts.
+- `tests/test_audit_swe_rebench_timestamp_register.py` — expected counts updated to 113 rows (96 primary + 17 reserves), with duplicate, delta, and missing-part checks.
+
+The script's success means only that the stored register is structurally coherent. It does not make GitHub API requests.
 
 ## Decision
 
-Keep `dataset_validation_gate = OPEN`. Do not use the 104-row register as an accepted case registry and do not authorize model inference from this audit. The next dataset action is to preserve verifiable API provenance, resolve the one-second record, and account for the nine missing reserve rows (or formally retire the unused reserve rows in a versioned cohort protocol).
+Keep `dataset_validation_gate = OPEN`. The timestamp register is complete for the 96 primary and 17 reserve candidates, but the one-second discrepancy and broader source-provenance, code-license, reproducibility, and case-eligibility gates remain open. Accepted confirmatory cases remain 0; model inference remains unauthorized.

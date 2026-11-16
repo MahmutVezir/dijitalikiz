@@ -30,8 +30,8 @@ class TimestampRegisterAuditTests(unittest.TestCase):
         folder = root / TRACK
         folder.mkdir(parents=True)
         fields = list(rows[0])
-        for part in range(1, 14):
-            selected = rows[(part - 1) * 8:part * 8]
+        for part in range(1, 15):
+            selected = rows[(part - 1) * 8:(part * 8 if part < 14 else len(rows))]
             with (folder / PART_PATTERN.format(part)).open("w", newline="", encoding="utf-8") as handle:
                 writer = csv.DictWriter(handle, fieldnames=fields)
                 writer.writeheader()
@@ -42,21 +42,21 @@ class TimestampRegisterAuditTests(unittest.TestCase):
             row(f"org{i}__repo{i}-{i+1}", f"org{i}/repo{i}", i+1,
                 "primary" if i < 96 else "project_reserve",
                 1 if i == 0 else 0)
-            for i in range(104)
+            for i in range(113)
         ]
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.build_register(root, rows)
             result = audit_register(root)
-        self.assertEqual(result["row_count"], 104)
-        self.assertEqual(result["unique_repository_count"], 104)
-        self.assertEqual(result["selection_role_counts"], {"primary": 96, "project_reserve": 8})
-        self.assertEqual(result["timestamp_status_counts"], {"exact_match": 103, "one_second_difference": 1})
-        self.assertEqual(result["status"], "PARTIAL_PASS_ONE_SECOND_CASE_REQUIRES_HUMAN_REVIEW")
+        self.assertEqual(result["row_count"], 113)
+        self.assertEqual(result["unique_repository_count"], 113)
+        self.assertEqual(result["selection_role_counts"], {"primary": 96, "project_reserve": 17})
+        self.assertEqual(result["timestamp_status_counts"], {"exact_match": 112, "one_second_difference": 1})
+        self.assertEqual(result["status"], "FULL_REGISTER_PASS_ONE_SECOND_CASE_REQUIRES_HUMAN_REVIEW")
         self.assertFalse(result["inference_authorized"])
 
     def test_rejects_duplicate_instance(self):
-        rows = [row(f"org{i}__repo{i}-{i+1}", f"org{i}/repo{i}", i+1) for i in range(104)]
+        rows = [row(f"org{i}__repo{i}-{i+1}", f"org{i}/repo{i}", i+1) for i in range(113)]
         rows[1]["instance_id"] = rows[0]["instance_id"]
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -64,8 +64,19 @@ class TimestampRegisterAuditTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "duplicate"):
                 audit_register(root)
 
+    def test_rejects_duplicate_repository(self):
+        rows = [row(f"org{i}__repo{i}-{i+1}", f"org{i}/repo{i}", i+1) for i in range(113)]
+        rows[1]["instance_id"] = "org0__repo0-2"
+        rows[1]["dataset_repo"] = "org0/repo0"
+        rows[1]["issue_url"] = "https://github.com/org0/repo0/issues/2"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.build_register(root, rows)
+            with self.assertRaisesRegex(ValueError, "duplicate repository"):
+                audit_register(root)
+
     def test_rejects_wrong_delta(self):
-        rows = [row(f"org{i}__repo{i}-{i+1}", f"org{i}/repo{i}", i+1) for i in range(104)]
+        rows = [row(f"org{i}__repo{i}-{i+1}", f"org{i}/repo{i}", i+1) for i in range(113)]
         rows[0]["delta_seconds"] = "2"
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

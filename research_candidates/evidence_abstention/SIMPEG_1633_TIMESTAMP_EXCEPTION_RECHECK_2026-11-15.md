@@ -26,6 +26,12 @@ The committed V2 timestamp reconciliation part records:
 
 The fresh fetch independently corroborates the GitHub-side value of `23:46:01Z`. It does not explain why the pinned dataset stores `23:46:00Z`.
 
+## Public schema documentation checked
+
+The upstream Nebius SWE-rebench V2 dataset card describes `created_at` as an `int64` Unix timestamp in milliseconds ([upstream dataset card](https://huggingface.co/datasets/nebius/SWE-rebench-V2/blob/main/README.md)). The filtered PrimeIntellect dataset card instead declares `created_at` as a string/date field ([filtered dataset card](https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/blob/main/README.md)). The public documentation inspected does not specify the exact transformation from the upstream millisecond integer to the filtered string representation, nor whether seconds are rounded, truncated, or derived from another source field. The upstream builder repository README identifies the project as a task-building/evaluation repository but does not document this timestamp conversion ([builder repository](https://github.com/SWE-rebench/SWE-rebench-V2)).
+
+This schema difference is a plausible place to investigate, **not proof** that the one-second discrepancy was caused by conversion or precision loss. The exception must remain open until the actual transformation code or a maintainer's authoritative explanation is obtained.
+
 ## Disposition
 
 1. Retain the row as `one_second_difference`; do not rewrite either timestamp.
@@ -34,4 +40,4 @@ The fresh fetch independently corroborates the GitHub-side value of `23:46:01Z`.
 4. Resolve only after documenting the dataset field's timestamp-generation/precision semantics from an authoritative source, or after a predeclared cohort rule explicitly specifies how such differences are handled.
 5. Preserve this as a source-level recheck, not as a full raw-response provenance capture.
 
-**Effect on readiness:** none. The timestamp exception remains unresolved, the 104-row register remains partial (96 primary plus 8 of 17 declared reserves), and the V2 dataset-validation gate remains OPEN. No case is accepted and no model inference is authorized.
+**Effect on readiness:** none. The timestamp exception remains unresolved, the expanded 113-row register now covers all 96 primary candidates and all 17 declared reserves; 112/113 match the dataset timestamp exactly, and the V2 dataset-validation gate remains OPEN. No case is accepted and no model inference is authorized.
