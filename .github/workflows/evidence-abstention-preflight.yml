@@ -232,7 +232,8 @@ jobs:
           git -C upstream-dishka show HEAD:src/dishka/container.py > reproduction-evidence/fixed-container.py
           git -C upstream-dishka show HEAD:src/dishka/registry.py > reproduction-evidence/fixed-registry.py
           git -C upstream-dishka diff 8718d5af93f9e48bc2506c64827663fdccc5ad89 b1eae11734e64551d7b101195f27cb6870e1c364 -- src/dishka/registry_builder.py > reproduction-evidence/registry_builder.diff
-          sha256sum reproduction-evidence/fixed-registry_builder.py reproduction-evidence/fixed-container.py reproduction-evidence/fixed-registry.py reproduction-evidence/registry_builder.diff > reproduction-evidence/fixed-source-sha256.txt
+          git -C upstream-dishka diff 8718d5af93f9e48bc2506c64827663fdccc5ad89 b1eae11734e64551d7b101195f27cb6870e1c364 > reproduction-evidence/full-pr.diff
+          sha256sum reproduction-evidence/fixed-registry_builder.py reproduction-evidence/fixed-container.py reproduction-evidence/fixed-registry.py reproduction-evidence/registry_builder.diff reproduction-evidence/full-pr.diff > reproduction-evidence/fixed-source-sha256.txt
           for source_file in tests/unit/container/override/test_alias.py tests/unit/container/override/test_context_var.py tests/unit/container/override/test_provide.py tests/unit/container/test_context_vars.py; do
             git -C upstream-dishka show HEAD:$source_file > reproduction-evidence/$(basename "$source_file")
           done
