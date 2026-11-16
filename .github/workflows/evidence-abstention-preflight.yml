@@ -1504,3 +1504,200 @@ jobs:
           path: reproduction-evidence/
           if-no-files-found: warn
           retention-days: 90
+
+
+  meltano-issue-3090-reproduction:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install pinned Singer SDK schema-test environment and audit licenses
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -VV
+          python -m venv .venv-tests
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/meltano_issue_3090/requirements.lock
+          .venv-tests/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          names = ["attrs", "backoff", "click", "fsspec", "greenlet", "inflection", "iniconfig", "joblib", "jsonpath-ng", "jsonschema", "jsonschema-specifications", "packaging", "ply", "pluggy", "Pygments", "PyYAML", "referencing", "requests", "rpds-py", "simpleeval", "simplejson", "SQLAlchemy", "typing-extensions", "universal-pathlib", "urllib3", "certifi", "charset-normalizer", "idna", "python-dotenv", "pytest"]
+          inventory = {}
+          for name in names:
+              dist = md.metadata(name)
+              classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+              license_text = dist.get("License") or dist.get("License-Expression")
+              if not license_text and not classifiers:
+                  raise SystemExit(f"License metadata missing for {name}; stop before source tests")
+              inventory[name] = {"version": md.version(name), "license": license_text, "license_expression": dist.get("License-Expression"), "license_classifiers": classifiers}
+          with open("dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Clone exact Singer SDK source and authenticate license
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          git clone https://github.com/meltano/sdk.git upstream-meltano
+          git -C upstream-meltano checkout --detach ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2
+          test "$(git -C upstream-meltano rev-parse HEAD)" = "ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2"
+          test "$(git -C upstream-meltano rev-parse HEAD:LICENSE)" = "564273905d22b60a0deb1155ece4281c0b855cbc"
+          test "$(git -C upstream-meltano rev-parse HEAD:pyproject.toml)" = "baae3360646db13ca761362cd99724176016031d"
+          grep -F 'license = "Apache-2.0"' upstream-meltano/pyproject.toml
+          git -C upstream-meltano show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE.txt
+          git -C upstream-meltano show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
+          git -C upstream-meltano diff ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2 9505ff1989b9be4d53b5bc9664b3fe3885879cb1 > reproduction-evidence/pr-3091.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-3091.patch > reproduction-evidence/source-provenance-sha256.txt
+          cp dependency-license-inventory.json reproduction-evidence/
+
+      - name: Run independent source reproducer on buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          MELTANO_SOURCE_ROOT="$GITHUB_WORKSPACE/upstream-meltano" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/meltano_issue_3090" -p "test_issue_3090.py" -v > reproduction-evidence/base-issue-test.log 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-issue-test.log
+          if [ "$status" -eq 0 ]; then
+            echo "Expected the second sibling reference to be unresolved on the buggy base." >&2
+            exit 1
+          fi
+          grep -F "max_compute_units" reproduction-evidence/base-issue-test.log
+
+      - name: Extract exact dataset row and authenticate timestamp
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          .venv-dataset/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          dist = md.metadata("pyarrow")
+          classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+          license_text = dist.get("License") or dist.get("License-Expression")
+          if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
+              raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
+          inventory = {"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}
+          with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2)
+              f.write("\n")
+          PY
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+          .venv-dataset/bin/python - <<'PY'
+          import hashlib
+          import json
+          import pyarrow.parquet as pq
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          table = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "meltano__sdk-3091")])
+          rows = table.to_pylist()
+          assert len(rows) == 1, len(rows)
+          row = rows[0]
+          assert row["repo"] == "meltano/sdk", row
+          assert row["base_commit"] == "ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2", row
+          assert row["language"] == "python", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2025-06-12 01:47:30", row
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\n")
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
+          print("dataset_row_sha256=" + digest)
+          print("dataset_created_at=" + str(row["created_at"]))
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          PY
+
+      - name: Run exact dataset selectors on patched buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-meltano checkout --detach ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2
+          git -C upstream-meltano apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-3091.patch"
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "meltano__sdk-3091")]).to_pylist()[0]
+          selectors = row["FAIL_TO_PASS"]
+          assert selectors
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-meltano")
+          logs = []
+          for selector in selectors:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-meltano", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode == 0:
+                  raise SystemExit("Dataset selector unexpectedly passed on buggy base: " + selector)
+              if "max_compute_units" not in result.stdout:
+                  raise SystemExit("Buggy-base selector did not fail for the repeated-reference defect: " + selector + "\n" + result.stdout)
+          output = "\n".join(logs)
+          with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Run same source and dataset selectors on fixed revision (pass required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-meltano checkout --detach 9505ff1989b9be4d53b5bc9664b3fe3885879cb1
+          MELTANO_SOURCE_ROOT="$GITHUB_WORKSPACE/upstream-meltano" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/meltano_issue_3090" -p "test_issue_3090.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
+          cat reproduction-evidence/fixed-issue-test.log
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "meltano__sdk-3091")]).to_pylist()[0]
+          selectors = row["FAIL_TO_PASS"]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-meltano")
+          logs = []
+          for selector in selectors:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-meltano", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode != 0:
+                  raise SystemExit("Dataset selector did not pass on fixed revision: " + selector + "\n" + result.stdout)
+          output = "\n".join(logs)
+          with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Prepare and upload raw Meltano reproduction evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          rm -f reproduction-evidence/train-00000-of-00001.parquet
+          if [ -f dependency-license-inventory.json ]; then cp dependency-license-inventory.json reproduction-evidence/; fi
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+
+      - name: Upload raw Meltano reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: meltano-issue-3090-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
