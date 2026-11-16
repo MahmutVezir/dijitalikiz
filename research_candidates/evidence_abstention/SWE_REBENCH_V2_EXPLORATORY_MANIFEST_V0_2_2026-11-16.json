@@ -664,6 +664,39 @@
         "independence_and_related_issue_family_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ]
+    },
+    {
+      "instance_id": "meltano__sdk-3091",
+      "cohort_rank": 26,
+      "status": "issue_patch_and_source_reproducer_prepared_exact_dataset_reproduction_pending",
+      "issue_url": "https://github.com/meltano/sdk/issues/3090",
+      "pull_request_url": "https://github.com/meltano/sdk/pull/3091",
+      "issue_created_at": "2025-06-12T01:45:49Z",
+      "pull_request_created_at": "2025-06-12T01:47:30Z",
+      "base_commit": "ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2",
+      "fixed_commit": "9505ff1989b9be4d53b5bc9664b3fe3885879cb1",
+      "merge_commit": "948bcec790bafebbb571cf3c0d58116a49d6f6aa",
+      "exact_base_root_license": "Apache-2.0",
+      "exact_base_license_blob_sha": "564273905d22b60a0deb1155ece4281c0b855cbc",
+      "exact_base_pyproject_blob_sha": "baae3360646db13ca761362cd99724176016031d",
+      "exact_base_schema_blob_sha": "035851fe4c3cb574b8015cf7f44da278cb4f1767",
+      "fixed_schema_blob_sha": "7754f835e4b11d13a4778669fb94a68c461b9f40",
+      "minimal_reproducer_path": "research_candidates/evidence_abstention/reproduction/meltano_issue_3090/test_issue_3090.py",
+      "dependency_lock_path": "research_candidates/evidence_abstention/reproduction/meltano_issue_3090/requirements.lock",
+      "minimal_reproduction_environment": "Python 3.11.9; pinned Singer SDK base/test subset; independent test loads exact schema.py source by file path; exact dataset selectors use upstream tests",
+      "dataset_selector_workflow_path": ".github/workflows/evidence-abstention-preflight.yml#meltano-issue-3090-reproduction",
+      "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
+      "temporal_exposure": "issue_and_PR_created_after_2024-09_Qwen2.5_3B_public_release; training_data_cutoff_not_independently_proven",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false,
+      "remaining_gates": [
+        "authenticate_exact_dataset_row_and_created_at_timestamp",
+        "all_dataset_FAIL_TO_PASS_selectors_fail_on_buggy_base_for_shared_visited_refs_defect",
+        "all_same_dataset_selectors_pass_on_fixed_revision",
+        "minimal_dependency_license_inventory_human_review",
+        "independence_and_related_issue_family_review",
+        "gold_standard_and_E1_E2_E3_human_adjudication"
+      ]
     }
   ],
   "candidate_triage_ledger": {
