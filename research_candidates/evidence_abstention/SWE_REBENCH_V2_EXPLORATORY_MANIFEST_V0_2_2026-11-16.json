@@ -728,6 +728,40 @@
         "independence_and_related_issue_family_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ]
+    },
+    {
+      "instance_id": "qutip__qutip-2694",
+      "cohort_rank": 39,
+      "status": "issue_patch_and_coefficient_reproducer_prepared_source_build_and_dataset_reproduction_pending",
+      "issue_url": "https://github.com/qutip/qutip/issues/2646",
+      "pull_request_url": "https://github.com/qutip/qutip/pull/2694",
+      "issue_created_at": "2025-03-05T18:35:23Z",
+      "pull_request_created_at": "2025-05-15T15:48:33Z",
+      "base_commit": "b821b1aa8c98a00f58014e7ec02cc9cbef701ce4",
+      "fixed_commit": "61df3c7bccf474aba393940581ffbbeccf5da366",
+      "exact_base_license": "BSD-3-Clause",
+      "exact_base_license_blob_sha": "bb2d6131bb8f4820a2e29714fb4ce1792e0215b6",
+      "exact_base_pyproject_blob_sha": "888bbb161e1d432e23c22725a9497bcc132c096b",
+      "exact_base_setup_cfg_blob_sha": "382021a63c177b81ac9ea5c743dc5f6907086eac",
+      "exact_base_coefficient_blob_sha": "3d5698de11c00e0525382046318051d98e77ce39",
+      "fixed_coefficient_blob_sha": "14315d49c760389d028fd0023cc382c973a08684",
+      "minimal_reproducer_path": "research_candidates/evidence_abstention/reproduction/qutip_issue_2646/test_issue_2646.py",
+      "dependency_lock_path": "research_candidates/evidence_abstention/reproduction/qutip_issue_2646/requirements.lock",
+      "minimal_reproduction_environment": "Python 3.11.9; pinned Cython/NumPy/SciPy/setuptools build environment; exact source built editable; pytest",
+      "dataset_selector_workflow_path": ".github/workflows/evidence-abstention-preflight.yml#qutip-issue-2646-reproduction",
+      "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
+      "temporal_exposure": "issue_and_PR_created_after_2024-09_Qwen2.5_3B_public_release; training_data_cutoff_not_independently_proven",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false,
+      "remaining_gates": [
+        "authenticate_exact_dataset_row_and_created_at_timestamp",
+        "source_build_must_complete_on_exact_buggy_base",
+        "independent_coefficient_reproducer_must_fail_on_base_and_pass_on_fix",
+        "all_dataset_FAIL_TO_PASS_selectors_must_fail_on_base_for_stale_args_and_pass_on_fix",
+        "minimal_build_dependency_license_inventory_human_review",
+        "independence_and_related_issue_family_review",
+        "gold_standard_and_E1_E2_E3_human_adjudication"
+      ]
     }
   ],
   "candidate_triage_ledger": {
