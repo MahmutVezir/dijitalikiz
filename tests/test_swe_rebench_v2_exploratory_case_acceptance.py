@@ -50,7 +50,7 @@ def _minimal_case():
                  "created_at_dataset_utc":"2024-01-01T00:00:00Z","created_at_upstream_utc":"2024-01-01T00:00:00Z",
                  "timestamp_reconciliation_status":"exact_match","timestamp_review_record":artifact,
                  "row_locator":{"field":"instance_id","value":"candidate-1"},"row_sha256":sha,"cohort_role":"primary"},
-      "source":{"repository_full_name":"org/repo","issue_or_pr_url":"https://github.com/org/repo/pull/1",
+      "source":{"repository_full_name":"org/repo","issue_or_pr_url":"https://github.com/org/repo/pull/1","resource_type":"pull_request",
                 "base_commit_sha":commit_a,"fixed_commit_sha":commit_b,"changed_paths":["src/file.py"],
                 "patch":artifact,"base_source_snapshot":artifact,"fixed_source_snapshot":artifact},
       "independence":{"status":"passed","upstream_project_id":"org/repo","defect_cluster_id":"defect-1",
@@ -102,3 +102,11 @@ def test_case_rejects_gold_leak_into_e3():
     result = validate_case_record(record)
     assert result["status"] == "invalid"
     assert any("E3 must leave all" in item for item in result["blockers"])
+
+
+def test_case_rejects_mismatched_github_resource_type():
+    record = _minimal_case()
+    record["source"]["resource_type"] = "issue"
+    result = validate_case_record(record)
+    assert result["status"] == "invalid"
+    assert any("issue resource_type" in item for item in result["blockers"])
