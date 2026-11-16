@@ -137,7 +137,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install the upstream-locked uv version
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@caf0cab7a618c569241d31dcd442f54681755d39
         with:
           version: "0.5.13"
 
