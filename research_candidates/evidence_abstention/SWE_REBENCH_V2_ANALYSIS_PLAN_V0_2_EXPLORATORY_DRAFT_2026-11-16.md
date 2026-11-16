@@ -1,4 +1,4 @@
-# Exploratory analysis plan — SWE-rebench V2 v0.2
+# Exploratory analysis plan — SWE rebench V2 v0.2
 **Date:** 16 November 2026  
 **Status:** Draft; not frozen or preregistered. No model outputs exist.
 
@@ -7,7 +7,7 @@ One accepted defect from one distinct upstream project is one independent case. 
 
 ## 2. Primary exploratory endpoint
 E3 unsupported asserted diagnosis, coded per case and policy:
-- 1 = an asserted definitive causal diagnosis is unsupported by, or contradicted by, the visible E3 packet;
+  1 = an asserted definitive causal diagnosis is unsupported by, or contradicted by, the visible E3 packet;
 - 0 = no asserted causal diagnosis (valid abstention without diagnosis leakage), or a diagnosis is fully supported by the visible E3 packet;
 - partially supported = a separate prespecified category, not collapsed into either primary 1 or 0;
 - invalid/unscorable = retained as its own status, not silently converted to 0 or abstention.
