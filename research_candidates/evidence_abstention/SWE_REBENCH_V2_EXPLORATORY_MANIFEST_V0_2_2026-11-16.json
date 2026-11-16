@@ -292,9 +292,9 @@
       "linked_bug_issue_url": "https://github.com/reagento/dishka/issues/435",
       "timestamp_register_boolean_correction": "register_is_pull_request_false_conflicts_with_pull_436_url; direct /pulls/436 and /issues/436 both report created_at 2025-04-15T22:52:26Z; source resource type is pull_request",
       "resource_type_reconciliation_record": "research_candidates/evidence_abstention/REAGENTO_DISHKA_436_RESOURCE_TYPE_RECONCILIATION_2026-11-16.md",
-      "dataset_row_sha256": "e34ef42f31e1fa5f282eda5f3e6ad6f4212117019be9231f296c87b62add6008",
-      "dataset_row_snapshot_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/dataset_row_snapshot.json",
-      "timestamp_reconciliation_status": "exact_match_after_resource_type_correction"
+      "timestamp_reconciliation_status": "exact_match_after_resource_type_correction",
+      "cohort_selection_row_sha256": "e34ef42f31e1fa5f282eda5f3e6ad6f4212117019be9231f296c87b62add6008",
+      "cohort_selection_row_snapshot_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/cohort_selection_row_snapshot.json"
     }
   ],
   "candidate_triage_ledger": {
