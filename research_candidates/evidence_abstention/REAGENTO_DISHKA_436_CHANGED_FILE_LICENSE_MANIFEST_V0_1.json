@@ -78,7 +78,47 @@
       "mypy==1.15.*"
     ]
   },
-  "review_scope": "Documentary license/provenance screen for the exact source files and minimal no-install reproduction environment only. Not legal advice, not a blanket clearance for optional integrations, development/test environments, redistribution, or later experiments.",
+  "review_scope": "Documentary license/provenance screen for the exact Dishka source files, the dependency-free issue reproducer, the pinned pytest environment used for the dataset FAIL_TO_PASS selectors, and the isolated pyarrow dataset-extraction environment. Not legal advice or blanket clearance for optional integrations, development environments, redistribution, or later experiments.",
   "decision": "no_obvious_prohibition_identified_for_minimal_reproduction_environment",
-  "legal_clearance_claimed": false
+  "legal_clearance_claimed": false,
+  "dataset_test_environment": {
+    "python": "3.11.9",
+    "lock_file": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/dataset_test_requirements.lock",
+    "installation": "isolated venv; pip install --no-deps with all packages pinned",
+    "packages": [
+      {
+        "name": "pytest",
+        "version": "8.3.5",
+        "license": "MIT",
+        "purpose": "run dataset FAIL_TO_PASS selectors"
+      },
+      {
+        "name": "iniconfig",
+        "version": "2.0.0",
+        "license": "MIT",
+        "purpose": "pytest dependency"
+      },
+      {
+        "name": "packaging",
+        "version": "24.2",
+        "license": "Apache-2.0 OR BSD-2-Clause",
+        "purpose": "pytest dependency"
+      },
+      {
+        "name": "pluggy",
+        "version": "1.5.0",
+        "license": "MIT",
+        "purpose": "pytest plugin system dependency"
+      }
+    ],
+    "other_runtime_dependencies": [],
+    "legal_note": "Documentary license inventory for the pinned test-only environment; verify installed distribution metadata and upstream license files in the run artifact. Not legal advice."
+  },
+  "dataset_extraction_environment": {
+    "python": "3.11.9",
+    "pyarrow": "19.0.1",
+    "license": "Apache-2.0",
+    "isolated_venv": ".venv-dataset",
+    "purpose": "Read the pinned public Parquet file and hash the exact dataset row; not used to execute Dishka source."
+  }
 }
