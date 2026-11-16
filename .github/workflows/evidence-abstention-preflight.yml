@@ -1897,3 +1897,202 @@ jobs:
           path: reproduction-evidence/
           if-no-files-found: warn
           retention-days: 90
+
+
+  qutip-issue-2646-reproduction:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install pinned QuTiP build/test environment and audit licenses
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -VV
+          python -m venv .venv-tests
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/qutip_issue_2646/requirements.lock
+          .venv-tests/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          names = ["Cython", "numpy", "scipy", "packaging", "setuptools", "wheel", "pytest", "iniconfig", "pluggy", "Pygments"]
+          inventory = {}
+          for name in names:
+              dist = md.metadata(name)
+              classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+              license_text = dist.get("License") or dist.get("License-Expression")
+              if not license_text and not classifiers:
+                  raise SystemExit(f"License metadata missing for {name}; stop before source build")
+              inventory[name] = {"version": md.version(name), "license": license_text, "license_expression": dist.get("License-Expression"), "license_classifiers": classifiers}
+          with open("dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Clone exact QuTiP source and authenticate license
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          git clone https://github.com/qutip/qutip.git upstream-qutip
+          git -C upstream-qutip checkout --detach b821b1aa8c98a00f58014e7ec02cc9cbef701ce4
+          test "$(git -C upstream-qutip rev-parse HEAD)" = "b821b1aa8c98a00f58014e7ec02cc9cbef701ce4"
+          test "$(git -C upstream-qutip rev-parse HEAD:LICENSE.txt)" = "bb2d6131bb8f4820a2e29714fb4ce1792e0215b6"
+          test "$(git -C upstream-qutip rev-parse HEAD:pyproject.toml)" = "888bbb161e1d432e23c22725a9497bcc132c096b"
+          test "$(git -C upstream-qutip rev-parse HEAD:setup.cfg)" = "382021a63c177b81ac9ea5c743dc5f6907086eac"
+          git -C upstream-qutip show HEAD:LICENSE.txt > reproduction-evidence/upstream-LICENSE.txt
+          git -C upstream-qutip show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
+          git -C upstream-qutip diff b821b1aa8c98a00f58014e7ec02cc9cbef701ce4 61df3c7bccf474aba393940581ffbbeccf5da366 > reproduction-evidence/pr-2694.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-2694.patch > reproduction-evidence/source-provenance-sha256.txt
+          cp dependency-license-inventory.json reproduction-evidence/
+
+      - name: Build exact buggy-base QuTiP source in editable mode
+        shell: bash
+        run: |
+          set -euo pipefail
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e upstream-qutip
+
+      - name: Run independent coefficient reproducer on buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-qutip" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/qutip_issue_2646" -p "test_issue_2646.py" -v > reproduction-evidence/base-issue-test.log 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-issue-test.log
+          if [ "$status" -eq 0 ]; then
+            echo "Expected coefficient argument update to fail on the buggy base." >&2
+            exit 1
+          fi
+          grep -E "AssertionError: 1 != 2|1 != 2" reproduction-evidence/base-issue-test.log
+
+      - name: Extract exact dataset row and authenticate timestamp
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          .venv-dataset/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          dist = md.metadata("pyarrow")
+          classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+          license_text = dist.get("License") or dist.get("License-Expression")
+          if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
+              raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
+          with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump({"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}, f, indent=2)
+              f.write("\n")
+          PY
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+          .venv-dataset/bin/python - <<'PY'
+          import hashlib
+          import json
+          import pyarrow.parquet as pq
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          rows = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "qutip__qutip-2694")]).to_pylist()
+          assert len(rows) == 1, len(rows)
+          row = rows[0]
+          assert row["repo"] == "qutip/qutip", row
+          assert row["base_commit"] == "b821b1aa8c98a00f58014e7ec02cc9cbef701ce4", row
+          assert row["language"] == "python", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2025-05-15 15:48:33", row
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\n")
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
+          print("dataset_row_sha256=" + digest)
+          print("dataset_created_at=" + str(row["created_at"]))
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          PY
+
+      - name: Apply exact PR patch and run dataset selectors on buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-qutip checkout --detach b821b1aa8c98a00f58014e7ec02cc9cbef701ce4
+          git -C upstream-qutip apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-2694.patch"
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "qutip__qutip-2694")]).to_pylist()[0]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-qutip")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-qutip", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode == 0:
+                  raise SystemExit("Dataset selector unexpectedly passed on buggy base: " + selector)
+              if "1 != 2" not in result.stdout and "assert 1 == 2" not in result.stdout:
+                  raise SystemExit("Buggy-base selector did not fail for stale coefficient arguments: " + selector + "\n" + result.stdout)
+          output = "\n".join(logs)
+          with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Run same reproducer and selectors on fixed revision (pass required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-qutip checkout --detach 61df3c7bccf474aba393940581ffbbeccf5da366
+          test "$(git -C upstream-qutip rev-parse HEAD:qutip/core/coefficient.py)" = "14315d49c760389d028fd0023cc382c973a08684"
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-qutip" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/qutip_issue_2646" -p "test_issue_2646.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
+          cat reproduction-evidence/fixed-issue-test.log
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "qutip__qutip-2694")]).to_pylist()[0]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-qutip")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-qutip", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode != 0:
+                  raise SystemExit("Dataset selector did not pass on fixed revision: " + selector + "\n" + result.stdout)
+          output = "\n".join(logs)
+          with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Prepare and upload raw QuTiP reproduction evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          rm -f reproduction-evidence/train-00000-of-00001.parquet
+          if [ -f dependency-license-inventory.json ]; then cp dependency-license-inventory.json reproduction-evidence/; fi
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+
+      - name: Upload raw QuTiP reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qutip-issue-2646-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
