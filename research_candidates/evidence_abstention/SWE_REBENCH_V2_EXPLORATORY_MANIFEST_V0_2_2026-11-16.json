@@ -172,7 +172,8 @@
     "The v0.1 confirmatory manifest, case schema/validator, and two-human Panel B rubric are historical artifacts only. They do not govern v0.2 exploratory case acceptance or scoring; do not use them to claim v0.2 readiness.",
     "The v0.2 study remains a draft and is not preregistered. No second human rater, Cohen's kappa, or independent external audit is part of this design. ChatGPT critique is advisory AI input only.",
     "The v0.2 single-researcher scoring rubric and case-acceptance schema/validator have dedicated drafts; CI validation and human review remain required before any case is accepted or model inference is considered.",
-    "Sequential intake amendment approved by project lead: target 20 independent cases; 15 is a preferred analysis threshold, not an eligibility floor. Retain all cases that pass unchanged criteria. If N<15, report only the achieved pilot/feasibility scope under predeclared N bands; no confirmatory efficacy claim. Candidate intake order: 96 primary rows, same-project alternates as replacements, then 17 distinct-project reserves."
+    "Sequential intake amendment approved by project lead: target 20 independent cases; 15 is a preferred analysis threshold, not an eligibility floor. Retain all cases that pass unchanged criteria. If N<15, report only the achieved pilot/feasibility scope under predeclared N bands; no confirmatory efficacy claim. Candidate intake order: 96 primary rows, same-project alternates as replacements, then 17 distinct-project reserves.",
+    "Dishka issue #435 at primary rank 2 passed an exact issue reproducer on the pinned buggy base and fixed revision (run 43876245379). It remains not accepted pending student project lead sign-off on gold mechanism, E1/E2/E3 tiers, independence/exposure, and minimal-environment license-screen scope. No model inference was performed."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -236,7 +237,7 @@
     {
       "instance_id": "reagento__dishka-436",
       "cohort_rank": 2,
-      "status": "priority_candidate_static_review_complete_reproduction_pending",
+      "status": "reproduced_base_fail_fixed_pass_pending_student_gold_evidence_and_license_signoff",
       "issue_url": "https://github.com/reagento/dishka/issues/435",
       "pull_request_url": "https://github.com/reagento/dishka/pull/436",
       "dataset_created_at": "2025-04-15T22:52:26Z",
@@ -254,9 +255,38 @@
       "review_note_path": "research_candidates/evidence_abstention/REAGENTO_DISHKA_435_PRE_REPRODUCTION_REVIEW_2026-11-16.md",
       "reproducer_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/test_issue_435.py",
       "reproduction_workflow_path": ".github/workflows/evidence-abstention-preflight.yml#dishka-issue-435-reproduction",
-      "reproduction_status": "pending",
+      "reproduction_status": "passed",
       "case_acceptance": "not_accepted",
-      "inference_authorized": false
+      "inference_authorized": false,
+      "reproduction_run_id": 43876245379,
+      "reproduction_run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/43876245379",
+      "reproduction_artifact_id": 14229259503,
+      "reproduction_artifact_name": "dishka-issue-435-reproduction-43876245379-1",
+      "reproduction_artifact_sha256": "d5b611e6264462d4bbb0ae5e4083d95c0f125dc92cf690a8e64d9a51980fc359",
+      "reproducer_sha256": "4d06c3ab006c43b134daa7c2b6df5b13ec4e087cecde4170570d6a6f213229f8",
+      "base_log_sha256": "42ad6d870c4513551c367b58c1b4391a58cf0c40d68eae0105d72df8df5df4ae",
+      "fixed_log_sha256": "a6bf680d66618cd9b29e1013934f75e1e3bd5ed2daff4f17710050382678fd21",
+      "base_registry_builder_sha256": "58cdb82ab89e44549fbf8789390c085040e1f862d0d9887859310959d42dd84f",
+      "fixed_registry_builder_sha256": "eb245123fd20eb629b7c80ccf0a57246c1bd48db337e019d87db7447ee081a60",
+      "base_container_sha256": "23bc4ba168e03a2f053c58f98bdf388a9bc21c920c99332fbc4bc53fb5f641c6",
+      "base_registry_sha256": "24a9967f47a11d63a0d12bd1f3a9ec590f12aa85d55361aba032acaf94674fe3",
+      "registry_builder_diff_sha256": "360e7f262662646280fc3b5cf5cfd519b28b9f4d0be7b5c2ea2c3f535a4d0e7e",
+      "issue_snapshot_sha256": "62ee31658aca98a51d2ff1505b44f857294f431f169fba1fff2e2a849b96c49f",
+      "pull_request_snapshot_sha256": "f87785a9189d468e4211ec60aeddf7fdaa1677915fce5dc2c7b3e7a658103d58",
+      "nested_evidence_packet_draft_sha256": "244e31b986ae883988fb007ab709684da390174f1f01b43758eccb340d8749dc",
+      "gold_and_tier_draft_sha256": "6bd6c6f88cba9d21a1654553821fe3c5e7903994a3c0ed3559c2c72611bce4f9",
+      "license_manifest_path": "research_candidates/evidence_abstention/REAGENTO_DISHKA_436_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json",
+      "related_issues_reviewed": [
+        151,
+        275,
+        16,
+        420,
+        466
+      ],
+      "independence_review": "canonical_repository_fork_false; one primary cohort row; related issues are not duplicate reports of this defect; no second Dishka case may count as independent",
+      "researcher_source_exposure": "partial",
+      "gold_status": "proposed_pending_student_project_lead_human_decision",
+      "evidence_tier_status": "E3_E2_E1_draft_packets_created_pending_student_project_lead_human_decision"
     }
   ],
   "candidate_triage_ledger": {
