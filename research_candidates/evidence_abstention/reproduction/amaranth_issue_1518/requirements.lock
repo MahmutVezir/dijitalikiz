@@ -1,0 +1,10 @@
+# Minimal Amaranth RTLIL formatting runtime and test environment.
+jschon==0.11.1
+pyvcd==0.4.0
+Jinja2==3.1.4
+MarkupSafe==3.0.2
+pytest==8.3.3
+iniconfig==2.0.0
+packaging==24.2
+pluggy==1.5.0
+Pygments==2.18.0
