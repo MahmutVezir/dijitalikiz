@@ -1,0 +1,18 @@
+{
+  "source_url": "https://github.com/reagento/dishka/pull/436",
+  "resource_type": "pull_request",
+  "number": 436,
+  "title": "Defer scopes processing to handle overriding properly",
+  "body": "/closes #435",
+  "created_at": "2025-04-15T22:52:26Z",
+  "merged_at": "2025-04-24T20:51:58Z",
+  "base_commit": "8718d5af93f9e48bc2506c64827663fdccc5ad89",
+  "head_commit": "b1eae11734e64551d7b101195f27cb6870e1c364",
+  "changed_files": [
+    "src/dishka/registry_builder.py",
+    "tests/unit/container/override/test_alias.py",
+    "tests/unit/container/override/test_context_var.py",
+    "tests/unit/container/override/test_provide.py",
+    "tests/unit/container/test_context_vars.py"
+  ]
+}
