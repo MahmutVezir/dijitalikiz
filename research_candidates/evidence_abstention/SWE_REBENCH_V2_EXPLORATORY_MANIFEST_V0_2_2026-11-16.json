@@ -226,5 +226,21 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false
     }
-  ]
+  ],
+  "candidate_triage_ledger": {
+    "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
+    "status": "generated_deterministically_from_12_scope_audit_tables_pending_human_review",
+    "rows": 96,
+    "unique_ranks": 96,
+    "screening_counts": {
+      "excluded": 29,
+      "provisional_candidate": 49,
+      "conditional": 10,
+      "hold": 2,
+      "strong_candidate": 6
+    },
+    "broad_shortlist_before_second_pass": 67,
+    "broad_shortlist_after_simpeg_row63_exclusion": 66,
+    "inference_authorized": false
+  }
 }
