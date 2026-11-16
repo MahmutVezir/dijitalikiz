@@ -18,7 +18,8 @@ The added upstream test directly exercises the reported warmup-then-run sequence
 
 - Repository: pyro-ppl/numpyro
 - Buggy base: 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d
-- Fixed PR head: d5367f16abee85a1d7788784c71eb908ecb12df7
+- PR head: d5367f16abee85a1d7788784c71eb908ecb12df7
+- Fixed upstream merge revision used for reproduction: 5692d2da335945b756aeae02e3720b9b7f3efef2
 - PR merge commit: 5692d2da335945b756aeae02e3720b9b7f3efef2
 - Issue #1916 created: 2024-11-25T14:53:29Z
 - PR #1918 created: 2024-11-28T00:54:29Z
@@ -34,7 +35,7 @@ The added upstream test directly exercises the reported warmup-then-run sequence
 
 ## 4. Test adequacy
 
-The exact dataset FAIL_TO_PASS selectors are extracted from the pinned Parquet row. The workflow applies the PR diff to the exact buggy base and runs those selectors, then runs the same selectors on the exact fixed PR head.
+The exact dataset FAIL_TO_PASS selectors are extracted from the pinned Parquet row. The workflow applies the diff from the exact buggy base to the upstream merge revision and runs those selectors, then runs the same selectors on that exact merge revision.
 
 Required result: all selected tests fail on the base with the reported PRNG key shape failure and pass on the fixed revision. Collection errors, dependency failures, or unrelated failures do not count as a successful reproduction.
 
