@@ -1,6 +1,7 @@
 # Minimal runtime and test dependencies for Werkzeug #2955.
 # Install with --no-deps; all direct and transitive packages are pinned.
 MarkupSafe==2.1.5
+ephemeral-port-reserve==1.1.4
 pytest==8.3.3
 iniconfig==2.0.0
 packaging==24.2
