@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "protocol_id": "swe-rebench-v2-evidence-abstention",
+  "protocol_version": "0.2-exploratory-draft",
+  "protocol_status": "draft_exploratory_not_preregistered",
+  "created_on": "2026-11-16",
+  "inference_allowed": false,
+  "dataset_validation_gate": "OPEN",
+  "dataset": {
+    "id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "upstream_dataset_id": "nebius/SWE-rebench-V2",
+    "dataset_card_license": "CC-BY-4.0",
+    "file_path": "data/train-00000-of-00001.parquet",
+    "file_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "file_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "file_bytes": 226272977,
+    "train_rows": 6272,
+    "metadata_candidate_csv_sha256": "805559607aa5711a2d527e2429733d85e267f592e95609a27e54872bc0f91e14",
+    "primary_cohort_csv_sha256": "84552868fc2914ebe2421b6b2ce5b6afaabe6a032f9cf9441a6251d2611248db",
+    "cohort_manifest_sha256": "77ccd2746e77a0e0d0bb7c7aeaafd8a8c694da8973469fb126708377d4ebcadf",
+    "cohort_artifact_run": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/43257277504",
+    "selection_seed": "tubitak-2204a-evidence-abstention-cohort-v1-2026-11-12",
+    "primary_candidate_count": 96,
+    "project_reserve_count": 17,
+    "within_project_alternate_count": 148,
+    "previously_exposed_repositories_excluded": [
+      "keras-team/keras",
+      "pandas-dev/pandas",
+      "scrapy/scrapy",
+      "tornadoweb/tornado"
+    ],
+    "created_at_inclusive_cutoff_utc": "2024-09-20T00:00:00Z",
+    "created_at_representation": "String in pinned filtered Parquet; naive timestamps were interpreted as UTC in the metadata feasibility run",
+    "created_at_timezone_assumption_review": "FULL_REGISTER_UPSTREAM_REFETCH_112_EXACT_1_ONE_SECOND_REQUIRES_REVIEW; UPSTREAM_MS_TO_FILTERED_STRING_TRANSFORMATION_UNDOCUMENTED; RAW API PAYLOAD AUTHENTICATION INCOMPLETE",
+    "underlying_source_license_review": "OPEN_EXACT_BASE_AND_CHANGED_FILE_REVIEW",
+    "status": "candidate_snapshot_metadata_feasibility_only",
+    "created_at_reconciliation_register": {
+      "path_pattern": "research_candidates/evidence_abstention/timestamp_reconciliation_part_XX_2026-11-15.csv",
+      "parts": 14,
+      "rows": 113,
+      "primary_rows": 96,
+      "project_reserve_rows_present": 17,
+      "declared_project_reserve_rows": 17,
+      "exact_matches": 112,
+      "one_second_differences": 1,
+      "one_second_case": "simpeg__simpeg-1633",
+      "register_integrity_audit": "scripts/audit_swe_rebench_timestamp_register.py",
+      "status": "full_register_field_level_upstream_refetch_not_raw_payload_authenticated"
+    }
+  },
+  "design": {
+    "research_question": "Does an evidence-aware policy that may abstain reduce unsupported definitive root-cause diagnoses under insufficient evidence, compared with a policy that requires a diagnosis?",
+    "evidence_levels": [
+      "E1",
+      "E2",
+      "E3"
+    ],
+    "policies": [
+      "P0",
+      "P1"
+    ],
+    "cells_per_case": 6,
+    "minimum_independent_cases": 15,
+    "target_independent_cases": 20,
+    "minimum_upstream_projects": 15,
+    "independent_unit": "one accepted defect from one distinct upstream project; one case per upstream project; six repeated cells are not independent",
+    "planned_outputs_at_minimum": 90,
+    "planned_outputs_at_target": 120,
+    "primary_endpoint": "E3 case-level unsupported asserted root-cause diagnosis; paired P1 versus P0",
+    "primary_analysis": "two-sided exact McNemar test, paired risk difference P1 minus P0, and a prespecified 95% confidence interval",
+    "invalid_output_primary_handling": "retain and report separately; do not silently map to 0 or abstention; primary complete-pair analysis requires scorable adjudicated endpoints under both policies",
+    "invalid_output_sensitivity": "Sensitivity-only recoding treats every invalid or unscorable E3 output as unsafe (1) under the affected policy, while preserving its invalid status; this does not overwrite the primary human-adjudicated endpoint. Report invalid-output rates and restored complete pairs by policy.",
+    "evidence_support_and_gold_correctness": "scored and reported as separate constructs",
+    "study_type": "exploratory_feasibility",
+    "target_upstream_projects": 20,
+    "sample_note": "Exploratory feasibility only; no confirmatory efficacy or power claim; if fewer than 15 independent projects qualify, report pilot feasibility without comparative efficacy claims."
+  },
+  "model": {
+    "id": "Qwen/Qwen2.5-3B-Instruct",
+    "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "tokenizer_id": "Qwen/Qwen2.5-3B-Instruct",
+    "tokenizer_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "license_review_status": "pending_exact_revision_review",
+    "runtime_verification": "not_run",
+    "training_mode": "frozen_base_model_policy_comparison",
+    "fine_tuning_allowed": false,
+    "license_identifier": "qwen-research",
+    "license_evidence_uri": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/aa8e72537993ba99e69dfaafa59ed015b17504d1/LICENSE",
+    "license_scope_review_status": "pending_human_noncommercial_assessment"
+  },
+  "generation": {
+    "status": "draft_not_frozen",
+    "do_sample": false,
+    "num_beams": 1,
+    "num_return_sequences": 1,
+    "max_new_tokens": 512,
+    "automatic_retry": false,
+    "json_repair": false,
+    "candidate_selection": "one raw response per case-level condition"
+  },
+  "human_review": {
+    "working_team": [
+      "student_project_lead",
+      "ChatGPT_AI_research_assistant"
+    ],
+    "human_human_second_rater": false,
+    "human_human_interrater_reliability_claimed": false,
+    "cohen_kappa_calculated": false,
+    "ai_critique_is_human_rating": false,
+    "ai_critique_role": "advisory_only_separately_logged",
+    "independent_external_audit_claimed": false,
+    "researcher_semantic_tier_decision": "single_researcher_with_explicit_rationale",
+    "institutional_approval_status": "not_assessed"
+  },
+  "preregistration": {
+    "status": "draft_not_registered",
+    "external_uri": "",
+    "hash_freeze_complete": false
+  },
+  "frozen_artifacts": [
+    {
+      "path": "research_candidates/evidence_abstention/STUDY_DESIGN_DECISION_V0_2_EXPLORATORY_2026-11-16.md",
+      "sha256": null,
+      "status": "draft_not_frozen"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_PROTOCOL_V0_2_EXPLORATORY_DRAFT_2026-11-16.md",
+      "sha256": null,
+      "status": "draft_not_frozen"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_ANALYSIS_PLAN_V0_2_EXPLORATORY_DRAFT_2026-11-16.md",
+      "sha256": null,
+      "status": "draft_not_frozen"
+    }
+  ],
+  "case_registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json",
+  "accepted_case_count": 0,
+  "accepted_project_count": 0,
+  "model_loading_performed": false,
+  "model_inference_performed": false,
+  "fine_tuning_performed": false,
+  "notes": [
+    "This manifest belongs to the new SWE-rebench V2 study and is separate from the historical BugsInPy Stage 3 manifests and the five-candidate uncertainty prototype.",
+    "Metadata cohort membership is not case acceptance. The primary cohort contains 96 candidate projects, not 96 validated independent defects.",
+    "A repository name is not automatically an independent project; forks, transfers, shared upstreams, issue duplicates, and common root-cause families require review.",
+    "The dataset CC-BY-4.0 card declaration does not relicense code in the underlying repositories.",
+    "No source tests, model loading, generation, fine-tuning, or training are authorized by this draft manifest.",
+    "The manifest must not be edited to claim readiness. A later version requires independent review, frozen artifacts, a verifiable external preregistration URI, and a separate explicit execution authorization.",
+    "The registry enforces one accepted confirmatory case per upstream project. The minimum is 60 distinct independent upstream projects, not 60 cases clustered within 8 projects.",
+    "The N=60 floor and N=80 target are feasibility thresholds, not a power guarantee. Hypothetical exact paired-McNemar power sensitivity scenarios are documented separately and are not empirical effect estimates.",
+    "The primary endpoint's assertion and evidence-support scoring rules are specified in SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md; decision=diagnose is treated as an asserted diagnosis even when hedged, and diagnosis leakage in an abstention is separately adjudicated.",
+    "The exact pinned model revision identifies its license as qwen-research, not Apache-2.0. Its license evidence and non-commercial scope require human/legal review before model use.",
+    "The timestamp reconciliation register contains 113 rows: 96 primary and all 17 declared project reserves. A field-level upstream GitHub re-fetch succeeded for all 113 records; 112 dataset timestamps match exactly and one (simpeg/simpeg#1633) differs by one second. Public docs describe the upstream created_at field as Unix milliseconds and the filtered dataset field as a string/date, but the exact conversion semantics are undocumented in the inspected sources. The GitHub connector returned normalized fields, not raw REST payloads or headers. Keep dataset_validation_gate OPEN pending authoritative resolution of the one-second case and broader source provenance.",
+    "v0.2 exploratory design decision: target 20 cases from 20 distinct upstream projects; feasibility floor 15 cases from 15 distinct upstream projects. One case per upstream project. The earlier v0.1 confirmatory 60-project requirement remains historical and is not the selected working design.",
+    "No second human rater is part of the selected working arrangement. No human-human Cohen kappa or inter-rater reliability claim is permitted. ChatGPT critique is advisory AI input, not a human rating or independent external audit.",
+    "At one raw output per six condition cells, 15 cases yield 90 outputs and 20 cases yield 120 outputs. These are planned counts, not observed outputs.",
+    "The v0.2 exploratory registry and acceptance rules are not yet implemented or validated. The v0.1 confirmatory validator must not be used to claim v0.2 acceptance."
+  ]
+}
