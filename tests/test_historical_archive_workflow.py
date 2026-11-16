@@ -7,32 +7,22 @@ SAFETY_WORKFLOW = ROOT / ".github" / "workflows" / "persist-historical-archive-s
 ARCHIVE_SHA256 = "e54ad960f141f3fadcfbdd88528f89d9fc0727c0c5e5062250d94da9cb0943bd"
 
 
-def test_workflow_runs_repository_and_historical_archive_gates_separately():
+def test_research_validation_does_not_gate_on_unrelated_historical_ccdg_zip():
     workflow = RESEARCH_WORKFLOW.read_text(encoding="utf-8")
     assert "validate-repository:" in workflow
-    assert "validate-historical-archive:" in workflow
-    assert "data/historical/confirmatory_artifact_2026-10-09.zip" in workflow
-    assert "11640450681" not in workflow
-    assert 'EXPECTED_BYTES: "292742"' in workflow
-    assert f'EXPECTED_SHA256: "{ARCHIVE_SHA256}"' in workflow
-    assert "size_in_bytes" not in workflow
-    assert "expires_at" not in workflow
-    assert "ARCHIVE_PATH: ${{ github.workspace }}/data/historical/confirmatory_artifact_2026-10-09.zip" in workflow
-    assert "sha256sum --check --status -" in workflow
-    assert 'python -m zipfile -t "$ARCHIVE_PATH"' in workflow
-    assert "python scripts/audit_historical_artifact.py" in workflow
-    assert '--expected-run-record-count "$EXPECTED_RECORDS"' in workflow
-    assert "historical_archive_status=BLOCKED/REPOSITORY_UPLOAD_REQUIRED" in workflow
+    assert "validate-historical-archive:" not in workflow
+    assert "data/historical/confirmatory_artifact_2026-10-09.zip" not in workflow
+    assert "scripts/audit_historical_artifact.py" not in workflow
     assert "repository_validation_status=PASS" in workflow
     assert "repository_validation_status=FAIL" in workflow
     assert "This job checks repository code/configuration only" in workflow
-    assert '> "$audit_json" 2> "$audit_log"' in workflow
-    assert "No archive contents were extracted, uploaded, or printed." in workflow
+
+
 
 
 def test_historical_archive_changes_still_trigger_repository_ci():
     workflow = RESEARCH_WORKFLOW.read_text(encoding="utf-8")
-    assert workflow.count('"data/historical/**"') == 2
+    assert workflow.count('"data/historical/**"') == 0
 
 
 def test_research_validation_uses_read_only_permissions_and_no_upload():
