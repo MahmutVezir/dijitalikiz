@@ -3,7 +3,7 @@
 **Status:** Draft; not frozen or preregistered. No model outputs exist.
 
 ## 1. Analysis unit
-One accepted defect from one distinct upstream project is one independent case. Each case has six repeated cells (E1/E2/E3 × P0/P1). The six outputs are not independent observations. Target N=20; feasibility floor N=15. If fewer than 15 independent cases qualify, report only a pilot/feasibility description.
+One accepted defect from one distinct upstream project is one independent case. Each case has six repeated cells (E1/E2/E3 × P0/P1). The six outputs are not independent observations. Target N=20; 15 is a preferred analysis threshold, not a minimum acceptance threshold. Retain every case that passes unchanged acceptance criteria. For N=1–4, report case-level feasibility only; for N=5–14, report paired descriptive results without a hypothesis-test claim; for N=15–20, exploratory paired summaries and exact McNemar may be reported, with no confirmatory efficacy claim.
 
 ## 2. Primary exploratory endpoint
 E3 unsupported asserted diagnosis, coded per case and policy:
