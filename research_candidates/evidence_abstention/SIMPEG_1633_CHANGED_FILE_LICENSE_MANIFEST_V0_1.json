@@ -1,0 +1,54 @@
+{
+  "record_type": "simpeg_pr_1633_changed_file_documentary_license_screen",
+  "repository": "simpeg/simpeg",
+  "pull_request": 1633,
+  "base_commit": "f2440e63c6ab92191ae4f452808a9e4169af84e3",
+  "head_commit": "77a41d3fe25e3ea881ff9ca0be88d9ba0d3b7410",
+  "root_license": {
+    "path": "LICENSE",
+    "git_blob_sha": "cd67a7669e3e768bb03686567ec0c3088d79560d",
+    "content_sha256": "550328033a0e8ecdb533739b9f4bb7b85881d081c470d57a500df73739d92fb1",
+    "spdx_expression": "MIT"
+  },
+  "dependency_note": {
+    "path": "pyproject.toml",
+    "git_blob_sha": "3d0efb96d4cfdb17b29ac1a1685bcd37dae77fcd",
+    "typing_extensions": "already declared runtime dependency for python_version < 3.13",
+    "new_dependency_introduced_by_pr": false
+  },
+  "changed_files": [
+    {
+      "path": "simpeg/potential_fields/gravity/survey.py",
+      "git_blob_sha": "447b4b69d146a5aeec6ac73a51745816f46dd095",
+      "file_role": "modified_source",
+      "license_note": "No file-specific license header was identified in the inspected file preamble; repository-level MIT applies unless a separate notice is later found."
+    },
+    {
+      "path": "simpeg/potential_fields/magnetics/simulation.py",
+      "git_blob_sha": "72ada84d2f99e4336c24e4b3d22ca84cee545baf",
+      "file_role": "modified_source",
+      "license_note": "No file-specific license header was identified in the inspected file preamble; repository-level MIT applies unless a separate notice is later found."
+    },
+    {
+      "path": "simpeg/potential_fields/magnetics/survey.py",
+      "git_blob_sha": "ac66c7c42f0fa53545181199cc0daebcbe62d61e",
+      "file_role": "modified_source",
+      "license_note": "No file-specific license header was identified in the inspected file preamble; repository-level MIT applies unless a separate notice is later found."
+    },
+    {
+      "path": "tests/pf/test_components.py",
+      "git_blob_sha": "569a33eba22c24aca735e0c1aa168167cffe973c",
+      "file_role": "added_test",
+      "license_note": "No file-specific license header was identified in the inspected file preamble; repository-level MIT applies unless a separate notice is later found."
+    },
+    {
+      "path": "tests/pf/test_forward_PFproblem.py",
+      "git_blob_sha": "fa2cb3fe2ec444c41ec52f92895245bfcca6bbae",
+      "file_role": "modified_test",
+      "license_note": "No file-specific license header was identified in the inspected file preamble; repository-level MIT applies unless a separate notice is later found."
+    }
+  ],
+  "root_notice_file_found": false,
+  "screening_status": "no_obvious_prohibition_identified",
+  "scope_limitation": "Documentary screening only; not legal advice or formal legal clearance. Full transitive environment license inventory and technical reproduction remain outstanding."
+}
