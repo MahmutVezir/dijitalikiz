@@ -1426,6 +1426,7 @@ jobs:
           row = rows[0]
           assert row["repo"] == "getmoto/moto", row
           assert row["base_commit"] == "bf49e22f41be7444dc20e05dfa5dd13f25672eba", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2024-11-07 20:51:42", row
           assert row["language"] == "python", row
           assert row["license"] == "Apache-2.0", row
           assert str(row["created_at"]).replace("T", " ")[:19] == "2024-11-07 20:51:42", row
