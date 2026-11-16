@@ -286,7 +286,15 @@
       "independence_review": "canonical_repository_fork_false; one primary cohort row; related issues are not duplicate reports of this defect; no second Dishka case may count as independent",
       "researcher_source_exposure": "partial",
       "gold_status": "proposed_pending_student_project_lead_human_decision",
-      "evidence_tier_status": "E3_E2_E1_draft_packets_created_pending_student_project_lead_human_decision"
+      "evidence_tier_status": "E3_E2_E1_draft_packets_created_pending_student_project_lead_human_decision",
+      "source_resource_type": "pull_request",
+      "source_resource_url": "https://github.com/reagento/dishka/pull/436",
+      "linked_bug_issue_url": "https://github.com/reagento/dishka/issues/435",
+      "timestamp_register_boolean_correction": "register_is_pull_request_false_conflicts_with_pull_436_url; direct /pulls/436 and /issues/436 both report created_at 2025-04-15T22:52:26Z; source resource type is pull_request",
+      "resource_type_reconciliation_record": "research_candidates/evidence_abstention/REAGENTO_DISHKA_436_RESOURCE_TYPE_RECONCILIATION_2026-11-16.md",
+      "dataset_row_sha256": "e34ef42f31e1fa5f282eda5f3e6ad6f4212117019be9231f296c87b62add6008",
+      "dataset_row_snapshot_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/dataset_row_snapshot.json",
+      "timestamp_reconciliation_status": "exact_match_after_resource_type_correction"
     }
   ],
   "candidate_triage_ledger": {
