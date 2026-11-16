@@ -792,6 +792,34 @@
         "resolve_temporal_exposure_against_exact_model_revision",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ]
+    },
+    {
+      "instance_id": "skypilot-org__skypilot-5985",
+      "cohort_rank": 17,
+      "status": "issue_patch_semantics_and_root_license_screen_passed_integration_reproduction_pending",
+      "issue_url": "https://github.com/skypilot-org/skypilot/issues/5981",
+      "pull_request_url": "https://github.com/skypilot-org/skypilot/pull/5985",
+      "issue_created_at": "2025-06-12T17:18:04Z",
+      "pull_request_created_at": "2025-06-12T21:52:38Z",
+      "base_commit": "60a6c930feeb8c48511f74c25bc2d7e12b290dd6",
+      "fixed_commit": "c8154ff3a4875cbb1bac8f29bb45254f264d72ba",
+      "exact_base_root_license": "Apache-2.0",
+      "exact_base_license_blob_sha": "aad27dddb0055248d9ceb93ac287898fc1d25b29",
+      "exact_base_pyproject_blob_sha": "a8fd2403a4c34d645369af07753b1608602f3d86",
+      "exact_base_common_utils_blob_sha": "a0ca0e97a4360019af0c5ec17381a2a3c753a094",
+      "fixed_common_utils_blob_sha": "5745c98b0ddd233625a3f49da20a032833cd95ff",
+      "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
+      "temporal_exposure": "issue_and_PR_created_after_2024-09_Qwen2.5_3B_public_release; training_data_cutoff_not_independently_proven",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false,
+      "remaining_gates": [
+        "authenticate_exact_dataset_row_and_timestamp",
+        "all_dataset_FAIL_TO_PASS_selectors_fail_on_buggy_base_for_lstrip_character_set_semantics",
+        "all_same_dataset_selectors_pass_on_fixed_revision",
+        "run_actual_SSH_integration_test_with_mocks_not_only_string_semantics",
+        "minimal_dependency_license_inventory_human_review",
+        "gold_standard_and_E1_E2_E3_human_adjudication"
+      ]
     }
   ],
   "candidate_triage_ledger": {
