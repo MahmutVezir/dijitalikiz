@@ -28,7 +28,7 @@ The issue has a quantitative, independently checkable expected result. A correct
 
 - The regression test uses generated in-memory signals; no external audio fixture or remote service is required.
 - pyfar's top-level package imports its DSP, plotting, sampling, and I/O modules, so the test environment includes the project's declared runtime dependencies rather than only numpy/scipy.
-- The pinned environment also includes the required transitive dependencies for matplotlib, soundfile, h5py, deepdiff, and pytest.
+- The pinned environment also includes the required transitive dependencies for matplotlib, soundfile, h5py, deepdiff, and pytest. sofar imports netCDF4, so netCDF4, cftime, and certifi are explicitly pinned and included in the license inventory.
 - The workflow records distribution license metadata before importing pyfar source and stops if any package lacks both a license field and a license classifier.
 - The exact dataset FAIL_TO_PASS selectors are extracted from the pinned Parquet row.
 - This is a narrow documentary screen, not legal advice or blanket clearance for optional extras or redistribution.
