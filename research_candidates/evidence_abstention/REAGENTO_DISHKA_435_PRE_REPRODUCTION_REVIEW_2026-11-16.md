@@ -62,7 +62,7 @@ A standard-library regression test was added at:
 It reproduces the exact issue example and asserts that the REQUEST-scoped interactor resolves 42 from the later APP-scoped fake provider.
 
 Workflow:
-`.github/workflows/reproduce-dishka-issue-435.yml`
+`.github/workflows/evidence-abstention-preflight.yml (job: `dishka-issue-435-reproduction`)`
 
 The workflow uses:
 - Ubuntu 22.04 GitHub-hosted runner;
