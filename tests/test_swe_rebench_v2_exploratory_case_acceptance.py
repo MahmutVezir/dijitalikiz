@@ -60,10 +60,11 @@ def _minimal_case():
                   "review_record":artifact},
       "license_review":{"root_license_expression":"MIT","exact_base_review":"passed","changed_file_review":"passed",
                         "nested_dependency_review":"passed","notice_and_provenance_review":"passed","research_use_decision":"no_obvious_prohibition_identified","scope_limitation":"documentary_screening_only_not_legal_advice",
-                        "reviewer_role":"student_project_lead","review_record":artifact,"changed_file_license_manifest":artifact},
+                        "reviewer_role":"student_project_lead","review_record":artifact,"changed_file_license_manifest":artifact,
+                        "root_license_file":{"path":"LICENSE","commit_sha":commit_a,"blob_sha":commit_a,"content_sha256":sha,"license_expression":"MIT"}},
       "technical_reproduction":{"status":"passed","environment_lock_sha256":sha,"test_selector":"tests/test_issue.py::test_regression",
-                                "buggy_baseline":{"commit_sha":commit_a,"exit_code":1,"failure_signature":"Expected regression failure","run_record":artifact},
-                                "fixed_revision":{"commit_sha":commit_b,"exit_code":0,"same_test_passed":True,"run_record":artifact},
+                                "buggy_baseline":{"commit_sha":commit_a,"exit_code":1,"failure_signature":"Expected regression failure","test_selector":"tests/test_issue.py::test_regression","run_record":artifact},
+                                "fixed_revision":{"commit_sha":commit_b,"exit_code":0,"same_test_passed":True,"test_selector":"tests/test_issue.py::test_regression","run_record":artifact},
                                 "review_record":artifact},
       "gold_standard":{"status":"human_recorded","gold_mechanism_id":"gold","candidate_mechanisms":mechanisms,
                        "technical_rationale":"Patch and targeted reproduction identify the mechanism.","evidence_refs":["C"],"review_record":artifact},
@@ -110,3 +111,11 @@ def test_case_rejects_mismatched_github_resource_type():
     result = validate_case_record(record)
     assert result["status"] == "invalid"
     assert any("issue resource_type" in item for item in result["blockers"])
+
+
+def test_case_rejects_different_buggy_and_fixed_test_selectors():
+    record = _minimal_case()
+    record["technical_reproduction"]["fixed_revision"]["test_selector"] = "tests/test_other.py::test_other"
+    result = validate_case_record(record)
+    assert result["status"] == "invalid"
+    assert any("exact same defect-specific test selector" in item for item in result["blockers"])
