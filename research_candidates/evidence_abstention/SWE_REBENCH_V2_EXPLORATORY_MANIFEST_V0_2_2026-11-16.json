@@ -67,7 +67,7 @@
     "planned_outputs_at_minimum": 90,
     "planned_outputs_at_target": 120,
     "primary_endpoint": "E3 case-level unsupported asserted root-cause diagnosis; paired P1 versus P0",
-    "primary_analysis": "two-sided exact McNemar test, paired risk difference P1 minus P0, and a prespecified 95% confidence interval",
+    "primary_analysis": "Report paired E3 case-level counts, exploratory exact two-sided McNemar result, paired risk difference, and a 95% uncertainty interval. The interval method must be selected, justified, and tested before outcome scoring is unblinded; no confirmatory inference claim.",
     "invalid_output_primary_handling": "retain and report separately; do not silently map to 0 or abstention; primary complete-pair analysis requires scorable adjudicated endpoints under both policies",
     "invalid_output_sensitivity": "Sensitivity-only recoding treats every invalid or unscorable E3 output as unsafe (1) under the affected policy, while preserving its invalid status; this does not overwrite the primary human-adjudicated endpoint. Report invalid-output rates and restored complete pairs by policy.",
     "evidence_support_and_gold_correctness": "scored and reported as separate constructs",
@@ -146,15 +146,15 @@
     "A repository name is not automatically an independent project; forks, transfers, shared upstreams, issue duplicates, and common root-cause families require review.",
     "The dataset CC-BY-4.0 card declaration does not relicense code in the underlying repositories.",
     "No source tests, model loading, generation, fine-tuning, or training are authorized by this draft manifest.",
-    "The manifest must not be edited to claim readiness. A later version requires independent review, frozen artifacts, a verifiable external preregistration URI, and a separate explicit execution authorization.",
-    "The registry enforces one accepted confirmatory case per upstream project. The minimum is 60 distinct independent upstream projects, not 60 cases clustered within 8 projects.",
-    "The N=60 floor and N=80 target are feasibility thresholds, not a power guarantee. Hypothetical exact paired-McNemar power sensitivity scenarios are documented separately and are not empirical effect estimates.",
     "The primary endpoint's assertion and evidence-support scoring rules are specified in SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md; decision=diagnose is treated as an asserted diagnosis even when hedged, and diagnosis leakage in an abstention is separately adjudicated.",
     "The exact pinned model revision identifies its license as qwen-research, not Apache-2.0. Its license evidence and non-commercial scope require human/legal review before model use.",
     "The timestamp reconciliation register contains 113 rows: 96 primary and all 17 declared project reserves. A field-level upstream GitHub re-fetch succeeded for all 113 records; 112 dataset timestamps match exactly and one (simpeg/simpeg#1633) differs by one second. Public docs describe the upstream created_at field as Unix milliseconds and the filtered dataset field as a string/date, but the exact conversion semantics are undocumented in the inspected sources. The GitHub connector returned normalized fields, not raw REST payloads or headers. Keep dataset_validation_gate OPEN pending authoritative resolution of the one-second case and broader source provenance.",
     "v0.2 exploratory design decision: target 20 cases from 20 distinct upstream projects; feasibility floor 15 cases from 15 distinct upstream projects. One case per upstream project. The earlier v0.1 confirmatory 60-project requirement remains historical and is not the selected working design.",
     "No second human rater is part of the selected working arrangement. No human-human Cohen kappa or inter-rater reliability claim is permitted. ChatGPT critique is advisory AI input, not a human rating or independent external audit.",
     "At one raw output per six condition cells, 15 cases yield 90 outputs and 20 cases yield 120 outputs. These are planned counts, not observed outputs.",
-    "The v0.2 exploratory registry and acceptance rules are not yet implemented or validated. The v0.1 confirmatory validator must not be used to claim v0.2 acceptance."
+    "The v0.2 exploratory registry and acceptance rules are not yet implemented or validated. The v0.1 confirmatory validator must not be used to claim v0.2 acceptance.",
+    "The v0.1 confirmatory manifest, case schema/validator, and two-human Panel B rubric are historical artifacts only. They do not govern v0.2 exploratory case acceptance or scoring; do not use them to claim v0.2 readiness.",
+    "The v0.2 study remains a draft and is not preregistered. No second human rater, Cohen's kappa, or independent external audit is part of this design. ChatGPT critique is advisory AI input only.",
+    "The v0.2 scoring rubric and case-acceptance schema/validator still require dedicated drafts and tests before any case is accepted or model inference is considered."
   ]
 }
