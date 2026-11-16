@@ -183,6 +183,48 @@
         "independence_review",
         "gold_and_evidence_tier_adjudication"
       ]
+    },
+    {
+      "instance_id": "simpeg__simpeg-1633",
+      "cohort_row": 63,
+      "status": "excluded_from_primary_bug_case_shortlist_after_issue_pr_semantic_review",
+      "reason": "Linked issue #1609 documents a docstring/return-value mismatch and explicitly leaves the expected aggregate for heterogeneous receiver components undefined. PR #1633 does not implement the issue's proposed integer return; it deprecates the property and adds a FutureWarning test. The change may be a defensible API deprecation, but it does not provide a clear issue-specific fail-to-pass oracle for the intended bug endpoint.",
+      "timestamp_reconciliation": "endpoint_resource_reconciled",
+      "documentary_license_screen": "root_MIT_screened_not_full_dependency_clearance",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false
+    },
+    {
+      "instance_id": "pyfar__pyfar-722",
+      "cohort_row": 90,
+      "status": "priority_candidate_pending_full_dependency_license_review_and_reproduction",
+      "issue_url": "https://github.com/pyfar/pyfar/issues/721",
+      "pull_request_url": "https://github.com/pyfar/pyfar/pull/722",
+      "base_commit": "648dda4c60c5a6f74acf335f7808c590c9d23929",
+      "fixed_commit": "a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e",
+      "exact_base_root_license": "MIT",
+      "scope_assessment": "Specific numerical normalization defect with explicit counterexamples; PR changes energy/power reference scaling to square-root scaling and adds parameterized target checks. Existing expected-value rows for energy/power in the old parameterized test were removed, so the replacement test oracle must be checked carefully.",
+      "remaining_gates": [
+        "full_direct_and_transitive_dependency_license_inventory",
+        "environment_lock",
+        "same_test_base_fail_fixed_pass_reproduction",
+        "changed_file_and_fixture_provenance",
+        "independence_and_exposure_review",
+        "gold_standard_and_E1_E2_E3_human_adjudication"
+      ],
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false
+    },
+    {
+      "instance_id": "mitmproxy__pdoc-813",
+      "cohort_row": 95,
+      "status": "held_license_metadata_conflict",
+      "issue_url": "https://github.com/mitmproxy/pdoc/issues/812",
+      "pull_request_url": "https://github.com/mitmproxy/pdoc/pull/813",
+      "base_commit": "57ee1d628027feffbd734180287e74294ddab7df",
+      "license_observation": "Exact-base LICENSE text is standard MIT, while exact-base pyproject.toml declares MIT-0. This inconsistency requires upstream clarification or a documented authoritative licensing resolution before execution/use.",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false
     }
   ]
 }
