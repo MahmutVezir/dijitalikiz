@@ -384,7 +384,9 @@
         "dataset_fail_to_pass_base_fail_fixed_pass_reproduction",
         "independence_and_related_issue_family_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
-      ]
+      ],
+      "license_manifest_path": "research_candidates/evidence_abstention/WNTRBLM_NOX_919_MINIMAL_ENVIRONMENT_LICENSE_MANIFEST_V0_1.json",
+      "dependency_license_inventory_status": "pending_workflow"
     }
   ],
   "candidate_triage_ledger": {
