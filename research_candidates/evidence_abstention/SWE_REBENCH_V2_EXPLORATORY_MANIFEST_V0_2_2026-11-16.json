@@ -31,7 +31,7 @@
     ],
     "created_at_inclusive_cutoff_utc": "2024-09-20T00:00:00Z",
     "created_at_representation": "String in pinned filtered Parquet; naive timestamps were interpreted as UTC in the metadata feasibility run",
-    "created_at_timezone_assumption_review": "FULL_REGISTER_UPSTREAM_REFETCH_112_EXACT_1_ONE_SECOND_REQUIRES_REVIEW; UPSTREAM_MS_TO_FILTERED_STRING_TRANSFORMATION_UNDOCUMENTED; RAW API PAYLOAD AUTHENTICATION INCOMPLETE",
+    "created_at_timezone_assumption_review": "ONE_SECOND_DIFFERENCE_RECONCILED_BY_RESOURCE_TYPE: PR endpoint /pulls/1633 returns 2025-03-20T23:46:00Z matching the dataset; issue endpoint /issues/1633 returns 23:46:01Z. Dataset-validation gate remains OPEN for broader source provenance and raw-response/header authentication.",
     "underlying_source_license_review": "OPEN_EXACT_BASE_AND_CHANGED_FILE_REVIEW",
     "status": "candidate_snapshot_metadata_feasibility_only",
     "created_at_reconciliation_register": {
@@ -46,7 +46,8 @@
       "one_second_case": "simpeg__simpeg-1633",
       "register_integrity_audit": "scripts/audit_swe_rebench_timestamp_register.py",
       "status": "full_register_field_level_upstream_refetch_not_raw_payload_authenticated"
-    }
+    },
+    "timestamp_resource_type_rule": "For PR-derived tasks compare dataset created_at to the GitHub pull-request resource (/pulls/{number}); for issue-derived tasks compare to /issues/{number}. Do not compare a PR dataset row to the issue representation."
   },
   "design": {
     "research_question": "Does an evidence-aware policy that may abstain reduce unsupported definitive root-cause diagnoses under insufficient evidence, compared with a policy that requires a diagnosis?",
@@ -157,7 +158,7 @@
     "No source tests, model loading, generation, fine-tuning, or training are authorized by this draft manifest.",
     "The v0.2 single-researcher scoring rubric is drafted and versioned; it requires CI tests and human review before any output scoring.",
     "The exact pinned model revision identifies its license as qwen-research, not Apache-2.0. Its license evidence and non-commercial scope require human/legal review before model use.",
-    "The timestamp reconciliation register contains 113 rows: 96 primary and all 17 declared project reserves. A field-level upstream GitHub re-fetch succeeded for all 113 records; 112 dataset timestamps match exactly and one (simpeg/simpeg#1633) differs by one second. Public docs describe the upstream created_at field as Unix milliseconds and the filtered dataset field as a string/date, but the exact conversion semantics are undocumented in the inspected sources. The GitHub connector returned normalized fields, not raw REST payloads or headers. Keep dataset_validation_gate OPEN pending authoritative resolution of the one-second case and broader source provenance.",
+    "The 113-row timestamp register has 112 exact matches under the earlier issue/PR field-level fetch. The sole apparent one-second exception (simpeg/simpeg#1633) was reconciled on 2026-11-16: GitHub GET /pulls/1633 reports 2025-03-20T23:46:00Z, matching the dataset, while GET /issues/1633 reports 23:46:01Z for the same PR URL. This is an endpoint-resource distinction, not evidence of a timestamp conversion. Apply resource-type-matched comparison for all candidates. The connector did not provide response headers/request IDs or byte-authenticated raw payloads, so broader source-provenance gate remains OPEN.",
     "v0.2 exploratory design decision: target 20 cases from 20 distinct upstream projects; feasibility floor 15 cases from 15 distinct upstream projects. One case per upstream project. The earlier v0.1 confirmatory 60-project requirement remains historical and is not the selected working design.",
     "No second human rater is part of the selected working arrangement. No human-human Cohen kappa or inter-rater reliability claim is permitted. ChatGPT critique is advisory AI input, not a human rating or independent external audit.",
     "At one raw output per six condition cells, 15 cases yield 90 outputs and 20 cases yield 120 outputs. These are planned counts, not observed outputs.",
