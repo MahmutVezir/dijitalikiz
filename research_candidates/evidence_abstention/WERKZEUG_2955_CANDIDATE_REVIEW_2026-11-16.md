@@ -4,7 +4,7 @@
 **Dataset instance:** pallets__werkzeug-2956  
 **Issue:** https://github.com/pallets/werkzeug/issues/2955  
 **Fix PR:** https://github.com/pallets/werkzeug/pull/2956  
-**Review status:** strong static bug candidate; exact dataset reproduction pending. Not an accepted case.
+**Review status:** strong static bug candidate; first reproduction attempt failed during test collection because the historical minimal lock omitted `ephemeral-port-reserve`, imported by the upstream test conftest. The current lock now pins it; post-correction execution is pending. Not an accepted case.
 
 ## 1. Defect contract
 
@@ -44,12 +44,16 @@ Required result: all selected tests fail on the exact buggy base with the empty-
 - The student researcher has reviewed the issue and patch during candidate screening. This exposure must be recorded; perfect blinding must not be claimed.
 - Related issue-family and fork/lineage checks remain part of final acceptance.
 
-## 6. Current decision
+## 6. Prior workflow attempt and current decision
+
+The first reproduction run was `43881610067`, job `133348644525`. Runtime and license metadata checks passed, and the exact Parquet row was authenticated. The base selector step stopped before the target test because upstream `tests/conftest.py` imports `ephemeral_port_reserve`, which was not present in the historical lock (`ModuleNotFoundError: No module named 'ephemeral_port_reserve'`). This is a test-environment collection blocker, not a defect failure.
+
+The current lock now pins `ephemeral-port-reserve==1.1.4`, and the current workflow includes that package in the pre-execution license inventory. No rerun has verified the correction; the later preflight run `43898509334` ended with the Werkzeug job having zero steps/no runner assignment.
 
 Issue/patch alignment: strong.  
 Root source license: BSD 3-Clause.  
-Dependency license inventory: pending workflow evidence and review.  
-Exact base-fail/fix-pass reproduction: pending.  
+Dependency inventory: historical inventory passed for its then-listed packages; the newly added package still needs completed metadata review.  
+Exact base-fail/fix-pass reproduction: not run; first attempt stopped during collection because of the missing conftest dependency.  
 Gold mechanism and E1/E2/E3 packet: pending human adjudication.  
 Final case acceptance: not accepted.  
 Model loading and inference authorization: false.
