@@ -200,7 +200,7 @@
     {
       "instance_id": "simpeg__simpeg-1633",
       "timestamp_reconciliation": "endpoint_resource_reconciled",
-      "documentary_license_screen": "no_obvious_prohibition_identified",
+      "documentary_license_screen": "root_MIT_screened_not_full_dependency_clearance",
       "license_manifest_path": "research_candidates/evidence_abstention/SIMPEG_1633_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json",
       "license_manifest_sha256": "5ed05695311801a26f5475083ee65e28f787d275a6878779732ed5098327342f",
       "case_acceptance": "not_accepted",
@@ -209,16 +209,10 @@
         "technical_reproduction",
         "independence_review",
         "gold_and_evidence_tier_adjudication"
-      ]
-    },
-    {
-      "instance_id": "simpeg__simpeg-1633",
+      ],
       "cohort_row": 63,
       "status": "excluded_from_primary_bug_case_shortlist_after_issue_pr_semantic_review",
       "reason": "Linked issue #1609 documents a docstring/return-value mismatch and explicitly leaves the expected aggregate for heterogeneous receiver components undefined. PR #1633 does not implement the issue's proposed integer return; it deprecates the property and adds a FutureWarning test. The change may be a defensible API deprecation, but it does not provide a clear issue-specific fail-to-pass oracle for the intended bug endpoint.",
-      "timestamp_reconciliation": "endpoint_resource_reconciled",
-      "documentary_license_screen": "root_MIT_screened_not_full_dependency_clearance",
-      "case_acceptance": "not_accepted",
       "inference_authorized": false
     },
     {
@@ -549,7 +543,7 @@
     {
       "instance_id": "CS-SI__eodag-1536",
       "cohort_rank": 16,
-      "status": "static_issue_patch_and_root_license_screen_passed_mixed_scope_reproduction_isolation_pending",
+      "status": "issue_patch_and_minimal_yaml_reproducer_prepared_dataset_selector_audit_pending",
       "issue_url": "https://github.com/CS-SI/eodag/issues/1530",
       "pull_request_url": "https://github.com/CS-SI/eodag/pull/1536",
       "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
@@ -568,13 +562,25 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "isolate_dataset_fail_to_pass_selectors_for_issue_1530",
-        "CF_or_external_config_data_provenance_review_if_applicable",
-        "full_dependency_license_inventory_or_validated_minimal_reproducer",
-        "same_test_base_fail_fixed_pass_reproduction",
-        "independence_and_exposure_review",
+        "authenticate_exact_dataset_row_and_created_at_timestamp",
+        "inspect_dataset_FAIL_TO_PASS_selectors_for_issue_1530_scope",
+        "same_test_base_fail_fixed_pass_workflow",
+        "independence_and_related_issue_family_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
-      ]
+      ],
+      "issue_created_at": "2025-02-20T11:38:36Z",
+      "pull_request_created_at": "2025-02-21T10:04:30Z",
+      "exact_base_notice_blob_sha": "9f763bc3c2f90854b8209ce60e23c8fc03c6ec7e",
+      "exact_base_yaml_blob_sha": "0d6c9e24a3294dd12c2b09e844ef3990b01a0a5b",
+      "fixed_yaml_blob_sha": "5221bd2d052bdd60363367d3be51044e1cc95c76",
+      "minimal_reproducer_path": "research_candidates/evidence_abstention/reproduction/eodag_issue_1530/test_issue_1530.py",
+      "minimal_reproducer_dependency_lock": "research_candidates/evidence_abstention/reproduction/eodag_issue_1530/requirements.lock",
+      "minimal_reproduction_environment": "Python 3.11.9; PyYAML 6.0.2 only; source YAML parsed directly; no EODAG import or external fixture",
+      "dependency_license_review": "PyYAML is declared in exact-base setup.cfg and listed as MIT in exact-base NOTICE; exact minimal environment only",
+      "scope_warning": "PR #1536 also adds StacListAssets support. Dataset FAIL_TO_PASS selectors must be audited to ensure issue #1530 is isolated from the separate feature.",
+      "dataset_row_timestamp_status": "pending_workflow_authentication",
+      "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
+      "reproduction_workflow_path": ".github/workflows/evidence-abstention-preflight.yml#eodag-issue-1530-reproduction"
     },
     {
       "instance_id": "pallets__click-2788",
@@ -599,40 +605,6 @@
       "hold_reason": "The exact public issue predates the model's public release by more than four years. Training-data exposure is plausible and cannot be ruled out, so this candidate is held out of the primary cohort.",
       "case_acceptance": "not_accepted",
       "inference_authorized": false
-    },
-    {
-      "instance_id": "CS-SI__eodag-1536",
-      "cohort_rank": 16,
-      "status": "issue_patch_and_minimal_yaml_reproducer_prepared_dataset_selector_audit_pending",
-      "issue_url": "https://github.com/CS-SI/eodag/issues/1530",
-      "pull_request_url": "https://github.com/CS-SI/eodag/pull/1536",
-      "issue_created_at": "2025-02-20T11:38:36Z",
-      "pull_request_created_at": "2025-02-21T10:04:30Z",
-      "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
-      "fixed_commit": "312966a46513a082333d46cd7212bdce36aaf769",
-      "merge_commit": "697b5c851f7f15ccb48c9e749061314118f26e3b",
-      "exact_base_root_license": "Apache-2.0",
-      "exact_base_license_blob_sha": "1a9893b43e8e6d46ff5cda60ab6562850b7f78ff",
-      "exact_base_notice_blob_sha": "9f763bc3c2f90854b8209ce60e23c8fc03c6ec7e",
-      "exact_base_yaml_blob_sha": "0d6c9e24a3294dd12c2b09e844ef3990b01a0a5b",
-      "fixed_yaml_blob_sha": "5221bd2d052bdd60363367d3be51044e1cc95c76",
-      "minimal_reproducer_path": "research_candidates/evidence_abstention/reproduction/eodag_issue_1530/test_issue_1530.py",
-      "minimal_reproducer_dependency_lock": "research_candidates/evidence_abstention/reproduction/eodag_issue_1530/requirements.lock",
-      "minimal_reproduction_environment": "Python 3.11.9; PyYAML 6.0.2 only; source YAML parsed directly; no EODAG import or external fixture",
-      "dependency_license_review": "PyYAML is declared in exact-base setup.cfg and listed as MIT in exact-base NOTICE; exact minimal environment only",
-      "scope_warning": "PR #1536 also adds StacListAssets support. Dataset FAIL_TO_PASS selectors must be audited to ensure issue #1530 is isolated from the separate feature.",
-      "dataset_row_timestamp_status": "pending_workflow_authentication",
-      "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
-      "case_acceptance": "not_accepted",
-      "inference_authorized": false,
-      "reproduction_workflow_path": ".github/workflows/evidence-abstention-preflight.yml#eodag-issue-1530-reproduction",
-      "remaining_gates": [
-        "authenticate_exact_dataset_row_and_created_at_timestamp",
-        "inspect_dataset_FAIL_TO_PASS_selectors_for_issue_1530_scope",
-        "same_test_base_fail_fixed_pass_workflow",
-        "independence_and_related_issue_family_review",
-        "gold_standard_and_E1_E2_E3_human_adjudication"
-      ]
     },
     {
       "instance_id": "getmoto__moto-8296",
