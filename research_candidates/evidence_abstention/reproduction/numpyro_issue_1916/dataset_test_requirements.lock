@@ -1,0 +1,19 @@
+# CPU-only minimal NumPyro #1916 runtime and test dependencies.
+# Install with --no-deps; direct and transitive packages are explicitly pinned.
+jax==0.4.35
+jaxlib==0.4.35
+numpy==1.26.4
+scipy==1.14.1
+ml-dtypes==0.5.0
+opt-einsum==3.4.0
+multipledispatch==1.0.0
+tqdm==4.67.1
+absl-py==2.1.0
+pytest==8.3.3
+iniconfig==2.0.0
+packaging==24.2
+pluggy==1.5.0
+pygments==2.18.0
+pyro-api==0.1.2
+importlib-metadata==4.13.0
+zipp==3.21.0
