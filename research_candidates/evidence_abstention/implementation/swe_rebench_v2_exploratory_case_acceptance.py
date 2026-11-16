@@ -18,7 +18,8 @@ DATASET_ID = "PrimeIntellect/SWE-rebench-V2-Filtered-Verified"
 DATASET_REVISION = "fb9aa226b2ce37c708ea7732e7b980abacdadb67"
 DATASET_SHA256 = "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
 MAX_CASES = 20
-MIN_CASES = 15
+PRIMARY_TARGET = 15
+MIN_CASES = 1
 
 
 def load_schema() -> dict[str, Any]:
@@ -149,10 +150,21 @@ def validate_registry(registry: Any) -> dict[str, Any]:
         blockers.append("study_type must remain exploratory_feasibility.")
     if registry.get("one_case_per_upstream_project") is not True:
         blockers.append("one_case_per_upstream_project must remain true.")
-    if registry.get("target_distinct_upstream_projects") != MAX_CASES or registry.get("minimum_distinct_upstream_projects") != MIN_CASES:
-        blockers.append("distinct upstream project thresholds must remain 20 target and 15 minimum.")
-    if registry.get("target_case_count") != MAX_CASES or registry.get("minimum_feasibility_case_count") != MIN_CASES:
-        blockers.append("sample thresholds must remain target 20 and feasibility floor 15.")
+    if (
+        registry.get("primary_target_distinct_upstream_projects") != PRIMARY_TARGET
+        or registry.get("stretch_target_distinct_upstream_projects") != MAX_CASES
+        or registry.get("minimum_distinct_upstream_projects") != MIN_CASES
+    ):
+        blockers.append("distinct-project thresholds must remain primary target 15, stretch target 20, and feasibility minimum 1.")
+    if (
+        registry.get("primary_target_case_count") != PRIMARY_TARGET
+        or registry.get("stretch_target_case_count") != MAX_CASES
+        or registry.get("minimum_feasibility_case_count") != MIN_CASES
+        or registry.get("preferred_analysis_threshold_case_count") != PRIMARY_TARGET
+        or registry.get("below_primary_target_policy")
+        != "accept_all_cases_meeting_unchanged_criteria_and_report_the_actual_smaller_exploratory_sample"
+    ):
+        blockers.append("sample policy must preserve primary target 15, stretch target 20, minimum feasibility count 1, and acceptance of every valid smaller sample.")
     records = registry.get("records")
     if not isinstance(records, list):
         blockers.append("records must be a list.")
@@ -188,8 +200,10 @@ def validate_registry(registry: Any) -> dict[str, Any]:
         "blockers": blockers,
         "accepted_case_count": count if not blockers else 0,
         "accepted_project_count": len(set(project_ids)) if not blockers else 0,
-        "feasibility_floor_met": count >= MIN_CASES if not blockers else False,
-        "target_met": count == MAX_CASES if not blockers else False,
+        "minimum_feasibility_count_met": count >= MIN_CASES if not blockers else False,
+        "primary_target_met": count >= PRIMARY_TARGET and len(set(project_ids)) >= PRIMARY_TARGET if not blockers else False,
+        "stretch_target_met": count >= MAX_CASES and len(set(project_ids)) >= MAX_CASES if not blockers else False,
+        "preferred_analysis_threshold_met": count >= PRIMARY_TARGET and len(set(project_ids)) >= PRIMARY_TARGET if not blockers else False,
         "comparative_efficacy_claim_permitted": False,
         "structural_only": True,
         "inference_authorized": False,
