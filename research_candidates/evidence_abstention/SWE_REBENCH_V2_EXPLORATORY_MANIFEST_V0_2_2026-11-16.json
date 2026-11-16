@@ -179,7 +179,10 @@
     "Nox #922 (primary rank 6) passed static issue/patch alignment and exact-base Apache-2.0 root-license screening. A separate minimal dependency environment, dependency license metadata gate, and exact base-fail/fixed-pass workflow have been added; no reproduction result is claimed until the workflow is observed.",
     "NumPyro #1916 (primary rank 12) passed static issue/patch alignment and source license screening: exact-base setup.py declares Apache License 2.0 and changed files carry SPDX Apache-2.0 headers. A CPU-only pinned environment and exact dataset FAIL_TO_PASS workflow have been added; reproduction is pending and the case is not accepted.",
     "Werkzeug #2955 (primary rank 32) passed static issue/patch alignment and exact-base BSD-3-Clause source-license screening. A Python 3.12.7 minimal environment and exact dataset FAIL_TO_PASS reproduction job have been added; test execution remains pending.",
-    "Robocop #1371 (primary rank 24) passed static issue/patch alignment and exact-base Apache-2.0 source-license screening. A pinned Robot Framework/Typer test environment and exact dataset FAIL_TO_PASS workflow have been added. The pathspec dependency's license metadata requires explicit compatibility review; reproduction remains pending."
+    "Robocop #1371 (primary rank 24) passed static issue/patch alignment and exact-base Apache-2.0 source-license screening. A pinned Robot Framework/Typer test environment and exact dataset FAIL_TO_PASS workflow have been added. The pathspec dependency's license metadata requires explicit compatibility review; reproduction remains pending.",
+    "Dymos #1166 (primary rank 15) passed static issue/patch alignment and exact-base Apache-2.0 license screening. The PR fixes ignored add_control/set_control_options val defaults; the fix spans control interpolation and explicit shooting. Reproduction remains pending because a focused OpenMDAO environment and its dependency license inventory are needed.",
+    "EODAG #1530 (primary rank 16) passed static issue/patch alignment and exact-base Apache-2.0 root-license screening. PR #1536 also resolves #1517 and adds StacListAssets support, so dataset selectors must be isolated to the duplicate geodes/geodes_s3 YAML key defect before counting this candidate.",
+    "Click #2746 (primary rank 33) and mpmath #511 (primary rank 40) are held out of the primary intake because their exact public issues predate the September 2024 model release, creating elevated potential training-data exposure. This is a precaution, not a claim that either issue was in the training set."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -489,6 +492,92 @@
         "independence_and_related_issue_family_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ]
+    },
+    {
+      "instance_id": "openmdao__dymos-1165",
+      "cohort_rank": 15,
+      "status": "static_issue_patch_and_root_license_screen_passed_reproduction_environment_pending",
+      "issue_url": "https://github.com/OpenMDAO/dymos/issues/1166",
+      "pull_request_url": "https://github.com/OpenMDAO/dymos/pull/1165",
+      "base_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "fixed_commit": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
+      "merge_commit": "da8cfbb1199021f9144f3205a6ccf2fabfa08298",
+      "exact_base_root_license": "Apache-2.0",
+      "exact_base_license_blob_sha": "55da29e11b1fb2465936598779085f1cbcdf2908",
+      "exact_base_pyproject_license": "Apache-2.0",
+      "exact_base_pyproject_blob_sha": "739e56592adfa10e0583b5f71fa4d36837e5a88c",
+      "changed_files": [
+        "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+        "dymos/transcriptions/common/control_comp.py",
+        "dymos/transcriptions/common/test/test_control_interp_comp.py",
+        "dymos/transcriptions/explicit_shooting/explicit_shooting.py",
+        "dymos/transcriptions/explicit_shooting/ode_evaluation_group.py",
+        "dymos/utils/misc.py"
+      ],
+      "issue_patch_alignment": "Issue #1166 reports that add_control/set_control_options val defaults were ignored. PR #1165 changes the control input defaults to use reshape_val and adds/rewrites tests that verify the defaults stick. The fix is broad across control interpolation and explicit shooting; the primary failure contract remains identifiable.",
+      "dependency_scope": "Dymos declares numpy, openmdao>=3.36.0, and scipy; PR declares no new dependencies. A focused OpenMDAO runtime is still required.",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false,
+      "remaining_gates": [
+        "minimal_openmdao_dependency_and_license_inventory",
+        "dataset_fail_to_pass_base_fail_fixed_pass_reproduction",
+        "independence_and_related_issue_family_review",
+        "gold_standard_and_E1_E2_E3_human_adjudication"
+      ]
+    },
+    {
+      "instance_id": "CS-SI__eodag-1536",
+      "cohort_rank": 16,
+      "status": "static_issue_patch_and_root_license_screen_passed_mixed_scope_reproduction_isolation_pending",
+      "issue_url": "https://github.com/CS-SI/eodag/issues/1530",
+      "pull_request_url": "https://github.com/CS-SI/eodag/pull/1536",
+      "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+      "fixed_commit": "312966a46513a082333d46cd7212bdce36aaf769",
+      "merge_commit": "697b5c851f7f15ccb48c9e749061314118f26e3b",
+      "exact_base_root_license": "Apache-2.0",
+      "exact_base_license_blob_sha": "1a9893b43e8e6d46ff5cda60ab6562850b7f78ff",
+      "changed_files": [
+        "eodag/config.py",
+        "eodag/resources/user_conf_template.yml",
+        "tests/units/test_core.py"
+      ],
+      "issue_patch_alignment": "Issue #1530 reports duplicate geodes keys in the user configuration template, causing the geodes_s3 credentials block to overwrite geodes and break public Geodes access. PR #1536 renames the duplicate key to geodes_s3 and updates provider tests.",
+      "mixed_scope_warning": "The same PR also resolves issue #1517 and adds StacListAssets support in provider configuration. Dataset FAIL_TO_PASS selectors must be checked to ensure the candidate's primary test oracle isolates issue #1530 rather than combining distinct defects/features.",
+      "dependency_scope": "EODAG has a broad geospatial dependency stack; a minimal YAML-only reproducer is possible, but the full dataset test path and dependency licenses remain open.",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false,
+      "remaining_gates": [
+        "isolate_dataset_fail_to_pass_selectors_for_issue_1530",
+        "CF_or_external_config_data_provenance_review_if_applicable",
+        "full_dependency_license_inventory_or_validated_minimal_reproducer",
+        "same_test_base_fail_fixed_pass_reproduction",
+        "independence_and_exposure_review",
+        "gold_standard_and_E1_E2_E3_human_adjudication"
+      ]
+    },
+    {
+      "instance_id": "pallets__click-2788",
+      "cohort_rank": 33,
+      "status": "held_high_pre_release_temporal_exposure_risk",
+      "issue_url": "https://github.com/pallets/click/issues/2746",
+      "pull_request_url": "https://github.com/pallets/click/pull/2788",
+      "issue_created_at": "2024-06-24T12:01:57Z",
+      "model_public_release_reference": "Qwen2.5-3B-Instruct public release September 2024",
+      "hold_reason": "The exact public issue predates the model's public release by several months. Training-data inclusion cannot be established or ruled out, so this candidate is held out of the primary cohort to reduce temporal exposure risk.",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false
+    },
+    {
+      "instance_id": "mpmath__mpmath-902",
+      "cohort_rank": 40,
+      "status": "held_high_pre_release_temporal_exposure_risk",
+      "issue_url": "https://github.com/mpmath/mpmath/issues/511",
+      "pull_request_url": "https://github.com/mpmath/mpmath/pull/902",
+      "issue_created_at": "2020-01-17T19:05:48Z",
+      "model_public_release_reference": "Qwen2.5-3B-Instruct public release September 2024",
+      "hold_reason": "The exact public issue predates the model's public release by more than four years. Training-data exposure is plausible and cannot be ruled out, so this candidate is held out of the primary cohort.",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false
     }
   ],
   "candidate_triage_ledger": {
