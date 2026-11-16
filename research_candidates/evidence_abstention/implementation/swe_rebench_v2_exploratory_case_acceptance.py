@@ -50,6 +50,12 @@ def validate_case_record(record: Any) -> dict[str, Any]:
     dataset = record["dataset"]
     if dataset["timestamp_reconciliation_status"] == "exact_match" and dataset["created_at_dataset_utc"] != dataset["created_at_upstream_utc"]:
         blockers.append("timestamp status claims exact_match but the dataset and upstream timestamps differ.")
+    resource_type = source["resource_type"]
+    source_url = source["issue_or_pr_url"]
+    if resource_type == "pull_request" and "/pull/" not in source_url:
+        blockers.append("pull_request resource_type must use a GitHub /pull/ URL.")
+    if resource_type == "issue" and "/issues/" not in source_url:
+        blockers.append("issue resource_type must use a GitHub /issues/ URL.")
     if source["base_commit_sha"] == source["fixed_commit_sha"]:
         blockers.append("base and fixed commit SHAs must differ.")
     if technical["buggy_baseline"]["commit_sha"] != source["base_commit_sha"]:
