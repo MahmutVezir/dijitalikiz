@@ -1,0 +1,26 @@
+# Minimal pyfar #721 runtime and test dependencies for Python 3.12.4.
+# Install with --no-deps; all direct and transitive packages are explicitly pinned.
+numpy==1.26.4
+scipy==1.14.1
+matplotlib==3.9.2
+sofar==1.1.3
+urllib3==2.2.3
+deepdiff==8.0.1
+soundfile==0.12.1
+h5py==3.12.1
+pytest==8.3.3
+contourpy==1.3.0
+cycler==0.12.1
+fonttools==4.54.1
+kiwisolver==1.4.7
+packaging==24.2
+pillow==11.0.0
+pyparsing==3.2.0
+python-dateutil==2.9.0.post0
+six==1.16.0
+cffi==1.17.1
+pycparser==2.22
+orderly-set==5.2.3
+iniconfig==2.0.0
+pluggy==1.5.0
+pygments==2.18.0
