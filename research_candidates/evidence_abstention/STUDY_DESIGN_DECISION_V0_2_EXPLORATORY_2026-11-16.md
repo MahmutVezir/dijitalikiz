@@ -24,7 +24,7 @@ A correct guess is not automatically an evidence-supported diagnosis. The study 
 - Target: 20 accepted cases from 20 distinct upstream projects.
 - Fifteen cases is the preferred analysis threshold, not an eligibility floor.
 - One case per upstream project. Forks, mirrors, transfers, duplicate issues, and shared upstream identities are grouped and cannot be counted as independent projects.
-- If 15 qualifying independent projects cannot be obtained, report the achieved smaller feasibility sample and its limits; do not duplicate projects to inflate N or relax acceptance criteria.
+- If 15 qualifying independent projects cannot be obtained, retain every case that passes the unchanged acceptance criteria. Report the achieved N and its limits; do not duplicate projects to inflate N or relax acceptance criteria. With N=1–4, report case-level feasibility only; with N=5–14, report paired descriptive results without a hypothesis-test claim; with N=15–20, exploratory paired summaries and exact McNemar may be reported, still without confirmatory efficacy claims.
 - The existing 96 primary rows and 17 project reserves are candidate metadata only. None is accepted by this decision.
 
 The 20-case target is not a power guarantee. This is not a confirmatory efficacy trial and will not be described as one.
