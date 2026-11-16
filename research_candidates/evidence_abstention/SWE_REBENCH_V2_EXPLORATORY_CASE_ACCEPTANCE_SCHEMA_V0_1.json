@@ -232,7 +232,8 @@
         "review_record",
         "changed_file_license_manifest",
         "research_use_decision",
-        "scope_limitation"
+        "scope_limitation",
+        "root_license_file"
       ],
       "properties": {
         "root_license_expression": {
@@ -265,6 +266,36 @@
         },
         "scope_limitation": {
           "const": "documentary_screening_only_not_legal_advice"
+        },
+        "root_license_file": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "commit_sha",
+            "blob_sha",
+            "content_sha256",
+            "license_expression"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "commit_sha": {
+              "$ref": "#/$defs/commit"
+            },
+            "blob_sha": {
+              "$ref": "#/$defs/commit"
+            },
+            "content_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "license_expression": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
         }
       }
     },
@@ -297,7 +328,8 @@
             "commit_sha",
             "exit_code",
             "failure_signature",
-            "run_record"
+            "run_record",
+            "test_selector"
           ],
           "properties": {
             "commit_sha": {
@@ -312,6 +344,10 @@
             },
             "run_record": {
               "$ref": "#/$defs/artifact"
+            },
+            "test_selector": {
+              "type": "string",
+              "minLength": 1
             }
           }
         },
@@ -322,7 +358,8 @@
             "commit_sha",
             "exit_code",
             "same_test_passed",
-            "run_record"
+            "run_record",
+            "test_selector"
           ],
           "properties": {
             "commit_sha": {
@@ -336,6 +373,10 @@
             },
             "run_record": {
               "$ref": "#/$defs/artifact"
+            },
+            "test_selector": {
+              "type": "string",
+              "minLength": 1
             }
           }
         },
