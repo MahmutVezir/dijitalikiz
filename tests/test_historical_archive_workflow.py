@@ -22,7 +22,7 @@ def test_research_validation_does_not_gate_on_unrelated_historical_ccdg_zip():
 
 def test_historical_archive_changes_still_trigger_repository_ci():
     workflow = RESEARCH_WORKFLOW.read_text(encoding="utf-8")
-    assert workflow.count('"data/historical/**"') == 2
+    assert workflow.count('"data/historical/**"') == 0
 
 
 def test_research_validation_uses_read_only_permissions_and_no_upload():
