@@ -319,6 +319,13 @@ jobs:
           test "$(git -C dependency-groups-license-source rev-parse HEAD:LICENSE.txt)" = "b9723b85ed7adb32f8c2b4ee880c06ec3061da50"
           test "$(git -C dependency-groups-license-source rev-parse HEAD:pyproject.toml)" = "db86f496d8dc41647df91b76d0b1319b9aa94974"
           grep -F 'license = { text = "MIT" }' dependency-groups-license-source/pyproject.toml
+          git clone https://github.com/python-attrs/attrs.git attrs-license-source
+          git -C attrs-license-source checkout --detach 598494a618410490cfbe0c896b7a544f6d23e0d9
+          test "$(git -C attrs-license-source rev-parse HEAD)" = "598494a618410490cfbe0c896b7a544f6d23e0d9"
+          test "$(git -C attrs-license-source rev-parse HEAD:LICENSE)" = "2bd6453d255e19b973f19b128596a8b6dd65b2c3"
+          test "$(git -C attrs-license-source rev-parse HEAD:pyproject.toml)" = "0b598099fdd945dcb75f3145909a9b4a85a93972"
+          grep -F 'license = "MIT"' attrs-license-source/pyproject.toml
+          grep -F 'license-files = ["LICENSE"]' attrs-license-source/pyproject.toml
           .venv-tests/bin/python - <<'PY'
           import importlib.metadata as md
           import json
@@ -339,6 +346,16 @@ jobs:
                           "license_file": "LICENSE.txt",
                           "license_file_git_blob_sha": "b9723b85ed7adb32f8c2b4ee880c06ec3061da50",
                           "pyproject_git_blob_sha": "db86f496d8dc41647df91b76d0b1319b9aa94974",
+                      }
+                  elif name == "attrs" and md.version(name) == "24.3.0" and Path("attrs-license-source/LICENSE").is_file():
+                      license_text = "MIT"
+                      evidence = {
+                          "source_repository": "https://github.com/python-attrs/attrs",
+                          "source_tag": "24.3.0",
+                          "source_commit": "598494a618410490cfbe0c896b7a544f6d23e0d9",
+                          "license_file": "LICENSE",
+                          "license_file_git_blob_sha": "2bd6453d255e19b973f19b128596a8b6dd65b2c3",
+                          "pyproject_git_blob_sha": "0b598099fdd945dcb75f3145909a9b4a85a93972",
                       }
                   else:
                       raise SystemExit(f"License metadata missing for {name}; stop before source tests")
@@ -465,7 +482,11 @@ jobs:
           cp research_candidates/evidence_abstention/DEPENDENCY_GROUPS_1_3_0_LICENSE_REVIEW_2026-11-16.md reproduction-evidence/
           cp dependency-groups-license-source/LICENSE.txt reproduction-evidence/dependency-groups-LICENSE.txt
           cp dependency-groups-license-source/pyproject.toml reproduction-evidence/dependency-groups-pyproject.toml
+          cp research_candidates/evidence_abstention/ATTRS_24_3_0_LICENSE_REVIEW_2026-11-16.md reproduction-evidence/
+          cp attrs-license-source/LICENSE reproduction-evidence/attrs-LICENSE
+          cp attrs-license-source/pyproject.toml reproduction-evidence/attrs-pyproject.toml
           git -C dependency-groups-license-source rev-parse HEAD > reproduction-evidence/dependency-groups-source-commit.txt
+          git -C attrs-license-source rev-parse HEAD > reproduction-evidence/attrs-source-commit.txt
           (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
           {
             echo "### Nox #919 exact fail-to-pass reproduction"
