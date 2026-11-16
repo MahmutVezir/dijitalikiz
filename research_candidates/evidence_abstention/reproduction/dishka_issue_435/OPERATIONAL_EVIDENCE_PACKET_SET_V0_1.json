@@ -1,0 +1,231 @@
+{
+  "schema_version": "1.0",
+  "packet_set_id": "PACKETSET_DISHKA_435_20261116",
+  "packets": {
+    "E1": {
+      "schema_version": "1.0",
+      "packet_id": "PACKET_DISHKA_E1_20261116",
+      "evidence_items": [
+        {
+          "id": "ISSUE_REPORT",
+          "kind": "documentation",
+          "content": "Issue #435: REQUEST int=1 followed by APP int=42 still resolves to 1; the reporter expects the later cross-scope provider to win. Issue created 2025-04-14T17:22:16Z.",
+          "content_sha256": "690f8fdb6bbfdfeeb0eed9ac8ae353794d345f32b1e24e0837f269955673831b",
+          "source_snapshot_sha256": "086ee0aba856f76397da74a704d98cc8a82e40e165739d9cc352b202d103e8f3"
+        },
+        {
+          "id": "ISSUE_REPRODUCER",
+          "kind": "source_excerpt",
+          "content": "Independent stdlib unittest reproducer registers RealProvider(REQUEST)->1, ServiceProvider(REQUEST)->Interactor, FakeProvider(APP)->42; test_issue_435_override_lower_scope asserts service() == 42.",
+          "content_sha256": "294dd033cf4346e204e75c58ff9a4099e515c3f8f9c78f892fc104b6711fe775",
+          "source_snapshot_sha256": "4d06c3ab006c43b134daa7c2b6df5b13ec4e087cecde4170570d6a6f213229f8"
+        },
+        {
+          "id": "BASE_ISSUE_FAILURE_LOG",
+          "kind": "test_output",
+          "content": "test_issue_435_override_lower_scope ... FAIL\\nAssertionError: 1 != 42\\nRan 1 test ... FAILED (failures=1)",
+          "content_sha256": "3731edec25d320a77f2658f97cedc269eabdf9dc762b5d2ce1e75b7b49d54d07",
+          "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827"
+        },
+        {
+          "id": "FIXED_ISSUE_PASS_LOG",
+          "kind": "test_output",
+          "content": "test_issue_435_override_lower_scope ... ok\\nRan 1 test ... OK",
+          "content_sha256": "3cbda7b32aca2e3687abf38bba9a567a193bd9e3acd9578500ac97eb2d8c48f6",
+          "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827"
+        },
+        {
+          "id": "DATASET_BASE_FAIL_LOG",
+          "kind": "test_output",
+          "content": "Exact pinned FAIL_TO_PASS selectors: 8 failed in 0.21s. Failures are assertion, alias-resolution, context and factory-registration defects; no collection failure.",
+          "content_sha256": "f769e97406d17f1c57fd7c6bb9c3bb5c4776bd468e052052e4d87d56139ed533",
+          "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827"
+        },
+        {
+          "id": "DATASET_FIXED_PASS_LOG",
+          "kind": "test_output",
+          "content": "Same exact pinned FAIL_TO_PASS selector set on fixed revision: 8 passed in 0.05s.",
+          "content_sha256": "4f253510a6dca375daf84c16df7c05491f2c3a1e75288eb6bd5ea5c4e153ffa9",
+          "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827"
+        },
+        {
+          "id": "DATASET_ROW",
+          "kind": "documentation",
+          "content": "instance_id=reagento__dishka-436; repo=reagento/dishka; base=8718d5af93f9e48bc2506c64827663fdccc5ad89; created_at=2025-04-15 22:52:26 UTC (PR #436); canonical-row SHA-256=c548969ec886af21b56c93daae34db1a86b3a10c8dd1473d3d5c886549a9e86d; Parquet SHA-256=7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+          "content_sha256": "6b640d0468bcab7a8f2ec9502b639d445b105f2e2c87e94c991cb7aab860111e",
+          "source_snapshot_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+        },
+        {
+          "id": "BASE_CONTAINER_LOOKUP",
+          "kind": "source_excerpt",
+          "content": "Container lookup order: check current container cache; resolve compiled factory from current-scope registry; only when no local factory exists, delegate to parent container.",
+          "content_sha256": "d6b24cca0dafa407e03241da7ab98fa4cf2c50ab9c815213115759288d73ba31",
+          "source_snapshot_sha256": "23bc4ba168e03a2f053c58f98bdf388a9bc21c920c99332fbc4bc53fb5f641c6"
+        },
+        {
+          "id": "BASE_REGISTRY_LOOKUP",
+          "kind": "source_excerpt",
+          "content": "Registry.get_factory first looks up the dependency in the current registry's factories mapping; absent key returns None (then generic handling may follow).",
+          "content_sha256": "16678b183771b30d174ecb9f0bca336a7fcbbb0a4e29d55a5779e33c689363e7",
+          "source_snapshot_sha256": "24a9967f47a11d63a0d12bd1f3a9ec590f12aa85d55361aba032acaf94674fe3"
+        },
+        {
+          "id": "BASE_REGISTRY_BUILDER",
+          "kind": "source_excerpt",
+          "content": "Buggy builder during _process_factory: self.processed_factories[provides] = factory; registry = self.registries[cast(Scope, factory.scope)]; registry.add_factory(factory).",
+          "content_sha256": "d7827e50e88895f7e67b21999f821ace22b92f7df8b0526bbabaf6a3dfd9f9e2",
+          "source_snapshot_sha256": "58cdb82ab89e44549fbf8789390c085040e1f862d0d9887859310959d42dd84f"
+        },
+        {
+          "id": "FIXED_REGISTRY_BUILDER",
+          "kind": "source_excerpt",
+          "content": "Fixed builder defers population: for key, factory in self.processed_factories.items(): scope = cast(BaseScope, factory.scope); registries[scope].add_factory(factory, key); return tuple(registries.values()).",
+          "content_sha256": "da4515c87bed9fff27d77493a19fe48dbf0dd67a6b3b45d06875ed335dd37191",
+          "source_snapshot_sha256": "eb245123fd20eb629b7c80ccf0a57246c1bd48db337e019d87db7447ee081a60"
+        },
+        {
+          "id": "REGISTRY_BUILDER_DIFF",
+          "kind": "source_excerpt",
+          "content": "Diff removes immediate per-scope insertion during provider processing and constructs registries after all providers are processed, using the final processed_factories mapping.",
+          "content_sha256": "688a46b519c67b3372e0780efe12fa8875c528d1db495735614cdc50927d5933",
+          "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827"
+        },
+        {
+          "id": "UPSTREAM_CROSS_SCOPE_TEST",
+          "kind": "source_excerpt",
+          "content": "Upstream test test_override_different_scope covers APP->REQUEST, REQUEST->APP, APP->APP and asserts the later provider's value is returned.",
+          "content_sha256": "d4dc1960cf2ab4ab86de27e20ca6c64942d8ae3d438020226ed235371d99f1ae",
+          "source_snapshot_sha256": "58b027fab7170fff552d1019b3051f2611ef068a2360e98bf3bd55681e60b462"
+        }
+      ],
+      "packet_sha256": "cc46494b6b2deb0de40a757b19ec2a7cdf70b7c916518ff277c22f0d4ea99496"
+    },
+    "E2": {
+      "schema_version": "1.0",
+      "packet_id": "PACKET_DISHKA_E2_20261116",
+      "evidence_items": [
+        {
+          "id": "ISSUE_REPORT",
+          "kind": "documentation",
+          "content": "Issue #435: REQUEST int=1 followed by APP int=42 still resolves to 1; the reporter expects the later cross-scope provider to win. Issue created 2025-04-14T17:22:16Z.",
+          "content_sha256": "690f8fdb6bbfdfeeb0eed9ac8ae353794d345f32b1e24e0837f269955673831b",
+          "source_snapshot_sha256": "086ee0aba856f76397da74a704d98cc8a82e40e165739d9cc352b202d103e8f3"
+        },
+        {
+          "id": "ISSUE_REPRODUCER",
+          "kind": "source_excerpt",
+          "content": "Independent stdlib unittest reproducer registers RealProvider(REQUEST)->1, ServiceProvider(REQUEST)->Interactor, FakeProvider(APP)->42; test_issue_435_override_lower_scope asserts service() == 42.",
+          "content_sha256": "294dd033cf4346e204e75c58ff9a4099e515c3f8f9c78f892fc104b6711fe775",
+          "source_snapshot_sha256": "4d06c3ab006c43b134daa7c2b6df5b13ec4e087cecde4170570d6a6f213229f8"
+        },
+        {
+          "id": "BASE_ISSUE_FAILURE_LOG",
+          "kind": "test_output",
+          "content": "test_issue_435_override_lower_scope ... FAIL\\nAssertionError: 1 != 42\\nRan 1 test ... FAILED (failures=1)",
+          "content_sha256": "3731edec25d320a77f2658f97cedc269eabdf9dc762b5d2ce1e75b7b49d54d07",
+          "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827"
+        },
+        {
+          "id": "FIXED_ISSUE_PASS_LOG",
+          "kind": "test_output",
+          "content": "test_issue_435_override_lower_scope ... ok\\nRan 1 test ... OK",
+          "content_sha256": "3cbda7b32aca2e3687abf38bba9a567a193bd9e3acd9578500ac97eb2d8c48f6",
+          "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827"
+        },
+        {
+          "id": "DATASET_BASE_FAIL_LOG",
+          "kind": "test_output",
+          "content": "Exact pinned FAIL_TO_PASS selectors: 8 failed in 0.21s. Failures are assertion, alias-resolution, context and factory-registration defects; no collection failure.",
+          "content_sha256": "f769e97406d17f1c57fd7c6bb9c3bb5c4776bd468e052052e4d87d56139ed533",
+          "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827"
+        },
+        {
+          "id": "DATASET_FIXED_PASS_LOG",
+          "kind": "test_output",
+          "content": "Same exact pinned FAIL_TO_PASS selector set on fixed revision: 8 passed in 0.05s.",
+          "content_sha256": "4f253510a6dca375daf84c16df7c05491f2c3a1e75288eb6bd5ea5c4e153ffa9",
+          "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827"
+        },
+        {
+          "id": "DATASET_ROW",
+          "kind": "documentation",
+          "content": "instance_id=reagento__dishka-436; repo=reagento/dishka; base=8718d5af93f9e48bc2506c64827663fdccc5ad89; created_at=2025-04-15 22:52:26 UTC (PR #436); canonical-row SHA-256=c548969ec886af21b56c93daae34db1a86b3a10c8dd1473d3d5c886549a9e86d; Parquet SHA-256=7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+          "content_sha256": "6b640d0468bcab7a8f2ec9502b639d445b105f2e2c87e94c991cb7aab860111e",
+          "source_snapshot_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+        },
+        {
+          "id": "BASE_CONTAINER_LOOKUP",
+          "kind": "source_excerpt",
+          "content": "Container lookup order: check current container cache; resolve compiled factory from current-scope registry; only when no local factory exists, delegate to parent container.",
+          "content_sha256": "d6b24cca0dafa407e03241da7ab98fa4cf2c50ab9c815213115759288d73ba31",
+          "source_snapshot_sha256": "23bc4ba168e03a2f053c58f98bdf388a9bc21c920c99332fbc4bc53fb5f641c6"
+        },
+        {
+          "id": "BASE_REGISTRY_LOOKUP",
+          "kind": "source_excerpt",
+          "content": "Registry.get_factory first looks up the dependency in the current registry's factories mapping; absent key returns None (then generic handling may follow).",
+          "content_sha256": "16678b183771b30d174ecb9f0bca336a7fcbbb0a4e29d55a5779e33c689363e7",
+          "source_snapshot_sha256": "24a9967f47a11d63a0d12bd1f3a9ec590f12aa85d55361aba032acaf94674fe3"
+        }
+      ],
+      "packet_sha256": "4cb061896822edee06a6c331591442d8507d0c356e0eddf15e78c46e76f42573"
+    },
+    "E3": {
+      "schema_version": "1.0",
+      "packet_id": "PACKET_DISHKA_E3_20261116",
+      "evidence_items": [
+        {
+          "id": "ISSUE_REPORT",
+          "kind": "documentation",
+          "content": "Issue #435: REQUEST int=1 followed by APP int=42 still resolves to 1; the reporter expects the later cross-scope provider to win. Issue created 2025-04-14T17:22:16Z.",
+          "content_sha256": "690f8fdb6bbfdfeeb0eed9ac8ae353794d345f32b1e24e0837f269955673831b",
+          "source_snapshot_sha256": "086ee0aba856f76397da74a704d98cc8a82e40e165739d9cc352b202d103e8f3"
+        },
+        {
+          "id": "ISSUE_REPRODUCER",
+          "kind": "source_excerpt",
+          "content": "Independent stdlib unittest reproducer registers RealProvider(REQUEST)->1, ServiceProvider(REQUEST)->Interactor, FakeProvider(APP)->42; test_issue_435_override_lower_scope asserts service() == 42.",
+          "content_sha256": "294dd033cf4346e204e75c58ff9a4099e515c3f8f9c78f892fc104b6711fe775",
+          "source_snapshot_sha256": "4d06c3ab006c43b134daa7c2b6df5b13ec4e087cecde4170570d6a6f213229f8"
+        },
+        {
+          "id": "BASE_ISSUE_FAILURE_LOG",
+          "kind": "test_output",
+          "content": "test_issue_435_override_lower_scope ... FAIL\\nAssertionError: 1 != 42\\nRan 1 test ... FAILED (failures=1)",
+          "content_sha256": "3731edec25d320a77f2658f97cedc269eabdf9dc762b5d2ce1e75b7b49d54d07",
+          "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827"
+        },
+        {
+          "id": "FIXED_ISSUE_PASS_LOG",
+          "kind": "test_output",
+          "content": "test_issue_435_override_lower_scope ... ok\\nRan 1 test ... OK",
+          "content_sha256": "3cbda7b32aca2e3687abf38bba9a567a193bd9e3acd9578500ac97eb2d8c48f6",
+          "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827"
+        },
+        {
+          "id": "DATASET_BASE_FAIL_LOG",
+          "kind": "test_output",
+          "content": "Exact pinned FAIL_TO_PASS selectors: 8 failed in 0.21s. Failures are assertion, alias-resolution, context and factory-registration defects; no collection failure.",
+          "content_sha256": "f769e97406d17f1c57fd7c6bb9c3bb5c4776bd468e052052e4d87d56139ed533",
+          "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827"
+        },
+        {
+          "id": "DATASET_FIXED_PASS_LOG",
+          "kind": "test_output",
+          "content": "Same exact pinned FAIL_TO_PASS selector set on fixed revision: 8 passed in 0.05s.",
+          "content_sha256": "4f253510a6dca375daf84c16df7c05491f2c3a1e75288eb6bd5ea5c4e153ffa9",
+          "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827"
+        },
+        {
+          "id": "DATASET_ROW",
+          "kind": "documentation",
+          "content": "instance_id=reagento__dishka-436; repo=reagento/dishka; base=8718d5af93f9e48bc2506c64827663fdccc5ad89; created_at=2025-04-15 22:52:26 UTC (PR #436); canonical-row SHA-256=c548969ec886af21b56c93daae34db1a86b3a10c8dd1473d3d5c886549a9e86d; Parquet SHA-256=7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+          "content_sha256": "6b640d0468bcab7a8f2ec9502b639d445b105f2e2c87e94c991cb7aab860111e",
+          "source_snapshot_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+        }
+      ],
+      "packet_sha256": "5abc525103a7714833a78ef2c2fd04456e79f7a39200392394342ea4e678fe09"
+    }
+  },
+  "packet_set_sha256": "55de204e87a9c2b5e24b56b4cb366fb3fc6a620ad7cbffd506c3c76fbca75604"
+}
