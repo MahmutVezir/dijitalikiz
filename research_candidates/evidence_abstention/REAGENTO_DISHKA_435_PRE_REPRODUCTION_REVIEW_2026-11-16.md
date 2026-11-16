@@ -75,12 +75,12 @@ The workflow uses:
 
 A workflow pass is evidence of the specified reproducer behavior only. It does not by itself establish full case acceptance, semantic gold correctness, E1/E2/E3 adequacy, or independence from all related defect families.
 
-## 6. Current decision
+## 6. Related-issue and project-lineage review\nGitHub reports `reagento/dishka` as a canonical repository (`fork=false`), not a fork. Related issues screened: #151 (container cloning enhancement), #275 (in-place override feature request/duplicate of #151), #16 (explicit provider override enhancement), #420 (generic `WithParents` resolution bug), and #466 (`from_context` override validation bug). None is the same defect contract as #435. The project can contribute at most one independent case to this study.\n\n## 7. Current decision
 
 Static issue/patch alignment: **promising; retain for technical reproduction**.  
 Minimal reproduction environment license/provenance screen: **documented, narrow pass**.  
-Exact base-fail/fix-pass reproduction: **pending**.  
-Full dependency/legal clearance beyond this minimal environment: **not claimed**.  
+Exact base-fail/fix-pass reproduction: **passed** in run `43876245379`; artifact `14229259503`; ZIP SHA-256 `d5b611e6264462d4bbb0ae5e4083d95c0f125dc92cf690a8e64d9a51980fc359`.  
+Minimal-environment license/provenance manifest: `REAGENTO_DISHKA_436_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json`; documentary screen found no obvious prohibition for this no-install reproducer. This is not legal advice or blanket clearance.  
 Gold standard, alternative mechanisms, evidence packets, E1/E2/E3: **not yet adjudicated**.  
 Final case acceptance: **not accepted**.  
 Model loading/inference authorization: **false**.
