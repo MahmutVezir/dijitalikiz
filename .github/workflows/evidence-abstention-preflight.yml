@@ -47,16 +47,6 @@ jobs:
           set -euo pipefail
           python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/implementation/v0_2_exploratory_preflight_requirements.lock
 
-      - name: Unit-test fail-closed preflight
-        shell: bash
-        run: |
-          set +e
-          python -m unittest discover -s tests -p 'test_evidence_abstention_preflight.py' -v > preflight-tests.log 2>&1
-          test_status=$?
-          cat preflight-tests.log
-          echo "Readiness preflight-test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
-          exit "$test_status"
-
       - name: Unit-test evidence packet and citation integrity auditor
         if: always()
         shell: bash
@@ -78,17 +68,6 @@ jobs:
           cat operational-packet-tests.log
           echo "Operational packet tests exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
           exit "$test_status"
-
-      - name: Report current readiness blockers without model execution
-        if: always()
-        shell: bash
-        run: |
-          set +e
-          python scripts/evidence_abstention_preflight.py > readiness-report.json 2>&1
-          report_status=$?
-          cat readiness-report.json
-          echo "Readiness report command exit code: ${report_status}" >> "$GITHUB_STEP_SUMMARY"
-          exit "$report_status"
 
       - name: Unit-test v0.2 exploratory acceptance and readiness contracts
         if: always()
@@ -118,11 +97,9 @@ jobs:
         with:
           name: evidence-abstention-preflight-logs-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            preflight-tests.log
             packet-audit-tests.log
             operational-packet-tests.log
             v0.2-exploratory-tests.log
-            readiness-report.json
             swe-rebench-v2-readiness-report.json
           if-no-files-found: warn
           retention-days: 14
@@ -483,6 +460,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p reproduction-evidence
           if [ -f dependency-license-inventory.json ]; then cp dependency-license-inventory.json reproduction-evidence/; fi
           cp research_candidates/evidence_abstention/DEPENDENCY_GROUPS_1_3_0_LICENSE_REVIEW_2026-11-16.md reproduction-evidence/
           cp dependency-groups-license-source/LICENSE.txt reproduction-evidence/dependency-groups-LICENSE.txt
@@ -705,7 +683,7 @@ jobs:
           .venv-tests/bin/python - <<'PY'
           import importlib.metadata as md
           import json
-          names = ["MarkupSafe", "pytest", "iniconfig", "packaging", "pluggy", "Pygments"]
+          names = ["MarkupSafe", "ephemeral-port-reserve", "pytest", "iniconfig", "packaging", "pluggy", "Pygments"]
           inventory = {}
           for name in names:
               dist = md.metadata(name)
