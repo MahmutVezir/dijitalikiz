@@ -1,13 +1,13 @@
 # Dishka #435 — nested E3/E2/E1 evidence packet drafts
 
-**Status:** proposed packets for human adjudication; not accepted case material yet. No gold label is exposed in the packet contents.
+**Status:** proposed packet material; the student project lead approved the technical gold, alternatives, and E3/E2/E1 hierarchy on 2026-11-16. Not accepted case material yet. No gold label is exposed in the packet contents.
 
 ## E3 — insufficient evidence
 
 **E3-01: upstream issue report**
 
 Source: https://github.com/reagento/dishka/issues/435  
-Snapshot SHA-256: `62ee31658aca98a51d2ff1505b44f857294f431f169fba1fff2e2a849b96c49f`
+Snapshot SHA-256: `086ee0aba856f76397da74a704d98cc8a82e40e165739d9cc352b202d103e8f3`
 
 Title: “bug: Provider doesn't override factory with lower scope”
 
@@ -123,4 +123,27 @@ The added `test_override_different_scope` parameterizes APP→REQUEST, REQUEST�
 
 **E1 rationale:** the base source writes every provider factory to its own scope registry immediately. The fixed source delays registry population and inserts only the final processed-factory mapping. The upstream regression test establishes later-provider precedence across the tested scope combinations. This distinguishes a stale per-scope entry from an inherent scope-chain precedence rule.
 
-**E1 proposed surviving mechanism:** one source-level registry-construction defect. Student project lead confirmation is still required before E1 is treated as adjudicated.
+**E1 proposed surviving mechanism:** one source-level registry-construction defect. The student project lead approved this technical-gold and tier rationale on 2026-11-16; the approval is recorded in `HUMAN_ADJUDICATION_DECISION_DISHKA_435_V0_1_DRAFT_2026-11-16.md`.
+
+---
+
+## Provenance and acceptance limitations
+
+The issue report and dataset-linked pull request are separate GitHub resources with separate creation timestamps. The issue snapshot's timestamp was corrected against the upstream issue endpoint; the dataset row's `created_at` matches PR #436's creation timestamp, not issue #435's timestamp. The row is therefore reconciled as a pull-request instance, while the issue remains the defect narrative source.
+
+The researcher has reviewed the issue and patch during candidate screening; perfect blinding must not be claimed. The working design has one human adjudicator. ChatGPT's critique is advisory AI input, not a second human rating. No human-human inter-rater reliability or Cohen's kappa claim is permitted. The documentary license screen applies only to the pinned minimal reproduction environment and is not legal advice or blanket clearance.
+
+The evidence packet remains a draft until each source snapshot, source URI/commit/path, content hash, and proper nested-set relation is independently revalidated against the actual evidence files.
+
+## Remaining case-acceptance gates
+
+Even after technical gold and evidence-tier adjudication, separately verify:
+
+1. exact dataset-row identity and timestamp/resource-type provenance;
+2. one-case-per-upstream-project independence and related-defect/fork lineage;
+3. exposure classification and the model-training contamination limitation;
+4. exact-base license and changed-file/dependency scope, with documentary evidence;
+5. immutable evidence packet files, packet hashes, and provenance;
+6. the case-acceptance schema and validator against the actual record.
+
+Until all gates pass and the case record is accepted, the registry count remains zero and model inference remains unauthorized.
