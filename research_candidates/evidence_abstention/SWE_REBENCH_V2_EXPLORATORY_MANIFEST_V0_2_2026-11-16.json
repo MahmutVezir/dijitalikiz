@@ -633,6 +633,37 @@
         "independence_and_related_issue_family_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ]
+    },
+    {
+      "instance_id": "getmoto__moto-8296",
+      "cohort_rank": 9,
+      "status": "issue_patch_and_reproducer_prepared_exact_dataset_reproduction_pending",
+      "issue_url": "https://github.com/getmoto/moto/issues/8269",
+      "pull_request_url": "https://github.com/getmoto/moto/pull/8296",
+      "issue_created_at": "2024-10-30T12:24:49Z",
+      "pull_request_created_at": "2024-11-07T20:51:42Z",
+      "base_commit": "bf49e22f41be7444dc20e05dfa5dd13f25672eba",
+      "fixed_commit": "d46db48b4911d84235ef783ddab41b73882530f7",
+      "merge_commit": "60828f4befc1da863dc4ad630409f6443145fc71",
+      "exact_base_root_license": "Apache-2.0",
+      "exact_base_license_blob_sha": "90a85e7149454f173dd595bdeb884340cc01e6f6",
+      "exact_base_setup_cfg_blob_sha": "fb1c7ead5806c611cf184980e8b54e4932079758",
+      "minimal_reproducer_path": "research_candidates/evidence_abstention/reproduction/moto_issue_8269/test_issue_8269.py",
+      "dependency_lock_path": "research_candidates/evidence_abstention/reproduction/moto_issue_8269/requirements.lock",
+      "minimal_reproduction_environment": "Python 3.11.9; Moto ECR + boto3 pinned runtime/test dependencies; local mock_aws; no AWS account or external service",
+      "dataset_selector_workflow_path": ".github/workflows/evidence-abstention-preflight.yml#moto-issue-8269-reproduction",
+      "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
+      "temporal_exposure": "issue_and_PR_created_after_2024-09_Qwen2.5_3B_public_release; training_data_cutoff_not_independently_proven",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false,
+      "remaining_gates": [
+        "authenticate_exact_dataset_row_and_timestamp",
+        "all_dataset_FAIL_TO_PASS_selectors_fail_on_buggy_base_for_expected_assertion",
+        "all_same_dataset_selectors_pass_on_fixed_revision",
+        "minimal_environment_dependency_license_inventory_human_review",
+        "independence_and_related_issue_family_review",
+        "gold_standard_and_E1_E2_E3_human_adjudication"
+      ]
     }
   ],
   "candidate_triage_ledger": {
