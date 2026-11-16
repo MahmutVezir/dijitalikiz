@@ -2,7 +2,7 @@
 
 **Record version:** 0.1 draft  
 **Date prepared:** 2026-11-16  
-**Status:** DRAFT — awaiting student project lead's explicit adjudication  
+**Status:** TECHNICAL GOLD AND EVIDENCE-TIER ADJUDICATION APPROVED BY STUDENT PROJECT LEAD; REMAINING ACCEPTANCE GATES OPEN  
 **Candidate:** `reagento__dishka-436`  
 **Upstream project:** `reagento/dishka`  
 **Issue / fix:** [Issue #435](https://github.com/reagento/dishka/issues/435) / [PR #436](https://github.com/reagento/dishka/pull/436)  
@@ -14,7 +14,7 @@
 
 This record separates the technical recommendation from the student's human adjudication. The AI research assistant may propose a mechanism and critique the evidence tiers, but it is not a human co-investigator, independent human rater, or the decision-maker.
 
-The student project lead must confirm, amend, or reject each proposed decision below. No field in this draft is evidence of human approval. Even after the proposed gold mechanism and evidence tiers are approved, the case remains unaccepted until every other case-acceptance gate is complete.
+The project lead's explicit approval was communicated in this conversation on 2026-11-16. The recorded approval covers the proposed technical gold mechanism, the A1/A2 alternative set, and the E3/E2/E1 evidence-tier memberships and rationales. This is a human project-lead decision, not an AI-generated decision. It does not approve the remaining case-acceptance gates, and it does not authorize model loading or inference.
 
 ## 2. Technical reproduction already established
 
@@ -37,14 +37,14 @@ The buggy `RegistryBuilder._process_factory` inserts provider factories into the
 
 The fixed revision defers registry construction until provider processing is complete and populates the scope registries from the final `processed_factories` mapping. The request then resolves to `42`.
 
-**AI-assisted technical recommendation:** G1 is the strongest explanation and is supported by the pinned base/fixed implementation diff and cross-scope regression tests. It is suitable to be submitted to the project lead as the proposed gold mechanism.
+**Project-lead adjudication:** APPROVED on 2026-11-16. The student project lead accepts G1 as the technical gold mechanism, subject to the limitations and remaining gates recorded below.
 
 ## 4. Alternative mechanisms to adjudicate
 
 - **A1_SCOPE_CHAIN_PRECEDENCE:** the observed value is due to ordinary local-scope-before-parent lookup semantics, rather than a stale registration. Prediction: a current-scope registration should shadow a parent registration whenever it exists; absent a stale local entry, the APP value should be returned.
 - **A2_CONSUMER_BINDING_OR_CACHE:** the consumer factory or container cache captured an earlier value independently of registry population. Prediction: the wrong value would remain explainable without a stale request-scope factory entry, potentially differing between direct `get(int)` and resolving the `Interactor`.
 
-The proposed G1 should be accepted as gold only if the evidence supports the predicted mechanism and excludes the alternatives at the appropriate evidence levels.
+**Project-lead adjudication:** A1 and A2 are accepted as the predeclared alternative mechanisms for this case's evidence-tier exercise. Their role is to define what evidence must distinguish; they are not asserted to be equally likely explanations.
 
 ## 5. Proposed nested evidence tiers
 
@@ -72,7 +72,7 @@ Proposed surviving mechanism: `G1` only.
 
 Rationale: the base implementation shows the per-scope insertion during provider processing; the fixed implementation defers insertion and builds from the final winning factory map. The upstream cross-scope test distinguishes this stale-entry mechanism from ordinary scope-chain precedence.
 
-**AI-assisted tier recommendation:** the E3 → E2 → E1 progression is logically coherent: each stronger tier adds source-level evidence that removes at least one alternative, while preserving the lower-tier evidence unchanged. The proposed evidence sets must still pass file/hash, provenance, and nested-set validation. Structural validation alone cannot prove that an evidence tier is semantically sufficient.
+**Project-lead adjudication:** APPROVED on 2026-11-16. The project lead accepts the proposed E3 → E2 → E1 hierarchy and its stated mechanism-survival rationale. This semantic approval does not replace the pending file/hash, provenance, and nested-set validation. Structural validation alone cannot prove that an evidence tier is semantically sufficient.
 
 ## 6. Exposure and limitations to preserve
 
@@ -81,20 +81,22 @@ Rationale: the base implementation shows the per-scope insertion during provider
 - The proposed documentary license screen is limited to the minimal Python 3.11.9 reproducer environment; it is not legal advice or blanket clearance for optional dependencies or redistribution.
 - The working design has one human adjudicator. ChatGPT's critique is advisory AI input, not a second human rating. Do not claim human-human inter-rater reliability or Cohen's kappa.
 
-## 7. Student project lead decision — pending
+## 7. Student project lead decision — recorded
 
-The project lead should explicitly confirm or amend each item:
+The student project lead explicitly approved the following technical adjudication decisions in this conversation on **2026-11-16**:
 
-- [ ] I accept `G1_STALE_PER_SCOPE_FACTORY_REGISTRATION` as the technical gold mechanism.
-- [ ] I accept A1 and A2 as the predeclared alternatives used in the adjudication.
-- [ ] I accept the proposed E3, E2, and E1 evidence memberships and rationales.
-- [ ] I confirm that the researcher exposure and single-adjudicator limitations above are accurately recorded.
+- [x] Accept `G1_STALE_PER_SCOPE_FACTORY_REGISTRATION` as the technical gold mechanism.
+- [x] Accept A1 and A2 as the predeclared alternatives used in the adjudication.
+- [x] Accept the proposed E3, E2, and E1 evidence memberships and rationales.
+- [ ] Separate confirmation of the researcher-exposure and single-adjudicator limitation statements is not represented as part of this specific technical approval; those limitations remain disclosed and must not be omitted.
 
-**Human decision:** PENDING — no decision has been recorded by this draft.  
-**Decision date (UTC):** PENDING  
-**Amendments / rationale:** PENDING
+**Human decision:** APPROVED — technical gold, alternatives, and evidence-tier design only.  
+**Decision date:** 2026-11-16 (communicated in this conversation).  
+**Amendments / rationale:** No amendments requested in the approval. The decision does not waive any remaining acceptance gate.
 
 ## 8. Remaining case-acceptance gates
+
+ 8. Remaining case-acceptance gates
 
 Even after the project lead signs off on the technical gold and evidence tiers, separately verify:
 
