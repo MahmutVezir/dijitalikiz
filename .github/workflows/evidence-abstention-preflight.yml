@@ -187,9 +187,9 @@ jobs:
           set -euo pipefail
           git -C upstream-dishka checkout --detach 8718d5af93f9e48bc2506c64827663fdccc5ad89
           git -C upstream-dishka apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          mapfile -t selectors < reproduction-evidence/dataset-fail-to-pass-selectors.txt
+          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
-          PYTHONPATH="$GITHUB_WORKSPACE/upstream-dishka/src" .venv-tests/bin/python -m pytest -q --color=no "${selectors[@]}" > reproduction-evidence/base-dataset-test.log 2>&1
+          (cd upstream-dishka && PYTHONPATH="$GITHUB_WORKSPACE/upstream-dishka/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -q --color=no "${selectors[@]}") > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           dataset_status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
@@ -242,8 +242,8 @@ jobs:
           cat reproduction-evidence/fixed-test.log
           grep -F "Ran 1 test" reproduction-evidence/fixed-test.log
           grep -F "OK" reproduction-evidence/fixed-test.log
-          mapfile -t selectors < reproduction-evidence/dataset-fail-to-pass-selectors.txt
-          PYTHONPATH="$GITHUB_WORKSPACE/upstream-dishka/src" .venv-tests/bin/python -m pytest -q --color=no "${selectors[@]}" > reproduction-evidence/fixed-dataset-test.log 2>&1
+          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
+          (cd upstream-dishka && PYTHONPATH="$GITHUB_WORKSPACE/upstream-dishka/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -q --color=no "${selectors[@]}") > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
           grep -E "8 passed in" reproduction-evidence/fixed-dataset-test.log
 
