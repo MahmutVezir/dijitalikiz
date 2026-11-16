@@ -5,24 +5,36 @@ on:
     branches:
       - "research/**"
     paths:
-      - "research_candidates/evidence_abstention/**"
+      - ".github/workflows/evidence-abstention-preflight.yml"
+      - "research_candidates/evidence_abstention/implementation/**"
+      - "research_candidates/evidence_abstention/reproduction/**/test_*.py"
+      - "research_candidates/evidence_abstention/reproduction/**/requirements*.lock"
+      - "research_candidates/evidence_abstention/reproduction/**/dataset_test_requirements.lock"
+      - "research_candidates/evidence_abstention/reproduction/**/reproduction_environment_lock.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json"
       - "scripts/evidence_abstention_preflight.py"
+      - "scripts/swe_rebench_v2_exploratory_preflight.py"
       - "tests/test_evidence_abstention_preflight.py"
       - "tests/test_evidence_packet_audit.py"
       - "tests/test_swe_rebench_v2_exploratory_case_acceptance.py"
       - "tests/test_swe_rebench_v2_exploratory_preflight.py"
-      - "scripts/swe_rebench_v2_exploratory_preflight.py"
-      - ".github/workflows/evidence-abstention-preflight.yml"
   pull_request:
     paths:
-      - "research_candidates/evidence_abstention/**"
+      - ".github/workflows/evidence-abstention-preflight.yml"
+      - "research_candidates/evidence_abstention/implementation/**"
+      - "research_candidates/evidence_abstention/reproduction/**/test_*.py"
+      - "research_candidates/evidence_abstention/reproduction/**/requirements*.lock"
+      - "research_candidates/evidence_abstention/reproduction/**/dataset_test_requirements.lock"
+      - "research_candidates/evidence_abstention/reproduction/**/reproduction_environment_lock.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json"
       - "scripts/evidence_abstention_preflight.py"
+      - "scripts/swe_rebench_v2_exploratory_preflight.py"
       - "tests/test_evidence_abstention_preflight.py"
       - "tests/test_evidence_packet_audit.py"
       - "tests/test_swe_rebench_v2_exploratory_case_acceptance.py"
       - "tests/test_swe_rebench_v2_exploratory_preflight.py"
-      - "scripts/swe_rebench_v2_exploratory_preflight.py"
-      - ".github/workflows/evidence-abstention-preflight.yml"
   workflow_dispatch:
 
 permissions:
