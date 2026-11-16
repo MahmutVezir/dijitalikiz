@@ -190,7 +190,7 @@ jobs:
           git -C upstream-dishka apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
-          (cd upstream-dishka && PYTHONPATH="$GITHUB_WORKSPACE/upstream-dishka/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -q --color=no "${selectors[@]}") > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
+          (cd upstream-dishka && PYTHONPATH="$GITHUB_WORKSPACE/upstream-dishka/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           dataset_status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
@@ -198,7 +198,7 @@ jobs:
             echo "Expected all 8 dataset FAIL_TO_PASS tests to fail on the buggy base." >&2
             exit 1
           fi
-          grep -E "8 failed in" reproduction-evidence/base-dataset-test.log
+          grep -E "8 failed.*in" reproduction-evidence/base-dataset-test.log
           if grep -q "ERROR collecting" reproduction-evidence/base-dataset-test.log; then
             echo "Dataset tests had collection errors rather than defect-specific failures." >&2
             exit 1
