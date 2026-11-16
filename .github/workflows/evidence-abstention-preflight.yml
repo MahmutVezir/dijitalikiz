@@ -1369,10 +1369,12 @@ jobs:
           test -f upstream-moto/tests/test_ecr/test_ecr_boto3.py
           python -m venv .venv-dataset
           .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
           .venv-dataset/bin/python - <<'PY'
-          import pyarrow.parquet as pq
-          import json
           import hashlib
+          import json
+          import pyarrow.parquet as pq
           path = "reproduction-evidence/train-00000-of-00001.parquet"
           columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
           table = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")])
@@ -1394,28 +1396,28 @@ jobs:
           print("dataset_created_at=" + str(row["created_at"]))
           print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
           PY
-          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
-          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
           .venv-dataset/bin/python - <<'PY'
           import json
+          import os
           import pyarrow.parquet as pq
+          import subprocess
           path = "reproduction-evidence/train-00000-of-00001.parquet"
           columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
           row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")]).to_pylist()[0]
           selectors = row["FAIL_TO_PASS"]
           assert selectors, "Dataset row has no FAIL_TO_PASS selectors"
-          command = [".venv-tests/bin/python", "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", *selectors]
-          import subprocess
-          env = dict(__import__("os").environ)
-          env["PYTHONPATH"] = "upstream-moto"
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", *selectors]
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-moto")
           result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
           with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
               f.write(result.stdout)
           print(result.stdout)
           if result.returncode == 0:
-              raise SystemExit("Expected all dataset FAIL_TO_PASS selectors to fail on buggy base")
-          if "1 failed" not in result.stdout and "failed" not in result.stdout:
-              raise SystemExit("Base selector run did not report a test failure; collection/setup failure is not accepted")
+              raise SystemExit("Expected dataset FAIL_TO_PASS selectors to fail on buggy base")
+          if "AssertionError" not in result.stdout and "assert 1 == 2" not in result.stdout:
+              raise SystemExit("Base dataset run did not show the expected missing-tag assertion; collection/setup failures do not count")
           PY
 
       - name: Run same issue reproducer and dataset selectors on fixed revision (pass required)
@@ -1426,17 +1428,17 @@ jobs:
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-moto" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/moto_issue_8269" -p "test_issue_8269.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
           .venv-dataset/bin/python - <<'PY'
-          import json
+          import os
           import pyarrow.parquet as pq
           import subprocess
-          import os
           path = "reproduction-evidence/train-00000-of-00001.parquet"
           columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
           row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")]).to_pylist()[0]
           selectors = row["FAIL_TO_PASS"]
-          command = [".venv-tests/bin/python", "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", *selectors]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", *selectors]
           env = dict(os.environ)
-          env["PYTHONPATH"] = "upstream-moto"
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-moto")
           result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
           with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
               f.write(result.stdout)
