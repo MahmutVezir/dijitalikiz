@@ -9,6 +9,9 @@ on:
       - "scripts/evidence_abstention_preflight.py"
       - "tests/test_evidence_abstention_preflight.py"
       - "tests/test_evidence_packet_audit.py"
+      - "tests/test_swe_rebench_v2_exploratory_case_acceptance.py"
+      - "tests/test_swe_rebench_v2_exploratory_preflight.py"
+      - "scripts/swe_rebench_v2_exploratory_preflight.py"
       - ".github/workflows/evidence-abstention-preflight.yml"
   pull_request:
     paths:
@@ -16,6 +19,9 @@ on:
       - "scripts/evidence_abstention_preflight.py"
       - "tests/test_evidence_abstention_preflight.py"
       - "tests/test_evidence_packet_audit.py"
+      - "tests/test_swe_rebench_v2_exploratory_case_acceptance.py"
+      - "tests/test_swe_rebench_v2_exploratory_preflight.py"
+      - "scripts/swe_rebench_v2_exploratory_preflight.py"
       - ".github/workflows/evidence-abstention-preflight.yml"
   workflow_dispatch:
 
@@ -34,6 +40,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
+      - name: Install pinned v0.2 exploratory validation dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/implementation/v0_2_exploratory_preflight_requirements.lock
 
       - name: Unit-test fail-closed preflight
         shell: bash
@@ -61,7 +73,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          PYTHONPATH=research_candidates/evidence_abstention/implementation python -m unittest test_operational_packet_validator test_evidence_level_packet_set test_swe_rebench_v2_contract test_swe_rebench_v2_case_acceptance test_swe_rebench_v2_no_inference_preflight test_swe_rebench_v2_candidate_triage_ledger -v > operational-packet-tests.log 2>&1
+          PYTHONPATH=research_candidates/evidence_abstention/implementation python -m unittest test_operational_packet_validator test_evidence_level_packet_set test_swe_rebench_v2_candidate_triage_ledger -v > operational-packet-tests.log 2>&1
           test_status=$?
           cat operational-packet-tests.log
           echo "Operational packet tests exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
@@ -78,15 +90,26 @@ jobs:
           echo "Readiness report command exit code: ${report_status}" >> "$GITHUB_STEP_SUMMARY"
           exit "$report_status"
 
+      - name: Unit-test v0.2 exploratory acceptance and readiness contracts
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/test_swe_rebench_v2_exploratory_case_acceptance.py tests/test_swe_rebench_v2_exploratory_preflight.py > v0.2-exploratory-tests.log 2>&1
+          test_status=$?
+          cat v0.2-exploratory-tests.log
+          echo "v0.2 exploratory contract test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
+
       - name: Report SWE-rebench V2 readiness blockers without model execution
         if: always()
         shell: bash
         run: |
           set +e
-          PYTHONPATH=research_candidates/evidence_abstention/implementation:scripts python scripts/swe_rebench_v2_no_inference_preflight.py > swe-rebench-v2-readiness-report.json 2>&1
+          PYTHONPATH=research_candidates/evidence_abstention/implementation:scripts python scripts/swe_rebench_v2_exploratory_preflight.py > swe-rebench-v2-readiness-report.json 2>&1
           report_status=$?
           cat swe-rebench-v2-readiness-report.json
-          echo "SWE-rebench V2 no-inference readiness report command exit code: ${report_status}" >> "$GITHUB_STEP_SUMMARY"
+          echo "SWE-rebench V2 v0.2 exploratory readiness report command exit code: ${report_status}" >> "$GITHUB_STEP_SUMMARY"
           exit "$report_status"
 
       - name: Upload no-inference preflight logs
@@ -98,6 +121,7 @@ jobs:
             preflight-tests.log
             packet-audit-tests.log
             operational-packet-tests.log
+            v0.2-exploratory-tests.log
             readiness-report.json
             swe-rebench-v2-readiness-report.json
           if-no-files-found: warn
