@@ -127,6 +127,7 @@ jobs:
           sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/test_issue_435.py > reproduction-evidence/test-sha256.txt
           sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/issue_435_source_snapshot.json research_candidates/evidence_abstention/reproduction/dishka_issue_435/pull_436_source_snapshot.json > reproduction-evidence/issue-pr-snapshot-sha256.txt
           sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/NESTED_EVIDENCE_PACKETS_DRAFT_2026-11-16.md research_candidates/evidence_abstention/REAGENTO_DISHKA_435_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-16.md > reproduction-evidence/packet-draft-sha256.txt
+          sha256sum research_candidates/evidence_abstention/REAGENTO_DISHKA_436_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json > reproduction-evidence/license-manifest-sha256.txt
 
       - name: Run identical issue reproducer on buggy base (failure required)
         shell: bash
