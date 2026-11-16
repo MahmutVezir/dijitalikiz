@@ -168,5 +168,21 @@
     "The v0.2 single-researcher scoring rubric and case-acceptance schema/validator have dedicated drafts; CI validation and human review remain required before any case is accepted or model inference is considered."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
-  "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py"
+  "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
+  "candidate_review_records": [
+    {
+      "instance_id": "simpeg__simpeg-1633",
+      "timestamp_reconciliation": "endpoint_resource_reconciled",
+      "documentary_license_screen": "no_obvious_prohibition_identified",
+      "license_manifest_path": "research_candidates/evidence_abstention/SIMPEG_1633_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json",
+      "license_manifest_sha256": "5ed05695311801a26f5475083ee65e28f787d275a6878779732ed5098327342f",
+      "case_acceptance": "not_accepted",
+      "remaining_gates": [
+        "full_dependency_license_inventory",
+        "technical_reproduction",
+        "independence_review",
+        "gold_and_evidence_tier_adjudication"
+      ]
+    }
+  ]
 }
