@@ -105,7 +105,7 @@ jobs:
 
   dishka-issue-435-reproduction:
     runs-on: ubuntu-22.04
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - name: Checkout research repository
         uses: actions/checkout@v4
@@ -129,8 +129,9 @@ jobs:
             "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
             --output reproduction-evidence/train-00000-of-00001.parquet
           echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
-          python -m pip install --disable-pip-version-check "pyarrow==19.0.1"
-          python - <<'PY'
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check "pyarrow==19.0.1"
+          .venv-dataset/bin/python - <<'PY'
           import hashlib, json
           import pyarrow.parquet as pq
 
