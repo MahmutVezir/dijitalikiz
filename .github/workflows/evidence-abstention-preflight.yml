@@ -900,12 +900,23 @@ jobs:
           import pyarrow.parquet as pq
           path = "reproduction-evidence/train-00000-of-00001.parquet"
           columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
-          table = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "MarketSquare__robotframework-robocop-1374")])
-          rows = table.to_pylist()
-          assert len(rows) == 1, len(rows)
+          table = pq.read_table(path, columns=columns)
+          all_rows = table.to_pylist()
+          rows = [
+              item for item in all_rows
+              if "robotframework-robocop" in str(item["repo"]).lower()
+              and item["base_commit"] == "271e73253a70710cc80374128efa9eabb549b5f2"
+          ]
+          if len(rows) != 1:
+              candidates = [
+                  {"instance_id": item["instance_id"], "repo": item["repo"], "base_commit": item["base_commit"]}
+                  for item in all_rows if "robocop" in str(item["repo"]).lower()
+              ]
+              raise AssertionError({"expected_one_repo_base_match": len(rows), "robocop_rows": candidates})
           row = rows[0]
-          assert row["repo"] == "MarketSquare/robotframework-robocop", row
+          assert str(row["repo"]).lower() == "marketsquare/robotframework-robocop", row
           assert row["base_commit"] == "271e73253a70710cc80374128efa9eabb549b5f2", row
+          print("resolved_dataset_instance_id=" + str(row["instance_id"]))
           assert row["language"] == "python", row
           assert row["license"] == "Apache-2.0", row
           assert row["FAIL_TO_PASS"], "Dataset row has no FAIL_TO_PASS selectors"
