@@ -615,15 +615,5 @@
     "broad_shortlist_after_simpeg_row63_exclusion": 66,
     "inference_authorized": false
   },
-  "inference_authorized": false,
-  "generation_settings": {
-    "status": "not_frozen",
-    "temperature": null,
-    "top_p": null,
-    "max_new_tokens": null,
-    "do_sample": null,
-    "seed": null,
-    "stop_sequences": [],
-    "note": "Generation settings are intentionally unspecified until exact model license and runtime gates pass; freeze and hash them before any inference."
-  }
+  "inference_authorized": false
 }
