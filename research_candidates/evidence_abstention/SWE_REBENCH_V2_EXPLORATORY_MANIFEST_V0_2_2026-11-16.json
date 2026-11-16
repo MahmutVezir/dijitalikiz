@@ -137,7 +137,8 @@
   "preregistration": {
     "status": "draft_not_registered",
     "external_uri": "",
-    "hash_freeze_complete": false
+    "hash_freeze_complete": false,
+    "external_registration_required": false
   },
   "frozen_artifacts": [
     {
@@ -190,7 +191,8 @@
     "EODAG #1530 (primary rank 16) passed static issue/patch alignment and exact-base Apache-2.0 root-license screening. PR #1536 also resolves #1517 and adds StacListAssets support, so dataset selectors must be isolated to the duplicate geodes/geodes_s3 YAML key defect before counting this candidate.",
     "Click #2746 (primary rank 33) and mpmath #511 (primary rank 40) are held out of the primary intake because their exact public issues predate the September 2024 model release, creating elevated potential training-data exposure. This is a precaution, not a claim that either issue was in the training set.",
     "pyfar #721 (primary rank 90) passed static numerical-contract and exact-base MIT source-license screening. The issue's energy-20-to-target-1 counterexample is explicit; a Python 3.12.4 pinned runtime/test environment and exact dataset FAIL_TO_PASS workflow have been added. Reproduction remains pending.",
-    "Target clarification approved by project lead on 2026-11-16: primary target is 15 independent upstream projects; 20 is a stretch target. Fewer than 15 cases are still retained if they pass all unchanged acceptance criteria; no eligibility threshold is lowered and no candidate is selected using model outcomes."
+    "Target clarification approved by project lead on 2026-11-16: primary target is 15 independent upstream projects; 20 is a stretch target. Fewer than 15 cases are still retained if they pass all unchanged acceptance criteria; no eligibility threshold is lowered and no candidate is selected using model outcomes.",
+    "v0.2 no-inference preflight is the active readiness report. Historical v0.1 confirmatory preflight rules (60-case threshold, Panel A/B, external preregistration, reviewer consent, and external audit) are not requirements of this single-researcher exploratory design."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -612,5 +614,16 @@
     "broad_shortlist_before_second_pass": 67,
     "broad_shortlist_after_simpeg_row63_exclusion": 66,
     "inference_authorized": false
+  },
+  "inference_authorized": false,
+  "generation_settings": {
+    "status": "not_frozen",
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": null,
+    "do_sample": null,
+    "seed": null,
+    "stop_sequences": [],
+    "note": "Generation settings are intentionally unspecified until exact model license and runtime gates pass; freeze and hash them before any inference."
   }
 }
