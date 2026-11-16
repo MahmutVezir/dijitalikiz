@@ -132,6 +132,8 @@ jobs:
           set -euo pipefail
           git -C upstream-dishka checkout --detach 8718d5af93f9e48bc2506c64827663fdccc5ad89
           git -C upstream-dishka rev-parse HEAD > reproduction-evidence/base-commit.txt
+          git -C upstream-dishka show HEAD:src/dishka/registry_builder.py > reproduction-evidence/base-registry_builder.py
+          sha256sum reproduction-evidence/base-registry_builder.py > reproduction-evidence/base-source-sha256.txt
           set +e
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-dishka/src" python -m unittest discover \
             -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/dishka_issue_435" \
@@ -152,6 +154,12 @@ jobs:
           set -euo pipefail
           git -C upstream-dishka checkout --detach b1eae11734e64551d7b101195f27cb6870e1c364
           git -C upstream-dishka rev-parse HEAD > reproduction-evidence/fixed-commit.txt
+          git -C upstream-dishka show HEAD:src/dishka/registry_builder.py > reproduction-evidence/fixed-registry_builder.py
+          git -C upstream-dishka diff 8718d5af93f9e48bc2506c64827663fdccc5ad89 b1eae11734e64551d7b101195f27cb6870e1c364 -- src/dishka/registry_builder.py > reproduction-evidence/registry_builder.diff
+          sha256sum reproduction-evidence/fixed-registry_builder.py reproduction-evidence/registry_builder.diff > reproduction-evidence/fixed-source-sha256.txt
+          for source_file in tests/unit/container/override/test_alias.py tests/unit/container/override/test_context_var.py tests/unit/container/override/test_provide.py tests/unit/container/test_context_vars.py; do
+            git -C upstream-dishka show HEAD:$source_file > reproduction-evidence/$(basename "$source_file")
+          done
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-dishka/src" python -m unittest discover \
             -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/dishka_issue_435" \
             -p "test_issue_435.py" -k test_issue_435_override_lower_scope -v \
@@ -165,7 +173,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          (cd reproduction-evidence && sha256sum *.txt *.log > SHA256SUMS.txt)
+          (cd reproduction-evidence && sha256sum *.txt *.log *.py *.diff > SHA256SUMS.txt)
           {
             echo "### Dishka #435 exact fail-to-pass reproduction"
             echo "- Buggy base: 8718d5af93f9e48bc2506c64827663fdccc5ad89"
