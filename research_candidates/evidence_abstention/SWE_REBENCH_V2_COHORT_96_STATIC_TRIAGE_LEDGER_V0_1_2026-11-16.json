@@ -1,0 +1,908 @@
+{
+  "schema_version": "0.1",
+  "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+  "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+  "dataset_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+  "cohort_sha256": "84552868fc2914ebe2421b6b2ce5b6afaabe6a032f9cf9441a6251d2611248db",
+  "selection_seed": "tubitak-2204a-evidence-abstention-cohort-v1-2026-11-12",
+  "audit_sources": [
+    "research_candidates/evidence_abstention/SWE_REBENCH_V2_FIRST8_CASE_SCOPE_AUDIT_2026-11-12.md",
+    "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_09_16_2026-11-12.md",
+    "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_17_24_2026-11-12.md",
+    "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_25_32_2026-11-12.md",
+    "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_33_40_2026-11-12.md",
+    "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_41_48_2026-11-12.md",
+    "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_49_56_2026-11-12.md",
+    "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md",
+    "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_65_72_2026-11-14.md",
+    "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_73_80_2026-11-14.md",
+    "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_81_88_2026-11-14.md",
+    "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_89_96_2026-11-14.md"
+  ],
+  "extraction_method": "Deterministic extraction of the final decision cell from each of the 12 versioned Markdown scope-audit tables. Original decision text and source audit path are preserved. This is a triage index, not a new scientific adjudication.",
+  "row_count": 96,
+  "unique_rank_count": 96,
+  "screening_counts": {
+    "excluded": 29,
+    "provisional_candidate": 49,
+    "conditional": 10,
+    "hold": 2,
+    "strong_candidate": 6
+  },
+  "post_second_pass_adjustments": [
+    {
+      "cohort_rank": 63,
+      "repository": "simpeg/simpeg",
+      "pull_request_number": 1633,
+      "decision": "excluded_from_strict_bug_shortlist",
+      "reason": "Issue/PR test-oracle mismatch; see v0.2 candidate yield review."
+    }
+  ],
+  "interpretation": "All 96 primary cohort rows are represented exactly once. Provisional, conditional, held and strong labels are static-screen labels only. They do not mean license clearance, technical reproduction, case acceptance, or inference authorization. The current broad shortlist is 67 rows before the second-pass SimPEG exclusion and 66 afterward; the row-level ledger must be human-reviewed before use as a final cohort statistic.",
+  "rows": [
+    {
+      "cohort_rank": 1,
+      "repository": "aristanetworks/anta",
+      "pull_request_number": 956,
+      "pull_request_url": "https://github.com/aristanetworks/anta/pull/956",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude from primary bug-root-cause pool: test-suite correction rather than a production-code defect fix",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_FIRST8_CASE_SCOPE_AUDIT_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 2,
+      "repository": "reagento/dishka",
+      "pull_request_number": 436,
+      "pull_request_url": "https://github.com/reagento/dishka/pull/436",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_FIRST8_CASE_SCOPE_AUDIT_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 3,
+      "repository": "theupdateframework/python-tuf",
+      "pull_request_number": 2808,
+      "pull_request_url": "https://github.com/theupdateframework/python-tuf/pull/2808",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool: classified as enhancement; retain provenance only",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_FIRST8_CASE_SCOPE_AUDIT_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 4,
+      "repository": "ecmwf/earthkit-data",
+      "pull_request_number": 592,
+      "pull_request_url": "https://github.com/ecmwf/earthkit-data/pull/592",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_FIRST8_CASE_SCOPE_AUDIT_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 5,
+      "repository": "googleapis/python-bigquery",
+      "pull_request_number": 2140,
+      "pull_request_url": "https://github.com/googleapis/python-bigquery/pull/2140",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool: feature addition",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_FIRST8_CASE_SCOPE_AUDIT_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 6,
+      "repository": "wntrblm/nox",
+      "pull_request_number": 922,
+      "pull_request_url": "https://github.com/wntrblm/nox/pull/922",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_FIRST8_CASE_SCOPE_AUDIT_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 7,
+      "repository": "GoogleCloudPlatform/cloud-sql-python-connector",
+      "pull_request_number": 1221,
+      "pull_request_url": "https://github.com/GoogleCloudPlatform/cloud-sql-python-connector/pull/1221",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool: feature addition",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_FIRST8_CASE_SCOPE_AUDIT_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 8,
+      "repository": "databricks/dbt-databricks",
+      "pull_request_number": 995,
+      "pull_request_url": "https://github.com/databricks/dbt-databricks/pull/995",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally; direct cleanup-path test adequacy remains to be checked",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_FIRST8_CASE_SCOPE_AUDIT_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 9,
+      "repository": "getmoto/moto",
+      "pull_request_number": 8296,
+      "pull_request_url": "https://github.com/getmoto/moto/pull/8296",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_09_16_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 10,
+      "repository": "dwavesystems/dwave-system",
+      "pull_request_number": 554,
+      "pull_request_url": "https://github.com/dwavesystems/dwave-system/pull/554",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool — feature/API addition",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_09_16_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 11,
+      "repository": "PrefectHQ/fastmcp",
+      "pull_request_number": 164,
+      "pull_request_url": "https://github.com/PrefectHQ/fastmcp/pull/164",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool — new API behavior/enhancement, not a demonstrated regression",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_09_16_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 12,
+      "repository": "pyro-ppl/numpyro",
+      "pull_request_number": 1918,
+      "pull_request_url": "https://github.com/pyro-ppl/numpyro/pull/1918",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_09_16_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 13,
+      "repository": "dpkp/kafka-python",
+      "pull_request_number": 2544,
+      "pull_request_url": "https://github.com/dpkp/kafka-python/pull/2544",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool — feature addition",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_09_16_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 14,
+      "repository": "PennyLaneAI/pennylane",
+      "pull_request_number": 6738,
+      "pull_request_url": "https://github.com/PennyLaneAI/pennylane/pull/6738",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool — API feature addition",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_09_16_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 15,
+      "repository": "OpenMDAO/dymos",
+      "pull_request_number": 1165,
+      "pull_request_url": "https://github.com/OpenMDAO/dymos/pull/1165",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_09_16_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 16,
+      "repository": "CS-SI/eodag",
+      "pull_request_number": 1536,
+      "pull_request_url": "https://github.com/CS-SI/eodag/pull/1536",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_09_16_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 17,
+      "repository": "skypilot-org/skypilot",
+      "pull_request_number": 5985,
+      "pull_request_url": "https://github.com/skypilot-org/skypilot/pull/5985",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_17_24_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 18,
+      "repository": "SQLMesh/sqlmesh",
+      "pull_request_number": 3654,
+      "pull_request_url": "https://github.com/SQLMesh/sqlmesh/pull/3654",
+      "screening_classification": "excluded",
+      "scope_decision": "Dışla: improvement/feature",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_17_24_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 19,
+      "repository": "napalm-automation/napalm",
+      "pull_request_number": 2152,
+      "pull_request_url": "https://github.com/napalm-automation/napalm/pull/2152",
+      "screening_classification": "conditional",
+      "scope_decision": "Koşullu bug adayı — fixture/provenans hold",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_17_24_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 20,
+      "repository": "terrapower/armi",
+      "pull_request_number": 2121,
+      "pull_request_url": "https://github.com/terrapower/armi/pull/2121",
+      "screening_classification": "excluded",
+      "scope_decision": "Dışla: feature request",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_17_24_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 21,
+      "repository": "PyThaiNLP/pythainlp",
+      "pull_request_number": 1046,
+      "pull_request_url": "https://github.com/PyThaiNLP/pythainlp/pull/1046",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_17_24_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 22,
+      "repository": "modin-project/modin",
+      "pull_request_number": 7554,
+      "pull_request_url": "https://github.com/modin-project/modin/pull/7554",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_17_24_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 23,
+      "repository": "CrossGL/crosstl",
+      "pull_request_number": 201,
+      "pull_request_url": "https://github.com/CrossGL/crosstl/pull/201",
+      "screening_classification": "excluded",
+      "scope_decision": "Dışla: enhancement",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_17_24_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 24,
+      "repository": "MarketSquare/robotframework-robocop",
+      "pull_request_number": 1374,
+      "pull_request_url": "https://github.com/MarketSquare/robotframework-robocop/pull/1374",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_17_24_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 25,
+      "repository": "CTFd/CTFd",
+      "pull_request_number": 2767,
+      "pull_request_url": "https://github.com/CTFd/CTFd/pull/2767",
+      "screening_classification": "excluded",
+      "scope_decision": "Dışla: özellik/iyileştirme",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_25_32_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 26,
+      "repository": "meltano/sdk",
+      "pull_request_number": 3091,
+      "pull_request_url": "https://github.com/meltano/sdk/pull/3091",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_25_32_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 27,
+      "repository": "capitalone/datacompy",
+      "pull_request_number": 404,
+      "pull_request_url": "https://github.com/capitalone/datacompy/pull/404",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı; hedef test uygunluğu riski",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_25_32_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 28,
+      "repository": "jax-ml/jax",
+      "pull_request_number": 25650,
+      "pull_request_url": "https://github.com/jax-ml/jax/pull/25650",
+      "screening_classification": "excluded",
+      "scope_decision": "Dışla: enhancement/yeni destek",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_25_32_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 29,
+      "repository": "sparckles/Robyn",
+      "pull_request_number": 1002,
+      "pull_request_url": "https://github.com/sparckles/Robyn/pull/1002",
+      "screening_classification": "excluded",
+      "scope_decision": "Dışla: özellik geliştirme",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_25_32_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 30,
+      "repository": "amaranth-lang/amaranth",
+      "pull_request_number": 1519,
+      "pull_request_url": "https://github.com/amaranth-lang/amaranth/pull/1519",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_25_32_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 31,
+      "repository": "cta-observatory/ctapipe",
+      "pull_request_number": 2732,
+      "pull_request_url": "https://github.com/cta-observatory/ctapipe/pull/2732",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_25_32_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 32,
+      "repository": "pallets/werkzeug",
+      "pull_request_number": 2956,
+      "pull_request_url": "https://github.com/pallets/werkzeug/pull/2956",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_25_32_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 33,
+      "repository": "pallets/click",
+      "pull_request_number": 2788,
+      "pull_request_url": "https://github.com/pallets/click/pull/2788",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_33_40_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 34,
+      "repository": "Kozea/WeasyPrint",
+      "pull_request_number": 2416,
+      "pull_request_url": "https://github.com/Kozea/WeasyPrint/pull/2416",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı; test-provenance riski",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_33_40_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 35,
+      "repository": "python-control/python-control",
+      "pull_request_number": 1145,
+      "pull_request_url": "https://github.com/python-control/python-control/pull/1145",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_33_40_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 36,
+      "repository": "stfc/PSyclone",
+      "pull_request_number": 2767,
+      "pull_request_url": "https://github.com/stfc/PSyclone/pull/2767",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_33_40_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 37,
+      "repository": "skrub-data/skrub",
+      "pull_request_number": 1445,
+      "pull_request_url": "https://github.com/skrub-data/skrub/pull/1445",
+      "screening_classification": "excluded",
+      "scope_decision": "Dışla: enhancement",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_33_40_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 38,
+      "repository": "cogent3/cogent3",
+      "pull_request_number": 2050,
+      "pull_request_url": "https://github.com/cogent3/cogent3/pull/2050",
+      "screening_classification": "excluded",
+      "scope_decision": "Dışla: yeni özellik",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_33_40_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 39,
+      "repository": "qutip/qutip",
+      "pull_request_number": 2694,
+      "pull_request_url": "https://github.com/qutip/qutip/pull/2694",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_33_40_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 40,
+      "repository": "mpmath/mpmath",
+      "pull_request_number": 902,
+      "pull_request_url": "https://github.com/mpmath/mpmath/pull/902",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_33_40_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 41,
+      "repository": "astropy/ccdproc",
+      "pull_request_number": 901,
+      "pull_request_url": "https://github.com/astropy/ccdproc/pull/901",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_41_48_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 42,
+      "repository": "pybamm-team/PyBaMM",
+      "pull_request_number": 4465,
+      "pull_request_url": "https://github.com/pybamm-team/PyBaMM/pull/4465",
+      "screening_classification": "excluded",
+      "scope_decision": "Dışla: feature",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_41_48_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 43,
+      "repository": "asdf-format/asdf",
+      "pull_request_number": 1907,
+      "pull_request_url": "https://github.com/asdf-format/asdf/pull/1907",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_41_48_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 44,
+      "repository": "msgspec/msgspec",
+      "pull_request_number": 772,
+      "pull_request_url": "https://github.com/msgspec/msgspec/pull/772",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_41_48_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 45,
+      "repository": "pallets/jinja",
+      "pull_request_number": 2033,
+      "pull_request_url": "https://github.com/pallets/jinja/pull/2033",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_41_48_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 46,
+      "repository": "scikit-rf/scikit-rf",
+      "pull_request_number": 1282,
+      "pull_request_url": "https://github.com/scikit-rf/scikit-rf/pull/1282",
+      "screening_classification": "excluded",
+      "scope_decision": "Dışla: feature request",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_41_48_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 47,
+      "repository": "jsonpickle/jsonpickle",
+      "pull_request_number": 565,
+      "pull_request_url": "https://github.com/jsonpickle/jsonpickle/pull/565",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_41_48_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 48,
+      "repository": "scikit-activeml/scikit-activeml",
+      "pull_request_number": 504,
+      "pull_request_url": "https://github.com/scikit-activeml/scikit-activeml/pull/504",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı; scope riski",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_41_48_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 49,
+      "repository": "geofileops/geofileops",
+      "pull_request_number": 649,
+      "pull_request_url": "https://github.com/geofileops/geofileops/pull/649",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_49_56_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 50,
+      "repository": "lektor/lektor",
+      "pull_request_number": 1214,
+      "pull_request_url": "https://github.com/lektor/lektor/pull/1214",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı; issue–patch uyumu riski",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_49_56_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 51,
+      "repository": "cuthbertLab/music21",
+      "pull_request_number": 1736,
+      "pull_request_url": "https://github.com/cuthbertLab/music21/pull/1736",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_49_56_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 52,
+      "repository": "geopandas/geopandas",
+      "pull_request_number": 3591,
+      "pull_request_url": "https://github.com/geopandas/geopandas/pull/3591",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_49_56_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 53,
+      "repository": "python-babel/babel",
+      "pull_request_number": 1141,
+      "pull_request_url": "https://github.com/python-babel/babel/pull/1141",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_49_56_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 54,
+      "repository": "gammapy/gammapy",
+      "pull_request_number": 5525,
+      "pull_request_url": "https://github.com/gammapy/gammapy/pull/5525",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_49_56_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 55,
+      "repository": "joshuadavidthomas/django-bird",
+      "pull_request_number": 219,
+      "pull_request_url": "https://github.com/joshuadavidthomas/django-bird/pull/219",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_49_56_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 56,
+      "repository": "vacanza/holidays",
+      "pull_request_number": 2106,
+      "pull_request_url": "https://github.com/vacanza/holidays/pull/2106",
+      "screening_classification": "excluded",
+      "scope_decision": "Dışla: veri/içerik düzeltmesi",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_49_56_2026-11-12.md"
+    },
+    {
+      "cohort_rank": 57,
+      "repository": "ApeWorX/web3.py",
+      "pull_request_number": 3690,
+      "pull_request_url": "https://github.com/ApeWorX/web3.py/pull/3690",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 58,
+      "repository": "PyPSA/linopy",
+      "pull_request_number": 438,
+      "pull_request_url": "https://github.com/PyPSA/linopy/pull/438",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate; verify reproducer",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 59,
+      "repository": "jazzband/tablib",
+      "pull_request_number": 613,
+      "pull_request_url": "https://github.com/jazzband/tablib/pull/613",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 60,
+      "repository": "silx-kit/silx",
+      "pull_request_number": 4282,
+      "pull_request_url": "https://github.com/silx-kit/silx/pull/4282",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude — feature/usability enhancement",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 61,
+      "repository": "twisted/towncrier",
+      "pull_request_number": 696,
+      "pull_request_url": "https://github.com/twisted/towncrier/pull/696",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 62,
+      "repository": "sissbruecker/linkding",
+      "pull_request_number": 984,
+      "pull_request_url": "https://github.com/sissbruecker/linkding/pull/984",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude — explicitly requested new feature",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 63,
+      "repository": "simpeg/simpeg",
+      "pull_request_number": 1633,
+      "pull_request_url": "https://github.com/simpeg/simpeg/pull/1633",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 64,
+      "repository": "OceanParcels/Parcels",
+      "pull_request_number": 1723,
+      "pull_request_url": "https://github.com/OceanParcels/Parcels/pull/1723",
+      "screening_classification": "hold",
+      "scope_decision": "Provisional bugfix candidate; hold",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_57_64_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 65,
+      "repository": "mikedh/trimesh",
+      "pull_request_number": 2312,
+      "pull_request_url": "https://github.com/mikedh/trimesh/pull/2312",
+      "screening_classification": "hold",
+      "scope_decision": "Hold — issue fix is present, but PR is a broad release/multi-change patch",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_65_72_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 66,
+      "repository": "litestar-org/polyfactory",
+      "pull_request_number": 728,
+      "pull_request_url": "https://github.com/litestar-org/polyfactory/pull/728",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_65_72_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 67,
+      "repository": "pyccel/pyccel",
+      "pull_request_number": 2038,
+      "pull_request_url": "https://github.com/pyccel/pyccel/pull/2038",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_65_72_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 68,
+      "repository": "pydap/pydap",
+      "pull_request_number": 481,
+      "pull_request_url": "https://github.com/pydap/pydap/pull/481",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude — API naming/consistency migration, not a demonstrated defect",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_65_72_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 69,
+      "repository": "python-attrs/attrs",
+      "pull_request_number": 1417,
+      "pull_request_url": "https://github.com/python-attrs/attrs/pull/1417",
+      "screening_classification": "conditional",
+      "scope_decision": "Conditional candidate — PR test does not reproduce the full inherited-subclass issue example",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_65_72_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 70,
+      "repository": "StingraySoftware/stingray",
+      "pull_request_number": 858,
+      "pull_request_url": "https://github.com/StingraySoftware/stingray/pull/858",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_65_72_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 71,
+      "repository": "softlayer/softlayer-python",
+      "pull_request_number": 2214,
+      "pull_request_url": "https://github.com/softlayer/softlayer-python/pull/2214",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate; preserve exact license text for legal review",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_65_72_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 72,
+      "repository": "pypa/virtualenv",
+      "pull_request_number": 2907,
+      "pull_request_url": "https://github.com/pypa/virtualenv/pull/2907",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_65_72_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 73,
+      "repository": "crewAIInc/crewAI",
+      "pull_request_number": 2408,
+      "pull_request_url": "https://github.com/crewAIInc/crewAI/pull/2408",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_73_80_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 74,
+      "repository": "microsoft/AzureTRE",
+      "pull_request_number": 4352,
+      "pull_request_url": "https://github.com/microsoft/AzureTRE/pull/4352",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude — feature request / new endpoint and UI",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_73_80_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 75,
+      "repository": "aiogram/aiogram",
+      "pull_request_number": 1657,
+      "pull_request_url": "https://github.com/aiogram/aiogram/pull/1657",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude — enhancement / convenience API",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_73_80_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 76,
+      "repository": "apiflask/apiflask",
+      "pull_request_number": 642,
+      "pull_request_url": "https://github.com/apiflask/apiflask/pull/642",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude — interoperability option/enhancement; keep NOTICE obligations",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_73_80_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 77,
+      "repository": "XKNX/xknx",
+      "pull_request_number": 1663,
+      "pull_request_url": "https://github.com/XKNX/xknx/pull/1663",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude — explicit feature request",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_73_80_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 78,
+      "repository": "narwhals-dev/narwhals",
+      "pull_request_number": 1869,
+      "pull_request_url": "https://github.com/narwhals-dev/narwhals/pull/1869",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_73_80_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 79,
+      "repository": "callowayproject/bump-my-version",
+      "pull_request_number": 325,
+      "pull_request_url": "https://github.com/callowayproject/bump-my-version/pull/325",
+      "screening_classification": "conditional",
+      "scope_decision": "Conditional defect candidate — broad Mercurial refactor; issue-specific commit proof should be strengthened",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_73_80_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 80,
+      "repository": "dynaconf/dynaconf",
+      "pull_request_number": 1293,
+      "pull_request_url": "https://github.com/dynaconf/dynaconf/pull/1293",
+      "screening_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate, with expected exit-code semantics to be frozen before acceptance",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_73_80_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 81,
+      "repository": "Diaoul/subliminal",
+      "pull_request_number": 1218,
+      "pull_request_url": "https://github.com/Diaoul/subliminal/pull/1218",
+      "screening_classification": "conditional",
+      "scope_decision": "Conditional — issue #1164 is a bug, but PR also addresses #1059 enhancement and performs a broad scan refactor",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_81_88_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 82,
+      "repository": "astanin/python-tabulate",
+      "pull_request_number": 362,
+      "pull_request_url": "https://github.com/astanin/python-tabulate/pull/362",
+      "screening_classification": "strong_candidate",
+      "scope_decision": "Strong defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_81_88_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 83,
+      "repository": "pyjanitor-devs/pyjanitor",
+      "pull_request_number": 1451,
+      "pull_request_url": "https://github.com/pyjanitor-devs/pyjanitor/pull/1451",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude — explicitly proposed alias convenience API",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_81_88_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 84,
+      "repository": "copier-org/copier",
+      "pull_request_number": 1998,
+      "pull_request_url": "https://github.com/copier-org/copier/pull/1998",
+      "screening_classification": "strong_candidate",
+      "scope_decision": "Strong defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_81_88_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 85,
+      "repository": "frictionlessdata/frictionless-py",
+      "pull_request_number": 1729,
+      "pull_request_url": "https://github.com/frictionlessdata/frictionless-py/pull/1729",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude — request to add a new configurable capability",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_81_88_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 86,
+      "repository": "packit/packit",
+      "pull_request_number": 2556,
+      "pull_request_url": "https://github.com/packit/packit/pull/2556",
+      "screening_classification": "conditional",
+      "scope_decision": "Conditional defect candidate — verify exact expected `--config` long-option alias; patch exposes `--config-path`",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_81_88_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 87,
+      "repository": "matthewwithanm/python-markdownify",
+      "pull_request_number": 202,
+      "pull_request_url": "https://github.com/matthewwithanm/python-markdownify/pull/202",
+      "screening_classification": "strong_candidate",
+      "scope_decision": "Strong defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_81_88_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 88,
+      "repository": "drivendataorg/cloudpathlib",
+      "pull_request_number": 474,
+      "pull_request_url": "https://github.com/drivendataorg/cloudpathlib/pull/474",
+      "screening_classification": "conditional",
+      "scope_decision": "Conditional — valid Python 3.13 import/API compatibility failure, but broad 17-file compatibility update",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_81_88_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 89,
+      "repository": "benavlabs/fastcrud",
+      "pull_request_number": 190,
+      "pull_request_url": "https://github.com/benavlabs/fastcrud/pull/190",
+      "screening_classification": "excluded",
+      "scope_decision": "Exclude: composite multi-issue PR",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_89_96_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 90,
+      "repository": "pyfar/pyfar",
+      "pull_request_number": 722,
+      "pull_request_url": "https://github.com/pyfar/pyfar/pull/722",
+      "screening_classification": "strong_candidate",
+      "scope_decision": "Strong defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_89_96_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 91,
+      "repository": "gtalarico/pyairtable",
+      "pull_request_number": 422,
+      "pull_request_url": "https://github.com/gtalarico/pyairtable/pull/422",
+      "screening_classification": "conditional",
+      "scope_decision": "Conditional defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_89_96_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 92,
+      "repository": "stanfordnlp/dspy",
+      "pull_request_number": 1853,
+      "pull_request_url": "https://github.com/stanfordnlp/dspy/pull/1853",
+      "screening_classification": "conditional",
+      "scope_decision": "Conditional defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_89_96_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 93,
+      "repository": "joke2k/faker",
+      "pull_request_number": 2203,
+      "pull_request_url": "https://github.com/joke2k/faker/pull/2203",
+      "screening_classification": "conditional",
+      "scope_decision": "Conditional defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_89_96_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 94,
+      "repository": "scverse/PyDESeq2",
+      "pull_request_number": 349,
+      "pull_request_url": "https://github.com/scverse/PyDESeq2/pull/349",
+      "screening_classification": "strong_candidate",
+      "scope_decision": "Strong defect candidate; issue-state discrepancy noted",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_89_96_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 95,
+      "repository": "mitmproxy/pdoc",
+      "pull_request_number": 813,
+      "pull_request_url": "https://github.com/mitmproxy/pdoc/pull/813",
+      "screening_classification": "strong_candidate",
+      "scope_decision": "Strong defect candidate",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_89_96_2026-11-14.md"
+    },
+    {
+      "cohort_rank": 96,
+      "repository": "aws-cloudformation/cfn-lint",
+      "pull_request_number": 3991,
+      "pull_request_url": "https://github.com/aws-cloudformation/cfn-lint/pull/3991",
+      "screening_classification": "conditional",
+      "scope_decision": "Conditional, partial issue fix",
+      "source_audit": "research_candidates/evidence_abstention/SWE_REBENCH_V2_CASE_SCOPE_AUDIT_89_96_2026-11-14.md"
+    }
+  ]
+}
