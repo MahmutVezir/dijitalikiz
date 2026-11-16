@@ -68,7 +68,9 @@ Rationale: the base code explicitly writes every factory into its own scope regi
 - Artifact ID: `14229259503`
 - Artifact ZIP SHA-256: `d5b611e6264462d4bbb0ae5e4083d95c0f125dc92cf690a8e64d9a51980fc359`
 - Artifact includes base/fixed source snapshots, registry builder diff, four fixed upstream test files, runtime record, raw test logs, and SHA256SUMS.
-- Test source SHA-256: `4d06c3ab006c43b134daa7c2b6df5b13ec4e087cecde4170570d6a6f213229f8`.\n- Nested E3/E2/E1 packet draft SHA-256: `244e31b986ae883988fb007ab709684da390174f1f01b43758eccb340d8749dc`.\n- Gold/tier adjudication draft SHA-256: `6bd6c6f88cba9d21a1654553821fe3c5e7903994a3c0ed3559c2c72611bce4f9`.
+- Test source SHA-256: `4d06c3ab006c43b134daa7c2b6df5b13ec4e087cecde4170570d6a6f213229f8` .
+- Nested E3/E2/E1 packet draft SHA-256: `244e31b986ae883988fb007ab709684da390174f1f01b43758eccb340d8749dc`.
+- Gold/tier adjudication draft SHA-256: `6bd6c6f88cba9d21a1654553821fe3c5e7903994a3c0ed3559c2c72611bce4f9`.
 - Python 3.11.9, Ubuntu 22.04.5 LTS; no pip dependencies installed; stdlib `unittest` only.
 
 ## 5. Remaining limitations and human decision
