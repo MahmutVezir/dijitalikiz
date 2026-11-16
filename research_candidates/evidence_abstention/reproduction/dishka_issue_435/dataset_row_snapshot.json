@@ -1,0 +1,23 @@
+{
+  "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+  "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+  "dataset_file_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+  "cohort_csv_sha256": "84552868fc2914ebe2421b6b2ce5b6afaabe6a032f9cf9441a6251d2611248db",
+  "row": {
+    "selection_role": "primary",
+    "license_stratum": "Apache-2.0",
+    "stratum_project_quota": "28",
+    "project_rank": "2",
+    "case_rank_within_project": "1",
+    "instance_id": "reagento__dishka-436",
+    "repo": "reagento/dishka",
+    "base_commit": "8718d5af93f9e48bc2506c64827663fdccc5ad89",
+    "created_at_utc": "2025-04-15T22:52:26Z",
+    "language": "python",
+    "license": "Apache-2.0",
+    "fail_to_pass_count": "8",
+    "screen_status": "metadata_candidate_unreviewed"
+  },
+  "row_sha256_canonical_json": "e34ef42f31e1fa5f282eda5f3e6ad6f4212117019be9231f296c87b62add6008",
+  "row_hash_method": "SHA-256 of UTF-8 JSON serialization of the row object with sorted keys and separators=(',', ':'), ensure_ascii=False; no trailing newline"
+}
