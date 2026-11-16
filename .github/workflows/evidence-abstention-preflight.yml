@@ -456,7 +456,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: nox-issue-919-reproduction-\${{ github.run_id }}-\${{ github.run_attempt }}
+          name: nox-issue-919-reproduction
           path: reproduction-evidence/
           if-no-files-found: warn
           retention-days: 90
