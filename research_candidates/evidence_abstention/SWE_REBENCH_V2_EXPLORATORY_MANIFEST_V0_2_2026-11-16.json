@@ -294,7 +294,25 @@
       "resource_type_reconciliation_record": "research_candidates/evidence_abstention/REAGENTO_DISHKA_436_RESOURCE_TYPE_RECONCILIATION_2026-11-16.md",
       "timestamp_reconciliation_status": "exact_match_after_resource_type_correction",
       "cohort_selection_row_sha256": "e34ef42f31e1fa5f282eda5f3e6ad6f4212117019be9231f296c87b62add6008",
-      "cohort_selection_row_snapshot_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/cohort_selection_row_snapshot.json"
+      "cohort_selection_row_snapshot_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/cohort_selection_row_snapshot.json",
+      "dataset_parquet_row_sha256": "c548969ec886af21b56c93daae34db1a86b3a10c8dd1473d3d5c886549a9e86d",
+      "dataset_parquet_row_canonicalization": "SHA-256 of UTF-8 JSON serialization of the exact Parquet row with sorted keys, compact separators, ensure_ascii=False; row includes FAIL_TO_PASS and problem_statement",
+      "dataset_parquet_row_snapshot_artifact_run": 43877165089,
+      "dataset_parquet_row_snapshot_artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/43877165089",
+      "dataset_created_at_raw": "2025-04-15 22:52:26",
+      "dataset_created_at_timezone_assumption": "naive Parquet timestamp interpreted as UTC, per dataset metadata audit",
+      "fail_to_pass_count": 8,
+      "fail_to_pass_selectors": [
+        "tests/unit/container/override/test_alias.py::test_override_alias_to_provide_different_scope[Scope.REQUEST-Scope.APP]",
+        "tests/unit/container/override/test_alias.py::test_override_source_to_different_scope[Scope.APP-Scope.REQUEST]",
+        "tests/unit/container/override/test_alias.py::test_override_source_to_different_scope[Scope.REQUEST-Scope.APP]",
+        "tests/unit/container/override/test_context_var.py::test_override_to_context[Scope.APP-Scope.REQUEST-app_context0-req_context0]",
+        "tests/unit/container/override/test_context_var.py::test_override_to_context[Scope.REQUEST-Scope.APP-app_context1-req_context1]",
+        "tests/unit/container/override/test_context_var.py::test_override_context_to_provide[Scope.REQUEST-Scope.APP]",
+        "tests/unit/container/override/test_provide.py::test_override_different_scope[Scope.APP-Scope.REQUEST]",
+        "tests/unit/container/override/test_provide.py::test_override_different_scope[Scope.REQUEST-Scope.APP]"
+      ],
+      "dataset_fail_to_pass_reproduction_status": "pending_exact_test_patch_base_fail_fixed_pass_run"
     }
   ],
   "candidate_triage_ledger": {
