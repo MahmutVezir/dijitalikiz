@@ -64,6 +64,15 @@ def validate_case_record(record: Any) -> dict[str, Any]:
         blockers.append("fixed reproduction commit must equal source fixed commit.")
     if technical["buggy_baseline"]["exit_code"] == 0:
         blockers.append("buggy baseline must have a non-zero exit code.")
+    if technical["buggy_baseline"]["test_selector"] != technical["test_selector"]:
+        blockers.append("buggy baseline must use the declared defect-specific test selector.")
+    if technical["fixed_revision"]["test_selector"] != technical["test_selector"]:
+        blockers.append("fixed revision must run the exact same defect-specific test selector.")
+    root_license = record["license_review"]["root_license_file"]
+    if root_license["commit_sha"] != source["base_commit_sha"]:
+        blockers.append("root license file must be pinned to the exact buggy base commit.")
+    if root_license["license_expression"] != record["license_review"]["root_license_expression"]:
+        blockers.append("root license file expression must match the recorded license expression.")
     if technical["buggy_baseline"]["failure_signature"] == "":
         blockers.append("buggy baseline failure signature is required.")
     if gold_id not in mechanisms:
@@ -102,8 +111,8 @@ def validate_case_record(record: Any) -> dict[str, Any]:
         for evidence_id in ids[lower] & ids[upper]:
             if tier_evidence[lower][evidence_id] != tier_evidence[upper][evidence_id]:
                 blockers.append(f"Evidence item {evidence_id} changes provenance/content between {lower} and {upper}.")
-    if gold_id not in mechanisms:
-        blockers.append("Gold mechanism is not present in the candidate mechanism set.")
+    if not set(gold["evidence_refs"]) <= ids["E1"]:
+        blockers.append("gold_standard.evidence_refs must refer to evidence items present in E1.")
 
     if source["repository_full_name"] != independence["upstream_project_id"]:
         blockers.append("source repository and canonical upstream_project_id must match after fork/mirror normalization.")
@@ -138,6 +147,10 @@ def validate_registry(registry: Any) -> dict[str, Any]:
         blockers.append("study_protocol mismatch.")
     if registry.get("study_type") != "exploratory_feasibility":
         blockers.append("study_type must remain exploratory_feasibility.")
+    if registry.get("one_case_per_upstream_project") is not True:
+        blockers.append("one_case_per_upstream_project must remain true.")
+    if registry.get("target_distinct_upstream_projects") != MAX_CASES or registry.get("minimum_distinct_upstream_projects") != MIN_CASES:
+        blockers.append("distinct upstream project thresholds must remain 20 target and 15 minimum.")
     if registry.get("target_case_count") != MAX_CASES or registry.get("minimum_feasibility_case_count") != MIN_CASES:
         blockers.append("sample thresholds must remain target 20 and feasibility floor 15.")
     records = registry.get("records")
@@ -150,10 +163,13 @@ def validate_registry(registry: Any) -> dict[str, Any]:
             blockers.extend(f"records[{index}]: {item}" for item in result["blockers"])
     case_ids = [result.get("case_id") for result in results if result.get("case_id")]
     project_ids = [result.get("upstream_project_id") for result in results if result.get("upstream_project_id")]
+    defect_ids = [result.get("defect_cluster_id") for result in results if result.get("defect_cluster_id")]
     if len(case_ids) != len(set(case_ids)):
         blockers.append("case IDs must be unique.")
     if len(project_ids) != len(set(project_ids)):
         blockers.append("one case per distinct upstream project is required.")
+    if len(defect_ids) != len(set(defect_ids)):
+        blockers.append("duplicate defect clusters cannot be counted as independent cases.")
     if len(records) > MAX_CASES:
         blockers.append("registry exceeds the target maximum of 20 cases.")
     if registry.get("accepted_case_count") != len(records):
