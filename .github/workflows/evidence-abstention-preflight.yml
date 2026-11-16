@@ -156,7 +156,7 @@ jobs:
               f.write(digest + "  dataset-row-canonical.json\n")
           print("dataset_row_sha256=" + digest)
           with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
-              f.write("\\n".join(row["FAIL_TO_PASS"]) + "\\n")
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
           print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
           PY
           sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/issue_435_source_snapshot.json research_candidates/evidence_abstention/reproduction/dishka_issue_435/pull_436_source_snapshot.json > reproduction-evidence/issue-pr-snapshot-sha256.txt
@@ -176,7 +176,7 @@ jobs:
               }
           with open("reproduction-evidence/test-environment-package-metadata.json", "w", encoding="utf-8") as f:
               json.dump(packages, f, indent=2, ensure_ascii=False)
-              f.write("\\n")
+              f.write("\n")
           PY
           sha256sum research_candidates/evidence_abstention/REAGENTO_DISHKA_436_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json research_candidates/evidence_abstention/reproduction/dishka_issue_435/reproduction_environment_lock.json research_candidates/evidence_abstention/reproduction/dishka_issue_435/dataset_test_requirements.lock > reproduction-evidence/license-and-environment-lock-sha256.txt
           sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/cohort_selection_row_snapshot.json research_candidates/evidence_abstention/timestamp_reconciliation_part_01_2026-11-15.csv research_candidates/evidence_abstention/REAGENTO_DISHKA_436_RESOURCE_TYPE_RECONCILIATION_2026-11-16.md > reproduction-evidence/dataset-provenance-sha256.txt
