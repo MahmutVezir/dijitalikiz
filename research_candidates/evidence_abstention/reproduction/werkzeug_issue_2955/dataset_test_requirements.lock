@@ -1,0 +1,8 @@
+# Minimal runtime and test dependencies for Werkzeug #2955.
+# Install with --no-deps; all direct and transitive packages are pinned.
+MarkupSafe==2.1.5
+pytest==8.3.3
+iniconfig==2.0.0
+packaging==24.2
+pluggy==1.5.0
+pygments==2.18.0
