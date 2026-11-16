@@ -124,6 +124,7 @@ jobs:
           python -c "import platform; print(platform.platform())" >> reproduction-evidence/runtime.txt
           cat /etc/os-release >> reproduction-evidence/runtime.txt
           git clone https://github.com/reagento/dishka.git upstream-dishka
+          git -C upstream-dishka diff 8718d5af93f9e48bc2506c64827663fdccc5ad89 b1eae11734e64551d7b101195f27cb6870e1c364 -- tests/unit/container/override/test_alias.py tests/unit/container/override/test_context_var.py tests/unit/container/override/test_provide.py tests/unit/container/test_context_vars.py > reproduction-evidence/dataset-test.patch
           sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/test_issue_435.py > reproduction-evidence/test-sha256.txt
           curl --fail --location --retry 3 --retry-delay 2 \
             "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
@@ -154,11 +155,30 @@ jobs:
           with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
               f.write(digest + "  dataset-row-canonical.json\n")
           print("dataset_row_sha256=" + digest)
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\\n".join(row["FAIL_TO_PASS"]) + "\\n")
           print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
           PY
           sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/issue_435_source_snapshot.json research_candidates/evidence_abstention/reproduction/dishka_issue_435/pull_436_source_snapshot.json > reproduction-evidence/issue-pr-snapshot-sha256.txt
           sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/NESTED_EVIDENCE_PACKETS_DRAFT_2026-11-16.md research_candidates/evidence_abstention/REAGENTO_DISHKA_435_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-16.md > reproduction-evidence/packet-draft-sha256.txt
-          sha256sum research_candidates/evidence_abstention/REAGENTO_DISHKA_436_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json research_candidates/evidence_abstention/reproduction/dishka_issue_435/reproduction_environment_lock.json > reproduction-evidence/license-and-environment-lock-sha256.txt
+          python -m venv .venv-tests
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/dishka_issue_435/dataset_test_requirements.lock
+          .venv-tests/bin/python - <<'PY'
+          import importlib.metadata as md, json
+          packages = {}
+          for name in ("pytest", "iniconfig", "packaging", "pluggy"):
+              dist = md.metadata(name)
+              packages[name] = {
+                  "version": md.version(name),
+                  "license": dist.get("License"),
+                  "license_expression": dist.get("License-Expression"),
+                  "classifiers": [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+              }
+          with open("reproduction-evidence/test-environment-package-metadata.json", "w", encoding="utf-8") as f:
+              json.dump(packages, f, indent=2, ensure_ascii=False)
+              f.write("\\n")
+          PY
+          sha256sum research_candidates/evidence_abstention/REAGENTO_DISHKA_436_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json research_candidates/evidence_abstention/reproduction/dishka_issue_435/reproduction_environment_lock.json research_candidates/evidence_abstention/reproduction/dishka_issue_435/dataset_test_requirements.lock > reproduction-evidence/license-and-environment-lock-sha256.txt
           sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/cohort_selection_row_snapshot.json research_candidates/evidence_abstention/timestamp_reconciliation_part_01_2026-11-15.csv research_candidates/evidence_abstention/REAGENTO_DISHKA_436_RESOURCE_TYPE_RECONCILIATION_2026-11-16.md > reproduction-evidence/dataset-provenance-sha256.txt
 
       - name: Run identical issue reproducer on buggy base (failure required)
@@ -166,6 +186,22 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-dishka checkout --detach 8718d5af93f9e48bc2506c64827663fdccc5ad89
+          git -C upstream-dishka apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
+          mapfile -t selectors < reproduction-evidence/dataset-fail-to-pass-selectors.txt
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-dishka/src" .venv-tests/bin/python -m pytest -q --color=no "${selectors[@]}" > reproduction-evidence/base-dataset-test.log 2>&1
+          dataset_status=$?
+          set -e
+          cat reproduction-evidence/base-dataset-test.log
+          if [ "$dataset_status" -eq 0 ]; then
+            echo "Expected all 8 dataset FAIL_TO_PASS tests to fail on the buggy base." >&2
+            exit 1
+          fi
+          grep -E "8 failed in" reproduction-evidence/base-dataset-test.log
+          if grep -q "ERROR collecting" reproduction-evidence/base-dataset-test.log; then
+            echo "Dataset tests had collection errors rather than defect-specific failures." >&2
+            exit 1
+          fi
           git -C upstream-dishka rev-parse HEAD > reproduction-evidence/base-commit.txt
           git -C upstream-dishka show HEAD:src/dishka/registry_builder.py > reproduction-evidence/base-registry_builder.py
           git -C upstream-dishka show HEAD:src/dishka/container.py > reproduction-evidence/base-container.py
@@ -206,6 +242,10 @@ jobs:
           cat reproduction-evidence/fixed-test.log
           grep -F "Ran 1 test" reproduction-evidence/fixed-test.log
           grep -F "OK" reproduction-evidence/fixed-test.log
+          mapfile -t selectors < reproduction-evidence/dataset-fail-to-pass-selectors.txt
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-dishka/src" .venv-tests/bin/python -m pytest -q --color=no "${selectors[@]}" > reproduction-evidence/fixed-dataset-test.log 2>&1
+          cat reproduction-evidence/fixed-dataset-test.log
+          grep -E "8 passed in" reproduction-evidence/fixed-dataset-test.log
 
       - name: Hash and summarize reproduction evidence
         if: always()
@@ -219,7 +259,8 @@ jobs:
             echo "- Fixed revision: b1eae11734e64551d7b101195f27cb6870e1c364"
             echo "- Same selector: test_issue_435_override_lower_scope"
             echo "- Python: 3.11.9; no pip dependencies installed; stdlib unittest only"
-            echo "- Expected: base fails with AssertionError 1 != 42; fixed revision passes"
+            echo "- Issue reproducer: base fails with AssertionError 1 != 42; fixed revision passes"
+            echo "- Dataset FAIL_TO_PASS: all 8 selectors fail on base after test-patch application and pass on fixed revision"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload raw reproduction evidence
