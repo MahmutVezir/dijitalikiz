@@ -1429,7 +1429,6 @@ jobs:
           assert str(row["created_at"]).replace("T", " ")[:19] == "2024-11-07 20:51:42", row
           assert row["language"] == "python", row
           assert row["license"] == "Apache-2.0", row
-          assert str(row["created_at"]).replace("T", " ")[:19] == "2024-11-07 20:51:42", row
           canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
           with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
               f.write(canonical)
