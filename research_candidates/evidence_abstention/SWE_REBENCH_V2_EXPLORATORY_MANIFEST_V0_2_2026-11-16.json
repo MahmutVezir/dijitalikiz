@@ -176,7 +176,8 @@
     "Dishka issue #435 at primary rank 2 passed an exact issue reproducer on the pinned buggy base and fixed revision (run 43876245379). It remains not accepted pending student project lead sign-off on gold mechanism, E1/E2/E3 tiers, independence/exposure, and minimal-environment license-screen scope. No model inference was performed.",
     "Dishka #435 follow-up reproduction run 43878434875 applied the exact dataset test patch to the pinned base and ran all eight dataset FAIL_TO_PASS selectors: 8 failed on base with defect assertions and 8 passed on the fixed revision. The independent issue reproducer also failed on base and passed on fixed. Artifact 14231031919 SHA-256 6d16f0802a9e4d28e99b8e08d595c6edeeb0afce739629975e7839a4072628ce. This strengthens technical reproduction but does not constitute case acceptance or human gold/tier adjudication.",
     "Earthkit-data #592 (primary rank 4) passed a static issue/patch alignment and exact-base Apache-2.0 root-license screen. It remains provisional because the runtime dependency stack, CF Conventions-derived YAML provenance, and remote regression-fixture provenance have not been fully cleared; no source tests were executed.",
-    "Nox #922 (primary rank 6) passed static issue/patch alignment and exact-base Apache-2.0 root-license screening. A separate minimal dependency environment, dependency license metadata gate, and exact base-fail/fixed-pass workflow have been added; no reproduction result is claimed until the workflow is observed."
+    "Nox #922 (primary rank 6) passed static issue/patch alignment and exact-base Apache-2.0 root-license screening. A separate minimal dependency environment, dependency license metadata gate, and exact base-fail/fixed-pass workflow have been added; no reproduction result is claimed until the workflow is observed.",
+    "NumPyro #1916 (primary rank 12) passed static issue/patch alignment and source license screening: exact-base setup.py declares Apache License 2.0 and changed files carry SPDX Apache-2.0 headers. A CPU-only pinned environment and exact dataset FAIL_TO_PASS workflow have been added; reproduction is pending and the case is not accepted."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -387,6 +388,37 @@
       ],
       "license_manifest_path": "research_candidates/evidence_abstention/WNTRBLM_NOX_919_MINIMAL_ENVIRONMENT_LICENSE_MANIFEST_V0_1.json",
       "dependency_license_inventory_status": "pending_workflow"
+    },
+    {
+      "instance_id": "pyro-ppl__numpyro-1918",
+      "cohort_rank": 12,
+      "status": "static_issue_patch_and_source_license_screen_passed_exact_reproduction_pending",
+      "issue_url": "https://github.com/pyro-ppl/numpyro/issues/1916",
+      "pull_request_url": "https://github.com/pyro-ppl/numpyro/pull/1918",
+      "base_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+      "fixed_commit": "d5367f16abee85a1d7788784c71eb908ecb12df7",
+      "merge_commit": "5692d2da335945b756aeae02e3720b9b7f3efef2",
+      "exact_base_setup_license": "Apache License 2.0",
+      "changed_file_spdx": "Apache-2.0",
+      "changed_files": [
+        "numpyro/infer/mcmc.py",
+        "test/infer/test_ensemble_mcmc.py"
+      ],
+      "issue_patch_alignment": "Issue #1916 documents MCMC.run failing after MCMC.warmup with AIES/ESS because a batched PRNG key is passed to random.split. PR #1918 supplies a singleton key for ensemble kernels and adds test_warmup for AIES and ESS.",
+      "dependency_lock_path": "research_candidates/evidence_abstention/reproduction/numpyro_issue_1916/dataset_test_requirements.lock",
+      "review_path": "research_candidates/evidence_abstention/NUMPYRO_1916_CANDIDATE_REVIEW_2026-11-16.md",
+      "workflow_path": ".github/workflows/evidence-abstention-preflight.yml#numpyro-issue-1916-reproduction",
+      "runtime_scope": "CPU-only JAX; no GPU, external service, or model inference",
+      "dependency_license_inventory_status": "pending_workflow",
+      "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false,
+      "remaining_gates": [
+        "dependency_license_metadata_workflow_and_human_review",
+        "dataset_fail_to_pass_base_fail_fixed_pass_reproduction",
+        "independence_and_related_issue_family_review",
+        "gold_standard_and_E1_E2_E3_human_adjudication"
+      ]
     }
   ],
   "candidate_triage_ledger": {
