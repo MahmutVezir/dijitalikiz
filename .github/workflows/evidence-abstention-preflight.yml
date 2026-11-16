@@ -125,6 +125,7 @@ jobs:
           cat /etc/os-release >> reproduction-evidence/runtime.txt
           git clone https://github.com/reagento/dishka.git upstream-dishka
           sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/test_issue_435.py > reproduction-evidence/test-sha256.txt
+          sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/issue_435_source_snapshot.json research_candidates/evidence_abstention/reproduction/dishka_issue_435/pull_436_source_snapshot.json > reproduction-evidence/issue-pr-snapshot-sha256.txt
 
       - name: Run identical issue reproducer on buggy base (failure required)
         shell: bash
