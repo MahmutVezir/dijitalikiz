@@ -1231,7 +1231,12 @@ jobs:
           license_text = dist.get("License") or dist.get("License-Expression")
           if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
               raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
-          print({"pyarrow_version": md.version("pyarrow"), "license": license_text, "classifiers": classifiers})
+          inventory = {"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}
+          import json
+          with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2)
+              f.write("\\n")
+          print(inventory)
           PY
           curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
           echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
@@ -1249,6 +1254,7 @@ jobs:
           assert row["base_commit"] == "b7cc06e19025e5bbf14e28a0975f1749e21e9be3", row
           assert row["language"] == "python", row
           assert row["license"] == "Apache-2.0", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2025-02-21 10:04:30", row
           canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
           with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
               f.write(canonical)
@@ -1340,7 +1346,9 @@ jobs:
           git -C upstream-moto checkout --detach bf49e22f41be7444dc20e05dfa5dd13f25672eba
           test "$(git -C upstream-moto rev-parse HEAD)" = "bf49e22f41be7444dc20e05dfa5dd13f25672eba"
           test "$(git -C upstream-moto rev-parse HEAD:LICENSE)" = "90a85e7149454f173dd595bdeb884340cc01e6f6"
+          test "$(git -C upstream-moto rev-parse HEAD:setup.cfg)" = "fb1c7ead5806c611cf184980e8b54e4932079758"
           git -C upstream-moto show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE.txt
+          git -C upstream-moto show HEAD:setup.cfg > reproduction-evidence/upstream-setup.cfg
           git -C upstream-moto diff bf49e22f41be7444dc20e05dfa5dd13f25672eba d46db48b4911d84235ef783ddab41b73882530f7 > reproduction-evidence/pr-8296.patch
           sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/pr-8296.patch > reproduction-evidence/source-provenance-sha256.txt
           cp dependency-license-inventory.json reproduction-evidence/
@@ -1477,6 +1485,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p reproduction-evidence
+          rm -f reproduction-evidence/train-00000-of-00001.parquet
           if [ -f dependency-license-inventory.json ]; then cp dependency-license-inventory.json reproduction-evidence/; fi
           (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
           {
