@@ -13,7 +13,14 @@
 - **Stage 2 — exact reproduction:** PASS.
 - **Stage 3 — technical gold, alternatives and E1/E2/E3:** PASS; explicit project-lead approval is recorded in the human adjudication decision.
 - **Final case acceptance:** NOT YET ACCEPTED. The outstanding acknowledgement is limited to the researcher-exposure and single-human-adjudicator limitation statement, plus final registry-record validation. This does not reverse the Stage 2 or Stage 3 results.
-- **Model inference authorization:** FALSE.
+- **Model inference authorization:** FALSE
+
+**Nested evidence manifests:**
+- E3 `E3_PACKET_MANIFEST_V0_1.json` — SHA-256 `d75d32da95bfdef73d3824677b6d6df445712967a777580b8867e769c133f131` (7 items).
+- E2 `E2_PACKET_MANIFEST_V0_1.json` — SHA-256 `8a39ab862393954451f403badd5ccea40350902b39f95ae4e0d7885e9d6751d5` (9 items).
+- E1 `E1_PACKET_MANIFEST_V0_1.json` — SHA-256 `0fc59ca0ff6cf220b6b46784329b21cdd9d16af3f2211dd29210dd1031f94462` (13 items).
+- Index and source-hash explanation: `DISHKA_435_EVIDENCE_PACKET_INDEX_V0_1_2026-11-16.md`.
+- Post-run resource timestamp correction: `DISHKA_435_POST_RUN_PROVENANCE_CORRECTION_V0_1_2026-11-16.md`..
 
 ## Stage 2 — raw reproduction evidence
 
