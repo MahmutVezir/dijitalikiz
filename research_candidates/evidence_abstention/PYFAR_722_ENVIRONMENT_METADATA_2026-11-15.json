@@ -1,0 +1,74 @@
+{
+  "dataset": {
+    "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "parquet_bytes": 226272977,
+    "parquet_rows": 6272,
+    "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "reader": {
+      "pyarrow": "19.0.1"
+    },
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67"
+  },
+  "environment_metadata": {
+    "base_commit": "648dda4c60c5a6f74acf335f7808c590c9d23929",
+    "created_at": "2024-11-15 08:33:08",
+    "image_name": "prime/primeintellect/pyfar-pyfar:722-648dda4",
+    "install_config": {
+      "base_image_name": "python_base_310",
+      "docker_specs": {
+        "_variant": null,
+        "bazel_version": null,
+        "bun_version": null,
+        "cargo_version": null,
+        "deno_version": null,
+        "docker_version": null,
+        "erlang_version": null,
+        "gcc_version": null,
+        "go_version": null,
+        "helm_version": null,
+        "java_version": null,
+        "jdk_version": null,
+        "llvm_version": null,
+        "lua_version": null,
+        "luajit_version": null,
+        "neovim_version": null,
+        "node_version": null,
+        "npm_version": null,
+        "nvim_version": null,
+        "pnpm_version": null,
+        "python_image": "python_base_310",
+        "python_version": null,
+        "redis_version": null,
+        "ruby_version": null,
+        "rust_version": null,
+        "rustc_version": null,
+        "solana_version": null,
+        "sqlite_version": null
+      },
+      "install": [
+        "export DEBIAN_FRONTEND=noninteractive && apt-get update -qq && apt-get install -y -qq libsndfile1",
+        "pip install -q -e ".[tests]""
+      ],
+      "log_parser": "parse_log_pytest",
+      "test_cmd": "pytest --no-header -rA --tb=line --color=no -p no:cacheprovider -W ignore::DeprecationWarning tests/test_dsp_normalize.py"
+    },
+    "instance_id": "pyfar__pyfar-722",
+    "language": "python",
+    "license": "MIT",
+    "repo": "pyfar/pyfar"
+  },
+  "environment_metadata_sha256": "734cb8eb136585afb129ad0bb614c9cd5c9ae224978b46a59a1bd76e7db697e8",
+  "execution_boundary": {
+    "fine_tuning": false,
+    "model_inference": false,
+    "model_loading": false,
+    "upstream_package_install": false,
+    "upstream_repository_checkout": false,
+    "upstream_test_or_build": false
+  },
+  "record_type": "swe_rebench_v2_environment_metadata_only",
+  "row_locator": {
+    "field": "instance_id",
+    "value": "pyfar__pyfar-722"
+  }
+}
