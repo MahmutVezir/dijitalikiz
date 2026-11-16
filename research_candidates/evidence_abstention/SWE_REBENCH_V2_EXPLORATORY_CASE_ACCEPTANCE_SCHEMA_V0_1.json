@@ -39,7 +39,11 @@
         "file_sha256",
         "row_locator",
         "row_sha256",
-        "cohort_role"
+        "cohort_role",
+        "created_at_dataset_utc",
+        "created_at_upstream_utc",
+        "timestamp_reconciliation_status",
+        "timestamp_review_record"
       ],
       "properties": {
         "dataset_id": {
@@ -77,6 +81,23 @@
             "primary",
             "project_reserve"
           ]
+        },
+        "created_at_dataset_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_at_upstream_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "timestamp_reconciliation_status": {
+          "enum": [
+            "exact_match",
+            "authoritatively_resolved"
+          ]
+        },
+        "timestamp_review_record": {
+          "$ref": "#/$defs/artifact"
         }
       }
     },
@@ -200,10 +221,11 @@
         "changed_file_review",
         "nested_dependency_review",
         "notice_and_provenance_review",
-        "research_use_decision",
         "reviewer_role",
         "review_record",
-        "changed_file_license_manifest"
+        "changed_file_license_manifest",
+        "research_use_decision",
+        "scope_limitation"
       ],
       "properties": {
         "root_license_expression": {
@@ -223,7 +245,7 @@
           "const": "passed"
         },
         "research_use_decision": {
-          "const": "approved"
+          "const": "no_obvious_prohibition_identified"
         },
         "reviewer_role": {
           "const": "student_project_lead"
@@ -233,6 +255,9 @@
         },
         "changed_file_license_manifest": {
           "$ref": "#/$defs/artifact"
+        },
+        "scope_limitation": {
+          "const": "documentary_screening_only_not_legal_advice"
         }
       }
     },
