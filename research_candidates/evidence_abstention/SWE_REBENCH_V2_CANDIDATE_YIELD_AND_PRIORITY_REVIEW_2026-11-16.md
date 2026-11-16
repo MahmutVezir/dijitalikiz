@@ -33,7 +33,7 @@ The 12 existing scope-audit batches classify the 96 primary rows as follows. Cou
 | 89–96 | 7 | 3 strong + 4 conditional |
 | **Total** | **67** | Broad static shortlist only |
 
-A second-pass review has already removed SimPEG row 63 from the primary shortlist: the linked issue describes an ambiguous API/docstring mismatch, while PR #1633 deprecates the property rather than implementing the issue's proposed integer result. This leaves **66 rows** in the current broad candidate/conditional/hold planning shortlist. The normalized row-level ledger still needs to be generated and independently checked before using 66 as a final cohort statistic.
+A second-pass review has already removed SimPEG row 63 from the primary shortlist: the linked issue describes an ambiguous API/docstring mismatch, while PR #1633 deprecates the property rather than implementing the issue's proposed integer result. This leaves **66 rows** in the current broad candidate/conditional/hold planning shortlist. The normalized row-level ledger has now been generated at `SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json`: 96/96 ranks appear exactly once. It records 29 excluded, 49 provisional, 10 conditional, 2 held, and 6 explicitly strong rows. The ledger is a deterministic extraction of the existing audit decisions, not a new adjudication; human review is still required before treating 66 as a final cohort statistic.
 
 ## Is 15 achievable?
 
