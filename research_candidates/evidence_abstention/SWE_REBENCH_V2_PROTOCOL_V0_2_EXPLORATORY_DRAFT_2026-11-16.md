@@ -17,10 +17,11 @@ The pinned dataset contains 6,272 rows. The frozen candidate cohort contains 96 
 The timestamp register's one-second `simpeg/simpeg#1633` discrepancy and raw-payload authentication limitation remain open. This metadata issue must be resolved or the affected candidate excluded under a written rule before it can be accepted.
 
 ## 3. Sample and stopping
-- Target: 20 accepted defects from 20 distinct upstream projects.
-- Fifteen accepted defects is a preferred analysis threshold, not an eligibility floor. Any positive number of fully accepted independent cases may be retained.
+- Primary target: 15 accepted defects from 15 distinct upstream projects.
+- Stretch target: 20 accepted defects from 20 distinct upstream projects if more candidates pass the same unchanged gates.
+- One valid case is sufficient for case-level feasibility. Fifteen is the primary target and preferred analysis threshold, not an eligibility floor. Any positive number of fully accepted independent cases may be retained.
 - One case per independent upstream project. Forks, mirrors, transfers, duplicate issues, and shared upstreams are not independent.
-- Review candidates sequentially in the frozen primary-cohort order, followed by the 17 distinct-project reserves if needed. Use within-project alternatives only to replace an issue in the same project. Stop when 20 cases are accepted or the eligible frozen queue is exhausted. Report the actual N; do not relax eligibility to hit the target.
+- Review candidates sequentially in the frozen primary-cohort order, followed by the 17 distinct-project reserves if needed. Use within-project alternatives only to replace an issue in the same project. Stop when 20 cases are accepted or the eligible frozen queue is exhausted; 15 is the primary target and 20 the stretch target. Report the actual N; do not relax eligibility to hit the target.
 - If fewer than 15 cases survive, retain all accepted cases. For N=1–4 report case-level feasibility only; for N=5–14 report paired descriptive results without a hypothesis-test claim; for N=15–20 exploratory paired summaries and exact McNemar may be reported. No band permits a confirmatory efficacy claim.
 
 Each case is one independent unit. Its six condition outputs are repeated measurements, not six independent observations.
