@@ -4,6 +4,7 @@ from __future__ import annotations
 import copy
 import importlib.util
 import os
+import sys
 from pathlib import Path
 import unittest
 
@@ -14,6 +15,7 @@ def load_schema_module():
     if spec is None or spec.loader is None:
         raise RuntimeError(f"Unable to load exact schema source: {source}")
     module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
 
