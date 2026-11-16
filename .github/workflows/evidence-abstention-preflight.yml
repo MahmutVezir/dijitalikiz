@@ -1369,6 +1369,20 @@ jobs:
           test -f upstream-moto/tests/test_ecr/test_ecr_boto3.py
           python -m venv .venv-dataset
           .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          .venv-dataset/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          dist = md.metadata("pyarrow")
+          classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+          license_text = dist.get("License") or dist.get("License-Expression")
+          if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
+              raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
+          inventory = {"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}
+          with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2)
+              f.write("\n")
+          print(inventory)
+          PY
           curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
           echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
           .venv-dataset/bin/python - <<'PY'
@@ -1384,6 +1398,8 @@ jobs:
           assert row["repo"] == "getmoto/moto", row
           assert row["base_commit"] == "bf49e22f41be7444dc20e05dfa5dd13f25672eba", row
           assert row["language"] == "python", row
+          assert row["license"] == "Apache-2.0", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2024-11-07 20:51:42", row
           canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
           with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
               f.write(canonical)
@@ -1407,17 +1423,21 @@ jobs:
           selectors = row["FAIL_TO_PASS"]
           assert selectors, "Dataset row has no FAIL_TO_PASS selectors"
           python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
-          command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", *selectors]
           env = dict(os.environ)
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-moto")
-          result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+          combined = []
+          for selector in selectors:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              combined.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode == 0:
+                  raise SystemExit("Dataset FAIL_TO_PASS selector unexpectedly passed on buggy base: " + selector)
+              if "assert 1 == 2" not in result.stdout and "AssertionError: 1 != 2" not in result.stdout:
+                  raise SystemExit("Buggy-base failure was not the expected missing-tag assertion for selector: " + selector + "\n" + result.stdout)
+          output = "\n".join(combined)
           with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
-              f.write(result.stdout)
-          print(result.stdout)
-          if result.returncode == 0:
-              raise SystemExit("Expected dataset FAIL_TO_PASS selectors to fail on buggy base")
-          if "AssertionError" not in result.stdout and "assert 1 == 2" not in result.stdout:
-              raise SystemExit("Base dataset run did not show the expected missing-tag assertion; collection/setup failures do not count")
+              f.write(output)
+          print(output)
           PY
 
       - name: Run same issue reproducer and dataset selectors on fixed revision (pass required)
@@ -1436,15 +1456,19 @@ jobs:
           row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")]).to_pylist()[0]
           selectors = row["FAIL_TO_PASS"]
           python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
-          command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", *selectors]
           env = dict(os.environ)
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-moto")
-          result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+          combined = []
+          for selector in selectors:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              combined.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode != 0:
+                  raise SystemExit("Dataset FAIL_TO_PASS selector did not pass on fixed revision: " + selector + "\n" + result.stdout)
+          output = "\n".join(combined)
           with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
-              f.write(result.stdout)
-          print(result.stdout)
-          if result.returncode != 0:
-              raise SystemExit("Dataset FAIL_TO_PASS selectors did not pass on fixed revision")
+              f.write(output)
+          print(output)
           PY
 
       - name: Prepare and upload raw Moto reproduction evidence
