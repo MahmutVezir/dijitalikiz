@@ -4,7 +4,7 @@
 
 ## 1. Decision recorded
 The project lead selected:
-  Study type: 20 case exploratory/feasibility study.
+  Study type: sequential exploratory/feasibility study; target 20 accepted cases, with no forced minimum sample size.
 - Model route: retain the pinned Qwen/Qwen2.5-3B-Instruct candidate, subject to exact-revision license and runtime review before loading or inference.
 - Working team: project lead (student researcher) and ChatGPT as an AI research assistant. ChatGPT is not a human co-investigator, independent human rater, legal reviewer, or external auditor.
 - No recruitment of additional human evaluators is planned under this working arrangement.
