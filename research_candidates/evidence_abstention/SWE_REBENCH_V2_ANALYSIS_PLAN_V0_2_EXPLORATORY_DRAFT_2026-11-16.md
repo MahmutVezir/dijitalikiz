@@ -15,7 +15,7 @@ E3 unsupported asserted diagnosis, coded per case and policy:
 A correct hidden-gold match does not make an unsupported guess evidence-supported. Evidence-support scoring is completed before gold-correctness is revealed or assessed.
 
 ## 3. Primary comparison
-For cases with scorable E3 outcomes under both policies, report:
+For cases with scorable E3 outcomes under both policies, report paired descriptive counts and risk differences at any achieved N. For N=1–4, present case-level outcomes only and do not summarize a hypothesis test. For N=5–14, keep the paired table and descriptive risk difference but do not report a hypothesis-test claim. For N=15–20, additionally report the exact two-sided McNemar p-value as exploratory only. In every band, report:
 - P0/P1 paired 2×2 table and discordant-pair counts;
 - unsafe rate under each policy;
 - paired risk difference P1 minus P0;
