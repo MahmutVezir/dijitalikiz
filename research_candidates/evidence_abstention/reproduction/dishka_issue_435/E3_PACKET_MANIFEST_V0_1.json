@@ -1,0 +1,71 @@
+{
+  "schema_version": "0.1-dishka-tier-packet",
+  "case_instance": "reagento__dishka-436",
+  "tier": "E3",
+  "packet_id": "DISHKA-435-E3",
+  "surviving_mechanism_ids": [
+    "G1_STALE_PER_SCOPE_FACTORY_REGISTRATION",
+    "A1_SCOPE_CHAIN_PRECEDENCE",
+    "A2_CONSUMER_BINDING_OR_CACHE"
+  ],
+  "semantic_rationale": "Project-lead-approved E3 tier: the reported symptom and exact base/fix outputs establish the cross-scope override failure, but reveal no internal resolution path. G1, ordinary scope-chain precedence, and consumer/cache behavior remain competing mechanisms. Execution logs include both the independent issue reproducer and all eight exact dataset FAIL_TO_PASS selectors.",
+  "inherited_packet_ids": [],
+  "evidence_items": [
+    {
+      "evidence_id": "ISSUE_REPORT",
+      "content_sha256": "086ee0aba856f76397da74a704d98cc8a82e40e165739d9cc352b202d103e8f3",
+      "source_snapshot_sha256": "086ee0aba856f76397da74a704d98cc8a82e40e165739d9cc352b202d103e8f3",
+      "source_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/dee22a1f6e638d75b055b89d57f455c72320ba17/research_candidates/evidence_abstention/reproduction/dishka_issue_435/issue_435_source_snapshot.json",
+      "source_commit_sha": "dee22a1f6e638d75b055b89d57f455c72320ba17",
+      "source_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/issue_435_source_snapshot.json"
+    },
+    {
+      "evidence_id": "ISSUE_REPRODUCER",
+      "content_sha256": "4d06c3ab006c43b134daa7c2b6df5b13ec4e087cecde4170570d6a6f213229f8",
+      "source_snapshot_sha256": "4d06c3ab006c43b134daa7c2b6df5b13ec4e087cecde4170570d6a6f213229f8",
+      "source_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/33b8f8760339d5d811823e9456769fea79b104fd/research_candidates/evidence_abstention/reproduction/dishka_issue_435/test_issue_435.py",
+      "source_commit_sha": "33b8f8760339d5d811823e9456769fea79b104fd",
+      "source_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/test_issue_435.py"
+    },
+    {
+      "evidence_id": "BASE_ISSUE_FAILURE_LOG",
+      "content_sha256": "42ad6d870c4513551c367b58c1b4391a58cf0c40d68eae0105d72df8df5df4ae",
+      "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827",
+      "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/43881610067/artifacts/14231689140#path=base-test.log",
+      "source_commit_sha": "33b8f8760339d5d811823e9456769fea79b104fd",
+      "source_path": "artifact:14231689140/base-test.log"
+    },
+    {
+      "evidence_id": "FIXED_ISSUE_PASS_LOG",
+      "content_sha256": "a6bf680d66618cd9b29e1013934f75e1e3bd5ed2daff4f17710050382678fd21",
+      "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827",
+      "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/43881610067/artifacts/14231689140#path=fixed-test.log",
+      "source_commit_sha": "33b8f8760339d5d811823e9456769fea79b104fd",
+      "source_path": "artifact:14231689140/fixed-test.log"
+    },
+    {
+      "evidence_id": "DATASET_BASE_FAIL_LOG",
+      "content_sha256": "bb0d8b280d418c87783ef199e7f09655040133bc5e59cfdbdf726e019a498f54",
+      "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827",
+      "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/43881610067/artifacts/14231689140#path=base-dataset-test.log",
+      "source_commit_sha": "33b8f8760339d5d811823e9456769fea79b104fd",
+      "source_path": "artifact:14231689140/base-dataset-test.log"
+    },
+    {
+      "evidence_id": "DATASET_FIXED_PASS_LOG",
+      "content_sha256": "58745d8011883213acd6d3ad00c73a2860f68e432f60fc956b8cb2a8bb6d8181",
+      "source_snapshot_sha256": "99c47e28c1707436d7dfa75dcb776f5a0865b2288f1ac16d1baee8d6684c7827",
+      "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/43881610067/artifacts/14231689140#path=fixed-dataset-test.log",
+      "source_commit_sha": "33b8f8760339d5d811823e9456769fea79b104fd",
+      "source_path": "artifact:14231689140/fixed-dataset-test.log"
+    },
+    {
+      "evidence_id": "DATASET_ROW",
+      "content_sha256": "c548969ec886af21b56c93daae34db1a86b3a10c8dd1473d3d5c886549a9e86d",
+      "source_snapshot_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+      "source_uri": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/tree/fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+      "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+      "source_path": "data/train-00000-of-00001.parquet#instance_id=reagento__dishka-436"
+    }
+  ]
+}
