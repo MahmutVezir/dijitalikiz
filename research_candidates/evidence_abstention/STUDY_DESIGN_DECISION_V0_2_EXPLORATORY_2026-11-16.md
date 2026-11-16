@@ -4,7 +4,7 @@
 
 ## 1. Decision recorded
 The project lead selected:
-- Study type: 20-case exploratory/feasibility study.
+  Study type: 20 case exploratory/feasibility study.
 - Model route: retain the pinned Qwen/Qwen2.5-3B-Instruct candidate, subject to exact-revision license and runtime review before loading or inference.
 - Working team: project lead (student researcher) and ChatGPT as an AI research assistant. ChatGPT is not a human co-investigator, independent human rater, legal reviewer, or external auditor.
 - No recruitment of additional human evaluators is planned under this working arrangement.
@@ -22,7 +22,7 @@ A correct guess is not automatically an evidence-supported diagnosis. The study 
 
 ## 3. Sample and independence
 - Target: 20 accepted cases from 20 distinct upstream projects.
-- Feasibility floor: 15 accepted cases from 15 distinct upstream projects.
+- Fifteen cases is the preferred analysis threshold, not an eligibility floor.
 - One case per upstream project. Forks, mirrors, transfers, duplicate issues, and shared upstream identities are grouped and cannot be counted as independent projects.
 - If 15 qualifying independent projects cannot be obtained, report the achieved smaller feasibility sample and its limits; do not duplicate projects to inflate N or relax acceptance criteria.
 - The existing 96 primary rows and 17 project reserves are candidate metadata only. None is accepted by this decision.
@@ -84,7 +84,12 @@ No model loading, inference, fine-tuning, training, or upstream code execution i
 ## 9. Interpretation boundary
 A favorable result would be preliminary evidence about this particular model revision, software-defect sample, packet-construction procedure, prompt contrast, and one-response-per-cell setup. It would not establish universal hallucination reduction, general model self-awareness, or superiority across models and domains. A null or mixed result is still reportable.
 
-## 10. Current status
+## 10. Sequential candidate intake and achieved-N reporting
+Candidates are reviewed in the frozen primary-cohort order, followed by the 17 distinct-project reserves if needed. Within-project alternatives may replace a failed issue but do not add an independent project. Stop at 20 accepted cases or exhaustion of the frozen eligible queue. Keep every case that meets the unchanged acceptance criteria. Do not lower the criteria or exclude valid cases merely because N is below 15.
+
+If the achieved N is 1–4, report case-level feasibility only. If N is 5–14, report paired descriptive results without a hypothesis-test claim. If N is 15–20, exploratory paired summaries and exact McNemar may be reported, still without confirmatory efficacy claims. All inference remains subject to separate explicit authorization after the remaining gates.
+
+## 11. Current status
 - Accepted cases/projects: 0/0.
 - Technical reproductions eligible for this sample: 0.
 - Evidence packet sets: 0.
