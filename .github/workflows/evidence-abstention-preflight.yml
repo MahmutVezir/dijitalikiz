@@ -1703,3 +1703,195 @@ jobs:
           path: reproduction-evidence/
           if-no-files-found: warn
           retention-days: 90
+
+
+  python-control-issue-1144-reproduction:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install pinned plotting environment and audit licenses
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -VV
+          python -m venv .venv-tests
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/python_control_issue_1144/requirements.lock
+          .venv-tests/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          names = ["numpy", "scipy", "matplotlib", "contourpy", "cycler", "fonttools", "kiwisolver", "packaging", "pillow", "pyparsing", "python-dateutil", "six", "pytest", "iniconfig", "pluggy", "Pygments"]
+          inventory = {}
+          for name in names:
+              dist = md.metadata(name)
+              classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+              license_text = dist.get("License") or dist.get("License-Expression")
+              if not license_text and not classifiers:
+                  raise SystemExit(f"License metadata missing for {name}; stop before source tests")
+              inventory[name] = {"version": md.version(name), "license": license_text, "license_expression": dist.get("License-Expression"), "license_classifiers": classifiers}
+          with open("dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Clone exact python-control source and prepare patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          git clone https://github.com/python-control/python-control.git upstream-control
+          git -C upstream-control checkout --detach dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113
+          test "$(git -C upstream-control rev-parse HEAD)" = "dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113"
+          test "$(git -C upstream-control rev-parse HEAD:LICENSE)" = "fbfc42c670132862f4d6998add25451214023574"
+          test "$(git -C upstream-control rev-parse HEAD:pyproject.toml)" = "db70b8f48d989ce415255fb039aedaebd77fcc94"
+          git -C upstream-control show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE.txt
+          git -C upstream-control show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
+          git -C upstream-control diff dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113 21f4912c8b12216534b8d5b07c243c66675a8b83 > reproduction-evidence/pr-1145.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1145.patch > reproduction-evidence/source-provenance-sha256.txt
+          cp dependency-license-inventory.json reproduction-evidence/
+
+      - name: Run independent Nyquist axes reproducer on buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          MPLBACKEND=Agg PYTHONPATH="$GITHUB_WORKSPACE/upstream-control" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/python_control_issue_1144" -p "test_issue_1144.py" -v > reproduction-evidence/base-issue-test.log 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-issue-test.log
+          if [ "$status" -eq 0 ]; then
+            echo "Expected nyquist_plot to ignore the supplied axes on the buggy base." >&2
+            exit 1
+          fi
+          grep -E "AssertionError: 0 not greater than 0|AssertionError" reproduction-evidence/base-issue-test.log
+
+      - name: Extract and authenticate exact dataset row
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          .venv-dataset/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          dist = md.metadata("pyarrow")
+          classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+          license_text = dist.get("License") or dist.get("License-Expression")
+          if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
+              raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
+          with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump({"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}, f, indent=2)
+              f.write("\n")
+          PY
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+          .venv-dataset/bin/python - <<'PY'
+          import hashlib
+          import json
+          import pyarrow.parquet as pq
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          rows = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "python-control__python-control-1145")]).to_pylist()
+          assert len(rows) == 1, len(rows)
+          row = rows[0]
+          assert row["repo"] == "python-control/python-control", row
+          assert row["base_commit"] == "dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113", row
+          assert row["language"] == "python", row
+          assert row["license"] == "BSD-3-Clause", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2025-04-17 03:16:40", row
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\n")
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
+          print("dataset_row_sha256=" + digest)
+          print("dataset_created_at=" + str(row["created_at"]))
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          PY
+
+      - name: Run exact dataset selectors on patched buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-control checkout --detach dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113
+          git -C upstream-control apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-1145.patch"
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "python-control__python-control-1145")]).to_pylist()[0]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-control")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-control", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode == 0:
+                  raise SystemExit("Dataset selector unexpectedly passed on buggy base: " + selector)
+              if "AssertionError" not in result.stdout:
+                  raise SystemExit("Buggy-base selector failed for a reason other than the explicit-axis assertion: " + selector + "\n" + result.stdout)
+          output = "\n".join(logs)
+          with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Run same reproducer and dataset selectors on fixed revision (pass required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-control checkout --detach 21f4912c8b12216534b8d5b07c243c66675a8b83
+          MPLBACKEND=Agg PYTHONPATH="$GITHUB_WORKSPACE/upstream-control" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/python_control_issue_1144" -p "test_issue_1144.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
+          cat reproduction-evidence/fixed-issue-test.log
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "python-control__python-control-1145")]).to_pylist()[0]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-control")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-control", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode != 0:
+                  raise SystemExit("Dataset selector did not pass on fixed revision: " + selector + "\n" + result.stdout)
+          output = "\n".join(logs)
+          with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Prepare and upload raw python-control reproduction evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          rm -f reproduction-evidence/train-00000-of-00001.parquet
+          if [ -f dependency-license-inventory.json ]; then cp dependency-license-inventory.json reproduction-evidence/; fi
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+
+      - name: Upload raw python-control reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-control-issue-1144-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
