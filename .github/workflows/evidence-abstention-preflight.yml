@@ -190,7 +190,7 @@ jobs:
           git -C upstream-dishka apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
-          (cd upstream-dishka && PYTHONPATH="$GITHUB_WORKSPACE/upstream-dishka/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -q --color=no "${selectors[@]}") > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
+          (cd upstream-dishka && PYTHONPATH="$GITHUB_WORKSPACE/upstream-dishka/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -q --color=no "${selectors[@]}") > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           dataset_status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
