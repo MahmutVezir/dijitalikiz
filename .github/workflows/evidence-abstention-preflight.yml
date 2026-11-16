@@ -781,7 +781,7 @@ jobs:
           git -C upstream-werkzeug apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
           set +e
-          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
+          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null --noconftest -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
@@ -802,7 +802,7 @@ jobs:
           set -euo pipefail
           git -C upstream-werkzeug checkout --detach --force 1688968101c3341136bd8420ac7b77b6286c7409
           set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
-          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null --noconftest -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
           grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
 
