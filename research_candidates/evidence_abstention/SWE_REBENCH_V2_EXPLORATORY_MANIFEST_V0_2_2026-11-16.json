@@ -788,6 +788,38 @@
         "same_dataset_base_fail_fixed_pass",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ]
+    },
+    {
+      "instance_id": "amaranth-lang__amaranth-1519",
+      "cohort_rank": 30,
+      "status": "issue_patch_and_rtlil_reproducer_prepared_exact_dataset_reproduction_pending_temporal_caution",
+      "issue_url": "https://github.com/amaranth-lang/amaranth/issues/1518",
+      "pull_request_url": "https://github.com/amaranth-lang/amaranth/pull/1519",
+      "issue_created_at": "2024-09-20T13:41:02Z",
+      "pull_request_created_at": "2024-09-20T14:00:49Z",
+      "base_commit": "8c5ed4051dd74a6347af8d52f8e397eb53218ac4",
+      "fixed_commit": "6a10abe6c873e7fb51a34f70801d3dd37cda9061",
+      "exact_base_license": "BSD-2-Clause",
+      "exact_base_license_blob_sha": "cb522426f79b987ad57f265b639a3f6c28214e04",
+      "exact_base_pyproject_blob_sha": "2f0c4dbb709ebeb6326ba2031a5604ffabc78260",
+      "exact_base_rtlil_blob_sha": "cecb11f0f591bcbf4db0f8bf3af3a0e49601c0e9",
+      "fixed_rtlil_blob_sha": "28f428c1aa4e1a5140287601553c1114f6f4820a",
+      "minimal_reproducer_path": "research_candidates/evidence_abstention/reproduction/amaranth_issue_1518/test_issue_1518.py",
+      "dependency_lock_path": "research_candidates/evidence_abstention/reproduction/amaranth_issue_1518/requirements.lock",
+      "minimal_reproduction_environment": "Python 3.11.9; jschon, pyvcd, Jinja2 and pytest; no Yosys invocation",
+      "dataset_selector_workflow_path": ".github/workflows/evidence-abstention-preflight.yml#amaranth-issue-1518-reproduction",
+      "temporal_exposure": "issue_and_PR_created_immediately_after_2024-09_Qwen2.5_3B_release_window; exact model training cutoff unresolved",
+      "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false,
+      "remaining_gates": [
+        "authenticate_exact_dataset_row_and_created_at_timestamp",
+        "all_dataset_FAIL_TO_PASS_selectors_fail_on_buggy_base_for_literal_brace_escape",
+        "all_same_dataset_selectors_pass_on_fixed_revision",
+        "minimal_dependency_license_inventory_human_review",
+        "resolve_temporal_exposure_against_exact_model_revision",
+        "gold_standard_and_E1_E2_E3_human_adjudication"
+      ]
     }
   ],
   "candidate_triage_ledger": {
