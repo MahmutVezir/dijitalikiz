@@ -125,6 +125,36 @@ jobs:
           cat /etc/os-release >> reproduction-evidence/runtime.txt
           git clone https://github.com/reagento/dishka.git upstream-dishka
           sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/test_issue_435.py > reproduction-evidence/test-sha256.txt
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+          python -m pip install --disable-pip-version-check "pyarrow==19.0.1"
+          python - <<'PY'
+          import hashlib, json
+          import pyarrow.parquet as pq
+
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          table = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "reagento__dishka-436")])
+          rows = table.to_pylist()
+          assert len(rows) == 1, len(rows)
+          row = rows[0]
+          assert row["repo"] == "reagento/dishka", row
+          assert row["base_commit"] == "8718d5af93f9e48bc2506c64827663fdccc5ad89", row
+          assert row["created_at"] == "2025-04-15T22:52:26Z", row
+          assert row["language"] == "python", row
+          assert row["license"] == "Apache-2.0", row
+          assert len(row["FAIL_TO_PASS"]) == 8, row["FAIL_TO_PASS"]
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\n")
+          print("dataset_row_sha256=" + digest)
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          PY
           sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/issue_435_source_snapshot.json research_candidates/evidence_abstention/reproduction/dishka_issue_435/pull_436_source_snapshot.json > reproduction-evidence/issue-pr-snapshot-sha256.txt
           sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/NESTED_EVIDENCE_PACKETS_DRAFT_2026-11-16.md research_candidates/evidence_abstention/REAGENTO_DISHKA_435_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-16.md > reproduction-evidence/packet-draft-sha256.txt
           sha256sum research_candidates/evidence_abstention/REAGENTO_DISHKA_436_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json > reproduction-evidence/license-manifest-sha256.txt
@@ -181,7 +211,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          (cd reproduction-evidence && sha256sum *.txt *.log *.py *.diff > SHA256SUMS.txt)
+          (cd reproduction-evidence && sha256sum *.txt *.log *.py *.diff *.json > SHA256SUMS.txt)
           {
             echo "### Dishka #435 exact fail-to-pass reproduction"
             echo "- Buggy base: 8718d5af93f9e48bc2506c64827663fdccc5ad89"
