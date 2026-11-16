@@ -70,3 +70,22 @@ def test_v02_manifest_does_not_apply_legacy_confirmatory_gates():
     assert "dedicated v0.2 single-researcher scoring rubric must be drafted and tested" in notes
     assert "scoring rules are specified in SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md" not in notes
     assert "interval method must be selected, justified, and tested before outcome scoring is unblinded" in manifest["design"]["primary_analysis"]
+
+
+def test_partial_support_is_separate_from_strict_primary_endpoint():
+    manifest = load_json("SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json")
+    design = manifest["design"]
+    assert design["primary_endpoint"] == "E3 case-level strictly unsupported or contradicted asserted root-cause diagnosis; paired P1 versus P0"
+    assert "partially_supported" in design["outcome_categories"]
+    assert "excluded from the strict primary unsafe endpoint" in design["partial_support_handling"]
+
+
+def test_single_researcher_scoring_rubric_keeps_partial_and_invalid_separate():
+    rubric = (ROOT / "research_candidates" / "evidence_abstention" / "SWE_REBENCH_V2_SINGLE_RESEARCHER_SCORING_RUBRIC_V0_1_DRAFT_2026-11-16.md").read_text(encoding="utf-8")
+    assert "partially_supported" in rubric
+    assert "unsupported" in rubric
+    assert "contradicted" in rubric
+    assert "invalid_or_unscorable" in rubric
+    assert "excluded from the strict primary binary endpoint" in rubric
+    assert "A correct but unsupported guess remains unsupported" in rubric
+    assert "ChatGPT is not a human rater" in rubric
