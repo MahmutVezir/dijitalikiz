@@ -112,7 +112,8 @@
         "changed_paths",
         "patch",
         "base_source_snapshot",
-        "fixed_source_snapshot"
+        "fixed_source_snapshot",
+        "resource_type"
       ],
       "properties": {
         "repository_full_name": {
@@ -146,6 +147,12 @@
         },
         "fixed_source_snapshot": {
           "$ref": "#/$defs/artifact"
+        },
+        "resource_type": {
+          "enum": [
+            "pull_request",
+            "issue"
+          ]
         }
       }
     },
