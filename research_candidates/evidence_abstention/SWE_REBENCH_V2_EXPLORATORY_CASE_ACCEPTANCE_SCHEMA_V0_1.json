@@ -1,0 +1,540 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MahmutVezir/dijitalikiz/blob/main/research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
+  "title": "SWE-rebench V2 exploratory case acceptance record",
+  "description": "Structural contract for the v0.2 single-researcher exploratory study. Validation checks record shape and internal consistency only; it does not authenticate artifacts, reproduce defects, grant legal clearance, or authorize inference.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_id",
+    "acceptance_decision",
+    "dataset",
+    "source",
+    "independence",
+    "exposure",
+    "license_review",
+    "technical_reproduction",
+    "gold_standard",
+    "evidence_tiers",
+    "human_decision"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1-v02-exploratory"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^SRV2E-[A-Z0-9_-]{1,48}$"
+    },
+    "acceptance_decision": {
+      "const": "accepted"
+    },
+    "dataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset_id",
+        "file_revision",
+        "file_sha256",
+        "row_locator",
+        "row_sha256",
+        "cohort_role"
+      ],
+      "properties": {
+        "dataset_id": {
+          "const": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified"
+        },
+        "file_revision": {
+          "const": "fb9aa226b2ce37c708ea7732e7b980abacdadb67"
+        },
+        "file_sha256": {
+          "const": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+        },
+        "row_locator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "field",
+            "value"
+          ],
+          "properties": {
+            "field": {
+              "type": "string",
+              "minLength": 1
+            },
+            "value": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "row_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "cohort_role": {
+          "enum": [
+            "primary",
+            "project_reserve"
+          ]
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_full_name",
+        "issue_or_pr_url",
+        "base_commit_sha",
+        "fixed_commit_sha",
+        "changed_paths",
+        "patch",
+        "base_source_snapshot",
+        "fixed_source_snapshot"
+      ],
+      "properties": {
+        "repository_full_name": {
+          "type": "string",
+          "pattern": "^[^/]+/[^/]+$"
+        },
+        "issue_or_pr_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "base_commit_sha": {
+          "$ref": "#/$defs/commit"
+        },
+        "fixed_commit_sha": {
+          "$ref": "#/$defs/commit"
+        },
+        "changed_paths": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "patch": {
+          "$ref": "#/$defs/artifact"
+        },
+        "base_source_snapshot": {
+          "$ref": "#/$defs/artifact"
+        },
+        "fixed_source_snapshot": {
+          "$ref": "#/$defs/artifact"
+        }
+      }
+    },
+    "independence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "upstream_project_id",
+        "defect_cluster_id",
+        "is_fork_or_mirror",
+        "related_case_ids",
+        "review_record"
+      ],
+      "properties": {
+        "status": {
+          "const": "passed"
+        },
+        "upstream_project_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "defect_cluster_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "is_fork_or_mirror": {
+          "const": false
+        },
+        "related_case_ids": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "review_record": {
+          "$ref": "#/$defs/artifact"
+        }
+      }
+    },
+    "exposure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prior_pipeline_debug_exposure",
+        "researcher_source_exposure",
+        "exposure_notes",
+        "review_record"
+      ],
+      "properties": {
+        "prior_pipeline_debug_exposure": {
+          "const": "none"
+        },
+        "researcher_source_exposure": {
+          "enum": [
+            "none",
+            "partial",
+            "full"
+          ]
+        },
+        "exposure_notes": {
+          "type": "string"
+        },
+        "review_record": {
+          "$ref": "#/$defs/artifact"
+        }
+      }
+    },
+    "license_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "root_license_expression",
+        "exact_base_review",
+        "changed_file_review",
+        "nested_dependency_review",
+        "notice_and_provenance_review",
+        "research_use_decision",
+        "reviewer_role",
+        "review_record",
+        "changed_file_license_manifest"
+      ],
+      "properties": {
+        "root_license_expression": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exact_base_review": {
+          "const": "passed"
+        },
+        "changed_file_review": {
+          "const": "passed"
+        },
+        "nested_dependency_review": {
+          "const": "passed"
+        },
+        "notice_and_provenance_review": {
+          "const": "passed"
+        },
+        "research_use_decision": {
+          "const": "approved"
+        },
+        "reviewer_role": {
+          "const": "student_project_lead"
+        },
+        "review_record": {
+          "$ref": "#/$defs/artifact"
+        },
+        "changed_file_license_manifest": {
+          "$ref": "#/$defs/artifact"
+        }
+      }
+    },
+    "technical_reproduction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "environment_lock_sha256",
+        "test_selector",
+        "buggy_baseline",
+        "fixed_revision",
+        "review_record"
+      ],
+      "properties": {
+        "status": {
+          "const": "passed"
+        },
+        "environment_lock_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "test_selector": {
+          "type": "string",
+          "minLength": 1
+        },
+        "buggy_baseline": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "commit_sha",
+            "exit_code",
+            "failure_signature",
+            "run_record"
+          ],
+          "properties": {
+            "commit_sha": {
+              "$ref": "#/$defs/commit"
+            },
+            "exit_code": {
+              "type": "integer"
+            },
+            "failure_signature": {
+              "type": "string",
+              "minLength": 1
+            },
+            "run_record": {
+              "$ref": "#/$defs/artifact"
+            }
+          }
+        },
+        "fixed_revision": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "commit_sha",
+            "exit_code",
+            "same_test_passed",
+            "run_record"
+          ],
+          "properties": {
+            "commit_sha": {
+              "$ref": "#/$defs/commit"
+            },
+            "exit_code": {
+              "const": 0
+            },
+            "same_test_passed": {
+              "const": true
+            },
+            "run_record": {
+              "$ref": "#/$defs/artifact"
+            }
+          }
+        },
+        "review_record": {
+          "$ref": "#/$defs/artifact"
+        }
+      }
+    },
+    "gold_standard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "gold_mechanism_id",
+        "candidate_mechanisms",
+        "technical_rationale",
+        "evidence_refs",
+        "review_record"
+      ],
+      "properties": {
+        "status": {
+          "const": "human_recorded"
+        },
+        "gold_mechanism_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidate_mechanisms": {
+          "type": "array",
+          "minItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "mechanism_id",
+              "description",
+              "testable_prediction"
+            ],
+            "properties": {
+              "mechanism_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "testable_prediction": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "technical_rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "review_record": {
+          "$ref": "#/$defs/artifact"
+        }
+      }
+    },
+    "evidence_tiers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "tier_decision_record",
+        "E1",
+        "E2",
+        "E3"
+      ],
+      "properties": {
+        "status": {
+          "const": "human_recorded"
+        },
+        "tier_decision_record": {
+          "$ref": "#/$defs/artifact"
+        },
+        "E1": {
+          "$ref": "#/$defs/tier"
+        },
+        "E2": {
+          "$ref": "#/$defs/tier"
+        },
+        "E3": {
+          "$ref": "#/$defs/tier"
+        }
+      }
+    },
+    "human_decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_maker_role",
+        "decision_timestamp_utc",
+        "rationale",
+        "ai_critique_used",
+        "ai_critique_record"
+      ],
+      "properties": {
+        "decision_maker_role": {
+          "const": "student_project_lead"
+        },
+        "decision_timestamp_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ai_critique_used": {
+          "type": "boolean"
+        },
+        "ai_critique_record": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uri",
+        "sha256"
+      ],
+      "properties": {
+        "uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "tier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packet",
+        "surviving_mechanism_ids",
+        "semantic_rationale",
+        "evidence_items"
+      ],
+      "properties": {
+        "packet": {
+          "$ref": "#/$defs/artifact"
+        },
+        "surviving_mechanism_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "semantic_rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "evidence_id",
+              "content_sha256",
+              "source_snapshot_sha256",
+              "source_uri",
+              "source_commit_sha",
+              "source_path"
+            ],
+            "properties": {
+              "evidence_id": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_-]{0,63}$"
+              },
+              "content_sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "source_snapshot_sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "source_uri": {
+                "type": "string",
+                "format": "uri"
+              },
+              "source_commit_sha": {
+                "$ref": "#/$defs/commit"
+              },
+              "source_path": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
