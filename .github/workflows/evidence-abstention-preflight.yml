@@ -484,6 +484,10 @@ jobs:
         run: |
           set -euo pipefail
           if [ -f dependency-license-inventory.json ]; then cp dependency-license-inventory.json reproduction-evidence/; fi
+          cp research_candidates/evidence_abstention/DEPENDENCY_GROUPS_1_3_0_LICENSE_REVIEW_2026-11-16.md reproduction-evidence/
+          cp dependency-groups-license-source/LICENSE.txt reproduction-evidence/dependency-groups-LICENSE.txt
+          cp dependency-groups-license-source/pyproject.toml reproduction-evidence/dependency-groups-pyproject.toml
+          git -C dependency-groups-license-source rev-parse HEAD > reproduction-evidence/dependency-groups-source-commit.txt
           (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
           {
             echo "### Nox #919 exact fail-to-pass reproduction"
