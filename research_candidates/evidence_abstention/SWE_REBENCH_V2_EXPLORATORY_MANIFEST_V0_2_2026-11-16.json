@@ -178,7 +178,8 @@
     "Earthkit-data #592 (primary rank 4) passed a static issue/patch alignment and exact-base Apache-2.0 root-license screen. It remains provisional because the runtime dependency stack, CF Conventions-derived YAML provenance, and remote regression-fixture provenance have not been fully cleared; no source tests were executed.",
     "Nox #922 (primary rank 6) passed static issue/patch alignment and exact-base Apache-2.0 root-license screening. A separate minimal dependency environment, dependency license metadata gate, and exact base-fail/fixed-pass workflow have been added; no reproduction result is claimed until the workflow is observed.",
     "NumPyro #1916 (primary rank 12) passed static issue/patch alignment and source license screening: exact-base setup.py declares Apache License 2.0 and changed files carry SPDX Apache-2.0 headers. A CPU-only pinned environment and exact dataset FAIL_TO_PASS workflow have been added; reproduction is pending and the case is not accepted.",
-    "Werkzeug #2955 (primary rank 32) passed static issue/patch alignment and exact-base BSD-3-Clause source-license screening. A Python 3.12.7 minimal environment and exact dataset FAIL_TO_PASS reproduction job have been added; test execution remains pending."
+    "Werkzeug #2955 (primary rank 32) passed static issue/patch alignment and exact-base BSD-3-Clause source-license screening. A Python 3.12.7 minimal environment and exact dataset FAIL_TO_PASS reproduction job have been added; test execution remains pending.",
+    "Robocop #1371 (primary rank 24) passed static issue/patch alignment and exact-base Apache-2.0 source-license screening. A pinned Robot Framework/Typer test environment and exact dataset FAIL_TO_PASS workflow have been added. The pathspec dependency's license metadata requires explicit compatibility review; reproduction remains pending."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -450,6 +451,40 @@
       "inference_authorized": false,
       "remaining_gates": [
         "dependency_license_metadata_workflow_and_human_review",
+        "dataset_fail_to_pass_base_fail_fixed_pass_reproduction",
+        "independence_and_related_issue_family_review",
+        "gold_standard_and_E1_E2_E3_human_adjudication"
+      ]
+    },
+    {
+      "instance_id": "MarketSquare__robotframework-robocop-1374",
+      "cohort_rank": 24,
+      "status": "static_issue_patch_and_source_license_screen_passed_exact_reproduction_pending",
+      "issue_url": "https://github.com/MarketSquare/robotframework-robocop/issues/1371",
+      "pull_request_url": "https://github.com/MarketSquare/robotframework-robocop/pull/1374",
+      "base_commit": "271e73253a70710cc80374128efa9eabb549b5f2",
+      "fixed_commit": "ceb6824fb4d80442937497a740edf60a5b6382e0",
+      "merge_commit": "6ed3c579e5d14fae89471be29503f73a051105af",
+      "exact_base_root_license": "Apache-2.0",
+      "exact_base_pyproject_license": "Apache Software License",
+      "changed_files": [
+        "src/robocop/formatter/runner.py",
+        "tests/formatter/__init__.py",
+        "tests/test_cli.py",
+        "docs/releasenotes/6.0.3.rst"
+      ],
+      "issue_patch_alignment": "Issue #1371 reports robocop format --check exiting 0 despite files needing formatting. PR #1374 changes formatting_result to raise typer.Exit with the proper process exit code and adds four CLI regression cases.",
+      "dependency_lock_path": "research_candidates/evidence_abstention/reproduction/robocop_issue_1371/dataset_test_requirements.lock",
+      "review_path": "research_candidates/evidence_abstention/ROBOCOP_1371_CANDIDATE_REVIEW_2026-11-16.md",
+      "workflow_path": ".github/workflows/evidence-abstention-preflight.yml#robocop-issue-1371-reproduction",
+      "runtime_scope": "Python 3.11.9; Robot Framework, Typer/Click, Rich and pinned runtime/test dependencies; uses only in-repository test fixtures",
+      "dependency_license_inventory_status": "pending_workflow",
+      "license_review_attention": "pathspec dependency license metadata must be reviewed; do not assume every dependency is permissive solely from the root Apache-2.0 license",
+      "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false,
+      "remaining_gates": [
+        "dependency_license_metadata_and_pathspec_license_compatibility_review",
         "dataset_fail_to_pass_base_fail_fixed_pass_reproduction",
         "independence_and_related_issue_family_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
