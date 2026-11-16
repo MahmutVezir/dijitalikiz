@@ -820,6 +820,33 @@
         "minimal_dependency_license_inventory_human_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ]
+    },
+    {
+      "instance_id": "Kozea__WeasyPrint-2416",
+      "cohort_rank": 34,
+      "status": "conditional_hold_pyphen_dictionary_provenance_and_test_issue_mapping_unresolved",
+      "issue_url": "https://github.com/Kozea/WeasyPrint/issues/2270",
+      "pull_request_url": "https://github.com/Kozea/WeasyPrint/pull/2416",
+      "issue_created_at": "2024-10-07T12:07:54Z",
+      "pull_request_created_at": "2025-03-24T16:54:52Z",
+      "base_commit": "1b24ad91323c8444e398b75ed40ad54cf678ea0d",
+      "fixed_commit": "ad338b66333d6a79fb513e2d7668e282962ba470",
+      "merge_commit": "4087af4d3048b4f9b968c2795ca497442dc72513",
+      "exact_base_root_license": "BSD-3-Clause",
+      "exact_base_license_blob_sha": "5b460bb52be9552ca2aa999642c6d66da9589fb3",
+      "exact_base_pyproject_blob_sha": "a6b9f362ce81d9fe26d2f0fae50365cb0491d536",
+      "exact_base_line_break_blob_sha": "ea9c6ca736cff3f29eb1ef9e91d1f40ef7cd908c",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false,
+      "remaining_gates": [
+        "reconcile_test_comment_issue_1817_with_issue_2270",
+        "authenticate_exact_dataset_row_and_FAIL_TO_PASS_selectors",
+        "identify_exact_Pyphen_version_and_selected_English_dictionary_file",
+        "document_dictionary_source_copyright_license_and_SHA256",
+        "freeze_native_Pango_Cairo_runtime",
+        "same_dataset_base_fail_fixed_pass",
+        "gold_standard_and_E1_E2_E3_human_adjudication"
+      ]
     }
   ],
   "candidate_triage_ledger": {
