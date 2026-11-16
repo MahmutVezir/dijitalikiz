@@ -1609,6 +1609,7 @@ jobs:
           assert row["repo"] == "meltano/sdk", row
           assert row["base_commit"] == "ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2", row
           assert row["language"] == "python", row
+          assert row["license"] == "Apache-2.0", row
           assert str(row["created_at"]).replace("T", " ")[:19] == "2025-06-12 01:47:30", row
           canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
           with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
@@ -1659,6 +1660,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-meltano checkout --detach 9505ff1989b9be4d53b5bc9664b3fe3885879cb1
+          test "$(git -C upstream-meltano rev-parse HEAD:singer_sdk/singerlib/schema.py)" = "7754f835e4b11d13a4778669fb94a68c461b9f40"
           MELTANO_SOURCE_ROOT="$GITHUB_WORKSPACE/upstream-meltano" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/meltano_issue_3090" -p "test_issue_3090.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
           .venv-dataset/bin/python - <<'PY'
