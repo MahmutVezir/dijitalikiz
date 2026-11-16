@@ -170,9 +170,9 @@ jobs:
             echo "### Dishka #435 exact fail-to-pass reproduction"
             echo "- Buggy base: `8718d5af93f9e48bc2506c64827663fdccc5ad89`"
             echo "- Fixed revision: `b1eae11734e64551d7b101195f27cb6870e1c364`"
-            echo "- Same selector: `test_issue_435_override_lower_scope`"
-            echo "- Python: `3.11.9`; no pip dependencies installed; stdlib unittest only"
-            echo "- Expected: base fails with `AssertionError: 1 != 42`; fixed revision passes"
+            echo "- Same selector: test_issue_435_override_lower_scope"
+            echo "- Python: 3.11.9; no pip dependencies installed; stdlib unittest only"
+            echo "- Expected: base fails with AssertionError 1 != 42; fixed revision passes"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload raw reproduction evidence
