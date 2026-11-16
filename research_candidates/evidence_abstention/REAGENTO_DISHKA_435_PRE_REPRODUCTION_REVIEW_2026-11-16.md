@@ -34,7 +34,10 @@ PR #436 changes five files:
 
 The base blob for `src/dishka/registry_builder.py` is `9a7f2ece6065f357a1806075c5b19af46d15c43d`. The exact-base test-file blobs and the PR's changed-file patch are recorded in the GitHub PR API response; the exact reproducer and raw test logs will be hash-recorded by the reproduction workflow.
 
-## 3. License and dependency screen for the planned reproducer
+## 3. Dataset resource-type reconciliation
+The timestamp register records `is_pull_request=false` for this row even though its URL is `/pull/436`. Direct GitHub API checks show `/pulls/436` is the source PR and `/issues/436` is its issue-style representation; both have `created_at=2025-04-15T22:52:26Z`. The correct source resource type is therefore `pull_request`. The dataset timestamp exactly matches the PR endpoint. The register's boolean is a field-level classification error, recorded rather than silently ignored. See `REAGENTO_DISHKA_436_RESOURCE_TYPE_RECONCILIATION_2026-11-16.md`.
+
+## 4. License and dependency screen for the planned reproducer
 
 - Exact-base root `LICENSE`: Apache-2.0; Git blob `261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64`.
 - Exact-base `pyproject.toml`: Git blob `aac556bc080e4c7ce0defc77dd171b3324f742a8`; declares Apache-2.0.
@@ -46,7 +49,7 @@ The base blob for `src/dishka/registry_builder.py` is `9a7f2ece6065f357a1806075c
 
 This is a narrow documentary screen for the minimal reproduction environment, not legal advice or blanket clearance for every optional integration, development environment, redistribution, or later experiment.
 
-## 4. Independence and exposure
+## 5. Independence and exposure
 
 - The canonical repository is not marked as a fork by GitHub.
 - The primary cohort selects one candidate project per repository; this candidate is one of the 96 unique primary repositories.
@@ -54,7 +57,7 @@ This is a narrow documentary screen for the minimal reproduction environment, no
 - The pinned Qwen2.5-3B-Instruct family was publicly released in September 2024; issue #435 and PR #436 were created on 2025-04-15. This temporal ordering reduces the plausibility that this exact public issue/patch was present in the already released model weights. It does not prove the model's complete training-data provenance or exclude prior knowledge of similar patterns.
 - The student researcher is now exposed to the issue and patch through candidate review. ChatGPT's review is advisory AI exposure, not a second human rating. Any later semantic scoring must record this exposure and must not claim perfect blinding.
 
-## 5. Exact reproduction plan
+## 6. Exact reproduction plan
 
 A standard-library regression test was added at:
 `research_candidates/evidence_abstention/reproduction/dishka_issue_435/test_issue_435.py`
@@ -75,10 +78,10 @@ The workflow uses:
 
 A workflow pass is evidence of the specified reproducer behavior only. It does not by itself establish full case acceptance, semantic gold correctness, E1/E2/E3 adequacy, or independence from all related defect families.
 
-## 6. Related-issue and project-lineage review
+## 7. Related-issue and project-lineage review
 GitHub reports `reagento/dishka` as a canonical repository (`fork=false`), not a fork. Related issues screened: #151 (container cloning enhancement), #275 (in-place override feature request/duplicate of #151), #16 (explicit provider override enhancement), #420 (generic `WithParents` resolution bug), and #466 (`from_context` override validation bug). None is the same defect contract as #435. The project can contribute at most one independent case to this study.
 
-## 7. Current decision
+## 8. Current decision
 
 Static issue/patch alignment: **strong; reproduction passed; retain for human adjudication**.  
 Minimal reproduction environment license/provenance screen: **documented, narrow pass**.  
