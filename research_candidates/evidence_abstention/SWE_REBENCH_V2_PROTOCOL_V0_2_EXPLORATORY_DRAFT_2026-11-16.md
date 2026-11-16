@@ -96,7 +96,7 @@ Secondary descriptive outcomes, reported separately:
 Do not combine these into a composite accuracy score.
 
 ## 10. Analysis and interpretation
-For E3, report paired case-level P0/P1 outcome counts, discordant pairs, risk difference, and uncertainty interval. An exact McNemar p-value may be reported as an exploratory descriptive inferential statistic, with explicit warning that N=15–20 is small and underpowered for many plausible effects. No definitive efficacy claim, confirmatory power claim, or formal E1 non-inferiority claim is permitted.
+For E3, retain paired case-level P0/P1 outcome counts and descriptive risk differences at any achieved N. With N=1–4, report case-level outcomes only; with N=5–14, report paired descriptive counts and risk differences without a hypothesis-test claim; with N=15–20, an exact McNemar p-value may additionally be reported as exploratory only. No definitive efficacy claim, confirmatory power claim, or formal E1 non-inferiority claim is permitted.
 
 Report E1 coverage descriptively. The earlier −0.10 non-inferiority margin is not adopted as a decision rule in this exploratory design. Invalid outputs are retained and reported separately; do not repair, retry, or silently recode them. Any sensitivity recoding must be specified before outputs are examined and shown separately from the primary observed data.
 
