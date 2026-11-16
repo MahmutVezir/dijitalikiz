@@ -2096,3 +2096,195 @@ jobs:
           path: reproduction-evidence/
           if-no-files-found: warn
           retention-days: 90
+
+
+  amaranth-issue-1518-reproduction:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install pinned Amaranth RTLIL environment and audit licenses
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -VV
+          python -m venv .venv-tests
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/amaranth_issue_1518/requirements.lock
+          .venv-tests/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          names = ["jschon", "pyvcd", "Jinja2", "MarkupSafe", "pytest", "iniconfig", "packaging", "pluggy", "Pygments"]
+          inventory = {}
+          for name in names:
+              dist = md.metadata(name)
+              classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+              license_text = dist.get("License") or dist.get("License-Expression")
+              if not license_text and not classifiers:
+                  raise SystemExit(f"License metadata missing for {name}; stop before source tests")
+              inventory[name] = {"version": md.version(name), "license": license_text, "license_expression": dist.get("License-Expression"), "license_classifiers": classifiers}
+          with open("dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Clone exact Amaranth source and prepare patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          git clone https://github.com/amaranth-lang/amaranth.git upstream-amaranth
+          git -C upstream-amaranth checkout --detach 8c5ed4051dd74a6347af8d52f8e397eb53218ac4
+          test "$(git -C upstream-amaranth rev-parse HEAD)" = "8c5ed4051dd74a6347af8d52f8e397eb53218ac4"
+          test "$(git -C upstream-amaranth rev-parse HEAD:LICENSE.txt)" = "cb522426f79b987ad57f265b639a3f6c28214e04"
+          test "$(git -C upstream-amaranth rev-parse HEAD:pyproject.toml)" = "2f0c4dbb709ebeb6326ba2031a5604ffabc78260"
+          git -C upstream-amaranth show HEAD:LICENSE.txt > reproduction-evidence/upstream-LICENSE.txt
+          git -C upstream-amaranth show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
+          git -C upstream-amaranth diff 8c5ed4051dd74a6347af8d52f8e397eb53218ac4 6a10abe6c873e7fb51a34f70801d3dd37cda9061 > reproduction-evidence/pr-1519.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1519.patch > reproduction-evidence/source-provenance-sha256.txt
+          cp dependency-license-inventory.json reproduction-evidence/
+
+      - name: Run independent RTLIL reproducer on buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-amaranth" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/amaranth_issue_1518" -p "test_issue_1518.py" -v > reproduction-evidence/base-issue-test.log 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-issue-test.log
+          if [ "$status" -eq 0 ]; then
+            echo "Expected unescaped RTLIL braces to fail on the buggy base." >&2
+            exit 1
+          fi
+          grep -E "AssertionError|FORMAT" reproduction-evidence/base-issue-test.log
+
+      - name: Extract and authenticate exact dataset row
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          .venv-dataset/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          dist = md.metadata("pyarrow")
+          classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+          license_text = dist.get("License") or dist.get("License-Expression")
+          if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
+              raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
+          with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump({"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}, f, indent=2)
+              f.write("\n")
+          PY
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+          .venv-dataset/bin/python - <<'PY'
+          import hashlib
+          import json
+          import pyarrow.parquet as pq
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          rows = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "amaranth-lang__amaranth-1519")]).to_pylist()
+          assert len(rows) == 1, len(rows)
+          row = rows[0]
+          assert row["repo"] == "amaranth-lang/amaranth", row
+          assert row["base_commit"] == "8c5ed4051dd74a6347af8d52f8e397eb53218ac4", row
+          assert row["language"] == "python", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2024-09-20 14:00:49", row
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\n")
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
+          print("dataset_row_sha256=" + digest)
+          print("dataset_created_at=" + str(row["created_at"]))
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          PY
+
+      - name: Apply exact PR patch and run dataset selectors on buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-amaranth checkout --detach 8c5ed4051dd74a6347af8d52f8e397eb53218ac4
+          git -C upstream-amaranth apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-1519.patch"
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "amaranth-lang__amaranth-1519")]).to_pylist()[0]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-amaranth")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-amaranth", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode == 0:
+                  raise SystemExit("Dataset selector unexpectedly passed on buggy base: " + selector)
+              if "AssertionError" not in result.stdout:
+                  raise SystemExit("Buggy-base selector failed for a reason other than RTLIL format assertion: " + selector + "\n" + result.stdout)
+          output = "\n".join(logs)
+          with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Run same reproducer and selectors on fixed revision (pass required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-amaranth checkout --detach 6a10abe6c873e7fb51a34f70801d3dd37cda9061
+          test "$(git -C upstream-amaranth rev-parse HEAD:amaranth/back/rtlil.py)" = "28f428c1aa4e1a5140287601553c1114f6f4820a"
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-amaranth" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/amaranth_issue_1518" -p "test_issue_1518.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
+          cat reproduction-evidence/fixed-issue-test.log
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "amaranth-lang__amaranth-1519")]).to_pylist()[0]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-amaranth")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-amaranth", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode != 0:
+                  raise SystemExit("Dataset selector did not pass on fixed revision: " + selector + "\n" + result.stdout)
+          output = "\n".join(logs)
+          with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Prepare and upload raw Amaranth reproduction evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          rm -f reproduction-evidence/train-00000-of-00001.parquet
+          if [ -f dependency-license-inventory.json ]; then cp dependency-license-inventory.json reproduction-evidence/; fi
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+
+      - name: Upload raw Amaranth reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: amaranth-issue-1518-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
