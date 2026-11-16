@@ -629,3 +629,163 @@ jobs:
           path: reproduction-evidence/
           if-no-files-found: warn
           retention-days: 90
+
+
+  werkzeug-issue-2955-reproduction:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up issue-matched Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.7"
+
+      - name: Install pinned runtime and test dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -VV
+          python -m venv .venv-tests
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/werkzeug_issue_2955/dataset_test_requirements.lock
+          .venv-tests/bin/python -m pip freeze > test-environment-freeze.txt
+
+      - name: Record dependency license metadata before source execution
+        shell: bash
+        run: |
+          set -euo pipefail
+          .venv-tests/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          names = ["MarkupSafe", "pytest", "iniconfig", "packaging", "pluggy", "Pygments"]
+          inventory = {}
+          for name in names:
+              dist = md.metadata(name)
+              classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+              license_text = dist.get("License") or dist.get("License-Expression")
+              if not license_text and not classifiers:
+                  raise SystemExit(f"License metadata missing for {name}; stop before source tests")
+              inventory[name] = {"version": md.version(name), "license": license_text, "license_expression": dist.get("License-Expression"), "license_classifiers": classifiers}
+          with open("dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Extract and authenticate exact SWE-rebench row
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          .venv-dataset/bin/python - <<'PY'
+          import importlib.metadata as md
+          dist = md.metadata("pyarrow")
+          classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+          license_text = dist.get("License") or dist.get("License-Expression")
+          if not license_text and not classifiers:
+              raise SystemExit("pyarrow license metadata missing; stop")
+          print({"pyarrow": md.version("pyarrow"), "license": license_text, "classifiers": classifiers})
+          PY
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+          .venv-dataset/bin/python - <<'PY'
+          import hashlib
+          import json
+          import pyarrow.parquet as pq
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          table = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "pallets__werkzeug-2956")])
+          rows = table.to_pylist()
+          assert len(rows) == 1, len(rows)
+          row = rows[0]
+          assert row["repo"] == "pallets/werkzeug", row
+          assert row["base_commit"] == "40319f91dbbae0a780526eab037a009b1a7e4d36", row
+          assert row["language"] == "python", row
+          assert row["license"], "Dataset license field is empty"
+          assert row["FAIL_TO_PASS"], "Dataset row has no FAIL_TO_PASS selectors"
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\n")
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
+          print("dataset_row_sha256=" + digest)
+          print("dataset_license=" + str(row["license"]))
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          PY
+          rm reproduction-evidence/train-00000-of-00001.parquet
+
+      - name: Clone exact upstream source and prepare pinned patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone https://github.com/pallets/werkzeug.git upstream-werkzeug
+          git -C upstream-werkzeug diff 40319f91dbbae0a780526eab037a009b1a7e4d36 1688968101c3341136bd8420ac7b77b6286c7409 -- src/werkzeug/http.py tests/test_http.py > reproduction-evidence/dataset-test.patch
+          sha256sum research_candidates/evidence_abstention/reproduction/werkzeug_issue_2955/dataset_test_requirements.lock > reproduction-evidence/environment-lock-sha256.txt
+          sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
+          cp test-environment-freeze.txt reproduction-evidence/
+
+      - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-werkzeug checkout --detach 40319f91dbbae0a780526eab037a009b1a7e4d36
+          git -C upstream-werkzeug apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
+          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
+          set +e
+          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-dataset-test.log
+          if [ "$status" -eq 0 ]; then
+            echo "Expected dataset FAIL_TO_PASS selectors to fail on the buggy base." >&2
+            exit 1
+          fi
+          if grep -q "ERROR collecting" reproduction-evidence/base-dataset-test.log; then
+            echo "Dataset selectors had collection errors, not defect-specific failures." >&2
+            exit 1
+          fi
+          grep -F "IndexError" reproduction-evidence/base-dataset-test.log
+          grep -E "[0-9]+ failed in" reproduction-evidence/base-dataset-test.log
+
+      - name: Run identical dataset selectors on fixed revision (pass required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-werkzeug checkout --detach --force 1688968101c3341136bd8420ac7b77b6286c7409
+          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
+          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          cat reproduction-evidence/fixed-dataset-test.log
+          grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
+
+      - name: Prepare and upload raw reproduction evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          if [ -f dependency-license-inventory.json ]; then cp dependency-license-inventory.json reproduction-evidence/; fi
+          if [ -f test-environment-freeze.txt ]; then cp test-environment-freeze.txt reproduction-evidence/; fi
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+          {
+            echo "### Werkzeug #2955 exact fail-to-pass reproduction"
+            echo "- Buggy base: 40319f91dbbae0a780526eab037a009b1a7e4d36"
+            echo "- Fixed revision: 1688968101c3341136bd8420ac7b77b6286c7409"
+            echo "- Dataset FAIL_TO_PASS selectors are extracted from the exact pinned Parquet row"
+            echo "- No model loading, inference, or training"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload raw reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: werkzeug-issue-2955-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
