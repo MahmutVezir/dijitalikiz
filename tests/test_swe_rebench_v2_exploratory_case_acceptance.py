@@ -6,7 +6,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 RESEARCH = ROOT / "research_candidates" / "evidence_abstention"
 sys.path.insert(0, str(RESEARCH / "implementation"))
-from swe_rebench_v2_case_acceptance import load_schema, validate_case_record, validate_registry
+from swe_rebench_v2_exploratory_case_acceptance import load_schema, validate_case_record, validate_registry
 
 
 def test_v02_acceptance_schema_is_valid_json_schema():
