@@ -179,7 +179,8 @@ jobs:
               f.write("\n")
           PY
           sha256sum research_candidates/evidence_abstention/REAGENTO_DISHKA_436_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json research_candidates/evidence_abstention/reproduction/dishka_issue_435/reproduction_environment_lock.json research_candidates/evidence_abstention/reproduction/dishka_issue_435/dataset_test_requirements.lock > reproduction-evidence/license-and-environment-lock-sha256.txt
-          sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/cohort_selection_row_snapshot.json research_candidates/evidence_abstention/timestamp_reconciliation_part_01_2026-11-15.csv research_candidates/evidence_abstention/REAGENTO_DISHKA_436_RESOURCE_TYPE_RECONCILIATION_2026-11-16.md > reproduction-evidence/dataset-provenance-sha256.txt
+          echo "c548969ec886af21b56c93daae34db1a86b3a10c8dd1473d3d5c886549a9e86d  research_candidates/evidence_abstention/reproduction/dishka_issue_435/dataset_parquet_row_canonical.json" | sha256sum --check
+          sha256sum research_candidates/evidence_abstention/reproduction/dishka_issue_435/cohort_selection_row_snapshot.json research_candidates/evidence_abstention/reproduction/dishka_issue_435/dataset_parquet_row_canonical.json research_candidates/evidence_abstention/timestamp_reconciliation_part_01_2026-11-15.csv research_candidates/evidence_abstention/REAGENTO_DISHKA_436_RESOURCE_TYPE_RECONCILIATION_2026-11-16.md > reproduction-evidence/dataset-provenance-sha256.txt
 
       - name: Run identical issue reproducer on buggy base (failure required)
         shell: bash
