@@ -47,6 +47,9 @@ def validate_case_record(record: Any) -> dict[str, Any]:
     mechanisms = {item["mechanism_id"] for item in gold["candidate_mechanisms"]}
     gold_id = gold["gold_mechanism_id"]
 
+    dataset = record["dataset"]
+    if dataset["timestamp_reconciliation_status"] == "exact_match" and dataset["created_at_dataset_utc"] != dataset["created_at_upstream_utc"]:
+        blockers.append("timestamp status claims exact_match but the dataset and upstream timestamps differ.")
     if source["base_commit_sha"] == source["fixed_commit_sha"]:
         blockers.append("base and fixed commit SHAs must differ.")
     if technical["buggy_baseline"]["commit_sha"] != source["base_commit_sha"]:
@@ -96,6 +99,8 @@ def validate_case_record(record: Any) -> dict[str, Any]:
     if gold_id not in mechanisms:
         blockers.append("Gold mechanism is not present in the candidate mechanism set.")
 
+    if source["repository_full_name"] != independence["upstream_project_id"]:
+        blockers.append("source repository and canonical upstream_project_id must match after fork/mirror normalization.")
     if independence["upstream_project_id"] == "":
         blockers.append("upstream project identity is required.")
     if record["exposure"]["prior_pipeline_debug_exposure"] != "none":
