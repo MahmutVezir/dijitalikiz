@@ -1,4 +1,4 @@
-# SWE-rebench V2 evidence-abstention protocol — v0.2 exploratory draft
+# SWE rebench V2 evidence abstention protocol — v0.2 exploratory draft
 **Date:** 16 November 2026  
 **Status:** Exploratory/feasibility design draft. Supersedes v0.1 only as the proposed working design; v0.1 is retained as historical design record. Not preregistered. Not legal clearance. No inference or upstream execution authorization.
 
