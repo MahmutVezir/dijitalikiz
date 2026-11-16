@@ -396,6 +396,7 @@ jobs:
           row = rows[0]
           assert row["repo"] == "wntrblm/nox", row
           assert row["base_commit"] == "97e0fad6a4036d610591a52e9ad0cfbe74a31af3", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2025-01-31 20:53:30", row
           assert row["language"] == "python", row
           assert row["license"] == "Apache-2.0", row
           assert row["FAIL_TO_PASS"], "Dataset row has no FAIL_TO_PASS selectors"
@@ -749,6 +750,7 @@ jobs:
           row = rows[0]
           assert row["repo"] == "pallets/werkzeug", row
           assert row["base_commit"] == "40319f91dbbae0a780526eab037a009b1a7e4d36", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2024-10-10 21:07:05", row
           assert row["language"] == "python", row
           assert row["license"], "Dataset license field is empty"
           assert row["FAIL_TO_PASS"], "Dataset row has no FAIL_TO_PASS selectors"
@@ -919,6 +921,7 @@ jobs:
           row = rows[0]
           assert str(row["repo"]).lower() == "marketsquare/robotframework-robocop", row
           assert row["base_commit"] == "271e73253a70710cc80374128efa9eabb549b5f2", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2025-04-02 13:39:40", row
           print("resolved_dataset_instance_id=" + str(row["instance_id"]))
           assert row["language"] == "python", row
           assert row["license"] == "Apache-2.0", row
@@ -1079,6 +1082,7 @@ jobs:
           row = rows[0]
           assert row["repo"] == "pyfar/pyfar", row
           assert row["base_commit"] == "648dda4c60c5a6f74acf335f7808c590c9d23929", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2024-11-15 08:33:08", row
           assert row["language"] == "python", row
           assert row["license"] == "MIT", row
           assert row["FAIL_TO_PASS"], "Dataset row has no FAIL_TO_PASS selectors"
