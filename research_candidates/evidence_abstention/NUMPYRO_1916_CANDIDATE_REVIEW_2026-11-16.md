@@ -4,7 +4,7 @@
 **Dataset instance:** pyro-ppl__numpyro-1918  
 **Issue:** https://github.com/pyro-ppl/numpyro/issues/1916  
 **Fix PR:** https://github.com/pyro-ppl/numpyro/pull/1918  
-**Review status:** strong static bug candidate; exact dataset reproduction pending. Not an accepted case.
+**Review status:** strong static bug candidate; the first reproduction attempt stopped before test execution because the workflow referenced the fork PR-head commit rather than a commit present in the canonical upstream clone. The current workflow now targets the verified upstream merge commit; no post-correction tests have run. Not an accepted case.
 
 ## 1. Defect contract
 
@@ -46,12 +46,17 @@ Required result: all selected tests fail on the base with the reported PRNG key 
 - The student researcher has reviewed the issue and patch during candidate screening. This exposure must be recorded; perfect blinding must not be claimed.
 - Related issue-family, fork/lineage, and exact dataset provenance checks remain part of final acceptance.
 
-## 6. Current decision
+## 6. Prior workflow attempt and current decision
+
+The first exact reproduction run was `43881610067`, job `133348644404`. Runtime installation, package-license inventory, and exact dataset-row authentication passed. The source preparation step then failed with `fatal: bad object d5367f16abee85a1d7788784c71eb908ecb12df7` because the workflow attempted to diff against the PR fork-head commit after cloning only `pyro-ppl/numpyro`.
+
+The current workflow corrects this by using the canonical upstream merge commit `5692d2da335945b756aeae02e3720b9b7f3efef2` for the diff and fixed test run. That SHA was independently verified against the GitHub PR #1918 metadata and upstream commit. The correction has not yet been executed: the later preflight run `43898509334` ended with the NumPyro job having zero steps/no runner assignment. Thus there is still no base-fail/fix-pass result.
 
 Issue/patch alignment: strong.  
 Root source license: Apache-2.0.  
-Dependency license inventory: pending workflow evidence and review.  
-Exact base-fail/fix-pass reproduction: pending.  
+Dependency inventory: recorded as passed in the first run before source execution.  
+Exact dataset row: authenticated in the first run.  
+Exact base-fail/fix-pass reproduction: not run; first attempt stopped at invalid fixed ref, corrected workflow pending execution.  
 Gold mechanism and E1/E2/E3 packet: pending human adjudication.  
 Final case acceptance: not accepted.  
 Model loading and inference authorization: false.
