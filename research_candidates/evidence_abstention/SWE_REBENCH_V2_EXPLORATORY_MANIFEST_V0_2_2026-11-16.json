@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json schema.org/draft/2020 12/schema",
   "protocol_id": "swe-rebench-v2-evidence-abstention",
   "protocol_version": "0.2-exploratory-draft",
   "protocol_status": "draft_exploratory_not_preregistered",
