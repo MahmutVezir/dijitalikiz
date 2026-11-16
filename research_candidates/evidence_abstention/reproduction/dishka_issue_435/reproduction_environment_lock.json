@@ -19,5 +19,17 @@
   },
   "reproducibility_limit": "GitHub-hosted runner image is not a bit-for-bit immutable VM; OS release, kernel, Python version, commit IDs, source hashes, and raw test logs are recorded for this run.",
   "inference_performed": false,
-  "training_performed": false
+  "training_performed": false,
+  "dataset_test_environment": {
+    "python": "3.11.9",
+    "lock_file": "dataset_test_requirements.lock",
+    "packages": {
+      "pytest": "8.3.5",
+      "iniconfig": "2.0.0",
+      "packaging": "24.2",
+      "pluggy": "1.5.0"
+    },
+    "install_command": "python -m pip install --no-deps -r dataset_test_requirements.lock",
+    "role": "Run the eight dataset FAIL_TO_PASS selectors after applying the exact test-file patch to the buggy base; not used for the stdlib issue reproducer."
+  }
 }
