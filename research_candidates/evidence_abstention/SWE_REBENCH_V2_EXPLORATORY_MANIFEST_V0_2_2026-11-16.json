@@ -762,6 +762,32 @@
         "independence_and_related_issue_family_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ]
+    },
+    {
+      "instance_id": "cta-observatory__ctapipe-2732",
+      "cohort_rank": 31,
+      "status": "conditional_hold_return_type_contract_inconsistent",
+      "issue_url": "https://github.com/cta-observatory/ctapipe/issues/2730",
+      "pull_request_url": "https://github.com/cta-observatory/ctapipe/pull/2732",
+      "issue_created_at": "2025-04-02T15:59:14Z",
+      "pull_request_created_at": "2025-04-02T17:48:48Z",
+      "base_commit": "287e7685e0e963f3fb44d92832ca97ac8c265c40",
+      "fixed_commit": "5007b6ab61887d7555155edb4d1d296603a9735e",
+      "merge_commit": "ba4546f2027e2f820982c4e40730097b7e16434c",
+      "exact_base_root_license": "BSD-3-Clause",
+      "exact_base_license_blob_sha": "7d85dda24fa481e24c4b33dd98dbc13245ee1fd2",
+      "exact_base_pyproject_blob_sha": "9f4bbee5eb6619a36bf327d7f34157a2c2ee0bd5",
+      "exact_base_features_blob_sha": "8d547bf52c52dee18a3fa82dd47395a03bded282",
+      "fixed_features_blob_sha": "f18f1c3f16b41a5e7b1076512296ca8a4efa1c2f",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false,
+      "remaining_gates": [
+        "resolve_docstring_quantity_vs_plain_float_contract",
+        "verify_DataWriter_failure_path_and_issue_causality",
+        "authenticate_exact_dataset_row_and_selectors",
+        "same_dataset_base_fail_fixed_pass",
+        "gold_standard_and_E1_E2_E3_human_adjudication"
+      ]
     }
   ],
   "candidate_triage_ledger": {
