@@ -67,4 +67,6 @@ def test_v02_manifest_does_not_apply_legacy_confirmatory_gates():
     assert "do not use them to claim v0.2 readiness" in notes
     assert "No second human rater" in notes
     assert "v0.2 scoring rubric and case-acceptance schema/validator still require dedicated drafts" in notes
+    assert "dedicated v0.2 single-researcher scoring rubric must be drafted and tested" in notes
+    assert "scoring rules are specified in SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md" not in notes
     assert "interval method must be selected, justified, and tested before outcome scoring is unblinded" in manifest["design"]["primary_analysis"]
