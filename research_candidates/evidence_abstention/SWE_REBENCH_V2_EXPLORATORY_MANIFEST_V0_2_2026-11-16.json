@@ -253,7 +253,7 @@
       "temporal_exposure_screen": "issue_and_PR_created_2025-04-15_after_Qwen2.5-3B-Instruct_public_release_2024-09; reduces plausibility of exact issue/patch in released weights but does not prove full training-data provenance",
       "review_note_path": "research_candidates/evidence_abstention/REAGENTO_DISHKA_435_PRE_REPRODUCTION_REVIEW_2026-11-16.md",
       "reproducer_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/test_issue_435.py",
-      "reproduction_workflow_path": ".github/workflows/reproduce-dishka-issue-435.yml",
+      "reproduction_workflow_path": ".github/workflows/evidence-abstention-preflight.yml#dishka-issue-435-reproduction",
       "reproduction_status": "pending",
       "case_acceptance": "not_accepted",
       "inference_authorized": false
