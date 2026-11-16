@@ -61,11 +61,10 @@
       "P1"
     ],
     "cells_per_case": 6,
-    "minimum_independent_cases": 15,
+    "minimum_independent_cases": 1,
     "target_independent_cases": 20,
-    "minimum_upstream_projects": 15,
+    "minimum_upstream_projects": 1,
     "independent_unit": "one accepted defect from one distinct upstream project; one case per upstream project; six repeated cells are not independent",
-    "planned_outputs_at_minimum": 90,
     "planned_outputs_at_target": 120,
     "primary_endpoint": "E3 case-level strictly unsupported or contradicted asserted root-cause diagnosis; paired P1 versus P0",
     "outcome_categories": [
@@ -83,7 +82,14 @@
     "evidence_support_and_gold_correctness": "scored and reported as separate constructs",
     "study_type": "exploratory_feasibility",
     "target_upstream_projects": 20,
-    "sample_note": "Exploratory feasibility only; no confirmatory efficacy or power claim; if fewer than 15 independent projects qualify, report pilot feasibility without comparative efficacy claims."
+    "sample_note": "Sequential exploratory feasibility: target 20 independent projects; 15 is a preferred analysis threshold, not an eligibility floor. Retain all cases that meet unchanged criteria. N=1–4: case-level feasibility only; N=5–14: paired descriptive results without a hypothesis-test claim; N=15–20: exploratory paired summaries and exact McNemar may be reported. No confirmatory efficacy or power claim.",
+    "planned_outputs_at_15_cases": 90,
+    "sequential_candidate_intake": {
+      "order": "96 primary candidates in frozen cohort rank order; after a primary candidate fails, its within-project alternatives may replace it without increasing project count; after the primary queue, screen 17 distinct-project reserves if needed",
+      "stop_rule": "stop at 20 accepted independent projects or exhaustion of the frozen eligible queue",
+      "below_15_rule": "retain all cases that meet unchanged acceptance criteria; N=1-4 case-level feasibility only; N=5-14 paired descriptive results without a hypothesis-test claim; N=15-20 exploratory paired summaries and exact McNemar may be reported; no confirmatory efficacy claims",
+      "acceptance_criteria_relaxed": false
+    }
   },
   "model": {
     "id": "Qwen/Qwen2.5-3B-Instruct",
@@ -165,7 +171,8 @@
     "The v0.2 exploratory case-acceptance schema and validator are drafted as versioned artifacts; they require CI tests and human review. Passing structural validation does not authenticate artifacts, establish legal clearance, or authorize inference.",
     "The v0.1 confirmatory manifest, case schema/validator, and two-human Panel B rubric are historical artifacts only. They do not govern v0.2 exploratory case acceptance or scoring; do not use them to claim v0.2 readiness.",
     "The v0.2 study remains a draft and is not preregistered. No second human rater, Cohen's kappa, or independent external audit is part of this design. ChatGPT critique is advisory AI input only.",
-    "The v0.2 single-researcher scoring rubric and case-acceptance schema/validator have dedicated drafts; CI validation and human review remain required before any case is accepted or model inference is considered."
+    "The v0.2 single-researcher scoring rubric and case-acceptance schema/validator have dedicated drafts; CI validation and human review remain required before any case is accepted or model inference is considered.",
+    "Sequential intake amendment approved by project lead: target 20 independent cases; 15 is a preferred analysis threshold, not an eligibility floor. Retain all cases that pass unchanged criteria. If N<15, report only the achieved pilot/feasibility scope under predeclared N bands; no confirmatory efficacy claim. Candidate intake order: 96 primary rows, same-project alternates as replacements, then 17 distinct-project reserves."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -223,6 +230,31 @@
       "pull_request_url": "https://github.com/mitmproxy/pdoc/pull/813",
       "base_commit": "57ee1d628027feffbd734180287e74294ddab7df",
       "license_observation": "Exact-base LICENSE text is standard MIT, while exact-base pyproject.toml declares MIT-0. This inconsistency requires upstream clarification or a documented authoritative licensing resolution before execution/use.",
+      "case_acceptance": "not_accepted",
+      "inference_authorized": false
+    },
+    {
+      "instance_id": "reagento__dishka-436",
+      "cohort_rank": 2,
+      "status": "priority_candidate_static_review_complete_reproduction_pending",
+      "issue_url": "https://github.com/reagento/dishka/issues/435",
+      "pull_request_url": "https://github.com/reagento/dishka/pull/436",
+      "dataset_created_at": "2025-04-15T22:52:26Z",
+      "issue_created_at": "2025-04-15T22:52:26Z",
+      "pull_request_created_at": "2025-04-15T22:52:26Z",
+      "base_commit": "8718d5af93f9e48bc2506c64827663fdccc5ad89",
+      "fixed_commit": "b1eae11734e64551d7b101195f27cb6870e1c364",
+      "root_license": "Apache-2.0",
+      "exact_base_license_blob": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+      "exact_base_pyproject_blob": "aac556bc080e4c7ce0defc77dd171b3324f742a8",
+      "minimal_reproduction_environment": "Python 3.11.9; stdlib unittest; source imported via PYTHONPATH; no pip installs; exceptiongroup runtime dependency is conditional on Python <3.11; no build performed",
+      "license_screen": "documentary_minimal_reproduction_environment_screened_not_legal_clearance",
+      "independence_screen": "canonical_repository_fork_false; one primary cohort row for this repository; not in four previously exposed repositories",
+      "temporal_exposure_screen": "issue_and_PR_created_2025-04-15_after_Qwen2.5-3B-Instruct_public_release_2024-09; reduces plausibility of exact issue/patch in released weights but does not prove full training-data provenance",
+      "review_note_path": "research_candidates/evidence_abstention/REAGENTO_DISHKA_435_PRE_REPRODUCTION_REVIEW_2026-11-16.md",
+      "reproducer_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/test_issue_435.py",
+      "reproduction_workflow_path": ".github/workflows/reproduce-dishka-issue-435.yml",
+      "reproduction_status": "pending",
       "case_acceptance": "not_accepted",
       "inference_authorized": false
     }
