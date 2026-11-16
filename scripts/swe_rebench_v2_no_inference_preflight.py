@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Read-only, fail-closed readiness report for SWE-rebench V2; never loads a model."""
+"""LEGACY v0.1 confirmatory readiness report; never loads a model.
+
+Do not use this for the v0.2 exploratory study. The active v0.2 report is
+scripts/swe_rebench_v2_exploratory_preflight.py. Historical v0.1 rules such as
+60-case thresholds and Panel A/B are not v0.2 exploratory requirements.
+"""
 from __future__ import annotations
 
 import argparse
