@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json schema.org/draft/2020 12/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "protocol_id": "swe-rebench-v2-evidence-abstention",
   "protocol_version": "0.2-exploratory-draft",
   "protocol_status": "draft_exploratory_not_preregistered",
@@ -82,14 +82,20 @@
     "evidence_support_and_gold_correctness": "scored and reported as separate constructs",
     "study_type": "exploratory_feasibility",
     "target_upstream_projects": 20,
-    "sample_note": "Sequential exploratory feasibility: target 20 independent projects; 15 is a preferred analysis threshold, not an eligibility floor. Retain all cases that meet unchanged criteria. N=1–4: case-level feasibility only; N=5–14: paired descriptive results without a hypothesis-test claim; N=15–20: exploratory paired summaries and exact McNemar may be reported. No confirmatory efficacy or power claim.",
+    "sample_note": "Primary target: 15 accepted cases from 15 distinct upstream projects. Stretch target: 20 if additional candidates pass the same unchanged gates. If fewer than 15 pass, retain every valid case and report the smaller exploratory sample; 15 is not an eligibility floor. N=1-4: case-level feasibility only; N=5-14: paired descriptive results without a hypothesis-test claim; N=15-20: exploratory paired summaries and exact McNemar may be reported. No confirmatory efficacy or power claim.",
     "planned_outputs_at_15_cases": 90,
     "sequential_candidate_intake": {
       "order": "96 primary candidates in frozen cohort rank order; after a primary candidate fails, its within-project alternatives may replace it without increasing project count; after the primary queue, screen 17 distinct-project reserves if needed",
-      "stop_rule": "stop at 20 accepted independent projects or exhaustion of the frozen eligible queue",
-      "below_15_rule": "retain all cases that meet unchanged acceptance criteria; N=1-4 case-level feasibility only; N=5-14 paired descriptive results without a hypothesis-test claim; N=15-20 exploratory paired summaries and exact McNemar may be reported; no confirmatory efficacy claims",
+      "stop_rule": "Continue sequentially until 20 accepted independent projects or exhaustion of the frozen eligible queue; 15 is the primary target and 20 the stretch target.",
+      "below_15_rule": "If fewer than 15 cases pass unchanged criteria, retain all valid cases and report the achieved smaller exploratory sample. N=1-4: case-level feasibility only; N=5-14: paired descriptive results without a hypothesis-test claim; N=15-20: exploratory paired summaries and exact McNemar may be reported. No confirmatory efficacy claims.",
       "acceptance_criteria_relaxed": false
-    }
+    },
+    "primary_target_independent_cases": 15,
+    "stretch_target_independent_cases": 20,
+    "primary_target_upstream_projects": 15,
+    "stretch_target_upstream_projects": 20,
+    "planned_outputs_at_primary_target": 90,
+    "planned_outputs_at_stretch_target": 120
   },
   "model": {
     "id": "Qwen/Qwen2.5-3B-Instruct",
@@ -183,7 +189,8 @@
     "Dymos #1166 (primary rank 15) passed static issue/patch alignment and exact-base Apache-2.0 license screening. The PR fixes ignored add_control/set_control_options val defaults; the fix spans control interpolation and explicit shooting. Reproduction remains pending because a focused OpenMDAO environment and its dependency license inventory are needed.",
     "EODAG #1530 (primary rank 16) passed static issue/patch alignment and exact-base Apache-2.0 root-license screening. PR #1536 also resolves #1517 and adds StacListAssets support, so dataset selectors must be isolated to the duplicate geodes/geodes_s3 YAML key defect before counting this candidate.",
     "Click #2746 (primary rank 33) and mpmath #511 (primary rank 40) are held out of the primary intake because their exact public issues predate the September 2024 model release, creating elevated potential training-data exposure. This is a precaution, not a claim that either issue was in the training set.",
-    "pyfar #721 (primary rank 90) passed static numerical-contract and exact-base MIT source-license screening. The issue's energy-20-to-target-1 counterexample is explicit; a Python 3.12.4 pinned runtime/test environment and exact dataset FAIL_TO_PASS workflow have been added. Reproduction remains pending."
+    "pyfar #721 (primary rank 90) passed static numerical-contract and exact-base MIT source-license screening. The issue's energy-20-to-target-1 counterexample is explicit; a Python 3.12.4 pinned runtime/test environment and exact dataset FAIL_TO_PASS workflow have been added. Reproduction remains pending.",
+    "Target clarification approved by project lead on 2026-11-16: primary target is 15 independent upstream projects; 20 is a stretch target. Fewer than 15 cases are still retained if they pass all unchanged acceptance criteria; no eligibility threshold is lowered and no candidate is selected using model outcomes."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
