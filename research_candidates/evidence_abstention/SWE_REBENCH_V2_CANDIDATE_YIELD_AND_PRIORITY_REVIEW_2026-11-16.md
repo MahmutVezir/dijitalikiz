@@ -33,7 +33,7 @@ The 12 existing scope-audit batches classify the 96 primary rows as follows. Cou
 | 89–96 | 7 | 3 strong + 4 conditional |
 | **Total** | **67** | Broad static shortlist only |
 
-A second-pass review has already removed SimPEG row 63 from the primary shortlist: the linked issue describes an ambiguous API/docstring mismatch, while PR #1633 deprecates the property rather than implementing the issue's proposed integer result. This leaves **66 rows** in the current broad candidate/conditional/hold planning shortlist. The normalized row-level ledger has now been generated at `SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json`: 96/96 ranks appear exactly once. It records 29 excluded, 49 provisional, 10 conditional, 2 held, and 6 explicitly strong rows. The ledger is a deterministic extraction of the existing audit decisions, not a new adjudication; human review is still required before treating 66 as a final cohort statistic.
+A second-pass review has already removed SimPEG row 63 from the primary shortlist: the linked issue describes an ambiguous API/docstring mismatch, while PR #1633 deprecates the property rather than implementing the issue's proposed integer result. This leaves **66 rows** after the SimPEG second-pass exclusion. A further review of dbt-databricks row 8 finds that the PR's added illegal-character test uses `re.match`, so it only checks the first character (an allowed underscore) and does not detect embedded UUID hyphens; the uniqueness test also passes on the buggy base. The PR adds no cleanup/drop integration assertion. This second-pass test-oracle failure leaves **65 rows** in the current broad planning shortlist. The normalized row-level ledger has now been generated at `SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json`: 96/96 ranks appear exactly once. It records 29 excluded, 49 provisional, 10 conditional, 2 held, and 6 explicitly strong rows. The ledger is a deterministic extraction of the existing audit decisions, not a new adjudication; human review is still required before treating 66 as a final cohort statistic.
 
 ## Is 15 achievable?
 
@@ -57,6 +57,17 @@ If primary candidates fail, the preselected 17 distinct-project reserves can be 
 - The timestamp discrepancy is reconciled against the PR endpoint, and the root MIT license was screened, but those facts do not repair the issue/patch oracle mismatch.
 
 **Decision:** do not spend the first reproduction slot on this candidate. Retain the timestamp and license records for provenance; mark the case not accepted and excluded from the strict primary bug shortlist unless a narrower, independently justified test contract is later approved.
+
+### dbt-databricks row 8 — exclude from the strict shortlist
+
+- Cohort instance: `databricks__dbt-databricks-995`
+- PR: https://github.com/databricks/dbt-databricks/pull/995
+- Linked issue: https://github.com/databricks/dbt-databricks/issues/994
+- The source change replaces non-alphanumeric UUID characters with underscores, which is mechanically consistent with the reported invalid-identifier cleanup failure.
+- However, the PR's added uniqueness test would also pass on the buggy base. Its “no illegal characters” test uses `re.match` against a string beginning with an allowed underscore; because `re.match` checks only the start of the string, embedded UUID hyphens are not examined. The PR adds no integration test that creates the temporary table and verifies session-close cleanup.
+- The exact base declares Apache-2.0 in `pyproject.toml` and its `License.md` contains Apache License 2.0. The code was not executed, and dataset row/selector extraction was not run.
+
+**Decision:** exclude from the strict reproduction shortlist under the predeclared defect-specific fail-on-base/pass-on-fix test-oracle rule. Do not repair the upstream test oracle inside the study and relabel it as the original dataset test. Full technical gold/tier adjudication was not started.
 
 ### pyfar row 90 — first technical candidate, pending dependency-license gate
 
