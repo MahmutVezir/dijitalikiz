@@ -1834,6 +1834,7 @@ jobs:
           python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
           env = dict(os.environ)
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-control")
+          env["MPLBACKEND"] = "Agg"
           logs = []
           for selector in row["FAIL_TO_PASS"]:
               command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
@@ -1864,6 +1865,7 @@ jobs:
           python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
           env = dict(os.environ)
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-control")
+          env["MPLBACKEND"] = "Agg"
           logs = []
           for selector in row["FAIL_TO_PASS"]:
               command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
