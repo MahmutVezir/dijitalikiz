@@ -425,8 +425,8 @@
       ],
       "license_manifest_path": "research_candidates/evidence_abstention/WNTRBLM_NOX_919_MINIMAL_ENVIRONMENT_LICENSE_MANIFEST_V0_1.json",
       "dependency_license_inventory_status": "pending_workflow",
-      "independent_reproducer_status": "PASS_CONTRAST: base AssertionError True is not false; fixed revision Ran 1 test OK",
-      "dataset_selector_status": "BLOCKED_ORACLE_MISMATCH_24_OF_27_EXECUTED_AS_EXPECTED_3_NOT_FOUND",
+      "independent_reproducer_status": "PASS_CONTRAST: buggy base failed because HAS_UV was true for broken shim; exact fixed revision passed",
+      "dataset_selector_status": "BLOCKED: 24/27 selectors executed as expected; one selector absent from pinned source and two parameterized selectors are truncated in the exact Parquet row",
       "invalid_selector_finding": {
         "selector": "tests/test__option_set.py::TestOptionSet::test_validation_options",
         "pinned_base_commit": "97e0fad6a4036d610591a52e9ad0cfbe74a31af3",
@@ -436,9 +436,9 @@
       },
       "shared_selector_runner_status": "PASS: each selector passed as one argv item; collection errors classified separately",
       "latest_candidate_workflow_run_id": 44103128787,
-      "latest_candidate_workflow_status": "dataset_oracle_blocked_issue_reproducer_passed",
-      "latest_reproduction_run_id": 44108700819,
-      "latest_reproduction_job_id": 134128172873,
+      "latest_candidate_workflow_status": "independent_issue_reproducer_pass_dataset_row_oracle_mismatch",
+      "latest_reproduction_run_id": 44110196196,
+      "latest_reproduction_job_id": 134133534070,
       "dataset_selector_audit": {
         "total_selectors": 27,
         "buggy_base_expected_fail_contracts": 24,
@@ -449,7 +449,9 @@
           "tests/test_virtualenv.py::test_uv_version[1-{\"version\":"
         ],
         "diagnosis": "One selector references a test method absent from both pinned commits; two JSON-parameter selectors are truncated in the dataset row and cannot be resolved as pytest node IDs.",
-        "policy": "retain exact source row and every original selector; do not silently delete or reconstruct malformed selectors"
+        "policy": "retain exact source row and every original selector; do not silently delete or reconstruct malformed selectors",
+        "latest_dataset_row_sha256": "not_recomputed_in_latest_run_same_exact_pinned_row",
+        "fixed_revision": "24 valid selectors pass on fixed revision"
       }
     },
     {
@@ -488,7 +490,7 @@
     {
       "instance_id": "pallets__werkzeug-2956",
       "cohort_rank": 32,
-      "status": "dataset_selector_oracle_mismatch_one_of_two_selectors_is_truncated_in_pinned_row",
+      "status": "issue_specific_dataset_selector_base_fail_fixed_pass_with_one_truncated_row_selector",
       "issue_url": "https://github.com/pallets/werkzeug/issues/2955",
       "pull_request_url": "https://github.com/pallets/werkzeug/pull/2956",
       "base_commit": "40319f91dbbae0a780526eab037a009b1a7e4d36",
@@ -518,8 +520,8 @@
         "independence_and_exposure_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ],
-      "latest_reproduction_run_id": 44108700819,
-      "latest_reproduction_job_id": 134128172443,
+      "latest_reproduction_run_id": 44110196196,
+      "latest_reproduction_job_id": 134133533898,
       "dataset_selector_audit": {
         "selector_count": 2,
         "base_executed_failure_count": 1,
@@ -529,7 +531,19 @@
         "diagnosis": "The first parametrized selector is truncated in the Parquet row and pytest reports ERROR: not found; the second executes and fails as required on the buggy base.",
         "conftest_policy": "--no-conftest is intentionally used because the selected tests are pure unit tests and the repository-wide conftest imports xprocess; selector integrity remains enforced."
       },
-      "latest_candidate_workflow_status": "blocked_by_exact_dataset_selector_corruption"
+      "latest_candidate_workflow_status": "blocked_by_exact_dataset_selector_corruption",
+      "dataset_created_at": "2024-10-09T18:42:44Z",
+      "dataset_row_sha256": "ddd41096ea2a6e17d18b9675dfb6a6f4195a1edfd528d5d00783c6ab546c9e92",
+      "selector_audit": {
+        "exact_selector_count": 2,
+        "valid_issue_specific_selector": "tests/test_http.py::TestHTTPUtility::test_authorization_ignore_invalid_parameters",
+        "valid_selector_result": "buggy base executed and failed; exact fixed revision passed",
+        "truncated_selector": "tests/test_http.py::TestHTTPUtility::test_dict_header[=foo,",
+        "truncated_selector_result": "pytest ERROR: not found; source PR's full parametrized value is '=foo, =', but the exact Parquet selector is truncated",
+        "source_alignment": "The valid selector is directly added by PR #2956 for issue #2955 and tests Authorization parsing with invalid parameters.",
+        "policy": "retain both original row selectors; do not silently repair or remove the truncated selector"
+      },
+      "technical_reproduction": "valid defect-specific dataset selector base-fail fixed-pass; whole row remains blocked by one truncated node id"
     },
     {
       "instance_id": "MarketSquare__robotframework-robocop-1374",
@@ -598,9 +612,9 @@
       ]
     },
     {
-      "instance_id": "CS-SI__eodag-1536",
+      "instance_id": "cs-si__eodag-1536",
       "cohort_rank": 16,
-      "status": "issue_reproducer_base_fail_fixed_pass_dataset_row_id_case_mismatch_corrected_pending_rerun",
+      "status": "issue_reproducer_base_fail_fixed_pass_exact_dataset_row_authenticated_selector_execution_pending",
       "issue_url": "https://github.com/CS-SI/eodag/issues/1530",
       "pull_request_url": "https://github.com/CS-SI/eodag/pull/1536",
       "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
@@ -619,9 +633,8 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "rerun_lowercase_exact_dataset_row_lookup_and_record_row_sha256",
-        "inspect_exact_FAIL_TO_PASS_selectors_for_issue_1530_scope_and_mixed_PR_changes",
-        "same_defect_specific_test_base_fail_fixed_pass_reproduction",
+        "execute_exact_dataset_FAIL_TO_PASS_selectors_on_buggy_base_and_fixed_revision_without_installing_unreviewed_dependency_stack",
+        "complete_dependency_license_inventory_for_any_full_test_environment_if_needed",
         "independence_and_related_issue_family_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ],
@@ -650,11 +663,29 @@
         "inventory_file": "eodag_dataset_candidate_inventory.json",
         "inventory_artifact_id": 14340430332
       },
-      "issue_reproducer_status": "PASS_CONTRAST: buggy base AssertionError geodes_s3 not found; fixed revision Ran 1 test OK",
+      "issue_reproducer_status": "PASS_CONTRAST: base fails because geodes_s3 key is absent; fixed revision passes",
       "latest_candidate_workflow_run_id": 44108700819,
       "latest_candidate_workflow_job_id": 134128172467,
-      "dataset_row_gate": "expected instance ID was case-mismatched in workflow; pinned parquet inventory shows exact lower-case cs-si__eodag-1536 row",
-      "next_action": "rerun after changing expected row key to exact lowercase instance_id; authenticate row hash/timestamp and inspect FAIL_TO_PASS for mixed issue 1517 / StacListAssets scope"
+      "dataset_row_gate": "exact lower-case Parquet instance_id authenticated; prior workflow capitalization bug corrected",
+      "next_action": "rerun after changing expected row key to exact lowercase instance_id; authenticate row hash/timestamp and inspect FAIL_TO_PASS for mixed issue 1517 / StacListAssets scope",
+      "dataset_created_at": "2025-02-21T10:04:30Z",
+      "dataset_created_at_raw": "2025-02-21 10:04:30",
+      "dataset_row_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47",
+      "dataset_row_sha256_artifact_id": 14340755734,
+      "dataset_row_locator": "data/train-00000-of-00001.parquet#instance_id=cs-si__eodag-1536",
+      "fail_to_pass_count": 2,
+      "fail_to_pass_selectors": [
+        "tests/units/test_core.py::TestCore::test_available_sortables",
+        "tests/units/test_core.py::TestCore::test_list_product_types_for_provider_ok"
+      ],
+      "dataset_selector_scope_review": {
+        "test_available_sortables": "PR diff adds expected geodes_s3 sortable entry; behavior is tied to the distinct provider introduced by issue #1530.",
+        "test_list_product_types_for_provider_ok": "The PR adds geodes_s3 to SUPPORTED_PROVIDERS; this existing loop now validates the new provider.",
+        "unrelated_pr_change": "The PR also adds StacListAssets support in eodag/config.py, but the two dataset selectors above directly target the geodes_s3 provider registration and metadata.",
+        "selector_execution_status": "not executed; only row extraction and static alignment reviewed"
+      },
+      "latest_reproduction_run_id": 44110196196,
+      "latest_reproduction_job_id": 134133534134
     },
     {
       "instance_id": "pallets__click-2788",
@@ -683,7 +714,7 @@
     {
       "instance_id": "getmoto__moto-8296",
       "cohort_rank": 9,
-      "status": "reproduction_blocked_by_missing_pinned_transitive_test_dependency",
+      "status": "independent_issue_reproducer_base_fail_fixed_pass_dataset_row_mixed_oracle",
       "issue_url": "https://github.com/getmoto/moto/issues/8269",
       "pull_request_url": "https://github.com/getmoto/moto/pull/8296",
       "issue_created_at": "2024-10-30T12:24:49Z",
@@ -709,12 +740,28 @@
         "complete_independence_and_exposure_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ],
-      "latest_reproduction_run_id": 44108700819,
-      "latest_reproduction_job_id": 134128172721,
+      "latest_reproduction_run_id": 44110196196,
+      "latest_reproduction_job_id": 134131534236,
       "failure": "responses import requires yaml; PyYAML was missing from locked --no-deps environment",
       "correction_committed": "PyYAML==6.0.2 added to requirements.lock and PyYAML license metadata included in dependency audit list",
       "correction_commit": "b04e7384792cd718d27640a6b6fb1c37477bf24e",
-      "latest_candidate_workflow_status": "dependency_fix_committed_pending_rerun"
+      "latest_candidate_workflow_status": "dependency_fix_committed_pending_rerun",
+      "dataset_created_at": "2024-11-07T20:51:42Z",
+      "dataset_row_sha256": "f27a670fad222671e63e18812b68aa035934f9e86a1cb06fa255a8d35aae4593",
+      "issue_reproducer_status": "PASS_CONTRAST: buggy base AssertionError 1 != 2; fixed revision OK",
+      "dependency_corrections": [
+        "PyYAML==6.0.2 pinned because responses imports yaml at collection",
+        "freezegun==1.5.1 pinned because Moto IoT tests import it; Apache-2.0 metadata included in license audit"
+      ],
+      "dataset_oracle_review": {
+        "total_fail_to_pass_selectors": 18,
+        "issue_specific_selector": "tests/test_ecr/test_ecr_boto3.py::test_list_same_image_with_multiple_tags",
+        "unrelated_selectors": 17,
+        "unrelated_selector_scope": "IoT role-alias and IoT CloudFormation/search tests; not related to ECR list_images duplicate-tag behavior",
+        "fixed_revision_observed_problem": "At least one IoT CloudFormation selector is not found in the pinned fixed source.",
+        "policy": "do not count the 17 unrelated IoT selectors as ECR evidence; preserve the full raw dataset row and classify the row as mixed-scope oracle contamination"
+      },
+      "technical_reproduction": "independent ECR issue reproducer base-fail fixed-pass; SWE-rebench full selector row blocked by mixed unrelated IoT selectors"
     },
     {
       "instance_id": "meltano__sdk-3091",
@@ -752,7 +799,7 @@
     {
       "instance_id": "python-control__python-control-1145",
       "cohort_rank": 35,
-      "status": "independent_issue_reproducer_base_fail_dataset_selector_harness_misconfigured_pending_rerun",
+      "status": "stage2_pass_independent_issue_reproducer_and_all_3_dataset_selectors_base_fail_fixed_pass",
       "issue_url": "https://github.com/python-control/python-control/issues/1144",
       "pull_request_url": "https://github.com/python-control/python-control/pull/1145",
       "issue_created_at": "2025-04-16T16:21:23Z",
@@ -778,13 +825,25 @@
         "complete_independence_and_exposure_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ],
-      "latest_reproduction_run_id": 44108700819,
-      "latest_reproduction_job_id": 134128172810,
+      "latest_reproduction_run_id": 44109769357,
+      "latest_reproduction_job_id": 134131999050,
       "independent_reproducer_status": "PASS_BUGGY_BASE: AssertionError 0 not greater than 0",
       "dataset_selector_previous_failure": "All three dataset selectors hit pytest fixture 'mplcleanup' not found because the workflow passed --noconftest.",
       "root_cause": "The pinned upstream control/tests/conftest.py defines mplcleanup; the workflow disabled conftest loading and thereby manufactured a setup error.",
       "correction_committed": "Removed --noconftest from both base/fixed dataset selector commands; pinned source conftest is allowed to provide the fixture.",
-      "correction_commit": "11ac9b0a661d1942b1357a6b095c329d083653e9"
+      "correction_commit": "11ac9b0a661d1942b1357a6b095c329d083653e9",
+      "dataset_created_at": "2025-04-17T03:16:40Z",
+      "dataset_created_at_raw": "2025-04-17 03:16:40",
+      "dataset_row_sha256": "0dbc94f964604302bea3afc9322596577bab3bb990f2292a640c51d80e8099eb",
+      "issue_reproducer_status": "PASS_CONTRAST: buggy base AssertionError 0 not greater than 0; fixed revision OK",
+      "dataset_selector_status": "PASS: all 3 exact FAIL_TO_PASS selectors execute and fail on buggy base, then pass on exact fixed revision",
+      "selector_harness_correction": "The prior false failure was caused by --noconftest suppressing the pinned upstream control/tests/conftest.py fixture mplcleanup. Removing --noconftest restored the correct fixture and all selectors passed the base/fix contract.",
+      "dataset_fail_to_pass_selectors": [
+        "control/tests/ctrlplot_test.py::test_plot_ax_processing[frequency_response-nichols_plot]",
+        "control/tests/ctrlplot_test.py::test_plot_ax_processing[describing_function_response-describing_function_plot]",
+        "control/tests/ctrlplot_test.py::test_plot_ax_processing[nyquist_response-nyquist_plot]"
+      ],
+      "technical_reproduction": "passed_same_issue_reproducer_and_all_3_selectors_buggy_base_failure_fixed_revision_pass"
     },
     {
       "instance_id": "qutip__qutip-2694",
