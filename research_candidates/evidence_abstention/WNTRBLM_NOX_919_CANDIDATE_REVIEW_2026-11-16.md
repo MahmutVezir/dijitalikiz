@@ -68,3 +68,17 @@ Exact base-fail/fix-pass reproduction: not run; CI job did not start.
 Gold mechanism and E1/E2/E3 packet: pending human adjudication.  
 Final case acceptance: not accepted.  
 Model loading and inference authorization: false.
+
+
+## 8. 17 Kasım 2026 metodolojik düzeltme ve yeniden üretim durumu
+
+The previous status sentence above saying that the candidate job had not started is historical and is superseded by this dated addendum.
+
+- Actions run 44097375066 did execute the Nox job. The independent issue reproducer ran on the pinned buggy base before the dataset patch and produced the expected failure signature: `AssertionError: True is not false`. This is retained as independent-reproducer evidence only.
+- The dataset selector portion of that run is **not admissible** for the base-fail/fixed-pass gate. The earlier workflow used shell word splitting for parameterized pytest node IDs and applied a full PR diff containing production changes to the buggy base before dataset testing. The old dataset result is therefore not used to reject or accept this candidate.
+- The exact selector `tests/test__option_set.py::TestOptionSet::test_validation_options` was checked against the pinned buggy commit `97e0fad6a4036d610591a52e9ad0cfbe74a31af3` and fixed commit `5c4000550325fd1ad036716d9e600ef7411bed3d`. In both versions, `TestOptionSet` exists but has no `test_validation_options` method. The methods present in the inspected source include `test_namespace`, `test_namespace_values`, and `test_namespace_non_existent_options_with_values`. This is a dataset-row/selector-to-source mismatch, not an upstream bug failure. It will not be silently removed from the dataset record.
+- The PR's exact source change is in `nox/virtualenv.py` and `tests/test_virtualenv.py`; the PR does not change `tests/test__option_set.py`. The mismatch therefore requires a documented row-level oracle disposition before acceptance.
+- A shared selector runner now preserves each node ID as one argv element, validates that base-side failures are executed test failures rather than collection errors, and validates fixed-side passes. Its unit tests passed in the no-inference preflight of run [44103128787](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44103128787).
+- In run 44103128787, the Nox candidate job was queued after no-inference preflight passed; no new Nox candidate test log/result was yet available when this addendum was written.
+
+**Current decision:** retain Nox provisionally. Independent issue reproducer: positive buggy-base failure observed. Dataset FAIL_TO_PASS contract: unresolved due at least one exact selector that does not exist in either pinned source revision. Candidate acceptance remains **not accepted**; no selector is dropped or altered without an explicit provenance/oracle record.
