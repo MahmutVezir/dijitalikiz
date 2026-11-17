@@ -1139,10 +1139,12 @@
       ],
       "issue_reproducer_status": "PASS_CONTRAST: stale coefficient argument behavior causes AssertionError 1 != 2 on buggy base; fixed source passes.",
       "dataset_selector_status": "PASS: single exact selector failed on buggy base and passed on fixed revision.",
-      "latest_repeat_run_id": 44111403900,
-      "latest_repeat_job_id": 134137813871,
-      "latest_repeat_status": "in_progress_at_exact_buggy_base_editable_build_at_last_review; earlier full reproduction run completed successfully",
-      "technical_reproduction": "stage2_pass_independent_issue_reproducer_and_1_dataset_selector_base_fail_fixed_pass"
+      "latest_repeat_run_id": 44117944004,
+      "latest_repeat_job_id": 134161227186,
+      "latest_repeat_status": "PASS: full independent coefficient reproducer and exact dataset selector both completed base-fail/fixed-pass; all workflow steps successful.",
+      "technical_reproduction": "stage2_pass_independent_issue_reproducer_and_1_dataset_selector_base_fail_fixed_pass",
+      "latest_repeat_artifact_id": 14344317505,
+      "latest_repeat_artifact_sha256": "659f20be3d691a7689a3c38e069470b2d2f4e11ddb72461f3d4e89a18e57d67d"
     },
     {
       "instance_id": "cta-observatory__ctapipe-2732",
