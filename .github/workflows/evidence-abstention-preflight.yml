@@ -81,6 +81,17 @@ jobs:
           echo "Operational packet tests exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
           exit "$test_status"
 
+      - name: Unit-test fail-to-pass selector runner contract
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          PYTHONPATH=research_candidates/evidence_abstention/implementation python -m unittest test_run_swe_rebench_fail_to_pass -v > selector-runner-tests.log 2>&1
+          test_status=$?
+          cat selector-runner-tests.log
+          echo "Fail-to-pass selector-runner contract test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
+
       - name: Unit-test v0.2 exploratory acceptance and readiness contracts
         if: always()
         shell: bash
@@ -109,6 +120,7 @@ jobs:
         with:
           name: evidence-abstention-preflight-logs-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
+            selector-runner-tests.log
             packet-audit-tests.log
             operational-packet-tests.log
             v0.2-exploratory-tests.log
@@ -117,6 +129,7 @@ jobs:
           retention-days: 14
 
   dishka-issue-435-reproduction:
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
@@ -289,6 +302,7 @@ jobs:
 
 
   nox-issue-919-reproduction:
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
     steps:
@@ -524,6 +538,7 @@ jobs:
 
 
   numpyro-issue-1916-reproduction:
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 35
     env:
@@ -693,6 +708,7 @@ jobs:
 
 
   werkzeug-issue-2955-reproduction:
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
@@ -854,6 +870,7 @@ jobs:
 
 
   robocop-issue-1371-reproduction:
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
     steps:
@@ -1028,6 +1045,7 @@ jobs:
 
 
   pyfar-issue-721-reproduction:
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
@@ -1187,6 +1205,7 @@ jobs:
 
 
   eodag-issue-1530-reproduction:
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
@@ -1342,6 +1361,7 @@ jobs:
 
 
   moto-issue-8269-reproduction:
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
     steps:
@@ -1553,6 +1573,7 @@ jobs:
 
 
   meltano-issue-3090-reproduction:
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
     steps:
@@ -1755,6 +1776,7 @@ jobs:
 
 
   python-control-issue-1144-reproduction:
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
     steps:
@@ -1949,6 +1971,7 @@ jobs:
 
 
   qutip-issue-2646-reproduction:
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 40
     steps:
@@ -2148,6 +2171,7 @@ jobs:
 
 
   amaranth-issue-1518-reproduction:
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
