@@ -62,8 +62,10 @@ Aynı 96 ana kohortta sonraki ayrı doğrulamalar:
 
 **Napalm #2152, rank 19** için de exact frozen dataset selector sabitlenmiş ortamda buggy base üzerinde gerçek assertion failure, fixed revision üzerinde aynı selector için pass verdi. Pinned run 44127350027 / job 134194652784 tamamlandı; temiz artifact 14348056824 (SHA-256 `b2d6934038baf751a43ec890fa1a98763bfc10f27b1dd60b3f47aea24f2ff30d`) 15/15 iç hash kontrolünden geçti. Fixture provenance/lisans konusu Stage 3 hold olarak kalıyor; kabul kararı verilmedi.
 
+**PyThaiNLP #1046, rank 21** için de exact frozen dataset selector pinned ortamda buggy base üzerinde gerçek assertion failure, exact fixed commit üzerinde pass verdi. İki issue örneği ayrıca tek tek test edildi; her ikisi base'de failure, fixed'te pass verdi. Bu iki destek testi yeni vaka veya selector olarak sayılmadı. Pinned run 44133576730 / job 134216923258 tamamlandı; artifact 14351751109 (SHA-256 `ce2ab3bbefd3148510992a7503d8c07b17fb87fe2c2a76173c1971d21e12dcb8`) 17/17 iç hash kontrolünden geçti. Runtime lock ve native ICU sürümleri doğrulandı. Bağımlılıkların tam lisans kapsamı, proje bağımsızlığı ve Stage 3 insan adjudication kapıları açık kaldı.
+
 Bu nedenle son kayıtlı funnel:
-- Stage 2 teknik geçiş: **12 aday** (Dishka dahil; Dymos, SkyPilot ve Napalm ayrı ek doğrulamalarla).
+- Stage 2 teknik geçiş: **13 aday** (Dishka dahil; Dymos, SkyPilot, Napalm ve PyThaiNLP için sonraki ayrı doğrulamalarla).
 - Stage 3 teknik/human adjudication tamamlanan: **1 aday (Dishka)**.
 - Nihai kabul edilmiş bağımsız vaka: **0**.
 - Nox, Werkzeug ve Moto başarısız aday diye elenmedi; exact dataset row/oracle kusurları nedeniyle bloklu.
@@ -73,13 +75,13 @@ Eski run 44097375066 için metodolojik erratum korunur. O run'daki eski test son
 
 ## Sonraki ana-kohort sırası
 
-Dymos rank 15, SkyPilot rank 17 ve Napalm rank 19 için Stage 2 teknik doğrulama tamamlandı. Napalm'ın Stage 3 kapısı, PR'a eklenen Cisco NX-OS fixture'ının provenance/lisans kapsamı nedeniyle hâlâ açık. Önceden dondurulmuş sıradaki ana-kohort adayı rank 21 PyThaiNLP'dir; sıra sonuçlara göre değiştirilmemiştir.
+Dymos rank 15, SkyPilot rank 17, Napalm rank 19 ve PyThaiNLP rank 21 için Stage 2 teknik doğrulama tamamlandı. Napalm'ın Stage 3 kapısı, PR'a eklenen Cisco NX-OS fixture'ının provenance/lisans kapsamı nedeniyle; PyThaiNLP'nin Stage 3 kapısı ise doğrudan/geçişli/native bağımlılık lisans kapsamı, proje bağımsızlığı ve insan adjudication nedeniyle açık. Önceden dondurulmuş sıradaki ana-kohort adayı rank 22 Modin'dir; sıra sonuçlara göre değiştirilmemiştir.
 
 | Rank | Aday | İlk kontrol |
 |---:|---|---|
 | 19 | Napalm #2152 | Stage 2 geçti (exact selector, pinned base-fail/fixed-pass); Stage 3 için fixture provenance/lisans hold'u |
-| 21 | PyThaiNLP #1046 | Sonraki inceleme: exact row, issue/patch alignment, bağımlılık ve license gate |
-| 22 | Modin #7554 | Exact row, test oracle ve minimal environment |
+| 21 | PyThaiNLP #1046 | Stage 2 geçti (exact selector pinned base-fail/fixed-pass; iki ayrı issue reproducer destekleyici); Stage 3 için bağımlılık lisans kapsamı/bağımsızlık/human adjudication hold'u |
+| 22 | Modin #7554 | Sonraki inceleme: exact row, test oracle ve minimal environment |
 | 27 | DataComPy #404 | Hedef testin defect-specific olup olmadığı |
 | 31 | CTAPIpe #2732 | Return-type/docstring sözleşme uyuşmazlığı |
 | 34 | WeasyPrint #2416 | Pyphen sözlüğü kaynağı/lisansı, issue-test eşleşmesi ve native runtime |
