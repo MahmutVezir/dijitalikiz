@@ -144,11 +144,13 @@ The following gates now have documented evidence:
 - Exact base/fix source pins, changed-path list, and minimal environment/documentary license screen: recorded; this is not legal advice or blanket clearance.
 - Immutable reproduction archive, internal file hashes, corrected source snapshot hashes, and E3/E2/E1 nested manifests: checked and indexed.
 
+The project-lead acknowledgement is now complete: on 2026-11-17 the student project lead accepted full researcher source exposure, the single-human-adjudicator limitation, the prohibition on human-human reliability/Cohen's kappa claims, and exploratory-only use of Dishka.
+
 Still open for final case acceptance:
 
-1. project-lead acknowledgement of the disclosed full researcher-source exposure and single-human-adjudicator limitation statements;
-2. completion of the case-acceptance record against the schema and fail-closed registry validator.
+1. prepare the complete Dishka case record using only the verified evidence and provenance;
+2. validate that record against the Draft 2020-12 case schema and run the fail-closed registry checks; resolve every validator blocker without weakening the criteria.
 
-The Stage 2 and Stage 3 pass results do not waive these final acceptance steps or authorize model inference.
+The validator performs structural and cross-field consistency checks only. It does not authenticate external URIs, execute upstream tests, decide legal questions, establish semantic truth, or authorize inference. The Stage 2 and Stage 3 pass results do not themselves accept the case or authorize model inference.
 
 Until all gates pass and the case record is accepted, the registry count remains zero and model inference remains unauthorized.
