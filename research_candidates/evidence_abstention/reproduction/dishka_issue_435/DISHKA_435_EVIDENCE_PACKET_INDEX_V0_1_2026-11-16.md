@@ -3,7 +3,7 @@
 **Candidate:** `reagento__dishka-436`  
 **Stage 2:** PASS  
 **Stage 3:** PASS — project-lead technical gold/tier approval recorded 2026-11-16  
-**Final acceptance:** pending the remaining exposure/single-adjudicator acknowledgement and registry validation  
+**Final acceptance:** not yet decided; the project lead's four-point exposure/single-adjudicator acknowledgement was recorded on 2026-11-17; schema-conformant case-record construction and validation remain  
 **Inference authorization:** false
 
 ## Immutable execution artifact
@@ -61,4 +61,4 @@ The student researcher has full source exposure. The study has one human adjudic
 
 ## Acceptance status
 
-The Stage 2/Stage 3 evidence is complete for this candidate. The case has **not** been inserted into the accepted-case registry. Final acceptance still requires the project lead's explicit acknowledgement of the disclosed source-exposure and single-adjudicator limitations, followed by the fail-closed case schema and registry validator. No model inference is authorized.
+The Stage 2/Stage 3 evidence is complete for this candidate. The case has **not** been inserted into the accepted-case registry. The project lead's explicit acknowledgement of full researcher source exposure, the single-human-adjudicator design, the prohibition on human-human reliability/Cohen's kappa claims, and exploratory-only use was recorded on 2026-11-17. This closes that acknowledgement item. Final case acceptance remains pending construction of the complete case record and successful validation against the Draft 2020-12 schema and fail-closed registry checks. The validator is structural only; it does not authenticate external URIs, re-run tests, make legal determinations, or authorize inference. No model inference is authorized.
