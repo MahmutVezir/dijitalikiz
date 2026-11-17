@@ -99,9 +99,9 @@ jobs:
               f.write(canonical)
           digest = hashlib.sha256(canonical).hexdigest()
           with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
-              f.write(digest + "  dataset-row-canonical.json\\n")
+              f.write(digest + "  dataset-row-canonical.json\n")
           with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
-              f.write("\\n".join(selectors) + "\\n")
+              f.write("\n".join(selectors) + "\n")
           with open("reproduction-evidence/dataset-row-summary.json", "w", encoding="utf-8") as f:
               json.dump({
                   "instance_id": instance_id,
@@ -113,7 +113,7 @@ jobs:
                   "selector_count": len(selectors),
                   "selectors": selectors,
               }, f, indent=2, ensure_ascii=False)
-              f.write("\\n")
+              f.write("\n")
           print("dataset_row_sha256=" + digest)
           print("dataset_created_at=" + observed["created_at"])
           print("fail_to_pass=" + json.dumps(selectors, ensure_ascii=False))
@@ -151,8 +151,8 @@ jobs:
               raise SystemExit("The upstream PR test-only patch does not contain the expected SSH regression test.")
           Path("reproduction-evidence/dataset-test.patch").write_text(changed, encoding="utf-8")
           import subprocess
-          subprocess.run(["git", "-C", "upstream-skypilot", "apply", " "], check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-          subprocess.run(["git", "-C", "upstream-skypilot", "apply", str(Path("../reproduction-evidence/dataset-test.patch").resolve())], cwd="upstream-skypilot", check=True)
+          patch_path = Path("reproduction-evidence/dataset-test.patch").resolve()
+          subprocess.run(["git", "-C", "upstream-skypilot", "apply", str(patch_path)], check=True)
           paths = subprocess.check_output(["git", "-C", "upstream-skypilot", "diff", "--name-only"], text=True).splitlines()
           expected_paths = ["tests/unit_tests/test_sky/clouds/test_ssh.py"]
           if paths != expected_paths:
@@ -166,7 +166,7 @@ jobs:
               raise SystemExit("Production code is present in the test-only patch")
           with open("reproduction-evidence/dataset-test-patch-scope.json", "w", encoding="utf-8") as f:
               json.dump(scope, f, indent=2)
-              f.write("\\n")
+              f.write("\n")
           print(json.dumps(scope, indent=2))
           PY
 
@@ -211,10 +211,10 @@ jobs:
           }
           with open("reproduction-evidence/dependency-license-inventory.json", "w", encoding="utf-8") as f:
               json.dump(distributions, f, indent=2, ensure_ascii=False)
-              f.write("\\n")
+              f.write("\n")
           with open("reproduction-evidence/dependency-environment-summary.json", "w", encoding="utf-8") as f:
               json.dump(payload, f, indent=2, ensure_ascii=False)
-              f.write("\\n")
+              f.write("\n")
           print(json.dumps(payload, indent=2, ensure_ascii=False))
           PY
 
@@ -222,14 +222,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PYTHONPATH="$GITHUB_WORKSPACE/upstream-skypilot" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \\
-            --source-dir "$GITHUB_WORKSPACE/upstream-skypilot" \\
-            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \\
-            --expect base-fail \\
-            --no-conftest \\
-            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \\
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-skypilot" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-skypilot" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect base-fail \
+            --no-conftest \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
             > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           status=$?
+          set -e
           cat reproduction-evidence/base-dataset-test.log
           if [ "$status" -ne 0 ]; then
             echo "At least one exact selector did not execute and fail on the buggy base." >&2
@@ -242,14 +244,16 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-skypilot checkout --detach --force c8154ff3a4875cbb1bac8f29bb45254f264d72ba
-          PYTHONPATH="$GITHUB_WORKSPACE/upstream-skypilot" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \\
-            --source-dir "$GITHUB_WORKSPACE/upstream-skypilot" \\
-            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \\
-            --expect fixed-pass \\
-            --no-conftest \\
-            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \\
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-skypilot" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-skypilot" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect fixed-pass \
+            --no-conftest \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
             > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           status=$?
+          set -e
           cat reproduction-evidence/fixed-dataset-test.log
           if [ "$status" -ne 0 ]; then
             echo "At least one exact selector did not pass on the fixed revision." >&2
