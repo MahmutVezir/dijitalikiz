@@ -81,15 +81,24 @@ Environment discovery:
 - Artifact ZIP SHA-256: `b0df249916eaaf25cb3d8fad4c9a0b29df6dd91490bcf03300ed068d398c39f1`
 - Internal SHA256SUMS: 17 entries, 0 mismatches.
 
-Pinned repeat:
+Pinned repeat 1:
 - Workflow run: [44120296408](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44120296408)
 - Job: `134169504759`
 - Artifact ID: `14345590500`
 - Artifact ZIP SHA-256: `c9b41b7fa3ce284a322e59bee360cc3504a27f2608212ea84cfb1bed38cded3e`
 - Internal SHA256SUMS: 18 entries, 0 mismatches.
-- Pinned repeat reran the same selector against the same base and fixed commits in the exact 85-package lock environment; all install, version, license-metadata, and test steps passed.
 
-The artifact ZIPs were downloaded and independently checked: ZIP CRC tests passed, every listed inner file was present, and all SHA-256 values matched.
+**Latest pinned repeat 2:**
+- Workflow run: [44121262451](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44121262451)
+- Job: `134172933160`
+- Artifact ID: `14344534041`
+- Artifact ZIP SHA-256: `10f5505f390426e003a833ffa60cd026a9513c33da9b5a0d288844374057f34c`
+- Internal SHA256SUMS: 19 entries, 0 mismatches.
+- The 85-package lock matched exactly; `pip check` passed; all 86 installed distribution records had license metadata.
+- The dataset row and evidence JSON files parsed; the selector-file newline serialization check passed; the test-only patch touched only `tests/unit_tests/test_sky/clouds/test_ssh.py`.
+- The exact selector again executed and failed on the buggy base, then passed on the exact fixed revision.
+
+All three artifact ZIPs (discovery plus two pinned repeats) were downloaded and independently checked: ZIP CRC tests passed, every listed inner file was present, and all SHA-256 values matched. The second pinned repeat is the latest Stage 2 technical evidence.
 
 ## 7. Decision and remaining gates
 
