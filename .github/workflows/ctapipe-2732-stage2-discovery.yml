@@ -1,0 +1,113 @@
+name: "ctapipe #2732 Frozen Dataset Row Discovery (No Inference)"
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/ctapipe-2732-stage2-discovery.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ctapipe-2732-row-discovery:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Download and authenticate frozen ctapipe row temporarily
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv "$RUNNER_TEMP/ctapipe-data-venv"
+          "$RUNNER_TEMP/ctapipe-data-venv/bin/python" -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  $RUNNER_TEMP/train-00000-of-00001.parquet" | sha256sum --check
+          mkdir -p ctapipe-discovery-evidence
+          "$RUNNER_TEMP/ctapipe-data-venv/bin/python" - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import pyarrow.parquet as pq
+
+          parquet = Path(os.environ["RUNNER_TEMP"]) / "train-00000-of-00001.parquet"
+          instance_id = "cta-observatory__ctapipe-2732"
+          columns = [
+              "instance_id", "repo", "base_commit", "created_at",
+              "language", "license", "FAIL_TO_PASS", "problem_statement",
+          ]
+          rows = pq.read_table(parquet, columns=columns, filters=[("instance_id", "=", instance_id)]).to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected exactly one frozen row; observed {len(rows)}")
+          row = rows[0]
+          expected = {
+              "repo": "cta-observatory/ctapipe",
+              "base_commit": "287e7685e0e963f3fb44d92832ca97ac8c265c40",
+              "language": "python",
+              "license": "BSD-3-Clause",
+          }
+          for key, value in expected.items():
+              if str(row[key]) != value:
+                  raise SystemExit(f"Frozen row {key} mismatch: expected={value!r}; observed={row[key]!r}")
+          selectors = row["FAIL_TO_PASS"]
+          if not isinstance(selectors, list) or not selectors:
+              raise SystemExit("Frozen ctapipe row has no FAIL_TO_PASS selectors")
+          problem = row.get("problem_statement") or ""
+          alignment = {
+              "mentions_datawriter": "DataWriter" in problem,
+              "mentions_skewness": "skewness" in problem.lower(),
+              "mentions_muon": "muon" in problem.lower(),
+              "mentions_float_to_value": "to_value" in problem or "float" in problem.lower(),
+          }
+          if not alignment["mentions_skewness"] or not alignment["mentions_muon"]:
+              raise SystemExit(f"Frozen problem statement does not identify muon skewness failure: {alignment}")
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          digest = hashlib.sha256(canonical).hexdigest()
+          summary = {
+              "instance_id": row["instance_id"],
+              "row_sha256": digest,
+              "repo": row["repo"],
+              "base_commit": row["base_commit"],
+              "created_at": str(row["created_at"]),
+              "language": row["language"],
+              "license": row["license"],
+              "selector_count": len(selectors),
+              "selectors": selectors,
+              "problem_statement_alignment_checks": alignment,
+              "problem_statement_saved": False,
+              "canonical_row_saved": False,
+              "parquet_saved_to_artifact": False,
+          }
+          evidence = Path("ctapipe-discovery-evidence")
+          (evidence / "dataset-row-summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          (evidence / "dataset-fail-to-pass-selectors.txt").write_text("\n".join(selectors) + "\n", encoding="utf-8")
+          (evidence / "dataset-row-sha256.txt").write_text(digest + "  canonical-row-not-stored\n", encoding="utf-8")
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          PY
+          rm -f "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          rm -rf "$RUNNER_TEMP/ctapipe-data-venv"
+          test ! -e "$RUNNER_TEMP/train-00000-of-00001.parquet"
+
+      - name: Hash selector-only evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd ctapipe-discovery-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
+
+      - name: Upload selector-only discovery evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ctapipe-2732-frozen-row-selector-discovery
+          path: ctapipe-discovery-evidence/
+          if-no-files-found: error
+          retention-days: 90
