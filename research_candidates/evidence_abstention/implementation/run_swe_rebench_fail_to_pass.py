@@ -80,13 +80,13 @@ def classify_result(expect: str, returncode: int, output: str) -> tuple[bool, st
     return False, f"unknown expectation: {expect}"
 
 
-def run_one(source_dir: Path, selector: str, expect: str, no_conftest: bool = False) -> dict[str, object]:
+def run_one(source_dir: Path, selector: str, expect: str, no_conftest: bool = False, config_file: Path | None = None) -> dict[str, object]:
     command = [
         sys.executable,
         "-m",
         "pytest",
         "-c",
-        "/dev/null",
+        str(config_file.resolve()) if config_file is not None else "/dev/null",
         "-p",
         "no:cacheprovider",
         "-q",
@@ -115,12 +115,14 @@ def run_one(source_dir: Path, selector: str, expect: str, no_conftest: bool = Fa
     }
 
 
-def execute(source_dir: Path, selectors_file: Path, expect: str, no_conftest: bool = False) -> tuple[list[dict[str, object]], bool]:
+def execute(source_dir: Path, selectors_file: Path, expect: str, no_conftest: bool = False, config_file: Path | None = None) -> tuple[list[dict[str, object]], bool]:
     source_dir = source_dir.resolve()
     if not source_dir.is_dir():
         raise ValueError(f"Source directory does not exist: {source_dir}")
+    if config_file is not None and not config_file.is_file():
+        raise ValueError(f"Pytest config file does not exist: {config_file}")
     selectors = read_selectors(selectors_file)
-    results = [run_one(source_dir, selector, expect, no_conftest=no_conftest) for selector in selectors]
+    results = [run_one(source_dir, selector, expect, no_conftest=no_conftest, config_file=config_file) for selector in selectors]
     return results, all(bool(item["ok"]) for item in results)
 
 
@@ -131,10 +133,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--expect", choices=("base-fail", "fixed-pass"), required=True)
     parser.add_argument("--log-file", required=True, type=Path)
     parser.add_argument("--no-conftest", action="store_true", help="run pure selectors without loading repository conftest.py files")
+    parser.add_argument("--config-file", type=Path, default=None, help="use an explicit upstream pytest config file instead of /dev/null")
     args = parser.parse_args(argv)
 
     try:
-        results, success = execute(args.source_dir, args.selectors_file, args.expect, no_conftest=args.no_conftest)
+        results, success = execute(args.source_dir, args.selectors_file, args.expect, no_conftest=args.no_conftest, config_file=args.config_file)
     except ValueError as exc:
         payload = {"success": False, "error": str(exc), "results": []}
         args.log_file.parent.mkdir(parents=True, exist_ok=True)
