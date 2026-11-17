@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-17T15:47:30Z",
+  "generated_at_utc": "2026-11-17T16:05:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -14,16 +14,17 @@
     "one_accepted_case_per_upstream_project": true,
     "do_not_count_test_selectors_as_independent_cases": true,
     "inference_authorized": false,
-    "latest_stage2_disposition_note": "10 technical Stage 2 passes: Dishka, NumPyro, Robocop, PyFar, Python-Control, Meltano, Amaranth, QuTiP, Dymos and EODAG. Nox and Werkzeug remain blocked by malformed exact dataset selectors. Moto has a valid ECR-specific base-fail/fixed-pass result but its full 18-selector row is mixed-scope and contains invalid selectors. Stage 3 technical adjudication pass remains Dishka only. All final accepted cases remain 0; no model load/inference/training."
+    "latest_stage2_disposition_note": "11 technical Stage 2 passes: Dishka, NumPyro, Robocop, PyFar, Python-Control, Meltano, Amaranth, QuTiP, Dymos, EODAG and SkyPilot. Nox and Werkzeug remain blocked by malformed selectors in the immutable original dataset rows. Moto has a valid ECR-specific fail/pass but the full row is mixed-scope and contains invalid unrelated IoT selectors. Earthkit-data remains blocked by external fixture/provenance. Stage 3 technical adjudication pass remains Dishka only. Final accepted cases remain 0; no model load/inference/training."
   },
   "global_execution_blocker": {
-    "status": "previously_observed_runner_allocation_failure_not_reproduced_in_latest_batch",
+    "status": "historical_zero_step_runner_allocation_failures_not_reproduced_in_current_SkyPilot_runs",
     "evidence_run_id": 43908181500,
     "no_secret_runner_smoke_run_id": 43908725261,
     "runner_smoke_job_id": 133444501890,
-    "latest_allocated_batch_run_id": 44117944004,
-    "latest_batch_preflight": "success; jobs allocated and candidate test steps executed",
-    "historical_root_cause": "Original zero-step runner failures expose no runner-side diagnostic in job records; do not infer quota, policy or platform outage."
+    "latest_skyPilot_environment_discovery_run_id": 44120296410,
+    "latest_skyPilot_pinned_reproduction_run_id": 44120296408,
+    "latest_skyPilot_preflight": "both SkyPilot workflows were allocated runners and all candidate steps completed successfully",
+    "historical_root_cause": "Original zero-step failures expose no runner-side diagnostics. Do not infer quota, policy or platform outage."
   },
   "summary": {
     "frozen_rows": 96,
@@ -34,7 +35,7 @@
     "strong": 6,
     "post_second_pass_excluded": 2,
     "remaining_broad_shortlist": 65,
-    "stage2_passed": 10,
+    "stage2_passed": 11,
     "stage3_technical_passed": 1,
     "final_accepted_cases": 0,
     "runner_blocked_candidates": 0,
@@ -336,12 +337,13 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/SKYPILOT_5981_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "not_started_selector_and_integration_reproducer_pending",
-      "stage2_workflow_job_id": null,
-      "stage2_evidence_note": "Must use local mocks only; exact dataset selectors and focused integration reproducer pending.",
-      "stage3_status": "not_started_stage2_not_passed",
+      "stage2_status": "passed_exact_dataset_selector_buggy_base_fail_fixed_revision_pass_pinned_environment",
+      "stage2_workflow_job_id": 134169504759,
+      "stage2_evidence_note": "Exact frozen Parquet row skypilot-org__skypilot-5985 authenticated (created_at 2025-06-12 21:52:38; canonical row SHA-256 a846e85ec5452d8100659e5c6c8cbecc3401dae16b8830eed77543172ef9bbbe). Exact one selector test_complex_scenario_with_mixed_filtering failed on buggy base because str.lstrip('ssh-') removed the initial s in staging, returning only ['ssh-prod'] instead of ['ssh-prod','ssh-staging']; same selector passed on exact fixed PR revision. Test-only patch changed tests/unit_tests/test_sky/clouds/test_ssh.py only; production_code_changed=false. Pinned Python 3.11.9 environment: requirements.lock has 85 external pins; all installed versions matched, 86 installed distributions including editable SkyPilot had license metadata, pip check passed. Pinned artifact 14345590500 ZIP SHA c9b41b7fa3ce284a322e59bee360cc3504a27f2608212ea84cfb1bed38cded3e; 18/18 internal hashes verified. Dependency license scope signoff, independence and Stage 3 human adjudication remain pending.",
+      "stage3_status": "not_started_stage2_passed_license_scope_and_human_adjudication_pending",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44120296408
     },
     {
       "cohort_rank": 18,
