@@ -211,7 +211,7 @@ jobs:
               if line.strip() != "jsonapi = true" and not line.strip().startswith("json_report =")
           ]
           target = Path("upstream-napalm/.napalm-stage2.cfg")
-          target.write_text("\\n".join(filtered) + "\\n", encoding="utf-8")
+          target.write_text("\n".join(filtered) + "\n", encoding="utf-8")
           print(f"Created temporary pytest config outside tracked upstream source: {target}")
           PY
           sha256sum reproduction-evidence/test-only.patch reproduction-evidence/test-only-patch-scope.json >> reproduction-evidence/source-provenance-sha256.txt
