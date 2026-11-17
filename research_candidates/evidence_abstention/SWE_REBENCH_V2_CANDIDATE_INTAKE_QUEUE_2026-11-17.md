@@ -60,8 +60,10 @@ Aynı 96 ana kohortta sonraki ayrı doğrulamalar:
 - **Dymos #1166, rank 15:** Stage 2 teknik doğrulama geçti; dependency/license kapsamı, bağımsızlık ve Stage 3 insan kararı bekliyor.
 - **SkyPilot #5981, rank 17:** 1/1 exact upstream SSH regression selector pinned ortamda base-fail/fixed-pass verdi; 85 paketli lock, license metadata ve artifact hash kontrolleri geçti. Stage 3 ve eğitim verisi zaman maruziyeti incelemesi bekliyor.
 
+**Napalm #2152, rank 19** için de exact frozen dataset selector sabitlenmiş ortamda buggy base üzerinde gerçek assertion failure, fixed revision üzerinde aynı selector için pass verdi. Pinned run 44127350027 / job 134194652784 tamamlandı; temiz artifact 14348056824 (SHA-256 `b2d6934038baf751a43ec890fa1a98763bfc10f27b1dd60b3f47aea24f2ff30d`) 15/15 iç hash kontrolünden geçti. Fixture provenance/lisans konusu Stage 3 hold olarak kalıyor; kabul kararı verilmedi.
+
 Bu nedenle son kayıtlı funnel:
-- Stage 2 teknik geçiş: **11 aday** (Dishka dahil; Dymos ve SkyPilot ayrı ek doğrulamalarla).
+- Stage 2 teknik geçiş: **12 aday** (Dishka dahil; Dymos, SkyPilot ve Napalm ayrı ek doğrulamalarla).
 - Stage 3 teknik/human adjudication tamamlanan: **1 aday (Dishka)**.
 - Nihai kabul edilmiş bağımsız vaka: **0**.
 - Nox, Werkzeug ve Moto başarısız aday diye elenmedi; exact dataset row/oracle kusurları nedeniyle bloklu.
@@ -71,12 +73,12 @@ Eski run 44097375066 için metodolojik erratum korunur. O run'daki eski test son
 
 ## Sonraki ana-kohort sırası
 
-Dymos rank 15 ve SkyPilot rank 17 için Stage 2 teknik doğrulama tamamlandı. Sonraki ana-kohort incelemesi, önceden dondurulmuş rank sırasına göre:
+Dymos rank 15, SkyPilot rank 17 ve Napalm rank 19 için Stage 2 teknik doğrulama tamamlandı. Napalm'ın Stage 3 kapısı, PR'a eklenen Cisco NX-OS fixture'ının provenance/lisans kapsamı nedeniyle hâlâ açık. Önceden dondurulmuş sıradaki ana-kohort adayı rank 21 PyThaiNLP'dir; sıra sonuçlara göre değiştirilmemiştir.
 
 | Rank | Aday | İlk kontrol |
 |---:|---|---|
-| 19 | Napalm #2152 | Harici fixture ve provenance koşullu hold'u |
-| 21 | PyThaiNLP #1046 | Exact row, issue/patch alignment, bağımlılık ve license gate |
+| 19 | Napalm #2152 | Stage 2 geçti (exact selector, pinned base-fail/fixed-pass); Stage 3 için fixture provenance/lisans hold'u |
+| 21 | PyThaiNLP #1046 | Sonraki inceleme: exact row, issue/patch alignment, bağımlılık ve license gate |
 | 22 | Modin #7554 | Exact row, test oracle ve minimal environment |
 | 27 | DataComPy #404 | Hedef testin defect-specific olup olmadığı |
 | 31 | CTAPIpe #2732 | Return-type/docstring sözleşme uyuşmazlığı |
