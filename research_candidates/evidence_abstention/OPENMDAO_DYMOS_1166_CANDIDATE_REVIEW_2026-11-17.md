@@ -7,9 +7,11 @@
 - Repository: https://github.com/OpenMDAO/dymos
 - Bug report: https://github.com/OpenMDAO/dymos/issues/1166
 - Fix PR: https://github.com/OpenMDAO/dymos/pull/1165
-- Issue created: 2025-04-04T20:26:09Z
 - PR created: 2025-04-04T20:23:44Z
+- Linked issue created: 2025-04-04T20:26:09Z (2 minutes 25 seconds after the PR)
 - PR merged: 2025-04-05T11:30:09Z
+
+The dataset timestamp is authenticated against the PR resource, not the linked issue resource. The PR-before-issue ordering is unusual but is preserved as observed; it is not silently normalized or presented as an issue-before-PR chronology.
 - Dataset instance: `openmdao__dymos-1165`
 - Buggy base: `3efd1035c3bf62890034eb9e07de543f3d117867`
 - Fixed revision: `0ffc82225d6125dcb5c5b5acfb9be9fd712ef949`
@@ -99,6 +101,15 @@ Potential alternatives to consider in Stage 3:
 3. A mismatch between polynomial control node count/shape and the supplied value could produce a similar symptom; inspect the `reshape_val` path and the other control tests before finalizing the mechanism.
 
 These are candidate explanations only. No gold root cause, alternative ranking, E1/E2/E3 membership, or final acceptance decision is asserted here.
+
+## 7. Independent artifact verification note
+
+The downloaded artifact ZIP was independently checked outside the workflow:
+- ZIP SHA-256: `8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051`
+- `SHA256SUMS.txt`: 18 entries, all 18 payload files present and hash-matched.
+- Canonical dataset row bytes independently re-hash to `236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5`.
+
+This confirms artifact integrity, not the legal sufficiency of the license metadata inventory or the scientific gold adjudication.
 
 ## 7. Remaining gates
 
