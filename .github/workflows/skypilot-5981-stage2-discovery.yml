@@ -79,6 +79,11 @@ jobs:
           open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8").write("\n".join(selectors) + "\n")
           digest = hashlib.sha256(canonical).hexdigest()
           open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8").write(digest + "  dataset-row-canonical.json\n")
+          observed_selectors = open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", encoding="utf-8").read().splitlines()
+          if observed_selectors != selectors:
+              raise SystemExit(f"Selector file serialization mismatch: expected {selectors!r}, got {observed_selectors!r}")
+          with open("reproduction-evidence/dataset-row-summary.json", encoding="utf-8") as f:
+              json.load(f)
           print(json.dumps({"dataset_row_sha256": digest, "created_at": str(row["created_at"]), "selectors": selectors}, indent=2))
           PY
           rm reproduction-evidence/train-00000-of-00001.parquet
@@ -210,12 +215,12 @@ jobs:
         run: |
           set -euo pipefail
           {
-            echo "### SkyPilot #5981 — environment discovery only"
+            echo "### SkyPilot #5981 — pinned Stage 2 reproduction"
             echo "- Buggy base: 60a6c930feeb8c48511f74c25bc2d7e12b290dd6"
             echo "- Fixed revision: c8154ff3a4875cbb1bac8f29bb45254f264d72ba"
             echo "- External SSH/Kubernetes/cloud services: not used"
             echo "- Model loading, inference, training: not performed"
-            echo "- This run installs the exact 85-distribution lock captured and audited in the prior environment-discovery run; Stage 2 is reported only if the locked base-fail/fixed-pass contract and artifact validation succeed."
+            echo "- This run installs the exact 85-distribution lock captured and audited in the environment-discovery run. Stage 2 passes only if lock, license metadata, JSON serialization, test-only patch scope, and exact base-fail/fixed-pass contracts all validate."
           } >> "$GITHUB_STEP_SUMMARY"
           (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
 
