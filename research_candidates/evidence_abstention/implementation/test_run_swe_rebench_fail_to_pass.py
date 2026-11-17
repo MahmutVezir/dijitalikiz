@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from run_swe_rebench_fail_to_pass import classify_result, read_selectors, run_one
+from run_swe_rebench_fail_to_pass import classify_result, execute, read_selectors, run_one
 
 
 class SelectorRunnerContractTests(unittest.TestCase):
@@ -43,16 +43,16 @@ class SelectorRunnerContractTests(unittest.TestCase):
 
     def test_explicit_upstream_pytest_config_is_passed(self) -> None:
         selector = "tests/units/test_core.py::TestCore::test_available_sortables"
-        output = "F\\nFAILED tests/units/test_core.py::TestCore::test_available_sortables - AssertionError\\n1 failed in 0.02s\\n"
+        output = "F\nFAILED tests/units/test_core.py::TestCore::test_available_sortables - AssertionError\n1 failed in 0.02s\n"
         completed = subprocess.CompletedProcess(args=["pytest"], returncode=1, stdout=output)
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             source = root / "source"
             source.mkdir()
             config = source / "pytest.ini"
-            config.write_text("[pytest]\\naddopts = --disable-socket\\n", encoding="utf-8")
+            config.write_text("[pytest]\naddopts = --disable-socket\n", encoding="utf-8")
             selectors = root / "selectors.txt"
-            selectors.write_text(selector + "\\n", encoding="utf-8")
+            selectors.write_text(selector + "\n", encoding="utf-8")
             with patch("run_swe_rebench_fail_to_pass.subprocess.run", return_value=completed) as mocked:
                 results, success = execute(source, selectors, "base-fail", config_file=config)
             command = mocked.call_args.args[0]
