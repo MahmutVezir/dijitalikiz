@@ -1077,7 +1077,7 @@ jobs:
           .venv-tests/bin/python - <<'PY'
           import importlib.metadata as md
           import json
-          names = ["numpy", "scipy", "matplotlib", "sofar", "urllib3", "deepdiff", "soundfile", "h5py", "netCDF4", "cftime", "certifi", "requests", "charset-normalizer", "idna", "pytest", "contourpy", "cycler", "fonttools", "kiwisolver", "packaging", "pillow", "pyparsing", "python-dateutil", "six", "cffi", "pycparser", "orderly-set", "iniconfig", "pluggy", "Pygments"]
+          names = ["numpy", "scipy", "matplotlib", "sofar", "urllib3", "deepdiff", "soundfile", "h5py", "netCDF4", "cftime", "certifi", "requests", "charset-normalizer", "idna", "beautifulsoup4", "soupsieve", "pytest", "contourpy", "cycler", "fonttools", "kiwisolver", "packaging", "pillow", "pyparsing", "python-dateutil", "six", "cffi", "pycparser", "orderly-set", "iniconfig", "pluggy", "Pygments"]
           inventory = {}
           for name in names:
               dist = md.metadata(name)
@@ -1417,7 +1417,7 @@ jobs:
           git -C upstream-moto checkout --detach bf49e22f41be7444dc20e05dfa5dd13f25672eba
           test "$(git -C upstream-moto rev-parse HEAD)" = "bf49e22f41be7444dc20e05dfa5dd13f25672eba"
           test "$(git -C upstream-moto rev-parse HEAD:LICENSE)" = "90a85e7149454f173dd595bdeb884340cc01e6f6"
-          test "$(git -C upstream-moto rev-parse HEAD:setup.cfg)" = "fb1c7ead5806c611cf184980e8b54e4932079758"
+          test "$(git -C upstream-moto rev-parse HEAD:setup.cfg)" = "cef6c2d5788a173013cc0a2307a4793c3900a200"
           git -C upstream-moto show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE.txt
           git -C upstream-moto show HEAD:setup.cfg > reproduction-evidence/upstream-setup.cfg
           git -C upstream-moto diff bf49e22f41be7444dc20e05dfa5dd13f25672eba d46db48b4911d84235ef783ddab41b73882530f7 > reproduction-evidence/pr-8296-full.patch
@@ -1601,7 +1601,7 @@ jobs:
           .venv-tests/bin/python - <<'PY'
           import importlib.metadata as md
           import json
-          names = ["attrs", "backoff", "click", "fsspec", "greenlet", "inflection", "iniconfig", "joblib", "jsonpath-ng", "jsonschema", "jsonschema-specifications", "packaging", "ply", "pluggy", "Pygments", "PyYAML", "referencing", "requests", "rpds-py", "simpleeval", "simplejson", "SQLAlchemy", "typing-extensions", "universal-pathlib", "urllib3", "certifi", "charset-normalizer", "idna", "python-dotenv", "pytest"]
+          names = ["attrs", "backoff", "click", "fsspec", "greenlet", "inflection", "iniconfig", "joblib", "jsonpath-ng", "jsonschema", "jsonschema-specifications", "packaging", "ply", "pluggy", "Pygments", "PyYAML", "referencing", "requests", "rpds-py", "simpleeval", "simplejson", "SQLAlchemy", "typing-extensions", "universal-pathlib", "urllib3", "certifi", "charset-normalizer", "idna", "python-dotenv", "importlib-metadata", "zipp", "pytest"]
           inventory = {}
           for name in names:
               dist = md.metadata(name)
@@ -2202,7 +2202,7 @@ jobs:
           .venv-tests/bin/python - <<'PY'
           import importlib.metadata as md
           import json
-          names = ["jschon", "pyvcd", "Jinja2", "MarkupSafe", "pytest", "iniconfig", "packaging", "pluggy", "Pygments"]
+          names = ["jschon", "pyvcd", "Jinja2", "MarkupSafe", "rfc3986", "pytest", "iniconfig", "packaging", "pluggy", "Pygments"]
           inventory = {}
           for name in names:
               dist = md.metadata(name)
