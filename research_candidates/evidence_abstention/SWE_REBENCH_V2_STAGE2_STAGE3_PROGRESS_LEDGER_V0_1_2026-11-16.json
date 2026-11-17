@@ -338,12 +338,14 @@
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/SKYPILOT_5981_CANDIDATE_REVIEW_2026-11-16.md",
       "stage2_status": "passed_exact_dataset_selector_buggy_base_fail_fixed_revision_pass_pinned_environment",
-      "stage2_workflow_job_id": 134169504759,
-      "stage2_evidence_note": "Exact frozen Parquet row skypilot-org__skypilot-5985 authenticated (created_at 2025-06-12 21:52:38; canonical row SHA-256 a846e85ec5452d8100659e5c6c8cbecc3401dae16b8830eed77543172ef9bbbe). Exact one selector test_complex_scenario_with_mixed_filtering failed on buggy base because str.lstrip('ssh-') removed the initial s in staging, returning only ['ssh-prod'] instead of ['ssh-prod','ssh-staging']; same selector passed on exact fixed PR revision. Test-only patch changed tests/unit_tests/test_sky/clouds/test_ssh.py only; production_code_changed=false. Pinned Python 3.11.9 environment: requirements.lock has 85 external pins; all installed versions matched, 86 installed distributions including editable SkyPilot had license metadata, pip check passed. Pinned artifact 14345590500 ZIP SHA c9b41b7fa3ce284a322e59bee360cc3504a27f2608212ea84cfb1bed38cded3e; 18/18 internal hashes verified. Dependency license scope signoff, independence and Stage 3 human adjudication remain pending.",
+      "stage2_workflow_job_id": 134172933160,
+      "stage2_evidence_note": "Latest pinned repeat run 44121262451 (job 134172933160) reran the exact Parquet selector against the pinned buggy base and fixed PR revision using the 85-package requirements.lock. Base: 1/1 exact selector executed and failed on the real SSH context assertion; fixed: 1/1 same selector passed. Lock versions all matched; pip check passed; all 86 installed distribution records had license metadata; dataset row and all artifact JSON files parsed; selector-file newline serialization was asserted; test-only patch touched only tests/unit_tests/test_sky/clouds/test_ssh.py; all 19 inner SHA256SUMS entries and ZIP CRC independently verified. Artifact 14344534041 SHA-256 10f5505f390426e003a833ffa60cd026a9513c33da9b5a0d288844374057f34c. Stage 3 and final acceptance remain pending.",
       "stage3_status": "not_started_stage2_passed_license_scope_and_human_adjudication_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44120296408
+      "stage2_latest_run_id": 44121262451,
+      "stage2_artifact_id": 14344534041,
+      "stage2_artifact_sha256": "10f5505f390426e003a833ffa60cd026a9513c33da9b5a0d288844374057f34c"
     },
     {
       "cohort_rank": 18,
