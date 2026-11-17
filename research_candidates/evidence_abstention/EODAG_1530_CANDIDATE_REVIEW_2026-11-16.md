@@ -1,10 +1,10 @@
 # CS-SI/eodag issue #1530 — candidate review
 
 **Cohort rank:** 16 of 96 primary candidates  
-**Dataset instance:** `CS-SI__eodag-1536` (row identity to be authenticated in the reproduction workflow)  
+**Dataset instance:** `cs-si__eodag-1536` (exact pinned Parquet row authenticated)  
 **Issue:** https://github.com/CS-SI/eodag/issues/1530  
 **Fix PR:** https://github.com/CS-SI/eodag/pull/1536  
-**Review status:** source/issue/patch and narrow minimal-reproducer license screen passed; dataset selector audit and exact workflow reproduction pending. Not an accepted case.
+**Review status:** Stage 2 technical reproduction passed on the exact upstream base/fixed commits, including both exact dataset selectors. Full dependency-license scope and Stage 3 human adjudication remain pending. Not an accepted case.
 
 ## 1. Defect contract
 
@@ -62,12 +62,31 @@ This is an issue-specific source reproducer, not a substitute for the dataset FA
 - The student researcher has reviewed the issue and patch during candidate screening. This exposure must be recorded; perfect blinding must not be claimed.
 - Related issue-family review remains required before final acceptance.
 
-## 6. Current decision
+## 6. Stage 2 result — 2026-11-17
 
-Issue/patch alignment for duplicate YAML keys: strong.  
-Minimal YAML reproducer: prepared; workflow result pending.  
-Dataset FAIL_TO_PASS row and selector scope: pending; must isolate #1530 from PR #1536's separate StacListAssets changes.  
-Minimal-environment license screen: documented, narrow pass.  
-Gold mechanism and E1/E2/E3 evidence adjudication: pending human decision.  
+The issue-specific YAML reproducer and both exact dataset selectors were run on the pinned buggy base and fixed revision in workflow run [44117944004](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44117944004), job `134161227052`.
+
+- Exact Parquet instance: `cs-si__eodag-1536`
+- Row `created_at`: `2025-02-21 10:04:30`, matching PR #1536 creation time.
+- Canonical row SHA-256: `35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47`
+- Selector count: 2.
+- Buggy base: both selectors executed and failed as expected (`selector_contracts=2/2 expectation=base-fail`). The second test raised `UnsupportedProvider: geodes_s3`; the first asserted a difference in provider sortables.
+- Fixed revision: the same two selectors passed (`selector_contracts=2/2 expectation=fixed-pass`).
+- Test-only patch scope: `tests/units/test_core.py` only; workflow scope audit reports `production_code_changed=false`.
+- Artifact ID: `14344421574`; ZIP SHA-256: `0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33`.
+- Artifact SHA256SUMS: 22 entries independently checked; 0 mismatches.
+- Focused test environment: Python 3.11.9; 52 installed distributions recorded in the license metadata inventory; `pip check` passed. The installed package inventory is evidence for review, not blanket legal clearance.
+
+The two exact selectors are directly related to `geodes_s3` provider registration/sortables. The PR also touches a separate `StacListAssets` feature, but that production change is not in the applied test-only patch and neither of the two selectors is a StacListAssets test.
+
+## 7. Current decision and remaining gates
+
+Issue/patch alignment for the duplicate YAML-key defect: strong.  
+Minimal YAML reproducer: base-fail/fixed-pass.  
+Exact dataset selectors: 2/2 base-fail and 2/2 fixed-pass.  
+Focused dependency environment and license metadata inventory: recorded; project-lead scope signoff remains pending.  
+Researcher source exposure: partial screening exposure recorded; no blinding claim.  
+Related issue-family / independence review: pending.  
+Gold mechanism, alternatives and nested E1/E2/E3 evidence: pending human adjudication.  
 Final case acceptance: not accepted.  
 Model loading/inference authorization: false.
