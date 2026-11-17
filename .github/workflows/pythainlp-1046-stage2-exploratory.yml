@@ -51,6 +51,28 @@ jobs:
           test "$(git -C upstream-pythainlp rev-parse HEAD:pythainlp/util/syllable.py)" = "9d480d815ee23edc74a39f34edea253dd4fd88fc"
           test "$(git -C upstream-pythainlp rev-parse "$FIX_SHA:pythainlp/util/syllable.py")" = "bf3d4be4c50d59005f3e752ec426861c53428ba6"
           test "$(git -C upstream-pythainlp rev-parse HEAD:LICENSE)" = "8dada3edaf50dbc082c9a125058f25def75e625a"
+          mkdir -p reproduction-evidence
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+          repo = Path("upstream-pythainlp")
+          def git(*args):
+              return subprocess.check_output(["git", "-C", str(repo), *args], text=True).strip()
+          data = {
+              "repository": "PyThaiNLP/pythainlp",
+              "base_commit": git("rev-parse", "HEAD"),
+              "fixed_commit": "6f1dc929f853ecd9910d1d25a56716b864b2ee98",
+              "base_syllable_source_blob": git("rev-parse", "HEAD:pythainlp/util/syllable.py"),
+              "fixed_syllable_source_blob": git("rev-parse", "6f1dc929f853ecd9910d1d25a56716b864b2ee98:pythainlp/util/syllable.py"),
+              "base_test_util_blob": git("rev-parse", "HEAD:tests/core/test_util.py"),
+              "fixed_test_util_blob": git("rev-parse", "6f1dc929f853ecd9910d1d25a56716b864b2ee98:tests/core/test_util.py"),
+              "base_license_blob": git("rev-parse", "HEAD:LICENSE"),
+              "root_license": "Apache-2.0",
+          }
+          Path("reproduction-evidence/source-provenance.json").write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(data, indent=2))
+          PY
 
           python -m venv "$RUNNER_TEMP/pythainlp-data-venv"
           "$RUNNER_TEMP/pythainlp-data-venv/bin/python" -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
@@ -213,6 +235,7 @@ jobs:
           Path("reproduction-evidence/test-only-patch-scope.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
           print(json.dumps(result, indent=2))
           PY
+          printf '%s\n' 'test_issue_1004_reproducer.py::test_issue_1004_krub_high_tone' 'test_issue_1004_reproducer.py::test_issue_1004_kha_falling_tone' > "$RUNNER_TEMP/pythainlp-independent-selectors.txt"
           printf '%s\n' \
             'from pythainlp.util import tone_detector' \
             '' \
@@ -272,7 +295,7 @@ jobs:
           PYTHAINLP_READ_MODE=1 PYTHONPATH="$GITHUB_WORKSPACE/upstream-pythainlp" \
             .venv-pythainlp/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
             --source-dir "$GITHUB_WORKSPACE/upstream-pythainlp" \
-            --selectors-file <(printf '%s\n' 'test_issue_1004_reproducer.py::test_issue_1004_krub_high_tone' 'test_issue_1004_reproducer.py::test_issue_1004_kha_falling_tone') \
+            --selectors-file "$RUNNER_TEMP/pythainlp-independent-selectors.txt" \
             --no-conftest --expect base-fail \
             --log-file "$RUNNER_TEMP/pythainlp-base-independent-tests.json" \
             > "$RUNNER_TEMP/pythainlp-base-independent-output.log" 2>&1
@@ -321,7 +344,7 @@ jobs:
           PYTHAINLP_READ_MODE=1 PYTHONPATH="$GITHUB_WORKSPACE/upstream-pythainlp" \
             .venv-pythainlp/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
             --source-dir "$GITHUB_WORKSPACE/upstream-pythainlp" \
-            --selectors-file <(printf '%s\n' 'test_issue_1004_reproducer.py::test_issue_1004_krub_high_tone' 'test_issue_1004_reproducer.py::test_issue_1004_kha_falling_tone') \
+            --selectors-file "$RUNNER_TEMP/pythainlp-independent-selectors.txt" \
             --no-conftest --expect fixed-pass \
             --log-file "$RUNNER_TEMP/pythainlp-fixed-independent-tests.json" \
             > "$RUNNER_TEMP/pythainlp-fixed-independent-output.log" 2>&1
