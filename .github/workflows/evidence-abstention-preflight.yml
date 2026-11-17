@@ -430,6 +430,9 @@ jobs:
         run: |
           set -euo pipefail
           git clone https://github.com/wntrblm/nox.git upstream-nox
+          git -C upstream-nox fetch --no-tags origin 97e0fad6a4036d610591a52e9ad0cfbe74a31af3 5c4000550325fd1ad036716d9e600ef7411bed3d
+          git -C upstream-nox cat-file -e '97e0fad6a4036d610591a52e9ad0cfbe74a31af3^{commit}'
+          git -C upstream-nox cat-file -e '5c4000550325fd1ad036716d9e600ef7411bed3d^{commit}'
           git -C upstream-nox diff 97e0fad6a4036d610591a52e9ad0cfbe74a31af3 5c4000550325fd1ad036716d9e600ef7411bed3d -- nox/virtualenv.py tests/test_virtualenv.py > reproduction-evidence/dataset-test.patch
           sha256sum research_candidates/evidence_abstention/reproduction/nox_issue_919/test_issue_919.py research_candidates/evidence_abstention/reproduction/nox_issue_919/dataset_test_requirements.lock > reproduction-evidence/reproducer-and-lock-sha256.txt
           sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
@@ -956,6 +959,9 @@ jobs:
         run: |
           set -euo pipefail
           git clone https://github.com/MarketSquare/robotframework-robocop.git upstream-robocop
+          git -C upstream-robocop fetch --no-tags origin 271e73253a70710cc80374128efa9eabb549b5f2 ceb6824fb4d80442937497a740edf60a5b6382e0
+          git -C upstream-robocop cat-file -e '271e73253a70710cc80374128efa9eabb549b5f2^{commit}'
+          git -C upstream-robocop cat-file -e 'ceb6824fb4d80442937497a740edf60a5b6382e0^{commit}'
           git -C upstream-robocop diff 271e73253a70710cc80374128efa9eabb549b5f2 ceb6824fb4d80442937497a740edf60a5b6382e0 -- src/robocop/formatter/runner.py tests/formatter/__init__.py tests/test_cli.py > reproduction-evidence/dataset-test.patch
           sha256sum research_candidates/evidence_abstention/reproduction/robocop_issue_1371/dataset_test_requirements.lock > reproduction-evidence/environment-lock-sha256.txt
           sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
@@ -1217,6 +1223,9 @@ jobs:
           set -euo pipefail
           mkdir -p reproduction-evidence
           git clone https://github.com/CS-SI/eodag.git upstream-eodag
+          git -C upstream-eodag fetch --no-tags origin b7cc06e19025e5bbf14e28a0975f1749e21e9be3 312966a46513a082333d46cd7212bdce36aaf769
+          git -C upstream-eodag cat-file -e 'b7cc06e19025e5bbf14e28a0975f1749e21e9be3^{commit}'
+          git -C upstream-eodag cat-file -e '312966a46513a082333d46cd7212bdce36aaf769^{commit}'
           git -C upstream-eodag checkout --detach b7cc06e19025e5bbf14e28a0975f1749e21e9be3
           test "$(git -C upstream-eodag rev-parse HEAD)" = "b7cc06e19025e5bbf14e28a0975f1749e21e9be3"
           test "$(git -C upstream-eodag rev-parse HEAD:LICENSE)" = "1a9893b43e8e6d46ff5cda60ab6562850b7f78ff"
@@ -1586,6 +1595,9 @@ jobs:
           set -euo pipefail
           mkdir -p reproduction-evidence
           git clone https://github.com/meltano/sdk.git upstream-meltano
+          git -C upstream-meltano fetch --no-tags origin ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2 9505ff1989b9be4d53b5bc9664b3fe3885879cb1
+          git -C upstream-meltano cat-file -e 'ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2^{commit}'
+          git -C upstream-meltano cat-file -e '9505ff1989b9be4d53b5bc9664b3fe3885879cb1^{commit}'
           git -C upstream-meltano checkout --detach ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2
           test "$(git -C upstream-meltano rev-parse HEAD)" = "ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2"
           test "$(git -C upstream-meltano rev-parse HEAD:LICENSE)" = "564273905d22b60a0deb1155ece4281c0b855cbc"
@@ -2178,6 +2190,9 @@ jobs:
           set -euo pipefail
           mkdir -p reproduction-evidence
           git clone https://github.com/amaranth-lang/amaranth.git upstream-amaranth
+          git -C upstream-amaranth fetch --no-tags origin 8c5ed4051dd74a6347af8d52f8e397eb53218ac4 6a10abe6c873e7fb51a34f70801d3dd37cda9061
+          git -C upstream-amaranth cat-file -e '8c5ed4051dd74a6347af8d52f8e397eb53218ac4^{commit}'
+          git -C upstream-amaranth cat-file -e '6a10abe6c873e7fb51a34f70801d3dd37cda9061^{commit}'
           git -C upstream-amaranth checkout --detach 8c5ed4051dd74a6347af8d52f8e397eb53218ac4
           test "$(git -C upstream-amaranth rev-parse HEAD)" = "8c5ed4051dd74a6347af8d52f8e397eb53218ac4"
           test "$(git -C upstream-amaranth rev-parse HEAD:LICENSE.txt)" = "cb522426f79b987ad57f265b639a3f6c28214e04"
