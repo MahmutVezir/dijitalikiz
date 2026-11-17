@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-17T15:25:00Z",
+  "generated_at_utc": "2026-11-17T15:31:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -14,7 +14,7 @@
     "one_accepted_case_per_upstream_project": true,
     "do_not_count_test_selectors_as_independent_cases": true,
     "inference_authorized": false,
-    "latest_stage2_disposition_note": "8 technical Stage 2 passes; Nox and Werkzeug blocked by exact dataset selector corruption; Moto blocked by mixed-scope row with unrelated IoT selectors; EODAG exact row/reproducer verified but selectors not yet run. Stage 3 not started for newly passed cases except existing Dishka technical adjudication. Final accepted cases remain zero."
+    "latest_stage2_disposition_note": "Stage 2 snapshot 2026-11-17: 9 technical passes (Dishka, NumPyro, Robocop, PyFar, Python-Control, Meltano, Amaranth, QuTiP and Dymos). EODAG issue reproducer and exact row authenticated but its two dataset selectors remain unexecuted. Nox and Werkzeug blocked by corrupted/truncated immutable dataset selector metadata. Moto has issue-specific ECR base-fail/fixed-pass evidence but its exact dataset row mixes unrelated IoT selectors and contains invalid entries. Stage 3 technical adjudication still only Dishka; Dymos and the other new technical passes remain to be adjudicated. Final accepted cases remain 0. No model loading, inference or training authorized."
   },
   "global_execution_blocker": {
     "status": "previously_observed_runner_allocation_failure_not_reproduced_in_latest_batch",
@@ -50,7 +50,7 @@
     "strong": 6,
     "post_second_pass_excluded": 2,
     "remaining_broad_shortlist": 65,
-    "stage2_passed": 8,
+    "stage2_passed": 9,
     "stage3_technical_passed": 1,
     "final_accepted_cases": 0,
     "runner_blocked_candidates": 0,
@@ -309,12 +309,18 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": null,
-      "stage2_status": "not_started",
-      "stage2_workflow_job_id": null,
-      "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage2_status": "passed_issue_specific_selector_base_fail_fixed_pass",
+      "stage2_workflow_job_id": 134149456631,
+      "stage2_evidence_note": "Exact SWE-rebench row openmdao__dymos-1165 (created_at 2025-04-04 20:23:44; one issue-specific selector) authenticated. Buggy base after test-only PR patch: exact test_default_vals_stick executed and failed, observed actual control defaults [[1],[1]] vs expected [[0],[10]]. Exact fixed revision: same selector passed. Test-only diff limited to two test files; full PR diff retained separately. OpenMDAO 3.38.0 / NumPy 1.26.4 / SciPy 1.13.1 pinned. Artifact SHA256SUMS verified 18/18.",
+      "stage3_status": "not_started_stage2_passed_license_scope_signoff_and_human_adjudication_pending",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44114656908,
+      "stage2_artifact_id": 14341424466,
+      "stage2_artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
+      "stage2_dataset_row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
+      "stage2_review_document": "research_candidates/evidence_abstention/OPENMDAO_DYMOS_1166_CANDIDATE_REVIEW_2026-11-17.md",
+      "stage2_license_note": "Dependency license metadata captured, including bundled NumPy/SciPy binary library notices; project-lead scope signoff remains pending."
     },
     {
       "cohort_rank": 16,
