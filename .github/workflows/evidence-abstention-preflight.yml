@@ -1410,7 +1410,7 @@ jobs:
           .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/moto_issue_8269/requirements.lock
           .venv-tests/bin/python - <<'PY'
           import importlib.metadata as md
-          names = ["boto3", "botocore", "s3transfer", "jmespath", "urllib3", "requests", "certifi", "charset-normalizer", "idna", "python-dateutil", "six", "cryptography", "cffi", "pycparser", "xmltodict", "Werkzeug", "responses", "Jinja2", "MarkupSafe", "typing-extensions", "pytest", "iniconfig", "packaging", "pluggy", "Pygments", "PyYAML"]
+          names = ["boto3", "botocore", "s3transfer", "jmespath", "urllib3", "requests", "certifi", "charset-normalizer", "idna", "python-dateutil", "six", "cryptography", "cffi", "pycparser", "xmltodict", "Werkzeug", "responses", "Jinja2", "MarkupSafe", "typing-extensions", "pytest", "iniconfig", "packaging", "pluggy", "Pygments", "PyYAML", "freezegun"]
           inventory = {}
           for name in names:
               dist = md.metadata(name)
