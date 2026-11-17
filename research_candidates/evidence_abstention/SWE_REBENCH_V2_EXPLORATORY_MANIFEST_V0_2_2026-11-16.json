@@ -259,7 +259,7 @@
     {
       "instance_id": "reagento__dishka-436",
       "cohort_rank": 2,
-      "status": "reproduced_base_fail_fixed_pass_pending_student_gold_evidence_and_license_signoff",
+      "status": "stage2_stage3_pass_human_gold_and_tier_decisions_approved_final_case_acceptance_pending",
       "issue_url": "https://github.com/reagento/dishka/issues/435",
       "pull_request_url": "https://github.com/reagento/dishka/pull/436",
       "dataset_created_at": "2025-04-15T22:52:26Z",
@@ -277,7 +277,7 @@
       "review_note_path": "research_candidates/evidence_abstention/REAGENTO_DISHKA_435_PRE_REPRODUCTION_REVIEW_2026-11-16.md",
       "reproducer_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/test_issue_435.py",
       "reproduction_workflow_path": ".github/workflows/evidence-abstention-preflight.yml#dishka-issue-435-reproduction",
-      "reproduction_status": "passed",
+      "reproduction_status": "passed_same_issue_reproducer_and_all_8_dataset_selectors_base_fail_fixed_pass",
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "reproduction_run_id": 43878434875,
@@ -306,9 +306,9 @@
         466
       ],
       "independence_review": "canonical_repository_fork_false; one primary cohort row; related issues are not duplicate reports of this defect; no second Dishka case may count as independent",
-      "researcher_source_exposure": "partial",
-      "gold_status": "proposed_pending_student_project_lead_human_decision",
-      "evidence_tier_status": "E3_E2_E1_draft_packets_created_pending_student_project_lead_human_decision",
+      "researcher_source_exposure": "full",
+      "gold_status": "human_recorded_approved_by_student_project_lead_2026-11-16",
+      "evidence_tier_status": "E3_E2_E1_membership_and_rationale_human_approved_2026-11-16",
       "source_resource_type": "pull_request",
       "source_resource_url": "https://github.com/reagento/dishka/pull/436",
       "linked_bug_issue_url": "https://github.com/reagento/dishka/issues/435",
@@ -338,11 +338,16 @@
       "dataset_fail_to_pass_reproduction_run_id": 43878434875,
       "dataset_fail_to_pass_reproduction_log_evidence": "workflow job 133337548925; base log reports 8 failed with defect-specific assertions; fixed log reports 8 passed",
       "remaining_gates": [
-        "student_project_lead_gold_mechanism_and_alternative_adjudication",
-        "student_project_lead_E1_E2_E3_evidence_tier_adjudication",
-        "independence_and_exposure_final_human_review",
-        "full_scope_license_screen_human_signoff"
-      ]
+        "student_project_lead_full_scope_documentary_license_review_signoff_or_recorded_scope_limitation",
+        "prepare_complete_schema_conformant_case_record_with_verified_artifacts_and_nested_E1_E2_E3_items",
+        "run_draft_2020_12_acceptance_schema_and_fail_closed_registry_validation",
+        "student_project_lead_separate_final_case_acceptance_decision"
+      ],
+      "human_limitation_acknowledgement": "approved_2026-11-17_single_human_adjudicator_full_researcher_source_exposure_no_inter_rater_or_cohens_kappa_claims_exploratory_only",
+      "ai_critique_record_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/CHATGPT_ADVISORY_CRITIQUE_DISHKA_435_2026-11-17.md",
+      "ai_critique_record_sha256": "ea0215e41382409e109d0b3587bd95df400e94887d2f9c137a64fd90173c45ca",
+      "license_review_status": "documentary_minimal_environment_screen_passed_full_scope_human_signoff_pending",
+      "final_case_record_status": "not_yet_constructed_schema_conformant_record"
     },
     {
       "instance_id": "ecmwf__earthkit-data-592",
@@ -366,13 +371,25 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "full_direct_and_transitive_dependency_license_inventory",
-        "CF_conventions_attribute_table_source_and_license_provenance",
-        "remote_test_fixture_source_and_license_provenance",
-        "same_test_base_fail_fixed_pass_reproduction",
+        "pin_exact_remote_GRIB_fixture_bytes_sha256_and_source",
+        "document_fixture_research_use_and_redistribution_terms",
+        "document_CF_Conventions_Appendix_A_source_revision_and_license",
+        "document_changed_cf_attrs_yaml_provenance",
+        "complete_direct_and_transitive_dependency_license_inventory",
+        "same_defect_specific_test_base_fail_fixed_pass_reproduction",
         "independence_and_exposure_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
-      ]
+      ],
+      "static_screen_status": "issue_patch_and_exact_base_root_license_passed",
+      "reproduction_status": "not_run_blocked_by_external_fixture_and_CF_source_provenance",
+      "current_execution_status": "intentionally_not_scheduled",
+      "fixture_gate": {
+        "external_GRIB_fixture": "exact_bytes_and_sha256_not_yet_pinned",
+        "fixture_origin_and_research_use_terms": "not_yet_documented",
+        "CF_Conventions_Appendix_A_source_revision_and_license": "not_yet_documented",
+        "changed_cf_attrs_yaml_provenance": "not_yet_documented",
+        "decision": "do_not_download_or_execute_fixture_until_provenance_gate_closes"
+      }
     },
     {
       "instance_id": "wntrblm__nox-922",
@@ -399,13 +416,27 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "dependency_license_metadata_workflow_and_human_review",
-        "dataset_fail_to_pass_base_fail_fixed_pass_reproduction",
+        "resolve_and_document_nonexistent_test_validation_options_dataset_oracle_mismatch",
+        "run_all_retained_valid_selectors_as_single_argv_items_on_pinned_buggy_base_and_fixed_revision",
+        "record_exact_base_fail_fixed_pass_for_same_defect_specific_test",
+        "complete_dependency_license_and_source_provenance_review",
         "independence_and_related_issue_family_review",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ],
       "license_manifest_path": "research_candidates/evidence_abstention/WNTRBLM_NOX_919_MINIMAL_ENVIRONMENT_LICENSE_MANIFEST_V0_1.json",
-      "dependency_license_inventory_status": "pending_workflow"
+      "dependency_license_inventory_status": "pending_workflow",
+      "independent_reproducer_status": "pinned_buggy_base_failure_observed_assertion_true_is_not_false",
+      "dataset_selector_status": "unresolved_selector_to_source_mismatch_and_prior_shell_word_splitting_method_invalid",
+      "invalid_selector_finding": {
+        "selector": "tests/test__option_set.py::TestOptionSet::test_validation_options",
+        "pinned_base_commit": "97e0fad6a4036d610591a52e9ad0cfbe74a31af3",
+        "pinned_fixed_commit": "5c4000550325fd1ad036716d9e600ef7411bed3d",
+        "finding": "TestOptionSet exists but test_validation_options method exists in neither pinned source revision; do not silently remove selector.",
+        "other_potentially_affected_selectors": "Parameterized test_uv_version node IDs include spaces/brackets and must be passed as a single argv item."
+      },
+      "shared_selector_runner_status": "implemented_and_4_contract_unit_tests_passed_in_no_inference_preflight",
+      "latest_candidate_workflow_run_id": 44103128787,
+      "latest_candidate_workflow_status": "queued_no_candidate_result_yet"
     },
     {
       "instance_id": "pyro-ppl__numpyro-1918",
