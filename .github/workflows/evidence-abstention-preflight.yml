@@ -1525,7 +1525,7 @@ jobs:
           env = dict(os.environ)
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-moto")
           records = []
-          collection_markers = ("ERROR: not found:", "no tests ran", "ERROR collecting", "ModuleNotFoundError:", "ImportError while importing test module")
+          collection_markers = ("ERROR: not found:", "file or directory not found:", "no tests ran", "ERROR collecting", "ModuleNotFoundError:", "ImportError while importing test module")
           for selector in selectors:
               command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
               result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -1598,7 +1598,7 @@ jobs:
           env = dict(os.environ)
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-moto")
           records = []
-          collection_markers = ("ERROR: not found:", "no tests ran", "ERROR collecting", "ModuleNotFoundError:", "ImportError while importing test module")
+          collection_markers = ("ERROR: not found:", "file or directory not found:", "no tests ran", "ERROR collecting", "ModuleNotFoundError:", "ImportError while importing test module")
           for selector in selectors:
               command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
               result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
