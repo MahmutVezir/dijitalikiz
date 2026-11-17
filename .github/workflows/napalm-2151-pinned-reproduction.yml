@@ -1,4 +1,4 @@
-name: NAPALM #2151 Pinned Synthetic Reproduction (No Inference)
+name: "NAPALM #2151 Pinned Synthetic Reproduction (No Inference)"
 
 on:
   pull_request:
@@ -18,7 +18,7 @@ jobs:
       PYTHONUNBUFFERED: "1"
       NAPALM_TEST_MOCK: "1"
       BASE_SHA: "d0d2a3e70d21d0556de71ab0462bd71a1450f820"
-      FIX_SHA: "a3781b83e02cb7ea87da948d82e0c9ee4d91a39a
+      FIX_SHA: "a3781b83e02cb7ea87da948d82e0c9ee4d91a39a"
       EXPECTED_PARQUET_SHA256: "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
       EXPECTED_ROW_SHA256: "badc723c07fe415e42d9e329529f9669932f43f18d2d0a61907f17d983c3f555"
 
@@ -68,6 +68,7 @@ jobs:
           BASE_NOTICE_BLOB="$(git -C upstream-napalm rev-parse "${BASE_SHA}:NOTICE")"
           BASE_SOURCE_BLOB="$(git -C upstream-napalm rev-parse "${BASE_SHA}:napalm/nxos_ssh/nxos_ssh.py")"
           FIX_SOURCE_BLOB="$(git -C upstream-napalm rev-parse "${FIX_SHA}:napalm/nxos_ssh/nxos_ssh.py")"
+          export BASE_LICENSE_BLOB BASE_NOTICE_BLOB BASE_SOURCE_BLOB FIX_SOURCE_BLOB
           python - <<'PY'
           import json
           import os
@@ -89,11 +90,6 @@ jobs:
           )
           print(json.dumps(data, indent=2))
           PY
-        env:
-          BASE_LICENSE_BLOB: ""
-          BASE_NOTICE_BLOB: ""
-          BASE_SOURCE_BLOB: ""
-          FIX_SOURCE_BLOB: ""
 
       - name: Download frozen Parquet temporarily and authenticate only the exact row
         shell: bash
