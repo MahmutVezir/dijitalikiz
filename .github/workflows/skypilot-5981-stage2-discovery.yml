@@ -1,9 +1,10 @@
-name: SkyPilot 5981 Stage 2 Environment Discovery (No Inference)
+name: SkyPilot 5981 Stage 2 Pinned Reproduction (No Inference)
 
 on:
   pull_request:
     paths:
       - ".github/workflows/skypilot-5981-stage2-discovery.yml"
+      - "research_candidates/evidence_abstention/reproduction/skypilot_issue_5981/requirements.lock"
       - "research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py"
       - "research_candidates/evidence_abstention/SKYPILOT_5981_CANDIDATE_REVIEW_2026-11-16.md"
   workflow_dispatch:
@@ -12,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  skypilot-5981-environment-discovery:
+  skypilot-5981-pinned-reproduction:
     runs-on: ubuntu-22.04
     timeout-minutes: 35
     env:
@@ -82,18 +83,32 @@ jobs:
           PY
           rm reproduction-evidence/train-00000-of-00001.parquet
 
-      - name: Install exploratory upstream SSH test environment
+      - name: Install exact pinned upstream SSH test environment
         shell: bash
         run: |
           set -euo pipefail
           python -m venv .venv-skypilot
-          .venv-skypilot/bin/python -m pip install --disable-pip-version-check --upgrade pip
-          .venv-skypilot/bin/python -m pip install --disable-pip-version-check -e "./upstream-skypilot[ssh]" pytest
+          .venv-skypilot/bin/python -m pip install --disable-pip-version-check -r research_candidates/evidence_abstention/reproduction/skypilot_issue_5981/requirements.lock
+          .venv-skypilot/bin/python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e ./upstream-skypilot
           .venv-skypilot/bin/python -m pip check
-          .venv-skypilot/bin/python -m pip freeze --all | sort > reproduction-evidence/discovery-environment-freeze.txt
+          .venv-skypilot/bin/python -m pip freeze --all | sort > reproduction-evidence/locked-environment-resolved.txt
           .venv-skypilot/bin/python - <<'PY'
+          import hashlib
           import importlib.metadata as md
-          import json, re
+          import json
+          import re
+          from pathlib import Path
+          lock_path = Path("research_candidates/evidence_abstention/reproduction/skypilot_issue_5981/requirements.lock")
+          expected = {}
+          for line in lock_path.read_text(encoding="utf-8").splitlines():
+              line = line.strip()
+              if not line or line.startswith("#"):
+                  continue
+              name, version = line.split("==", 1)
+              key = re.sub(r"[-_.]+", "-", name).lower()
+              if key in expected:
+                  raise SystemExit(f"Duplicate normalized package in lock: {name}")
+              expected[key] = version
           inventory = {}
           missing = []
           for dist in md.distributions():
@@ -113,13 +128,25 @@ jobs:
                   "license_classifiers": classifiers,
               }
           if missing:
-              raise SystemExit("Missing license metadata; stop before running selectors: " + ", ".join(sorted(missing)))
-          with open("reproduction-evidence/discovery-dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              raise SystemExit("Missing license metadata: " + ", ".join(sorted(missing)))
+          installed = {k: v["version"] for k, v in inventory.items() if k != "skypilot"}
+          if installed != expected:
+              absent = sorted(set(expected) - set(installed))
+              unexpected = sorted(set(installed) - set(expected))
+              mismatched = {k: (expected[k], installed[k]) for k in set(expected) & set(installed) if expected[k] != installed[k]}
+              raise SystemExit(json.dumps({"absent": absent, "unexpected": unexpected, "version_mismatch": mismatched}, indent=2))
+          with open("reproduction-evidence/dependency-license-inventory.json", "w", encoding="utf-8") as f:
               json.dump(inventory, f, indent=2, sort_keys=True)
               f.write("\n")
-          print(json.dumps({"distribution_count": len(inventory), "license_metadata_complete": True}, indent=2))
+          with open("reproduction-evidence/requirements-lock-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(hashlib.sha256(lock_path.read_bytes()).hexdigest() + "  requirements.lock\n")
+          with open("reproduction-evidence/dependency-license-inventory.json", encoding="utf-8") as f:
+              json.load(f)
+          lock_hash_text = Path("reproduction-evidence/requirements-lock-sha256.txt").read_text(encoding="utf-8")
+          if not lock_hash_text.endswith("\n") or len(lock_hash_text.splitlines()) != 1:
+              raise SystemExit("requirements-lock-sha256.txt must contain exactly one newline-terminated record")
+          print(json.dumps({"locked_distribution_count": len(expected), "all_versions_match": True, "license_metadata_complete": True, "license_inventory_json_valid": True, "lock_hash_record_valid": True}, indent=2))
           PY
-
       - name: Prepare test-only patch and verify its scope
         shell: bash
         run: |
@@ -188,7 +215,7 @@ jobs:
             echo "- Fixed revision: c8154ff3a4875cbb1bac8f29bb45254f264d72ba"
             echo "- External SSH/Kubernetes/cloud services: not used"
             echo "- Model loading, inference, training: not performed"
-            echo "- This first resolved environment is exploratory; its freeze must be converted to a reviewed pinned lock before a Stage 2 disposition."
+            echo "- This run installs the exact 85-distribution lock captured and audited in the prior environment-discovery run; Stage 2 is reported only if the locked base-fail/fixed-pass contract and artifact validation succeed."
           } >> "$GITHUB_STEP_SUMMARY"
           (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
 
@@ -196,7 +223,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: skypilot-issue-5981-environment-discovery
+          name: skypilot-issue-5981-pinned-reproduction
           path: reproduction-evidence/
           if-no-files-found: warn
           retention-days: 90
