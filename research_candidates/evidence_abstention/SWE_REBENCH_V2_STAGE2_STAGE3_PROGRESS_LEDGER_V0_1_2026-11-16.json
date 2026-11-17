@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-17T16:39:45.442Z",
+  "generated_at_utc": "2026-11-17T17:13:11.474Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -14,7 +14,7 @@
     "one_accepted_case_per_upstream_project": true,
     "do_not_count_test_selectors_as_independent_cases": true,
     "inference_authorized": false,
-    "latest_stage2_disposition_note": "12 technical Stage 2 passes: Dishka, NumPyro, Robocop, PyFar, Python-Control, Meltano, Amaranth, QuTiP, Dymos, EODAG, SkyPilot and Napalm. Napalm's exact dataset selector has a pinned base-fail/fixed-pass result, but its Cisco PR fixture provenance/legal scope remains a Stage 3 hold. Nox and Werkzeug remain blocked by malformed selectors in immutable dataset rows. Moto has a valid ECR-specific fail/pass but its full row is mixed-scope and includes invalid unrelated IoT selectors. Earthkit-data remains blocked by external fixture/provenance. Stage 3 technical adjudication pass remains Dishka only. Final accepted cases remain 0; no model load/inference/training."
+    "latest_stage2_disposition_note": "13 technical Stage 2 passes: Dishka, NumPyro, Robocop, PyFar, Python-Control, Meltano, Amaranth, QuTiP, Dymos, EODAG, SkyPilot, Napalm and PyThaiNLP. PyThaiNLP #1046 now has a pinned exact dataset-selector base-fail/fixed-pass plus two supplemental single-word issue reproducers; dependency license scope and Stage 3 human adjudication remain pending. Napalm's exact selector passes technically but its Cisco PR fixture provenance/legal scope remains a Stage 3 hold. Nox and Werkzeug remain blocked by malformed selectors in immutable dataset rows. Moto has a valid ECR-specific fail/pass but its full row is mixed-scope and includes invalid unrelated IoT selectors. Earthkit-data remains blocked by external fixture/provenance. Stage 3 technical adjudication pass remains Dishka only. Final accepted cases remain 0; no model load/inference/training."
   },
   "global_execution_blocker": {
     "status": "historical_zero_step_runner_allocation_failures_not_reproduced_in_current_SkyPilot_runs",
@@ -35,7 +35,7 @@
     "strong": 6,
     "post_second_pass_excluded": 2,
     "remaining_broad_shortlist": 65,
-    "stage2_passed": 12,
+    "stage2_passed": 13,
     "stage3_technical_passed": 1,
     "final_accepted_cases": 0,
     "runner_blocked_candidates": 0,
@@ -407,11 +407,11 @@
       "static_scope_decision": "Geçici bug adayı",
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
-      "candidate_review_document": null,
-      "stage2_status": "not_started",
-      "stage2_workflow_job_id": null,
-      "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "candidate_review_document": "research_candidates/evidence_abstention/PYTHAINLP_1046_CANDIDATE_REVIEW_2026-11-17.md",
+      "stage2_status": "passed_exact_dataset_selector_buggy_base_fail_fixed_revision_pass_pinned_environment",
+      "stage2_workflow_job_id": 134216923258,
+      "stage2_evidence_note": "Canonical pinned exact-selector run 44133576730 (job 134216923258) authenticated frozen row pythainlp__pythainlp-1046 (row SHA-256 80b244dd8b406d095f7ec727f968dacbb6b2f620dc8b10c21d44e726ba3e5803), exact base/fix commits and exact FAIL_TO_PASS selector tests/core/test_util.py::UtilTestCase::test_tone_detector. Exact selector: real pytest assertion failure on buggy base ('f' vs expected 'h' for ครับ), same selector passed on fixed commit. Two independent one-word reproducers also separately failed on base and passed on fixed for ครับ and ค่ะ; these are support tests, not additional cases. Test-only patch altered only tests/core/test_util.py (2 insertions, 0 deletions); base production syllable.py blob unchanged. Pinned CPython 3.10.15 / pip 24.3.1 / pytest 8.3.5 / PyThaiNLP 5.0.6.dev0 / PyICU 2.17 / ICU 70.1 toolchain; Ubuntu 22.04.5, libicu-dev/libicu70 70.1-2, compiler 11.4.0. 19 runtime pins matched pip freeze exactly; pip check passed; all 20 installed distribution metadata records had license metadata. Artifact 14351751109 SHA-256 ce2ab3bbefd3148510992a7503d8c07b17fb87fe2c2a76173c1971d21e12dcb8; 17/17 internal hashes independently verified; no Parquet, raw outputs, issue test fixture, patch contents or temporary reproducers. Stage 3 remains pending full dependency/license scope, project independence/related-defect, exposure assessment and human adjudication; final acceptance not granted.",
+      "stage3_status": "not_started_stage2_passed_license_scope_and_human_adjudication_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false
     },
