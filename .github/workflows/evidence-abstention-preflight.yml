@@ -468,28 +468,27 @@ jobs:
           fi
           grep -F "AssertionError: True is not false" reproduction-evidence/base-issue-test.log
 
-      - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
+      - name: Run dataset selectors on buggy base with test-only diff
         shell: bash
         run: |
           set -euo pipefail
+          git -C upstream-nox checkout --detach 97e0fad6a4036d610591a52e9ad0cfbe74a31af3
           git -C upstream-nox apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
-          (cd upstream-nox && PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/base-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-nox" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
-          if [ "$status" -eq 0 ]; then
-            echo "Expected all dataset FAIL_TO_PASS selectors to fail on the buggy base." >&2
-            exit 1
+          if [ "$status" -ne 0 ]; then
+            echo "Dataset selectors did not all execute and fail on the pinned buggy source." >&2
+            exit "$status"
           fi
-          if grep -q "ERROR collecting" reproduction-evidence/base-dataset-test.log; then
-            echo "Dataset selectors had collection errors, not defect-specific failures." >&2
-            exit 1
-          fi
-          grep -E "[0-9]+ failed in" reproduction-evidence/base-dataset-test.log
-
-      - name: Run independent issue reproducer and dataset selectors on fixed revision (pass required)
+      - name: Run the same dataset selectors on the exact fixed revision
         shell: bash
         run: |
           set -euo pipefail
@@ -497,12 +496,14 @@ jobs:
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/nox_issue_919" -p "test_issue_919.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
           grep -F "Ran 1 test" reproduction-evidence/fixed-issue-test.log
-          grep -F "OK" reproduction-evidence/fixed-issue-test.log
-          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
-          (cd upstream-nox && PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          grep -E "^OK$" reproduction-evidence/fixed-issue-test.log
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-nox" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
-          grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
-
       - name: Prepare raw reproduction artifact
         if: always()
         shell: bash
@@ -649,39 +650,38 @@ jobs:
           sha256sum reproduction-evidence/pr-1918-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
           cp test-environment-freeze.txt reproduction-evidence/
 
-      - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
+      - name: Run dataset selectors on buggy base with test-only diff
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-numpyro checkout --detach 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d
           git -C upstream-numpyro apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
-          (cd upstream-numpyro && PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/base-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-numpyro" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
-          if [ "$status" -eq 0 ]; then
-            echo "Expected dataset FAIL_TO_PASS selectors to fail on the buggy base." >&2
-            exit 1
+          if [ "$status" -ne 0 ]; then
+            echo "Dataset selectors did not all execute and fail on the pinned buggy source." >&2
+            exit "$status"
           fi
-          if grep -q "ERROR collecting" reproduction-evidence/base-dataset-test.log; then
-            echo "Dataset selectors had collection errors, not defect-specific failures." >&2
-            exit 1
-          fi
-          grep -F "split accepts a single key" reproduction-evidence/base-dataset-test.log
-          grep -E "[0-9]+ failed in" reproduction-evidence/base-dataset-test.log
-
-      - name: Run identical dataset selectors on fixed revision (pass required)
+      - name: Run the same dataset selectors on the exact fixed revision
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-numpyro checkout --detach --force 5692d2da335945b756aeae02e3720b9b7f3efef2
-          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
-          (cd upstream-numpyro && PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-numpyro" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
-          grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
-
       - name: Prepare and upload raw reproduction evidence
         if: always()
         shell: bash
@@ -812,39 +812,38 @@ jobs:
           sha256sum reproduction-evidence/pr-2956-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
           cp test-environment-freeze.txt reproduction-evidence/
 
-      - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
+      - name: Run dataset selectors on buggy base with test-only diff
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-werkzeug checkout --detach 40319f91dbbae0a780526eab037a009b1a7e4d36
           git -C upstream-werkzeug apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
-          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null --noconftest -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/base-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-werkzeug" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
-          if [ "$status" -eq 0 ]; then
-            echo "Expected dataset FAIL_TO_PASS selectors to fail on the buggy base." >&2
-            exit 1
+          if [ "$status" -ne 0 ]; then
+            echo "Dataset selectors did not all execute and fail on the pinned buggy source." >&2
+            exit "$status"
           fi
-          if grep -q "ERROR collecting" reproduction-evidence/base-dataset-test.log; then
-            echo "Dataset selectors had collection errors, not defect-specific failures." >&2
-            exit 1
-          fi
-          grep -F "IndexError" reproduction-evidence/base-dataset-test.log
-          grep -E "[0-9]+ failed in" reproduction-evidence/base-dataset-test.log
-
-      - name: Run identical dataset selectors on fixed revision (pass required)
+      - name: Run the same dataset selectors on the exact fixed revision
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-werkzeug checkout --detach --force 1688968101c3341136bd8420ac7b77b6286c7409
-          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
-          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null --noconftest -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-werkzeug" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
-          grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
-
       - name: Prepare and upload raw reproduction evidence
         if: always()
         shell: bash
@@ -988,39 +987,38 @@ jobs:
           sha256sum reproduction-evidence/pr-1374-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
           cp test-environment-freeze.txt reproduction-evidence/
 
-      - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
+      - name: Run dataset selectors on buggy base with test-only diff
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-robocop checkout --detach 271e73253a70710cc80374128efa9eabb549b5f2
           git -C upstream-robocop apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
-          (cd upstream-robocop && PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/base-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-robocop" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
-          if [ "$status" -eq 0 ]; then
-            echo "Expected dataset FAIL_TO_PASS selectors to fail on the buggy base." >&2
-            exit 1
+          if [ "$status" -ne 0 ]; then
+            echo "Dataset selectors did not all execute and fail on the pinned buggy source." >&2
+            exit "$status"
           fi
-          if grep -q "ERROR collecting" reproduction-evidence/base-dataset-test.log; then
-            echo "Dataset selectors had collection errors, not defect-specific failures." >&2
-            exit 1
-          fi
-          grep -F "test_exit_code" reproduction-evidence/base-dataset-test.log
-          grep -E "[0-9]+ failed in" reproduction-evidence/base-dataset-test.log
-
-      - name: Run identical dataset selectors on fixed revision (pass required)
+      - name: Run the same dataset selectors on the exact fixed revision
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-robocop checkout --detach --force ceb6824fb4d80442937497a740edf60a5b6382e0
-          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
-          (cd upstream-robocop && PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-robocop" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
-          grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
-
       - name: Prepare and upload raw reproduction evidence
         if: always()
         shell: bash
@@ -1150,38 +1148,38 @@ jobs:
           sha256sum reproduction-evidence/pr-722-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
           cp test-environment-freeze.txt reproduction-evidence/
 
-      - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
+      - name: Run dataset selectors on buggy base with test-only diff
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-pyfar checkout --detach 648dda4c60c5a6f74acf335f7808c590c9d23929
           git -C upstream-pyfar apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
-          (cd upstream-pyfar && PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/base-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-pyfar" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
-          if [ "$status" -eq 0 ]; then
-            echo "Expected dataset FAIL_TO_PASS selectors to fail on the buggy base." >&2
-            exit 1
+          if [ "$status" -ne 0 ]; then
+            echo "Dataset selectors did not all execute and fail on the pinned buggy source." >&2
+            exit "$status"
           fi
-          if grep -q "ERROR collecting" reproduction-evidence/base-dataset-test.log; then
-            echo "Dataset selectors had collection errors, not defect-specific failures." >&2
-            exit 1
-          fi
-          grep -E "[0-9]+ failed in" reproduction-evidence/base-dataset-test.log
-
-      - name: Run identical dataset selectors on fixed revision (pass required)
+      - name: Run the same dataset selectors on the exact fixed revision
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-pyfar checkout --detach --force a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e
-          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
-          (cd upstream-pyfar && PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-pyfar" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
-          grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
-
       - name: Prepare and upload raw reproduction evidence
         if: always()
         shell: bash
