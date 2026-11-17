@@ -79,6 +79,9 @@ jobs:
           open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8").write("\n".join(selectors) + "\n")
           digest = hashlib.sha256(canonical).hexdigest()
           open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8").write(digest + "  dataset-row-canonical.json\n")
+          with open("reproduction-evidence/dataset-row-summary.json", "w", encoding="utf-8") as f:
+              json.dump({"instance_id": row["instance_id"], "row_sha256": digest, "created_at": str(row["created_at"]), "repo": row["repo"], "base_commit": row["base_commit"], "license": row["license"], "selector_count": len(selectors), "selectors": selectors}, f, indent=2, ensure_ascii=False)
+              f.write("\n")
           observed_selectors = open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", encoding="utf-8").read().splitlines()
           if observed_selectors != selectors:
               raise SystemExit(f"Selector file serialization mismatch: expected {selectors!r}, got {observed_selectors!r}")
@@ -200,6 +203,10 @@ jobs:
             echo "Selectors or test environment unavailable; no fixed-side tests run." >&2
             exit 0
           fi
+          if [ ! -f reproduction-evidence/base-dataset-tests.json ] || [ ! -f reproduction-evidence/dataset-fail-to-pass-selectors.txt ] || [ ! -d .venv-skypilot ]; then
+            echo "Base-side evidence or pinned environment missing; fixed-side tests are not valid and will not run." >&2
+            exit 0
+          fi
           git -C upstream-skypilot checkout --detach --force c8154ff3a4875cbb1bac8f29bb45254f264d72ba
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-skypilot" .venv-skypilot/bin/python research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py \
             --source-dir "$GITHUB_WORKSPACE/upstream-skypilot" \
@@ -222,6 +229,28 @@ jobs:
             echo "- Model loading, inference, training: not performed"
             echo "- This run installs the exact 85-distribution lock captured and audited in the environment-discovery run. Stage 2 passes only if lock, license metadata, JSON serialization, test-only patch scope, and exact base-fail/fixed-pass contracts all validate."
           } >> "$GITHUB_STEP_SUMMARY"
+          .venv-skypilot/bin/python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("reproduction-evidence")
+          required = ["dataset-row-canonical.json", "dataset-row-summary.json", "dataset-row-sha256.txt", "dataset-fail-to-pass-selectors.txt", "test-only-patch-scope.json", "dependency-license-inventory.json", "requirements-lock-sha256.txt", "base-dataset-tests.json", "fixed-dataset-tests.json", "locked-environment-resolved.txt"]
+          missing = [name for name in required if not (root / name).is_file()]
+          if missing:
+              raise SystemExit("Missing required evidence files: " + ", ".join(missing))
+          for name in ["dataset-row-summary.json", "dependency-license-inventory.json", "base-dataset-tests.json", "fixed-dataset-tests.json", "test-only-patch-scope.json"]:
+              with open(root / name, encoding="utf-8") as f:
+                  json.load(f)
+          base = json.loads((root / "base-dataset-tests.json").read_text(encoding="utf-8"))
+          fixed = json.loads((root / "fixed-dataset-tests.json").read_text(encoding="utf-8"))
+          if not base.get("success") or base.get("expectation") != "base-fail":
+              raise SystemExit("Buggy-base selector contract did not pass")
+          if not fixed.get("success") or fixed.get("expectation") != "fixed-pass":
+              raise SystemExit("Fixed-revision selector contract did not pass")
+          scope = json.loads((root / "test-only-patch-scope.json").read_text(encoding="utf-8"))
+          if scope.get("production_code_changed") is not False:
+              raise SystemExit("Test-only patch scope is not clean")
+          print("Evidence JSON, required files, and base-fail/fixed-pass contracts validated.")
+          PY
           (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
 
       - name: Upload raw SkyPilot evidence
