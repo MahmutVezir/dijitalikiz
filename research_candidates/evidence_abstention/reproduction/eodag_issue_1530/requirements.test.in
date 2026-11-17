@@ -1,0 +1,39 @@
+# Focused EODAG #1530 test environment, aligned to the source/issue period.
+# Python: 3.11.9. These pin direct runtime and test-import dependencies.
+# Exact resolved transitive versions are captured as dependency-lock-resolved.txt
+# in the workflow artifact, with a complete license metadata inventory.
+annotated-types==0.7.0
+boto3==1.36.14
+botocore==1.36.14
+click==8.1.8
+geojson==3.2.0
+jsonpath-ng==1.7.0
+lxml==5.3.1
+orjson==3.10.15
+pydantic==2.10.6
+pydantic-core==2.27.2
+PyJWT[crypto]==2.10.1
+pyproj==3.7.0
+pyshp==2.3.1
+pystac==1.11.0
+python-dateutil==2.9.0.post0
+PyYAML==6.0.2
+requests==2.32.3
+setuptools==75.8.0
+setuptools-scm==8.1.0
+Shapely==2.0.7
+stream-zip==0.0.83
+tqdm==4.67.1
+typing_extensions==4.12.2
+urllib3==2.3.0
+Whoosh==2.7.4
+
+# Import-time plugins referenced by tests/context.py and tests/__init__.py.
+ecmwf-api-client==1.6.3
+usgs==0.3.5
+OWSLib==0.31.0
+fastapi==0.115.8
+
+# Focused test runner; upstream pytest.ini enforces --disable-socket.
+pytest==8.3.4
+pytest-socket==0.7.0
