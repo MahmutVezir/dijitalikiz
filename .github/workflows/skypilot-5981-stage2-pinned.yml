@@ -1,0 +1,224 @@
+name: SkyPilot 5981 Stage 2 Pinned Reproduction (No Inference)
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/skypilot-5981-stage2-pinned.yml"
+      - "research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py"
+      - "research_candidates/evidence_abstention/reproduction/skypilot_issue_5981/requirements.lock"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  skypilot-5981-environment-discovery:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    env:
+      SKYPILOT_DISABLE_USAGE_COLLECTION: "1"
+      SKYPILOT_DEBUG: "1"
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Clone and authenticate exact upstream revisions
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          git clone https://github.com/skypilot-org/skypilot.git upstream-skypilot
+          git -C upstream-skypilot fetch --no-tags origin 60a6c930feeb8c48511f74c25bc2d7e12b290dd6 c8154ff3a4875cbb1bac8f29bb45254f264d72ba
+          git -C upstream-skypilot cat-file -e '60a6c930feeb8c48511f74c25bc2d7e12b290dd6^{commit}'
+          git -C upstream-skypilot cat-file -e 'c8154ff3a4875cbb1bac8f29bb45254f264d72ba^{commit}'
+          git -C upstream-skypilot checkout --detach 60a6c930feeb8c48511f74c25bc2d7e12b290dd6
+          test "$(git -C upstream-skypilot rev-parse HEAD)" = "60a6c930feeb8c48511f74c25bc2d7e12b290dd6"
+          test "$(git -C upstream-skypilot rev-parse HEAD:LICENSE)" = "aad27dddb0055248d9ceb93ac287898fc1d25b29"
+          test "$(git -C upstream-skypilot rev-parse HEAD:sky/utils/common_utils.py)" = "a0ca0e97a4360019af0c5ec17381a2a3c753a094"
+          test "$(git -C upstream-skypilot rev-parse c8154ff3a4875cbb1bac8f29bb45254f264d72ba:sky/utils/common_utils.py)" = "5745c98b0ddd233625a3f49da20a032833cd95ff"
+          git -C upstream-skypilot diff 60a6c930feeb8c48511f74c25bc2d7e12b290dd6 c8154ff3a4875cbb1bac8f29bb45254f264d72ba > reproduction-evidence/full-pr.patch
+          git -C upstream-skypilot diff --name-only 60a6c930feeb8c48511f74c25bc2d7e12b290dd6 c8154ff3a4875cbb1bac8f29bb45254f264d72ba > reproduction-evidence/full-pr-changed-paths.txt
+          git -C upstream-skypilot show 60a6c930feeb8c48511f74c25bc2d7e12b290dd6:LICENSE > reproduction-evidence/upstream-LICENSE.txt
+          git -C upstream-skypilot show 60a6c930feeb8c48511f74c25bc2d7e12b290dd6:pyproject.toml > reproduction-evidence/base-pyproject.toml
+          git -C upstream-skypilot show 60a6c930feeb8c48511f74c25bc2d7e12b290dd6:sky/setup_files/dependencies.py > reproduction-evidence/base-dependencies.py
+          sha256sum reproduction-evidence/full-pr.patch reproduction-evidence/full-pr-changed-paths.txt reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/base-pyproject.toml reproduction-evidence/base-dependencies.py > reproduction-evidence/source-provenance-sha256.txt
+
+      - name: Authenticate exact SWE-rebench row and selectors
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+          .venv-dataset/bin/python - <<'PY'
+          import hashlib, json
+          import pyarrow.parquet as pq
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          cols = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          rows = pq.read_table(path, columns=cols, filters=[("instance_id", "=", "skypilot-org__skypilot-5985")]).to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected exactly one pinned SkyPilot row, got {len(rows)}")
+          row = rows[0]
+          assert row["repo"] == "skypilot-org/skypilot", row
+          assert row["base_commit"] == "60a6c930feeb8c48511f74c25bc2d7e12b290dd6", row
+          assert row["language"] == "python", row
+          assert row["license"] == "Apache-2.0", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2025-06-12 21:52:38", row
+          selectors = row["FAIL_TO_PASS"]
+          if not selectors:
+              raise SystemExit("Exact dataset row has no FAIL_TO_PASS selectors")
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+          open("reproduction-evidence/dataset-row-canonical.json", "wb").write(canonical)
+          open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8").write("\n".join(selectors) + "\n")
+          digest = hashlib.sha256(canonical).hexdigest()
+          open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8").write(digest + "  dataset-row-canonical.json\n")
+          print(json.dumps({"dataset_row_sha256": digest, "created_at": str(row["created_at"]), "selectors": selectors}, indent=2))
+          PY
+          rm reproduction-evidence/train-00000-of-00001.parquet
+
+      - name: Install exact pinned upstream SSH test environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-skypilot
+          .venv-skypilot/bin/python -m pip install --disable-pip-version-check -r research_candidates/evidence_abstention/reproduction/skypilot_issue_5981/requirements.lock
+          .venv-skypilot/bin/python -m pip install --disable-pip-version-check --no-deps -e ./upstream-skypilot
+          .venv-skypilot/bin/python -m pip check
+          .venv-skypilot/bin/python -m pip freeze --all | sort > reproduction-evidence/locked-environment-resolved.txt
+          .venv-skypilot/bin/python - <<'PY'
+          import hashlib
+          import importlib.metadata as md
+          import json
+          import re
+          from pathlib import Path
+          lock_path = Path("research_candidates/evidence_abstention/reproduction/skypilot_issue_5981/requirements.lock")
+          expected = {}
+          for line in lock_path.read_text(encoding="utf-8").splitlines():
+              line = line.strip()
+              if not line or line.startswith("#"):
+                  continue
+              name, version = line.split("==", 1)
+              key = re.sub(r"[-_.]+", "-", name).lower()
+              if key in expected:
+                  raise SystemExit(f"Duplicate normalized package in lock: {name}")
+              expected[key] = version
+          inventory = {}
+          missing = []
+          for dist in md.distributions():
+              name = dist.metadata.get("Name")
+              if not name:
+                  continue
+              key = re.sub(r"[-_.]+", "-", name).lower()
+              classifiers = [x for x in dist.metadata.get_all("Classifier", []) if x.startswith("License ::")]
+              license_text = dist.metadata.get("License") or dist.metadata.get("License-Expression")
+              if not license_text and not classifiers:
+                  missing.append(name)
+              inventory[key] = {
+                  "name": name,
+                  "version": dist.version,
+                  "license": license_text,
+                  "license_expression": dist.metadata.get("License-Expression"),
+                  "license_classifiers": classifiers,
+              }
+          if missing:
+              raise SystemExit("Missing license metadata; stop before running selectors: " + ", ".join(sorted(missing)))
+          installed = {k: v["version"] for k, v in inventory.items() if k != "skypilot"}
+          if installed != expected:
+              absent = sorted(set(expected) - set(installed))
+              unexpected = sorted(set(installed) - set(expected))
+              mismatched = {k: (expected[k], installed[k]) for k in set(expected) & set(installed) if expected[k] != installed[k]}
+              raise SystemExit(json.dumps({"absent": absent, "unexpected": unexpected, "version_mismatch": mismatched}, indent=2))
+          with open("reproduction-evidence/dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, sort_keys=True)
+              f.write("\\n")
+          with open("reproduction-evidence/requirements-lock-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(hashlib.sha256(lock_path.read_bytes()).hexdigest() + "  requirements.lock\\n")
+          print(json.dumps({"locked_distribution_count": len(expected), "all_versions_match": True, "license_metadata_complete": True}, indent=2))
+          PY
+
+      - name: Prepare test-only patch and verify its scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-skypilot checkout --detach 60a6c930feeb8c48511f74c25bc2d7e12b290dd6
+          git -C upstream-skypilot diff 60a6c930feeb8c48511f74c25bc2d7e12b290dd6 c8154ff3a4875cbb1bac8f29bb45254f264d72ba -- tests/unit_tests/test_sky/clouds/test_ssh.py > reproduction-evidence/test-only.patch
+          test -s reproduction-evidence/test-only.patch
+          git -C upstream-skypilot apply "$GITHUB_WORKSPACE/reproduction-evidence/test-only.patch"
+          .venv-skypilot/bin/python - <<'PY'
+          import json, subprocess
+          changed = set(subprocess.check_output(["git", "-C", "upstream-skypilot", "diff", "--name-only"], text=True).splitlines())
+          expected = {"tests/unit_tests/test_sky/clouds/test_ssh.py"}
+          if changed != expected:
+              raise SystemExit(f"Test-only patch scope mismatch: {sorted(changed)}")
+          with open("reproduction-evidence/test-only-patch-scope.json", "w", encoding="utf-8") as f:
+              json.dump({"changed_paths": sorted(changed), "expected_paths": sorted(expected), "production_code_changed": False}, f, indent=2)
+              f.write("\n")
+          PY
+          sha256sum reproduction-evidence/test-only.patch reproduction-evidence/test-only-patch-scope.json >> reproduction-evidence/source-provenance-sha256.txt
+
+      - name: Run exact dataset selectors on buggy base (real test failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-skypilot" .venv-skypilot/bin/python research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py \
+            --source-dir "$GITHUB_WORKSPACE/upstream-skypilot" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --no-conftest --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-dataset-test.log
+          if [ "$status" -ne 0 ]; then
+            echo "Exact selectors did not all execute and fail on the buggy base." >&2
+            exit "$status"
+          fi
+
+      - name: Run identical selectors on fixed revision (real pass required)
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f reproduction-evidence/dataset-fail-to-pass-selectors.txt ] || [ ! -d .venv-skypilot ]; then
+            echo "Selectors or test environment unavailable; no fixed-side tests run." >&2
+            exit 0
+          fi
+          git -C upstream-skypilot checkout --detach --force c8154ff3a4875cbb1bac8f29bb45254f264d72ba
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-skypilot" .venv-skypilot/bin/python research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py \
+            --source-dir "$GITHUB_WORKSPACE/upstream-skypilot" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --no-conftest --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
+          cat reproduction-evidence/fixed-dataset-test.log
+
+      - name: Summarize and hash all evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "### SkyPilot #5981 — environment discovery only"
+            echo "- Buggy base: 60a6c930feeb8c48511f74c25bc2d7e12b290dd6"
+            echo "- Fixed revision: c8154ff3a4875cbb1bac8f29bb45254f264d72ba"
+            echo "- External SSH/Kubernetes/cloud services: not used"
+            echo "- Model loading, inference, training: not performed"
+            echo "- This run installs the exact pinned 85-distribution lock captured and audited in the discovery run; Stage 2 remains conditional on this repeat succeeding."
+          } >> "$GITHUB_STEP_SUMMARY"
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+
+      - name: Upload raw SkyPilot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: skypilot-issue-5981-pinned-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
