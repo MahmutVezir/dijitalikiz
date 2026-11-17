@@ -315,7 +315,7 @@ jobs:
               raise SystemExit("Expected exactly one base selector result")
           result = report["results"][0]
           mismatch = re.search(
-              r'"os_version":\\s*\\{\\s*"result":\\s*"([^"]+)",\\s*"expected":\\s*"([^"]+)"',
+              r'"os_version":\s*\{\s*"result":\s*"([^"]+)",\s*"expected":\s*"([^"]+)"',
               result.get("output", ""),
           )
           if not result.get("ok") or result.get("returncode") != 1 or not mismatch:
@@ -334,7 +334,7 @@ jobs:
               "raw_test_output_saved": False,
           }
           Path("reproduction-evidence/base-dataset-tests.json").write_text(
-              json.dumps(summary, indent=2) + "\\n", encoding="utf-8"
+              json.dumps(summary, indent=2) + "\n", encoding="utf-8"
           )
           print(json.dumps(summary, indent=2))
           PY
@@ -379,7 +379,7 @@ jobs:
               "raw_test_output_saved": False,
           }
           Path("reproduction-evidence/fixed-dataset-tests.json").write_text(
-              json.dumps(summary, indent=2) + "\\n", encoding="utf-8"
+              json.dumps(summary, indent=2) + "\n", encoding="utf-8"
           )
           print(json.dumps(summary, indent=2))
           PY
