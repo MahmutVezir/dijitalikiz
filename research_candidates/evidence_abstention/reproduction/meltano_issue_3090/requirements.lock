@@ -29,3 +29,6 @@ charset-normalizer==3.4.0
 idna==3.10
 python-dotenv==1.0.1
 pytest==8.3.3
+# pytest collection imports importlib_metadata via the Singer SDK schema test module.
+importlib-metadata==8.5.0
+zipp==3.21.0
