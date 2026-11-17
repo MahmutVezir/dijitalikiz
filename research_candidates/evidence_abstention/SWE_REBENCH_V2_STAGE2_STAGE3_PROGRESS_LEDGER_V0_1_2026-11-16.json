@@ -14,7 +14,7 @@
     "one_accepted_case_per_upstream_project": true,
     "do_not_count_test_selectors_as_independent_cases": true,
     "inference_authorized": false,
-    "latest_stage2_disposition_note": "Stage 2 snapshot 2026-11-17: 9 technical passes (Dishka, NumPyro, Robocop, PyFar, Python-Control, Meltano, Amaranth, QuTiP and Dymos). EODAG issue reproducer and exact row authenticated but its two dataset selectors remain unexecuted. Nox and Werkzeug blocked by corrupted/truncated immutable dataset selector metadata. Moto has issue-specific ECR base-fail/fixed-pass evidence but its exact dataset row mixes unrelated IoT selectors and contains invalid entries. Stage 3 technical adjudication still only Dishka; Dymos and the other new technical passes remain to be adjudicated. Final accepted cases remain 0. No model loading, inference or training authorized."
+    "latest_stage2_disposition_note": "10 technical Stage 2 passes including EODAG (2/2 selectors); Nox and Werkzeug blocked by exact dataset selector corruption; Moto blocked by mixed-scope row with 12 invalid selectors. Dishka remains the only Stage 3 technical adjudication completed. Dymos Stage 2 pass is recorded. Final accepted cases remain zero."
   },
   "global_execution_blocker": {
     "status": "previously_observed_runner_allocation_failure_not_reproduced_in_latest_batch",
@@ -50,7 +50,7 @@
     "strong": 6,
     "post_second_pass_excluded": 2,
     "remaining_broad_shortlist": 65,
-    "stage2_passed": 9,
+    "stage2_passed": 10,
     "stage3_technical_passed": 1,
     "final_accepted_cases": 0,
     "runner_blocked_candidates": 0,
@@ -332,13 +332,15 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/EODAG_1530_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "partially_verified_selector_execution_pending",
-      "stage2_workflow_job_id": 134143226554,
-      "stage2_evidence_note": "Independent YAML reproducer shows duplicate geodes key failure on base and passes on fixed. Exact lower-case dataset row cs-si__eodag-1536 authenticated with row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47. Two selectors are statically aligned to geodes_s3 provider; they have not yet been executed against base/fixed source.",
-      "stage3_status": "not_started_stage2_incomplete",
+      "stage2_status": "passed",
+      "stage2_workflow_job_id": 134161227052,
+      "stage2_evidence_note": "Independent YAML reproducer and both exact SWE-rebench selectors pass strict base-fail/fixed-pass. Selectors: TestCore.test_available_sortables (base assertion mismatch; fixed pass) and TestCore.test_list_product_types_for_provider_ok (base UnsupportedProvider geodes_s3; fixed pass). Exact row timestamp 2025-02-21 10:04:30; row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47. Complete dependency license inventory captured; project-lead scope review pending.",
+      "stage3_status": "not_started_stage2_passed",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44112905745
+      "stage2_latest_run_id": 44117944004,
+      "stage2_artifact_id": 14344421574,
+      "stage2_artifact_sha256": "0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33"
     },
     {
       "cohort_rank": 17,
