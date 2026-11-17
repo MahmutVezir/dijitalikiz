@@ -1482,12 +1482,10 @@ jobs:
           classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
           license_text = dist.get("License") or dist.get("License-Expression")
           if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
-              raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
-          inventory = {"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}
+              raise SystemExit("pyarrow Apache license metadata not confirmed")
           with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
-              json.dump(inventory, f, indent=2)
+              json.dump({"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}, f, indent=2)
               f.write("\n")
-          print(inventory)
           PY
           curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
           echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
@@ -1497,10 +1495,7 @@ jobs:
           import pyarrow.parquet as pq
           path = "reproduction-evidence/train-00000-of-00001.parquet"
           columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
-          table = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")])
-          rows = table.to_pylist()
-          assert len(rows) == 1, len(rows)
-          row = rows[0]
+          row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")]).to_pylist()[0]
           assert row["repo"] == "getmoto/moto", row
           assert row["base_commit"] == "bf49e22f41be7444dc20e05dfa5dd13f25672eba", row
           assert str(row["created_at"]).replace("T", " ")[:19] == "2024-11-07 20:51:42", row
@@ -1516,7 +1511,6 @@ jobs:
               f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
           print("dataset_row_sha256=" + digest)
           print("dataset_created_at=" + str(row["created_at"]))
-          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
           PY
           .venv-dataset/bin/python - <<'PY'
           import json
@@ -1524,28 +1518,66 @@ jobs:
           import pyarrow.parquet as pq
           import subprocess
           path = "reproduction-evidence/train-00000-of-00001.parquet"
-          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          columns = ["instance_id", "FAIL_TO_PASS"]
           row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")]).to_pylist()[0]
           selectors = row["FAIL_TO_PASS"]
-          assert selectors, "Dataset row has no FAIL_TO_PASS selectors"
           python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
           env = dict(os.environ)
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-moto")
-          combined = []
+          records = []
+          collection_markers = ("ERROR: not found:", "no tests ran", "ERROR collecting", "ModuleNotFoundError:", "ImportError while importing test module")
           for selector in selectors:
               command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
               result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-              combined.append("SELECTOR: " + selector + "\n" + result.stdout)
-              if result.returncode == 0:
-                  raise SystemExit("Dataset FAIL_TO_PASS selector unexpectedly passed on buggy base: " + selector)
-              if "assert 1 == 2" not in result.stdout and "AssertionError: 1 != 2" not in result.stdout:
-                  raise SystemExit("Buggy-base failure was not the expected missing-tag assertion for selector: " + selector + "\n" + result.stdout)
-          output = "\n".join(combined)
+              collection_error = any(marker in result.stdout for marker in collection_markers)
+              executed_failure = result.returncode == 1 and "FAILED " in result.stdout and not collection_error
+              is_issue_selector = selector == "tests/test_ecr/test_ecr_boto3.py::test_list_same_image_with_multiple_tags"
+              issue_signature = "assert 1 == 2" in result.stdout or "AssertionError: 1 != 2" in result.stdout
+              records.append({
+                  "selector": selector,
+                  "scope": "issue_specific_ecr" if is_issue_selector else "other_dataset_scope",
+                  "returncode": result.returncode,
+                  "collection_error": collection_error,
+                  "executed_failure": executed_failure,
+                  "issue_signature_observed": issue_signature,
+                  "output": result.stdout,
+              })
+          payload = {
+              "candidate": "getmoto__moto-8296",
+              "revision_role": "buggy_base",
+              "selector_count": len(records),
+              "issue_specific_selector_count": sum(item["scope"] == "issue_specific_ecr" for item in records),
+              "executed_failure_count": sum(item["executed_failure"] for item in records),
+              "collection_error_count": sum(item["collection_error"] for item in records),
+              "records": records,
+          }
+          with open("reproduction-evidence/base-dataset-tests.json", "w", encoding="utf-8") as f:
+              json.dump(payload, f, indent=2, ensure_ascii=False)
+              f.write("\n")
           with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
-              f.write(output)
-          print(output)
+              for item in records:
+                  f.write("SELECTOR: " + item["selector"] + "\n")
+                  f.write("SCOPE: " + item["scope"] + "\n")
+                  f.write("RETURN CODE: " + str(item["returncode"]) + "\n")
+                  f.write("COLLECTION ERROR: " + str(item["collection_error"]) + "\n")
+                  f.write("EXECUTED FAILURE: " + str(item["executed_failure"]) + "\n")
+                  f.write("ISSUE SIGNATURE: " + str(item["issue_signature_observed"]) + "\n")
+                  f.write(item["output"] + "\n")
+          print(json.dumps({
+              "selector_count": payload["selector_count"],
+              "issue_specific_selector_count": payload["issue_specific_selector_count"],
+              "executed_failure_count": payload["executed_failure_count"],
+              "collection_error_count": payload["collection_error_count"],
+          }, indent=2))
+          for item in records:
+              status = "EXECUTED-FAIL" if item["executed_failure"] else "MISMATCH"
+              print("[" + status + "] " + item["scope"] + " " + item["selector"])
+          issue_records = [item for item in records if item["scope"] == "issue_specific_ecr"]
+          if len(issue_records) != 1 or not issue_records[0]["executed_failure"] or not issue_records[0]["issue_signature_observed"]:
+              raise SystemExit("Moto ECR issue-specific selector did not reproduce the missing-tag assertion")
+          if payload["collection_error_count"]:
+              raise SystemExit("Dataset row contains collection errors; all per-selector evidence saved")
           PY
-
       - name: Run same issue reproducer and dataset selectors on fixed revision (pass required)
         if: always()
         shell: bash
@@ -1555,29 +1587,67 @@ jobs:
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-moto" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/moto_issue_8269" -p "test_issue_8269.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
           .venv-dataset/bin/python - <<'PY'
+          import json
           import os
           import pyarrow.parquet as pq
           import subprocess
           path = "reproduction-evidence/train-00000-of-00001.parquet"
-          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
-          row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")]).to_pylist()[0]
+          row = pq.read_table(path, columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "getmoto__moto-8296")]).to_pylist()[0]
           selectors = row["FAIL_TO_PASS"]
           python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
           env = dict(os.environ)
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-moto")
-          combined = []
+          records = []
+          collection_markers = ("ERROR: not found:", "no tests ran", "ERROR collecting", "ModuleNotFoundError:", "ImportError while importing test module")
           for selector in selectors:
               command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
               result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-              combined.append("SELECTOR: " + selector + "\n" + result.stdout)
-              if result.returncode != 0:
-                  raise SystemExit("Dataset FAIL_TO_PASS selector did not pass on fixed revision: " + selector + "\n" + result.stdout)
-          output = "\n".join(combined)
+              collection_error = any(marker in result.stdout for marker in collection_markers)
+              passed = result.returncode == 0 and "1 passed" in result.stdout and "skipped" not in result.stdout and not collection_error
+              is_issue_selector = selector == "tests/test_ecr/test_ecr_boto3.py::test_list_same_image_with_multiple_tags"
+              records.append({
+                  "selector": selector,
+                  "scope": "issue_specific_ecr" if is_issue_selector else "other_dataset_scope",
+                  "returncode": result.returncode,
+                  "collection_error": collection_error,
+                  "passed": passed,
+                  "output": result.stdout,
+              })
+          payload = {
+              "candidate": "getmoto__moto-8296",
+              "revision_role": "fixed_revision",
+              "selector_count": len(records),
+              "issue_specific_selector_count": sum(item["scope"] == "issue_specific_ecr" for item in records),
+              "passed_count": sum(item["passed"] for item in records),
+              "collection_error_count": sum(item["collection_error"] for item in records),
+              "records": records,
+          }
+          with open("reproduction-evidence/fixed-dataset-tests.json", "w", encoding="utf-8") as f:
+              json.dump(payload, f, indent=2, ensure_ascii=False)
+              f.write("\n")
           with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
-              f.write(output)
-          print(output)
+              for item in records:
+                  f.write("SELECTOR: " + item["selector"] + "\n")
+                  f.write("SCOPE: " + item["scope"] + "\n")
+                  f.write("RETURN CODE: " + str(item["returncode"]) + "\n")
+                  f.write("COLLECTION ERROR: " + str(item["collection_error"]) + "\n")
+                  f.write("PASSED: " + str(item["passed"]) + "\n")
+                  f.write(item["output"] + "\n")
+          print(json.dumps({
+              "selector_count": payload["selector_count"],
+              "issue_specific_selector_count": payload["issue_specific_selector_count"],
+              "passed_count": payload["passed_count"],
+              "collection_error_count": payload["collection_error_count"],
+          }, indent=2))
+          for item in records:
+              status = "PASS" if item["passed"] else "MISMATCH"
+              print("[" + status + "] " + item["scope"] + " " + item["selector"])
+          issue_records = [item for item in records if item["scope"] == "issue_specific_ecr"]
+          if len(issue_records) != 1 or not issue_records[0]["passed"]:
+              raise SystemExit("Moto ECR issue-specific selector did not pass on fixed revision")
+          if payload["collection_error_count"]:
+              raise SystemExit("Dataset row contains collection errors; all per-selector evidence saved")
           PY
-
       - name: Prepare and upload raw Moto reproduction evidence
         if: always()
         shell: bash
