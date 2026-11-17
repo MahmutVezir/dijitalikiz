@@ -41,6 +41,26 @@ class SelectorRunnerContractTests(unittest.TestCase):
             self.assertEqual(command[-1], selector)
             self.assertTrue(result["ok"], result["reason"])
 
+    def test_explicit_upstream_pytest_config_is_passed(self) -> None:
+        selector = "tests/units/test_core.py::TestCore::test_available_sortables"
+        output = "F\\nFAILED tests/units/test_core.py::TestCore::test_available_sortables - AssertionError\\n1 failed in 0.02s\\n"
+        completed = subprocess.CompletedProcess(args=["pytest"], returncode=1, stdout=output)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "source"
+            source.mkdir()
+            config = source / "pytest.ini"
+            config.write_text("[pytest]\\naddopts = --disable-socket\\n", encoding="utf-8")
+            selectors = root / "selectors.txt"
+            selectors.write_text(selector + "\\n", encoding="utf-8")
+            with patch("run_swe_rebench_fail_to_pass.subprocess.run", return_value=completed) as mocked:
+                results, success = execute(source, selectors, "base-fail", config_file=config)
+            command = mocked.call_args.args[0]
+            self.assertEqual(command[command.index("-c") + 1], str(config.resolve()))
+            self.assertEqual(command[-1], selector)
+            self.assertTrue(success)
+            self.assertEqual(len(results), 1)
+
     def test_base_requires_executed_failure_not_collection_error(self) -> None:
         output = "F\nFAILED tests/test_x.py::test_bug\n1 failed in 0.02s\n"
         self.assertEqual(
