@@ -1,4 +1,5 @@
 name: Evidence Abstention Preflight (No Inference)
+# Candidate jobs retain raw buggy-base and fixed-revision evidence even when a selector audit fails.
 
 on:
   push:
@@ -1312,7 +1313,7 @@ jobs:
           import json
           with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
               json.dump(inventory, f, indent=2)
-              f.write("\\n")
+              f.write("\n")
           print(inventory)
           PY
           curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
@@ -1331,7 +1332,7 @@ jobs:
           ]
           with open("reproduction-evidence/eodag_dataset_candidate_inventory.json", "w", encoding="utf-8") as f:
               json.dump(eodag_rows, f, indent=2, ensure_ascii=False, default=str)
-              f.write("\\n")
+              f.write("\n")
           print("EODAG-related rows in pinned dataset:")
           print(json.dumps(eodag_rows, indent=2, ensure_ascii=False, default=str))
           exact = [row for row in eodag_rows if row["instance_id"] == "CS-SI__eodag-1536"]
