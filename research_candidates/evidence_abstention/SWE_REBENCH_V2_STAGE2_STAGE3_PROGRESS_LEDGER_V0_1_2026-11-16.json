@@ -716,12 +716,14 @@
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/QUTIP_2646_CANDIDATE_REVIEW_2026-11-16.md",
       "stage2_status": "passed",
-      "stage2_workflow_job_id": 134131998973,
-      "stage2_evidence_note": "Exact buggy-base build, independent stale-coefficient reproducer, exact dataset row and sole test_coefficient_update_args selector all completed successfully: base failure and fixed revision pass. A later repeat job is still building; earlier complete successful run is the Stage 2 evidence.",
+      "stage2_workflow_job_id": 134161227186,
+      "stage2_evidence_note": "Repeat run 44117944004 independently completed all stages successfully: exact buggy-base build, independent stale-coefficient reproducer, exact dataset row, one selector base-fail and same selector fixed-pass. Artifact 14344317505 SHA-256 659f20be3d691a7689a3c38e069470b2d2f4e11ddb72461f3d4e89a18e57d67d. Stage 3 and final acceptance remain pending.",
       "stage3_status": "not_started_stage2_passed",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44109769357
+      "stage2_latest_run_id": 44117944004,
+      "stage2_artifact_id": 14344317505,
+      "stage2_artifact_sha256": "659f20be3d691a7689a3c38e069470b2d2f4e11ddb72461f3d4e89a18e57d67d"
     },
     {
       "cohort_rank": 40,
