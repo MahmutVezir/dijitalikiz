@@ -197,7 +197,8 @@
     "Stage 2 snapshot update 2026-11-17 15:29 UTC: OpenMDAO/dymos #1166 is now technically verified. Its exact single FAIL_TO_PASS selector failed on the buggy base (actual control defaults [[1],[1]] vs expected [[0],[10]]) and passed on the fixed revision. Parquet row SHA-256 236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5; workflow artifact 14341424466, ZIP SHA-256 8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051; all 18 artifact member hashes verified locally. Stage 3 and human license signoff remain pending; final accepted cases stay 0.",
     "EODAG Stage 2 closed on run 44117944004: exact pinned row cs-si__eodag-1536, row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47, timestamp 2025-02-21T10:04:30Z; issue reproducer base-fail/fixed-pass and both exact dataset selectors base-fail/fixed-pass (2/2 each). Artifact 14344421574 SHA-256 0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33. No inference/training; final case not accepted.",
     "Stage 2 update 2026-11-17: EODAG #1530 progressed from exact-row verification to full technical pass. Two issue-related dataset selectors executed on the exact pinned base and fixed commits: 2/2 base failures and 2/2 fixed passes; test-only patch touches tests/units/test_core.py only. The 52-distribution environment inventory, dependency lock resolution, pip check and 22-entry artifact SHA manifest are recorded. Dymos #1166 remains Stage 2 pass with 1/1 base-fail/fixed-pass and 18/18 inner hashes verified. Dymos PR creation precedes the linked issue by 2m25s; PR timestamp is the dataset timestamp resource and this chronology is disclosed. Neither case is finally accepted; no model load/inference/training authorized.",
-    "Stage 2 update 2026-11-17: SkyPilot #5981 / PR #5985 passed the exact frozen dataset test selector on the exact pinned base and fixed revisions. Base failure is the expected assertion: str.lstrip('ssh-') drops the initial s in staging, returning only ssh-prod instead of ssh-prod + ssh-staging. The exact same selector passes on fixed revision. Test-only diff touched tests/unit_tests/test_sky/clouds/test_ssh.py only; no production code was applied to buggy base. Python 3.11.9; requirements.lock contains 85 pinned external distributions; pinned repeat verified all installed versions equal lock, 86 installed distributions including editable SkyPilot had complete license metadata, and pip check passed. Discovery artifact 14344533255 SHA b0df249... (17 internal hashes verified); pinned artifact 14345590500 SHA c9b41... (18 internal hashes verified). Row SHA a846e85...; lock SHA a5f56951.... Stage 2 technical pass only; Stage 3 and final acceptance remain pending; no inference."
+    "Stage 2 update 2026-11-17: SkyPilot #5981 / PR #5985 passed the exact frozen dataset test selector on the exact pinned base and fixed revisions. Base failure is the expected assertion: str.lstrip('ssh-') drops the initial s in staging, returning only ssh-prod instead of ssh-prod + ssh-staging. The exact same selector passes on fixed revision. Test-only diff touched tests/unit_tests/test_sky/clouds/test_ssh.py only; no production code was applied to buggy base. Python 3.11.9; requirements.lock contains 85 pinned external distributions; pinned repeat verified all installed versions equal lock, 86 installed distributions including editable SkyPilot had complete license metadata, and pip check passed. Discovery artifact 14344533255 SHA b0df249... (17 internal hashes verified); pinned artifact 14345590500 SHA c9b41... (18 internal hashes verified). Row SHA a846e85...; lock SHA a5f56951.... Stage 2 technical pass only; Stage 3 and final acceptance remain pending; no inference.",
+    "Latest SkyPilot pinned repeat: run 44121262451, job 134172933160, artifact 14344534041, ZIP SHA-256 10f5505f390426e003a833ffa60cd026a9513c33da9b5a0d288844374057f34c. The 85-pin lock matched exactly; all 86 installed distribution records had license metadata; pip check, dataset JSON/selector serialization checks, test-only patch scope, and 1/1 base-fail plus 1/1 fixed-pass contracts succeeded. Artifact ZIP CRC and all 19 internal SHA256SUMS entries independently verified. This supersedes earlier pinned repeat 44120296408 as the latest technical run; accepted case count remains 0."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -1249,15 +1250,15 @@
         "complete_schema_conformant_final_case_record_and_fail_closed_registry_validation",
         "project_lead_separate_final_case_acceptance_decision"
       ],
-      "latest_reproduction_run_id": 44120296408,
-      "latest_reproduction_job_id": 134169504759,
+      "latest_reproduction_run_id": 44121262451,
+      "latest_reproduction_job_id": 134172933160,
       "environment_discovery_run_id": 44120296410,
       "environment_discovery_job_id": 134169504792,
       "environment_discovery_artifact_id": 14344533255,
       "environment_discovery_artifact_sha256": "b0df249916eaaf25cb3d8fad4c9a0b29df6dd91490bcf03300ed068d398c39f1",
-      "pinned_reproduction_artifact_id": 14345590500,
-      "pinned_reproduction_artifact_sha256": "c9b41b7fa3ce284a322e59bee360cc3504a27f2608212ea84cfb1bed38cded3e",
-      "pinned_artifact_inner_sha256_entries": 18,
+      "pinned_reproduction_artifact_id": 14344534041,
+      "pinned_reproduction_artifact_sha256": "10f5505f390426e003a833ffa60cd026a9513c33da9b5a0d288844374057f34c",
+      "pinned_artifact_inner_sha256_entries": 19,
       "pinned_artifact_inner_sha256_mismatches": 0,
       "dataset_created_at": "2025-06-12T21:52:38Z",
       "dataset_created_at_raw": "2025-06-12 21:52:38",
@@ -1307,7 +1308,7 @@
       "artifact_integrity": "discovery 17/17 and pinned 18/18 internal SHA256SUMS entries verified independently; both ZIP CRC checks passed",
       "review_record_path": "research_candidates/evidence_abstention/SKYPILOT_5981_STAGE2_RESULT_2026-11-17.md",
       "dependency_license_review_status": "complete installed distribution license metadata inventory recorded; project-lead scope signoff and review of bundled notices remain pending",
-      "latest_candidate_workflow_status": "stage2_passed_in_discovery_and_pinned_repeat"
+      "latest_candidate_workflow_status": "stage2_passed_in_discovery_and_two_pinned_repeats; latest repeat 44121262451"
     },
     {
       "instance_id": "Kozea__WeasyPrint-2416",
