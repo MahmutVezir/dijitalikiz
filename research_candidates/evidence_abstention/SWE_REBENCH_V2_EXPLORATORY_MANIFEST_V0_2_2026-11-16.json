@@ -193,7 +193,8 @@
     "pyfar #721 (primary rank 90) passed static numerical-contract and exact-base MIT source-license screening. The issue's energy-20-to-target-1 counterexample is explicit; a Python 3.12.4 pinned runtime/test environment and exact dataset FAIL_TO_PASS workflow have been added. Reproduction remains pending.",
     "Target clarification approved by project lead on 2026-11-16: primary target is 15 independent upstream projects; 20 is a stretch target. Fewer than 15 cases are still retained if they pass all unchanged acceptance criteria; no eligibility threshold is lowered and no candidate is selected using model outcomes.",
     "v0.2 no-inference preflight is the active readiness report. Historical v0.1 confirmatory preflight rules (60-case threshold, Panel A/B, external preregistration, reviewer consent, and external audit) are not requirements of this single-researcher exploratory design.",
-    "Stage 2 rerun snapshot 2026-11-17: full base-fail/fixed-pass contracts verified for Dishka, NumPyro (2/2), Robocop (1/1), PyFar (23/23), Python-Control (3/3), Meltano (1/1), Amaranth (1/1), and QuTiP (1/1). EODAG issue reproducer and exact row verified; its two issue-aligned dataset selectors remain unexecuted. Moto's issue-specific ECR reproducer and selector passed, but the exact 18-selector row mixes unrelated IoT tests and contains 12 invalid selectors. Nox and Werkzeug remain blocked by malformed original dataset selectors. Technical Stage 2 dispositions only; accepted_case_count and accepted_project_count remain 0; no model load/inference/training authorized."
+    "Stage 2 rerun snapshot 2026-11-17: full base-fail/fixed-pass contracts verified for Dishka, NumPyro (2/2), Robocop (1/1), PyFar (23/23), Python-Control (3/3), Meltano (1/1), Amaranth (1/1), and QuTiP (1/1). EODAG issue reproducer and exact row verified; its two issue-aligned dataset selectors remain unexecuted. Moto's issue-specific ECR reproducer and selector passed, but the exact 18-selector row mixes unrelated IoT tests and contains 12 invalid selectors. Nox and Werkzeug remain blocked by malformed original dataset selectors. Technical Stage 2 dispositions only; accepted_case_count and accepted_project_count remain 0; no model load/inference/training authorized.",
+    "Stage 2 snapshot update 2026-11-17 15:29 UTC: OpenMDAO/dymos #1166 is now technically verified. Its exact single FAIL_TO_PASS selector failed on the buggy base (actual control defaults [[1],[1]] vs expected [[0],[10]]) and passed on the fixed revision. Parquet row SHA-256 236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5; workflow artifact 14341424466, ZIP SHA-256 8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051; all 18 artifact member hashes verified locally. Stage 3 and human license signoff remain pending; final accepted cases stay 0."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -644,7 +645,7 @@
     {
       "instance_id": "openmdao__dymos-1165",
       "cohort_rank": 15,
-      "status": "static_issue_patch_and_root_license_screen_passed_reproduction_environment_pending",
+      "status": "stage2_pass_single_exact_issue_specific_dataset_selector_buggy_base_fail_fixed_revision_pass_stage3_pending",
       "issue_url": "https://github.com/OpenMDAO/dymos/issues/1166",
       "pull_request_url": "https://github.com/OpenMDAO/dymos/pull/1165",
       "base_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
@@ -667,11 +668,90 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "minimal_openmdao_dependency_and_license_inventory",
-        "dataset_fail_to_pass_base_fail_fixed_pass_reproduction",
+        "human_review_of_full_runtime_and_bundled_dependency_license_inventory",
         "independence_and_related_issue_family_review",
-        "gold_standard_and_E1_E2_E3_human_adjudication"
-      ]
+        "human_gold_root_cause_and_alternative_hypothesis_adjudication",
+        "prepare_nested_E1_E2_E3_evidence_packets_and_manifests",
+        "project_lead_approval_of_gold_and_E1_E2_E3_tiers",
+        "construct_complete_schema_conformant_final_case_record_and_pass_fail_closed_registry_validation",
+        "project_lead_separate_final_case_acceptance_decision"
+      ],
+      "dataset_created_at": "2025-04-04T20:23:44Z",
+      "dataset_created_at_raw": "2025-04-04 20:23:44",
+      "dataset_row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
+      "fail_to_pass_count": 1,
+      "fail_to_pass_selectors": [
+        "dymos/examples/balanced_field/test/test_balanced_field_length.py::TestBalancedFieldLengthDefaultValues::test_default_vals_stick"
+      ],
+      "dataset_selector_status": "PASS: exact selector executed and failed on buggy base with actual [[1.0],[1.0]] versus expected [[0],[10]], then passed on exact fixed revision.",
+      "latest_reproduction_run_id": 44114656908,
+      "latest_reproduction_job_id": 134149456631,
+      "reproduction_artifact_id": 14341424466,
+      "reproduction_artifact_name": "dymos-issue-1166-reproduction",
+      "reproduction_artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
+      "artifact_sha256sum_entries": 18,
+      "artifact_sha256sum_mismatches": 0,
+      "dataset_selector_contract": {
+        "base": {
+          "selector_count": 1,
+          "passed_contract_count": 1,
+          "failed_contract_count": 0,
+          "expectation": "base-fail"
+        },
+        "fixed": {
+          "selector_count": 1,
+          "passed_contract_count": 1,
+          "failed_contract_count": 0,
+          "expectation": "fixed-pass"
+        },
+        "issue_specific": true
+      },
+      "test_only_patch_paths": [
+        "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+        "dymos/transcriptions/common/test/test_control_interp_comp.py"
+      ],
+      "full_pr_changed_files": [
+        "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+        "dymos/transcriptions/common/control_comp.py",
+        "dymos/transcriptions/common/test/test_control_interp_comp.py",
+        "dymos/transcriptions/explicit_shooting/explicit_shooting.py",
+        "dymos/transcriptions/explicit_shooting/ode_evaluation_group.py",
+        "dymos/utils/misc.py"
+      ],
+      "production_code_in_test_only_patch": false,
+      "reproduction_environment": {
+        "python": "3.11.9",
+        "packages": {
+          "numpy": "1.26.4",
+          "scipy": "1.13.1",
+          "networkx": "3.3",
+          "packaging": "24.2",
+          "requests": "2.32.3",
+          "certifi": "2024.8.30",
+          "charset-normalizer": "3.4.0",
+          "idna": "3.10",
+          "urllib3": "2.2.3",
+          "openmdao": "3.38.0",
+          "pytest": "8.3.3",
+          "iniconfig": "2.0.0",
+          "pluggy": "1.5.0",
+          "Pygments": "2.18.0"
+        },
+        "lock_path": "research_candidates/evidence_abstention/reproduction/dymos_issue_1166/requirements.lock",
+        "lock_git_blob_sha": "e1fb545360bea09756071fcc6e6c2e55faad469d",
+        "pyoptsparse_or_ipopt_installed": false,
+        "reason": "The exact PR regression test is rewritten to use run_model() and no longer needs an optimizer plugin; no optimizer package was installed."
+      },
+      "issue_reproducer_status": "The exact dataset regression test is the independent defect-specific reproduction: it fails on the buggy base due to the default value being ignored and passes on the fixed revision. No second, separate reproducer file was added.",
+      "technical_reproduction": "stage2_pass_exact_issue_specific_selector_base_fail_fixed_pass",
+      "dependency_license_inventory_status": "runtime_and_pyarrow_license_metadata_recorded_in_artifact; full human scope signoff pending",
+      "dependency_license_review_notes": [
+        "NumPy 1.26.4 binary metadata includes bundled OpenBLAS, LAPACK and GCC runtime library notices.",
+        "SciPy 1.13.1 binary metadata includes bundled libquadmath notice.",
+        "The inventory is evidence, not legal clearance; project lead must review the exact bundled runtime license scope before final case acceptance."
+      ],
+      "temporal_exposure_review": "Issue and PR were created 2025-04-04, after Qwen2.5-3B-Instruct's public release; exact model training-data cutoff and inclusion provenance are not established. Do not make a no-exposure claim.",
+      "review_note_path": "research_candidates/evidence_abstention/OPENMDAO_DYMOS_1166_CANDIDATE_REVIEW_2026-11-17.md"
     },
     {
       "instance_id": "cs-si__eodag-1536",
