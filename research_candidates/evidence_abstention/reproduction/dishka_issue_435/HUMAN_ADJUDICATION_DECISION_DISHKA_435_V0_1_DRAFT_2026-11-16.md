@@ -1,8 +1,8 @@
 # Dishka #435 — human adjudication decision record
 
 **Record version:** 0.1 draft  
-**Date prepared:** 2026-11-16  
-**Status:** TECHNICAL GOLD AND EVIDENCE-TIER ADJUDICATION APPROVED BY STUDENT PROJECT LEAD; REMAINING ACCEPTANCE GATES OPEN  
+**Date prepared:** 2026-11-16; limitation acknowledgement added 2026-11-17  
+**Status:** TECHNICAL GOLD / EVIDENCE-TIER ADJUDICATION AND LIMITATION ACKNOWLEDGEMENT APPROVED; FINAL CASE ACCEPTANCE GATES OPEN  
 **Candidate:** `reagento__dishka-436`  
 **Upstream project:** `reagento/dishka`  
 **Issue / fix:** [Issue #435](https://github.com/reagento/dishka/issues/435) / [PR #436](https://github.com/reagento/dishka/pull/436)  
@@ -14,7 +14,7 @@
 
 This record separates the technical recommendation from the student's human adjudication. The AI research assistant may propose a mechanism and critique the evidence tiers, but it is not a human co-investigator, independent human rater, or the decision-maker.
 
-The project lead's explicit approval was communicated in this conversation on 2026-11-16. The recorded approval covers the proposed technical gold mechanism, the A1/A2 alternative set, and the E3/E2/E1 evidence-tier memberships and rationales. This is a human project-lead decision, not an AI-generated decision. It does not approve the remaining case-acceptance gates, and it does not authorize model loading or inference.
+The project lead's explicit approvals were communicated in this conversation on 2026-11-16 and 2026-11-17. The first approval covers the proposed technical gold mechanism, the A1/A2 alternative set, and the E3/E2/E1 evidence-tier memberships and rationales. The second approval acknowledges the researcher-exposure and single-adjudicator limitations and accepts use of this case only within the exploratory feasibility design. These are human project-lead decisions, not AI-generated decisions. Neither approval closes the remaining case-acceptance gates or authorizes model loading or inference.
 
 ## 2. Technical reproduction already established
 
@@ -76,29 +76,46 @@ Rationale: the base implementation shows the per-scope insertion during provider
 
 ## 6. Exposure and limitations to preserve
 
-- The student researcher has reviewed the issue and fix during candidate screening. Do not claim perfect blinding.
-- The pinned model family was publicly released before the issue/PR dates, which lowers the likelihood of exact post-release issue exposure but does not establish the model's complete training-data cutoff or prove absence from training.
+- The student researcher has reviewed the issue and fix during candidate screening. The researcher therefore acknowledges **full source-level exposure to the case materials already reviewed**. Do not claim perfect blinding or a blinded human adjudication.
+- This acknowledgement concerns the researcher's exposure. It does **not** establish whether the model encountered this issue, PR, or code during training. The pinned model family was publicly released before the issue/PR dates, which lowers the likelihood of exact post-release issue exposure but does not establish the model's complete training-data cutoff or prove absence from training.
 - The proposed documentary license screen is limited to the minimal Python 3.11.9 reproducer environment; it is not legal advice or blanket clearance for optional dependencies or redistribution.
-- The working design has one human adjudicator. ChatGPT's critique is advisory AI input, not a second human rating. Do not claim human-human inter-rater reliability or Cohen's kappa.
+- The working design has **one human adjudicator: the student project lead**. ChatGPT's critique is advisory AI input, not a second human rating.
+- Consequently, do not claim human-human inter-rater reliability, inter-rater agreement, or Cohen's kappa. No second-human-rater statistic will be manufactured or inferred from AI critique.
 
-## 7. Student project lead decision — recorded
+## 7. Student project lead decisions — recorded
 
-The student project lead explicitly approved the following technical adjudication decisions in this conversation on **2026-11-16**:
+### 7.1 Technical adjudication approval — 2026-11-16
+
+The student project lead explicitly approved:
 
 - [x] Accept `G1_STALE_PER_SCOPE_FACTORY_REGISTRATION` as the technical gold mechanism.
 - [x] Accept A1 and A2 as the predeclared alternatives used in the adjudication.
 - [x] Accept the proposed E3, E2, and E1 evidence memberships and rationales.
-- [ ] Separate confirmation of the researcher-exposure and single-adjudicator limitation statements is not represented as part of this specific technical approval; those limitations remain disclosed and must not be omitted.
 
 **Human decision:** APPROVED — technical gold, alternatives, and evidence-tier design only.  
-**Decision date:** 2026-11-16 (communicated in this conversation).  
+**Decision date:** 2026-11-16.  
 **Amendments / rationale:** No amendments requested in the approval. The decision does not waive any remaining acceptance gate.
+
+### 7.2 Researcher-exposure and single-adjudicator limitation acknowledgement — 2026-11-17
+
+The student project lead explicitly confirmed in this conversation:
+
+> “Bu dört sınırlamayı kabul ediyor ve Dishka vaka kaydına bu şekilde işlenmesini onaylıyorum eğer doğru bir onaylamaysa.”
+
+The approval was given after the four limitations were clarified as follows:
+
+- [x] **Researcher exposure:** acknowledge that the student has full source-level exposure to the Dishka issue/fix materials already reviewed; do not claim researcher blinding.
+- [x] **Single human adjudicator:** acknowledge that the student project lead is the only human adjudicator; ChatGPT is not a second human rater.
+- [x] **No inter-rater reliability claim:** do not claim human-human inter-rater agreement or Cohen's kappa.
+- [x] **Exploratory use only:** use Dishka, if it passes all remaining gates, as a case in the exploratory feasibility study under these limitations; do not present it as confirmatory evidence or as an unrestricted demonstration of general performance.
+
+**Human decision:** APPROVED — the four methodological limitations and exploratory-use boundary above.  
+**Decision date:** 2026-11-17 (communicated in this conversation).  
+**Scope:** This approval records acceptance of the limitations. It does not certify that the exposure audit, training-data contamination assessment, licensing review, independence check, evidence packet, or acceptance validator has passed.
 
 ## 8. Remaining case-acceptance gates
 
- 8. Remaining case-acceptance gates
-
-Even after the project lead signs off on the technical gold and evidence tiers, separately verify:
+Even after the project lead signs off on the technical gold, evidence tiers, and limitations, separately verify:
 
 1. exact dataset-row identity, timestamp/resource-type provenance, and row hash;
 2. one-case-per-upstream-project independence and related-defect/fork lineage;
@@ -107,4 +124,4 @@ Even after the project lead signs off on the technical gold and evidence tiers, 
 5. immutable evidence packet files, packet hashes, and provenance;
 6. the case-acceptance schema and validator against the actual record.
 
-Until all gates pass and the case record is accepted, the registry count remains zero and model inference remains unauthorized.
+Until all gates pass and the case record is formally accepted, the registry count remains zero and model inference remains unauthorized.
