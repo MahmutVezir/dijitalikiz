@@ -1353,9 +1353,9 @@ jobs:
               f.write(canonical)
           digest = hashlib.sha256(canonical).hexdigest()
           with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
-              f.write(digest + "  dataset-row-canonical.json\\n")
+              f.write(digest + "  dataset-row-canonical.json\n")
           with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
-              f.write("\\n".join(row["FAIL_TO_PASS"]) + "\\n")
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
           print("dataset_row_sha256=" + digest)
           print("dataset_created_at=" + str(row["created_at"]))
           print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
@@ -1423,7 +1423,7 @@ jobs:
                   raise SystemExit(f"Unexpected {name} version: {actual}; expected {expected}")
           with open("reproduction-evidence/dependency-license-inventory.json", "w", encoding="utf-8") as f:
               json.dump(inventory, f, indent=2, ensure_ascii=False, sort_keys=True)
-              f.write("\\n")
+              f.write("\n")
           with open("reproduction-evidence/dependency-environment-summary.json", "w", encoding="utf-8") as f:
               json.dump({
                   "python": "3.11.9",
@@ -1434,7 +1434,7 @@ jobs:
                   "pip_check": "passed",
                   "license_inventory_is_legal_clearance": False,
               }, f, indent=2, ensure_ascii=False)
-              f.write("\\n")
+              f.write("\n")
           print(json.dumps({
               "resolved_distribution_count": len(inventory),
               "all_license_metadata_present": True,
@@ -1467,7 +1467,7 @@ jobs:
                   "expected_test_only_paths": sorted(expected),
                   "production_code_changed": False,
               }, f, indent=2)
-              f.write("\\n")
+              f.write("\n")
           PY
           sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-test-patch-scope.json >> reproduction-evidence/dependency-environment-sha256.txt
 
