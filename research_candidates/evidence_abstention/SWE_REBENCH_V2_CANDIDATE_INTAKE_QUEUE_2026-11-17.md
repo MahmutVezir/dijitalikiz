@@ -19,7 +19,7 @@ Bu kayıt, 15 bağımsız upstream proje hedefinden sapmadan 96 ana adayın ve 1
 
 ### 1. Dishka #435 / PR #436 — ana kohort rank 2
 
-- Teknik yeniden üretim: önceki doğru test-only yöntemli çalışmalarda issue reproducer ve sekiz dataset selector için base FAIL / fixed PASS kanıtı mevcut.
+- Teknik yeniden üretim: issue reproducer ve 8/8 dataset selector pinned buggy base'te gerçek failure, fixed revision'da pass verdi.
 - Proje lideri gold mekanizma, alternatifler ve E1/E2/E3 üyelik/rasyonellerini onayladı.
 - Tek insan değerlendirici, araştırmacı maruziyeti ve yalnızca keşifsel kullanım sınırlamaları kabul edildi.
 - **Kalan kapı:** tam case-acceptance record, Draft 2020-12 acceptance schema doğrulaması ve fail-closed registry kontrolü. Bunlar tamamlanmadan accepted registry 0 kalır.
@@ -34,32 +34,49 @@ Bu kayıt, 15 bağımsız upstream proje hedefinden sapmadan 96 ana adayın ve 1
 ### 3. Nox #919 / PR #922 — ana kohort rank 6
 
 - Bağımsız issue reproducer pinned buggy base'de beklenen hatayı verdi.
-- Önceki Actions dataset selector çalıştırmasında shell word splitting parametrik selector'ları bozdu; ayrıca test_validation_options selector'ının pinned upstream koleksiyonunda bulunmadığı görüldü.
-- Ortak selector koşucusu artık her node ID'yi tek argv öğesi olarak iletiyor ve selector/collection hatasını gerçek test failure olarak sınıflandırmıyor.
-- **Kalan kapı:** yeni run'da tam selector listesi, eksik selector dahil, tek tek değerlendirilmelidir. Uyuşmayan selector sessizce çıkarılmayacak; exact dataset-row/oracle uyuşmazlığı kaydedilecek.
+- Son doğru test-only denemede 27 dataset selector'ın 24'ü geçerliydi ve base-fail/fixed-pass verdi; 3 selector pinned source'ta bulunmuyor veya parametrik node ID kesilmiş.
+- **Kalan kapı:** exact dataset row/oracle uyuşmazlığını çözmek. Üç selector sessizce çıkarılmayacak; row değiştirilmeden candidate pass sayılmayacak.
 
-## Aktif teknik batch
+## Aktif teknik batch — doğrulanmış sonuçlar
 
-17 Kasım 2026 itibarıyla yeni no-inference çalışması [44103128787](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44103128787) için:
+17 Kasım 2026 itibarıyla 12 adaylı no-inference batch'in sonucu:
 
-- no-inference-preflight: PASS.
-- Selector-runner contract tests: PASS.
-- 12 candidate job preflight'tan sonra kuyruğa alındı; bu kayıt oluşturulurken henüz candidate sonucu oluşmamıştı.
-- Batch: Dishka rank 2, Nox rank 6, Moto rank 9, NumPyro rank 12, EODAG rank 16, Robocop rank 24, Meltano SDK rank 26, Amaranth rank 30, Werkzeug rank 32, Python-Control rank 35, QuTiP rank 39 ve PyFar rank 90.
-- Earthkit-data rank 4 bu batch'e dahil değildir; fixture/provenance kapısı çözülmeden çalıştırılmayacaktır.
+| Aday | Teknik sonuç | Sonraki kapı |
+|---|---|---|
+| Dishka #435 | Stage 2 geçti; Stage 3 gold/E1/E2/E3 teknik incelemesi proje liderince onaylandı | Tam final acceptance record ve schema/registry |
+| NumPyro #1916 | 2/2 exact selector base-fail/fixed-pass | Stage 3 |
+| PyFar #721 | 23/23 exact selector base-fail/fixed-pass | Stage 3 |
+| Robocop #1371 | 1/1 exact selector base-fail/fixed-pass | Stage 3 |
+| Meltano SDK #3090 | 1/1 exact selector + bağımsız reproducer base-fail/fixed-pass | Stage 3 |
+| Amaranth #1518 | 1/1 exact selector + RTLIL reproducer base-fail/fixed-pass | Model eğitim/veri cutoff maruziyeti çözülmeden Stage 3 |
+| EODAG #1530 | 2/2 exact selector + YAML reproducer base-fail/fixed-pass | Stage 3 |
+| Python-Control #1144 | 3/3 exact selector + bağımsız reproducer base-fail/fixed-pass | Stage 3 |
+| QuTiP #2646 | 1/1 exact selector + bağımsız reproducer base-fail/fixed-pass; tekrar run da geçti | Stage 3 |
+| Nox #919 | 24/27 selector geçerli; 3 selector source/parametrik ID uyuşmazlığı | Bloklu; row/oracle kapısı |
+| Werkzeug #2955 | 1/2 selector geçerli; diğeri kesilmiş parametrik node ID | Bloklu; row/oracle kapısı |
+| Moto #8269 | ECR issue selector 1/1 geçti; row'daki 17 ilgisiz IoT selector'ın 5'i buggy base'te de geçti, 12'si geçersiz | Tam row karışık kapsam nedeniyle bloklu |
 
-Bu batch'in önceki run'ı [44097375066](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44097375066) için ayrı metodolojik erratum oluşturuldu. On adayın eski dataset sonuçları, buggy base üzerine tam üretim diff'i uygulanmış olması nedeniyle kabul kapısı açısından karar dışıdır. Eski loglar tarihsel kanıt olarak korunur.
+Aynı 96 ana kohortta sonraki ayrı doğrulamalar:
+- **Dymos #1166, rank 15:** Stage 2 teknik doğrulama geçti; dependency/license kapsamı, bağımsızlık ve Stage 3 insan kararı bekliyor.
+- **SkyPilot #5981, rank 17:** 1/1 exact upstream SSH regression selector pinned ortamda base-fail/fixed-pass verdi; 85 paketli lock, license metadata ve artifact hash kontrolleri geçti. Stage 3 ve eğitim verisi zaman maruziyeti incelemesi bekliyor.
+
+Bu nedenle son kayıtlı funnel:
+- Stage 2 teknik geçiş: **11 aday** (Dishka dahil; Dymos ve SkyPilot ayrı ek doğrulamalarla).
+- Stage 3 teknik/human adjudication tamamlanan: **1 aday (Dishka)**.
+- Nihai kabul edilmiş bağımsız vaka: **0**.
+- Nox, Werkzeug ve Moto başarısız aday diye elenmedi; exact dataset row/oracle kusurları nedeniyle bloklu.
+- Model yükleme, inference veya eğitim yapılmadı.
+
+Eski run 44097375066 için metodolojik erratum korunur. O run'daki eski test sonuçları, buggy base üzerine tam üretim diff'i uygulanmış olması nedeniyle kabul kapısı açısından karar dışıdır.
 
 ## Sonraki ana-kohort sırası
 
-Aktif batch'in aday sonuçları ve ham logları sınıflandırıldıktan sonra, henüz teknik batch'e alınmamış adaylar ana kohort sıra numarasıyla ele alınır. İlk sonraki inceleme sırası:
+Dymos rank 15 ve SkyPilot rank 17 için Stage 2 teknik doğrulama tamamlandı. Sonraki ana-kohort incelemesi, önceden dondurulmuş rank sırasına göre:
 
 | Rank | Aday | İlk kontrol |
 |---:|---|---|
-| 15 | OpenMDAO / Dymos #1165 | Minimal OpenMDAO ortamı, tüm doğrudan/geçişli bağımlılık lisansları ve daraltılmış issue-specific test |
-| 17 | SkyPilot #5985 | SSH/LSTRIP davranışının gerçek entegrasyon yolu ve mock'lu reproducer |
 | 19 | Napalm #2152 | Harici fixture ve provenance koşullu hold'u |
-| 21 | PyThaiNLP #1046 | Exact row, issue/patch alignment, bağımlılık ve licence gate |
+| 21 | PyThaiNLP #1046 | Exact row, issue/patch alignment, bağımlılık ve license gate |
 | 22 | Modin #7554 | Exact row, test oracle ve minimal environment |
 | 27 | DataComPy #404 | Hedef testin defect-specific olup olmadığı |
 | 31 | CTAPIpe #2732 | Return-type/docstring sözleşme uyuşmazlığı |
