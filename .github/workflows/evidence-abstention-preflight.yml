@@ -2480,3 +2480,285 @@ jobs:
           path: reproduction-evidence/
           if-no-files-found: warn
           retention-days: 90
+
+  dymos-issue-1166-reproduction:
+    needs: no-inference-preflight
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install pinned minimal Dymos runtime and audit licenses
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -VV
+          python -m venv .venv-tests
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/dymos_issue_1166/requirements.lock
+          .venv-tests/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          expected = {
+              "numpy": "1.26.4",
+              "scipy": "1.13.1",
+              "networkx": "3.3",
+              "packaging": "24.2",
+              "requests": "2.32.3",
+              "certifi": "2024.8.30",
+              "charset-normalizer": "3.4.0",
+              "idna": "3.10",
+              "urllib3": "2.2.3",
+              "openmdao": "3.38.0",
+              "pytest": "8.3.3",
+              "iniconfig": "2.0.0",
+              "pluggy": "1.5.0",
+              "Pygments": "2.18.0",
+          }
+          inventory = {}
+          for name, version in expected.items():
+              actual = md.version(name)
+              if actual != version:
+                  raise SystemExit(f"Unexpected {name} version: {actual}; expected {version}")
+              dist = md.metadata(name)
+              classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+              license_text = dist.get("License") or dist.get("License-Expression")
+              if not license_text and not classifiers:
+                  raise SystemExit(f"License metadata missing for {name}; stop before upstream tests")
+              inventory[name] = {
+                  "version": actual,
+                  "license": license_text,
+                  "license_expression": dist.get("License-Expression"),
+                  "license_classifiers": classifiers,
+              }
+          with open("dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          with open("runtime-version-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(expected, f, indent=2)
+              f.write("\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+          .venv-tests/bin/python -m pip check
+
+      - name: Clone exact Dymos source and authenticate base and fixed revisions
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          git clone https://github.com/OpenMDAO/dymos.git upstream-dymos
+          git -C upstream-dymos fetch --no-tags origin 3efd1035c3bf62890034eb9e07de543f3d117867 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949
+          git -C upstream-dymos cat-file -e '3efd1035c3bf62890034eb9e07de543f3d117867^{commit}'
+          git -C upstream-dymos cat-file -e '0ffc82225d6125dcb5c5b5acfb9be9fd712ef949^{commit}'
+          git -C upstream-dymos checkout --detach 3efd1035c3bf62890034eb9e07de543f3d117867
+          test "$(git -C upstream-dymos rev-parse HEAD)" = "3efd1035c3bf62890034eb9e07de543f3d117867"
+          test "$(git -C upstream-dymos rev-parse HEAD:LICENSE)" = "55da29e11b1fb2465936598779085f1cbcdf2908"
+          test "$(git -C upstream-dymos rev-parse HEAD:pyproject.toml)" = "739e56592adfa10e0583b5f71fa4d36837e5a88c"
+          git -C upstream-dymos show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE.txt
+          git -C upstream-dymos show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
+          git -C upstream-dymos diff 3efd1035c3bf62890034eb9e07de543f3d117867 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949 > reproduction-evidence/pr-1165-full.patch
+          git -C upstream-dymos diff 3efd1035c3bf62890034eb9e07de543f3d117867 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949 -- dymos/examples/balanced_field/test/test_balanced_field_length.py dymos/transcriptions/common/test/test_control_interp_comp.py > reproduction-evidence/dataset-test.patch
+          .venv-tests/bin/python - <<'PY'
+          import json
+          import subprocess
+          expected = {
+              "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+              "dymos/transcriptions/common/control_comp.py",
+              "dymos/transcriptions/common/test/test_control_interp_comp.py",
+              "dymos/transcriptions/explicit_shooting/explicit_shooting.py",
+              "dymos/transcriptions/explicit_shooting/ode_evaluation_group.py",
+              "dymos/utils/misc.py",
+          }
+          changed = set(subprocess.check_output(
+              ["git", "-C", "upstream-dymos", "diff", "--name-only",
+               "3efd1035c3bf62890034eb9e07de543f3d117867",
+               "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949"],
+              text=True,
+          ).splitlines())
+          if changed != expected:
+              raise SystemExit(f"Unexpected full PR changed-file set: {sorted(changed)}")
+          test_patch = set(subprocess.check_output(
+              ["git", "-C", "upstream-dymos", "diff", "--name-only",
+               "3efd1035c3bf62890034eb9e07de543f3d117867",
+               "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949", "--",
+               "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+               "dymos/transcriptions/common/test/test_control_interp_comp.py"],
+              text=True,
+          ).splitlines())
+          required_test_paths = {
+              "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+              "dymos/transcriptions/common/test/test_control_interp_comp.py",
+          }
+          if test_patch != required_test_paths:
+              raise SystemExit(f"Unexpected test-only diff set: {sorted(test_patch)}")
+          with open("reproduction-evidence/source-change-scope.json", "w", encoding="utf-8") as f:
+              json.dump({
+                  "full_pr_changed_files": sorted(changed),
+                  "test_only_patch_paths": sorted(test_patch),
+                  "production_code_is_not_in_test_only_patch": True,
+              }, f, indent=2)
+              f.write("\n")
+          PY
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1165-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
+          cp dependency-license-inventory.json reproduction-evidence/
+          cp runtime-version-inventory.json reproduction-evidence/
+
+      - name: Install pinned Parquet extraction dependency and audit its license
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          .venv-dataset/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          dist = md.metadata("pyarrow")
+          classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+          license_text = dist.get("License") or dist.get("License-Expression")
+          if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
+              raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
+          inventory = {"pyarrow": {
+              "version": md.version("pyarrow"),
+              "license": license_text,
+              "license_expression": dist.get("License-Expression"),
+              "license_classifiers": classifiers,
+          }}
+          with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+
+      - name: Extract and authenticate exact Dymos dataset row and selectors
+        shell: bash
+        run: |
+          set -euo pipefail
+          .venv-dataset/bin/python - <<'PY'
+          import hashlib
+          import json
+          import pyarrow.parquet as pq
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          table = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "openmdao__dymos-1165")])
+          rows = table.to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected exactly one openmdao__dymos-1165 row; found {len(rows)}")
+          row = rows[0]
+          assert row["repo"] == "OpenMDAO/dymos", row
+          assert row["base_commit"] == "3efd1035c3bf62890034eb9e07de543f3d117867", row
+          assert row["language"] == "python", row
+          assert row["license"] == "Apache-2.0", row
+          if str(row["created_at"]).replace("T", " ")[:19] != "2025-04-04 20:23:44":
+              raise SystemExit(f"Dataset created_at does not match PR #1165 creation time 2025-04-04T20:23:44Z: {row['created_at']!r}")
+          if not row["FAIL_TO_PASS"]:
+              raise SystemExit("Pinned Dymos dataset row has no FAIL_TO_PASS selectors")
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\n")
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
+          scope = [{
+              "selector": selector,
+              "direct_default_value_regression": "test_default_vals_stick" in selector,
+              "control_interpolation_regression": "test_control_interp_" in selector,
+          } for selector in row["FAIL_TO_PASS"]]
+          with open("reproduction-evidence/selector-scope-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(scope, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print("dataset_row_sha256=" + digest)
+          print("dataset_created_at=" + str(row["created_at"]))
+          print("fail_to_pass_count=" + str(len(row["FAIL_TO_PASS"])))
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          print("selector_scope=" + json.dumps(scope, ensure_ascii=False))
+          PY
+          sha256sum reproduction-evidence/dataset-row-canonical.json reproduction-evidence/dataset-fail-to-pass-selectors.txt > reproduction-evidence/dataset-row-and-selector-sha256.txt
+
+      - name: Run exact dataset selectors on test-only patched buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-dymos checkout --detach 3efd1035c3bf62890034eb9e07de543f3d117867
+          git -C upstream-dymos apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
+          .venv-tests/bin/python - <<'PY'
+          import subprocess
+          expected = {
+              "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+              "dymos/transcriptions/common/test/test_control_interp_comp.py",
+          }
+          changed = set(subprocess.check_output(
+              ["git", "-C", "upstream-dymos", "diff", "--name-only"], text=True
+          ).splitlines())
+          if changed != expected:
+              raise SystemExit(f"Test-only patch changed unexpected paths: {sorted(changed)}")
+          PY
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-dymos" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-dymos" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-dataset-test.log
+          if [ "$status" -ne 0 ]; then
+            echo "Dymos FAIL_TO_PASS selectors did not all execute and fail on the pinned buggy base." >&2
+            exit "$status"
+          fi
+
+      - name: Run the same dataset selectors on the exact fixed revision (pass required)
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f reproduction-evidence/dataset-fail-to-pass-selectors.txt ]; then
+            echo "Exact dataset selectors were not authenticated; fixed-side test execution is not possible." >&2
+            exit 0
+          fi
+          git -C upstream-dymos checkout --detach --force 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-dymos" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-dymos" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
+          cat reproduction-evidence/fixed-dataset-test.log
+
+      - name: Prepare Dymos raw reproduction evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          rm -f reproduction-evidence/train-00000-of-00001.parquet
+          if [ -f dependency-license-inventory.json ]; then cp dependency-license-inventory.json reproduction-evidence/; fi
+          if [ -f runtime-version-inventory.json ]; then cp runtime-version-inventory.json reproduction-evidence/; fi
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+          {
+            echo "### Dymos #1166 / PR #1165 — control default values"
+            echo "- Buggy base: 3efd1035c3bf62890034eb9e07de543f3d117867"
+            echo "- Fixed revision: 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949"
+            echo "- Test-only PR patch paths are limited to the two upstream test modules"
+            echo "- The exact Parquet row and every original FAIL_TO_PASS selector are retained"
+            echo "- No pyoptsparse/IPOPT optimizer installed; PR test-only diff removes the optimizer-only decorator from the focused run_model regression test"
+            echo "- No model loading, inference, or training"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload raw Dymos reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dymos-issue-1166-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
