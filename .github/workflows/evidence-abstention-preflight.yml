@@ -1362,6 +1362,153 @@ jobs:
           PY
           rm reproduction-evidence/train-00000-of-00001.parquet
 
+      - name: Install focused EODAG unit-test environment and audit all dependency licenses
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-eodag
+          .venv-eodag/bin/python -m pip install --disable-pip-version-check -r research_candidates/evidence_abstention/reproduction/eodag_issue_1530/requirements.test.in
+          .venv-eodag/bin/python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e ./upstream-eodag
+          .venv-eodag/bin/python -m pip check
+          .venv-eodag/bin/python -m pip freeze --all | sort > reproduction-evidence/dependency-lock-resolved.txt
+          .venv-eodag/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          import re
+          inventory = {}
+          missing = []
+          for dist in md.distributions():
+              name = dist.metadata.get("Name")
+              if not name:
+                  continue
+              canonical = re.sub(r"[-_.]+", "-", name).lower()
+              if canonical in inventory:
+                  raise SystemExit(f"Duplicate installed distribution metadata name: {name}")
+              classifiers = [
+                  item for item in dist.metadata.get_all("Classifier", [])
+                  if item.startswith("License ::")
+              ]
+              license_text = dist.metadata.get("License") or dist.metadata.get("License-Expression")
+              if not license_text and not classifiers:
+                  missing.append(name)
+              inventory[canonical] = {
+                  "name": name,
+                  "version": dist.version,
+                  "license": license_text,
+                  "license_expression": dist.metadata.get("License-Expression"),
+                  "license_classifiers": classifiers,
+              }
+          if missing:
+              raise SystemExit(
+                  "License metadata missing for installed distribution(s); "
+                  "upstream dataset selectors were not executed: " + ", ".join(sorted(missing))
+              )
+          required = {
+              "eodag": "3.1.0b2",
+              "pydantic": "2.10.6",
+              "pyyaml": "6.0.2",
+              "ecmwf-api-client": "1.6.3",
+              "usgs": "0.3.5",
+              "owslib": "0.31.0",
+              "fastapi": "0.115.8",
+              "pytest": "8.3.4",
+              "pytest-socket": "0.7.0",
+          }
+          for name, expected in required.items():
+              actual = inventory.get(name, {}).get("version")
+              if actual is None:
+                  raise SystemExit(f"Required package absent from license inventory: {name}")
+              if actual != expected:
+                  raise SystemExit(f"Unexpected {name} version: {actual}; expected {expected}")
+          with open("reproduction-evidence/dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False, sort_keys=True)
+              f.write("\\n")
+          with open("reproduction-evidence/dependency-environment-summary.json", "w", encoding="utf-8") as f:
+              json.dump({
+                  "python": "3.11.9",
+                  "eodag_source_base": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+                  "explicitly_pinned_packages": required,
+                  "resolved_distribution_count": len(inventory),
+                  "all_installed_distributions_have_license_metadata": True,
+                  "pip_check": "passed",
+                  "license_inventory_is_legal_clearance": False,
+              }, f, indent=2, ensure_ascii=False)
+              f.write("\\n")
+          print(json.dumps({
+              "resolved_distribution_count": len(inventory),
+              "all_license_metadata_present": True,
+              "required_package_versions": required,
+          }, indent=2))
+          PY
+          sha256sum reproduction-evidence/dependency-lock-resolved.txt reproduction-evidence/dependency-license-inventory.json reproduction-evidence/dependency-environment-summary.json > reproduction-evidence/dependency-environment-sha256.txt
+
+      - name: Apply exact test-only PR patch and verify no production code changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-eodag checkout --detach b7cc06e19025e5bbf14e28a0975f1749e21e9be3
+          git -C upstream-eodag diff b7cc06e19025e5bbf14e28a0975f1749e21e9be3 312966a46513a082333d46cd7212bdce36aaf769 -- tests/units/test_core.py > reproduction-evidence/dataset-test.patch
+          test -s reproduction-evidence/dataset-test.patch
+          git -C upstream-eodag apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
+          .venv-eodag/bin/python - <<'PY'
+          import json
+          import subprocess
+          expected = {"tests/units/test_core.py"}
+          changed = set(subprocess.check_output(
+              ["git", "-C", "upstream-eodag", "diff", "--name-only"],
+              text=True,
+          ).splitlines())
+          if changed != expected:
+              raise SystemExit(f"Test-only patch changed unexpected paths: {sorted(changed)}")
+          with open("reproduction-evidence/dataset-test-patch-scope.json", "w", encoding="utf-8") as f:
+              json.dump({
+                  "changed_paths_after_test_patch": sorted(changed),
+                  "expected_test_only_paths": sorted(expected),
+                  "production_code_changed": False,
+              }, f, indent=2)
+              f.write("\\n")
+          PY
+          sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-test-patch-scope.json >> reproduction-evidence/dependency-environment-sha256.txt
+
+      - name: Run exact EODAG dataset selectors on test-only patched buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-eodag" .venv-eodag/bin/python research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py \
+            --source-dir "$GITHUB_WORKSPACE/upstream-eodag" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --config-file "$GITHUB_WORKSPACE/upstream-eodag/pytest.ini" \
+            --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-dataset-test.log
+          if [ "$status" -ne 0 ]; then
+            echo "EODAG selectors did not all execute and fail on the exact buggy base." >&2
+            exit "$status"
+          fi
+
+      - name: Run the same exact EODAG dataset selectors on fixed revision (pass required)
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f reproduction-evidence/dataset-fail-to-pass-selectors.txt ] || [ ! -d .venv-eodag ]; then
+            echo "Exact dataset selectors or audited test environment unavailable; no fixed-side tests run." >&2
+            exit 0
+          fi
+          git -C upstream-eodag checkout --detach --force 312966a46513a082333d46cd7212bdce36aaf769
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-eodag" .venv-eodag/bin/python research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py \
+            --source-dir "$GITHUB_WORKSPACE/upstream-eodag" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --config-file "$GITHUB_WORKSPACE/upstream-eodag/pytest.ini" \
+            --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
+          cat reproduction-evidence/fixed-dataset-test.log
+
       - name: Prepare and upload raw EODAG reproduction evidence
         if: always()
         shell: bash
@@ -1374,7 +1521,7 @@ jobs:
             echo "- Buggy base: b7cc06e19025e5bbf14e28a0975f1749e21e9be3"
             echo "- Fixed revision: 312966a46513a082333d46cd7212bdce36aaf769"
             echo "- Minimal runtime: Python 3.11.9 + PyYAML 6.0.2"
-            echo "- Dataset FAIL_TO_PASS selectors were captured but not executed in this minimal environment"
+            echo "- Exact issue-specific dataset selectors were run using upstream pytest.ini and the pinned focused test environment when the dependency license gate passed"
             echo "- No model loading, inference, or training"
           } >> "$GITHUB_STEP_SUMMARY"
 
