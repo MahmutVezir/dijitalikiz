@@ -31,7 +31,7 @@ class SelectorRunnerContractTests(unittest.TestCase):
 
     def test_no_conftest_option_is_passed_to_pytest(self) -> None:
         selector = "tests/test_http.py::TestHTTPUtility::test_authorization_ignore_invalid_parameters"
-        output = ".\\n1 passed in 0.02s\\n"
+        output = ".\n1 passed in 0.02s\n"
         completed = subprocess.CompletedProcess(args=["pytest"], returncode=0, stdout=output)
         with tempfile.TemporaryDirectory() as tmp:
             with patch("run_swe_rebench_fail_to_pass.subprocess.run", return_value=completed) as mocked:
