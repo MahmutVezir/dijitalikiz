@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-17T17:32:24.426Z",
+  "generated_at_utc": "2026-11-17T17:39:37.161Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -508,17 +508,18 @@
       "repository": "capitalone/datacompy",
       "pull_request_number": 404,
       "pull_request_url": "https://github.com/capitalone/datacompy/pull/404",
-      "static_screening_classification": "provisional_candidate",
-      "static_scope_decision": "Geçici bug adayı; hedef test uygunluğu riski",
-      "second_pass_disposition": "none_recorded",
-      "second_pass_reason": null,
-      "candidate_review_document": null,
-      "stage2_status": "not_started",
+      "static_screening_classification": "conditional",
+      "static_scope_decision": "Koşullu/hold — frozen FAIL_TO_PASS set mixed scope; NumPy selector empty-array oracle'a ulaşmadan genel array desteğinde fail olabilir; iki ek selector list/Polars-list özelliği.",
+      "second_pass_disposition": "held_mixed_scope_and_non_issue_specific_frozen_selectors",
+      "second_pass_reason": "Frozen row capitalone__datacompy-404 contains 3 FAIL_TO_PASS selectors: numpy arrays, Python lists, and Polars lists. Issue #58 concerns only equal empty NumPy arrays. The broad NumPy selector test_columns_equal_numpy_arrays first asserts equality for non-empty np.array([j]) cells; the exact base columns_equal() short-circuits mixed object series to all False before reaching the empty-array block at the end. The two other frozen selectors test list/Polars-list support and are unrelated to issue #58's narrow defect. Do not drop selectors, reorder tests, or substitute a handcrafted selector; immutable row cannot presently satisfy issue-specific oracle gate.",
+      "candidate_review_document": "research_candidates/evidence_abstention/DATACOMPY_404_CANDIDATE_REVIEW_2026-11-17.md",
+      "stage2_status": "held_mixed_scope_and_non_issue_specific_frozen_selectors",
       "stage2_workflow_job_id": null,
-      "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage2_evidence_note": "Frozen Parquet row authenticated by discovery run 44138363070 / job 134234019328; row SHA-256 960a975dc433d1357dbeb575fba8ae15ef68ed9609866293ff4493b6804325fd; exact selectors preserved in artifact 14351794927, SHA-256 6dac19d093acdbc22b0ed009aa2cee5987bf57360bf0f2af9399b91b4797eca1; 3/3 inner hashes independently verified. Static source/test review found the NumPy selector begins with non-empty np.array([j]) equality before its empty-array assertion. On base, pandas 2.2.3 infer_dtype classifies ndarray object Series as mixed and columns_equal() returns all False in the mixed-type short-circuit, so that broad test can fail before the empty-array issue case. The other two selectors cover list/Polars-list support. No frozen selector test was run because issue-specific scope gate fails; no selector was removed or replaced. No Stage2 pass claimed.",
+      "stage3_status": "not_started_stage2_scope_gate_not_passed",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": null
     },
     {
       "cohort_rank": 28,
