@@ -115,13 +115,14 @@ The approval was given after the four limitations were clarified as follows:
 
 ## 8. Remaining case-acceptance gates
 
-Even after the project lead signs off on the technical gold, evidence tiers, and limitations, separately verify:
+The project lead's 2026-11-17 acknowledgement of the disclosed limitations is complete. The technical reproduction, gold/tier adjudication, dataset row and timestamp reconciliation, one-project independence review, documentary license/environment screen, and immutable evidence-packet/hash checks are documented in the linked candidate records.
 
-1. exact dataset-row identity, timestamp/resource-type provenance, and row hash;
-2. one-case-per-upstream-project independence and related-defect/fork lineage;
-3. exposure classification and the model-training contamination limitation;
-4. exact-base license and changed-file/dependency scope, with documentary evidence;
-5. immutable evidence packet files, packet hashes, and provenance;
-6. the case-acceptance schema and validator against the actual record.
+The remaining formal case-acceptance work is:
 
-Until all gates pass and the case record is formally accepted, the registry count remains zero and model inference remains unauthorized.
+1. prepare the complete case-acceptance record using the exact dataset row, source commits/paths, root-license evidence, technical reproduction artifacts, approved gold/alternatives, and E1/E2/E3 manifests;
+2. validate the complete record against the Draft 2020-12 acceptance schema and run the fail-closed registry checks; resolve every blocker without relaxing any predeclared criterion;
+3. preserve the registry at zero accepted cases until a complete record has passed those checks and the project lead has made the separate final case-acceptance decision.
+
+The validator is structural and consistency-only. It does not authenticate external artifact URIs, reproduce upstream tests, decide legal questions, prove semantic sufficiency, or authorize model loading/inference.
+
+**Current status:** limitation acknowledgement recorded; final case acceptance not yet granted; accepted registry count remains 0; model inference/training authorization remains false.
