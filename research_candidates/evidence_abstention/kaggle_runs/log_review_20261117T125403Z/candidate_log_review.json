@@ -1,0 +1,333 @@
+{
+  "schema_version": "1.0",
+  "run_id_utc": "20261117T125403Z",
+  "repository": "MahmutVezir/dijitalikiz",
+  "source_branch": "research/2026-11-16-followup-evidence-validation",
+  "source_archive_path": "research_candidates/evidence_abstention/kaggle_runs/2026-11-17_b4b8b536e82e/kaggle_no_inference_candidate_evidence.zip",
+  "source_archive_sha256": "b4b8b536e82e7ac93e94bbb51d63f71185a2b7ab2515178480189f8cf783b777",
+  "source_summary_sha256": "d0bba8618d4af349ae20348ba0a8b046fbfe0d1cc2e81e777ab3bdb27bfd564a",
+  "zip_integrity": "pass",
+  "expected_failed_candidate_jobs": 11,
+  "observed_failed_candidate_jobs": 11,
+  "model_loaded": false,
+  "model_inference_performed": false,
+  "training_performed": false,
+  "acceptance_decisions_made": false,
+  "interpretation": "Categories are deterministic preliminary triage labels only. A failed job does not establish candidate invalidity. Inspect raw logs and rerun after fixing environment/source issues.",
+  "candidate_reviews": [
+    {
+      "job": "nox-issue-919-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 27.0,
+      "failed_steps": [
+        "Clone exact upstream source and prepare pinned patch"
+      ],
+      "preliminary_category": "source_checkout_or_patch_step_failed_cause_unresolved",
+      "artifact_declared_count": 14,
+      "artifact_found_count": 0,
+      "artifact_missing_count": 14,
+      "missing_artifacts": [
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-groups-pyproject.toml",
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/attrs-pyproject.toml",
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/attrs-LICENSE",
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/DEPENDENCY_GROUPS_1_3_0_LICENSE_REVIEW_2026-11-16.md",
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-groups-LICENSE.txt",
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/attrs-source-commit.txt",
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-test.patch",
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-groups-source-commit.txt",
+        "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/ATTRS_24_3_0_LICENSE_REVIEW_2026-11-16.md"
+      ],
+      "relevant_files": [],
+      "skipped_steps": [
+        "Run independent issue reproducer on buggy base (failure required)",
+        "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)",
+        "Run independent issue reproducer and dataset selectors on fixed revision (pass required)"
+      ],
+      "log_excerpt_candidates": []
+    },
+    {
+      "job": "numpyro-issue-1916-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 76.14,
+      "failed_steps": [
+        "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)"
+      ],
+      "preliminary_category": "test_step_failed_cause_unresolved",
+      "artifact_declared_count": 12,
+      "artifact_found_count": 0,
+      "artifact_missing_count": 12,
+      "missing_artifacts": [
+        "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/base-commit.txt",
+        "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/fixed-commit.txt",
+        "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/environment-lock-sha256.txt",
+        "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/test-environment-freeze.txt",
+        "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/base-dataset-test.log",
+        "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/source-and-dataset-sha256.txt",
+        "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-test.patch"
+      ],
+      "relevant_files": [],
+      "skipped_steps": [
+        "Run identical dataset selectors on fixed revision (pass required)"
+      ],
+      "log_excerpt_candidates": []
+    },
+    {
+      "job": "werkzeug-issue-2955-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 23.26,
+      "failed_steps": [
+        "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)"
+      ],
+      "preliminary_category": "test_step_failed_cause_unresolved",
+      "artifact_declared_count": 10,
+      "artifact_found_count": 0,
+      "artifact_missing_count": 10,
+      "missing_artifacts": [
+        "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/environment-lock-sha256.txt",
+        "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/test-environment-freeze.txt",
+        "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/base-dataset-test.log",
+        "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/source-and-dataset-sha256.txt",
+        "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-test.patch"
+      ],
+      "relevant_files": [],
+      "skipped_steps": [
+        "Run identical dataset selectors on fixed revision (pass required)"
+      ],
+      "log_excerpt_candidates": []
+    },
+    {
+      "job": "robocop-issue-1371-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 27.06,
+      "failed_steps": [
+        "Clone exact upstream source and prepare pinned patch"
+      ],
+      "preliminary_category": "source_checkout_or_patch_step_failed_cause_unresolved",
+      "artifact_declared_count": 7,
+      "artifact_found_count": 0,
+      "artifact_missing_count": 7,
+      "missing_artifacts": [
+        "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/test-environment-freeze.txt",
+        "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-test.patch"
+      ],
+      "relevant_files": [],
+      "skipped_steps": [
+        "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)",
+        "Run identical dataset selectors on fixed revision (pass required)"
+      ],
+      "log_excerpt_candidates": []
+    },
+    {
+      "job": "pyfar-issue-721-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 48.82,
+      "failed_steps": [
+        "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)"
+      ],
+      "preliminary_category": "test_step_failed_cause_unresolved",
+      "artifact_declared_count": 10,
+      "artifact_found_count": 0,
+      "artifact_missing_count": 10,
+      "missing_artifacts": [
+        "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/environment-lock-sha256.txt",
+        "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/test-environment-freeze.txt",
+        "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/base-dataset-test.log",
+        "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/source-and-dataset-sha256.txt",
+        "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-test.patch"
+      ],
+      "relevant_files": [],
+      "skipped_steps": [
+        "Run identical dataset selectors on fixed revision (pass required)"
+      ],
+      "log_excerpt_candidates": []
+    },
+    {
+      "job": "eodag-issue-1530-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 22.0,
+      "failed_steps": [
+        "Clone and authenticate exact upstream source snapshots"
+      ],
+      "preliminary_category": "source_checkout_or_patch_step_failed_cause_unresolved",
+      "artifact_declared_count": 5,
+      "artifact_found_count": 0,
+      "artifact_missing_count": 5,
+      "missing_artifacts": [
+        "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/base-user_conf_template.yml",
+        "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/issue-1530-source.patch",
+        "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/upstream-NOTICE.txt",
+        "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/upstream-LICENSE.txt"
+      ],
+      "relevant_files": [],
+      "skipped_steps": [
+        "Run identical issue reproducer on buggy base (failure required)",
+        "Run identical issue reproducer on fixed revision (pass required)",
+        "Extract exact dataset row and record FAIL_TO_PASS selectors without executing upstream tests"
+      ],
+      "log_excerpt_candidates": []
+    },
+    {
+      "job": "moto-issue-8269-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 35.4,
+      "failed_steps": [
+        "Clone exact Moto source and prepare patch"
+      ],
+      "preliminary_category": "source_checkout_or_patch_step_failed_cause_unresolved",
+      "artifact_declared_count": 2,
+      "artifact_found_count": 0,
+      "artifact_missing_count": 2,
+      "missing_artifacts": [
+        "collected_artifacts/moto-issue-8269-reproduction/moto-issue-8269-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "collected_artifacts/moto-issue-8269-reproduction/moto-issue-8269-reproduction/reproduction-evidence/dependency-license-inventory.json"
+      ],
+      "relevant_files": [],
+      "skipped_steps": [
+        "Run independent issue reproducer on buggy base (failure required)",
+        "Run exact dataset FAIL_TO_PASS selectors on patched buggy base (failure required)",
+        "Run same issue reproducer and dataset selectors on fixed revision (pass required)"
+      ],
+      "log_excerpt_candidates": []
+    },
+    {
+      "job": "meltano-issue-3090-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 20.42,
+      "failed_steps": [
+        "Clone exact Singer SDK source and authenticate license"
+      ],
+      "preliminary_category": "source_checkout_or_patch_step_failed_cause_unresolved",
+      "artifact_declared_count": 5,
+      "artifact_found_count": 0,
+      "artifact_missing_count": 5,
+      "missing_artifacts": [
+        "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/pr-3091.patch",
+        "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/upstream-pyproject.toml",
+        "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/upstream-LICENSE.txt"
+      ],
+      "relevant_files": [],
+      "skipped_steps": [
+        "Run independent source reproducer on buggy base (failure required)",
+        "Extract exact dataset row and authenticate timestamp",
+        "Run exact dataset selectors on patched buggy base (failure required)",
+        "Run same source and dataset selectors on fixed revision (pass required)"
+      ],
+      "log_excerpt_candidates": []
+    },
+    {
+      "job": "python-control-issue-1144-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 39.88,
+      "failed_steps": [
+        "Run exact dataset selectors on patched buggy base (failure required)"
+      ],
+      "preliminary_category": "source_checkout_or_patch_step_failed_cause_unresolved",
+      "artifact_declared_count": 11,
+      "artifact_found_count": 0,
+      "artifact_missing_count": 11,
+      "missing_artifacts": [
+        "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/source-provenance-sha256.txt",
+        "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-extraction-license-inventory.json",
+        "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/upstream-pyproject.toml",
+        "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/upstream-LICENSE.txt",
+        "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/base-issue-test.log",
+        "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/pr-1145.patch"
+      ],
+      "relevant_files": [],
+      "skipped_steps": [
+        "Run same reproducer and dataset selectors on fixed revision (pass required)"
+      ],
+      "log_excerpt_candidates": []
+    },
+    {
+      "job": "qutip-issue-2646-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 437.62,
+      "failed_steps": [
+        "Apply exact PR patch and run dataset selectors on buggy base (failure required)"
+      ],
+      "preliminary_category": "source_checkout_or_patch_step_failed_cause_unresolved",
+      "artifact_declared_count": 11,
+      "artifact_found_count": 0,
+      "artifact_missing_count": 11,
+      "missing_artifacts": [
+        "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/pr-2694.patch",
+        "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/source-provenance-sha256.txt",
+        "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-extraction-license-inventory.json",
+        "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/upstream-pyproject.toml",
+        "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/upstream-LICENSE.txt",
+        "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/base-issue-test.log"
+      ],
+      "relevant_files": [],
+      "skipped_steps": [
+        "Run same reproducer and selectors on fixed revision (pass required)"
+      ],
+      "log_excerpt_candidates": []
+    },
+    {
+      "job": "amaranth-issue-1518-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 10.51,
+      "failed_steps": [
+        "Clone exact Amaranth source and prepare patch"
+      ],
+      "preliminary_category": "source_checkout_or_patch_step_failed_cause_unresolved",
+      "artifact_declared_count": 5,
+      "artifact_found_count": 0,
+      "artifact_missing_count": 5,
+      "missing_artifacts": [
+        "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/pr-1519.patch",
+        "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/upstream-pyproject.toml",
+        "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/upstream-LICENSE.txt"
+      ],
+      "relevant_files": [],
+      "skipped_steps": [
+        "Run independent RTLIL reproducer on buggy base (failure required)",
+        "Extract and authenticate exact dataset row",
+        "Apply exact PR patch and run dataset selectors on buggy base (failure required)",
+        "Run same reproducer and selectors on fixed revision (pass required)"
+      ],
+      "log_excerpt_candidates": []
+    }
+  ]
+}
