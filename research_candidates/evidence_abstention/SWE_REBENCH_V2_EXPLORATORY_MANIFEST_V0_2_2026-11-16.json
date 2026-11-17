@@ -194,7 +194,8 @@
     "Target clarification approved by project lead on 2026-11-16: primary target is 15 independent upstream projects; 20 is a stretch target. Fewer than 15 cases are still retained if they pass all unchanged acceptance criteria; no eligibility threshold is lowered and no candidate is selected using model outcomes.",
     "v0.2 no-inference preflight is the active readiness report. Historical v0.1 confirmatory preflight rules (60-case threshold, Panel A/B, external preregistration, reviewer consent, and external audit) are not requirements of this single-researcher exploratory design.",
     "Stage 2 rerun snapshot 2026-11-17: full base-fail/fixed-pass contracts verified for Dishka, NumPyro (2/2), Robocop (1/1), PyFar (23/23), Python-Control (3/3), Meltano (1/1), Amaranth (1/1), and QuTiP (1/1). EODAG issue reproducer and exact row verified; its two issue-aligned dataset selectors remain unexecuted. Moto's issue-specific ECR reproducer and selector passed, but the exact 18-selector row mixes unrelated IoT tests and contains 12 invalid selectors. Nox and Werkzeug remain blocked by malformed original dataset selectors. Technical Stage 2 dispositions only; accepted_case_count and accepted_project_count remain 0; no model load/inference/training authorized.",
-    "Stage 2 snapshot update 2026-11-17 15:29 UTC: OpenMDAO/dymos #1166 is now technically verified. Its exact single FAIL_TO_PASS selector failed on the buggy base (actual control defaults [[1],[1]] vs expected [[0],[10]]) and passed on the fixed revision. Parquet row SHA-256 236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5; workflow artifact 14341424466, ZIP SHA-256 8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051; all 18 artifact member hashes verified locally. Stage 3 and human license signoff remain pending; final accepted cases stay 0."
+    "Stage 2 snapshot update 2026-11-17 15:29 UTC: OpenMDAO/dymos #1166 is now technically verified. Its exact single FAIL_TO_PASS selector failed on the buggy base (actual control defaults [[1],[1]] vs expected [[0],[10]]) and passed on the fixed revision. Parquet row SHA-256 236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5; workflow artifact 14341424466, ZIP SHA-256 8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051; all 18 artifact member hashes verified locally. Stage 3 and human license signoff remain pending; final accepted cases stay 0.",
+    "EODAG Stage 2 closed on run 44117944004: exact pinned row cs-si__eodag-1536, row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47, timestamp 2025-02-21T10:04:30Z; issue reproducer base-fail/fixed-pass and both exact dataset selectors base-fail/fixed-pass (2/2 each). Artifact 14344421574 SHA-256 0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33. No inference/training; final case not accepted."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -756,7 +757,7 @@
     {
       "instance_id": "cs-si__eodag-1536",
       "cohort_rank": 16,
-      "status": "issue_reproducer_base_fail_fixed_pass_exact_dataset_row_authenticated_selector_execution_pending",
+      "status": "stage2_pass_independent_issue_reproducer_and_all_2_exact_dataset_selectors_buggy_base_fail_fixed_revision_pass",
       "issue_url": "https://github.com/CS-SI/eodag/issues/1530",
       "pull_request_url": "https://github.com/CS-SI/eodag/pull/1536",
       "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
@@ -775,10 +776,12 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "execute_exact_dataset_FAIL_TO_PASS_selectors_on_buggy_base_and_fixed_revision_without_installing_unreviewed_dependency_stack",
-        "complete_dependency_license_inventory_for_any_full_test_environment_if_needed",
+        "human_review_dependency_license_inventory_and_source_provenance",
         "independence_and_related_issue_family_review",
-        "gold_standard_and_E1_E2_E3_human_adjudication"
+        "human_gold_root_cause_and_alternative_hypotheses_adjudication",
+        "E1_E2_E3_nested_evidence_packet_preparation_and_human_approval",
+        "complete_schema_conformant_final_case_record_and_fail_closed_registry_validation",
+        "student_project_lead_separate_final_case_acceptance_decision"
       ],
       "issue_created_at": "2025-02-20T11:38:36Z",
       "pull_request_created_at": "2025-02-21T10:04:30Z",
@@ -805,7 +808,7 @@
         "inventory_file": "eodag_dataset_candidate_inventory.json",
         "inventory_artifact_id": 14340430332
       },
-      "issue_reproducer_status": "PASS_CONTRAST: base fails because geodes_s3 key is absent; fixed revision passes",
+      "issue_reproducer_status": "PASS_CONTRAST: buggy base fails because geodes_s3 provider key is absent; exact fixed revision passes.",
       "latest_candidate_workflow_run_id": 44108700819,
       "latest_candidate_workflow_job_id": 134128172467,
       "dataset_row_gate": "exact lower-case Parquet instance_id authenticated; prior workflow capitalization bug corrected",
@@ -826,12 +829,16 @@
         "unrelated_pr_change": "The PR also adds StacListAssets support in eodag/config.py, but the two dataset selectors above directly target the geodes_s3 provider registration and metadata.",
         "selector_execution_status": "not executed; only row extraction and static alignment reviewed"
       },
-      "latest_reproduction_run_id": 44111403900,
-      "latest_reproduction_job_id": 134137814170,
-      "reproduction_artifact_id": 14339759627,
-      "reproduction_artifact_sha256": "4d34616c6338a9b477ec4ab07a46ab780047a755ab1578962c4de5eaf7493bbc",
+      "latest_reproduction_run_id": 44117944004,
+      "latest_reproduction_job_id": 134161227052,
+      "reproduction_artifact_id": 14344421574,
+      "reproduction_artifact_sha256": "0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33",
       "dataset_selector_execution_status": "not_run_by_workflow; job authenticates exact row and selectors only, then stops",
-      "latest_candidate_workflow_status": "issue_reproducer_base_fail_fixed_pass_and_exact_dataset_row_authenticated; two issue-aligned selectors pending actual execution"
+      "latest_candidate_workflow_status": "issue_reproducer_base_fail_fixed_pass_and_exact_dataset_row_authenticated; two issue-aligned selectors pending actual execution",
+      "dataset_selector_status": "PASS: both exact selectors failed on buggy base (2/2) and passed on exact fixed revision (2/2).",
+      "technical_reproduction": "stage2_pass_independent_issue_reproducer_and_2_dataset_selectors_base_fail_fixed_pass",
+      "dependency_license_inventory_status": "complete inventory captured in artifact; human scope review pending",
+      "latest_stage2_run_head_sha": "97e40a09c8105f6bb3d3d801fd83c70476beab39"
     },
     {
       "instance_id": "pallets__click-2788",
