@@ -475,7 +475,7 @@ jobs:
           git -C upstream-nox apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
-          (cd upstream-nox && PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
+          (cd upstream-nox && PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/base-dataset-test.log 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
@@ -499,7 +499,7 @@ jobs:
           grep -F "Ran 1 test" reproduction-evidence/fixed-issue-test.log
           grep -F "OK" reproduction-evidence/fixed-issue-test.log
           mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
-          (cd upstream-nox && PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          (cd upstream-nox && PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/fixed-dataset-test.log 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
           grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
 
@@ -657,7 +657,7 @@ jobs:
           git -C upstream-numpyro apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
-          (cd upstream-numpyro && PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
+          (cd upstream-numpyro && PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/base-dataset-test.log 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
@@ -678,7 +678,7 @@ jobs:
           set -euo pipefail
           git -C upstream-numpyro checkout --detach --force 5692d2da335945b756aeae02e3720b9b7f3efef2
           mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
-          (cd upstream-numpyro && PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          (cd upstream-numpyro && PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/fixed-dataset-test.log 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
           grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
 
@@ -820,7 +820,7 @@ jobs:
           git -C upstream-werkzeug apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
-          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null --noconftest -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
+          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null --noconftest -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/base-dataset-test.log 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
@@ -841,7 +841,7 @@ jobs:
           set -euo pipefail
           git -C upstream-werkzeug checkout --detach --force 1688968101c3341136bd8420ac7b77b6286c7409
           mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
-          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null --noconftest -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null --noconftest -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/fixed-dataset-test.log 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
           grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
 
@@ -996,7 +996,7 @@ jobs:
           git -C upstream-robocop apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
-          (cd upstream-robocop && PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
+          (cd upstream-robocop && PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/base-dataset-test.log 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
@@ -1017,7 +1017,7 @@ jobs:
           set -euo pipefail
           git -C upstream-robocop checkout --detach --force ceb6824fb4d80442937497a740edf60a5b6382e0
           mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
-          (cd upstream-robocop && PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          (cd upstream-robocop && PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/fixed-dataset-test.log 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
           grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
 
@@ -1158,7 +1158,7 @@ jobs:
           git -C upstream-pyfar apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
-          (cd upstream-pyfar && PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
+          (cd upstream-pyfar && PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/base-dataset-test.log 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
@@ -1178,7 +1178,7 @@ jobs:
           set -euo pipefail
           git -C upstream-pyfar checkout --detach --force a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e
           mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
-          (cd upstream-pyfar && PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          (cd upstream-pyfar && PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > reproduction-evidence/fixed-dataset-test.log 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
           grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
 
