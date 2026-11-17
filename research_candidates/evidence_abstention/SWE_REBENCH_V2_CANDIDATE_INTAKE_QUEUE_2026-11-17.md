@@ -64,8 +64,10 @@ Aynı 96 ana kohortta sonraki ayrı doğrulamalar:
 
 **PyThaiNLP #1046, rank 21** için de exact frozen dataset selector pinned ortamda buggy base üzerinde gerçek assertion failure, exact fixed commit üzerinde pass verdi. İki issue örneği ayrıca tek tek test edildi; her ikisi base'de failure, fixed'te pass verdi. Bu iki destek testi yeni vaka veya selector olarak sayılmadı. Pinned run 44133576730 / job 134216923258 tamamlandı; artifact 14351751109 (SHA-256 `ce2ab3bbefd3148510992a7503d8c07b17fb87fe2c2a76173c1971d21e12dcb8`) 17/17 iç hash kontrolünden geçti. Runtime lock ve native ICU sürümleri doğrulandı. Bağımlılıkların tam lisans kapsamı, proje bağımsızlığı ve Stage 3 insan adjudication kapıları açık kaldı.
 
+**Modin #7554, rank 22** için de iki frozen selector (DataFrameGroupBy ve SeriesGroupBy; her ikisi `AutoSwitchBackend=False`) pinned ortamda buggy base üzerinde gerçek `NotImplementedError`, exact fixed commit üzerinde pass verdi. İki selector tek dataset vakasıdır. Run 44137294820 / job 134230204005; artifact 14352871592 (SHA-256 `1eb504d1eafedd1caf395d3731ac4b736302c87b00effdea4234fc9896fffded`) 12/12 iç hash kontrolünden geçti. Ancak issue #7553 başlığı `AutoSwitchBackend is on` derken PR #7554 açıklaması ve frozen selector ID'leri `off/False` kapsamını hedefliyor; issue body boş. Bu nedenle teknik Stage 2 sonucu kaydedildi, aday koşullu kapsam incelemesinde tutuldu ve issue-title/PR-scope uyumu insan kararı bekliyor.
+
 Bu nedenle son kayıtlı funnel:
-- Stage 2 teknik geçiş: **13 aday** (Dishka dahil; Dymos, SkyPilot, Napalm ve PyThaiNLP için sonraki ayrı doğrulamalarla).
+- Stage 2 teknik geçiş: **14 aday** (Dishka dahil; Dymos, SkyPilot, Napalm, PyThaiNLP ve Modin için ayrı doğrulamalarla).
 - Stage 3 teknik/human adjudication tamamlanan: **1 aday (Dishka)**.
 - Nihai kabul edilmiş bağımsız vaka: **0**.
 - Nox, Werkzeug ve Moto başarısız aday diye elenmedi; exact dataset row/oracle kusurları nedeniyle bloklu.
@@ -75,14 +77,14 @@ Eski run 44097375066 için metodolojik erratum korunur. O run'daki eski test son
 
 ## Sonraki ana-kohort sırası
 
-Dymos rank 15, SkyPilot rank 17, Napalm rank 19 ve PyThaiNLP rank 21 için Stage 2 teknik doğrulama tamamlandı. Napalm'ın Stage 3 kapısı, PR'a eklenen Cisco NX-OS fixture'ının provenance/lisans kapsamı nedeniyle; PyThaiNLP'nin Stage 3 kapısı ise doğrudan/geçişli/native bağımlılık lisans kapsamı, proje bağımsızlığı ve insan adjudication nedeniyle açık. Önceden dondurulmuş sıradaki ana-kohort adayı rank 22 Modin'dir; sıra sonuçlara göre değiştirilmemiştir.
+Dymos rank 15, SkyPilot rank 17, Napalm rank 19, PyThaiNLP rank 21 ve Modin rank 22 için teknik Stage 2 yeniden üretimleri tamamlandı. Napalm'ın Stage 3 kapısı Cisco NX-OS fixture provenance/lisans kapsamı nedeniyle; PyThaiNLP'nin Stage 3 kapısı dependency/native license scope, proje bağımsızlığı ve insan adjudication nedeniyle; Modin'in ise issue başlığı ile PR/frozen selector AutoSwitchBackend durumlarının uyuşmazlığı ve bağımlılık lisans incelemesi nedeniyle açık. Modin'in teknik sonucu geçmiştir ancak kapsam kararı koşulludur. Önceden dondurulmuş sıradaki yeni ana-kohort adayı rank 27 DataComPy'dir; rank 24 Robocop zaten teknik Stage 2 geçişi olarak kaydedilmiştir ve tekrar çalıştırılmayacaktır.
 
 | Rank | Aday | İlk kontrol |
 |---:|---|---|
 | 19 | Napalm #2152 | Stage 2 geçti (exact selector, pinned base-fail/fixed-pass); Stage 3 için fixture provenance/lisans hold'u |
 | 21 | PyThaiNLP #1046 | Stage 2 geçti (exact selector pinned base-fail/fixed-pass; iki ayrı issue reproducer destekleyici); Stage 3 için bağımlılık lisans kapsamı/bağımsızlık/human adjudication hold'u |
-| 22 | Modin #7554 | Sonraki inceleme: exact row, test oracle ve minimal environment |
-| 27 | DataComPy #404 | Hedef testin defect-specific olup olmadığı |
+| 22 | Modin #7554 | Teknik Stage 2 geçti (iki exact selector pinned base-fail/fixed-pass); issue başlığı AutoSwitchBackend on derken PR/frozen selector False diyor, insan kapsam kararı ve license review bekleniyor |
+| 27 | DataComPy #404 | Sonraki yeni inceleme: #58 empty NumPy arrays issue'sinin exact row/selector hedef testinin bu edge-case'i gerçekten ölçtüğünü doğrula |
 | 31 | CTAPIpe #2732 | Return-type/docstring sözleşme uyuşmazlığı |
 | 34 | WeasyPrint #2416 | Pyphen sözlüğü kaynağı/lisansı, issue-test eşleşmesi ve native runtime |
 
