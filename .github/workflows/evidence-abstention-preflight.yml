@@ -1335,14 +1335,14 @@ jobs:
               f.write("\n")
           print("EODAG-related rows in pinned dataset:")
           print(json.dumps(eodag_rows, indent=2, ensure_ascii=False, default=str))
-          exact = [row for row in eodag_rows if row["instance_id"] == "CS-SI__eodag-1536"]
+          exact = [row for row in eodag_rows if row["instance_id"] == "cs-si__eodag-1536"]
           if len(exact) != 1:
               raise SystemExit(
                   "Pinned SWE-rebench dataset does not contain exactly one CS-SI__eodag-1536 row; "
                   f"found {len(exact)}. No alternate EODAG row will be substituted."
               )
           columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
-          row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "CS-SI__eodag-1536")]).to_pylist()[0]
+          row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "cs-si__eodag-1536")]).to_pylist()[0]
           assert row["repo"] == "CS-SI/eodag", row
           assert row["base_commit"] == "b7cc06e19025e5bbf14e28a0975f1749e21e9be3", row
           assert row["language"] == "python", row
@@ -1410,7 +1410,7 @@ jobs:
           .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/moto_issue_8269/requirements.lock
           .venv-tests/bin/python - <<'PY'
           import importlib.metadata as md
-          names = ["boto3", "botocore", "s3transfer", "jmespath", "urllib3", "requests", "certifi", "charset-normalizer", "idna", "python-dateutil", "six", "cryptography", "cffi", "pycparser", "xmltodict", "Werkzeug", "responses", "Jinja2", "MarkupSafe", "typing-extensions", "pytest", "iniconfig", "packaging", "pluggy", "Pygments"]
+          names = ["boto3", "botocore", "s3transfer", "jmespath", "urllib3", "requests", "certifi", "charset-normalizer", "idna", "python-dateutil", "six", "cryptography", "cffi", "pycparser", "xmltodict", "Werkzeug", "responses", "Jinja2", "MarkupSafe", "typing-extensions", "pytest", "iniconfig", "packaging", "pluggy", "Pygments", "PyYAML"]
           inventory = {}
           for name in names:
               dist = md.metadata(name)
@@ -1945,7 +1945,7 @@ jobs:
           logs = []
           mismatches = []
           for selector in row["FAIL_TO_PASS"]:
-              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              command = [python, "-m", "pytest", "-c", "/dev/null", "-q", selector]
               result = subprocess.run(command, cwd="upstream-control", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
               logs.append("SELECTOR: " + selector + "\n" + result.stdout)
               if result.returncode == 0 or "AssertionError" not in result.stdout:
@@ -1978,7 +1978,7 @@ jobs:
           logs = []
           failures = []
           for selector in row["FAIL_TO_PASS"]:
-              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              command = [python, "-m", "pytest", "-c", "/dev/null", "-q", selector]
               result = subprocess.run(command, cwd="upstream-control", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
               logs.append("SELECTOR: " + selector + "\n" + result.stdout)
               if result.returncode != 0:
