@@ -447,9 +447,10 @@ jobs:
           git -C upstream-nox fetch --no-tags origin 97e0fad6a4036d610591a52e9ad0cfbe74a31af3 5c4000550325fd1ad036716d9e600ef7411bed3d
           git -C upstream-nox cat-file -e '97e0fad6a4036d610591a52e9ad0cfbe74a31af3^{commit}'
           git -C upstream-nox cat-file -e '5c4000550325fd1ad036716d9e600ef7411bed3d^{commit}'
-          git -C upstream-nox diff 97e0fad6a4036d610591a52e9ad0cfbe74a31af3 5c4000550325fd1ad036716d9e600ef7411bed3d -- nox/virtualenv.py tests/test_virtualenv.py > reproduction-evidence/dataset-test.patch
+          git -C upstream-nox diff 97e0fad6a4036d610591a52e9ad0cfbe74a31af3 5c4000550325fd1ad036716d9e600ef7411bed3d > reproduction-evidence/pr-922-full.patch
+          git -C upstream-nox diff 97e0fad6a4036d610591a52e9ad0cfbe74a31af3 5c4000550325fd1ad036716d9e600ef7411bed3d -- tests/test_virtualenv.py > reproduction-evidence/dataset-test.patch
           sha256sum research_candidates/evidence_abstention/reproduction/nox_issue_919/test_issue_919.py research_candidates/evidence_abstention/reproduction/nox_issue_919/dataset_test_requirements.lock > reproduction-evidence/reproducer-and-lock-sha256.txt
-          sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
+          sha256sum reproduction-evidence/pr-922-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
 
       - name: Run independent issue reproducer on buggy base (failure required)
         shell: bash
@@ -472,7 +473,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-nox apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
+          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
           (cd upstream-nox && PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
           status=$?
@@ -497,7 +498,7 @@ jobs:
           cat reproduction-evidence/fixed-issue-test.log
           grep -F "Ran 1 test" reproduction-evidence/fixed-issue-test.log
           grep -F "OK" reproduction-evidence/fixed-issue-test.log
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
+          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           (cd upstream-nox && PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
           grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
@@ -640,11 +641,12 @@ jobs:
         run: |
           set -euo pipefail
           git clone https://github.com/pyro-ppl/numpyro.git upstream-numpyro
-          git -C upstream-numpyro diff 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d 5692d2da335945b756aeae02e3720b9b7f3efef2 -- numpyro/infer/mcmc.py test/infer/test_ensemble_mcmc.py > reproduction-evidence/dataset-test.patch
+          git -C upstream-numpyro diff 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d 5692d2da335945b756aeae02e3720b9b7f3efef2 > reproduction-evidence/pr-1918-full.patch
+          git -C upstream-numpyro diff 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d 5692d2da335945b756aeae02e3720b9b7f3efef2 -- test/infer/test_ensemble_mcmc.py > reproduction-evidence/dataset-test.patch
           git -C upstream-numpyro rev-parse 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d > reproduction-evidence/base-commit.txt
           git -C upstream-numpyro rev-parse 5692d2da335945b756aeae02e3720b9b7f3efef2 > reproduction-evidence/fixed-commit.txt
           sha256sum research_candidates/evidence_abstention/reproduction/numpyro_issue_1916/dataset_test_requirements.lock > reproduction-evidence/environment-lock-sha256.txt
-          sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
+          sha256sum reproduction-evidence/pr-1918-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
           cp test-environment-freeze.txt reproduction-evidence/
 
       - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
@@ -653,7 +655,7 @@ jobs:
           set -euo pipefail
           git -C upstream-numpyro checkout --detach 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d
           git -C upstream-numpyro apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
+          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
           (cd upstream-numpyro && PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
           status=$?
@@ -675,7 +677,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-numpyro checkout --detach --force 5692d2da335945b756aeae02e3720b9b7f3efef2
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
+          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           (cd upstream-numpyro && PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
           grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
@@ -804,9 +806,10 @@ jobs:
         run: |
           set -euo pipefail
           git clone https://github.com/pallets/werkzeug.git upstream-werkzeug
-          git -C upstream-werkzeug diff 40319f91dbbae0a780526eab037a009b1a7e4d36 1688968101c3341136bd8420ac7b77b6286c7409 -- src/werkzeug/http.py tests/test_http.py > reproduction-evidence/dataset-test.patch
+          git -C upstream-werkzeug diff 40319f91dbbae0a780526eab037a009b1a7e4d36 1688968101c3341136bd8420ac7b77b6286c7409 > reproduction-evidence/pr-2956-full.patch
+          git -C upstream-werkzeug diff 40319f91dbbae0a780526eab037a009b1a7e4d36 1688968101c3341136bd8420ac7b77b6286c7409 -- tests/test_http.py > reproduction-evidence/dataset-test.patch
           sha256sum research_candidates/evidence_abstention/reproduction/werkzeug_issue_2955/dataset_test_requirements.lock > reproduction-evidence/environment-lock-sha256.txt
-          sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
+          sha256sum reproduction-evidence/pr-2956-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
           cp test-environment-freeze.txt reproduction-evidence/
 
       - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
@@ -815,7 +818,7 @@ jobs:
           set -euo pipefail
           git -C upstream-werkzeug checkout --detach 40319f91dbbae0a780526eab037a009b1a7e4d36
           git -C upstream-werkzeug apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
+          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
           (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null --noconftest -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
           status=$?
@@ -837,7 +840,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-werkzeug checkout --detach --force 1688968101c3341136bd8420ac7b77b6286c7409
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
+          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null --noconftest -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
           grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
@@ -979,9 +982,10 @@ jobs:
           git -C upstream-robocop fetch --no-tags origin 271e73253a70710cc80374128efa9eabb549b5f2 ceb6824fb4d80442937497a740edf60a5b6382e0
           git -C upstream-robocop cat-file -e '271e73253a70710cc80374128efa9eabb549b5f2^{commit}'
           git -C upstream-robocop cat-file -e 'ceb6824fb4d80442937497a740edf60a5b6382e0^{commit}'
-          git -C upstream-robocop diff 271e73253a70710cc80374128efa9eabb549b5f2 ceb6824fb4d80442937497a740edf60a5b6382e0 -- src/robocop/formatter/runner.py tests/formatter/__init__.py tests/test_cli.py > reproduction-evidence/dataset-test.patch
+          git -C upstream-robocop diff 271e73253a70710cc80374128efa9eabb549b5f2 ceb6824fb4d80442937497a740edf60a5b6382e0 > reproduction-evidence/pr-1374-full.patch
+          git -C upstream-robocop diff 271e73253a70710cc80374128efa9eabb549b5f2 ceb6824fb4d80442937497a740edf60a5b6382e0 -- tests/formatter/__init__.py tests/test_cli.py > reproduction-evidence/dataset-test.patch
           sha256sum research_candidates/evidence_abstention/reproduction/robocop_issue_1371/dataset_test_requirements.lock > reproduction-evidence/environment-lock-sha256.txt
-          sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
+          sha256sum reproduction-evidence/pr-1374-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
           cp test-environment-freeze.txt reproduction-evidence/
 
       - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
@@ -990,7 +994,7 @@ jobs:
           set -euo pipefail
           git -C upstream-robocop checkout --detach 271e73253a70710cc80374128efa9eabb549b5f2
           git -C upstream-robocop apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
+          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
           (cd upstream-robocop && PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
           status=$?
@@ -1012,7 +1016,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-robocop checkout --detach --force ceb6824fb4d80442937497a740edf60a5b6382e0
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
+          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           (cd upstream-robocop && PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
           grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
@@ -1140,9 +1144,10 @@ jobs:
         run: |
           set -euo pipefail
           git clone https://github.com/pyfar/pyfar.git upstream-pyfar
-          git -C upstream-pyfar diff 648dda4c60c5a6f74acf335f7808c590c9d23929 a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e -- pyfar/dsp/dsp.py tests/test_dsp_normalize.py > reproduction-evidence/dataset-test.patch
+          git -C upstream-pyfar diff 648dda4c60c5a6f74acf335f7808c590c9d23929 a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e > reproduction-evidence/pr-722-full.patch
+          git -C upstream-pyfar diff 648dda4c60c5a6f74acf335f7808c590c9d23929 a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e -- tests/test_dsp_normalize.py > reproduction-evidence/dataset-test.patch
           sha256sum research_candidates/evidence_abstention/reproduction/pyfar_issue_721/dataset_test_requirements.lock > reproduction-evidence/environment-lock-sha256.txt
-          sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
+          sha256sum reproduction-evidence/pr-722-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
           cp test-environment-freeze.txt reproduction-evidence/
 
       - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
@@ -1151,7 +1156,7 @@ jobs:
           set -euo pipefail
           git -C upstream-pyfar checkout --detach 648dda4c60c5a6f74acf335f7808c590c9d23929
           git -C upstream-pyfar apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
+          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           set +e
           (cd upstream-pyfar && PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
           status=$?
@@ -1172,7 +1177,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-pyfar checkout --detach --force a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
+          mapfile -t selectors < "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt"
           (cd upstream-pyfar && PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
           grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
@@ -1415,8 +1420,9 @@ jobs:
           test "$(git -C upstream-moto rev-parse HEAD:setup.cfg)" = "fb1c7ead5806c611cf184980e8b54e4932079758"
           git -C upstream-moto show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE.txt
           git -C upstream-moto show HEAD:setup.cfg > reproduction-evidence/upstream-setup.cfg
-          git -C upstream-moto diff bf49e22f41be7444dc20e05dfa5dd13f25672eba d46db48b4911d84235ef783ddab41b73882530f7 > reproduction-evidence/pr-8296.patch
-          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/pr-8296.patch > reproduction-evidence/source-provenance-sha256.txt
+          git -C upstream-moto diff bf49e22f41be7444dc20e05dfa5dd13f25672eba d46db48b4911d84235ef783ddab41b73882530f7 > reproduction-evidence/pr-8296-full.patch
+          git -C upstream-moto diff bf49e22f41be7444dc20e05dfa5dd13f25672eba d46db48b4911d84235ef783ddab41b73882530f7 -- tests/test_ecr/test_ecr_boto3.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/pr-8296-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
           cp dependency-license-inventory.json reproduction-evidence/
 
       - name: Run independent issue reproducer on buggy base (failure required)
@@ -1439,7 +1445,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-moto checkout --detach bf49e22f41be7444dc20e05dfa5dd13f25672eba
-          git -C upstream-moto apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-8296.patch"
+          git -C upstream-moto apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           test -f upstream-moto/tests/test_ecr/test_ecr_boto3.py
           python -m venv .venv-dataset
           .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
@@ -1626,8 +1632,9 @@ jobs:
           grep -F 'license = "Apache-2.0"' upstream-meltano/pyproject.toml
           git -C upstream-meltano show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE.txt
           git -C upstream-meltano show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
-          git -C upstream-meltano diff ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2 9505ff1989b9be4d53b5bc9664b3fe3885879cb1 > reproduction-evidence/pr-3091.patch
-          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-3091.patch > reproduction-evidence/source-provenance-sha256.txt
+          git -C upstream-meltano diff ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2 9505ff1989b9be4d53b5bc9664b3fe3885879cb1 > reproduction-evidence/pr-3091-full.patch
+          git -C upstream-meltano diff ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2 9505ff1989b9be4d53b5bc9664b3fe3885879cb1 -- tests/singerlib/test_schema.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-3091-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
           cp dependency-license-inventory.json reproduction-evidence/
 
       - name: Run independent source reproducer on buggy base (failure required)
@@ -1699,7 +1706,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-meltano checkout --detach ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2
-          git -C upstream-meltano apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-3091.patch"
+          git -C upstream-meltano apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           .venv-dataset/bin/python - <<'PY'
           import os
           import pyarrow.parquet as pq
@@ -1825,8 +1832,9 @@ jobs:
           test "$(git -C upstream-control rev-parse HEAD:pyproject.toml)" = "db70b8f48d989ce415255fb039aedaebd77fcc94"
           git -C upstream-control show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE.txt
           git -C upstream-control show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
-          git -C upstream-control diff dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113 21f4912c8b12216534b8d5b07c243c66675a8b83 > reproduction-evidence/pr-1145.patch
-          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1145.patch > reproduction-evidence/source-provenance-sha256.txt
+          git -C upstream-control diff dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113 21f4912c8b12216534b8d5b07c243c66675a8b83 > reproduction-evidence/pr-1145-full.patch
+          git -C upstream-control diff dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113 21f4912c8b12216534b8d5b07c243c66675a8b83 -- control/tests/ctrlplot_test.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1145-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
           cp dependency-license-inventory.json reproduction-evidence/
 
       - name: Run independent Nyquist axes reproducer on buggy base (failure required)
@@ -1896,7 +1904,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-control checkout --detach dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113
-          git -C upstream-control apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-1145.patch"
+          git -C upstream-control apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           .venv-dataset/bin/python - <<'PY'
           import os
           import pyarrow.parquet as pq
@@ -2021,8 +2029,9 @@ jobs:
           test "$(git -C upstream-qutip rev-parse HEAD:setup.cfg)" = "382021a63c177b81ac9ea5c743dc5f6907086eac"
           git -C upstream-qutip show HEAD:LICENSE.txt > reproduction-evidence/upstream-LICENSE.txt
           git -C upstream-qutip show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
-          git -C upstream-qutip diff b821b1aa8c98a00f58014e7ec02cc9cbef701ce4 61df3c7bccf474aba393940581ffbbeccf5da366 > reproduction-evidence/pr-2694.patch
-          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-2694.patch > reproduction-evidence/source-provenance-sha256.txt
+          git -C upstream-qutip diff b821b1aa8c98a00f58014e7ec02cc9cbef701ce4 61df3c7bccf474aba393940581ffbbeccf5da366 > reproduction-evidence/pr-2694-full.patch
+          git -C upstream-qutip diff b821b1aa8c98a00f58014e7ec02cc9cbef701ce4 61df3c7bccf474aba393940581ffbbeccf5da366 -- qutip/tests/core/test_coefficient.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-2694-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
           cp dependency-license-inventory.json reproduction-evidence/
 
       - name: Build exact buggy-base QuTiP source in editable mode
@@ -2097,7 +2106,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-qutip checkout --detach b821b1aa8c98a00f58014e7ec02cc9cbef701ce4
-          git -C upstream-qutip apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-2694.patch"
+          git -C upstream-qutip apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           .venv-dataset/bin/python - <<'PY'
           import os
           import pyarrow.parquet as pq
@@ -2223,8 +2232,9 @@ jobs:
           test "$(git -C upstream-amaranth rev-parse HEAD:pyproject.toml)" = "2f0c4dbb709ebeb6326ba2031a5604ffabc78260"
           git -C upstream-amaranth show HEAD:LICENSE.txt > reproduction-evidence/upstream-LICENSE.txt
           git -C upstream-amaranth show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
-          git -C upstream-amaranth diff 8c5ed4051dd74a6347af8d52f8e397eb53218ac4 6a10abe6c873e7fb51a34f70801d3dd37cda9061 > reproduction-evidence/pr-1519.patch
-          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1519.patch > reproduction-evidence/source-provenance-sha256.txt
+          git -C upstream-amaranth diff 8c5ed4051dd74a6347af8d52f8e397eb53218ac4 6a10abe6c873e7fb51a34f70801d3dd37cda9061 > reproduction-evidence/pr-1519-full.patch
+          git -C upstream-amaranth diff 8c5ed4051dd74a6347af8d52f8e397eb53218ac4 6a10abe6c873e7fb51a34f70801d3dd37cda9061 -- tests/test_back_rtlil.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1519-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
           cp dependency-license-inventory.json reproduction-evidence/
 
       - name: Run independent RTLIL reproducer on buggy base (failure required)
@@ -2293,7 +2303,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-amaranth checkout --detach 8c5ed4051dd74a6347af8d52f8e397eb53218ac4
-          git -C upstream-amaranth apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-1519.patch"
+          git -C upstream-amaranth apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           .venv-dataset/bin/python - <<'PY'
           import os
           import pyarrow.parquet as pq
