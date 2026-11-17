@@ -12,7 +12,7 @@
 
 - **Stage 2 — exact reproduction:** PASS.
 - **Stage 3 — technical gold, alternatives and E1/E2/E3:** PASS; explicit project-lead approval is recorded in the human adjudication decision.
-- **Final case acceptance:** NOT YET ACCEPTED. The outstanding acknowledgement is limited to the researcher-exposure and single-human-adjudicator limitation statement, plus final registry-record validation. This does not reverse the Stage 2 or Stage 3 results.
+- **Final case acceptance:** NOT YET ACCEPTED. The project lead recorded the four-point researcher-exposure/single-adjudicator acknowledgement on 2026-11-17. The remaining formal step is to prepare the complete case record and pass it through the Draft 2020-12 schema and fail-closed registry checks. This does not reverse the Stage 2 or Stage 3 results.
 - **Model inference authorization:** FALSE
 
 **Nested evidence manifests:**
@@ -106,4 +106,4 @@ This is a source-snapshot metadata correction after the reproduction run, not a 
 
 ## Current decision
 
-**Stage 2 PASS. Stage 3 PASS. Final case acceptance remains pending.** Before adding this record to the accepted registry, the project lead must acknowledge the disclosed full researcher-source exposure and the single-human-adjudicator limitation, and the complete acceptance record must pass the schema and registry validator. None of these remaining steps authorizes model inference.
+**Stage 2 PASS. Stage 3 PASS. Final case acceptance remains pending.** The project lead has acknowledged the disclosed full researcher-source exposure, single-human-adjudicator limitation, prohibition on Cohen's kappa/inter-human agreement claims, and exploratory-only use on 2026-11-17. Before adding this candidate to the accepted registry, a complete case record must be prepared and pass the Draft 2020-12 schema and fail-closed registry checks. These are structural checks only; they do not authenticate external artifacts or authorize model inference.
