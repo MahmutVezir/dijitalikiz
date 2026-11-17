@@ -175,13 +175,25 @@ jobs:
           .venv-napalm/bin/python - <<'PY'
           import json
           import subprocess
-          changed = sorted(subprocess.check_output(["git", "-C", "upstream-napalm", "diff", "--name-only"], text=True).splitlines())
+          tracked_changes = subprocess.check_output(["git", "-C", "upstream-napalm", "diff", "--name-only"], text=True).splitlines()
+          untracked_files = subprocess.check_output(["git", "-C", "upstream-napalm", "ls-files", "--others", "--exclude-standard"], text=True).splitlines()
+          changed = sorted(set(tracked_changes) | set(untracked_files))
           prefix = "test/nxos_ssh/mocked_data/test_get_facts/issue2151/"
-          if len(changed) != 6 or any(not p.startswith(prefix) for p in changed):
-              raise SystemExit(f"NAPALM test-only patch scope mismatch: {changed}")
+          expected = {
+              prefix + "expected_result.json",
+              prefix + "show_hostname.txt",
+              prefix + "show_hosts.txt",
+              prefix + "show_interface_status.txt",
+              prefix + "show_inventory___json.txt",
+              prefix + "show_version.txt",
+          }
+          if set(changed) != expected:
+              raise SystemExit(f"NAPALM test-only patch scope mismatch: observed={changed}, expected={sorted(expected)}")
           scope = {
+              "tracked_changes": sorted(tracked_changes),
+              "untracked_files": sorted(untracked_files),
               "changed_paths": changed,
-              "expected_prefix": prefix,
+              "expected_paths": sorted(expected),
               "production_code_changed": any(not p.startswith("test/") for p in changed),
           }
           if scope["production_code_changed"]:
