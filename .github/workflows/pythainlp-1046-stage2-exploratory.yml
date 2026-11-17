@@ -148,7 +148,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m venv .venv-pythainlp
-          .venv-pythainlp/bin/python -m pip install --disable-pip-version-check pip==24.3.1
+          .venv-pythainlp/bin/python -m pip install --disable-pip-version-check pip==24.3.1 wheel==0.45.1
           .venv-pythainlp/bin/python -m pip install --disable-pip-version-check pytest==8.3.5
           .venv-pythainlp/bin/python -m pip install --disable-pip-version-check -r upstream-pythainlp/requirements.txt
           .venv-pythainlp/bin/python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e ./upstream-pythainlp
