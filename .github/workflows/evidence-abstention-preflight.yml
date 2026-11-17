@@ -1322,11 +1322,26 @@ jobs:
           import json
           import pyarrow.parquet as pq
           path = "reproduction-evidence/train-00000-of-00001.parquet"
+          identity_columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license"]
+          identity_table = pq.read_table(path, columns=identity_columns)
+          eodag_rows = [
+              row for row in identity_table.to_pylist()
+              if "eodag" in str(row["instance_id"]).lower()
+              or "eodag" in str(row["repo"]).lower()
+          ]
+          with open("reproduction-evidence/eodag_dataset_candidate_inventory.json", "w", encoding="utf-8") as f:
+              json.dump(eodag_rows, f, indent=2, ensure_ascii=False, default=str)
+              f.write("\\n")
+          print("EODAG-related rows in pinned dataset:")
+          print(json.dumps(eodag_rows, indent=2, ensure_ascii=False, default=str))
+          exact = [row for row in eodag_rows if row["instance_id"] == "CS-SI__eodag-1536"]
+          if len(exact) != 1:
+              raise SystemExit(
+                  "Pinned SWE-rebench dataset does not contain exactly one CS-SI__eodag-1536 row; "
+                  f"found {len(exact)}. No alternate EODAG row will be substituted."
+              )
           columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
-          table = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "CS-SI__eodag-1536")])
-          rows = table.to_pylist()
-          assert len(rows) == 1, len(rows)
-          row = rows[0]
+          row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "CS-SI__eodag-1536")]).to_pylist()[0]
           assert row["repo"] == "CS-SI/eodag", row
           assert row["base_commit"] == "b7cc06e19025e5bbf14e28a0975f1749e21e9be3", row
           assert row["language"] == "python", row
@@ -1337,9 +1352,9 @@ jobs:
               f.write(canonical)
           digest = hashlib.sha256(canonical).hexdigest()
           with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
-              f.write(digest + "  dataset-row-canonical.json\n")
+              f.write(digest + "  dataset-row-canonical.json\\n")
           with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
-              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
+              f.write("\\n".join(row["FAIL_TO_PASS"]) + "\\n")
           print("dataset_row_sha256=" + digest)
           print("dataset_created_at=" + str(row["created_at"]))
           print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
