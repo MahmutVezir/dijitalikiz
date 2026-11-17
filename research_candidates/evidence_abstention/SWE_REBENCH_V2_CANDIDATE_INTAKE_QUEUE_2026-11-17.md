@@ -66,6 +66,8 @@ Aynı 96 ana kohortta sonraki ayrı doğrulamalar:
 
 **Modin #7554, rank 22** için de iki frozen selector (DataFrameGroupBy ve SeriesGroupBy; her ikisi `AutoSwitchBackend=False`) pinned ortamda buggy base üzerinde gerçek `NotImplementedError`, exact fixed commit üzerinde pass verdi. İki selector tek dataset vakasıdır. Run 44137294820 / job 134230204005; artifact 14352871592 (SHA-256 `1eb504d1eafedd1caf395d3731ac4b736302c87b00effdea4234fc9896fffded`) 12/12 iç hash kontrolünden geçti. Ancak issue #7553 başlığı `AutoSwitchBackend is on` derken PR #7554 açıklaması ve frozen selector ID'leri `off/False` kapsamını hedefliyor; issue body boş. Bu nedenle teknik Stage 2 sonucu kaydedildi, aday koşullu kapsam incelemesinde tutuldu ve issue-title/PR-scope uyumu insan kararı bekliyor.
 
+**DataComPy #404, rank 27** için immutable row ve üç frozen selector doğrulandı; ancak aday issue #58'e özgü Stage 2 kapısını geçemiyor. NumPy selector, test metodunun ilk adımında boş olmayan `np.array([j])` girdilerini kontrol ediyor; base mixed-object short-circuit bu noktada tüm sonuçları False yaptığı için empty-array assertion'ına ulaşılmadan test fail edebilir. Diğer iki selector Python-list ve Polars-list desteğini test ediyor. Bu nedenle frozen row mixed-scope / target-oracle hold olarak kaydedildi; hiçbir selector silinmedi veya değiştirilmedi. Discovery run 44138363070 / artifact 14351794927, SHA-256 `6dac19d093acdbc22b0ed009aa2cee5987bf57360bf0f2af9399b91b4797eca1`, 3/3 iç hash doğrulandı. Stage 2 pass sayılmadı.
+
 Bu nedenle son kayıtlı funnel:
 - Stage 2 teknik geçiş: **14 aday** (Dishka dahil; Dymos, SkyPilot, Napalm, PyThaiNLP ve Modin için ayrı doğrulamalarla).
 - Stage 3 teknik/human adjudication tamamlanan: **1 aday (Dishka)**.
@@ -77,14 +79,14 @@ Eski run 44097375066 için metodolojik erratum korunur. O run'daki eski test son
 
 ## Sonraki ana-kohort sırası
 
-Dymos rank 15, SkyPilot rank 17, Napalm rank 19, PyThaiNLP rank 21 ve Modin rank 22 için teknik Stage 2 yeniden üretimleri tamamlandı. Napalm'ın Stage 3 kapısı Cisco NX-OS fixture provenance/lisans kapsamı nedeniyle; PyThaiNLP'nin Stage 3 kapısı dependency/native license scope, proje bağımsızlığı ve insan adjudication nedeniyle; Modin'in ise issue başlığı ile PR/frozen selector AutoSwitchBackend durumlarının uyuşmazlığı ve bağımlılık lisans incelemesi nedeniyle açık. Modin'in teknik sonucu geçmiştir ancak kapsam kararı koşulludur. Önceden dondurulmuş sıradaki yeni ana-kohort adayı rank 27 DataComPy'dir; rank 24 Robocop zaten teknik Stage 2 geçişi olarak kaydedilmiştir ve tekrar çalıştırılmayacaktır.
+Dymos rank 15, SkyPilot rank 17, Napalm rank 19, PyThaiNLP rank 21 ve Modin rank 22 için teknik Stage 2 yeniden üretimleri tamamlandı. Napalm'ın Stage 3 kapısı Cisco NX-OS fixture provenance/lisans kapsamı nedeniyle; PyThaiNLP'nin Stage 3 kapısı dependency/native license scope, proje bağımsızlığı ve insan adjudication nedeniyle; Modin'in ise issue başlığı ile PR/frozen selector AutoSwitchBackend durumlarının uyuşmazlığı ve bağımlılık lisans incelemesi nedeniyle açık. Modin'in teknik sonucu geçmiştir ancak kapsam kararı koşulludur. DataComPy rank 27 mixed-scope / target-oracle hold olarak kapatıldı; issue-specific frozen selector seti bu haliyle kullanılmayacak. Rank 24 Robocop zaten teknik Stage 2 geçişi olarak kaydedilmiştir ve tekrar çalıştırılmayacaktır. Önceden dondurulmuş sıradaki yeni ana-kohort adayı rank 31 CTAPIpe'dir.
 
 | Rank | Aday | İlk kontrol |
 |---:|---|---|
 | 19 | Napalm #2152 | Stage 2 geçti (exact selector, pinned base-fail/fixed-pass); Stage 3 için fixture provenance/lisans hold'u |
 | 21 | PyThaiNLP #1046 | Stage 2 geçti (exact selector pinned base-fail/fixed-pass; iki ayrı issue reproducer destekleyici); Stage 3 için bağımlılık lisans kapsamı/bağımsızlık/human adjudication hold'u |
 | 22 | Modin #7554 | Teknik Stage 2 geçti (iki exact selector pinned base-fail/fixed-pass); issue başlığı AutoSwitchBackend on derken PR/frozen selector False diyor, insan kapsam kararı ve license review bekleniyor |
-| 27 | DataComPy #404 | Sonraki yeni inceleme: #58 empty NumPy arrays issue'sinin exact row/selector hedef testinin bu edge-case'i gerçekten ölçtüğünü doğrula |
+| 27 | DataComPy #404 | Hold: 3 selector mixed scope; NumPy test boş olmayan array assertion'ında fail olabilir ve empty-array issue oracle'ına ulaşmayabilir; list/Polars-list selector'leri unrelated |
 | 31 | CTAPIpe #2732 | Return-type/docstring sözleşme uyuşmazlığı |
 | 34 | WeasyPrint #2416 | Pyphen sözlüğü kaynağı/lisansı, issue-test eşleşmesi ve native runtime |
 
