@@ -1404,7 +1404,6 @@ jobs:
                   "upstream dataset selectors were not executed: " + ", ".join(sorted(missing))
               )
           required = {
-              "eodag": "3.1.0b2",
               "pydantic": "2.10.6",
               "pyyaml": "6.0.2",
               "ecmwf-api-client": "1.6.3",
@@ -1414,6 +1413,8 @@ jobs:
               "pytest": "8.3.4",
               "pytest-socket": "0.7.0",
           }
+          if "eodag" not in inventory:
+              raise SystemExit("Editable exact-base EODAG distribution metadata is missing")
           for name, expected in required.items():
               actual = inventory.get(name, {}).get("version")
               if actual is None:
