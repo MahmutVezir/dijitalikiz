@@ -249,6 +249,7 @@ jobs:
           grep -F "AssertionError: 1 != 42" reproduction-evidence/base-test.log
 
       - name: Run the same issue reproducer on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
@@ -489,6 +490,7 @@ jobs:
             exit "$status"
           fi
       - name: Run the same dataset selectors on the exact fixed revision
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
@@ -671,6 +673,7 @@ jobs:
             exit "$status"
           fi
       - name: Run the same dataset selectors on the exact fixed revision
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
@@ -833,6 +836,7 @@ jobs:
             exit "$status"
           fi
       - name: Run the same dataset selectors on the exact fixed revision
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
@@ -1008,6 +1012,7 @@ jobs:
             exit "$status"
           fi
       - name: Run the same dataset selectors on the exact fixed revision
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
@@ -1169,6 +1174,7 @@ jobs:
             exit "$status"
           fi
       - name: Run the same dataset selectors on the exact fixed revision
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
@@ -1276,10 +1282,11 @@ jobs:
           grep -F "AssertionError: 'geodes_s3' not found" reproduction-evidence/base-issue-test.log
 
       - name: Run identical issue reproducer on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          git -C upstream-eodag checkout --detach 312966a46513a082333d46cd7212bdce36aaf769
+          git -C upstream-eodag checkout --detach --force 312966a46513a082333d46cd7212bdce36aaf769
           test "$(git -C upstream-eodag rev-parse HEAD:eodag/resources/user_conf_template.yml)" = "5221bd2d052bdd60363367d3be51044e1cc95c76"
           EODAG_SOURCE_ROOT="$GITHUB_WORKSPACE/upstream-eodag" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/eodag_issue_1530" -p "test_issue_1530.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
@@ -1412,6 +1419,9 @@ jobs:
           set -euo pipefail
           mkdir -p reproduction-evidence
           git clone https://github.com/getmoto/moto.git upstream-moto
+          git -C upstream-moto fetch --no-tags origin bf49e22f41be7444dc20e05dfa5dd13f25672eba d46db48b4911d84235ef783ddab41b73882530f7
+          git -C upstream-moto cat-file -e 'bf49e22f41be7444dc20e05dfa5dd13f25672eba^{commit}'
+          git -C upstream-moto cat-file -e 'd46db48b4911d84235ef783ddab41b73882530f7^{commit}'
           git -C upstream-moto checkout --detach bf49e22f41be7444dc20e05dfa5dd13f25672eba
           test "$(git -C upstream-moto rev-parse HEAD)" = "bf49e22f41be7444dc20e05dfa5dd13f25672eba"
           test "$(git -C upstream-moto rev-parse HEAD:LICENSE)" = "90a85e7149454f173dd595bdeb884340cc01e6f6"
@@ -1519,10 +1529,11 @@ jobs:
           PY
 
       - name: Run same issue reproducer and dataset selectors on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          git -C upstream-moto checkout --detach d46db48b4911d84235ef783ddab41b73882530f7
+          git -C upstream-moto checkout --detach --force d46db48b4911d84235ef783ddab41b73882530f7
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-moto" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/moto_issue_8269" -p "test_issue_8269.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
           .venv-dataset/bin/python - <<'PY'
@@ -1731,10 +1742,11 @@ jobs:
           PY
 
       - name: Run same source and dataset selectors on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          git -C upstream-meltano checkout --detach 9505ff1989b9be4d53b5bc9664b3fe3885879cb1
+          git -C upstream-meltano checkout --detach --force 9505ff1989b9be4d53b5bc9664b3fe3885879cb1
           test "$(git -C upstream-meltano rev-parse HEAD:singer_sdk/singerlib/schema.py)" = "7754f835e4b11d13a4778669fb94a68c461b9f40"
           MELTANO_SOURCE_ROOT="$GITHUB_WORKSPACE/upstream-meltano" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/meltano_issue_3090" -p "test_issue_3090.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
@@ -1928,10 +1940,11 @@ jobs:
           PY
 
       - name: Run same reproducer and dataset selectors on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          git -C upstream-control checkout --detach 21f4912c8b12216534b8d5b07c243c66675a8b83
+          git -C upstream-control checkout --detach --force 21f4912c8b12216534b8d5b07c243c66675a8b83
           MPLBACKEND=Agg PYTHONPATH="$GITHUB_WORKSPACE/upstream-control" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/python_control_issue_1144" -p "test_issue_1144.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
           .venv-dataset/bin/python - <<'PY'
@@ -2129,10 +2142,11 @@ jobs:
           PY
 
       - name: Run same reproducer and selectors on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          git -C upstream-qutip checkout --detach 61df3c7bccf474aba393940581ffbbeccf5da366
+          git -C upstream-qutip checkout --detach --force 61df3c7bccf474aba393940581ffbbeccf5da366
           test "$(git -C upstream-qutip rev-parse HEAD:qutip/core/coefficient.py)" = "14315d49c760389d028fd0023cc382c973a08684"
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-qutip" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/qutip_issue_2646" -p "test_issue_2646.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
@@ -2326,10 +2340,11 @@ jobs:
           PY
 
       - name: Run same reproducer and selectors on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          git -C upstream-amaranth checkout --detach 6a10abe6c873e7fb51a34f70801d3dd37cda9061
+          git -C upstream-amaranth checkout --detach --force 6a10abe6c873e7fb51a34f70801d3dd37cda9061
           test "$(git -C upstream-amaranth rev-parse HEAD:amaranth/back/rtlil.py)" = "28f428c1aa4e1a5140287601553c1114f6f4820a"
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-amaranth" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/amaranth_issue_1518" -p "test_issue_1518.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
