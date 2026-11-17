@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-16T16:34:00Z",
+  "generated_at_utc": "2026-11-17T15:25:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -13,10 +13,11 @@
     "order": "Stage 2 exact base/fix reproduction and evidence, then Stage 3 gold/alternatives/E1-E2-E3 adjudication, then independent acceptance audit",
     "one_accepted_case_per_upstream_project": true,
     "do_not_count_test_selectors_as_independent_cases": true,
-    "inference_authorized": false
+    "inference_authorized": false,
+    "latest_stage2_disposition_note": "8 technical Stage 2 passes; Nox and Werkzeug blocked by exact dataset selector corruption; Moto blocked by mixed-scope row with unrelated IoT selectors; EODAG exact row/reproducer verified but selectors not yet run. Stage 3 not started for newly passed cases except existing Dishka technical adjudication. Final accepted cases remain zero."
   },
   "global_execution_blocker": {
-    "status": "confirmed_hosted_runner_allocation_failure",
+    "status": "previously_observed_runner_allocation_failure_not_reproduced_in_latest_batch",
     "evidence_run_id": 43908181500,
     "no_secret_runner_smoke_run_id": 43908725261,
     "runner_smoke_job_id": 133444501890,
@@ -36,8 +37,9 @@
         "conclusion": "failure"
       }
     ],
-    "preflight_jobs_zero_steps": true,
-    "unknown_root_cause": "GitHub job records expose no runner-side diagnostic; do not infer quota, policy or platform outage without more evidence."
+    "latest_allocated_batch_run_id": 44112905745,
+    "latest_batch_preflight": "success; candidate jobs assigned runners and executing",
+    "historical_root_cause": "GitHub job records from the original zero-step failures expose no runner-side diagnostic; do not infer quota, policy or platform outage."
   },
   "summary": {
     "frozen_rows": 96,
@@ -48,10 +50,10 @@
     "strong": 6,
     "post_second_pass_excluded": 2,
     "remaining_broad_shortlist": 65,
-    "stage2_passed": 1,
+    "stage2_passed": 8,
     "stage3_technical_passed": 1,
     "final_accepted_cases": 0,
-    "runner_blocked_candidates": 11,
+    "runner_blocked_candidates": 0,
     "separately_blocked_external_fixture": 1
   },
   "records": [
@@ -83,11 +85,12 @@
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_STAGE2_STAGE3_GATE_REVIEW_V0_1_2026-11-16.md",
       "stage2_status": "passed",
-      "stage2_workflow_job_id": null,
-      "stage2_evidence_note": "8/8 exact dataset selectors failed on buggy base and passed on fixed; independent issue reproducer 1!=42 on base and pass on fixed; raw artifact SHA verified.",
+      "stage2_workflow_job_id": 134137813966,
+      "stage2_evidence_note": "Latest no-inference run: independent issue reproducer plus all 8 exact dataset selectors passed the strict buggy-base failure / fixed-revision pass contract. Stage 3 gold/alternatives and E1/E2/E3 technical adjudication remain approved under the recorded single-human-adjudicator/source-exposure limitations. Final acceptance record and registry validation still pending.",
       "stage3_status": "passed_technical_adjudication",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44111403900
     },
     {
       "cohort_rank": 3,
@@ -150,12 +153,13 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/WNTRBLM_NOX_919_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "blocked_runner_allocation",
-      "stage2_workflow_job_id": 133442592087,
-      "stage2_evidence_note": "Exact source-license resolution for dependency-groups 1.3.0 and attrs 24.3.0 recorded; exact row/selectors and fail/pass tests still await a runner.",
+      "stage2_status": "blocked_dataset_selector_integrity",
+      "stage2_workflow_job_id": 134143226126,
+      "stage2_evidence_note": "Independent issue reproducer has the expected base-fail/fixed-pass contrast. Dataset row contains 27 selectors: 24 valid selectors execute with expected base fail/fixed pass; 3 original selectors are malformed (one references a test method absent from both pinned commits, two parametrized node IDs are truncated). Exact source row is retained; no selectors silently removed.",
       "stage3_status": "not_started_stage2_not_passed",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44112905745
     },
     {
       "cohort_rank": 7,
@@ -201,12 +205,13 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/MOTO_8269_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "blocked_runner_allocation",
-      "stage2_workflow_job_id": 133442592363,
-      "stage2_evidence_note": "Static source mechanism strong; PR timestamp identity guard added; no test step/artifact due runner_id=0.",
+      "stage2_status": "blocked_mixed_scope_and_invalid_dataset_selectors",
+      "stage2_workflow_job_id": 134143226326,
+      "stage2_evidence_note": "Independent ECR multi-tag reproducer and the one ECR-specific dataset selector show buggy-base failure and fixed-revision pass. Exact SWE-rebench row has 18 selectors: 17 unrelated IoT tests; among those, 5 pass on buggy and fixed revisions, while 12 are invalid/nonexistent selectors. Full raw row and per-selector JSON retained; do not cherry-pick the ECR selector as a replacement row.",
       "stage3_status": "not_started_stage2_not_passed",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44112905745
     },
     {
       "cohort_rank": 10,
@@ -252,12 +257,13 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/NUMPYRO_1916_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "blocked_runner_allocation",
-      "stage2_workflow_job_id": 133442592429,
-      "stage2_evidence_note": "Old run stopped at fork PR-head SHA; workflow corrected to verified upstream merge SHA; no post-correction test execution.",
-      "stage3_status": "not_started_stage2_not_passed",
+      "stage2_status": "passed",
+      "stage2_workflow_job_id": 134137813850,
+      "stage2_evidence_note": "Exact dataset row authenticated; both AIES and ESS warmup selectors fail on buggy base with JAX split-key array error and pass on exact fixed revision (2/2 base-fail, 2/2 fixed-pass).",
+      "stage3_status": "not_started_stage2_passed",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44111403900
     },
     {
       "cohort_rank": 13,
@@ -320,12 +326,13 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/EODAG_1530_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "blocked_runner_allocation_and_mixed_scope_selector_review",
-      "stage2_workflow_job_id": 133442591987,
-      "stage2_evidence_note": "Need ensure FAIL_TO_PASS selectors isolate duplicate-key defect from separate StacListAssets changes.",
-      "stage3_status": "not_started_stage2_not_passed",
+      "stage2_status": "partially_verified_selector_execution_pending",
+      "stage2_workflow_job_id": 134143226554,
+      "stage2_evidence_note": "Independent YAML reproducer shows duplicate geodes key failure on base and passes on fixed. Exact lower-case dataset row cs-si__eodag-1536 authenticated with row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47. Two selectors are statically aligned to geodes_s3 provider; they have not yet been executed against base/fixed source.",
+      "stage3_status": "not_started_stage2_incomplete",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44112905745
     },
     {
       "cohort_rank": 17,
@@ -456,12 +463,13 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/ROBOCOP_1371_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "blocked_runner_allocation",
-      "stage2_workflow_job_id": 133442592250,
-      "stage2_evidence_note": "Old extraction used wrong case-sensitive instance ID; current repo/base resolver corrected but not executed.",
-      "stage3_status": "not_started_stage2_not_passed",
+      "stage2_status": "passed",
+      "stage2_workflow_job_id": 134137813750,
+      "stage2_evidence_note": "Exact row authenticated; the sole dataset selector fails on buggy base and passes on exact fixed revision (1/1 base-fail, 1/1 fixed-pass).",
+      "stage3_status": "not_started_stage2_passed",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44111403900
     },
     {
       "cohort_rank": 25,
@@ -490,12 +498,13 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/MELTANO_3090_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "blocked_runner_allocation",
-      "stage2_workflow_job_id": 133442592515,
-      "stage2_evidence_note": "Exact row/selector and dependency inventory require completed workflow.",
-      "stage3_status": "not_started_stage2_not_passed",
+      "stage2_status": "passed",
+      "stage2_workflow_job_id": 134137814089,
+      "stage2_evidence_note": "Independent schema reproducer fails on buggy base and passes on fixed. Exact row and timestamp authenticated; sole repeated-reference selector fails on buggy base and passes on fixed (1/1).",
+      "stage3_status": "not_started_stage2_passed",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44111403900
     },
     {
       "cohort_rank": 27,
@@ -558,12 +567,13 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/AMARANTH_1518_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "blocked_runner_allocation_and_exposure_review",
-      "stage2_workflow_job_id": 133442592241,
-      "stage2_evidence_note": "Dataset selector execution pending; issue/PR date is close to model public-release period, exposure review required.",
-      "stage3_status": "not_started_stage2_not_passed",
+      "stage2_status": "passed_temporal_exposure_review_open",
+      "stage2_workflow_job_id": 134137814116,
+      "stage2_evidence_note": "Independent RTLIL reproducer and exact PrintTestCase.test_escape_curly selector fail on buggy base and pass on fixed. Dataset timestamp is 2024-09-20 14:00:49 UTC, the Qwen public-release date; exact training-data cutoff and release-time precedence remain unresolved, so Stage 3 temporal exposure gate is open.",
+      "stage3_status": "not_started_temporal_exposure_review_open",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44111403900
     },
     {
       "cohort_rank": 31,
@@ -592,12 +602,13 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/WERKZEUG_2955_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "blocked_runner_allocation_after_dependency_lock_correction",
-      "stage2_workflow_job_id": 133442592042,
-      "stage2_evidence_note": "Old run collection failed because ephemeral-port-reserve absent; lock now pins it; no post-correction execution.",
+      "stage2_status": "blocked_dataset_selector_integrity",
+      "stage2_workflow_job_id": 134143226029,
+      "stage2_evidence_note": "One of two exact selectors directly added for issue #2955 executes with buggy-base failure and fixed-revision pass. The second is truncated in the immutable Parquet row (`test_dict_header[=foo,`) and does not resolve to the full upstream parametrized node ID. Exact row preserved; no silent repair.",
       "stage3_status": "not_started_stage2_not_passed",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44112905745
     },
     {
       "cohort_rank": 33,
@@ -643,12 +654,13 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/PYTHON_CONTROL_1144_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "blocked_runner_allocation",
-      "stage2_workflow_job_id": 133442592201,
-      "stage2_evidence_note": "Exact selectors need to isolate explicit-axes routing defect from other PR changes.",
-      "stage3_status": "not_started_stage2_not_passed",
+      "stage2_status": "passed",
+      "stage2_workflow_job_id": 134137813952,
+      "stage2_evidence_note": "Independent explicit-axes reproducer fails on buggy base. After enabling the pinned upstream conftest (restoring mplcleanup), all 3 exact dataset selectors fail on buggy base and pass on fixed revision. Previous setup-only failure was caused by our --noconftest flag and is superseded.",
+      "stage3_status": "not_started_stage2_passed",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44111403900
     },
     {
       "cohort_rank": 36,
@@ -711,12 +723,13 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/QUTIP_2646_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "blocked_runner_allocation",
-      "stage2_workflow_job_id": 133442591918,
-      "stage2_evidence_note": "Source build and exact dataset selector pair pending.",
-      "stage3_status": "not_started_stage2_not_passed",
+      "stage2_status": "passed",
+      "stage2_workflow_job_id": 134131998973,
+      "stage2_evidence_note": "Exact buggy-base build, independent stale-coefficient reproducer, exact dataset row and sole test_coefficient_update_args selector all completed successfully: base failure and fixed revision pass. A later repeat job is still building; earlier complete successful run is the Stage 2 evidence.",
+      "stage3_status": "not_started_stage2_passed",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44109769357
     },
     {
       "cohort_rank": 40,
@@ -1578,12 +1591,13 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/PYFAR_721_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "blocked_runner_allocation_after_environment_lock_correction",
-      "stage2_workflow_job_id": 133442591954,
-      "stage2_evidence_note": "Old run authenticated row and 23 selectors but collection stopped because netCDF4 missing; current lock adds netCDF4, cftime, certifi; no rerun.",
-      "stage3_status": "not_started_stage2_not_passed",
+      "stage2_status": "passed",
+      "stage2_workflow_job_id": 134137813769,
+      "stage2_evidence_note": "Exact row and dependency-license inventory artifact saved. All 23 selectors fail on buggy base and pass on exact fixed revision (23/23 in both directions).",
+      "stage3_status": "not_started_stage2_passed",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44111403900
     },
     {
       "cohort_rank": 91,
