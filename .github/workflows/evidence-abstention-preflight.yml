@@ -826,6 +826,7 @@ jobs:
             --source-dir "$GITHUB_WORKSPACE/upstream-werkzeug" \
             --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
             --expect base-fail \
+            --no-conftest \
             --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
             > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           status=$?
@@ -845,6 +846,7 @@ jobs:
             --source-dir "$GITHUB_WORKSPACE/upstream-werkzeug" \
             --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
             --expect fixed-pass \
+            --no-conftest \
             --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
             > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
@@ -1925,18 +1927,19 @@ jobs:
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-control")
           env["MPLBACKEND"] = "Agg"
           logs = []
+          mismatches = []
           for selector in row["FAIL_TO_PASS"]:
               command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
               result = subprocess.run(command, cwd="upstream-control", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
               logs.append("SELECTOR: " + selector + "\n" + result.stdout)
-              if result.returncode == 0:
-                  raise SystemExit("Dataset selector unexpectedly passed on buggy base: " + selector)
-              if "AssertionError" not in result.stdout:
-                  raise SystemExit("Buggy-base selector failed for a reason other than the explicit-axis assertion: " + selector + "\n" + result.stdout)
+              if result.returncode == 0 or "AssertionError" not in result.stdout:
+                  mismatches.append(selector)
           output = "\n".join(logs)
           with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
               f.write(output)
           print(output)
+          if mismatches:
+              raise SystemExit(f"{len(mismatches)}/{len(row['FAIL_TO_PASS'])} dataset selectors did not fail on buggy base; full per-selector log saved")
           PY
 
       - name: Run same reproducer and dataset selectors on fixed revision (pass required)
@@ -1957,16 +1960,19 @@ jobs:
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-control")
           env["MPLBACKEND"] = "Agg"
           logs = []
+          failures = []
           for selector in row["FAIL_TO_PASS"]:
               command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
               result = subprocess.run(command, cwd="upstream-control", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
               logs.append("SELECTOR: " + selector + "\n" + result.stdout)
               if result.returncode != 0:
-                  raise SystemExit("Dataset selector did not pass on fixed revision: " + selector + "\n" + result.stdout)
+                  failures.append(selector)
           output = "\n".join(logs)
           with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
               f.write(output)
           print(output)
+          if failures:
+              raise SystemExit(f"{len(failures)}/{len(row['FAIL_TO_PASS'])} selectors failed on fixed revision; full per-selector log saved")
           PY
 
       - name: Prepare and upload raw python-control reproduction evidence
@@ -2147,6 +2153,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-qutip checkout --detach --force 61df3c7bccf474aba393940581ffbbeccf5da366
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e ./upstream-qutip
           test "$(git -C upstream-qutip rev-parse HEAD:qutip/core/coefficient.py)" = "14315d49c760389d028fd0023cc382c973a08684"
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-qutip" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/qutip_issue_2646" -p "test_issue_2646.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
