@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-17T16:05:00Z",
+  "generated_at_utc": "2026-11-17T16:39:45.442Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -14,7 +14,7 @@
     "one_accepted_case_per_upstream_project": true,
     "do_not_count_test_selectors_as_independent_cases": true,
     "inference_authorized": false,
-    "latest_stage2_disposition_note": "11 technical Stage 2 passes: Dishka, NumPyro, Robocop, PyFar, Python-Control, Meltano, Amaranth, QuTiP, Dymos, EODAG and SkyPilot. Nox and Werkzeug remain blocked by malformed selectors in the immutable original dataset rows. Moto has a valid ECR-specific fail/pass but the full row is mixed-scope and contains invalid unrelated IoT selectors. Earthkit-data remains blocked by external fixture/provenance. Stage 3 technical adjudication pass remains Dishka only. Final accepted cases remain 0; no model load/inference/training."
+    "latest_stage2_disposition_note": "12 technical Stage 2 passes: Dishka, NumPyro, Robocop, PyFar, Python-Control, Meltano, Amaranth, QuTiP, Dymos, EODAG, SkyPilot and Napalm. Napalm's exact dataset selector has a pinned base-fail/fixed-pass result, but its Cisco PR fixture provenance/legal scope remains a Stage 3 hold. Nox and Werkzeug remain blocked by malformed selectors in immutable dataset rows. Moto has a valid ECR-specific fail/pass but its full row is mixed-scope and includes invalid unrelated IoT selectors. Earthkit-data remains blocked by external fixture/provenance. Stage 3 technical adjudication pass remains Dishka only. Final accepted cases remain 0; no model load/inference/training."
   },
   "global_execution_blocker": {
     "status": "historical_zero_step_runner_allocation_failures_not_reproduced_in_current_SkyPilot_runs",
@@ -35,7 +35,7 @@
     "strong": 6,
     "post_second_pass_excluded": 2,
     "remaining_broad_shortlist": 65,
-    "stage2_passed": 11,
+    "stage2_passed": 12,
     "stage3_technical_passed": 1,
     "final_accepted_cases": 0,
     "runner_blocked_candidates": 0,
@@ -373,11 +373,11 @@
       "static_scope_decision": "Koşullu bug adayı — fixture/provenans hold",
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
-      "candidate_review_document": null,
-      "stage2_status": "not_started_conditional_gate",
-      "stage2_workflow_job_id": null,
-      "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "candidate_review_document": "research_candidates/evidence_abstention/NAPALM_2152_CANDIDATE_REVIEW_2026-11-17.md",
+      "stage2_status": "passed_exact_dataset_selector_buggy_base_fail_fixed_revision_pass_pinned_environment",
+      "stage2_workflow_job_id": 134194652784,
+      "stage2_evidence_note": "Canonical pinned exact-selector run 44127350027 (job 134194652784): frozen row napalm-automation__napalm-2152 and exact FAIL_TO_PASS selector authenticated; pinned CPython 3.11.9 / pip 24.3.1 / pytest 8.3.5 / NAPALM 5.0.0 environment (51 external lock entries; 52 installed distributions), exact freeze matched, pip check passed, all 52 distributions had license metadata. Exact selector failed on buggy base with os_version actual 'version' vs expected '10.3(5)' and passed on exact fixed revision. Test-only patch contained exactly six issue2151 fixture paths, no production source changes. Sanitized artifact 14348056824 SHA-256 b2d6934038baf751a43ec890fa1a98763bfc10f27b1dd60b3f47aea24f2ff30d; 15/15 inner hashes independently verified; no Parquet, raw fixture, patch contents, harness or raw stdout. Stage 3 remains pending due fixture provenance/legal scope and human adjudication; final acceptance not granted.",
+      "stage3_status": "not_started_stage2_passed_license_scope_and_human_adjudication_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false
     },
