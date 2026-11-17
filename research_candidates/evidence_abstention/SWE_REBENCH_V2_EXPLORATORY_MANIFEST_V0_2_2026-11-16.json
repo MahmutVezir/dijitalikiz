@@ -192,7 +192,8 @@
     "Click #2746 (primary rank 33) and mpmath #511 (primary rank 40) are held out of the primary intake because their exact public issues predate the September 2024 model release, creating elevated potential training-data exposure. This is a precaution, not a claim that either issue was in the training set.",
     "pyfar #721 (primary rank 90) passed static numerical-contract and exact-base MIT source-license screening. The issue's energy-20-to-target-1 counterexample is explicit; a Python 3.12.4 pinned runtime/test environment and exact dataset FAIL_TO_PASS workflow have been added. Reproduction remains pending.",
     "Target clarification approved by project lead on 2026-11-16: primary target is 15 independent upstream projects; 20 is a stretch target. Fewer than 15 cases are still retained if they pass all unchanged acceptance criteria; no eligibility threshold is lowered and no candidate is selected using model outcomes.",
-    "v0.2 no-inference preflight is the active readiness report. Historical v0.1 confirmatory preflight rules (60-case threshold, Panel A/B, external preregistration, reviewer consent, and external audit) are not requirements of this single-researcher exploratory design."
+    "v0.2 no-inference preflight is the active readiness report. Historical v0.1 confirmatory preflight rules (60-case threshold, Panel A/B, external preregistration, reviewer consent, and external audit) are not requirements of this single-researcher exploratory design.",
+    "Stage 2 rerun snapshot 2026-11-17: full base-fail/fixed-pass contracts verified for Dishka, NumPyro (2/2), Robocop (1/1), PyFar (23/23), Python-Control (3/3), Meltano (1/1), Amaranth (1/1), and QuTiP (1/1). EODAG issue reproducer and exact row verified; its two issue-aligned dataset selectors remain unexecuted. Moto's issue-specific ECR reproducer and selector passed, but the exact 18-selector row mixes unrelated IoT tests and contains 12 invalid selectors. Nox and Werkzeug remain blocked by malformed original dataset selectors. Technical Stage 2 dispositions only; accepted_case_count and accepted_project_count remain 0; no model load/inference/training authorized."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -218,7 +219,7 @@
     {
       "instance_id": "pyfar__pyfar-722",
       "cohort_rank": 90,
-      "status": "static_numerical_bug_and_root_license_screen_passed_exact_reproduction_pending",
+      "status": "stage2_pass_all_23_exact_dataset_selectors_buggy_base_fail_fixed_revision_pass",
       "issue_url": "https://github.com/pyfar/pyfar/issues/721",
       "pull_request_url": "https://github.com/pyfar/pyfar/pull/722",
       "base_commit": "648dda4c60c5a6f74acf335f7808c590c9d23929",
@@ -234,16 +235,42 @@
       "review_path": "research_candidates/evidence_abstention/PYFAR_721_CANDIDATE_REVIEW_2026-11-16.md",
       "workflow_path": ".github/workflows/evidence-abstention-preflight.yml#pyfar-issue-721-reproduction",
       "runtime_scope": "Python 3.12.4; declared pyfar runtime dependencies plus required transitive dependencies; in-memory signals only",
-      "dependency_license_inventory_status": "pending_workflow",
+      "dependency_license_inventory_status": "recorded_in_artifact_pending_human_scope_review",
       "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "dependency_license_metadata_workflow_and_human_review",
-        "dataset_fail_to_pass_base_fail_fixed_pass_reproduction",
+        "review_complete_dependency_license_inventory_and_document_scope",
         "independence_and_related_issue_family_review",
-        "gold_standard_and_E1_E2_E3_human_adjudication"
-      ]
+        "human_gold_root_cause_and_alternative_hypotheses_adjudication",
+        "E1_E2_E3_nested_evidence_packet_preparation_and_human_approval",
+        "complete_schema_conformant_final_case_record_and_fail_closed_registry_validation",
+        "student_project_lead_separate_final_case_acceptance_decision"
+      ],
+      "latest_reproduction_run_id": 44111403900,
+      "latest_reproduction_job_id": 134137813769,
+      "reproduction_artifact_id": 14341306698,
+      "reproduction_artifact_sha256": "820889557ad458c437908c18b37ad16b5e29beb2b9a7db276353b4ccae5fd6ad",
+      "dataset_created_at": "2024-11-15T08:33:08Z",
+      "dataset_created_at_raw": "2024-11-15 08:33:08",
+      "dataset_row_sha256": "82444bd1dcaa0c52bcac4a5c0b76efc20ed0ad26606de1edc338265843aca6bd",
+      "fail_to_pass_count": 23,
+      "dataset_selector_status": "PASS: 23/23 exact selectors executed and failed on buggy base; 23/23 passed on fixed revision",
+      "dataset_selector_evidence": {
+        "base_selector_contracts": "23/23",
+        "fixed_selector_contracts": "23/23",
+        "artifact_files": [
+          "base-dataset-tests.json",
+          "base-dataset-test.log",
+          "fixed-dataset-tests.json",
+          "fixed-dataset-test.log",
+          "dataset-row-canonical.json",
+          "dependency-license-inventory.json"
+        ],
+        "environment_lock_sha256": "48eded6c8371f7b20631b15c09961a6e039d7afd62487dd7f3dd0d74f1636bce"
+      },
+      "issue_reproducer_status": "No separate standalone test file was run; exact issue-aligned dataset regression selectors reproduce the numerical normalization failure and pass on fixed code.",
+      "technical_reproduction": "stage2_pass_exact_23_dataset_selectors_base_fail_fixed_pass"
     },
     {
       "instance_id": "mitmproxy__pdoc-813",
@@ -347,7 +374,11 @@
       "ai_critique_record_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/CHATGPT_ADVISORY_CRITIQUE_DISHKA_435_2026-11-17.md",
       "ai_critique_record_sha256": "ea0215e41382409e109d0b3587bd95df400e94887d2f9c137a64fd90173c45ca",
       "license_review_status": "documentary_minimal_environment_screen_passed_full_scope_human_signoff_pending",
-      "final_case_record_status": "not_yet_constructed_schema_conformant_record"
+      "final_case_record_status": "not_yet_constructed_schema_conformant_record",
+      "latest_reproduction_run_id": 44111403900,
+      "latest_reproduction_job_id": 134137813966,
+      "latest_reproduction_artifact_id": 14340572651,
+      "latest_reproduction_status": "PASS: issue reproducer and all 8 exact dataset selectors; does not replace remaining final case acceptance gates."
     },
     {
       "instance_id": "ecmwf__earthkit-data-592",
@@ -457,7 +488,7 @@
     {
       "instance_id": "pyro-ppl__numpyro-1918",
       "cohort_rank": 12,
-      "status": "static_issue_patch_and_source_license_screen_passed_exact_reproduction_pending",
+      "status": "stage2_pass_all_2_exact_dataset_selectors_buggy_base_fail_fixed_revision_pass",
       "issue_url": "https://github.com/pyro-ppl/numpyro/issues/1916",
       "pull_request_url": "https://github.com/pyro-ppl/numpyro/pull/1918",
       "base_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
@@ -474,18 +505,34 @@
       "review_path": "research_candidates/evidence_abstention/NUMPYRO_1916_CANDIDATE_REVIEW_2026-11-16.md",
       "workflow_path": ".github/workflows/evidence-abstention-preflight.yml#numpyro-issue-1916-reproduction",
       "runtime_scope": "CPU-only JAX; no GPU, external service, or model inference",
-      "dependency_license_inventory_status": "pending_workflow",
+      "dependency_license_inventory_status": "recorded_in_artifact_pending_human_scope_review",
       "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "dependency_license_metadata_workflow_and_human_review",
-        "dataset_fail_to_pass_base_fail_fixed_pass_reproduction",
+        "review_dependency_license_inventory_and_exact_base_scope",
         "independence_and_related_issue_family_review",
-        "gold_standard_and_E1_E2_E3_human_adjudication"
+        "human_gold_root_cause_and_alternative_hypotheses_adjudication",
+        "E1_E2_E3_nested_evidence_packet_preparation_and_human_approval",
+        "complete_schema_conformant_final_case_record_and_fail_closed_registry_validation",
+        "student_project_lead_separate_final_case_acceptance_decision"
       ],
       "pr_head_commit": "d5367f16abee85a1d7788784c71eb908ecb12df7",
-      "reproduction_fixed_revision": "upstream merge commit; PR head is retained as a separate provenance identifier"
+      "reproduction_fixed_revision": "upstream merge commit; PR head is retained as a separate provenance identifier",
+      "latest_reproduction_run_id": 44111403900,
+      "latest_reproduction_job_id": 134137813850,
+      "reproduction_artifact_id": 14340342614,
+      "reproduction_artifact_sha256": "c9968811eb3bc9da4fd6d6a7dbc5281cce6a903411cf532125d44e80b3365bd5",
+      "dataset_created_at": "2024-11-28T00:54:29Z",
+      "dataset_created_at_raw": "2024-11-28 00:54:29",
+      "dataset_row_sha256": "d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646",
+      "fail_to_pass_count": 2,
+      "fail_to_pass_selectors": [
+        "test/infer/test_ensemble_mcmc.py::test_warmup[AIES]",
+        "test/infer/test_ensemble_mcmc.py::test_warmup[ESS]"
+      ],
+      "dataset_selector_status": "PASS: 2/2 selectors executed with the JAX batched-key error on buggy base; 2/2 passed on exact fixed revision.",
+      "technical_reproduction": "stage2_pass_2_dataset_selectors_base_fail_fixed_pass"
     },
     {
       "instance_id": "pallets__werkzeug-2956",
@@ -548,7 +595,7 @@
     {
       "instance_id": "MarketSquare__robotframework-robocop-1374",
       "cohort_rank": 24,
-      "status": "static_issue_patch_and_source_license_screen_passed_exact_reproduction_pending",
+      "status": "stage2_pass_single_exact_dataset_selector_buggy_base_fail_fixed_revision_pass",
       "issue_url": "https://github.com/MarketSquare/robotframework-robocop/issues/1371",
       "pull_request_url": "https://github.com/MarketSquare/robotframework-robocop/pull/1374",
       "base_commit": "271e73253a70710cc80374128efa9eabb549b5f2",
@@ -567,17 +614,32 @@
       "review_path": "research_candidates/evidence_abstention/ROBOCOP_1371_CANDIDATE_REVIEW_2026-11-16.md",
       "workflow_path": ".github/workflows/evidence-abstention-preflight.yml#robocop-issue-1371-reproduction",
       "runtime_scope": "Python 3.11.9; Robot Framework, Typer/Click, Rich and pinned runtime/test dependencies; uses only in-repository test fixtures",
-      "dependency_license_inventory_status": "pending_workflow",
+      "dependency_license_inventory_status": "recorded_in_artifact_pending_human_scope_review",
       "license_review_attention": "pathspec dependency license metadata must be reviewed; do not assume every dependency is permissive solely from the root Apache-2.0 license",
       "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "dependency_license_metadata_and_pathspec_license_compatibility_review",
-        "dataset_fail_to_pass_base_fail_fixed_pass_reproduction",
+        "review_dependency_license_inventory_and_exact_base_changed_file_scope",
         "independence_and_related_issue_family_review",
-        "gold_standard_and_E1_E2_E3_human_adjudication"
-      ]
+        "human_gold_root_cause_and_alternative_hypotheses_adjudication",
+        "E1_E2_E3_nested_evidence_packet_preparation_and_human_approval",
+        "complete_schema_conformant_final_case_record_and_fail_closed_registry_validation",
+        "student_project_lead_separate_final_case_acceptance_decision"
+      ],
+      "latest_reproduction_run_id": 44111403900,
+      "latest_reproduction_job_id": 134137813750,
+      "reproduction_artifact_id": 14339514994,
+      "reproduction_artifact_sha256": "b06bba69adb120ba31c1399be93166585ee6cb823b4c98167d0d24bbd374b7bf",
+      "dataset_created_at": "2025-04-02T13:39:40Z",
+      "dataset_created_at_raw": "2025-04-02 13:39:40",
+      "dataset_row_sha256": "22cc7a322d27dc116f8577d21b844f06573523206ff64028a296c7edb7d127e6",
+      "fail_to_pass_count": 1,
+      "fail_to_pass_selectors": [
+        "tests/test_cli.py::TestListFormatters::test_exit_code[True-True-1]"
+      ],
+      "dataset_selector_status": "PASS: exact selector failed on buggy base and passed on fixed revision.",
+      "technical_reproduction": "stage2_pass_single_dataset_selector_base_fail_fixed_pass"
     },
     {
       "instance_id": "openmdao__dymos-1165",
@@ -684,8 +746,12 @@
         "unrelated_pr_change": "The PR also adds StacListAssets support in eodag/config.py, but the two dataset selectors above directly target the geodes_s3 provider registration and metadata.",
         "selector_execution_status": "not executed; only row extraction and static alignment reviewed"
       },
-      "latest_reproduction_run_id": 44110196196,
-      "latest_reproduction_job_id": 134133534134
+      "latest_reproduction_run_id": 44111403900,
+      "latest_reproduction_job_id": 134137814170,
+      "reproduction_artifact_id": 14339759627,
+      "reproduction_artifact_sha256": "4d34616c6338a9b477ec4ab07a46ab780047a755ab1578962c4de5eaf7493bbc",
+      "dataset_selector_execution_status": "not_run_by_workflow; job authenticates exact row and selectors only, then stops",
+      "latest_candidate_workflow_status": "issue_reproducer_base_fail_fixed_pass_and_exact_dataset_row_authenticated; two issue-aligned selectors pending actual execution"
     },
     {
       "instance_id": "pallets__click-2788",
@@ -714,7 +780,7 @@
     {
       "instance_id": "getmoto__moto-8296",
       "cohort_rank": 9,
-      "status": "independent_issue_reproducer_base_fail_fixed_pass_dataset_row_mixed_oracle",
+      "status": "independent_issue_reproducer_and_issue_specific_ECR_selector_pass_mixed_dataset_row_rejected_for_candidate_acceptance",
       "issue_url": "https://github.com/getmoto/moto/issues/8269",
       "pull_request_url": "https://github.com/getmoto/moto/pull/8296",
       "issue_created_at": "2024-10-30T12:24:49Z",
@@ -734,14 +800,13 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "rerun_after_PyYAML_pin_and_license_metadata_check",
-        "obtain_independent_buggy_base_failure_and_fixed_revision_pass",
-        "run_exact_dataset_selectors_base_fail_fixed_pass",
-        "complete_independence_and_exposure_review",
-        "gold_standard_and_E1_E2_E3_human_adjudication"
+        "do_not_automatically_repair_pinned_mixed_scope_dataset_row",
+        "only_reconsider_if_protocol_explicitly_authorizes_separately_versioned_issue_specific_oracle_without_changing_original_benchmark_row",
+        "independence_and_related_issue_family_review",
+        "human_gold_root_cause_and_alternative_hypotheses_adjudication"
       ],
-      "latest_reproduction_run_id": 44110196196,
-      "latest_reproduction_job_id": 134131534236,
+      "latest_reproduction_run_id": 44111403900,
+      "latest_reproduction_job_id": 134137814025,
       "failure": "responses import requires yaml; PyYAML was missing from locked --no-deps environment",
       "correction_committed": "PyYAML==6.0.2 added to requirements.lock and PyYAML license metadata included in dependency audit list",
       "correction_commit": "b04e7384792cd718d27640a6b6fb1c37477bf24e",
@@ -761,12 +826,40 @@
         "fixed_revision_observed_problem": "At least one IoT CloudFormation selector is not found in the pinned fixed source.",
         "policy": "do not count the 17 unrelated IoT selectors as ECR evidence; preserve the full raw dataset row and classify the row as mixed-scope oracle contamination"
       },
-      "technical_reproduction": "independent ECR issue reproducer base-fail fixed-pass; SWE-rebench full selector row blocked by mixed unrelated IoT selectors"
+      "technical_reproduction": "issue-specific ECR reproducer and ECR dataset selector pass base-fail/fixed-pass; whole dataset row rejected for mixed scope and 12 invalid selectors.",
+      "reproduction_artifact_id": 14340917321,
+      "reproduction_artifact_sha256": "d9644332abdbb0102a85892c2a137acda3b8f913735797bff08f4f46e1937c25",
+      "dataset_selector_audit": {
+        "total_fail_to_pass_selectors": 18,
+        "issue_specific_selector": "tests/test_ecr/test_ecr_boto3.py::test_list_same_image_with_multiple_tags",
+        "issue_specific_base_result": "executed failure; AssertionError 1 != 2; expected duplicate-tag missing behavior observed",
+        "issue_specific_fixed_result": "passed on exact fixed revision",
+        "unrelated_selector_count": 17,
+        "base_results": {
+          "issue_specific_executed_failure": 1,
+          "unrelated_selectors_that_unexpectedly_passed": 5,
+          "selector_or_collection_errors": 12
+        },
+        "fixed_results": {
+          "issue_specific_passed": 1,
+          "unrelated_selectors_passed": 5,
+          "selector_or_collection_errors": 12
+        },
+        "invalid_selector_categories": {
+          "nonexistent_test_node_ids": 5,
+          "nonexistent_file_or_path_selectors": 7
+        },
+        "artifact_json_sha256": {
+          "base": "4847662f827915914e5fe30225eb217ae1a951964f85498dfe49e9ed817d1f58",
+          "fixed": "53a52d07cfabeaf332d3a229c9021f3306458c8ff692532edf9a8ddd0b97cf7b"
+        },
+        "policy": "The exact pinned Parquet row is retained. Do not drop the 17 unrelated IoT selectors or replace this candidate's dataset row. The candidate cannot pass the full-row benchmark gate in its current state."
+      }
     },
     {
       "instance_id": "meltano__sdk-3091",
       "cohort_rank": 26,
-      "status": "issue_patch_and_source_reproducer_prepared_exact_dataset_reproduction_pending",
+      "status": "stage2_pass_independent_issue_reproducer_and_single_exact_dataset_selector_base_fail_fixed_pass",
       "issue_url": "https://github.com/meltano/sdk/issues/3090",
       "pull_request_url": "https://github.com/meltano/sdk/pull/3091",
       "issue_created_at": "2025-06-12T01:45:49Z",
@@ -788,18 +881,33 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "authenticate_exact_dataset_row_and_created_at_timestamp",
-        "all_dataset_FAIL_TO_PASS_selectors_fail_on_buggy_base_for_shared_visited_refs_defect",
-        "all_same_dataset_selectors_pass_on_fixed_revision",
-        "minimal_dependency_license_inventory_human_review",
+        "review_minimal_dependency_license_inventory_and_source_provenance",
         "independence_and_related_issue_family_review",
-        "gold_standard_and_E1_E2_E3_human_adjudication"
-      ]
+        "human_gold_root_cause_and_alternative_hypotheses_adjudication",
+        "E1_E2_E3_nested_evidence_packet_preparation_and_human_approval",
+        "complete_schema_conformant_final_case_record_and_fail_closed_registry_validation",
+        "student_project_lead_separate_final_case_acceptance_decision"
+      ],
+      "latest_reproduction_run_id": 44111403900,
+      "latest_reproduction_job_id": 134137814089,
+      "reproduction_artifact_id": 14342060184,
+      "reproduction_artifact_sha256": "80f494a6b6a26f846612b431348d17379bd74fef33d162e12ba238b153888976",
+      "dataset_created_at": "2025-06-12T01:47:30Z",
+      "dataset_created_at_raw": "2025-06-12 01:47:30",
+      "dataset_row_sha256": "318893b8546a4a6b2d8bc75d986a079c818951658fc1293ac59ba05d84682266",
+      "fail_to_pass_count": 1,
+      "fail_to_pass_selectors": [
+        "tests/singerlib/test_schema.py::test_resolve_schema_references[resolve_schema_multiple_properties_with_same_reference]"
+      ],
+      "issue_reproducer_status": "PASS_CONTRAST: independent base test fails because schema reference resolution drops a repeated property schema; fixed source passes.",
+      "dataset_selector_status": "PASS: exact single selector fails on buggy base and passes on fixed revision.",
+      "technical_reproduction": "stage2_pass_independent_issue_reproducer_and_1_dataset_selector_base_fail_fixed_pass",
+      "dependency_license_inventory_status": "recorded_in_artifact_pending_human_scope_review"
     },
     {
       "instance_id": "python-control__python-control-1145",
       "cohort_rank": 35,
-      "status": "stage2_pass_independent_issue_reproducer_and_all_3_dataset_selectors_base_fail_fixed_pass",
+      "status": "stage2_pass_independent_issue_reproducer_and_all_3_exact_dataset_selectors_buggy_base_fail_fixed_revision_pass",
       "issue_url": "https://github.com/python-control/python-control/issues/1144",
       "pull_request_url": "https://github.com/python-control/python-control/pull/1145",
       "issue_created_at": "2025-04-16T16:21:23Z",
@@ -819,14 +927,15 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "rerun_with_exact_upstream_conftest_enabled",
-        "inspect_all_three_base_selector_results_and_same_three_fixed_selector_results",
-        "record_issue_reproducer_base_fail_fixed_pass",
-        "complete_independence_and_exposure_review",
-        "gold_standard_and_E1_E2_E3_human_adjudication"
+        "review_full_dependency_license_inventory_and_source_provenance",
+        "independence_and_related_issue_family_review",
+        "human_gold_root_cause_and_alternative_hypotheses_adjudication",
+        "E1_E2_E3_nested_evidence_packet_preparation_and_human_approval",
+        "complete_schema_conformant_final_case_record_and_fail_closed_registry_validation",
+        "student_project_lead_separate_final_case_acceptance_decision"
       ],
-      "latest_reproduction_run_id": 44109769357,
-      "latest_reproduction_job_id": 134131999050,
+      "latest_reproduction_run_id": 44111403900,
+      "latest_reproduction_job_id": 134137813952,
       "independent_reproducer_status": "PASS_BUGGY_BASE: AssertionError 0 not greater than 0",
       "dataset_selector_previous_failure": "All three dataset selectors hit pytest fixture 'mplcleanup' not found because the workflow passed --noconftest.",
       "root_cause": "The pinned upstream control/tests/conftest.py defines mplcleanup; the workflow disabled conftest loading and thereby manufactured a setup error.",
@@ -843,12 +952,15 @@
         "control/tests/ctrlplot_test.py::test_plot_ax_processing[describing_function_response-describing_function_plot]",
         "control/tests/ctrlplot_test.py::test_plot_ax_processing[nyquist_response-nyquist_plot]"
       ],
-      "technical_reproduction": "passed_same_issue_reproducer_and_all_3_selectors_buggy_base_failure_fixed_revision_pass"
+      "technical_reproduction": "passed_same_issue_reproducer_and_all_3_selectors_buggy_base_failure_fixed_revision_pass",
+      "reproduction_artifact_id": 14340013958,
+      "reproduction_artifact_sha256": "5957e0de926f5242559fa955caa5a1e1a227309f919f3f1849fc35b072cd1824",
+      "current_selector_harness_status": "PASS: upstream control/tests/conftest.py loaded; mplcleanup fixture restored; all three selectors pass the strict base-fail/fixed-pass contract."
     },
     {
       "instance_id": "qutip__qutip-2694",
       "cohort_rank": 39,
-      "status": "issue_patch_and_coefficient_reproducer_prepared_source_build_and_dataset_reproduction_pending",
+      "status": "stage2_pass_independent_coefficient_reproducer_and_single_exact_dataset_selector_base_fail_fixed_pass",
       "issue_url": "https://github.com/qutip/qutip/issues/2646",
       "pull_request_url": "https://github.com/qutip/qutip/pull/2694",
       "issue_created_at": "2025-03-05T18:35:23Z",
@@ -870,14 +982,30 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "authenticate_exact_dataset_row_and_created_at_timestamp",
-        "source_build_must_complete_on_exact_buggy_base",
-        "independent_coefficient_reproducer_must_fail_on_base_and_pass_on_fix",
-        "all_dataset_FAIL_TO_PASS_selectors_must_fail_on_base_for_stale_args_and_pass_on_fix",
-        "minimal_build_dependency_license_inventory_human_review",
+        "review_minimal_build_dependency_license_inventory_and_source_provenance",
         "independence_and_related_issue_family_review",
-        "gold_standard_and_E1_E2_E3_human_adjudication"
-      ]
+        "human_gold_root_cause_and_alternative_hypotheses_adjudication",
+        "E1_E2_E3_nested_evidence_packet_preparation_and_human_approval",
+        "complete_schema_conformant_final_case_record_and_fail_closed_registry_validation",
+        "student_project_lead_separate_final_case_acceptance_decision"
+      ],
+      "latest_successful_reproduction_run_id": 44109769357,
+      "latest_successful_reproduction_job_id": 134131998973,
+      "reproduction_artifact_id": 14340492188,
+      "reproduction_artifact_sha256": "156999ac6967abb37f29d77ac18a54e3bad5f231d41bd980729b5c4db5259daa",
+      "dataset_created_at": "2025-05-15T15:48:33Z",
+      "dataset_created_at_raw": "2025-05-15 15:48:33",
+      "dataset_row_sha256": "16ed66f7a865915697f5fbed540a56e3017ccfe460f3d5bc94d5918a63e9c1ee",
+      "fail_to_pass_count": 1,
+      "fail_to_pass_selectors": [
+        "qutip/tests/core/test_coefficient.py::test_coefficient_update_args"
+      ],
+      "issue_reproducer_status": "PASS_CONTRAST: stale coefficient argument behavior causes AssertionError 1 != 2 on buggy base; fixed source passes.",
+      "dataset_selector_status": "PASS: single exact selector failed on buggy base and passed on fixed revision.",
+      "latest_repeat_run_id": 44111403900,
+      "latest_repeat_job_id": 134137813871,
+      "latest_repeat_status": "in_progress_at_exact_buggy_base_editable_build_at_last_review; earlier full reproduction run completed successfully",
+      "technical_reproduction": "stage2_pass_independent_issue_reproducer_and_1_dataset_selector_base_fail_fixed_pass"
     },
     {
       "instance_id": "cta-observatory__ctapipe-2732",
@@ -908,7 +1036,7 @@
     {
       "instance_id": "amaranth-lang__amaranth-1519",
       "cohort_rank": 30,
-      "status": "issue_patch_and_rtlil_reproducer_prepared_exact_dataset_reproduction_pending_temporal_caution",
+      "status": "stage2_pass_independent_RTLIL_reproducer_and_single_exact_dataset_selector_base_fail_fixed_pass_temporal_review_open",
       "issue_url": "https://github.com/amaranth-lang/amaranth/issues/1518",
       "pull_request_url": "https://github.com/amaranth-lang/amaranth/pull/1519",
       "issue_created_at": "2024-09-20T13:41:02Z",
@@ -929,13 +1057,29 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "authenticate_exact_dataset_row_and_created_at_timestamp",
-        "all_dataset_FAIL_TO_PASS_selectors_fail_on_buggy_base_for_literal_brace_escape",
-        "all_same_dataset_selectors_pass_on_fixed_revision",
-        "minimal_dependency_license_inventory_human_review",
-        "resolve_temporal_exposure_against_exact_model_revision",
-        "gold_standard_and_E1_E2_E3_human_adjudication"
-      ]
+        "resolve_exact_Qwen2.5-3B_release_and_training_data_cutoff_temporal_exposure",
+        "review_dependency_license_inventory_and_source_provenance",
+        "independence_and_related_issue_family_review",
+        "human_gold_root_cause_and_alternative_hypotheses_adjudication",
+        "E1_E2_E3_nested_evidence_packet_preparation_and_human_approval",
+        "complete_schema_conformant_final_case_record_and_fail_closed_registry_validation",
+        "student_project_lead_separate_final_case_acceptance_decision"
+      ],
+      "latest_reproduction_run_id": 44111403900,
+      "latest_reproduction_job_id": 134137814116,
+      "reproduction_artifact_id": 14340976999,
+      "reproduction_artifact_sha256": "f3a1a146bd055eb064f3b043c340c74d584351f22569805de63eaf44492ba5ff",
+      "dataset_created_at": "2024-09-20T14:00:49Z",
+      "dataset_created_at_raw": "2024-09-20 14:00:49",
+      "dataset_row_sha256": "73be38d692dd5426e755184998fabfa2f0a612cef244bfb75ba5d58ec352c4c7",
+      "fail_to_pass_count": 1,
+      "fail_to_pass_selectors": [
+        "tests/test_back_rtlil.py::PrintTestCase::test_escape_curly"
+      ],
+      "issue_reproducer_status": "PASS_CONTRAST: RTLIL output on buggy base contains single braces instead of escaped doubled braces; fixed code passes reproducer.",
+      "dataset_selector_status": "PASS: exact selector fails on buggy base with literal-brace mismatch and passes on fixed revision.",
+      "technical_reproduction": "stage2_pass_independent_RTLIL_reproducer_and_1_dataset_selector_base_fail_fixed_pass",
+      "temporal_exposure_review": "OPEN: issue and PR timestamps are 2024-09-20T13:41:02Z and 2024-09-20T14:00:49Z, on the Qwen2.5-3B public release date. Model training cutoff / public release-time precedence is not established; do not make a no-exposure claim."
     },
     {
       "instance_id": "skypilot-org__skypilot-5985",
