@@ -29,6 +29,18 @@ class SelectorRunnerContractTests(unittest.TestCase):
             self.assertEqual(sum(arg == selector for arg in command), 1)
             self.assertTrue(result["ok"], result["reason"])
 
+    def test_no_conftest_option_is_passed_to_pytest(self) -> None:
+        selector = "tests/test_http.py::TestHTTPUtility::test_authorization_ignore_invalid_parameters"
+        output = ".\\n1 passed in 0.02s\\n"
+        completed = subprocess.CompletedProcess(args=["pytest"], returncode=0, stdout=output)
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch("run_swe_rebench_fail_to_pass.subprocess.run", return_value=completed) as mocked:
+                result = run_one(Path(tmp), selector, "fixed-pass", no_conftest=True)
+            command = mocked.call_args.args[0]
+            self.assertIn("--noconftest", command)
+            self.assertEqual(command[-1], selector)
+            self.assertTrue(result["ok"], result["reason"])
+
     def test_base_requires_executed_failure_not_collection_error(self) -> None:
         output = "F\nFAILED tests/test_x.py::test_bug\n1 failed in 0.02s\n"
         self.assertEqual(
