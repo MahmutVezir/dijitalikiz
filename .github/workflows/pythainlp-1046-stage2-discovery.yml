@@ -71,10 +71,11 @@ jobs:
           alignment = {
               "mentions_issue_1004": "#1004" in problem,
               "mentions_tone_detector": "tone_detector" in problem,
-              "mentions_krab_or_kha": ("ครับ" in problem or "ค่ะ" in problem),
+              "mentions_krub": "ครับ" in problem,
+              "mentions_kha": "ค่ะ" in problem,
           }
-          if not alignment["mentions_issue_1004"] or not alignment["mentions_tone_detector"]:
-              raise SystemExit(f"Dataset problem statement is not demonstrably aligned with issue #1004: {alignment}")
+          if not alignment["mentions_tone_detector"] or not alignment["mentions_krub"] or not alignment["mentions_kha"]:
+              raise SystemExit(f"Dataset problem statement does not describe both issue-specific tone_detector examples: {alignment}")
           canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
           row_sha256 = hashlib.sha256(canonical).hexdigest()
           summary = {
