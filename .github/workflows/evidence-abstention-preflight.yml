@@ -1055,7 +1055,7 @@ jobs:
           .venv-tests/bin/python - <<'PY'
           import importlib.metadata as md
           import json
-          names = ["numpy", "scipy", "matplotlib", "sofar", "urllib3", "deepdiff", "soundfile", "h5py", "netCDF4", "cftime", "certifi", "pytest", "contourpy", "cycler", "fonttools", "kiwisolver", "packaging", "pillow", "pyparsing", "python-dateutil", "six", "cffi", "pycparser", "orderly-set", "iniconfig", "pluggy", "Pygments"]
+          names = ["numpy", "scipy", "matplotlib", "sofar", "urllib3", "deepdiff", "soundfile", "h5py", "netCDF4", "cftime", "certifi", "requests", "charset-normalizer", "idna", "pytest", "contourpy", "cycler", "fonttools", "kiwisolver", "packaging", "pillow", "pyparsing", "python-dateutil", "six", "cffi", "pycparser", "orderly-set", "iniconfig", "pluggy", "Pygments"]
           inventory = {}
           for name in names:
               dist = md.metadata(name)
