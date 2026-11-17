@@ -195,7 +195,8 @@
     "v0.2 no-inference preflight is the active readiness report. Historical v0.1 confirmatory preflight rules (60-case threshold, Panel A/B, external preregistration, reviewer consent, and external audit) are not requirements of this single-researcher exploratory design.",
     "Stage 2 rerun snapshot 2026-11-17: full base-fail/fixed-pass contracts verified for Dishka, NumPyro (2/2), Robocop (1/1), PyFar (23/23), Python-Control (3/3), Meltano (1/1), Amaranth (1/1), and QuTiP (1/1). EODAG issue reproducer and exact row verified; its two issue-aligned dataset selectors remain unexecuted. Moto's issue-specific ECR reproducer and selector passed, but the exact 18-selector row mixes unrelated IoT tests and contains 12 invalid selectors. Nox and Werkzeug remain blocked by malformed original dataset selectors. Technical Stage 2 dispositions only; accepted_case_count and accepted_project_count remain 0; no model load/inference/training authorized.",
     "Stage 2 snapshot update 2026-11-17 15:29 UTC: OpenMDAO/dymos #1166 is now technically verified. Its exact single FAIL_TO_PASS selector failed on the buggy base (actual control defaults [[1],[1]] vs expected [[0],[10]]) and passed on the fixed revision. Parquet row SHA-256 236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5; workflow artifact 14341424466, ZIP SHA-256 8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051; all 18 artifact member hashes verified locally. Stage 3 and human license signoff remain pending; final accepted cases stay 0.",
-    "EODAG Stage 2 closed on run 44117944004: exact pinned row cs-si__eodag-1536, row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47, timestamp 2025-02-21T10:04:30Z; issue reproducer base-fail/fixed-pass and both exact dataset selectors base-fail/fixed-pass (2/2 each). Artifact 14344421574 SHA-256 0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33. No inference/training; final case not accepted."
+    "EODAG Stage 2 closed on run 44117944004: exact pinned row cs-si__eodag-1536, row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47, timestamp 2025-02-21T10:04:30Z; issue reproducer base-fail/fixed-pass and both exact dataset selectors base-fail/fixed-pass (2/2 each). Artifact 14344421574 SHA-256 0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33. No inference/training; final case not accepted.",
+    "Stage 2 update 2026-11-17: EODAG #1530 progressed from exact-row verification to full technical pass. Two issue-related dataset selectors executed on the exact pinned base and fixed commits: 2/2 base failures and 2/2 fixed passes; test-only patch touches tests/units/test_core.py only. The 52-distribution environment inventory, dependency lock resolution, pip check and 22-entry artifact SHA manifest are recorded. Dymos #1166 remains Stage 2 pass with 1/1 base-fail/fixed-pass and 18/18 inner hashes verified. Dymos PR creation precedes the linked issue by 2m25s; PR timestamp is the dataset timestamp resource and this chronology is disclosed. Neither case is finally accepted; no model load/inference/training authorized."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -752,12 +753,19 @@
         "The inventory is evidence, not legal clearance; project lead must review the exact bundled runtime license scope before final case acceptance."
       ],
       "temporal_exposure_review": "Issue and PR were created 2025-04-04, after Qwen2.5-3B-Instruct's public release; exact model training-data cutoff and inclusion provenance are not established. Do not make a no-exposure claim.",
-      "review_note_path": "research_candidates/evidence_abstention/OPENMDAO_DYMOS_1166_CANDIDATE_REVIEW_2026-11-17.md"
+      "review_note_path": "research_candidates/evidence_abstention/OPENMDAO_DYMOS_1166_CANDIDATE_REVIEW_2026-11-17.md",
+      "issue_created_at": "2025-04-04T20:26:09Z",
+      "pull_request_created_at": "2025-04-04T20:23:44Z",
+      "temporal_ordering_note": "The linked PR was created 2 minutes 25 seconds before issue #1166. Dataset created_at was authenticated against the PR resource, which is the correct resource type. Preserve this unusual chronology; do not describe the issue as preceding the PR.",
+      "independent_artifact_sha256_verified": true,
+      "artifact_inner_sha256_entries_verified": 18,
+      "artifact_inner_sha256_mismatches": 0,
+      "dataset_row_sha256_independently_verified": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5"
     },
     {
       "instance_id": "cs-si__eodag-1536",
       "cohort_rank": 16,
-      "status": "stage2_pass_independent_issue_reproducer_and_all_2_exact_dataset_selectors_buggy_base_fail_fixed_revision_pass",
+      "status": "stage2_pass_independent_yaml_reproducer_and_2_exact_dataset_selectors_buggy_base_fail_fixed_revision_pass",
       "issue_url": "https://github.com/CS-SI/eodag/issues/1530",
       "pull_request_url": "https://github.com/CS-SI/eodag/pull/1536",
       "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
@@ -776,12 +784,13 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "human_review_dependency_license_inventory_and_source_provenance",
-        "independence_and_related_issue_family_review",
+        "project_lead_review_of_all_52_distribution_license_metadata_and_any_bundled_library_notices",
+        "independence_and_related_issue_family_review_including_StacListAssets_issue_family",
         "human_gold_root_cause_and_alternative_hypotheses_adjudication",
-        "E1_E2_E3_nested_evidence_packet_preparation_and_human_approval",
-        "complete_schema_conformant_final_case_record_and_fail_closed_registry_validation",
-        "student_project_lead_separate_final_case_acceptance_decision"
+        "prepare_nested_E1_E2_E3_evidence_packets_and_manifests",
+        "project_lead_approval_of_gold_and_E1_E2_E3_tiers",
+        "construct_complete_schema_conformant_final_case_record_and_pass_fail_closed_registry_validation",
+        "project_lead_separate_final_case_acceptance_decision"
       ],
       "issue_created_at": "2025-02-20T11:38:36Z",
       "pull_request_created_at": "2025-02-21T10:04:30Z",
@@ -808,7 +817,7 @@
         "inventory_file": "eodag_dataset_candidate_inventory.json",
         "inventory_artifact_id": 14340430332
       },
-      "issue_reproducer_status": "PASS_CONTRAST: buggy base fails because geodes_s3 provider key is absent; exact fixed revision passes.",
+      "issue_reproducer_status": "PASS_CONTRAST: duplicate geodes key means geodes_s3 absent on base; the same test passes on fixed revision.",
       "latest_candidate_workflow_run_id": 44108700819,
       "latest_candidate_workflow_job_id": 134128172467,
       "dataset_row_gate": "exact lower-case Parquet instance_id authenticated; prior workflow capitalization bug corrected",
@@ -835,10 +844,51 @@
       "reproduction_artifact_sha256": "0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33",
       "dataset_selector_execution_status": "not_run_by_workflow; job authenticates exact row and selectors only, then stops",
       "latest_candidate_workflow_status": "issue_reproducer_base_fail_fixed_pass_and_exact_dataset_row_authenticated; two issue-aligned selectors pending actual execution",
-      "dataset_selector_status": "PASS: both exact selectors failed on buggy base (2/2) and passed on exact fixed revision (2/2).",
+      "dataset_selector_status": "PASS: both exact selectors execute and fail on buggy base, then pass on exact fixed revision; no selector removed or substituted.",
       "technical_reproduction": "stage2_pass_independent_issue_reproducer_and_2_dataset_selectors_base_fail_fixed_pass",
       "dependency_license_inventory_status": "complete inventory captured in artifact; human scope review pending",
-      "latest_stage2_run_head_sha": "97e40a09c8105f6bb3d3d801fd83c70476beab39"
+      "latest_stage2_run_head_sha": "97e40a09c8105f6bb3d3d801fd83c70476beab39",
+      "reproduction_artifact_name": "eodag-issue-1530-reproduction",
+      "artifact_sha256sum_entries": 22,
+      "artifact_sha256sum_mismatches": 0,
+      "dataset_row_timestamp_authenticated_against": "https://github.com/CS-SI/eodag/pull/1536",
+      "dataset_selector_contract": {
+        "base": {
+          "selector_count": 2,
+          "passed_contract_count": 2,
+          "failed_contract_count": 0,
+          "expectation": "base-fail"
+        },
+        "fixed": {
+          "selector_count": 2,
+          "passed_contract_count": 2,
+          "failed_contract_count": 0,
+          "expectation": "fixed-pass"
+        },
+        "issue_specific": true
+      },
+      "test_only_patch_paths": [
+        "tests/units/test_core.py"
+      ],
+      "production_code_in_test_only_patch": false,
+      "test_only_patch_scope_json_sha256": "b51a090fdf20b6818ce40b8bf69c252af41b45a42eac16d6fc417a55a92745bd",
+      "dataset_test_patch_sha256": "09d37ec7f67034400c0ff7a3a121440b6b8a19cf24e563adf318ff06be4c8af2",
+      "base_dataset_results_sha256": "5aaef89d693c0644f8298199e48366aac34fc38cb226b82c0628f8e32a91efd5",
+      "fixed_dataset_results_sha256": "3c13d4ac65ddf345c4452c618efd1c3c6618991d8cc5ea749464f2d5a54cd899",
+      "base_dataset_log_sha256": "67092589c9a105bccb1ede6fbd2d687a3012b4a79f93e4c7b328a9ede798ffff",
+      "fixed_dataset_log_sha256": "60de93d439f516b3c53e3747c8c8d2c430e211b8fca0eb4a91fe160f0c0146dd",
+      "test_environment": {
+        "python": "3.11.9",
+        "resolved_distribution_count": 52,
+        "all_installed_distributions_have_license_metadata": true,
+        "pip_check": "passed",
+        "environment_summary_sha256": "fe7f8fd493875da09d76315e4ec6b62cc9ee6b3b393d28d6700cd9225dea1acd",
+        "resolved_lock_sha256": "a64b5196505f7a222976b61c0f0bf6a03344f2ea34a2f39935997a2f9b35f7b4",
+        "dependency_license_inventory_sha256": "38caf508412912024f982e76f43f02021f5bb906e26c814edd4e5d266f29b124",
+        "source_provenance_sha256_file_entries": 4
+      },
+      "mixed_scope_assessment": "The PR also adds StacListAssets support, but both exact FAIL_TO_PASS selectors exercise geodes_s3 provider registration/sortables. The applied test-only patch is limited to tests/units/test_core.py, and the workflow confirms production_code_changed=false.",
+      "dependency_license_review_status": "52 installed distributions have license metadata and pip check passed; project-lead review of the complete dependency/bundled-license scope remains pending. Inventory is evidence, not legal clearance."
     },
     {
       "instance_id": "pallets__click-2788",
