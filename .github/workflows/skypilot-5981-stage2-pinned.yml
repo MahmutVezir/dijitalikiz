@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  skypilot-5981-environment-discovery:
+  skypilot-5981-pinned-reproduction:
     runs-on: ubuntu-22.04
     timeout-minutes: 35
     env:
@@ -136,10 +136,15 @@ jobs:
               raise SystemExit(json.dumps({"absent": absent, "unexpected": unexpected, "version_mismatch": mismatched}, indent=2))
           with open("reproduction-evidence/dependency-license-inventory.json", "w", encoding="utf-8") as f:
               json.dump(inventory, f, indent=2, sort_keys=True)
-              f.write("\\n")
+              f.write("\n")
           with open("reproduction-evidence/requirements-lock-sha256.txt", "w", encoding="utf-8") as f:
-              f.write(hashlib.sha256(lock_path.read_bytes()).hexdigest() + "  requirements.lock\\n")
-          print(json.dumps({"locked_distribution_count": len(expected), "all_versions_match": True, "license_metadata_complete": True}, indent=2))
+              f.write(hashlib.sha256(lock_path.read_bytes()).hexdigest() + "  requirements.lock\n")
+          with open("reproduction-evidence/dependency-license-inventory.json", encoding="utf-8") as f:
+              json.load(f)
+          lock_hash_text = Path("reproduction-evidence/requirements-lock-sha256.txt").read_text(encoding="utf-8")
+          if not lock_hash_text.endswith("\n") or len(lock_hash_text.splitlines()) != 1:
+              raise SystemExit("requirements-lock-sha256.txt must contain exactly one newline-terminated record")
+          print(json.dumps({"locked_distribution_count": len(expected), "all_versions_match": True, "license_metadata_complete": True, "license_inventory_json_valid": True, "lock_hash_record_valid": True}, indent=2))
           PY
 
       - name: Prepare test-only patch and verify its scope
