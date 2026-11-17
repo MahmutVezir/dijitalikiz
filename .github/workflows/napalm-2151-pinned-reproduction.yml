@@ -1,0 +1,309 @@
+name: NAPALM #2151 Pinned Synthetic Reproduction (No Inference)
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/napalm-2151-pinned-reproduction.yml"
+      - "research_candidates/evidence_abstention/pinned_repro/napalm_2151/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  napalm-2151-pinned-synthetic:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    env:
+      PYTHONUNBUFFERED: "1"
+      NAPALM_TEST_MOCK: "1"
+      BASE_SHA: "d0d2a3e70d21d0556de71ab0462bd71a1450f820"
+      FIX_SHA: "a3781b83e02cb7ea87da948d82e0c9ee4d91a39a
+      EXPECTED_PARQUET_SHA256: "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+      EXPECTED_ROW_SHA256: "badc723c07fe415e42d9e329529f9669932f43f18d2d0a61907f17d983c3f555"
+
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Prepare sanitized evidence directory
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+
+      - name: Authenticate exact upstream source revisions without copying fixture data
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone https://github.com/napalm-automation/napalm.git upstream-napalm
+          git -C upstream-napalm fetch --no-tags origin "$BASE_SHA" "$FIX_SHA"
+          git -C upstream-napalm cat-file -e "${BASE_SHA}^{commit}"
+          git -C upstream-napalm cat-file -e "${FIX_SHA}^{commit}"
+          git -C upstream-napalm checkout --detach "$BASE_SHA"
+          test "$(git -C upstream-napalm rev-parse HEAD)" = "$BASE_SHA"
+          test "$(git -C upstream-napalm rev-parse HEAD:LICENSE)" = "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64"
+          test "$(git -C upstream-napalm rev-parse HEAD:NOTICE)" = "362d9d34c0a4fc9985f247b52d65e97d4d07e719"
+          test "$(git -C upstream-napalm rev-parse HEAD:napalm/nxos_ssh/nxos_ssh.py)" = "7206756d4ed5562ad08958e1b5119bf31a0b85bc"
+          test "$(git -C upstream-napalm rev-parse "${FIX_SHA}:napalm/nxos_ssh/nxos_ssh.py")" = "5a71662a8f32bb0d39419a88f43300ce4491a833"
+
+          git -C upstream-napalm diff --name-only "$BASE_SHA" "$FIX_SHA" | LC_ALL=C sort > reproduction-evidence/upstream-changed-paths.txt
+          cat > reproduction-evidence/expected-upstream-changed-paths.txt <<'EOF'
+          napalm/nxos_ssh/nxos_ssh.py
+          test/nxos_ssh/mocked_data/test_get_facts/issue2151/expected_result.json
+          test/nxos_ssh/mocked_data/test_get_facts/issue2151/show_hostname.txt
+          test/nxos_ssh/mocked_data/test_get_facts/issue2151/show_hosts.txt
+          test/nxos_ssh/mocked_data/test_get_facts/issue2151/show_interface_status.txt
+          test/nxos_ssh/mocked_data/test_get_facts/issue2151/show_inventory___json.txt
+          test/nxos_ssh/mocked_data/test_get_facts/issue2151/show_version.txt
+          EOF
+          diff -u reproduction-evidence/expected-upstream-changed-paths.txt reproduction-evidence/upstream-changed-paths.txt
+
+          BASE_LICENSE_BLOB="$(git -C upstream-napalm rev-parse "${BASE_SHA}:LICENSE")"
+          BASE_NOTICE_BLOB="$(git -C upstream-napalm rev-parse "${BASE_SHA}:NOTICE")"
+          BASE_SOURCE_BLOB="$(git -C upstream-napalm rev-parse "${BASE_SHA}:napalm/nxos_ssh/nxos_ssh.py")"
+          FIX_SOURCE_BLOB="$(git -C upstream-napalm rev-parse "${FIX_SHA}:napalm/nxos_ssh/nxos_ssh.py")"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          data = {
+              "repository": "napalm-automation/napalm",
+              "base_commit": os.environ["BASE_SHA"],
+              "fixed_commit": os.environ["FIX_SHA"],
+              "base_root_license_blob": os.environ["BASE_LICENSE_BLOB"],
+              "base_root_notice_blob": os.environ["BASE_NOTICE_BLOB"],
+              "base_nxos_ssh_source_blob": os.environ["BASE_SOURCE_BLOB"],
+              "fixed_nxos_ssh_source_blob": os.environ["FIX_SOURCE_BLOB"],
+              "changed_paths": Path("reproduction-evidence/upstream-changed-paths.txt").read_text().splitlines(),
+              "original_fixture_copied": False,
+              "full_upstream_patch_saved": False,
+          }
+          Path("reproduction-evidence/source-provenance.json").write_text(
+              json.dumps(data, indent=2) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(data, indent=2))
+          PY
+        env:
+          BASE_LICENSE_BLOB: ""
+          BASE_NOTICE_BLOB: ""
+          BASE_SOURCE_BLOB: ""
+          FIX_SOURCE_BLOB: ""
+
+      - name: Download frozen Parquet temporarily and authenticate only the exact row
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATA_DIR="$RUNNER_TEMP/napalm-dataset"
+          DATA_VENV="$RUNNER_TEMP/napalm-dataset-venv"
+          mkdir -p "$DATA_DIR"
+          python -m venv "$DATA_VENV"
+          "$DATA_VENV/bin/python" -m pip install --disable-pip-version-check --no-deps "pyarrow==19.0.1"
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output "$DATA_DIR/train-00000-of-00001.parquet"
+          echo "$EXPECTED_PARQUET_SHA256  $DATA_DIR/train-00000-of-00001.parquet" | sha256sum --check
+
+          "$DATA_VENV/bin/python" - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import pyarrow.parquet as pq
+
+          parquet = Path(os.environ["RUNNER_TEMP"]) / "napalm-dataset" / "train-00000-of-00001.parquet"
+          instance_id = "napalm-automation__napalm-2152"
+          columns = [
+              "instance_id", "repo", "base_commit", "created_at",
+              "language", "license", "FAIL_TO_PASS", "problem_statement",
+          ]
+          rows = pq.read_table(
+              parquet, columns=columns, filters=[("instance_id", "=", instance_id)]
+          ).to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected one frozen row; observed {len(rows)}")
+          row = rows[0]
+          expected = {
+              "repo": "napalm-automation/napalm",
+              "base_commit": os.environ["BASE_SHA"],
+              "created_at": "2024-11-04 21:41:29",
+              "language": "python",
+              "license": "Apache-2.0",
+          }
+          for key, value in expected.items():
+              if str(row[key]) != value:
+                  raise SystemExit(f"Frozen dataset {key} mismatch: {row[key]!r}")
+          selector = "test/nxos_ssh/test_getters.py::TestGetter::test_get_facts[issue2151]"
+          selectors = row["FAIL_TO_PASS"]
+          if selector not in selectors:
+              raise SystemExit("Exact issue2151 selector absent from the frozen FAIL_TO_PASS list")
+          canonical = json.dumps(
+              row, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+          ).encode("utf-8")
+          digest = hashlib.sha256(canonical).hexdigest()
+          if digest != os.environ["EXPECTED_ROW_SHA256"]:
+              raise SystemExit(f"Frozen row hash mismatch: {digest}")
+          summary = {
+              "instance_id": instance_id,
+              "row_sha256": digest,
+              "repo": row["repo"],
+              "base_commit": row["base_commit"],
+              "created_at": str(row["created_at"]),
+              "language": row["language"],
+              "license": row["license"],
+              "selector_count": len(selectors),
+              "selectors": selectors,
+              "problem_statement_saved": False,
+              "parquet_saved_to_artifact": False,
+          }
+          Path("reproduction-evidence/dataset-row-summary.json").write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + "\n",
+              encoding="utf-8",
+          )
+          Path("reproduction-evidence/dataset-selector.txt").write_text(
+              selector + "\n", encoding="utf-8"
+          )
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          PY
+
+          rm -rf "$DATA_DIR" "$DATA_VENV"
+          test ! -e "$DATA_DIR/train-00000-of-00001.parquet"
+
+      - name: Install exact pinned runtime and verify full dependency freeze
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-napalm
+          .venv-napalm/bin/python -m pip install --disable-pip-version-check "pip==24.3.1"
+          sed '/^#/d;/^$/d;/^pip==/d' research_candidates/evidence_abstention/pinned_repro/napalm_2151/requirements.lock > "$RUNNER_TEMP/napalm-runtime-requirements.txt"
+          .venv-napalm/bin/python -m pip install --disable-pip-version-check --no-deps -r "$RUNNER_TEMP/napalm-runtime-requirements.txt"
+          .venv-napalm/bin/python -m pip install --disable-pip-version-check --no-deps -e ./upstream-napalm
+          .venv-napalm/bin/python -m pip check | tee reproduction-evidence/pip-check.txt
+
+          sed '/^#/d;/^$/d' research_candidates/evidence_abstention/pinned_repro/napalm_2151/requirements.lock | LC_ALL=C sort > "$RUNNER_TEMP/napalm-expected-freeze.txt"
+          .venv-napalm/bin/python -m pip freeze --all | grep -v '^-e ' | LC_ALL=C sort > "$RUNNER_TEMP/napalm-observed-freeze.txt"
+          diff -u "$RUNNER_TEMP/napalm-expected-freeze.txt" "$RUNNER_TEMP/napalm-observed-freeze.txt"
+          cp "$RUNNER_TEMP/napalm-observed-freeze.txt" reproduction-evidence/environment-freeze.txt
+          cp research_candidates/evidence_abstention/pinned_repro/napalm_2151/requirements.lock reproduction-evidence/requirements.lock
+
+          .venv-napalm/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          import re
+          import sys
+          inventory = {}
+          missing = []
+          for dist in md.distributions():
+              name = dist.metadata.get("Name")
+              if not name:
+                  continue
+              key = re.sub(r"[-_.]+", "-", name).lower()
+              classifiers = [
+                  value for value in dist.metadata.get_all("Classifier", [])
+                  if value.startswith("License ::")
+              ]
+              license_text = dist.metadata.get("License") or dist.metadata.get("License-Expression")
+              if not license_text and not classifiers:
+                  missing.append(name)
+              inventory[key] = {
+                  "name": name,
+                  "version": dist.version,
+                  "license": license_text,
+                  "license_classifiers": classifiers,
+              }
+          if missing:
+              raise SystemExit("Installed distributions lack license metadata: " + ", ".join(sorted(missing)))
+          with open("reproduction-evidence/dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, sort_keys=True)
+              f.write("\n")
+          runtime = {
+              "python": sys.version.split()[0],
+              "pip": md.version("pip"),
+              "pytest": md.version("pytest"),
+              "napalm": md.version("napalm"),
+              "distribution_count": len(inventory),
+              "license_metadata_missing": missing,
+              "license_metadata_complete": True,
+          }
+          with open("reproduction-evidence/runtime-summary.json", "w", encoding="utf-8") as f:
+              json.dump(runtime, f, indent=2)
+              f.write("\n")
+          print(json.dumps(runtime, indent=2))
+          PY
+
+      - name: Run synthetic regression on the exact buggy base
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp research_candidates/evidence_abstention/pinned_repro/napalm_2151/test_napalm_2151_synthetic.py upstream-napalm/test_napalm_2151_synthetic.py
+          printf '%s\n' 'test_napalm_2151_synthetic.py::test_get_facts_parses_primary_nxos_version_line' > reproduction-evidence/synthetic-selector.txt
+          set +e
+          NAPALM_TEST_MOCK=1 PYTHONPATH="$GITHUB_WORKSPACE/upstream-napalm" \
+            .venv-napalm/bin/python research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py \
+            --source-dir "$GITHUB_WORKSPACE/upstream-napalm" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/synthetic-selector.txt" \
+            --expect base-fail --no-conftest \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/synthetic-base-result.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/synthetic-base.log" 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/synthetic-base.log
+          if [ "$status" -ne 0 ]; then
+            echo "Synthetic regression did not produce the required executed assertion failure on base." >&2
+            exit "$status"
+          fi
+
+      - name: Run identical synthetic regression on exact fixed revision
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f reproduction-evidence/synthetic-selector.txt ] || [ ! -x .venv-napalm/bin/python ]; then
+            echo "Synthetic selector or pinned environment missing; fixed-side result unavailable." >&2
+            exit 0
+          fi
+          git -C upstream-napalm checkout --detach --force "$FIX_SHA"
+          set +e
+          NAPALM_TEST_MOCK=1 PYTHONPATH="$GITHUB_WORKSPACE/upstream-napalm" \
+            .venv-napalm/bin/python research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py \
+            --source-dir "$GITHUB_WORKSPACE/upstream-napalm" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/synthetic-selector.txt" \
+            --expect fixed-pass --no-conftest \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/synthetic-fixed-result.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/synthetic-fixed.log" 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/synthetic-fixed.log
+          if [ "$status" -ne 0 ]; then
+            echo "Synthetic regression did not pass on the exact fixed revision." >&2
+            exit "$status"
+          fi
+
+      - name: Hash sanitized evidence and report no-inference boundary
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "### NAPALM #2151 pinned synthetic reproduction"
+            echo "- Exact source revisions: $BASE_SHA / $FIX_SHA"
+            echo "- Exact dataset row and original selector authenticated; Parquet removed before artifact upload."
+            echo "- Synthetic regression uses only two parser-relevant synthetic NX-OS version lines."
+            echo "- Original Cisco upstream PR fixture and full upstream patch were not copied into the evidence artifact."
+            echo "- No model loading, inference, fine-tuning, or training."
+          } >> "$GITHUB_STEP_SUMMARY"
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
+
+      - name: Upload sanitized pinned evidence only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: napalm-2151-pinned-synthetic-evidence
+          path: reproduction-evidence/
+          if-no-files-found: error
+          retention-days: 90
