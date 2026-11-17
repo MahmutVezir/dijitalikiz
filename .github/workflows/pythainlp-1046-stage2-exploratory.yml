@@ -1,0 +1,388 @@
+name: "PyThaiNLP #1046 Exact Selector Reproduction (Exploratory, No Inference)"
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/pythainlp-1046-stage2-exploratory.yml"
+      - "research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pythainlp-1046-exact-selector:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    env:
+      PYTHONUNBUFFERED: "1"
+      PYTHAINLP_READ_MODE: "1"
+      BASE_SHA: "188904f22c4c80fd7406706850c798f611690a4a"
+      FIX_SHA: "6f1dc929f853ecd9910d1d25a56716b864b2ee98"
+      EXPECTED_ROW_SHA256: "80b244dd8b406d095f7ec727f968dacbb6b2f620dc8b10c21d44e726ba3e5803"
+      EXPECTED_SELECTOR: "tests/core/test_util.py::UtilTestCase::test_tone_detector"
+
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up issue-era Python 3.10.15
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10.15"
+
+      - name: Install system ICU build requirement
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libicu-dev
+
+      - name: Authenticate exact upstream commits and frozen dataset row
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone https://github.com/PyThaiNLP/pythainlp.git upstream-pythainlp
+          git -C upstream-pythainlp fetch --no-tags origin "$BASE_SHA" "$FIX_SHA"
+          git -C upstream-pythainlp cat-file -e "${BASE_SHA}^{commit}"
+          git -C upstream-pythainlp cat-file -e "${FIX_SHA}^{commit}"
+          git -C upstream-pythainlp checkout --detach "$BASE_SHA"
+          test "$(git -C upstream-pythainlp rev-parse HEAD)" = "$BASE_SHA"
+          test "$(git -C upstream-pythainlp rev-parse HEAD:pythainlp/util/syllable.py)" = "9d480d815ee23edc74a39f34edea253dd4fd88fc"
+          test "$(git -C upstream-pythainlp rev-parse "$FIX_SHA:pythainlp/util/syllable.py")" = "bf3d4be4c50d59005f3e752ec426861c53428ba6"
+          test "$(git -C upstream-pythainlp rev-parse HEAD:LICENSE)" = "8dada3edaf50dbc082c9a125058f25def75e625a"
+
+          python -m venv "$RUNNER_TEMP/pythainlp-data-venv"
+          "$RUNNER_TEMP/pythainlp-data-venv/bin/python" -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  $RUNNER_TEMP/train-00000-of-00001.parquet" | sha256sum --check
+
+          "$RUNNER_TEMP/pythainlp-data-venv/bin/python" - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import pyarrow.parquet as pq
+
+          parquet = Path(os.environ["RUNNER_TEMP"]) / "train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          rows = pq.read_table(parquet, columns=columns, filters=[("instance_id", "=", "pythainlp__pythainlp-1046")]).to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected exactly one dataset row; observed {len(rows)}")
+          row = rows[0]
+          expected = {
+              "repo": "PyThaiNLP/pythainlp",
+              "base_commit": os.environ["BASE_SHA"],
+              "created_at": "2024-12-25 06:25:09",
+              "language": "python",
+              "license": "Apache-2.0",
+          }
+          for key, value in expected.items():
+              if str(row[key]) != value:
+                  raise SystemExit(f"Frozen row {key} mismatch: expected {value!r}; observed {row[key]!r}")
+          if row["FAIL_TO_PASS"] != [os.environ["EXPECTED_SELECTOR"]]:
+              raise SystemExit(f"Frozen FAIL_TO_PASS mismatch: {row['FAIL_TO_PASS']!r}")
+          problem = row.get("problem_statement") or ""
+          alignment = {
+              "mentions_tone_detector": "tone_detector" in problem,
+              "mentions_krub": "ครับ" in problem,
+              "mentions_kha": "ค่ะ" in problem,
+          }
+          if not all(alignment.values()):
+              raise SystemExit(f"Frozen problem statement and issue examples do not align: {alignment}")
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          digest = hashlib.sha256(canonical).hexdigest()
+          if digest != os.environ["EXPECTED_ROW_SHA256"]:
+              raise SystemExit(f"Dataset row SHA-256 mismatch: {digest}")
+          Path("reproduction-evidence").mkdir(exist_ok=True)
+          summary = {
+              "instance_id": row["instance_id"],
+              "row_sha256": digest,
+              "repo": row["repo"],
+              "base_commit": row["base_commit"],
+              "created_at": str(row["created_at"]),
+              "language": row["language"],
+              "license": row["license"],
+              "selector_count": len(row["FAIL_TO_PASS"]),
+              "selectors": row["FAIL_TO_PASS"],
+              "problem_statement_alignment_checks": alignment,
+              "problem_statement_saved": False,
+              "canonical_row_saved": False,
+              "parquet_saved_to_artifact": False,
+          }
+          Path("reproduction-evidence/dataset-row-summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          Path("reproduction-evidence/dataset-fail-to-pass-selectors.txt").write_text("\n".join(row["FAIL_TO_PASS"]) + "\n", encoding="utf-8")
+          Path("reproduction-evidence/dataset-row-sha256.txt").write_text(digest + "  canonical-row-not-stored\n", encoding="utf-8")
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          PY
+          rm -f "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          rm -rf "$RUNNER_TEMP/pythainlp-data-venv"
+          test ! -e "$RUNNER_TEMP/train-00000-of-00001.parquet"
+
+      - name: Install exploratory runtime and capture an exact environment lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-pythainlp
+          .venv-pythainlp/bin/python -m pip install --disable-pip-version-check pip==24.3.1
+          .venv-pythainlp/bin/python -m pip install --disable-pip-version-check pytest==8.3.5
+          .venv-pythainlp/bin/python -m pip install --disable-pip-version-check -r upstream-pythainlp/requirements.txt
+          .venv-pythainlp/bin/python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e ./upstream-pythainlp
+          .venv-pythainlp/bin/python -m pip check | tee reproduction-evidence/pip-check.txt
+          .venv-pythainlp/bin/python -m pip freeze --all | grep -v '^-e ' | LC_ALL=C sort > reproduction-evidence/requirements.discovery.lock
+
+          .venv-pythainlp/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          import re
+          import sys
+          inventory = {}
+          missing = []
+          for dist in md.distributions():
+              name = dist.metadata.get("Name")
+              if not name:
+                  continue
+              key = re.sub(r"[-_.]+", "-", name).lower()
+              classifiers = [v for v in dist.metadata.get_all("Classifier", []) if v.startswith("License ::")]
+              license_text = dist.metadata.get("License") or dist.metadata.get("License-Expression")
+              if not license_text and not classifiers:
+                  missing.append(name)
+              inventory[key] = {
+                  "name": name,
+                  "version": dist.version,
+                  "license": license_text,
+                  "license_expression": dist.metadata.get("License-Expression"),
+                  "license_classifiers": classifiers,
+              }
+          with open("reproduction-evidence/dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, sort_keys=True)
+              f.write("\n")
+          summary = {
+              "python": sys.version.split()[0],
+              "pip": md.version("pip"),
+              "pytest": md.version("pytest"),
+              "pythainlp": md.version("pythainlp"),
+              "distribution_count": len(inventory),
+              "license_metadata_missing": sorted(missing),
+              "license_metadata_complete": not missing,
+          }
+          with open("reproduction-evidence/runtime-summary.json", "w", encoding="utf-8") as f:
+              json.dump(summary, f, indent=2)
+              f.write("\n")
+          print(json.dumps(summary, indent=2))
+          PY
+
+      - name: Prepare exact test-only patch and two independent single-word regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-pythainlp checkout --detach "$BASE_SHA"
+          TEST_PATCH="$RUNNER_TEMP/pythainlp-1046-test-only.patch"
+          git -C upstream-pythainlp diff "$BASE_SHA" "$FIX_SHA" -- tests/core/test_util.py > "$TEST_PATCH"
+          test -s "$TEST_PATCH"
+          git -C upstream-pythainlp apply "$TEST_PATCH"
+          .venv-pythainlp/bin/python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+          tracked = subprocess.check_output(["git", "-C", "upstream-pythainlp", "diff", "--name-only"], text=True).splitlines()
+          untracked = subprocess.check_output(["git", "-C", "upstream-pythainlp", "ls-files", "--others", "--exclude-standard"], text=True).splitlines()
+          numstat = subprocess.check_output(["git", "-C", "upstream-pythainlp", "diff", "--numstat"], text=True).strip().split("\t")
+          changed = sorted(set(tracked) | set(untracked))
+          if changed != ["tests/core/test_util.py"]:
+              raise SystemExit(f"Test-only patch changed unexpected paths: {changed}")
+          if numstat != ["2", "0", "tests/core/test_util.py"]:
+              raise SystemExit(f"Expected exactly two added test examples and no deletions: {numstat}")
+          patch_text = subprocess.check_output(["git", "-C", "upstream-pythainlp", "diff", "--", "tests/core/test_util.py"], text=True)
+          required_additions = ['+            ("h", "ครับ"),', '+            ("f", "ค่ะ"),']
+          if any(line not in patch_text.splitlines() for line in required_additions):
+              raise SystemExit("Test-only patch does not contain exactly the two issue examples")
+          source_blob = subprocess.check_output(["git", "-C", "upstream-pythainlp", "rev-parse", "HEAD:pythainlp/util/syllable.py"], text=True).strip()
+          if source_blob != "9d480d815ee23edc74a39f34edea253dd4fd88fc":
+              raise SystemExit("Production tone detector source changed while preparing buggy-base tests")
+          result = {
+              "tracked_changes": tracked,
+              "untracked_files": untracked,
+              "numstat": numstat,
+              "required_issue_test_additions": required_additions,
+              "base_production_source_blob_unchanged": source_blob,
+              "full_production_patch_applied_to_base": False,
+          }
+          Path("reproduction-evidence/test-only-patch-scope.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(result, indent=2))
+          PY
+          printf '%s\n' \
+            'from pythainlp.util import tone_detector' \
+            '' \
+            'def test_issue_1004_krub_high_tone():' \
+            '    assert tone_detector("ครับ") == "h"' \
+            '' \
+            'def test_issue_1004_kha_falling_tone():' \
+            '    assert tone_detector("ค่ะ") == "f"' \
+            > upstream-pythainlp/test_issue_1004_reproducer.py
+          sha256sum "$TEST_PATCH" | awk '{print $1 "  temporary-test-only-patch-not-stored"}' > reproduction-evidence/test-only-patch-sha256.txt
+
+      - name: Run the exact frozen dataset selector on the buggy base
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          PYTHAINLP_READ_MODE=1 PYTHONPATH="$GITHUB_WORKSPACE/upstream-pythainlp" \
+            .venv-pythainlp/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-pythainlp" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --no-conftest --expect base-fail \
+            --log-file "$RUNNER_TEMP/pythainlp-base-dataset-tests.json" \
+            > "$RUNNER_TEMP/pythainlp-base-dataset-output.log" 2>&1
+          status=$?
+          set -e
+          if [ "$status" -ne 0 ]; then
+            echo "Exact frozen dataset selector did not produce an executed assertion failure on base." >&2
+            exit "$status"
+          fi
+          .venv-pythainlp/bin/python - <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+          report = json.loads((Path(os.environ["RUNNER_TEMP"]) / "pythainlp-base-dataset-tests.json").read_text(encoding="utf-8"))
+          if not report.get("success") or report.get("expectation") != "base-fail" or report.get("selector_count") != 1:
+              raise SystemExit("Dataset selector runner did not satisfy base-fail contract")
+          result = report["results"][0]
+          if result.get("returncode") != 1 or not result.get("ok"):
+              raise SystemExit("Dataset selector did not fail through a pytest assertion")
+          assertion = next((line.strip() for line in result.get("output", "").splitlines() if "AssertionError:" in line), None)
+          if not assertion:
+              raise SystemExit("No assertion detail found in the exact dataset selector failure")
+          summary = {
+              "expectation": "base-fail",
+              "selector": result["selector"],
+              "returncode": result["returncode"],
+              "ok": result["ok"],
+              "reason": result["reason"],
+              "assertion_summary": assertion,
+              "raw_test_output_saved": False,
+          }
+          Path("reproduction-evidence/base-dataset-test-summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(summary, indent=2))
+          PY
+          set +e
+          PYTHAINLP_READ_MODE=1 PYTHONPATH="$GITHUB_WORKSPACE/upstream-pythainlp" \
+            .venv-pythainlp/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-pythainlp" \
+            --selectors-file <(printf '%s\n' 'test_issue_1004_reproducer.py::test_issue_1004_krub_high_tone' 'test_issue_1004_reproducer.py::test_issue_1004_kha_falling_tone') \
+            --no-conftest --expect base-fail \
+            --log-file "$RUNNER_TEMP/pythainlp-base-independent-tests.json" \
+            > "$RUNNER_TEMP/pythainlp-base-independent-output.log" 2>&1
+          status=$?
+          set -e
+          if [ "$status" -ne 0 ]; then
+            echo "Independent single-word reproducers did not both fail as expected on base." >&2
+            exit "$status"
+          fi
+          .venv-pythainlp/bin/python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          report = json.loads((Path(os.environ["RUNNER_TEMP"]) / "pythainlp-base-independent-tests.json").read_text(encoding="utf-8"))
+          if not report.get("success") or report.get("selector_count") != 2:
+              raise SystemExit("Expected both independent base reproducers to fail as executed assertions")
+          data = []
+          for item in report["results"]:
+              assertion = next((line.strip() for line in item.get("output", "").splitlines() if "AssertionError:" in line), None)
+              if not item.get("ok") or item.get("returncode") != 1 or not assertion:
+                  raise SystemExit(f"Single-word reproducer was not a real assertion failure: {item.get('selector')}")
+              data.append({"selector": item["selector"], "expectation": "base-fail", "assertion_summary": assertion, "raw_test_output_saved": False})
+          Path("reproduction-evidence/base-independent-reproducers.json").write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(data, indent=2))
+          PY
+          rm -f "$RUNNER_TEMP/pythainlp-base-dataset-tests.json" "$RUNNER_TEMP/pythainlp-base-independent-tests.json" "$RUNNER_TEMP/pythainlp-base-dataset-output.log" "$RUNNER_TEMP/pythainlp-base-independent-output.log"
+
+      - name: Run the identical dataset selector and independent reproducers on the fixed revision
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f reproduction-evidence/dataset-fail-to-pass-selectors.txt ] || [ ! -x .venv-pythainlp/bin/python ]; then
+            echo "Exact selector or exploratory environment unavailable; fixed-side claim is not available." >&2
+            exit 1
+          fi
+          git -C upstream-pythainlp checkout --detach --force "$FIX_SHA"
+          PYTHAINLP_READ_MODE=1 PYTHONPATH="$GITHUB_WORKSPACE/upstream-pythainlp" \
+            .venv-pythainlp/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-pythainlp" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --no-conftest --expect fixed-pass \
+            --log-file "$RUNNER_TEMP/pythainlp-fixed-dataset-tests.json" \
+            > "$RUNNER_TEMP/pythainlp-fixed-dataset-output.log" 2>&1
+          set +e
+          PYTHAINLP_READ_MODE=1 PYTHONPATH="$GITHUB_WORKSPACE/upstream-pythainlp" \
+            .venv-pythainlp/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-pythainlp" \
+            --selectors-file <(printf '%s\n' 'test_issue_1004_reproducer.py::test_issue_1004_krub_high_tone' 'test_issue_1004_reproducer.py::test_issue_1004_kha_falling_tone') \
+            --no-conftest --expect fixed-pass \
+            --log-file "$RUNNER_TEMP/pythainlp-fixed-independent-tests.json" \
+            > "$RUNNER_TEMP/pythainlp-fixed-independent-output.log" 2>&1
+          status=$?
+          set -e
+          if [ "$status" -ne 0 ]; then
+            echo "Independent single-word reproducers did not both pass on fixed revision." >&2
+            exit "$status"
+          fi
+          .venv-pythainlp/bin/python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path("reproduction-evidence")
+          temp = Path(os.environ["RUNNER_TEMP"])
+          dataset = json.loads((temp / "pythainlp-fixed-dataset-tests.json").read_text(encoding="utf-8"))
+          independent = json.loads((temp / "pythainlp-fixed-independent-tests.json").read_text(encoding="utf-8"))
+          if not dataset.get("success") or dataset.get("expectation") != "fixed-pass" or dataset.get("selector_count") != 1:
+              raise SystemExit("Exact dataset selector did not satisfy fixed-pass contract")
+          if not independent.get("success") or independent.get("expectation") != "fixed-pass" or independent.get("selector_count") != 2:
+              raise SystemExit("Both independent fixed reproducers did not satisfy fixed-pass contract")
+          for item in independent["results"]:
+              if not item.get("ok") or item.get("returncode") != 0:
+                  raise SystemExit(f"Independent reproducer failed on fixed revision: {item.get('selector')}")
+          (root / "fixed-dataset-test-summary.json").write_text(json.dumps({
+              "expectation": "fixed-pass",
+              "selector": dataset["results"][0]["selector"],
+              "returncode": dataset["results"][0]["returncode"],
+              "ok": dataset["results"][0]["ok"],
+              "reason": dataset["results"][0]["reason"],
+              "raw_test_output_saved": False,
+          }, indent=2) + "\n", encoding="utf-8")
+          (root / "fixed-independent-reproducers.json").write_text(json.dumps([
+              {"selector": item["selector"], "expectation": "fixed-pass", "returncode": item["returncode"], "ok": item["ok"], "reason": item["reason"], "raw_test_output_saved": False}
+              for item in independent["results"]
+          ], indent=2) + "\n", encoding="utf-8")
+          print(json.dumps({"dataset": dataset["results"][0]["selector"], "independent": [x["selector"] for x in independent["results"]]}, indent=2))
+          PY
+          rm -f "$RUNNER_TEMP/pythainlp-fixed-dataset-tests.json" "$RUNNER_TEMP/pythainlp-fixed-independent-tests.json" "$RUNNER_TEMP/pythainlp-fixed-dataset-output.log" "$RUNNER_TEMP/pythainlp-fixed-independent-output.log"
+
+      - name: Hash sanitized exploratory evidence and declare no-inference boundary
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "### PyThaiNLP #1046 — exact selector exploratory reproduction"
+            echo "- Exact frozen row SHA-256: $EXPECTED_ROW_SHA256"
+            echo "- Base: $BASE_SHA"
+            echo "- Fixed: $FIX_SHA"
+            echo "- Exact dataset selector is kept distinct from two independent single-word reproducers."
+            echo "- Test-only patch added two assertions to tests/core/test_util.py; production syllable.py blob remained unchanged on base."
+            echo "- No model loading, inference, fine-tuning, or training."
+          } >> "$GITHUB_STEP_SUMMARY"
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
+
+      - name: Upload sanitized exploratory evidence and dependency lock
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pythainlp-1046-exploratory-exact-selector-evidence
+          path: reproduction-evidence/
+          if-no-files-found: error
+          retention-days: 90
