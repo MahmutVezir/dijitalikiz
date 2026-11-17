@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - ".github/workflows/napalm-2151-stage2-discovery.yml"
-      - "research_candidates/evidence_abstention/reproduction/napalm_issue_2151/**"
+      - "research_candidates/evidence_abstention/reproduction/napalm_issue_2151/requirements.discovery.in"
       - "research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py"
   workflow_dispatch:
 
@@ -203,6 +203,17 @@ jobs:
               f.write("\n")
           print(json.dumps(scope, indent=2))
           PY
+          .venv-napalm/bin/python - <<'PY'
+          from pathlib import Path
+          source = Path("upstream-napalm/setup.cfg").read_text(encoding="utf-8")
+          filtered = [
+              line for line in source.splitlines()
+              if line.strip() != "jsonapi = true" and not line.strip().startswith("json_report =")
+          ]
+          target = Path("upstream-napalm/.napalm-stage2.cfg")
+          target.write_text("\\n".join(filtered) + "\\n", encoding="utf-8")
+          print(f"Created temporary pytest config outside tracked upstream source: {target}")
+          PY
           sha256sum reproduction-evidence/test-only.patch reproduction-evidence/test-only-patch-scope.json >> reproduction-evidence/source-provenance-sha256.txt
 
       - name: Run exact frozen dataset selectors on buggy base (real test failure required)
@@ -210,7 +221,7 @@ jobs:
         run: |
           set -euo pipefail
           set +e
-          NAPALM_TEST_MOCK=1 PYTHONPATH="$GITHUB_WORKSPACE/upstream-napalm" .venv-napalm/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" --source-dir "$GITHUB_WORKSPACE/upstream-napalm" --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" --config-file "$GITHUB_WORKSPACE/upstream-napalm/setup.cfg" --expect base-fail --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
+          NAPALM_TEST_MOCK=1 PYTHONPATH="$GITHUB_WORKSPACE/upstream-napalm" .venv-napalm/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" --source-dir "$GITHUB_WORKSPACE/upstream-napalm" --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" --config-file "$GITHUB_WORKSPACE/upstream-napalm/.napalm-stage2.cfg" --expect base-fail --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
@@ -225,11 +236,12 @@ jobs:
         run: |
           set -euo pipefail
           if [ ! -f reproduction-evidence/dataset-fail-to-pass-selectors.txt ] || [ ! -x .venv-napalm/bin/python ]; then
-            echo "Selectors or the test environment are unavailable; no fixed-side reproduction." >&2
-            exit 0
+            echo "Selectors or the test environment are unavailable; fixed-side reproduction cannot be claimed." >&2
+            exit 1
           fi
+          git -C upstream-napalm clean -fd -- test/nxos_ssh/mocked_data/test_get_facts/issue2151
           git -C upstream-napalm checkout --detach --force a3781b83e02cb7ea87da948d82e0c9ee4d91a39a
-          NAPALM_TEST_MOCK=1 PYTHONPATH="$GITHUB_WORKSPACE/upstream-napalm" .venv-napalm/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" --source-dir "$GITHUB_WORKSPACE/upstream-napalm" --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" --config-file "$GITHUB_WORKSPACE/upstream-napalm/setup.cfg" --expect fixed-pass --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
+          NAPALM_TEST_MOCK=1 PYTHONPATH="$GITHUB_WORKSPACE/upstream-napalm" .venv-napalm/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" --source-dir "$GITHUB_WORKSPACE/upstream-napalm" --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" --config-file "$GITHUB_WORKSPACE/upstream-napalm/.napalm-stage2.cfg" --expect fixed-pass --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
 
       - name: Summarize and hash the discovery evidence
