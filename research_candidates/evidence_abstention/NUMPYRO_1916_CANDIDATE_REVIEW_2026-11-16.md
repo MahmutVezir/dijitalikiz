@@ -73,7 +73,7 @@ This closes the previous review's statement that the corrected workflow had not 
 
 A separate Stage 3 proposal is recorded in `NUMPYRO_1916_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-18.md`. In brief, the leading mechanism is a mismatch between the batched per-chain PRNG key carried through the warmup-state path and the singleton key expected by `EnsembleSampler.sample`. The upstream fix's conditional selection of `rng_key[0]` for ensemble kernels is consistent with that mechanism.
 
-The mechanism, alternative hypotheses, and the proposed E1/E2/E3 evidence subsets are **drafts for project-lead adjudication**. They are not a completed gold record or a validated three-tier packet set.
+The mechanism, alternative hypotheses, and the proposed E1/E2/E3 evidence subsets are **drafts for project-lead adjudication**. The fix patch and fixed-revision pass records are reserved for hidden adjudication evidence and are not proposed as model-visible packet items, to avoid leaking the correction. The three-tier set is not yet operationalized or validated.
 
 ## 6. Independence, exposure and acceptance
 
