@@ -1,0 +1,179 @@
+name: "CTAPIpe #2732 Stage 2 Base-Fail / Fixed-Pass (No Inference)"
+
+on:
+  push:
+    branches:
+      - "research/**"
+    paths:
+      - ".github/workflows/ctapipe-2732-stage2-reproduction.yml"
+      - "research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/**"
+  pull_request:
+    paths:
+      - ".github/workflows/ctapipe-2732-stage2-reproduction.yml"
+      - "research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ctapipe-2732-base-fixed:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up CPython 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Clone and pin exact upstream source revisions
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ctapipe-stage2-evidence
+          git clone https://github.com/cta-observatory/ctapipe.git upstream-ctapipe
+          git -C upstream-ctapipe checkout --detach 287e7685e0e963f3fb44d92832ca97ac8c265c40
+          git -C upstream-ctapipe rev-parse HEAD | tee ctapipe-stage2-evidence/base-commit.txt
+          git -C upstream-ctapipe diff --stat 287e7685e0e963f3fb44d92832ca97ac8c265c40 5007b6ab61887d7555155edb4d1d296603a9735e > ctapipe-stage2-evidence/pr-diff-stat.txt
+          git -C upstream-ctapipe diff --name-only 287e7685e0e963f3fb44d92832ca97ac8c265c40 5007b6ab61887d7555155edb4d1d296603a9735e > ctapipe-stage2-evidence/pr-changed-files.txt
+          git -C upstream-ctapipe diff 287e7685e0e963f3fb44d92832ca97ac8c265c40 5007b6ab61887d7555155edb4d1d296603a9735e > ctapipe-stage2-evidence/full-pr.diff
+          git -C upstream-ctapipe diff 287e7685e0e963f3fb44d92832ca97ac8c265c40 5007b6ab61887d7555155edb4d1d296603a9735e -- src/ctapipe/image/muon/tests/test_muon_features.py > ctapipe-stage2-evidence/dataset-test.patch
+          test -s ctapipe-stage2-evidence/dataset-test.patch
+          test "$(cat ctapipe-stage2-evidence/pr-changed-files.txt | grep -c '^src/ctapipe/image/muon/tests/test_muon_features.py$')" -eq 1
+          if grep -v '^src/ctapipe/image/muon/tests/test_muon_features.py$' ctapipe-stage2-evidence/pr-changed-files.txt | grep -q .; then
+            echo "Unexpected changed-file scope: PR includes production or unrelated paths; inspect full diff before proceeding."
+            exit 1
+          fi
+          git -C upstream-ctapipe apply --check "$GITHUB_WORKSPACE/ctapipe-stage2-evidence/dataset-test.patch"
+          git -C upstream-ctapipe apply "$GITHUB_WORKSPACE/ctapipe-stage2-evidence/dataset-test.patch"
+          git -C upstream-ctapipe status --short > ctapipe-stage2-evidence/base-test-only-worktree.txt
+          cat ctapipe-stage2-evidence/base-test-only-worktree.txt
+
+      - name: Install pinned direct runtime and test dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-ctapipe
+          .venv-ctapipe/bin/python -m pip install --disable-pip-version-check -r research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/reproduction_environment.in
+          .venv-ctapipe/bin/python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e upstream-ctapipe
+          .venv-ctapipe/bin/python -m pip check | tee ctapipe-stage2-evidence/pip-check.txt
+          .venv-ctapipe/bin/python -m pip freeze --all > ctapipe-stage2-evidence/pip-freeze.txt
+          .venv-ctapipe/bin/python -VV > ctapipe-stage2-evidence/python-version.txt 2>&1
+          python -c "import platform; print(platform.platform())" > ctapipe-stage2-evidence/platform.txt
+          sha256sum research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/reproduction_environment.in > ctapipe-stage2-evidence/environment-input-sha256.txt
+          .venv-ctapipe/bin/python - <<'PY' > ctapipe-stage2-evidence/dependency-license-metadata.json
+          import importlib.metadata as md
+          import json
+
+          rows = []
+          for dist in sorted(md.distributions(), key=lambda d: (d.metadata.get("Name") or "").lower()):
+              name = dist.metadata.get("Name")
+              if not name:
+                  continue
+              rows.append({
+                  "name": name,
+                  "version": dist.version,
+                  "license": dist.metadata.get("License"),
+                  "license_classifiers": [
+                      c for c in (dist.metadata.get_all("Classifier") or [])
+                      if c.startswith("License ::")
+                  ],
+                  "license_files": [
+                      str(f) for f in (dist.files or [])
+                      if "license" in str(f).lower() or "copying" in str(f).lower()
+                  ][:20],
+              })
+          print(json.dumps(rows, indent=2))
+          PY
+
+      - name: Run exact frozen FAIL_TO_PASS selector on buggy base
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t selectors < research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/dataset_fail_to_pass_selectors.txt
+          test "${#selectors[@]}" -eq 1
+          set +e
+          (cd upstream-ctapipe && PYTHONPATH="$GITHUB_WORKSPACE/upstream-ctapipe/src" "$GITHUB_WORKSPACE/.venv-ctapipe/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > "$GITHUB_WORKSPACE/ctapipe-stage2-evidence/base-dataset-test.log" 2>&1
+          status=$?
+          set -e
+          cat ctapipe-stage2-evidence/base-dataset-test.log
+          echo "$status" > ctapipe-stage2-evidence/base-dataset-test-exit-code.txt
+          test "$status" -ne 0
+          grep -F "Unexpected type:" ctapipe-stage2-evidence/base-dataset-test.log
+          if grep -q "ERROR collecting" ctapipe-stage2-evidence/base-dataset-test.log; then
+            echo "Collection failure is not an accepted defect-specific failure."
+            exit 1
+          fi
+
+      - name: Run direct HDF5 mixed-type reproducer on buggy base
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          (cd upstream-ctapipe && PYTHONPATH="$GITHUB_WORKSPACE/upstream-ctapipe/src" "$GITHUB_WORKSPACE/.venv-ctapipe/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/test_hdf5_mixed_type.py") > "$GITHUB_WORKSPACE/ctapipe-stage2-evidence/base-hdf5-reproducer.log" 2>&1
+          status=$?
+          set -e
+          cat ctapipe-stage2-evidence/base-hdf5-reproducer.log
+          echo "$status" > ctapipe-stage2-evidence/base-hdf5-reproducer-exit-code.txt
+          test "$status" -ne 0
+          grep -F "'float' object has no attribute 'to_value'" ctapipe-stage2-evidence/base-hdf5-reproducer.log
+          if grep -q "ERROR collecting" ctapipe-stage2-evidence/base-hdf5-reproducer.log; then
+            echo "Collection failure is not an accepted defect-specific failure."
+            exit 1
+          fi
+
+      - name: Switch to exact fixed PR head
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-ctapipe checkout --force --detach 5007b6ab61887d7555155edb4d1d296603a9735e
+          git -C upstream-ctapipe rev-parse HEAD | tee ctapipe-stage2-evidence/fixed-commit.txt
+          git -C upstream-ctapipe status --short > ctapipe-stage2-evidence/fixed-worktree-status.txt
+          test ! -s ctapipe-stage2-evidence/fixed-worktree-status.txt
+
+      - name: Run the same exact frozen selector on fixed revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t selectors < research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/dataset_fail_to_pass_selectors.txt
+          (cd upstream-ctapipe && PYTHONPATH="$GITHUB_WORKSPACE/upstream-ctapipe/src" "$GITHUB_WORKSPACE/.venv-ctapipe/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "${selectors[@]}") > ctapipe-stage2-evidence/fixed-dataset-test.log 2>&1
+          cat ctapipe-stage2-evidence/fixed-dataset-test.log
+          grep -E "1 passed in" ctapipe-stage2-evidence/fixed-dataset-test.log
+
+      - name: Run direct HDF5 mixed-type reproducer on fixed revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd upstream-ctapipe && PYTHONPATH="$GITHUB_WORKSPACE/upstream-ctapipe/src" "$GITHUB_WORKSPACE/.venv-ctapipe/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/test_hdf5_mixed_type.py") > ctapipe-stage2-evidence/fixed-hdf5-reproducer.log 2>&1
+          cat ctapipe-stage2-evidence/fixed-hdf5-reproducer.log
+          grep -E "1 passed in" ctapipe-stage2-evidence/fixed-hdf5-reproducer.log
+
+      - name: Summarize and hash Stage 2 evidence
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          {
+            echo "### CTAPIpe #2732 exact base/fixed reproduction"
+            echo "- Buggy base: 287e7685e0e963f3fb44d92832ca97ac8c265c40"
+            echo "- Fixed PR head: 5007b6ab61887d7555155edb4d1d296603a9735e"
+            echo "- Frozen row: cta-observatory__ctapipe-2732"
+            echo "- Frozen row SHA-256: 9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d"
+            echo "- Exact selector: src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution"
+            echo "- Independent reproducer: HDF5TableWriter receives calculated muon values then default MuonParametersContainer values"
+            echo "- No model loading, inference, or training was performed."
+          } >> "$GITHUB_STEP_SUMMARY"
+          (cd ctapipe-stage2-evidence && find . -maxdepth 1 -type f ! -name SHA256SUMS.txt -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
+          exit 0
+
+      - name: Upload raw CTAPIpe Stage 2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ctapipe-2732-stage2-base-fixed-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ctapipe-stage2-evidence/
+          if-no-files-found: warn
+          retention-days: 90
