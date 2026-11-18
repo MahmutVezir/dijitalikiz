@@ -272,3 +272,23 @@ The follow-up branch now has a newer complete Stage 2 repeat than the runs liste
 The packet-audit status in section 12 is also superseded by the final clean audit: run `44316015132`, job `134842193908`, artifact `14432113942`, ZIP SHA-256 `fd7fc7ed0cf7953f51efae7ef174aa6593b4860806bafdf9e03ba8fa88a25a38`. That archive passed ZIP CRC and **4/4** internal checksums, excluded the checksum file from its own checksum list, verified exact E3→E2→E1 byte inheritance, and passed the hidden-label leakage checks. The earlier self-referential checksum attempt is not the final packet artifact.
 
 **Scientific disposition is unchanged:** technical Stage 2 PASS; E1/E2/E3 technical packaging and integrity audit PASS; CTAPIpe remains on conditional hold. The actual reporter configuration behind the issue/traceback mismatch is still unknown; human gold/tier adjudication, prior pipeline-debug exposure classification, independence approval, dependency-license scope acknowledgement, and separate final acceptance remain pending. The global accepted-case count remains zero. No inference is authorized.
+
+
+## 14. v0.2 acceptance-schema constraint and project-wide no-inference gate (2026-11-18)
+
+A review of the active v0.2 exploratory schema and validator adds an important acceptance constraint that was not explicit in the earlier CTAPIpe note:
+
+- The schema permits `researcher_source_exposure` to be `full`; full source exposure must be disclosed and is not, by itself, a structural rejection.
+- The validator requires `exposure.prior_pipeline_debug_exposure == "none"`. Any other classification adds the blocker “prior pipeline/debug exposure permanently excludes this candidate.”
+- CTAPIpe's technical reproduction/test harness was refined against this specific case. That fact is disclosed above; it must not be silently coded as `none`. The project lead must classify whether this work meets the protocol's prior pipeline/debug exposure exclusion. If yes, #2732 remains a documented technical-development case and must not enter the accepted-case registry. The validator must not be weakened merely to admit it.
+- The same v0.2 schema requires project-lead-recorded gold and evidence-tier decisions, a student-project-lead license review, and a separate human decision record. When AI critique is used, its advisory record must also be separately hashed. The current G1/A1/A2 and E3/E2/E1 proposal is not yet a human decision.
+
+The project-wide no-inference preflight was rerun on the updated PR head:
+- Run `44318994967`, job `134852608128`; outcome: successful test/report execution.
+- Artifact `14434555521`; ZIP SHA-256 `85d23c485ff9007b6a5f9311d723dc757b540dee46551271724dc1e0f6e4dc7d`; downloaded archive size 3,750 bytes, five members, ZIP CRC PASS.
+- Packet-audit tests: 12 passed; operational packet/triage tests: 24 passed; selector-runner contract tests: 6 passed; v0.2 acceptance/preflight tests: 15 passed.
+- The generated readiness report is `blocked_before_inference`, `ready_for_inference=false`, with 11 blockers. It confirms a valid schema and a valid empty registry, but **0 accepted cases / 0 accepted projects**.
+
+The 11 blockers are: dataset/source provenance and license gate open; upstream changed-file/source license review open; raw upstream timestamp authentication open; exact Qwen revision license/use approval open; model/tokenizer/runtime verification not run; generation settings not frozen; protocol/analysis/generation/scoring hash freeze incomplete; the study-design decision, v0.2 protocol, and v0.2 analysis plan are not yet frozen/hash-recorded; and no accepted independent-project case is registered. The first five are substantive evidence/model gates; the remaining items include protocol finalization and the minimum one accepted case.
+
+**Current conclusion:** CTAPIpe Stage 2 is technically reproducible and its packet artefacts are structurally clean. It is not accepted. The v0.2 study is not ready for inference. No model loading, inference, fine-tuning, or training has occurred or is authorized.
