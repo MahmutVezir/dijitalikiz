@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-18T14:18:15.854Z",
+  "generated_at_utc": "2026-11-18T14:20:00.511Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -1767,12 +1767,12 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44321922276,
-    "job_id": 134862837135,
-    "artifact_id": 14434269076,
-    "artifact_name": "evidence-abstention-preflight-logs-44321922276-1",
-    "artifact_zip_sha256": "f4c32af4f87c08c8001a850e876f0a77babda9796b7f083525c99d45b6aa0a26",
-    "artifact_size_bytes": 3751,
+    "workflow_run_id": 44322262968,
+    "job_id": 134864024369,
+    "artifact_id": 14434582787,
+    "artifact_name": "evidence-abstention-preflight-logs-44322262968-1",
+    "artifact_zip_sha256": "529b14f588d7850930aa94dc49b0b1caa1f05d56919f8e3b5f4b6d324b27e4e7",
+    "artifact_size_bytes": 3750,
     "archive_members": 5,
     "zip_crc": "PASS",
     "status": "blocked_before_inference",
@@ -1818,6 +1818,6 @@
       "Artifact is not frozen and hash-recorded: research_candidates/evidence_abstention/SWE_REBENCH_V2_ANALYSIS_PLAN_V0_2_EXPLORATORY_DRAFT_2026-11-16.md.",
       "No accepted case is registered; at least one fully accepted independent-project case is required before any model inference."
     ],
-    "note": "Tests and report generation succeeded on the refreshed PR head, but readiness remains blocked. A valid schema and empty registry are not case acceptance or inference authorization."
+    "note": "Latest PR-head no-inference preflight: all tests and report generation pass, but 11 study-readiness blockers remain. Valid empty registry does not imply an accepted case or inference authorization."
   }
 }
