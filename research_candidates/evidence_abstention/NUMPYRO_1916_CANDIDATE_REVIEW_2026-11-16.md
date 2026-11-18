@@ -1,62 +1,96 @@
 # pyro-ppl/numpyro #1916 — candidate review
 
 **Cohort rank:** 12 of 96 primary candidates  
-**Dataset instance:** pyro-ppl__numpyro-1918  
+**Dataset instance:** `pyro-ppl__numpyro-1918`  
 **Issue:** https://github.com/pyro-ppl/numpyro/issues/1916  
 **Fix PR:** https://github.com/pyro-ppl/numpyro/pull/1918  
-**Review status:** strong static bug candidate; the first reproduction attempt stopped before test execution because the workflow referenced the fork PR-head commit rather than a commit present in the canonical upstream clone. The current workflow now targets the verified upstream merge commit; no post-correction tests have run. Not an accepted case.
+**Review status:** provisional technical candidate. The 18 November 2026 branch-head repeat now confirms the exact dataset selectors fail on the pinned buggy base and pass on the pinned upstream merge revision. Stage 3 human adjudication, exposure/independence and license-scope review remain open. The case is **not accepted**.
 
 ## 1. Defect contract
 
-Issue #1916 reports that calling MCMC.run after MCMC.warmup with the AIES ensemble kernel raises a JAX PRNG key shape error. The reported key has a batched shape (num_chains, 2), but the ensemble sampler calls random.split expecting a single key. The issue also reports the same failure with ESS.
+Issue #1916 reports that calling `MCMC.run` after `MCMC.warmup` with an AIES ensemble kernel raises a JAX PRNG-key shape error in vectorized multi-chain execution. The reporter also states that ESS exhibits the same error.
 
-PR #1918 changes the warmup-state handoff for ensemble kernels: it supplies the first key from the batched key array, while retaining the original behavior for non-ensemble kernels. The PR adds a test_warmup regression test parameterized over AIES and ESS with 10 vectorized chains.
+PR #1918 changes the warmup-state handoff for ensemble kernels: when `_warmup_state` exists, it supplies the first key from the batched key array; non-ensemble kernels retain the prior behavior. The PR adds a `test_warmup` regression test parameterized over AIES and ESS with 10 vectorized chains.
 
-The added upstream test directly exercises the reported warmup-then-run sequence and is therefore a stronger oracle than a test of an internal helper alone.
+## 2. Pinned source and dataset identity
 
-## 2. Pinned source identity
+- Upstream repository: `pyro-ppl/numpyro`
+- Buggy base: `07e4c9bc4524cc0a741ba8f8ad41339d34a0288d`
+- PR head: `d5367f16abee85a1d7788784c71eb908ecb12df7`
+- Fixed upstream merge revision: `5692d2da335945b756aeae02e3720b9b7f3efef2`
+- Dataset: `PrimeIntellect/SWE-rebench-V2-Filtered-Verified`
+- Dataset revision: `fb9aa226b2ce37c708ea7732e7b980abacdadb67`
+- Dataset Parquet SHA-256: `7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9`
+- Exact row: `pyro-ppl__numpyro-1918`
+- Canonical row SHA-256: `d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646`
+- Row metadata: `pyro-ppl/numpyro`, base SHA above, `2024-11-28 00:54:29`, Python, Apache-2.0
+- Frozen selectors:
+  - `test/infer/test_ensemble_mcmc.py::test_warmup[AIES]`
+  - `test/infer/test_ensemble_mcmc.py::test_warmup[ESS]`
 
-- Repository: pyro-ppl/numpyro
-- Buggy base: 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d
-- PR head: d5367f16abee85a1d7788784c71eb908ecb12df7
-- Fixed upstream merge revision used for reproduction: 5692d2da335945b756aeae02e3720b9b7f3efef2
-- PR merge commit: 5692d2da335945b756aeae02e3720b9b7f3efef2
-- Issue #1916 created: 2024-11-25T14:53:29Z
-- PR #1918 created: 2024-11-28T00:54:29Z
-- PR body explicitly says it fixes issue #1916.
+The dataset row was authenticated in the run and stored in the artifact. The two selectors are test variants within one upstream project; they are not two independent cases.
 
-## 3. Source and dependency license screen
+## 3. Latest exact Stage 2 reproduction — 18 November 2026
 
-- Exact-base setup.py declares Apache License 2.0 and the Apache Software License classifier.
-- Both changed source/test files carry SPDX Apache-2.0 headers.
-- The minimal test environment uses CPU JAX only; no GPU, external service, or downloaded model is required.
-- Runtime/test dependencies and transitive dependencies are version-pinned. Before upstream source tests execute, the workflow records distribution license metadata for every installed package and stops if any package lacks both a license field and a license classifier.
-- This is a narrow documentary screen, not legal advice or blanket clearance for optional extras or redistribution.
+Latest branch-head workflow: https://github.com/MahmutVezir/dijitalikiz/actions/runs/44332892793
 
-## 4. Test adequacy
+- Workflow run: `44332892793`
+- Job: `134901923864` (`numpyro-issue-1916-reproduction`)
+- Job conclusion: **success**
+- Artifact ID: `14438938964`
+- Artifact: `numpyro-issue-1916-reproduction`
+- Artifact ZIP SHA-256: `c122008c972df7e8ecf77b67a9fd050d4b54b883aea9de6dfc4b41e3dd2b67e4`
+- Independent local verification: outer SHA-256 matched the GitHub artifact digest; ZIP CRC passed; all 15 payload-file hashes in `SHA256SUMS.txt` passed.
 
-The exact dataset FAIL_TO_PASS selectors are extracted from the pinned Parquet row. The workflow applies the diff from the exact buggy base to the upstream merge revision and runs those selectors, then runs the same selectors on that exact merge revision.
+Observed selector results, using the same pinned CPU environment and the same two test selectors:
 
-Required result: all selected tests fail on the base with the reported PRNG key shape failure and pass on the fixed revision. Collection errors, dependency failures, or unrelated failures do not count as a successful reproduction.
+| Revision | AIES selector | ESS selector | Contract |
+|---|---:|---:|---|
+| Buggy base `07e4c9b...` | Executed and failed with the reported PRNG-key shape error | Executed and failed with the reported PRNG-key shape error | 2/2 expected failures |
+| Fixed merge `5692d2d...` | Passed | Passed | 2/2 passes |
 
-## 5. Independence and exposure
+The failing path reaches `numpyro/infer/ensemble.py` in `EnsembleSampler.sample`, where `random.split(rng_key)` receives a traced key array with shape `(10, 2)`; JAX requires one key at this call site. The fixed run passes both selectors (one pass per selector). The reporter's original example uses 100 chains; the pinned regression selectors exercise 10 chains.
 
-- The cohort contains one primary candidate for pyro-ppl/numpyro; this project can contribute at most one accepted case.
-- Issue and PR dates are after the September 2024 public release of Qwen2.5-3B-Instruct. This reduces the likelihood that this exact public issue/patch was in the released weights but does not establish complete training-data provenance.
-- The student researcher has reviewed the issue and patch during candidate screening. This exposure must be recorded; perfect blinding must not be claimed.
-- Related issue-family, fork/lineage, and exact dataset provenance checks remain part of final acceptance.
+Relevant artifact hashes:
+- Full upstream PR patch: `d05cbdbc3b934c55ace104d7d031c9987d61db5e1abba815104eab8004af5512`
+- Dataset-only test patch applied to the buggy base: `03df1473e0a8ebcdba4f5981b2f8dfeef57484088a66c495bcc903204dbb51e4`
+- Buggy-base test log: `0c4e0e335b80877185ab2b54ec527add0bd1e1b9c733511c4f71aa09e4ba20c1`
+- Fixed-revision test log: `e268b6d982d0d335970c28310727c3e822e7e1684a076db2f2b854b9b186901b`
+- Dependency lock file SHA-256: `8a160de15a15792632268e9840879fe262b98413ac1c5fe7bcf4253631f6bbb5`
+- Dependency-license inventory artifact SHA-256: `20b6109dae0af95a6c4917cadca00c958e5aa9cc02f11c536854c78305d7eaba`
 
-## 6. Prior workflow attempt and current decision
+This closes the previous review's statement that the corrected workflow had not run. The 18 November repeat is the current evidence; the historical failed attempt against the fork-only PR-head SHA remains recorded as workflow history, not as the current result.
 
-The first exact reproduction run was `43881610067`, job `133348644404`. Runtime installation, package-license inventory, and exact dataset-row authentication passed. The source preparation step then failed with `fatal: bad object d5367f16abee85a1d7788784c71eb908ecb12df7` because the workflow attempted to diff against the PR fork-head commit after cloning only `pyro-ppl/numpyro`.
+## 4. Source and dependency license screen
 
-The current workflow corrects this by using the canonical upstream merge commit `5692d2da335945b756aeae02e3720b9b7f3efef2` for the diff and fixed test run. That SHA was independently verified against the GitHub PR #1918 metadata and upstream commit. The correction has not yet been executed: the later preflight run `43898509334` ended with the NumPyro job having zero steps/no runner assignment. Thus there is still no base-fail/fix-pass result.
+- The exact-base NumPyro source declares Apache License 2.0; both changed source/test files carry SPDX Apache-2.0 headers.
+- The reproduction uses a CPU-only pinned environment. No GPU, external service or downloaded model is required.
+- The lock explicitly pins 17 runtime/test packages and their transitive requirements. The workflow recorded license text/classifier metadata for all 17 before executing upstream source tests; the metadata-presence gate passed.
+- Metadata presence is not legal clearance. Some distributions expose multiple classifiers or broad license text, and the inventory does not replace review of bundled components, notices, redistribution scope or competition-use conditions.
+- Project-lead acknowledgement of the narrow dependency/license scope remains open. This is not legal advice or blanket approval for optional extras or redistribution.
 
-Issue/patch alignment: strong.  
-Root source license: Apache-2.0.  
-Dependency inventory: recorded as passed in the first run before source execution.  
-Exact dataset row: authenticated in the first run.  
-Exact base-fail/fix-pass reproduction: not run; first attempt stopped at invalid fixed ref, corrected workflow pending execution.  
-Gold mechanism and E1/E2/E3 packet: pending human adjudication.  
-Final case acceptance: not accepted.  
-Model loading and inference authorization: false.
+## 5. Proposed technical mechanism and alternatives
+
+A separate Stage 3 proposal is recorded in `NUMPYRO_1916_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-18.md`. In brief, the leading mechanism is a mismatch between the batched per-chain PRNG key carried through the warmup-state path and the singleton key expected by `EnsembleSampler.sample`. The upstream fix's conditional selection of `rng_key[0]` for ensemble kernels is consistent with that mechanism.
+
+The mechanism, alternative hypotheses, and the proposed E1/E2/E3 evidence subsets are **drafts for project-lead adjudication**. They are not a completed gold record or a validated three-tier packet set.
+
+## 6. Independence, exposure and acceptance
+
+- The cohort contains one primary candidate for `pyro-ppl/numpyro`; the project can contribute at most one accepted case.
+- The student project lead has reviewed the issue, PR, source patch and reproduction results during candidate screening. This exposure is disclosed; perfect blinding is not claimed.
+- Rater B's case-specific exposure/independence screen and participation status have not been confirmed. Rater B is for blinded model-output scoring only, not technical-gold or E1/E2/E3 adjudication.
+- Fork/lineage, issue-family duplication and the final candidate-specific exposure decision remain open.
+- The public issue/PR dates are after the September 2024 release of Qwen2.5-3B-Instruct. This timing reduces one narrow exposure concern but does not establish complete training-data provenance.
+
+Current disposition:
+- Static issue/patch alignment: strong.
+- Exact dataset row and selectors: authenticated.
+- Stage 2 exact base-fail/fixed-pass: passed, repeated on the 18 November branch head.
+- Source/dependency documentary metadata: recorded; human license-scope sign-off pending.
+- Technical gold and at least two alternatives: proposed, not adjudicated.
+- E1/E2/E3 semantics and packet hashes: proposed, not frozen or validated as a packet set.
+- Independence/exposure review: open.
+- Stage 3 adjudication: not complete.
+- Final case acceptance: **not accepted**.
+- Model loading, inference and fine-tuning authorization: **false**.
