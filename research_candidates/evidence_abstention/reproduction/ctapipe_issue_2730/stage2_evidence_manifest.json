@@ -153,6 +153,27 @@
       }
     ],
     "latest_verified_repeat": {
+      "workflow_run_id": 44318994654,
+      "job_id": 134852611469,
+      "artifact_id": 14434206824,
+      "artifact_name": "ctapipe-2732-stage2-base-fixed-44318994654-1",
+      "artifact_zip_sha256": "aeb4666c0c69c581199c41a4a0fc140f8e0e643ea4a43a2a818005fb5b0d0100",
+      "artifact_size_bytes": 295206,
+      "archive_members": 137,
+      "zip_crc": "PASS",
+      "artifact_internal_hashes": "136/136 SHA256SUMS entries independently verified; 137 archive members including SHA256SUMS.txt",
+      "exact_frozen_selector": {
+        "buggy_base": "FAIL: defect-specific assertion; skewness is astropy.units.quantity.Quantity rather than float or numpy.floating (1 failed in 0.08s)",
+        "fixed_revision": "PASS: 1 passed in 0.02s"
+      },
+      "direct_hdf5_mixed_type_reproducer": {
+        "buggy_base": "FAIL as expected defect reproduction: false config branch passes and skips muon writer; true config branch invokes real DataWriter.__call__/HDF5 path and fails on second default-float row with AttributeError: 'float' object has no attribute 'to_value' (1 failed, 1 passed in 1.38s).",
+        "fixed_revision": "PASS: both config branches pass and both rows are written (2 passed in 1.39s)."
+      },
+      "pip_check": "No broken requirements found",
+      "no_model_loading_inference_or_training": true
+    },
+    "previous_manifest_latest_repeat": {
       "workflow_run_id": 44317298277,
       "job_id": 134846673050,
       "artifact_id": 14433995574,
@@ -186,7 +207,7 @@
     "container_validation_comment": "The PR author's comment says Container validation would reject the mixed values. Exact-base Field.validate accepts both because these fields have no unit/type/dtype/ndim constraints; our HDF5 reproduction calls validate() on both. The error occurs in the HDF5 column transform."
   },
   "decision": {
-    "stage2_technical_reproduction": "PASS: latest branch-head repeat run 44317298277/job 134846673050. Exact frozen selector fails on buggy base with the defect-specific Quantity-vs-float assertion and passes on the exact fixed PR head (1/1). The real DataWriter.__call__/HDF5 reproducer checks both write_muon_parameters=False and True: False skips the muon writer; True reproduces the float.to_value failure on base; both branches pass on fixed and write both rows. Downloaded ZIP artifact 14433995574 independently verified: SHA-256 9494954a09a956887a2f1610e948d89eb84a5fb0f776f65285ac4a224e47337e, CRC PASS, 137 members, 136/136 internal checksums passed.",
+    "stage2_technical_reproduction": "PASS: latest verified repeat run 44318994654/job 134852611469, artifact 14434206824. Exact frozen selector fails on exact buggy base with the Quantity-vs-float defect assertion and passes on exact fixed PR head. The real DataWriter.__call__/HDF5 reproducer tests both false/true write_muon_parameters paths: false skips muon writer; true reproduces float.to_value AttributeError on base; fixed passes both branches and writes two rows. Artifact independently downloaded and checked: SHA-256 aeb4666c0c69c581199c41a4a0fc140f8e0e643ea4a43a2a818005fb5b0d0100, 137 members, CRC PASS, 136/136 inner SHA256SUMS entries PASS.",
     "candidate_disposition": "Conditional hold pending project-lead gold/alternatives/tier approval, explicit acceptance or exclusion decision for full researcher source exposure and prior pipeline-debug exposure, documentary license scope acknowledgement, formal related-defect/one-project independence approval, and separate final case acceptance. The published issue YAML/effective-configuration discrepancy is reproducibly demonstrated but reporter's actual effective configuration is unknown.",
     "stage3": "technical evidence, repository-family screen, nested packet preparation, packet leakage audit, and independent artifact integrity verification complete; human adjudication and final acceptance gate still pending",
     "final_case_acceptance": "not_accepted",
