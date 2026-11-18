@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+  "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+  "parquet_path": "data/train-00000-of-00001.parquet",
+  "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+  "instance_id": "cta-observatory__ctapipe-2732",
+  "repository": "cta-observatory/ctapipe",
+  "base_commit": "287e7685e0e963f3fb44d92832ca97ac8c265c40",
+  "dataset_created_at": "2025-04-02 17:48:48",
+  "language": "python",
+  "license_metadata": "BSD-3-Clause",
+  "fail_to_pass_count": 1,
+  "fail_to_pass_selectors": [
+    "src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution"
+  ],
+  "canonical_row_sha256": "9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d",
+  "discovery_workflow_run_id": 44296556380,
+  "discovery_artifact_id": 14423413288,
+  "discovery_artifact_sha256": "5c43e72263632057c87046d72c494aa7fc50ecbe8a207fead7bc39eca55d3a94",
+  "note": "Canonical row bytes and problem_statement were not saved into the artifact; row hash and selector were generated from the exact pinned Parquet file. The row hash still needs independent recalculation from a retained canonical row or a repeat row-audit artifact."
+}
