@@ -95,7 +95,7 @@ def test_dual_human_scoring_rubric_preserves_blinding_and_original_ratings():
     assert "contradicted" in rubric
     assert "invalid_or_unscorable" in rubric
     assert "excluded from the strict primary binary endpoint" in rubric
-    assert "A correct but unsupported guess remains unsupported" in rubric
+    assert "A correct guess is not automatically evidence-supported." in rubric
     assert "ChatGPT is never counted as a human rater" in rubric
     assert "Both original ratings are locked before discussion" in rubric
     assert "hidden E1/E2/E3 label" in rubric
@@ -108,4 +108,4 @@ def test_human_evaluator_amendment_preserves_exposure_exclusion_and_roles():
     assert "The existing v0.2 candidate rule excluding cases used for earlier pipeline debugging" in amendment
     assert "does not erase the project lead's prior source exposure" in amendment
     assert "Rater B's proposed role is an independent human scorer" in amendment
-    assert "not an authorization for model loading, inference, scoring, or case acceptance" in amendment
+    assert "This amendment does not authorize model loading, inference, scoring, or case acceptance." in amendment
