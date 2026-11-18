@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "candidate": "cta-observatory/ctapipe issue #2730 / PR #2732",
+  "cohort_rank": 31,
+  "instance_id": "cta-observatory__ctapipe-2732",
+  "dataset": {
+    "name": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "row_sha256": "9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d",
+    "fail_to_pass_count": 1,
+    "fail_to_pass_selectors": [
+      "src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution"
+    ],
+    "row_audit_workflow_run_id": 44298746628,
+    "row_audit_artifact_id": 14424887790,
+    "row_audit_artifact_sha256": "4653884c0f6f127c0d8150b3011924bc1be0c515800a5df762ac839be67c151c",
+    "canonical_row_sha256_recalculated_from_retained_json": true,
+    "internal_artifact_hashes": "4/4 files verified"
+  },
+  "source": {
+    "repository": "cta-observatory/ctapipe",
+    "buggy_base": "287e7685e0e963f3fb44d92832ca97ac8c265c40",
+    "fixed_pr_head": "5007b6ab61887d7555155edb4d1d296603a9735e",
+    "merge_commit": "ba4546f2027e2f820982c4e40730097b7e16434c",
+    "exact_pr_changed_files": [
+      "docs/changes/2732.bugfix.rst",
+      "src/ctapipe/image/muon/features.py",
+      "src/ctapipe/image/muon/tests/test_muon_features.py"
+    ],
+    "only_dataset_test_file_patch_applied_to_buggy_base": "src/ctapipe/image/muon/tests/test_muon_features.py",
+    "base_worktree_changed_files": [
+      "src/ctapipe/image/muon/tests/test_muon_features.py"
+    ]
+  },
+  "environment": {
+    "python": "3.11.9",
+    "numpy": "1.26.4",
+    "astropy": "6.1.7",
+    "pytest": "8.3.5",
+    "pytest_astropy_header": "0.2.2",
+    "pytables": "3.10.2",
+    "environment_input_sha256": "1b6e82f8db8dcad6a1720666f19c8868ae5d6ef6e13cae2228d9c0e7e7a62edb",
+    "pip_check": "No broken requirements found",
+    "installed_distribution_count": 51,
+    "dependency_license_metadata_artifact": "dependency-license-metadata.json",
+    "dependency_license_metadata_sha256": "f9151d1e3824a96da76dff15401e4e112a904fd4f25a52c2865903e1e1d3a868",
+    "dependency_license_status": "metadata captured for 51 installed distributions; no distribution lacked all of license field, license classifier, and detected license file. 50 had detected license files; tqdm had SPDX-like license field and classifiers but no license file in captured metadata. Human scope review remains pending."
+  },
+  "reproduction": {
+    "workflow_run_id": 44299388651,
+    "job_id": 134784814840,
+    "artifact_id": 14424942732,
+    "artifact_name": "ctapipe-2732-stage2-base-fixed-44299388651-1",
+    "artifact_zip_sha256": "f6ddfd91afa97b3720c10c0f7816f409a7c354f85883fa61b837bfc823621ea",
+    "artifact_internal_hashes": "21/21 files verified",
+    "exact_frozen_selector": {
+      "buggy_base": "FAIL: defect-specific assertion; observed skewness type astropy.units.quantity.Quantity instead of float or numpy.floating",
+      "fixed_revision": "PASS: 1 passed in 0.02s"
+    },
+    "direct_hdf5_mixed_type_reproducer": {
+      "buggy_base": "FAIL: AttributeError: 'float' object has no attribute 'to_value' at QuantityColumnTransform.__call__ while writing default MuonParametersContainer after calculated Quantity-valued parameters",
+      "fixed_revision": "PASS: 1 passed in 1.07s"
+    },
+    "base_exit_codes": {
+      "dataset_selector": 1,
+      "hdf5_reproducer": 1
+    },
+    "fixed_test_counts": {
+      "dataset_selector": "1 passed",
+      "hdf5_reproducer": "1 passed"
+    }
+  },
+  "unresolved": {
+    "issue_configuration_discrepancy": "Issue #2730 problem_statement YAML says DataWriter.write_muon_parameters=False, but the reporter traceback proves _write_muon_telescope_events executed. Effective config override or transcription error is not established.",
+    "docstring_contract": "radial_light_distribution docstring still declares skewness and excess_kurtosis as astropy.units.Quantity, inconsistent with unitless MuonParametersContainer fields and fixed implementation.",
+    "license_human_signoff": "Dependency metadata inventory is recorded, but dependency/third-party license scope has not received human signoff.",
+    "independence_and_exposure_review": "Pending Stage 3.",
+    "gold_and_evidence_tier_adjudication": "Pending Stage 3."
+  },
+  "decision": {
+    "stage2_technical_reproduction": "PASS: exact frozen FAIL_TO_PASS selector and independent HDF5 writer reproducer both base-fail/fixed-pass",
+    "candidate_disposition": "Conditional hold pending issue configuration/provenance reconciliation and Stage 3",
+    "stage3": "not_started",
+    "final_case_acceptance": "not_accepted",
+    "model_loading_performed": false,
+    "model_inference_performed": false,
+    "fine_tuning_performed": false
+  }
+}
