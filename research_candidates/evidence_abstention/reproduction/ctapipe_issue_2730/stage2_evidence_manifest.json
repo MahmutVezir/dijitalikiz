@@ -217,11 +217,28 @@
     "license_human_signoff": "Machine-readable source/dependency license inventory and exact changed-file screen completed (51 installed dists, 106 notice files captured; three PR files documented under repository BSD-3-Clause). Student project-lead decision pending; not legal advice.",
     "independence_and_exposure_review": "The complete frozen Parquet scan authenticated five exact cta-observatory/ctapipe rows. Full row hashes: 1872=59d1aeb7..., 1883=04e0fc47..., 2320=29aa95ca..., 2732=e7d40ebf..., 2738=db357eac.... The corresponding issue/PR descriptions, production patch paths, and F2P selectors indicate distinct issue families. Only #2732 is the selected muon Quantity/float HDF5 defect; the one-case-per-upstream-project rule means at most one accepted CTAPIpe case. Human formal independence approval and researcher-exposure classification remain pending.",
     "gold_and_evidence_tier_adjudication": "E3/E2/E1 model-facing packets finalized as nested files; audit run 44316015132 passed, artifact 14432113942 SHA-256 fd7fc7ed0cf7953f51efae7ef174aa6593b4860806bafdf9e03ba8fa88a25a38. Packet set manifest SHA-256 123bcba10ed241c466299297dbf6582d45a92e8e75ad5b3e881db63d5fd14998; E2 inherits E3 and E1 inherits E2 exactly; 4/4 checksum entries independently verified, no self-checksum. Gold and tier memberships remain AI-assisted proposals, not project-lead-approved.",
-    "container_validation_comment": "The PR author's comment says Container validation would reject the mixed values. Exact-base Field.validate accepts both because these fields have no unit/type/dtype/ndim constraints; our HDF5 reproduction calls validate() on both. The error occurs in the HDF5 column transform."
+    "container_validation_comment": "The PR author's comment says Container validation would reject the mixed values. Exact-base Field.validate accepts both because these fields have no unit/type/dtype/ndim constraints; our HDF5 reproduction calls validate() on both. The error occurs in the HDF5 column transform.",
+    "project_lead_pipeline_debug_exposure": {
+      "status": "pending_project_lead_decision",
+      "proposed_classification": "some",
+      "proposal_path": "research_candidates/evidence_abstention/CTAPIPE_2732_EXPOSURE_DECISION_PROPOSAL_2026-11-18.md",
+      "basis": "The candidate-specific reproduction/test harness was refined against CTAPIpe #2732; the v0.2 protocol excludes cases used for prior pipeline debugging, test-oracle troubleshooting or prompt calibration.",
+      "consequence_if_approved": "exclude_ctapipe_2732_from_model_evaluation_sample_and_retain_as_engineering_pilot_record",
+      "not_waived_by_second_rater": true,
+      "final_decision_maker": "student_project_lead"
+    },
+    "rater_b_participation": {
+      "status": "identified_pending_explicit_consent_and_case_specific_independence_screen",
+      "public_pseudonym": "Rater_B",
+      "consent_template": "research_candidates/evidence_abstention/RATER_B_CONSENT_AND_EXPOSURE_SCREEN_TEMPLATE_V0_1_2026-11-18.md",
+      "proposed_role": "independent_blinded_model_output_evidence_support_rater_only",
+      "calibration_complete": false,
+      "no_scores_or_agreement_statistics_exist": true
+    }
   },
   "decision": {
     "stage2_technical_reproduction": "PASS: latest branch-head repeat 44324115597/job 134870646827, artifact 14436277116. Exact frozen selector: defect-specific FAIL on buggy base and PASS on exact fixed revision. Direct DataWriter.__call__/HDF5 reproducer: false flag skips muon writer; true flag reproduces float.to_value AttributeError on buggy base; fixed revision passes both branches and writes both rows. Artifact independently downloaded and verified: ZIP SHA-256 9e3e35f4f499a3a5947e0e6ad803dd7d6d9d1c240695a6558769e7f31ea501b2; 137 members; CRC PASS; 136/136 inner checksums passed. pip check clean. Latest selector-only discovery run 44324115686/artifact 14436376289 independently verified: ZIP SHA-256 23625e47e655e34b37482cacc11d58e79c040b57b901d8db00aec5a809de8005; 4 members; 3/3 inner checksums passed. No model loading, inference, fine-tuning or training.",
-    "candidate_disposition": "Conditional hold pending project-lead gold/alternatives/tier approval, explicit acceptance or exclusion decision for full researcher source exposure and prior pipeline-debug exposure, documentary license scope acknowledgement, formal related-defect/one-project independence approval, and separate final case acceptance. The published issue YAML/effective-configuration discrepancy is reproducibly demonstrated but reporter's actual effective configuration is unknown.",
+    "candidate_disposition": "Conditional hold. Technical Stage 2 and E1/E2/E3 packet structural/audit checks pass. Final model-sample eligibility remains pending project-lead source/pipeline-debug exposure classification (evidence-based proposal is 'some', which excludes the case under v0.2), gold/tier approval, license scope acknowledgement and effective-configuration provenance caveat. Second human output rater Rater_B is identified, but consent, independence/exposure screening and calibration are pending; this does not waive candidate exclusion or authorize inference.",
     "stage3": "technical evidence, repository-family screen, nested packet preparation, strengthened current-gold/alternative/caveat leakage audit, and independent artifact integrity verification complete; human adjudication and final acceptance gate still pending",
     "final_case_acceptance": "not_accepted",
     "model_loading_performed": false,
