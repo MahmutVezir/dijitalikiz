@@ -381,19 +381,19 @@
       "ai_critique_record_sha256": "ea0215e41382409e109d0b3587bd95df400e94887d2f9c137a64fd90173c45ca",
       "license_review_status": "documentary_minimal_environment_screen_passed_full_scope_human_signoff_pending",
       "final_case_record_status": "not_yet_constructed_schema_conformant_record",
-      "latest_reproduction_run_id": 44111403900,
-      "latest_reproduction_job_id": 134137813966,
-      "latest_reproduction_artifact_id": 14340572651,
+      "latest_reproduction_run_id": 44322262968,
+      "latest_reproduction_job_id": 134864350055,
+      "latest_reproduction_artifact_id": 14436220610,
       "latest_reproduction_status": "PASS: issue reproducer and all 8 exact dataset selectors; does not replace remaining final case acceptance gates.",
-      "latest_reproduction_artifact_name": "dishka-issue-435-reproduction-44111403900-1",
-      "latest_reproduction_artifact_sha256": "183b8c62af381d012234f2f5cee6e9d40e70c4f8cdcb6b21f10e79f0425921f0",
-      "latest_reproduction_artifact_size_bytes": 226404514,
+      "latest_reproduction_artifact_name": "dishka-issue-435-reproduction-44322262968-1",
+      "latest_reproduction_artifact_sha256": "c40178034053a7d2f3eead80cb8dc22027578767406384711d54e670d9234a5a",
+      "latest_reproduction_artifact_size_bytes": 54107858,
       "latest_reproduction_archive_members": 33,
       "latest_reproduction_zip_crc": "PASS",
       "latest_reproduction_internal_hashes": "32/32 SHA256SUMS entries passed independent verification",
       "latest_reproduction_issue_test": "Buggy base: AssertionError: 1 != 42; fixed revision: PASS",
-      "latest_reproduction_dataset_selectors": "All 8 exact FAIL_TO_PASS selectors failed on buggy base with defect-related assertions and all 8 passed on fixed revision",
-      "latest_reproduction_artifact_independent_verification": "Downloaded artifact 14340572651; ZIP SHA-256 independently recalculated; ZIP CRC clean; all 32 listed inner file hashes verified; includes exact dataset Parquet and raw base/fixed logs",
+      "latest_reproduction_dataset_selectors": "All 8 exact FAIL_TO_PASS selectors failed on buggy base and passed on fixed revision",
+      "latest_reproduction_artifact_independent_verification": "Artifact 14436220610 was downloaded; ZIP SHA-256 c40178034053a7d2f3eead80cb8dc22027578767406384711d54e670d9234a5a independently recalculated; ZIP CRC clean; all 32 listed file hashes passed; exact dataset Parquet and raw base/fixed logs present.",
       "note_no_prior_pipeline_debug": "The master audit identifies Robocop #1371 and pdoc #812 as prior pipeline/debug-exposed exclusions. Dishka #435 is not identified among those exclusions; its first documented issue reproducer and exact selector validation were prospective case-validation runs. Full researcher source exposure is separately acknowledged. Preserve this distinction and cite the protocol's exclusion rule; do not infer model blinding or training-data absence.",
       "case_acceptance_readiness_record_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_CASE_ACCEPTANCE_READINESS_2026-11-18.md",
       "prior_pipeline_debug_exposure_audit": {
@@ -401,7 +401,16 @@
         "researcher_source_exposure": "full",
         "evidence": "Dishka is not among the documented prior pipeline/debug exclusions (Robocop #1371 and pdoc #812); its exact issue reproducer and dataset-selector runs are recorded as prospective candidate-validation runs. The active v0.2 protocol still requires prior pipeline/debug exposure to be none; do not collapse full source exposure into that field.",
         "human_confirmation_required": true
-      }
+      },
+      "previous_latest_reproduction": {
+        "run_id": 44111403900,
+        "job_id": 134137813966,
+        "artifact_id": 14340572651,
+        "artifact_sha256": "183b8c62af381d012234f2f5cee6e9d40e70c4f8cdcb6b21f10e79f0425921f0"
+      },
+      "latest_project_preflight_run_id": 44322262968,
+      "latest_project_preflight_artifact_id": 14434582787,
+      "latest_project_preflight_status": "blocked_before_inference; 11 blockers; accepted cases/projects 0/0"
     },
     {
       "instance_id": "ecmwf__earthkit-data-592",
