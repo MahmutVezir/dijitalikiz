@@ -149,3 +149,19 @@ The most recent Dishka repeat on this branch completed successfully:
 - This is another technical replication only; it does not constitute final case acceptance or close the limited license/exposure gates.
 
 The same PR-head no-inference preflight run `44322262968`, job `134864024369`, artifact `14434582787`, was downloaded and checked. ZIP SHA-256: `529b14f588d7850930aa94dc49b0b1caa1f05d56919f8e3b5f4b6d324b27e4e7`; CRC PASS; five members. The report remains `blocked_before_inference`, `ready_for_inference=false`, with 11 blockers, 0 accepted cases/projects, and no model loading/inference/fine-tuning. All 57 preflight tests passed (12 + 24 + 6 + 15).
+
+
+## 12. Latest branch-head Dishka technical repeat — independently archive-verified (2026-11-18)
+
+- Workflow run: `44331092872`
+- Job: `134895967726`
+- Artifact ID: `14438674343`
+- Artifact name: `dishka-issue-435-reproduction-44331092872-1`
+- Downloaded archive SHA-256: `7aabccb73d71d6d725b0eaa0f711f45033255a8da0ef36b32e9d8c435e484365`
+- Archive size: 226,404,514 bytes; 33 members; ZIP CRC check: PASS.
+- Internal `SHA256SUMS.txt`: 32/32 entries independently verified.
+- Independent issue reproducer: buggy base fails with `AssertionError: 1 != 42`; fixed revision passes.
+- Frozen dataset selectors: 8/8 fail on buggy base with executed defect-related test failures; the same 8/8 pass on fixed revision (`8 passed in 0.06s`).
+- No model loading, inference, fine-tuning or training.
+
+This repeat supersedes the prior Stage 2 repeat as the latest branch-head technical artifact reference. It does not change the unresolved case-level approvals: prior pipeline/debug exposure confirmation, bounded license-screen sign-off, schema-conformant acceptance record, validation, and separate final acceptance. It also does not close the project-wide dataset/model/runtime/hash-freeze gates.
