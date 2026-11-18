@@ -287,7 +287,58 @@ For a processed event, the muon processor calls the radial-light-distribution fu
 317:         )
 ```
 
-The base implementation of radial_light_distribution returns the standard deviation, skewness, and excess kurtosis:
+The base docstring describes the returned types as follows:
+
+```python
+304:     Returns
+305:     -------
+306:     radial_std_dev : `astropy.units.Quantity`
+307:         Standard deviation of the light distribution in degrees.
+308:         Spread of pixel intensities around the mean radial distance from the ring center.
+309:     skewness : `astropy.units.Quantity`
+310:         Skewness of the radial light distribution (dimensionless).
+311:         Measures the asymmetry of the distribution around the mean radius.
+312:     excess_kurtosis : `astropy.units.Quantity`
+313:         Excess kurtosis of the radial light distribution (dimensionless).
+314:         Indicates the "tailedness" of the distribution compared to a normal distribution.
+315: 
+316:     Notes
+317:     -----
+318:     This function calculates the statistical properties of the radial distribution
+319:     of light in an image with respect to the reconstructed muon ring center. It computes
+320:     the standard deviation, skewness, and excess kurtosis of the radial distances of the pixels
+321:     from the center of the ring, weighted by the pixel intensities.
+322:     """
+323: 
+324:     if np.sum(image) == 0:
+325:         return (
+326:             np.nan * u.deg,
+327:             np.nan * u.dimensionless_unscaled,
+328:             np.nan * u.dimensionless_unscaled,
+329:         )
+330: 
+331:     pixel_r = np.hypot(pixel_fov_lon - center_fov_lon, pixel_fov_lat - center_fov_lat)
+332: 
+333:     mean = np.average(pixel_r, weights=image)
+334:     delta_r = pixel_r - mean
+335:     radial_std_dev = np.sqrt(np.average(delta_r**2, weights=image))
+336:     skewness = (
+337:         np.average(delta_r**3, weights=image)
+338:         / radial_std_dev**3
+339:         * u.dimensionless_unscaled
+340:     )
+341:     excess_kurtosis = (
+342:         np.average(delta_r**4, weights=image) / radial_std_dev**4 - 3.0
+343:     ) * u.dimensionless_unscaled
+344: 
+345:     return (
+346:         radial_std_dev,
+347:         skewness,
+348:         excess_kurtosis,
+349:     )
+```
+
+The base implementation returns the values as follows:
 
 ```python
 324:     if np.sum(image) == 0:
