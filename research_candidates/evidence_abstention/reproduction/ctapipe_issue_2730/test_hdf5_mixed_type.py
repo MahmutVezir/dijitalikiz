@@ -24,6 +24,11 @@ def test_calculated_then_default_muon_parameters_write_without_type_mismatch(tmp
     )
     default_parameters = MuonParametersContainer()
 
+    # The untyped, unitless Field definitions accept both Quantity and float.
+    # The failure is introduced by the HDF5 column transform retained from row 1.
+    calculated_parameters.validate()
+    default_parameters.validate()
+
     output = tmp_path / "muon-parameters.h5"
     with HDF5TableWriter(output, mode="w") as writer:
         writer.write("muon", calculated_parameters)
