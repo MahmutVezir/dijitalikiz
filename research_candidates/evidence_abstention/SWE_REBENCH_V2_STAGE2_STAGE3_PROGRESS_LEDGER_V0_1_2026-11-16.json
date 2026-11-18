@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-18T14:03:47.493Z",
+  "generated_at_utc": "2026-11-18T14:15:16.059Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -1767,12 +1767,12 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44318994967,
-    "job_id": 134852608128,
-    "artifact_id": 14434555521,
-    "artifact_name": "evidence-abstention-preflight-logs-44318994967-1",
-    "artifact_zip_sha256": "85d23c485ff9007b6a5f9311d723dc757b540dee46551271724dc1e0f6e4dc7d",
-    "artifact_size_bytes": 3750,
+    "workflow_run_id": 44321922276,
+    "job_id": 134862837135,
+    "artifact_id": 14434269076,
+    "artifact_name": "evidence-abstention-preflight-logs-44321922276-1",
+    "artifact_zip_sha256": "f4c32af4f87c08c8001a850e876f0a77babda9796b7f083525c99d45b6aa0a26",
+    "artifact_size_bytes": 3751,
     "archive_members": 5,
     "zip_crc": "PASS",
     "status": "blocked_before_inference",
@@ -1804,6 +1804,7 @@
         "result": "PASS"
       }
     ],
+    "total_tests_passed": 57,
     "blockers": [
       "Dataset validation gate remains open: source provenance/license and raw timestamp authentication are not fully closed.",
       "Underlying upstream source and changed-file license review is not closed.",
@@ -1812,11 +1813,11 @@
       "The exact model/tokenizer/runtime environment has not been verified.",
       "Generation settings are still draft and have not been frozen.",
       "The protocol, analysis plan, generation settings, and scoring rules have not completed the internal hash freeze.",
-      "Study design decision file is not frozen and hash-recorded.",
-      "v0.2 protocol draft is not frozen and hash-recorded.",
-      "v0.2 analysis plan is not frozen and hash-recorded.",
+      "Artifact is not frozen and hash-recorded: research_candidates/evidence_abstention/STUDY_DESIGN_DECISION_V0_2_EXPLORATORY_2026-11-16.md.",
+      "Artifact is not frozen and hash-recorded: research_candidates/evidence_abstention/SWE_REBENCH_V2_PROTOCOL_V0_2_EXPLORATORY_DRAFT_2026-11-16.md.",
+      "Artifact is not frozen and hash-recorded: research_candidates/evidence_abstention/SWE_REBENCH_V2_ANALYSIS_PLAN_V0_2_EXPLORATORY_DRAFT_2026-11-16.md.",
       "No accepted case is registered; at least one fully accepted independent-project case is required before any model inference."
     ],
-    "note": "The workflow succeeded as a no-inference audit: tests and report generation passed, but the reported project readiness is blocked. A valid empty registry and valid schema are not case acceptance or inference authorization."
+    "note": "Tests and report generation succeeded on the refreshed PR head, but readiness remains blocked. A valid schema and empty registry are not case acceptance or inference authorization."
   }
 }
