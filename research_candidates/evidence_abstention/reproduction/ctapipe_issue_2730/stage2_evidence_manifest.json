@@ -151,7 +151,31 @@
         "artifact_sha256": "bc5c7c022cb0b7685415877beea3d678945a5740dcc21b44b1989e224a0f3426",
         "outcome": "earlier direct HDF5 reproducer plus frozen selector; repeated base-fail/fixed-pass"
       }
-    ]
+    ],
+    "latest_verified_repeat": {
+      "workflow_run_id": 44317298277,
+      "job_id": 134846673050,
+      "artifact_id": 14433995574,
+      "artifact_name": "ctapipe-2732-stage2-base-fixed-44317298277-1",
+      "artifact_zip_sha256": "9494954a09a956887a2f1610e948d89eb84a5fb0f776f65285ac4a224e47337e",
+      "artifact_size_bytes": 295208,
+      "archive_members": 137,
+      "zip_crc": "PASS",
+      "artifact_internal_hashes": "136/136 SHA256SUMS entries independently verified; 137 archive members including SHA256SUMS.txt",
+      "exact_frozen_selector": {
+        "buggy_base": "FAIL: defect-specific assertion; skewness is astropy.units.quantity.Quantity rather than float or numpy.floating (1 failed in 0.12s)",
+        "fixed_revision": "PASS: 1 passed in 0.03s"
+      },
+      "direct_hdf5_mixed_type_reproducer": {
+        "buggy_base": "FAIL as expected defect reproduction: config=False branch passes and skips muon writer; config=True executes real DataWriter.__call__ -> _write_muon_telescope_events -> HDF5TableWriter path, then later Python float fails at QuantityColumnTransform.__call__ with AttributeError: 'float' object has no attribute 'to_value' (1 failed, 1 passed in 1.73s). Both containers pass Container.validate() before writing.",
+        "fixed_revision": "PASS: config=False and config=True branches both pass; HDF5 table contains both rows (2 passed in 1.72s)."
+      },
+      "base_worktree_changed_files": [
+        "src/ctapipe/image/muon/tests/test_muon_features.py"
+      ],
+      "pip_check": "No broken requirements found",
+      "no_model_loading_inference_or_training": true
+    }
   },
   "unresolved": {
     "issue_configuration_discrepancy": "The issue body YAML sets DataWriter.write_muon_parameters=False. Exact-base ProcessorTool.should_compute_muon_parameters only enables MuonProcessor if that flag is true; DataWriter.__call__ only invokes _write_muon_telescope_events if the same flag is true. A new test calls the real DataWriter.__call__: false makes zero calls to muon writer; true runs the exact traceback path and reproduces the error on base. Thus the published YAML and reporter traceback cannot represent the same effective configuration unless an override or transcription error occurred. The actual reporter effective configuration is unknown.",
@@ -162,8 +186,8 @@
     "container_validation_comment": "The PR author's comment says Container validation would reject the mixed values. Exact-base Field.validate accepts both because these fields have no unit/type/dtype/ndim constraints; our HDF5 reproduction calls validate() on both. The error occurs in the HDF5 column transform."
   },
   "decision": {
-    "stage2_technical_reproduction": "PASS: exact frozen selector base-fail/fixed-pass and independent real DataWriter.__call__/HDF5 reproducer base-fail/fixed-pass, with an explicit false/true config branch test; latest run 44308927754.",
-    "candidate_disposition": "Conditional hold pending project-lead gold/alternatives/tier approval, explicit acceptance of researcher exposure and prior pipeline-debug classification, documentary license scope acknowledgement, and separate final case acceptance.",
+    "stage2_technical_reproduction": "PASS: latest branch-head repeat run 44317298277/job 134846673050. Exact frozen selector fails on buggy base with the defect-specific Quantity-vs-float assertion and passes on the exact fixed PR head (1/1). The real DataWriter.__call__/HDF5 reproducer checks both write_muon_parameters=False and True: False skips the muon writer; True reproduces the float.to_value failure on base; both branches pass on fixed and write both rows. Downloaded ZIP artifact 14433995574 independently verified: SHA-256 9494954a09a956887a2f1610e948d89eb84a5fb0f776f65285ac4a224e47337e, CRC PASS, 137 members, 136/136 internal checksums passed.",
+    "candidate_disposition": "Conditional hold pending project-lead gold/alternatives/tier approval, explicit acceptance or exclusion decision for full researcher source exposure and prior pipeline-debug exposure, documentary license scope acknowledgement, formal related-defect/one-project independence approval, and separate final case acceptance. The published issue YAML/effective-configuration discrepancy is reproducibly demonstrated but reporter's actual effective configuration is unknown.",
     "stage3": "technical evidence, repository-family screen, nested packet preparation, packet leakage audit, and independent artifact integrity verification complete; human adjudication and final acceptance gate still pending",
     "final_case_acceptance": "not_accepted",
     "model_loading_performed": false,
