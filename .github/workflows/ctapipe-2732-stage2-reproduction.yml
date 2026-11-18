@@ -43,10 +43,13 @@ jobs:
           git -C upstream-ctapipe diff 287e7685e0e963f3fb44d92832ca97ac8c265c40 5007b6ab61887d7555155edb4d1d296603a9735e -- src/ctapipe/image/muon/tests/test_muon_features.py > ctapipe-stage2-evidence/dataset-test.patch
           test -s ctapipe-stage2-evidence/dataset-test.patch
           test "$(cat ctapipe-stage2-evidence/pr-changed-files.txt | grep -c '^src/ctapipe/image/muon/tests/test_muon_features.py$')" -eq 1
-          if grep -v '^src/ctapipe/image/muon/tests/test_muon_features.py$' ctapipe-stage2-evidence/pr-changed-files.txt | grep -q .; then
-            echo "Unexpected changed-file scope: PR includes production or unrelated paths; inspect full diff before proceeding."
-            exit 1
-          fi
+          grep -Fx "docs/changes/2732.bugfix.rst" ctapipe-stage2-evidence/pr-changed-files.txt
+          grep -Fx "src/ctapipe/image/muon/features.py" ctapipe-stage2-evidence/pr-changed-files.txt
+          grep -Fx "src/ctapipe/image/muon/tests/test_muon_features.py" ctapipe-stage2-evidence/pr-changed-files.txt
+          test "$(wc -l < ctapipe-stage2-evidence/pr-changed-files.txt)" -eq 3
+          git -C upstream-ctapipe diff --name-only 287e7685e0e963f3fb44d92832ca97ac8c265c40 5007b6ab61887d7555155edb4d1d296603a9735e -- src/ctapipe/image/muon/tests/test_muon_features.py > ctapipe-stage2-evidence/dataset-test-patch-paths.txt
+          test "$(wc -l < ctapipe-stage2-evidence/dataset-test-patch-paths.txt)" -eq 1
+          grep -Fx "src/ctapipe/image/muon/tests/test_muon_features.py" ctapipe-stage2-evidence/dataset-test-patch-paths.txt
           git -C upstream-ctapipe apply --check "$GITHUB_WORKSPACE/ctapipe-stage2-evidence/dataset-test.patch"
           git -C upstream-ctapipe apply "$GITHUB_WORKSPACE/ctapipe-stage2-evidence/dataset-test.patch"
           git -C upstream-ctapipe status --short > ctapipe-stage2-evidence/base-test-only-worktree.txt
