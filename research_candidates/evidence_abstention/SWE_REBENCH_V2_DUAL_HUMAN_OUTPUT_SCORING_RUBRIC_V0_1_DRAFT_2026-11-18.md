@@ -7,7 +7,7 @@
 ## 1. Rating unit and separation of constructs
 
 The rating unit is one raw response in one case × evidence-tier × policy cell. Two human raters independently score the same response:
-- **Rater A:** student project lead (Mahmut).
+- **Rater A:** student project lead.
 - **Rater B:** second human evaluator (public repository pseudonym; private working name is not stored here).
 
 Each rater assigns one evidence-support category, one assertion/abstention status, and separate technical-validity/compliance flags. Hidden-gold correctness is scored separately and only after evidence-support ratings are locked.
