@@ -195,11 +195,11 @@
       "no_model_loading_inference_or_training": true
     },
     "latest_row_discovery": {
-      "workflow_run_id": 44323129579,
-      "job_id": 134867140641,
-      "artifact_id": 14436116424,
+      "workflow_run_id": 44324115686,
+      "job_id": 134870646636,
+      "artifact_id": 14436376289,
       "artifact_name": "ctapipe-2732-frozen-row-selector-discovery",
-      "artifact_zip_sha256": "12e70e450bc7270a8f0e5abd11e142f932fe166e653e324a3c1618973d02fada",
+      "artifact_zip_sha256": "23625e47e655e34b37482cacc11d58e79c040b57b901d8db00aec5a809de8005",
       "archive_members": 4,
       "zip_crc": "PASS",
       "artifact_internal_hashes": "3/3 SHA256SUMS entries independently verified",
@@ -208,7 +208,7 @@
       "selector_count": 1,
       "selector": "src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution",
       "full_row_sha256": "e7d40ebfdfa47f6d2b92940d83d4e1c74afea6a096e9dca0d682ebb0854e7006",
-      "note": "Discovery artifact retains selector-only evidence; full row payload and five-row family audit remain in the separate authenticated row-audit artifact."
+      "note": "Latest branch-head selector-only discovery artifact independently downloaded and verified. Full row payload and five-row family audit remain in the separate authenticated row-audit artifact."
     }
   },
   "unresolved": {
@@ -222,7 +222,7 @@
   "decision": {
     "stage2_technical_reproduction": "PASS: latest branch-head repeat 44323129719/job 134867141719, artifact 14435552722. Exact frozen selector: defect-specific FAIL on buggy base and PASS on exact fixed revision. Direct DataWriter.__call__/HDF5 reproducer: false flag skips muon writer; true flag reproduces float.to_value AttributeError on buggy base; fixed revision passes both branches and writes both rows. Artifact independently downloaded and verified: ZIP SHA-256 ce533dcf5f62d22c4dfb89041c20fe80347fd4b3e542bbe94a6efd1297f9b45b; 137 members; CRC PASS; 136/136 inner checksums passed. pip check clean. Latest selector-only discovery run 44323129579/artifact 14436116424 independently verified: ZIP SHA-256 12e70e450bc7270a8f0e5abd11e142f932fe166e653e324a3c1618973d02fada; 4 members; 3/3 inner checksums passed. No model loading, inference, fine-tuning or training.",
     "candidate_disposition": "Conditional hold pending project-lead gold/alternatives/tier approval, explicit acceptance or exclusion decision for full researcher source exposure and prior pipeline-debug exposure, documentary license scope acknowledgement, formal related-defect/one-project independence approval, and separate final case acceptance. The published issue YAML/effective-configuration discrepancy is reproducibly demonstrated but reporter's actual effective configuration is unknown.",
-    "stage3": "technical evidence, repository-family screen, nested packet preparation, packet leakage audit, and independent artifact integrity verification complete; human adjudication and final acceptance gate still pending",
+    "stage3": "technical evidence, repository-family screen, nested packet preparation, strengthened current-gold/alternative/caveat leakage audit, and independent artifact integrity verification complete; human adjudication and final acceptance gate still pending",
     "final_case_acceptance": "not_accepted",
     "model_loading_performed": false,
     "model_inference_performed": false,
@@ -268,16 +268,16 @@
   },
   "evidence_tier_packet_audit": {
     "status": "PASS_INDEPENDENTLY_VERIFIED",
-    "workflow_run_id": 44316015132,
-    "job_id": 134842193908,
-    "artifact_id": 14432113942,
-    "artifact_name": "ctapipe-2730-evidence-tier-packet-audit-44316015132-1",
-    "artifact_zip_sha256": "fd7fc7ed0cf7953f51efae7ef174aa6593b4860806bafdf9e03ba8fa88a25a38",
+    "workflow_run_id": 44324230929,
+    "job_id": 134871054000,
+    "artifact_id": 14435932782,
+    "artifact_name": "ctapipe-2730-evidence-tier-packet-audit-44324230929-1",
+    "artifact_zip_sha256": "a7d804576ab96cf8db0c8206fdaca1dee50c68615d35e7d9a6e5c81287051ac8",
     "artifact_members": 5,
     "artifact_crc": "PASS",
     "sha256sum_entries_verified": "4/4",
     "checksum_self_reference": "excluded; final checksum manifest clean",
-    "packet_set_manifest_sha256": "123bcba10ed241c466299297dbf6582d45a92e8e75ad5b3e881db63d5fd14998",
+    "packet_set_manifest_sha256": "3031accc14998e4ed5dc270e7af38309cbe537e102ffd84b4557d62f8aa13070",
     "nested_inheritance": {
       "e2_starts_with_e3_exact_bytes": true,
       "e1_starts_with_e2_exact_bytes": true
@@ -292,12 +292,12 @@
         "bytes": 6979
       },
       "E1": {
-        "sha256": "861a427fa215105d5f0e86db2fbc2d76c5c23f44e93da6481504264b49597173",
-        "bytes": 11599
+        "sha256": "d37fc5dfca0a1607c9db78c0da909ba900966243cc4ec81bf8254cea769b7139",
+        "bytes": 13584
       }
     },
-    "leakage_audit": "PASS: hidden instance, issue/PR IDs, commit hashes, gold labels, tier labels absent from model-facing packet contents; fixed source/PR patch/test outcomes are not in the packets.",
-    "semantics": "Automated audit confirms packet byte nesting and expected evidence-signal placement. It does not substitute for human approval of semantic sufficiency, gold mechanisms, or the tier design.",
+    "leakage_audit": "PASS: hidden instance, issue/PR IDs, commit hashes, current gold ID, both alternative-contract IDs, configuration-provenance caveat, and tier labels absent from model-facing packet contents; fixed source/PR patch/test outcomes are not in the packets.",
+    "semantics": "Automated audit confirms packet byte nesting, current gold/alternative/caveat label exclusion, and expected evidence-signal placement. It does not substitute for human approval of semantic sufficiency, gold mechanisms, or the tier design.",
     "model_load_performed": false,
     "model_inference_performed": false,
     "model_training_performed": false,
