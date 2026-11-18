@@ -14,7 +14,7 @@ The exact buggy-base `MuonParametersContainer` declares:
 - `skewness = Field(nan, ...)`
 - `excess_kurtosis = Field(nan, ...)`
 
-Neither field declares a unit. The exact-base `Field.validate` only enforces a Quantity conversion when `self.unit is not None`. Thus the container schema treats these fields as unitless numeric values. The docstring on `radial_light_distribution` nevertheless describes both outputs as `astropy.units.Quantity`; this is stale documentation relative to the container fields and the fixed implementation.
+Neither field declares a unit, and neither declares `type`, `dtype`, or `ndim`. This is an untyped field with a plain-float default, not a strict runtime type contract. The exact-base `Field.validate` only requires/converts a Quantity when `self.unit is not None`; because these fields have no unit or other type/dtype/dimension constraint, it accepts both a Quantity and a plain float. The docstring on `radial_light_distribution` nevertheless describes both outputs as `astropy.units.Quantity`; the PR's new test and implementation make the intended output change to plain floats, but the docstring was not updated.
 
 The exact-base HDF5 writer path is:
 
@@ -112,17 +112,24 @@ This provides direct mechanism-level evidence beyond the frozen selector's type 
 - Installed distributions captured: 51
 - Dependency license metadata: 51 distributions captured; all had at least one of a license field, license classifier, or detected license file. 50 had detected license files; tqdm had a license field and classifiers but no license file among the captured metadata paths. This is an inventory, not human legal clearance.
 
-Stage 2 run:
-- Workflow run: `44299388651`
-- Job: `134784814840`
-- Artifact ID: `14424942732`
-- Artifact name: `ctapipe-2732-stage2-base-fixed-44299388651-1`
-- Artifact ZIP SHA-256: `f6ddfd91afa97b3720c10c0f7816f409a7c354f85883fa61b837bfc823621ea`
-- All 21 evidence-file hashes in `SHA256SUMS.txt` were independently checked successfully.
+Primary Stage 2 repeat run:
+- Workflow run: `44300812600`
+- Job: `134789741250`
+- Artifact ID: `14424704542`
+- Artifact name: `ctapipe-2732-stage2-base-fixed-44300812600-1`
+- Artifact ZIP SHA-256: `bc5c7c022cb0b7685415877beea3d678945a5740dcc21b44b1989e224a0f3426`
+- All 22 evidence-file hashes in `SHA256SUMS.txt` were independently checked successfully.
+- The artifact additionally includes SHA-256 hashes for the workflow, direct HDF5 test file, exact selector file, frozen row manifest, and dependency input lock.
+- The HDF5 reproducer now explicitly calls `validate()` on both the calculated Quantity-valued and default-float containers; both validate successfully before the base writer failure.
 - Environment input SHA-256: `1b6e82f8db8dcad6a1720666f19c8868ae5d6ef6e13cae2228d9c0e7e7a62edb`
 - Dependency-license metadata SHA-256: `f9151d1e3824a96da76dff15401e4e112a904fd4f25a52c2865903e1e1d3a868`
 
-A standalone machine-readable manifest is stored at `research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/stage2_evidence_manifest.json`.
+An earlier complete Stage 2 execution independently gave the same base-fail/fixed-pass outcomes:
+- Workflow run: `44299388651`, job `134784814840`
+- Artifact ID: `14424942732`
+- Artifact ZIP SHA-256: `f6ddfd91afa97b3720c10c0f7816f409a7c354f85883fa61b837bfc823621ea`
+
+A machine-readable combined evidence manifest is stored at `research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/stage2_evidence_manifest.json`.
 
 ## 5. Remaining Stage 3 and provenance gates
 
@@ -138,7 +145,7 @@ No model was loaded; no inference or fine-tuning was performed.
 ## 6. Upstream discussion and test-coverage limitations
 
 - The reporter's issue comment provides the full exception traceback.
-- The PR author says some skewness/excess-kurtosis values had a dimensionless unit while others did not, although the container fields declared no units; the author states container validation would reject the inconsistency but was not normally run.
+- The PR author says some skewness/excess-kurtosis values had a dimensionless unit while others did not, although the container fields declared no units; the author states container validation would reject the inconsistency but was not normally run. **That validation claim conflicts with the exact-base implementation:** `Field.validate` has no unit, type, dtype, or ndim constraint for these fields, and `Container.validate` delegates to that method. The revised direct HDF5 test explicitly calls `validate()` on both a Quantity-valued calculated container and a default-float container; both pass on the buggy base. The error then occurs later, when HDF5TableWriter applies the transform registered from the first row's Quantity to the second row's float.
 - A reviewer questioned attaching a dimensionless unit only to remove it later. The author referred to new type assertions.
 - The reporter later confirmed that the patched branch created the HDF5 output file; invalid sqrt/log warnings were treated as unrelated.
 - A reviewer noted that an integration test writing muon parameters through DataWriter could have caught the defect. The PR author considered type assertions adequate. The missing end-to-end test remains a coverage limitation; the research-side direct HDF5 reproducer now addresses the mechanism for our Stage 2 evaluation.
