@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-18T14:35:00Z",
+  "generated_at_utc": "2026-11-18T14:50:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -586,7 +586,7 @@
       "stage2_status": "passed_exact_frozen_selector_and_real_DataWriter_call_path_base_fail_fixed_pass",
       "stage2_workflow_job_id": 134870646827,
       "stage2_evidence_note": "Authoritative latest run 44308927754/job 134817682862. Exact frozen selector failed on buggy base with defect-specific Quantity-vs-float assertion and passed on exact fixed PR head (1/1). Direct test executes exact DataWriter.__call__ with flag false and true, keeps the real _write_muon_telescope_events and HDF5TableWriter: false branch skips muon writer (PASS); true branch writes a calculated Quantity-valued event then a default float event, reproducing AttributeError 'float' object has no attribute 'to_value' at QuantityColumnTransform on base. Fixed revision: both flag branches pass (2/2) and two HDF5 rows are written. Both containers pass Container.validate() on base before the writer error. CPython 3.11.9; pip check clean. Artifact SHA-256 55b08b31634afcdc052c2f8ef973db35a1fea49c342e9e5974adf386729bbd4f; ZIP contains 137 members and 136/136 SHA256SUMS entries pass. 51 installed distributions; 106/106 detected license/NOTICE file entries captured. Three exact PR changed files are hashed and documented as repository BSD-3-Clause; root LICENSE and pyproject are unchanged base-to-fix. Student project-lead license review pending. Issue YAML says write_muon_parameters=False, which the new direct DataWriter.__call__ test proves skips muon writer; reporter traceback proves the writer executed. Thus published YAML and traceback cannot be the same effective unoverridden config; actual reporter config unresolved. Full researcher source exposure; gold/E1-E2-E3 adjudication and related issue family review pending. Latest repeat run 44311798828/job 134827539863/artifact 14430672248 SHA-256 bc2fff5cd42ad137b18a45a529732f14e0d4d265c651488cbc89994ab3c580e0: exact frozen selector fails base with type assertion and passes fixed; DataWriter.__call__ false branch skips muon writer; true branch reproduces base float.to_value exception and fixed branch writes 2 rows; fixed results 2 HDF5 tests passed. 136/136 checksum entries verified. ",
-      "stage3_status": "technical_evidence_family_review_and_nested_packet_integrity_passed_human_adjudication_pending",
+      "stage3_status": "technical evidence, source-family review, nested packet structural audit and strengthened leakage checks pass; dual-human output scoring amendment drafted; Rater_B consent/exposure/calibration and project-lead CTAPIpe exposure/gold/tier/license decisions pending; final case not accepted; no inference",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44324115597,
@@ -658,7 +658,24 @@
       "stage2_row_discovery_artifact_sha256": "23625e47e655e34b37482cacc11d58e79c040b57b901d8db00aec5a809de8005",
       "stage2_row_discovery_artifact_internal_hashes": "3/3 passed; ZIP CRC PASS; 4 members",
       "stage2_row_discovery_note": "Latest selector-only discovery run 44324115686/job 134870646636/artifact 14436376289 independently downloaded and verified. Frozen instance cta-observatory__ctapipe-2732; selected-columns row SHA-256 9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d; one FAIL_TO_PASS selector: src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution. Full 16-column row SHA-256 e7d40ebfdfa47f6d2b92940d83d4e1c74afea6a096e9dca0d682ebb0854e7006 remains authenticated in the separate five-row family audit.",
-      "generated_at_utc": "2026-11-18T14:32:00Z"
+      "generated_at_utc": "2026-11-18T14:32:00Z",
+      "stage3_rater_b_status": "identified_pending_explicit_consent_case_specific_independence_screen_and_calibration",
+      "stage3_rater_b_role": "independent_blinded_model_output_evidence_support_rater_only",
+      "stage3_rater_b_public_pseudonym": "Rater_B",
+      "stage3_rater_b_amendment_path": "research_candidates/evidence_abstention/HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md",
+      "stage3_rater_b_scoring_rubric_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md",
+      "stage3_rater_b_consent_template_path": "research_candidates/evidence_abstention/RATER_B_CONSENT_AND_EXPOSURE_SCREEN_TEMPLATE_V0_1_2026-11-18.md",
+      "stage3_rater_b_scores_exist": false,
+      "stage3_rater_b_agreement_statistics_exist": false,
+      "stage3_rater_b_note": "Second human output rater identified as Rater_B; consent and case-specific source/gold/patch/prompt/output exposure screen pending; calibration not complete. Rater B is not a gold/tier adjudicator or external auditor. The project lead remains final decision maker.",
+      "stage3_project_lead_pipeline_debug_exposure": {
+        "proposed_classification": "some",
+        "status": "pending_project_lead_decision",
+        "proposal_path": "research_candidates/evidence_abstention/CTAPIPE_2732_EXPOSURE_DECISION_PROPOSAL_2026-11-18.md",
+        "basis": "The candidate-specific reproduction/test harness was refined against CTAPIpe #2732; active v0.2 rules exclude candidates used for earlier pipeline debugging, test-oracle troubleshooting or prompt calibration.",
+        "consequence_if_confirmed": "exclude_ctapipe_2732_from_model_evaluation_sample_but_retain_technical_artifacts_as_engineering_pilot_record",
+        "second_human_rater_does_not_waive_exposure": true
+      }
     },
     {
       "cohort_rank": 32,
