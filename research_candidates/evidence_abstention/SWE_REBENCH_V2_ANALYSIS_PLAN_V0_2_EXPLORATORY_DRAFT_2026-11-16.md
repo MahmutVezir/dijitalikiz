@@ -42,13 +42,18 @@ For each case, preserve:
 - evidence-to-mechanism elimination matrix;
 - evidence IDs and source hashes;
 - E1/E2/E3 packet membership and nested-set validation;
-- single-researcher tier decision and rationale;
+- project-lead tier decision and rationale;
+- two independent human model-output ratings per response, with both originals preserved;
 - separately stored ChatGPT AI critique and any disagreement.
 
-No Cohen's kappa, human-human agreement, or independent panel reliability is calculated. AI critique is not a human rater. Report this limitation explicitly.
+For output ratings, report exact agreement, the six-category confusion matrix, six-category Cohen's kappa and E3 binary agreement/kappa where estimable. Confidence intervals, if reported, must resample independent cases (not individual responses) to preserve within-case clustering. These statistics are descriptive/exploratory and not an acceptance threshold. No second human rating is claimed for gold or E1/E2/E3 tier construction; ChatGPT is not a human rater.
 
 ## 6. Missingness, invalidity, and deviations
 No retry, JSON repair, selective rerun, or silent deletion. Preserve raw outputs. Deviations are logged with timestamp, reason, affected case/cell, and whether the analysis plan is affected. If a model/runtime failure occurs, stop the run; do not selectively rerun only failed conditions without a predeclared whole-batch recovery rule.
 
 ## 7. Interpretation
-This is an exploratory single-model study with a small case sample and single-researcher semantic review. Results apply only to the tested model revision, dataset slice, packet construction, prompt contrast, and execution settings. Avoid universal claims and causal generalization beyond the design.
+This is an exploratory single-model study with a small case sample, dual-human scoring of model responses, and single-project-lead semantic review of technical gold and E1/E2/E3 tiers. Results apply only to the tested model revision, dataset slice, packet construction, prompt contrast, reviewer procedure and execution settings. Avoid universal claims and causal generalization beyond the design.
+
+## 8. Human evaluator amendment
+
+Rater B is identified but written agreement, case-specific exposure screening and calibration are pending. No output has been scored. Before scoring, both raters independently rate every included raw response under randomized response IDs; preserve original scores and adjudicate only after lock. Rater B is restricted to output scoring and will not inspect source, gold or hidden tier labels before evidence-support scoring is locked. See `HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md` and `SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md`.
