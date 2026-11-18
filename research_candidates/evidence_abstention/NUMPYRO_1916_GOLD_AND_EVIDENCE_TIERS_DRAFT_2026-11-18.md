@@ -2,7 +2,7 @@
 
 **Date:** 18 November 2026  
 **Candidate:** `pyro-ppl/numpyro`, issue #1916 / PR #1918  
-**Status:** Draft proposal only. Not project-lead adjudication, not an accepted case, and not authorization for model inference.
+**Status:** Design split approved in principle by the project lead on 18 November 2026 (the project lead reports joint approval by himself and Hasan), conditional on preserving the protocol's scientific safeguards. This is not a semantic E1/E2/E3 adjudication, not an accepted case, and not authorization for model inference.
 
 ## 1. Evidence basis and immutable identifiers
 
@@ -118,3 +118,16 @@ The student project lead has already reviewed the public issue, PR, patch and re
 - Independence/exposure and license-scope gates: **open**.
 - Final case acceptance: **not accepted**.
 - Model loading, inference or fine-tuning: **not authorized**.
+
+
+## 8. Project-lead decision on the proposed tier split — 18 November 2026
+
+The project lead reports that he and Hasan approve the proposed E3/E2/E1 progression in principle, provided it does not weaken the scientific protocol:
+
+- E3 must leave all predeclared plausible mechanisms alive.
+- E2 must eliminate at least one plausible alternative while leaving at least two mechanisms alive.
+- E1 must leave exactly one mechanism alive, and that mechanism must match the hidden technical gold after blinded Panel B decisions are locked.
+
+This approval accepts the **design logic only**. It does not certify that the current NumPyro evidence items actually produce those semantic outcomes. In particular, the proposed source excerpts in E1 must be tested against the full alternative-mechanism set; if the sampler-contract alternative or another defensible explanation remains, E1 is not sufficient and the case must be revised or excluded from the three-level design. The project's operational rule requires independent Panel B review, retained initial ratings, and adjudication before level assignment. Structural JSON/hash validation cannot replace that review.
+
+The upstream fix, fixed-run logs, gold cause and E-level labels remain hidden from model-facing packets. No model inference is authorized by this decision.
