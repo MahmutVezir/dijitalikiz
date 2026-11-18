@@ -30,16 +30,27 @@ PR #1918 changes the warmup-state handoff for ensemble kernels: when `_warmup_st
 
 The dataset row was authenticated in the run and stored in the artifact. The two selectors are test variants within one upstream project; they are not two independent cases.
 
+## 2A. Exact source-code cross-check
+
+The upstream files were fetched independently at the pinned revisions and compared around the failing path:
+
+- Buggy-base `numpyro/infer/mcmc.py`, Git blob SHA-1 `dd3ec0c3a782c1e1530b138153d821392ee5bebd`: lines 654–660 split a scalar key into per-chain keys, then pass the resulting array unchanged into `_warmup_state`.
+- Buggy-base `numpyro/infer/ensemble.py`, Git blob SHA-1 `64a2870ade0565cb6547cc92d97c11502e769bfd`: lines 190–193 unpack the state and call `random.split(rng_key)`.
+- Fixed `numpyro/infer/mcmc.py`, Git blob SHA-1 `7dd596bca382c4f6517e93458c5806c690cddb59`: lines 661–664 use `rng_key[0]` only for ensemble kernels and preserve the full key array for non-ensemble kernels.
+- Fixed regression test file, Git blob SHA-1 `bda377b993ef198960eddc0b27b9e217978d20a3`: lines 101–115 add the AIES/ESS vectorized warmup-then-run test.
+
+The source-level difference matches the observed runtime trace. These anchors support the proposed mechanism but do not replace Stage 3 human adjudication.
+
 ## 3. Latest exact Stage 2 reproduction — 18 November 2026
 
-Latest branch-head workflow: https://github.com/MahmutVezir/dijitalikiz/actions/runs/44332892793
+Latest branch-head workflow: https://github.com/MahmutVezir/dijitalikiz/actions/runs/44337982370
 
-- Workflow run: `44332892793`
-- Job: `134901923864` (`numpyro-issue-1916-reproduction`)
+- Workflow run: `44337982370`
+- Job: `134919948613` (`numpyro-issue-1916-reproduction`)
 - Job conclusion: **success**
-- Artifact ID: `14438938964`
+- Artifact ID: `14443210820`
 - Artifact: `numpyro-issue-1916-reproduction`
-- Artifact ZIP SHA-256: `c122008c972df7e8ecf77b67a9fd050d4b54b883aea9de6dfc4b41e3dd2b67e4`
+- Artifact ZIP SHA-256: `f39d21e0d3d2c4719b16d8639ca84d8349ebba42c99a7c5276ed81e916a720d5`
 - Independent local verification: outer SHA-256 matched the GitHub artifact digest; ZIP CRC passed; all 15 payload-file hashes in `SHA256SUMS.txt` passed.
 
 Observed selector results, using the same pinned CPU environment and the same two test selectors:
@@ -66,7 +77,8 @@ This closes the previous review's statement that the corrected workflow had not 
 - The exact-base NumPyro source declares Apache License 2.0; both changed source/test files carry SPDX Apache-2.0 headers.
 - The reproduction uses a CPU-only pinned environment. No GPU, external service or downloaded model is required.
 - The lock explicitly pins 17 runtime/test packages and their transitive requirements. The workflow recorded license text/classifier metadata for all 17 before executing upstream source tests; the metadata-presence gate passed.
-- Metadata presence is not legal clearance. Some distributions expose multiple classifiers or broad license text, and the inventory does not replace review of bundled components, notices, redistribution scope or competition-use conditions.
+- The captured NumPy 1.26.4 metadata identifies its binary distribution's bundled OpenBLAS (BSD-3-Clause), LAPACK (BSD-3-Clause-Attribution) and GCC runtime library/libgfortran (GPL-3.0-with-GCC-exception). This merits a scope/notice check; it does not by itself establish a license conflict or determine what must be redistributed in the final project artifact.
+- Metadata presence is not legal clearance. The inventory does not replace review of bundled components, notices, redistribution scope or competition-use conditions.
 - Project-lead acknowledgement of the narrow dependency/license scope remains open. This is not legal advice or blanket approval for optional extras or redistribution.
 
 ## 5. Proposed technical mechanism and alternatives
