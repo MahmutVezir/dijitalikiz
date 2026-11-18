@@ -1,96 +1,158 @@
-# cta-observatory/ctapipe issue #2730 — updated candidate review
+# cta-observatory/ctapipe issue #2730 — candidate review and Stage 2 result
 
 **Cohort rank:** 31 of 96 primary candidates  
-**Dataset instance:** cta-observatory__ctapipe-2732 (row and selectors not yet authenticated)  
+**Dataset instance:** `cta-observatory__ctapipe-2732`  
 **Issue:** https://github.com/cta-observatory/ctapipe/issues/2730  
 **Fix PR:** https://github.com/cta-observatory/ctapipe/pull/2732  
-**Review status:** source-level root-cause mechanism corroborated by the reporter's traceback and exact-base writer code. Candidate remains on hold pending dataset-row authentication, the issue-config discrepancy, and pinned base/fixed reproduction. Not an accepted case.
+**Technical Stage 2:** PASS — exact frozen selector and independent HDF5 mixed-type reproducer both fail on the exact buggy base and pass on the exact fixed PR head.  
+**Candidate disposition:** Conditional hold pending issue-configuration/provenance reconciliation and Stage 3 review. Not a final accepted case.
 
-## 1. Defect contract and source-level mechanism
+## 1. Defect contract and source-level failure mechanism
 
-The relevant field contract is defined by the exact buggy-base source:
+The exact buggy-base `MuonParametersContainer` declares:
 
-- `MuonParametersContainer.skewness = Field(nan, ...)`
-- `MuonParametersContainer.excess_kurtosis = Field(nan, ...)`
+- `skewness = Field(nan, ...)`
+- `excess_kurtosis = Field(nan, ...)`
 
-Neither field declares a unit. The `Field` implementation documents `unit=None` as no unit conversion; its validation only requires a Quantity when `self.unit is not None`. Thus the container schema expects ordinary unitless numeric values for these two fields. The function docstring in `radial_light_distribution` still describes both as `astropy.units.Quantity`; that docstring is stale relative to the container schema and is not sufficient evidence that Quantity is the intended serialized contract.
+Neither field declares a unit. The exact-base `Field.validate` only enforces a Quantity conversion when `self.unit is not None`. Thus the container schema treats these fields as unitless numeric values. The docstring on `radial_light_distribution` nevertheless describes both outputs as `astropy.units.Quantity`; this is stale documentation relative to the container fields and the fixed implementation.
 
-The exact-base HDF5 write path explains the exception:
+The exact-base HDF5 writer path is:
 
-1. `HDF5TableWriter._add_column_to_schema` detects a Quantity value and installs a `QuantityColumnTransform` for that column.
-2. `QuantityColumnTransform.__call__` returns `value.to_value(self.unit)`.
-3. `HDF5TableWriter._append_row` applies the previously registered column transform to each later row's value.
-4. If a later row supplies a Python float for a column whose transform was registered from a prior Quantity value, the transform calls `float.to_value(...)` and raises the observed AttributeError.
+1. `HDF5TableWriter._add_column_to_schema` detects a Quantity in the first row and creates a `QuantityColumnTransform` using the value's unit when the field has no unit.
+2. `QuantityColumnTransform.__call__` evaluates `value.to_value(self.unit)`.
+3. `HDF5TableWriter._append_row` applies the already-registered transform to later rows in that same column.
+4. When a later row has an ordinary Python float, the transform calls `float.to_value(...)`, producing the observed `AttributeError`.
 
-This mechanism is not merely inferred from the issue title: the reporter's issue comment includes the full traceback. It identifies `DataWriter.__call__` -> `_write_muon_telescope_events` -> `HDF5TableWriter.write` -> `_append_row` -> `_apply_col_transform` -> `QuantityColumnTransform.__call__` -> `value.to_value(self.unit)`, ending in `AttributeError: 'float' object has no attribute 'to_value'`. The source and traceback therefore corroborate the mixed-type, per-column-transform failure mechanism.
+This is directly supported by the reporter's full issue traceback: `DataWriter.__call__` -> `_write_muon_telescope_events` -> `HDF5TableWriter.write` -> `_append_row` -> `_apply_col_transform` -> `QuantityColumnTransform.__call__` -> `value.to_value(self.unit)`, ending in `AttributeError: 'float' object has no attribute 'to_value'`.
 
-PR #2732 normalizes skewness and excess kurtosis to plain numeric values in both the zero-image and nonzero-image branches. Its regression test asserts float/np.floating outputs for the nonzero uniform-image case. The zero-image test checks NaN but does not assert the output types. The docstring remains unchanged in the fixed source, so a documentation mismatch remains, but the container schema plus HDF5 serialization contract support plain unitless numbers as the intended storage type.
+The pipeline source also contains two relevant output paths: valid muon parameters are calculated through `radial_light_distribution`, while invalid-ring processing can return the default `INVALID_PARAMETERS = MuonParametersContainer()`. The direct reproduction below deliberately writes a calculated (base: Quantity-valued) `MuonParametersContainer` followed by a default container (plain float defaults), reproducing the column-transform type mismatch.
 
-## 2. Important issue reproduction discrepancy
+## 2. Important issue reproduction discrepancy — still open
 
-The issue body shows this configuration:
+The frozen issue problem statement includes this YAML:
 
 ```yaml
 DataWriter:
   write_muon_parameters: False
 ```
 
-However, exact-base `DataWriter.__call__` only invokes `_write_muon_telescope_events(event)` inside `if self.write_muon_parameters:`. The reporter's traceback explicitly shows that this method was invoked. Therefore the pasted configuration, if applied literally and without later override, cannot produce the reported muon-parameter write path.
+Yet exact-base `DataWriter.__call__` calls `_write_muon_telescope_events(event)` only under `if self.write_muon_parameters:`, and the reporter traceback proves that the muon writer ran.
 
-This is an unresolved provenance/reproduction discrepancy. Possibilities include a transcription error in the issue's YAML, an effective configuration override, or a different run configuration. None may be assumed. Before claiming an end-to-end reproduction of issue #2730, the effective value of `write_muon_parameters` must be established. This discrepancy does not invalidate the traceback's evidence for the HDF5 mixed-type transform failure, but it prevents us from treating the published YAML as a self-sufficient reproducer.
+Therefore the published YAML, if literally used as the effective configuration without an override, does not explain the observed call path. A transcription error, a different effective configuration, or an override are possible, but none has been established. This discrepancy does not undo the independently reproduced HDF5 mechanism, but it means that the issue YAML is not a self-sufficient reproducer and the original run's effective configuration remains a provenance question.
 
-## 3. Pinned source identity
+## 3. Pinned source and frozen dataset identity
 
-- Repository: cta-observatory/ctapipe
+- Repository: `cta-observatory/ctapipe`
 - Buggy base: `287e7685e0e963f3fb44d92832ca97ac8c265c40`
 - Fixed PR head: `5007b6ab61887d7555155edb4d1d296603a9735e`
 - Merge commit: `ba4546f2027e2f820982c4e40730097b7e16434c`
 - Issue #2730 created: `2025-04-02T15:59:14Z`
-- PR #2732 created: `2025-04-02T17:48:48Z`
+- PR/dataset row created: `2025-04-02T17:48:48Z`
 - Exact-base root LICENSE Git blob: `7d85dda24fa481e24c4b33dd98dbc13245ee1fd2`
 - Exact-base pyproject.toml Git blob: `9f4bbee5eb6619a36bf327d7f34157a2c2ee0bd5`
-- Exact-base containers.py Git blob: `89b33ac0c25516ca57fa23254808e276ac5944d2`
-- Exact-base core/container.py Git blob: `70ce1cc66ea1442c5b228bd3dd619ea89ecb0b3c`
-- Exact-base hdf5tableio.py Git blob: `df7514632f59da73a609179fd916ff316620e77a`
-- Exact-base tableio.py Git blob: `ee059630af80dc746eae5ecbfbaa9727bbfe768a`
-- Exact-base datawriter.py Git blob: `dbd5b36b1528d850537885b956dfc4a1f24be5e4`
-- Exact-base features.py Git blob: `8d547bf52c52dee18a3fa82dd47395a03bded282`
-- Fixed features.py Git blob: `f18f1c3f16b41a5e7b1076512296ca8a4efa1c2f`
-- Fixed test_muon_features.py Git blob: `b9f44ed8d8254ce3f55c6df79471d071f6de7540`
-- Exact-base project license declaration: BSD-3-Clause (documentary screen only; not legal advice or complete dependency clearance).
+- Exact-base containers.py blob: `89b33ac0c25516ca57fa23254808e276ac5944d2`
+- Exact-base core/container.py blob: `70ce1cc66ea1442c5b228bd3dd619ea89ecb0b3c`
+- Exact-base hdf5tableio.py blob: `df7514632f59da73a609179fd916ff316620e77a`
+- Exact-base tableio.py blob: `ee059630af80dc746eae5ecbfbaa9727bbfe768a`
+- Exact-base datawriter.py blob: `dbd5b36b1528d850537885b956dfc4a1f24be5e4`
+- Exact-base features.py blob: `8d547bf52c52dee18a3fa82dd47395a03bded282`
+- Fixed features.py blob: `f18f1c3f16b41a5e7b1076512296ca8a4efa1c2f`
+- Fixed test_muon_features.py blob: `b9f44ed8d8254ce3f55c6df79471d071f6de7540`
+- Exact-base project license declaration: BSD-3-Clause (documentary root-source screen, not legal advice or blanket dependency clearance).
 
-## 4. Upstream discussion evidence
+Frozen dataset:
+- Dataset: `PrimeIntellect/SWE-rebench-V2-Filtered-Verified`
+- Revision: `fb9aa226b2ce37c708ea7732e7b980abacdadb67`
+- Parquet SHA-256: `7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9`
+- Instance ID: `cta-observatory__ctapipe-2732`
+- Row SHA-256 (canonical JSON): `9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d`
+- Frozen `FAIL_TO_PASS` count: **1**
+- Exact unchanged selector: `src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution`
 
-- The reporter's issue comment supplies the full exception traceback described above.
-- The PR author states that the container had inconsistent values: some dimensionless quantities and some plain values, despite the container fields declaring no units; container validation would reject the inconsistent values, but is not normally run.
-- A reviewer questioned why a dimensionless unit was attached and then removed. The author pointed to type assertions added in tests.
-- The reporter later said the patched branch created the HDF5 output file; unrelated invalid sqrt/log RuntimeWarnings were raised separately.
-- A reviewer noted that an end-to-end DataWriter integration test could have caught the issue. The PR author considered type assertions sufficient. This remains a test-coverage limitation worth recording.
+The row was extracted from the exact pinned Parquet file in a successful Python 3.11.9 audit run. Canonical row JSON and selector text were saved in the artifact, the artifact digest matched GitHub's reported digest, all four internal file hashes passed, and the row SHA-256 was independently recalculated from the retained canonical JSON.
+- Row audit run: `44298746628`
+- Row audit artifact ID: `14424887790`
+- Row audit ZIP SHA-256: `4653884c0f6f127c0d8150b3011924bc1be0c515800a5df762ac839be67c151c`
 
-## 5. Remaining gates — do not skip
+## 4. Technical Stage 2 — exact base-fail / fixed-pass
 
-1. Authenticate the exact SWE-rebench frozen Parquet row for `cta-observatory__ctapipe-2732`, canonical row SHA-256, and every original `FAIL_TO_PASS` selector. No selector may be guessed, rewritten, or silently removed.
-2. Resolve the issue YAML contradiction: establish why the published configuration says `write_muon_parameters: False` while the traceback proves the muon writer ran. If it cannot be resolved, document the issue report as internally inconsistent and limit the claim to the independently corroborated traceback/source mechanism.
-3. Prepare an exact-base test-only patch and pinned minimal environment. Run the unchanged dataset selectors on buggy base and exact fixed revision. A valid Stage 2 result requires defect-specific test failures on base and passes on fixed; collection/setup failures do not count.
-4. Ensure the test reproduces the mixed per-column type sequence that triggers the transform (Quantity first, float later), not merely the return type assertion. Prefer a focused HDF5TableWriter regression test or a source-faithful minimal reproducer.
-5. Complete direct/transitive dependency and fixture license/provenance review.
-6. Record raw logs, environment lock, source and row hashes, artifact manifest, and independent project/exposure review.
-7. Only after Stage 2, perform human gold-mechanism and nested E1/E2/E3 adjudication. No model inference or training is authorized.
+A dedicated no-inference workflow used CPython 3.11.9 and pinned direct/test dependencies. The exact upstream PR changed three files:
 
-## 6. Frozen-row audit workflow
+1. `docs/changes/2732.bugfix.rst`
+2. `src/ctapipe/image/muon/features.py`
+3. `src/ctapipe/image/muon/tests/test_muon_features.py`
 
-A dedicated no-inference GitHub Actions workflow was added at `.github/workflows/ctapipe-dataset-row-audit.yml` in research-repository commit `d59ee09fa8908511896b9e112aa677efee0d785d`. It downloads the already-frozen Parquet revision, verifies its known file SHA-256, extracts exactly the CTAPIpe row, asserts repository/base identity, writes canonical JSON and the unchanged FAIL_TO_PASS selector list, and uploads raw evidence. The workflow does not install ctapipe, execute upstream tests, load a model, or run inference. **Its run/artifact result has not yet been retrieved or verified**, so row authentication remains pending.
+On the buggy base, the workflow applied only the upstream test-file patch; its worktree status confirms only `src/ctapipe/image/muon/tests/test_muon_features.py` was modified. No production fix was applied to the buggy base.
+
+### 4.1 Frozen SWE-rebench selector
+
+- Buggy base: **FAIL** at the regression assertion. Actual observed type was `astropy.units.quantity.Quantity`, whereas the patched test requires `float` or `numpy.floating`. Result: `1 failed in 0.05s`.
+- Fixed PR head: **PASS**. Result: `1 passed in 0.02s`.
+
+This was a defect-specific assertion failure, not collection or environment failure.
+
+### 4.2 Independent HDF5 mixed-type reproducer
+
+The supplemental test writes a calculated muon-parameter container and then a default `MuonParametersContainer` through the real `HDF5TableWriter`.
+
+- Buggy base: **FAIL** at the exact HDF5 transform. The traceback ends with `AttributeError: 'float' object has no attribute 'to_value'` in `QuantityColumnTransform.__call__`. Result: `1 failed in 1.08s`.
+- Fixed PR head: **PASS**. Result: `1 passed in 1.07s`.
+
+This provides direct mechanism-level evidence beyond the frozen selector's type assertion.
+
+### 4.3 Environment and artifact
+
+- CPython: 3.11.9
+- NumPy: 1.26.4
+- Astropy: 6.1.7
+- pytest: 8.3.5
+- pytest-astropy-header: 0.2.2
+- PyTables: 3.10.2
+- `pip check`: `No broken requirements found`
+- Installed distributions captured: 51
+- Dependency license metadata: 51 distributions captured; all had at least one of a license field, license classifier, or detected license file. 50 had detected license files; tqdm had a license field and classifiers but no license file among the captured metadata paths. This is an inventory, not human legal clearance.
+
+Stage 2 run:
+- Workflow run: `44299388651`
+- Job: `134784814840`
+- Artifact ID: `14424942732`
+- Artifact name: `ctapipe-2732-stage2-base-fixed-44299388651-1`
+- Artifact ZIP SHA-256: `f6ddfd91afa97b3720c10c0f7816f409a7c354f85883fa61b837bfc823621ea`
+- All 21 evidence-file hashes in `SHA256SUMS.txt` were independently checked successfully.
+- Environment input SHA-256: `1b6e82f8db8dcad6a1720666f19c8868ae5d6ef6e13cae2228d9c0e7e7a62edb`
+- Dependency-license metadata SHA-256: `f9151d1e3824a96da76dff15401e4e112a904fd4f25a52c2865903e1e1d3a868`
+
+A standalone machine-readable manifest is stored at `research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/stage2_evidence_manifest.json`.
+
+## 5. Remaining Stage 3 and provenance gates
+
+1. Resolve or formally record the issue YAML/effective-configuration discrepancy. If it cannot be resolved, preserve the scope limitation and do not claim that the posted YAML alone reproduces the original run.
+2. Complete direct/transitive dependency, optional/bundled third-party, and system-level license/provenance review. The recorded 51-distribution metadata inventory is not a substitute for human scope review.
+3. Complete independent-project and related-issue-family review.
+4. Record researcher exposure and timing/cutoff assessment.
+5. Complete human gold-mechanism adjudication and nested E1/E2/E3 evidence-tier decisions.
+6. Keep the final accepted case registry unchanged until a schema-conformant acceptance record and separate project-lead decision are recorded.
+
+No model was loaded; no inference or fine-tuning was performed.
+
+## 6. Upstream discussion and test-coverage limitations
+
+- The reporter's issue comment provides the full exception traceback.
+- The PR author says some skewness/excess-kurtosis values had a dimensionless unit while others did not, although the container fields declared no units; the author states container validation would reject the inconsistency but was not normally run.
+- A reviewer questioned attaching a dimensionless unit only to remove it later. The author referred to new type assertions.
+- The reporter later confirmed that the patched branch created the HDF5 output file; invalid sqrt/log warnings were treated as unrelated.
+- A reviewer noted that an integration test writing muon parameters through DataWriter could have caught the defect. The PR author considered type assertions adequate. The missing end-to-end test remains a coverage limitation; the research-side direct HDF5 reproducer now addresses the mechanism for our Stage 2 evaluation.
 
 ## 7. Current decision
 
-- Source-level mechanism: **corroborated** by exact-base implementation and reporter traceback.
-- Intended field/storage contract: **plain unitless numeric values**, supported by container field declarations and HDF5 serialization behavior.
-- Docstring: **stale/inconsistent**; not evidence that the serialized field should be Quantity.
-- Issue YAML: **internally inconsistent with the reported traceback** unless an override or transcription error is established.
-- Frozen dataset row/selectors: **not yet authenticated**.
-- Base-fail/fixed-pass: **not run**.
-- License: exact-base root BSD-3-Clause documentary screen passed; full dependency scope pending.
-- Stage 2: **hold**.
-- Stage 3: not started.
+- Source-level failure mechanism: **corroborated by exact-base code, reporter traceback, and independent HDF5 reproducer**.
+- Intended serialized field contract: **unitless numeric values**, supported by `Field(nan)` container declarations and the HDF5 behavior.
+- Docstring: **stale/inconsistent** with the field schema and implementation.
+- Frozen dataset row and exact selector: **authenticated**.
+- Exact frozen selector: **base-fail / fixed-pass**.
+- Direct HDF5 mixed-type reproducer: **base-fail / fixed-pass**.
+- Technical Stage 2: **PASS**.
+- Candidate disposition: **conditional hold pending YAML/config provenance and Stage 3**.
+- Stage 3: **not started**.
 - Final case acceptance: **not accepted**.
-- Model inference/training: not authorized and not performed.
+- Model loading/inference/training: **not performed**.
