@@ -383,7 +383,17 @@
       "latest_reproduction_run_id": 44111403900,
       "latest_reproduction_job_id": 134137813966,
       "latest_reproduction_artifact_id": 14340572651,
-      "latest_reproduction_status": "PASS: issue reproducer and all 8 exact dataset selectors; does not replace remaining final case acceptance gates."
+      "latest_reproduction_status": "PASS: issue reproducer and all 8 exact dataset selectors; does not replace remaining final case acceptance gates.",
+      "latest_reproduction_artifact_name": "dishka-issue-435-reproduction-44111403900-1",
+      "latest_reproduction_artifact_sha256": "183b8c62af381d012234f2f5cee6e9d40e70c4f8cdcb6b21f10e79f0425921f0",
+      "latest_reproduction_artifact_size_bytes": 226404514,
+      "latest_reproduction_archive_members": 33,
+      "latest_reproduction_zip_crc": "PASS",
+      "latest_reproduction_internal_hashes": "32/32 SHA256SUMS entries passed independent verification",
+      "latest_reproduction_issue_test": "Buggy base: AssertionError: 1 != 42; fixed revision: PASS",
+      "latest_reproduction_dataset_selectors": "All 8 exact FAIL_TO_PASS selectors failed on buggy base with defect-related assertions and all 8 passed on fixed revision",
+      "latest_reproduction_artifact_independent_verification": "Downloaded artifact 14340572651; ZIP SHA-256 independently recalculated; ZIP CRC clean; all 32 listed inner file hashes verified; includes exact dataset Parquet and raw base/fixed logs",
+      "note_no_prior_pipeline_debug": "The master audit identifies Robocop #1371 and pdoc #812 as prior pipeline/debug-exposed exclusions. Dishka #435 is not identified among those exclusions; its first documented issue reproducer and exact selector validation were prospective case-validation runs. Full researcher source exposure is separately acknowledged. Preserve this distinction and cite the protocol's exclusion rule; do not infer model blinding or training-data absence."
     },
     {
       "instance_id": "ecmwf__earthkit-data-592",
