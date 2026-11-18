@@ -158,13 +158,13 @@
     "docstring_contract": "radial_light_distribution docstring still declares skewness and excess_kurtosis as astropy.units.Quantity, inconsistent with unitless MuonParametersContainer fields and fixed implementation.",
     "license_human_signoff": "Machine-readable source/dependency license inventory and exact changed-file screen completed (51 installed dists, 106 notice files captured; three PR files documented under repository BSD-3-Clause). Student project-lead decision pending; not legal advice.",
     "independence_and_exposure_review": "The complete frozen Parquet scan authenticated five exact cta-observatory/ctapipe rows. Full row hashes: 1872=59d1aeb7..., 1883=04e0fc47..., 2320=29aa95ca..., 2732=e7d40ebf..., 2738=db357eac.... The corresponding issue/PR descriptions, production patch paths, and F2P selectors indicate distinct issue families. Only #2732 is the selected muon Quantity/float HDF5 defect; the one-case-per-upstream-project rule means at most one accepted CTAPIpe case. Human formal independence approval and researcher-exposure classification remain pending.",
-    "gold_and_evidence_tier_adjudication": "E3/E2/E1 model-facing nested packet files have been prepared with E2 inheriting E3 and E1 inheriting E2. Packet integrity/leakage audit rerun pending after a source signature fix. Gold and tier memberships are proposed only; human project-lead approval pending.",
+    "gold_and_evidence_tier_adjudication": "E3/E2/E1 model-facing packets finalized as nested files; audit run 44316015132 passed, artifact 14432113942 SHA-256 fd7fc7ed0cf7953f51efae7ef174aa6593b4860806bafdf9e03ba8fa88a25a38. Packet set manifest SHA-256 123bcba10ed241c466299297dbf6582d45a92e8e75ad5b3e881db63d5fd14998; E2 inherits E3 and E1 inherits E2 exactly; 4/4 checksum entries independently verified, no self-checksum. Gold and tier memberships remain AI-assisted proposals, not project-lead-approved.",
     "container_validation_comment": "The PR author's comment says Container validation would reject the mixed values. Exact-base Field.validate accepts both because these fields have no unit/type/dtype/ndim constraints; our HDF5 reproduction calls validate() on both. The error occurs in the HDF5 column transform."
   },
   "decision": {
     "stage2_technical_reproduction": "PASS: exact frozen selector base-fail/fixed-pass and independent real DataWriter.__call__/HDF5 reproducer base-fail/fixed-pass, with an explicit false/true config branch test; latest run 44308927754.",
-    "candidate_disposition": "Conditional hold: technical Stage 2 passed; frozen repository family screen completed with one selected CTAPIpe row; remain held for project-lead gold/tier approval, full exposure decision, and documentary license scope approval.",
-    "stage3": "technical evidence assembled; human adjudication and independent acceptance audit not started",
+    "candidate_disposition": "Conditional hold pending project-lead gold/alternatives/tier approval, explicit acceptance of researcher exposure and prior pipeline-debug classification, documentary license scope acknowledgement, and separate final case acceptance.",
+    "stage3": "technical evidence, repository-family screen, nested packet preparation, packet leakage audit, and independent artifact integrity verification complete; human adjudication and final acceptance gate still pending",
     "final_case_acceptance": "not_accepted",
     "model_loading_performed": false,
     "model_inference_performed": false,
@@ -209,10 +209,40 @@
     "artifact_internal_hashes": "1/1 source-snapshot-manifest checksum independently verified"
   },
   "evidence_tier_packet_audit": {
-    "status": "pending latest successful run after packet correction",
-    "packet_root": "research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/evidence_tiers/",
-    "nested_inheritance": "E2 starts with E3 exact bytes; E1 starts with E2 exact bytes",
-    "leakage_guards": "automated audit checks hidden case ID, PR/issue numbers, commit hashes, gold labels and tier labels are absent from model-facing packet text",
-    "inference_performed": false
+    "status": "PASS_INDEPENDENTLY_VERIFIED",
+    "workflow_run_id": 44316015132,
+    "job_id": 134842193908,
+    "artifact_id": 14432113942,
+    "artifact_name": "ctapipe-2730-evidence-tier-packet-audit-44316015132-1",
+    "artifact_zip_sha256": "fd7fc7ed0cf7953f51efae7ef174aa6593b4860806bafdf9e03ba8fa88a25a38",
+    "artifact_members": 5,
+    "artifact_crc": "PASS",
+    "sha256sum_entries_verified": "4/4",
+    "checksum_self_reference": "excluded; final checksum manifest clean",
+    "packet_set_manifest_sha256": "123bcba10ed241c466299297dbf6582d45a92e8e75ad5b3e881db63d5fd14998",
+    "nested_inheritance": {
+      "e2_starts_with_e3_exact_bytes": true,
+      "e1_starts_with_e2_exact_bytes": true
+    },
+    "packets": {
+      "E3": {
+        "sha256": "472bf4e37606ed8910555d50e4d5d97ef467010222f32b2ae1cc5fabe8775630",
+        "bytes": 2061
+      },
+      "E2": {
+        "sha256": "d8f82e5a53bb9fffe2060d7bb15b8792adb73827f1ca1ab97980f601f0606bf2",
+        "bytes": 6979
+      },
+      "E1": {
+        "sha256": "861a427fa215105d5f0e86db2fbc2d76c5c23f44e93da6481504264b49597173",
+        "bytes": 11599
+      }
+    },
+    "leakage_audit": "PASS: hidden instance, issue/PR IDs, commit hashes, gold labels, tier labels absent from model-facing packet contents; fixed source/PR patch/test outcomes are not in the packets.",
+    "semantics": "Automated audit confirms packet byte nesting and expected evidence-signal placement. It does not substitute for human approval of semantic sufficiency, gold mechanisms, or the tier design.",
+    "model_load_performed": false,
+    "model_inference_performed": false,
+    "model_training_performed": false,
+    "human_approval_status": "pending"
   }
 }
