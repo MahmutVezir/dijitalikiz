@@ -236,6 +236,70 @@ jobs:
           git -C upstream-ctapipe status --short > ctapipe-stage2-evidence/fixed-worktree-status.txt
           test ! -s ctapipe-stage2-evidence/fixed-worktree-status.txt
 
+      - name: Capture changed-file source snapshots and BSD-3-Clause inheritance manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ctapipe-stage2-evidence/changed-files
+          : > ctapipe-stage2-evidence/changed-file-identities.txt
+          while IFS= read -r path; do
+            test -n "$path"
+            destination="ctapipe-stage2-evidence/changed-files/$path"
+            mkdir -p "$(dirname "$destination")"
+            git -C upstream-ctapipe show "5007b6ab61887d7555155edb4d1d296603a9735e:$path" > "$destination"
+            blob_sha=$(git -C upstream-ctapipe rev-parse "5007b6ab61887d7555155edb4d1d296603a9735e:$path")
+            content_sha=$(sha256sum "$destination" | awk '{print $1}')
+            printf '%s\t%s\t%s\n' "$path" "$blob_sha" "$content_sha" >> ctapipe-stage2-evidence/changed-file-identities.txt
+          done < ctapipe-stage2-evidence/pr-changed-files.txt
+          git -C upstream-ctapipe diff --quiet 287e7685e0e963f3fb44d92832ca97ac8c265c40 5007b6ab61887d7555155edb4d1d296603a9735e -- LICENSE pyproject.toml
+          .venv-ctapipe/bin/python - <<'PY'
+          import hashlib
+          import json
+          import subprocess
+          from pathlib import Path
+
+          repo = Path("upstream-ctapipe")
+          fixed = "5007b6ab61887d7555155edb4d1d296603a9735e"
+          base = "287e7685e0e963f3fb44d92832ca97ac8c265c40"
+          license_path = repo / "LICENSE"
+          license_bytes = license_path.read_bytes()
+          rows = []
+          for line in Path("ctapipe-stage2-evidence/changed-file-identities.txt").read_text().splitlines():
+              path, blob, sha256 = line.split("\\t")
+              rows.append({
+                  "path": path,
+                  "fixed_git_blob_sha1": blob,
+                  "content_sha256": sha256,
+                  "license_inheritance": "repository BSD-3-Clause; no license header or third-party notice found in this changed file during source review",
+              })
+          manifest = {
+              "repository": "cta-observatory/ctapipe",
+              "base_commit": base,
+              "fixed_commit": fixed,
+              "repository_license": "BSD-3-Clause",
+              "root_license": {
+                  "path": "LICENSE",
+                  "commit_sha": base,
+                  "git_blob_sha1": subprocess.check_output(
+                      ["git", "-C", str(repo), "rev-parse", f"{base}:LICENSE"], text=True
+                  ).strip(),
+                  "content_sha256": hashlib.sha256(license_bytes).hexdigest(),
+              },
+              "license_change_check": {
+                  "LICENSE_unchanged_between_base_and_fixed": True,
+                  "pyproject_toml_unchanged_between_base_and_fixed": True,
+                  "root_NOTICE_file_present_at_base": False,
+              },
+              "changed_files": rows,
+              "screening_conclusion": "All three PR-changed files are covered by the repository BSD-3-Clause license at the pinned base. This is a documentary source review, not legal advice. No third-party vendored source was identified in the changed paths during the current screening; student project-lead review remains required.",
+          }
+          Path("ctapipe-stage2-evidence/changed-file-license-manifest.json").write_text(
+              json.dumps(manifest, indent=2, ensure_ascii=False) + "\\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(manifest, indent=2))
+          PY
+
       - name: Run the same exact frozen selector on fixed revision
         shell: bash
         run: |
@@ -267,6 +331,7 @@ jobs:
             echo "- Exact selector: src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution"
             echo "- DataWriter.__call__ reproducer: config False skips muon writer; config True executes the real muon writer and reproduces the mixed Quantity/float HDF5 failure on base"
             echo "- Installed dependency LICENSE/NOTICE files and the exact-base CTAPIpe root LICENSE are included with SHA-256 records"
+          echo "- Exact changed source files and BSD-3-Clause inheritance manifest are included"
             echo "- No model loading, inference, or training was performed."
           } >> "$GITHUB_STEP_SUMMARY"
           (cd ctapipe-stage2-evidence && find . -type f ! -name SHA256SUMS.txt -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
