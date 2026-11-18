@@ -318,3 +318,15 @@ The new run is a repeat of technical reproduction only. It does not resolve the 
 - `pip check`: no broken requirements. No model loaded; no inference, fine-tuning or training.
 
 This is a repeat of technical Stage 2, not a change in case disposition. The published YAML/effective-configuration discrepancy, human gold/tier approvals, project-lead prior-debug exposure classification, license scope sign-off, and final case acceptance remain separate gates.
+
+
+## 10. Human evaluator amendment and pipeline/debug exposure proposal (2026-11-18)
+
+A second human evaluator has been identified by the project lead. The public repository uses the pseudonym `Rater_B`; explicit agreement, case-specific independence/exposure screening and calibration remain pending. The proposed role is limited to independent blinded scoring of raw model outputs. Rater_B is not a gold/tier adjudicator, legal reviewer or external auditor. The project lead remains the final decision-maker and retains gold/E1/E2/E3 decisions. See:
+- `HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md`
+- `SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md`
+- `RATER_B_CONSENT_AND_EXPOSURE_SCREEN_TEMPLATE_V0_1_2026-11-18.md`
+
+**Candidate-specific pipeline/debug exposure:** the project record states that the CTAPIpe test harness was refined against this exact case. The evidence-based proposed classification is `some`, not `none`. Under the active v0.2 protocol exclusion rule, approving `some` means #2732 is excluded from the model-evaluation sample and retained as a technical reproduction / engineering-pilot artifact. Rater_B's participation does not cure the project lead's exposure or waive the rule. The final exposure classification remains pending explicit project-lead decision. See `CTAPIPE_2732_EXPOSURE_DECISION_PROPOSAL_2026-11-18.md`.
+
+No model output has been generated, no response has been rated, no human-human agreement statistic exists, and no inference is authorized.
