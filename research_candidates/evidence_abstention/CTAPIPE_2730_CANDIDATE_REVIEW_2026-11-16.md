@@ -306,3 +306,15 @@ This section supersedes section 13's “latest repeat” reference. After the ev
 - `pip check` reports no broken requirements. No model was loaded; no inference, fine-tuning, or training occurred.
 
 The new run is a repeat of technical reproduction only. It does not resolve the published YAML versus reporter-traceback effective-configuration discrepancy, supply student project-lead adjudication, or change the conditional-hold / not-accepted disposition.
+
+
+
+## 16. Latest CTAPIpe Stage 2 repeat after case-readiness updates (2026-11-18)
+
+- Run `44321922328`; job `134862837802`; artifact `14436170101` (`ctapipe-2732-stage2-base-fixed-44321922328-1`).
+- ZIP SHA-256: `9575c5f120d01c6bd9618aa512d299946d6c1564f3bba3c9699705386d405360`; 295,208 bytes; 137 members; ZIP CRC PASS; **136/136** internal SHA256SUMS entries independently verified.
+- The exact frozen selector again fails on the buggy base with the Quantity-vs-float defect assertion and passes on the exact fixed PR head (1/1).
+- The direct `DataWriter.__call__`/HDF5 reproducer again shows false config skips the muon writer; true config reproduces `AttributeError: 'float' object has no attribute 'to_value'` on the buggy base. The fixed revision passes both config branches and writes both rows (2/2).
+- `pip check`: no broken requirements. No model loaded; no inference, fine-tuning or training.
+
+This is a repeat of technical Stage 2, not a change in case disposition. The published YAML/effective-configuration discrepancy, human gold/tier approvals, project-lead prior-debug exposure classification, license scope sign-off, and final case acceptance remain separate gates.
