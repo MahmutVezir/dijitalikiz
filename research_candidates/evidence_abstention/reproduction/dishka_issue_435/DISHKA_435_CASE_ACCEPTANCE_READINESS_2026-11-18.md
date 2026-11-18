@@ -128,3 +128,12 @@ The blockers include the global dataset/raw-payload provenance gate, upstream so
 A fresh no-inference preflight was triggered on the subsequent PR head and was queued at the time of this record. Its result must be inspected before reporting a newer readiness state.
 
 **Final disposition:** Dishka is a strong, technically reproduced exploratory candidate with approved gold/tier decisions, but it is **not accepted**. Global accepted-case count remains 0. No model loading, inference, fine-tuning, or training is authorized.
+
+
+## 10. Latest project-wide no-inference gate recheck (2026-11-18)
+
+The updated PR head was audited again by workflow run `44321922276`, job `134862837135`, artifact `14434269076` (`evidence-abstention-preflight-logs-44321922276-1`). The downloaded ZIP SHA-256 is `f4c32af4f87c08c8001a850e876f0a77babda9796b7f083525c99d45b6aa0a26`; archive CRC passed; five files are present.
+
+All 57 tests passed: 12 packet-audit, 24 operational-packet/triage, 6 selector-runner, and 15 v0.2 acceptance/preflight tests. The resulting report nevertheless remains `blocked_before_inference`, `ready_for_inference=false`, with 11 blockers and 0 accepted cases/projects. It confirms a valid empty registry and a valid acceptance schema, not an accepted case. The blocker list is unchanged from section 9; no inference, fine-tuning, or training was performed.
+
+This run supersedes section 9's earlier completed preflight reference. The separate workflow fan-out for candidate reproductions continued independently; those results must be assessed and recorded per candidate rather than counted from job completion alone.
