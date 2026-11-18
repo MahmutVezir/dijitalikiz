@@ -18,6 +18,12 @@
 
 The run authenticated the pinned SWE-rebench row and ran both frozen FAIL_TO_PASS selectors in the same pinned CPU environment. Both selectors executed and failed on the buggy base with JAX's batched-key error; both passed on the fixed merge revision. This is technical Stage 2 evidence, not semantic tier adjudication.
 
+Exact upstream source anchors fetched at the pinned revisions:
+- Buggy-base `numpyro/infer/mcmc.py`: Git blob SHA-1 `dd3ec0c3a782c1e1530b138153d821392ee5bebd`.
+- Buggy-base `numpyro/infer/ensemble.py`: Git blob SHA-1 `64a2870ade0565cb6547cc92d97c11502e769bfd`.
+- Fixed `numpyro/infer/mcmc.py`: Git blob SHA-1 `7dd596bca382c4f6517e93458c5806c690cddb59`.
+- Fixed regression test file: Git blob SHA-1 `bda377b993ef198960eddc0b27b9e217978d20a3`.
+
 ## 2. Proposed technical gold mechanism
 
 **Proposed mechanism (pending project-lead adjudication):**
@@ -48,11 +54,8 @@ The following is a **design proposal**, not the final operational packet set. It
 |---|---|---|
 | `NP1916-ISSUE-NARRATIVE-CODE` | Exact first 836 UTF-8 bytes of the pinned dataset row's `problem_statement` field: issue title, narrative and reproducer code, ending before the separately identified traceback | `3a1b4b412dfeb9f33a5fa9a6534a4a7522d79dddd7a8760540c358f21d81bf2c` |
 | `NP1916-ISSUE-TRACEBACK` | Exact traceback fragment from the same field, byte range [838, 5775), including the reported key shape and failing `random.split` frame | `4ba5d2d4d78a306adce6b8ce850a3f47fc66b6a1ebce934fcb3b318eed6ada36` |
-| `NP1918-FIX-PATCH` | Full upstream PR #1918 patch captured in the latest reproduction artifact | `d05cbdbc3b934c55ace104d7d031c9987d61db5e1abba815104eab8004af5512` |
-| `NP1916-BASE-TEST-LOG` | Raw base selector log from the latest reproduction artifact | `0c4e0e335b80877185ab2b54ec527add0bd1e1b9c733511c4f71aa09e4ba20c1` |
-| `NP1916-FIXED-TEST-LOG` | Raw fixed-revision selector log from the latest reproduction artifact | `e268b6d982d0d335970c28310727c3e822e7e1684a076db2f2b854b9b186901b` |
-| `NP1916-BASE-RESULTS` | Machine-readable base selector results | `cf097c64ed25a67cbc40fedeca542a4c74e18f1e059f494669d1192c65b7d35b` |
-| `NP1916-FIXED-RESULTS` | Machine-readable fixed selector results | `5f3389f5183c4683d8bf9d24e3b1b7c41a4fcab57d9007d41102088d5861a736` |
+| `NP1916-BASE-MCMC-RUN-HANDOFF` | Verbatim buggy-base `numpyro/infer/mcmc.py` lines 654–660 showing chain-key batching and the warmup-state key handoff; parent file blob SHA-1 `dd3ec0c3a782c1e1530b138153d821392ee5bebd` | `f2b649fd9a8c9771ef857c01c04c36dc98f75bea82a2da908be6fe4147401e4f` |
+| `NP1916-BASE-ENSEMBLE-SPLIT` | Verbatim buggy-base `numpyro/infer/ensemble.py` lines 190–193 showing the sampler's direct `random.split(rng_key)`; parent file blob SHA-1 `64a2870ade0565cb6547cc92d97c11502e769bfd` | `de79ca7039c71eb3999ca8daf9f190d6a70c1659221514e945a554d6218be190` |
 
 The full canonical row remains available as the source anchor and has SHA-256 `d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646`. The original upstream issue and PR are linked above. The excerpt hashes identify the exact included bytes; the excerpt boundaries must accompany the operational packet manifests.
 
@@ -75,13 +78,23 @@ Rationale: the traceback adds the batched key shape and the `EnsembleSampler.sam
 
 Proposed contents:
 - all E2 items, unchanged;
-- `NP1918-FIX-PATCH`;
-- `NP1916-BASE-TEST-LOG`, `NP1916-FIXED-TEST-LOG`;
-- `NP1916-BASE-RESULTS`, `NP1916-FIXED-RESULTS`.
+- `NP1916-BASE-MCMC-RUN-HANDOFF`;
+- `NP1916-BASE-ENSEMBLE-SPLIT`.
 
-Rationale: the patch identifies the exact conditional state handoff in `MCMC.run`; the paired logs/results show both AIES and ESS selectors execute and fail on the pinned buggy base and pass on the pinned fixed merge revision. This should distinguish the proposed gold mechanism from the remaining alternatives. It must be verified by the project lead; a patch author's implementation choice is supporting evidence, not by itself a substitute for causal adjudication.
+Rationale: the buggy-base `MCMC.run` excerpt shows that vectorized execution creates a per-chain key array and then assigns that array unchanged into the warmup state. The buggy-base ensemble sampler excerpt shows the next sampling step calling `random.split(rng_key)` directly. Together, these source excerpts expose the incompatible key-shape handoff without showing the maintainer's correction. The project lead must still confirm that this evidence leaves exactly one defensible mechanism.
 
-## 5. Integrity and packet-construction controls
+## 5. Hidden adjudication-only evidence (not model-visible)
+
+The following records support the project lead's technical-gold adjudication but must **not** be included in E1, E2 or E3 model-input packets:
+
+- Full upstream PR #1918 patch SHA-256: `d05cbdbc3b934c55ace104d7d031c9987d61db5e1abba815104eab8004af5512`.
+- Fixed-revision test log SHA-256: `e268b6d982d0d335970c28310727c3e822e7e1684a076db2f2b854b9b186901b`.
+- Machine-readable base results SHA-256: `cf097c64ed25a67cbc40fedeca542a4c74e18f1e059f494669d1192c65b7d35b`.
+- Machine-readable fixed results SHA-256: `5f3389f5183c4683d8bf9d24e3b1b7c41a4fcab57d9007d41102088d5861a736`.
+
+These hidden records establish the upstream maintainer's chosen correction and the paired Stage 2 result. Keeping the correction out of model-visible packets avoids direct answer/fix leakage. The raw records remain hash-bound and available for project-lead adjudication.
+
+## 6. Integrity and packet-construction controls
 
 Before operationalizing these tiers:
 
@@ -92,11 +105,11 @@ Before operationalizing these tiers:
 5. Have the project lead review the semantic tier definitions against the complete source record and explicitly record if any level is not defensible. Do not force a three-tier classification to preserve a candidate.
 6. Keep technical gold, alternative hypotheses, exposure/independence, and license scope in separate adjudication records. A successful Stage 2 test does not close these gates.
 
-## 6. Exposure and role boundary
+## 7. Exposure and role boundary
 
 The student project lead has already reviewed the public issue, PR, patch and reproduction output during technical screening. This is disclosed exposure, not blinded review. Rater B has not been confirmed as consented or case-specific exposure-cleared and is not a technical-gold or evidence-tier adjudicator. ChatGPT critique is advisory only.
 
-## 7. Current disposition
+## 8. Current disposition
 
 - Stage 2 technical reproduction: **passed**, latest run `44332892793`.
 - Proposed technical gold: **not adjudicated**.
