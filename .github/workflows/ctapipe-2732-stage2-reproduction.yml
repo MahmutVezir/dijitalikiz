@@ -34,6 +34,13 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p ctapipe-stage2-evidence
+          sha256sum \
+            .github/workflows/ctapipe-2732-stage2-reproduction.yml \
+            research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/test_hdf5_mixed_type.py \
+            research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/dataset_fail_to_pass_selectors.txt \
+            research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/dataset_row_manifest.json \
+            research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/reproduction_environment.in \
+            > ctapipe-stage2-evidence/reproduction-input-sha256.txt
           git clone https://github.com/cta-observatory/ctapipe.git upstream-ctapipe
           git -C upstream-ctapipe checkout --detach 287e7685e0e963f3fb44d92832ca97ac8c265c40
           git -C upstream-ctapipe rev-parse HEAD | tee ctapipe-stage2-evidence/base-commit.txt
