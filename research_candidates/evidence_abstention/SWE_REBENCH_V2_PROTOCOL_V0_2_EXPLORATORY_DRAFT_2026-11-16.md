@@ -57,16 +57,20 @@ Semantic definitions:
 A level is not determined by packet length or evidence count. If a case cannot support all three defensible tiers, it is excluded from the three-tier comparison or recorded as unclassifiable. Do not manufacture evidence or force a tier.
 
 ## 6. Review and scoring arrangement
-The working team consists of the student project lead and ChatGPT as an AI research assistant. ChatGPT is not a human reviewer, independent auditor, legal reviewer, or second investigator.
 
-The project lead records the human research decisions. ChatGPT may conduct a separately labelled AI critique using only the material assigned to that review step. The critique is advisory and is not independent human validation. Since the project has no second human rater:
-- no human-human Cohen's kappa or inter-rater reliability claim is permitted;
-- researcher and AI judgments remain separate;
-- disagreements and their resolution are logged;
-- the evidence-tier framework is reported as a proposed operationalization applied in a feasibility study, not a validated measurement instrument.
+The human arrangement has two distinct responsibilities:
+- The student project lead is Rater A, project lead and final decision-maker for protocol, candidate acceptance, gold/tier decisions, deviations and interpretation.
+- A second human evaluator (public pseudonym: Rater B) has been identified for independent blinded scoring of raw model outputs. Explicit agreement, independence/exposure screening and calibration are pending.
+- ChatGPT is an AI research assistant. Its critique is advisory and is never counted as a human rating, independent audit, legal review or second investigator.
 
-For model-output scoring, use a predeclared rubric and randomized response IDs. The scorer should see the model-visible packet and raw response, but not policy identity, hidden tier, case identity, patch, or gold cause until evidence-support scoring is locked. Because a single researcher may have source exposure, perfect blinding cannot be assumed. Record any unavoidable exposure and treat scoring as exploratory. ChatGPT may perform a separate blind-style critique, but this does not create independent human blinding.
+For each response, Rater A and Rater B independently assign the evidence-support category and related scoring flags from the same blinded packet. Both original ratings are locked before discussion. The randomized scoring packet must hide case identity, source repository, issue/PR, fixed source/patch, hidden gold mechanism, hidden evidence-tier label, P0/P1 policy identity, paired response and the other rater's score. Rater B must not have prior source/gold/patch/prompt/output exposure for a case to be counted as blinded. Exposure is screened and recorded case by case.
 
+The project lead adjudicates disagreements only after both independent ratings have been locked. Preserve both original ratings and the adjudication separately. Report exact agreement, category confusion, six-category Cohen's kappa and E3 binary endpoint agreement/kappa where estimable. Agreement is descriptive/exploratory and not a pass/fail case-acceptance rule. Where confidence intervals are reported, resample at the case level to respect the six repeated cells per case.
+
+E1/E2/E3 semantic tier construction and technical-gold adjudication remain single-project-lead judgments, with separately logged ChatGPT critique. Rater B will not inspect source code, hidden gold, or tier labels before scoring is locked; therefore the study does not claim independent human validation of the gold mechanism or tier design. Rater B is not an external auditor.
+
+Use the draft dual-human scoring procedure at `SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md`. It must be reviewed, calibrated on separate non-study examples and hash-frozen before any model-output scoring.
+ 
 ## 7. Experimental conditions
 Each case has six cells: E1/P0, E1/P1, E2/P0, E2/P1, E3/P0, E3/P1.
 
@@ -119,3 +123,7 @@ No training or fine-tuning is permitted under this protocol.
 
 ## 13. Current status
 Accepted cases/projects: 0/0. Evidence packet sets: 0. Model load: not performed. Inference: not performed and not authorized. Protocol: draft, not preregistered. The prior v0.1 confirmatory design requiring 60 independent projects and independent human panels is retained as historical record and is not the selected working design for this exploratory study.
+
+## 14. Human-evaluator amendment (18 November 2026)
+
+The dual-human output-scoring amendment is recorded in `HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md`. Rater B is identified but not yet consent-confirmed or exposure-cleared. The pre-existing rule excluding candidate cases used for earlier pipeline debugging, test-oracle troubleshooting or prompt calibration remains unchanged. Adding Rater B does not waive that exclusion or authorize inference.
