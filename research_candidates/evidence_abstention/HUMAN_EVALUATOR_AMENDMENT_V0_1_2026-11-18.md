@@ -8,7 +8,7 @@
 
 The student project lead remains the sole project lead and final decision-maker for protocol changes, candidate acceptance, scientific interpretation, deviations and release of study results.
 
-A second human evaluator has been identified (private working name: Hasan). To minimize personal data in the public repository, the public record uses the pseudonym **Rater B**. Rater B's proposed role is an independent human scorer of the raw model responses. Rater B is not automatically an external auditor, legal reviewer, co-investigator, gold-standard adjudicator or author of the final scientific interpretation.
+A second human evaluator has been identified. To minimize personal data in the public repository, the public record uses the pseudonym **Rater B**. Rater B's proposed role is an independent human scorer of the raw model responses. Rater B is not automatically an external auditor, legal reviewer, co-investigator, gold-standard adjudicator or author of the final scientific interpretation.
 
 ChatGPT remains an AI research assistant. Its critique is not a human rating and will be stored separately.
 
