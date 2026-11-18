@@ -1,7 +1,7 @@
 # CTAPIpe #2732 — candidate-specific pipeline/debug exposure decision
 
 **Date:** 18 November 2026  
-**Status:** Evidence-based project-lead decision proposal. No final acceptance decision recorded.
+**Status:** Decision recorded and approved by the project lead on 18 November 2026. Candidate excluded from the model-evaluation sample; retained as an engineering/feasibility pilot.
 
 ## 1. Protocol rule
 
@@ -25,13 +25,14 @@ Under the current v0.2 rule, this classification means CTAPIpe #2732 should be e
 
 Adding a second blinded human output rater does not remove the project lead's prior candidate-specific pipeline/debug exposure and does not reverse this exclusion.
 
-## 4. Decision required from the project lead
+## 4. Decision recorded on 18 November 2026
 
-- Proposed decision: accept the evidence-based some classification and exclude CTAPIpe #2732 from the model-evaluation sample.
-- Alternative decision: provide a written, protocol-consistent rationale showing that the recorded candidate-specific harness development does not meet the protocol definition of prior pipeline/debug exposure. The factual work history must remain disclosed; the field must not be changed to none merely to pass schema validation.
+- Final decision: **approved — `prior_pipeline_debug_exposure = some`.**
 - Decision maker: student project lead.
-- Decision status: pending.
-- Decision timestamp: pending.
-- Rationale: pending.
+- Decision date: 18 November 2026.
+- Decision source: explicit project-lead confirmation in the conversation record; the project lead also reported Hasan's concurrence.
+- Consequence: exclude CTAPIpe #2732 from the model-evaluation sample; retain its technical reproduction and audit packet as an engineering/feasibility pilot; do not add it to the accepted-case registry.
+- Rationale: the candidate-specific reproduction/test harness and direct HDF5 reproducer were developed and refined against this exact case, which meets the active v0.2 prior pipeline/debug exposure definition.
+- Public evidence record: `research_candidates/evidence_abstention/PROJECT_LEAD_DECISION_AND_REVIEWER_CONCURRENCE_2026-11-18.md`.
 
-No case acceptance, inference authorization or change to the registry is made by this proposal.
+This decision does not accept the case for evaluation, authorize inference, or waive the separate issue-configuration, licensing, gold/tier, and Rater B eligibility gates.
