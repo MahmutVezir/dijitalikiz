@@ -1,0 +1,20 @@
+# Runtime dependencies declared by the exact-base ctapipe pyproject.toml,
+# with a pinned test runner and reproducible build tooling.
+numpy==1.26.4
+astropy==6.1.7
+docutils==0.21.2
+joblib==1.4.2
+numba==0.60.0
+packaging==24.2
+psutil==6.1.1
+PyYAML==6.0.2
+requests==2.32.3
+scikit-learn==1.6.1
+scipy==1.15.2
+tables==3.10.2
+tqdm==4.67.1
+traitlets==5.14.3
+pytest==8.3.5
+pip==24.3.1
+setuptools==75.8.0
+setuptools-scm[toml]==8.2.0
