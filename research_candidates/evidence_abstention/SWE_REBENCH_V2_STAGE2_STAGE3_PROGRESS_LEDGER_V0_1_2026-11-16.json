@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-18T15:38:21.890Z",
+  "generated_at_utc": "2026-11-18T15:51:26.103Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -261,12 +261,16 @@
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/NUMPYRO_1916_CANDIDATE_REVIEW_2026-11-16.md",
       "stage2_status": "passed",
-      "stage2_workflow_job_id": 134901923864,
-      "stage2_evidence_note": "Latest branch-head repeat (run 44332892793, job 134901923864, artifact 14438938964) independently verified: artifact ZIP SHA-256 c122008c972df7e8ecf77b67a9fd050d4b54b883aea9de6dfc4b41e3dd2b67e4 matches GitHub digest; ZIP CRC and 15/15 internal SHA-256 checks pass. The exact AIES and ESS selectors executed and failed on the pinned buggy base with the JAX PRNG-key shape error (2/2 expected base failures), then both passed on exact fixed merge 5692d2da335945b756aeae02e3720b9b7f3efef2 (2/2 fixed passes). Stage 3, exposure/independence, human license-scope acknowledgement and final acceptance remain open.",
-      "stage3_status": "not_started_stage2_passed",
+      "stage2_workflow_job_id": 134923384282,
+      "stage2_evidence_note": "Latest repeat in run 44338919763 on workflow head f838660fdfcdd2ec92a3983a70e5f3f894732675 (job 134923384282, artifact 14441559416) independently verified. Downloaded ZIP SHA-256 b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360 matches GitHub artifact digest; ZIP CRC passed and all 15 payload-file hashes in SHA256SUMS.txt passed. The exact AIES and ESS selectors both executed and failed on pinned buggy base 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d with JAX key-array shape (10,2), then both passed on fixed upstream merge 5692d2da335945b756aeae02e3720b9b7f3efef2 (2/2 expected base failures, 2/2 fixed passes). Source-level handoff/sampler split was independently cross-checked against pinned source blobs. Stage 3 semantic adjudication, exposure/independence, human license-scope acknowledgement and final acceptance remain open.",
+      "stage3_status": "draft_prepared_pending_project_lead_adjudication",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44332892793
+      "stage2_latest_run_id": 44338919763,
+      "stage2_artifact_id": 14441559416,
+      "stage2_artifact_sha256": "b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360",
+      "stage3_proposal_document": "research_candidates/evidence_abstention/NUMPYRO_1916_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-18.md",
+      "model_visible_packet_status": "not_operationalized_or_semantically_adjudicated"
     },
     {
       "cohort_rank": 13,
@@ -1845,11 +1849,12 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44332892793,
-    "job_id": 134901713550,
-    "artifact_id": 14439573020,
-    "artifact_name": "evidence-abstention-preflight-logs-44332892793-1",
-    "artifact_zip_sha256": "23e0fee7122e3d469a1cb7cb42864184d4548637d6f9612f64b7f871c68cec3d",
+    "workflow_run_id": 44338919763,
+    "head_commit": "f838660fdfcdd2ec92a3983a70e5f3f894732675",
+    "job_id": 134923156970,
+    "artifact_id": 14442213140,
+    "artifact_name": "evidence-abstention-preflight-logs-44338919763-1",
+    "artifact_zip_sha256": "6719f07d344647d97a62a743bfd831ba688937a8733cbf5d887dd07116603e13",
     "status": "blocked_before_inference",
     "ready_for_inference": false,
     "blocker_count": 14,
@@ -1862,12 +1867,13 @@
       "evidence_packet_and_citation_audit": "12 passed",
       "operational_packet_and_candidate_ledger": "24 passed",
       "v0_2_exploratory_acceptance_and_preflight": "15 passed",
-      "v0_2_design_and_scoring_amendment": "9 passed"
+      "v0_2_design_and_scoring_amendment": "9 passed",
+      "total": "66 passed"
     },
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
-    "note": "Latest branch-head no-inference preflight job completed successfully on commit 3e191afe4d10d76be1176dd8dfcf812868b8e57c. The five recorded test groups total 66 passing tests. The generated readiness report remains blocked with 14 study-readiness blockers, zero accepted cases and ready_for_inference=false. No model loading, inference or fine-tuning occurred."
+    "note": "The no-inference preflight job succeeded on workflow commit f838660fdfcdd2ec92a3983a70e5f3f894732675. The readiness report still has 14 blockers, zero accepted cases/projects and ready_for_inference=false. No model loading, inference or fine-tuning occurred. This is a code/preflight check for the tested branch head; later PR head changes were documentation/ledger updates only."
   },
   "project_lead_decisions": [
     {
@@ -1881,10 +1887,14 @@
     }
   ],
   "latest_candidate_matrix_recheck": {
-    "workflow_run_id": 44332892793,
-    "head_commit": "3e191afe4d10d76be1176dd8dfcf812868b8e57c",
-    "status": "completed_with_candidate_specific_failures",
-    "summary": "Latest branch-head candidate repeat completed 10 reproduction jobs successfully: Dishka, NumPyro, Dymos, PyFar, Amaranth, Robocop, Meltano, Python-Control, QuTiP and EODAG. Nox, Moto and Werkzeug jobs failed at their dataset-selector reproduction steps; those failures remain candidate-specific and are not counted as successful reproductions. NumPyro's latest artifact and exact 2/2 base-fail plus 2/2 fixed-pass result are recorded in its candidate row. The preflight job succeeded, but its readiness report still has 14 blockers and zero accepted cases.",
+    "workflow_run_id": 44338919763,
+    "head_commit": "f838660fdfcdd2ec92a3983a70e5f3f894732675",
+    "status": "partially_completed_with_candidate_specific_failures",
+    "candidate_job_count": 13,
+    "successful_reproductions": 9,
+    "failed_reproductions": 3,
+    "in_progress_reproductions": 1,
+    "summary": "At the latest poll, nine candidate jobs completed successfully: Dishka, Python-Control, EODAG, Amaranth, Robocop, NumPyro, PyFar, Meltano and Dymos. Nox, Moto and Werkzeug completed with selector-reproduction failures and are not counted as successful. QuTiP was still in progress. NumPyro job 134923384282 succeeded and its artifact 14441559416 has SHA-256 b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360. The separate no-inference preflight job succeeded, but readiness still has 14 blockers and zero accepted cases.",
     "no_inference": true,
     "artifacts_are_github_actions_artifacts": true
   }
