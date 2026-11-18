@@ -69,7 +69,7 @@ Secondary reporting includes partial support, all six evidence-support categorie
 
 1. A data manager prepares response packets and randomized IDs. The key linking response ID to case, tier and policy is access-restricted.
 2. Each rater scores each assigned response independently, without discussion and without access to the other rater's score.
-3. Each rating is submitted and locked with a timestamp and immutable record hash.
+3. Each rating is submitted and locked with a timestamp and immutable record hash. Both original ratings are locked before discussion.
 4. Only after both ratings for a response are locked may disagreements be discussed.
 5. The project lead records any adjudicated result separately. Both original scores remain unchanged and available for analysis.
 6. Evidence-support scoring is locked before the project lead reveals the hidden gold record for a separate gold-correctness assessment.
