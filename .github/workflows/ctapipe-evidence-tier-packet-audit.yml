@@ -1,0 +1,191 @@
+name: "CTAPIpe Evidence-Tier Packet Audit (No Inference)"
+
+on:
+  push:
+    branches:
+      - "research/**"
+    paths:
+      - ".github/workflows/ctapipe-evidence-tier-packet-audit.yml"
+      - "research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/evidence_tiers/**"
+      - "research_candidates/evidence_abstention/CTAPIPE_2730_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-18.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-nested-packets:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Verify nested packet structure and hash all tiers
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          root = Path("research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/evidence_tiers")
+          packet_paths = {tier: root / tier / "PACKET.md" for tier in ("E3", "E2", "E1")}
+          packets = {tier: path.read_bytes() for tier, path in packet_paths.items()}
+
+          assert packets["E2"].startswith(packets["E3"]), "E2 must inherit E3 byte-for-byte"
+          assert packets["E1"].startswith(packets["E2"]), "E1 must inherit E2 byte-for-byte"
+          assert len(packets["E3"]) < len(packets["E2"]) < len(packets["E1"])
+
+          e3 = packets["E3"].decode("utf-8")
+          e2 = packets["E2"].decode("utf-8")
+          e1 = packets["E1"].decode("utf-8")
+
+          hidden_terms = [
+              "cta-observatory__ctapipe-2732",
+              "PR #2732",
+              "Issue #2730",
+              "287e7685e0e963f3fb44d92832ca97ac8c265c40",
+              "5007b6ab61887d7555155edb4d1d296603a9735e",
+              "G1_MIXED_TYPE_COLUMN_TRANSFORM_REUSE",
+              "E1",
+              "E2",
+              "E3",
+              "gold mechanism",
+              "surviving_mechanism",
+          ]
+          for term in hidden_terms:
+              assert term.lower() not in e3.lower(), f"Hidden term leaked in E3: {term}"
+              assert term.lower() not in e2.lower(), f"Hidden term leaked in E2: {term}"
+              assert term.lower() not in e1.lower(), f"Hidden term leaked in E1: {term}"
+
+          assert "write_muon_parameters: False" in e3
+          assert "AttributeError: 'float' object has no attribute 'to_value'" in e2
+          assert "QuantityColumnTransform" in e2
+          assert "Field.validate" in e2
+          assert "INVALID_PARAMETERS" in e1
+          assert "radial_light_distribution" in e1
+          assert "should_compute_muon_parameters" in e1
+          assert "write_muon_parameters" in e1
+
+          tiers = {
+              "E3": {
+                  "packet_path": str(packet_paths["E3"]),
+                  "sha256": hashlib.sha256(packets["E3"]).hexdigest(),
+                  "byte_length": len(packets["E3"]),
+                  "surviving_hypotheses": [
+                      "mixed Quantity/float values are being serialized through one HDF5 column transform",
+                      "the intended field contract may instead require all Quantity values including defaults",
+                      "the intended field contract may instead require plain dimensionless numeric values",
+                      "the published config may not be the effective runtime config represented by the reported error",
+                  ],
+                  "visible_evidence": ["original bug-report title and body"],
+                  "not_visible": [
+                      "reporter traceback",
+                      "implementation source",
+                      "fixed source or PR patch",
+                      "dataset row identifier",
+                      "gold labels and tier metadata",
+                  ],
+              },
+              "E2": {
+                  "packet_path": str(packet_paths["E2"]),
+                  "sha256": hashlib.sha256(packets["E2"]).hexdigest(),
+                  "byte_length": len(packets["E2"]),
+                  "inherits": ["E3"],
+                  "surviving_hypotheses": [
+                      "mixed scalar representations trigger a Quantity-specific transform on a later float",
+                      "the field's intended canonical type may be Quantity or plain float",
+                      "the report's effective configuration remains inconsistent with the published YAML",
+                  ],
+                  "visible_evidence": [
+                      "E3 report unchanged",
+                      "reporter traceback excerpt",
+                      "unitless container field declarations",
+                      "the conditional unit check in Field.validate",
+                      "HDF5 transform registration and row-append implementation",
+                  ],
+                  "not_visible": [
+                      "muon processor's invalid/default and computed producer paths",
+                      "fixed source and PR patch",
+                      "independently run reproduction outcome",
+                      "gold labels and tier metadata",
+                  ],
+              },
+              "E1": {
+                  "packet_path": str(packet_paths["E1"]),
+                  "sha256": hashlib.sha256(packets["E1"]).hexdigest(),
+                  "byte_length": len(packets["E1"]),
+                  "inherits": ["E2", "E3"],
+                  "surviving_hypotheses": [
+                      "a calculated Quantity value and a default plain float can enter the same muon telescope table, and the HDF5 transform is reused across rows",
+                      "the normative contract direction remains a separate question because the docstring and container declaration differ",
+                      "the published config/effective-config discrepancy remains a provenance caveat",
+                  ],
+                  "visible_evidence": [
+                      "E2 evidence unchanged",
+                      "MuonProcessor default/invalid paths",
+                      "MuonProcessor calculated parameter path",
+                      "radial_light_distribution base return values",
+                      "ProcessorTool processing order and configuration gate",
+                      "DataWriter muon-write flag gate",
+                  ],
+                  "not_visible": [
+                      "fixed source and PR patch",
+                      "upstream fix/test outcomes",
+                      "researcher-created direct test source and its outcome",
+                      "gold labels and tier metadata",
+                  ],
+              },
+          }
+          manifest = {
+              "schema_version": "0.1-ctapipe-tier-packets",
+              "candidate_internal_reference": "cta-observatory__ctapipe-2732",
+              "source_base_commit": "287e7685e0e963f3fb44d92832ca97ac8c265c40",
+              "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+              "dataset_parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+              "nested_byte_inheritance": {
+                  "E2_starts_with_E3_exact_bytes": True,
+                  "E1_starts_with_E2_exact_bytes": True,
+              },
+              "tier_packets": tiers,
+              "hidden_research_only": {
+                  "proposed_gold": "G1_MIXED_QUANTITY_FLOAT_HDF5_COLUMN_TRANSFORM_REUSE",
+                  "alternative_contracts": [
+                      "A1_UNIFORM_DIMENSIONLESS_QUANTITY_CONTRACT",
+                      "A2_UNIFORM_PLAIN_FLOAT_CONTRACT",
+                  ],
+                  "configuration_provenance_caveat": "P1_EFFECTIVE_CONFIG_DIFFERS_FROM_PUBLISHED_YAML",
+                  "human_approval_status": "pending",
+              },
+              "validation": {
+                  "packet_utf8_valid": True,
+                  "strictly_nested": True,
+                  "required_source_signals_present_at_expected_tiers": True,
+                  "fixed_source_or_PR_patch_not_visible": True,
+                  "model_load_performed": False,
+                  "model_inference_performed": False,
+                  "model_training_performed": False,
+              },
+              "limitations": [
+                  "These are proposed evidence levels and not project-lead-approved adjudication.",
+                  "Human approval of gold, alternatives, and tier memberships remains required.",
+                  "This audit verifies file bytes, nesting, and leakage guard terms only; it does not prove semantic sufficiency or calibrate abstention thresholds.",
+              ],
+          }
+          out = root / "PACKET_SET_MANIFEST.json"
+          out.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+          print(json.dumps(manifest, indent=2, ensure_ascii=False))
+          PY
+          (cd research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/evidence_tiers && find . -type f -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
+          sha256sum research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/evidence_tiers/PACKET_SET_MANIFEST.json
+
+      - name: Upload nested packet audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ctapipe-2730-evidence-tier-packet-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/evidence_tiers/
+          if-no-files-found: warn
+          retention-days: 90
