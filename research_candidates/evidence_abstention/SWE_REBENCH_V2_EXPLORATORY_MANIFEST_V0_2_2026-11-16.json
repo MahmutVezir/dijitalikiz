@@ -291,7 +291,7 @@
     {
       "instance_id": "reagento__dishka-436",
       "cohort_rank": 2,
-      "status": "stage2_stage3_pass_human_gold_and_tier_decisions_approved_final_case_acceptance_pending",
+      "status": "stage2_stage3_technical_and_human_gold_tier_approvals_passed_case_acceptance_pending_project_lead_license_and_exposure_scope_signoff",
       "issue_url": "https://github.com/reagento/dishka/issues/435",
       "pull_request_url": "https://github.com/reagento/dishka/pull/436",
       "dataset_created_at": "2025-04-15T22:52:26Z",
@@ -370,6 +370,7 @@
       "dataset_fail_to_pass_reproduction_run_id": 43878434875,
       "dataset_fail_to_pass_reproduction_log_evidence": "workflow job 133337548925; base log reports 8 failed with defect-specific assertions; fixed log reports 8 passed",
       "remaining_gates": [
+        "project_lead_confirm_prior_pipeline_debug_exposure_is_none_under_v0_2_protocol",
         "student_project_lead_full_scope_documentary_license_review_signoff_or_recorded_scope_limitation",
         "prepare_complete_schema_conformant_case_record_with_verified_artifacts_and_nested_E1_E2_E3_items",
         "run_draft_2020_12_acceptance_schema_and_fail_closed_registry_validation",
@@ -393,7 +394,14 @@
       "latest_reproduction_issue_test": "Buggy base: AssertionError: 1 != 42; fixed revision: PASS",
       "latest_reproduction_dataset_selectors": "All 8 exact FAIL_TO_PASS selectors failed on buggy base with defect-related assertions and all 8 passed on fixed revision",
       "latest_reproduction_artifact_independent_verification": "Downloaded artifact 14340572651; ZIP SHA-256 independently recalculated; ZIP CRC clean; all 32 listed inner file hashes verified; includes exact dataset Parquet and raw base/fixed logs",
-      "note_no_prior_pipeline_debug": "The master audit identifies Robocop #1371 and pdoc #812 as prior pipeline/debug-exposed exclusions. Dishka #435 is not identified among those exclusions; its first documented issue reproducer and exact selector validation were prospective case-validation runs. Full researcher source exposure is separately acknowledged. Preserve this distinction and cite the protocol's exclusion rule; do not infer model blinding or training-data absence."
+      "note_no_prior_pipeline_debug": "The master audit identifies Robocop #1371 and pdoc #812 as prior pipeline/debug-exposed exclusions. Dishka #435 is not identified among those exclusions; its first documented issue reproducer and exact selector validation were prospective case-validation runs. Full researcher source exposure is separately acknowledged. Preserve this distinction and cite the protocol's exclusion rule; do not infer model blinding or training-data absence.",
+      "case_acceptance_readiness_record_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_CASE_ACCEPTANCE_READINESS_2026-11-18.md",
+      "prior_pipeline_debug_exposure_audit": {
+        "proposed_value": "none",
+        "researcher_source_exposure": "full",
+        "evidence": "Dishka is not among the documented prior pipeline/debug exclusions (Robocop #1371 and pdoc #812); its exact issue reproducer and dataset-selector runs are recorded as prospective candidate-validation runs. The active v0.2 protocol still requires prior pipeline/debug exposure to be none; do not collapse full source exposure into that field.",
+        "human_confirmation_required": true
+      }
     },
     {
       "instance_id": "ecmwf__earthkit-data-592",
