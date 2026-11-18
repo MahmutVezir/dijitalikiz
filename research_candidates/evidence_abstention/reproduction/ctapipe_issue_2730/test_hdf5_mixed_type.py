@@ -1,4 +1,5 @@
 import astropy.units as u
+import logging
 import numpy as np
 import tables
 
@@ -26,6 +27,7 @@ class DataWriterCallHarness:
 
     def __init__(self, table_writer, write_muon_parameters):
         self._writer = table_writer
+        self.log = logging.getLogger("ctapipe.DataWriterCallHarness")
         self.write_muon_parameters = write_muon_parameters
         self._at_least_one_event = False
         self.muon_writer_calls = 0
