@@ -130,6 +130,7 @@ jobs:
           echo "$status" > ctapipe-stage2-evidence/base-hdf5-reproducer-exit-code.txt
           test "$status" -ne 0
           grep -F "'float' object has no attribute 'to_value'" ctapipe-stage2-evidence/base-hdf5-reproducer.log
+          grep -E "1 passed, 1 failed" ctapipe-stage2-evidence/base-hdf5-reproducer.log
           if grep -q "ERROR collecting" ctapipe-stage2-evidence/base-hdf5-reproducer.log; then
             echo "Collection failure is not an accepted defect-specific failure."
             exit 1
@@ -159,7 +160,7 @@ jobs:
           set -euo pipefail
           (cd upstream-ctapipe && PYTHONPATH="$GITHUB_WORKSPACE/upstream-ctapipe/src" "$GITHUB_WORKSPACE/.venv-ctapipe/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/test_hdf5_mixed_type.py") > ctapipe-stage2-evidence/fixed-hdf5-reproducer.log 2>&1
           cat ctapipe-stage2-evidence/fixed-hdf5-reproducer.log
-          grep -E "1 passed in" ctapipe-stage2-evidence/fixed-hdf5-reproducer.log
+          grep -E "2 passed in" ctapipe-stage2-evidence/fixed-hdf5-reproducer.log
 
       - name: Summarize and hash Stage 2 evidence
         if: always()
@@ -173,7 +174,7 @@ jobs:
             echo "- Frozen row: cta-observatory__ctapipe-2732"
             echo "- Frozen row SHA-256: 9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d"
             echo "- Exact selector: src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution"
-            echo "- Independent reproducer: HDF5TableWriter receives calculated muon values then default MuonParametersContainer values"
+            echo "- DataWriter.__call__ reproducer: config False skips muon writer; config True executes the real muon writer and reproduces the mixed Quantity/float HDF5 failure on base"
             echo "- No model loading, inference, or training was performed."
           } >> "$GITHUB_STEP_SUMMARY"
           (cd ctapipe-stage2-evidence && find . -maxdepth 1 -type f ! -name SHA256SUMS.txt -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
