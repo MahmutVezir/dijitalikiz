@@ -27,6 +27,8 @@ ARTIFACT_PATHS = {
     "design_decision": TRACK / "STUDY_DESIGN_DECISION_V0_2_EXPLORATORY_2026-11-16.md",
     "protocol": TRACK / "SWE_REBENCH_V2_PROTOCOL_V0_2_EXPLORATORY_DRAFT_2026-11-16.md",
     "analysis_plan": TRACK / "SWE_REBENCH_V2_ANALYSIS_PLAN_V0_2_EXPLORATORY_DRAFT_2026-11-16.md",
+    "human_evaluator_amendment": TRACK / "HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md",
+    "dual_human_scoring_rubric": TRACK / "SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md",
     "candidate_ledger": TRACK / "SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
 }
 
@@ -166,14 +168,21 @@ def evaluate(root: Path = ROOT) -> dict[str, Any]:
         if item.get("status") != "frozen" or not item.get("sha256"):
             blockers.append(f"Artifact is not frozen and hash-recorded: {item.get('path', '<unknown>')}.")
 
-    if human.get("human_human_second_rater") is not False:
-        blockers.append("The v0.2 protocol must explicitly retain the single-human-adjudicator design.")
+    if human.get("human_human_second_rater") is not True:
+        blockers.append("The v0.2 dual-human output-scoring plan must identify a second human rater.")
+    rater_b = human.get("second_human_rater", {})
+    if rater_b.get("status") != "consent_confirmed_and_case_specific_independence_screen_passed":
+        blockers.append("Rater B participation and case-specific independence/exposure screening are not confirmed.")
     if human.get("human_human_interrater_reliability_claimed") is not False:
-        blockers.append("The v0.2 protocol must not claim human-human inter-rater reliability.")
+        blockers.append("Human-human agreement must not be claimed before both original ratings exist.")
     if human.get("cohen_kappa_calculated") is not False:
-        blockers.append("Cohen's kappa must not be claimed for a single-human-adjudicator design.")
+        blockers.append("Cohen's kappa must remain uncalculated until blinded human ratings exist.")
     if human.get("ai_critique_is_human_rating") is not False:
         blockers.append("AI critique must remain advisory and must not be counted as a human rating.")
+    if not human.get("scoring_rubric_path"):
+        blockers.append("The dual-human output-scoring rubric path must be present.")
+    if human.get("second_human_tier_review") is not False:
+        blockers.append("Rater B must remain blind to and must not adjudicate hidden gold or E1/E2/E3 tier sufficiency.")
 
     accepted_count = registry.get("accepted_case_count", 0)
     accepted_projects = registry.get("accepted_project_count", 0)
@@ -227,9 +236,11 @@ def evaluate(root: Path = ROOT) -> dict[str, Any]:
         "generation_status": generation.get("status"),
         "protocol_hash_freeze_complete": preregistration.get("hash_freeze_complete"),
         "external_preregistration_required": external_registration_required,
-        "human_review_mode": "single_researcher_adjudicator",
+        "human_review_mode": "two_human_raters_for_model_outputs_single_project_lead_for_gold_and_tiers",
         "second_human_rater_required": human.get("human_human_second_rater"),
+        "second_human_rater_status": rater_b.get("status"),
         "interrater_reliability_claimed": human.get("human_human_interrater_reliability_claimed"),
+        "agreement_statistics_planned": human.get("agreement_statistics_planned", []),
         "model_loading_performed": manifest.get("model_loading_performed"),
         "model_inference_performed": manifest.get("model_inference_performed"),
         "fine_tuning_performed": manifest.get("fine_tuning_performed"),
