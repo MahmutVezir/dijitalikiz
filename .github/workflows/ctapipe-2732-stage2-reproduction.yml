@@ -177,7 +177,7 @@ jobs:
               "distributions": records,
           }
           Path("ctapipe-stage2-evidence/dependency-license-file-manifest.json").write_text(
-              json.dumps(manifest, indent=2, ensure_ascii=False) + "\\n",
+              json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
               encoding="utf-8",
           )
           print("distribution_count=", len(records))
