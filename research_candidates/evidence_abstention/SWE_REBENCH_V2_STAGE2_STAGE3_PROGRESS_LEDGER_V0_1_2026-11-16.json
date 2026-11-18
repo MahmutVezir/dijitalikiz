@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-18T14:50:00Z",
+  "generated_at_utc": "2026-11-18T15:38:21.890Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -261,12 +261,12 @@
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/NUMPYRO_1916_CANDIDATE_REVIEW_2026-11-16.md",
       "stage2_status": "passed",
-      "stage2_workflow_job_id": 134137813850,
-      "stage2_evidence_note": "Exact dataset row authenticated; both AIES and ESS warmup selectors fail on buggy base with JAX split-key array error and pass on exact fixed revision (2/2 base-fail, 2/2 fixed-pass).",
+      "stage2_workflow_job_id": 134901923864,
+      "stage2_evidence_note": "Latest branch-head repeat (run 44332892793, job 134901923864, artifact 14438938964) independently verified: artifact ZIP SHA-256 c122008c972df7e8ecf77b67a9fd050d4b54b883aea9de6dfc4b41e3dd2b67e4 matches GitHub digest; ZIP CRC and 15/15 internal SHA-256 checks pass. The exact AIES and ESS selectors executed and failed on the pinned buggy base with the JAX PRNG-key shape error (2/2 expected base failures), then both passed on exact fixed merge 5692d2da335945b756aeae02e3720b9b7f3efef2 (2/2 fixed passes). Stage 3, exposure/independence, human license-scope acknowledgement and final acceptance remain open.",
       "stage3_status": "not_started_stage2_passed",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44111403900
+      "stage2_latest_run_id": 44332892793
     },
     {
       "cohort_rank": 13,
@@ -1845,11 +1845,11 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44331092872,
-    "job_id": 134895387234,
-    "artifact_id": 14439042840,
-    "artifact_name": "evidence-abstention-preflight-logs-44331092872-1",
-    "artifact_zip_sha256": "dcc0913d2d65cb57221942b853d2d8a4f001b4da09865ccc01c1d8d3e0097c7b",
+    "workflow_run_id": 44332892793,
+    "job_id": 134901713550,
+    "artifact_id": 14439573020,
+    "artifact_name": "evidence-abstention-preflight-logs-44332892793-1",
+    "artifact_zip_sha256": "23e0fee7122e3d469a1cb7cb42864184d4548637d6f9612f64b7f871c68cec3d",
     "status": "blocked_before_inference",
     "ready_for_inference": false,
     "blocker_count": 14,
@@ -1858,14 +1858,16 @@
     "registry_status": "valid_empty_registry",
     "schema_valid": true,
     "tests": {
-      "selector_runner_contract": "15 passed",
-      "v0_2_exploratory_acceptance_and_preflight": "9 passed",
-      "evidence_packet_and_operational_packet_groups": "passed"
+      "selector_runner_contract": "6 passed",
+      "evidence_packet_and_citation_audit": "12 passed",
+      "operational_packet_and_candidate_ledger": "24 passed",
+      "v0_2_exploratory_acceptance_and_preflight": "15 passed",
+      "v0_2_design_and_scoring_amendment": "9 passed"
     },
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
-    "note": "Latest branch-head no-inference preflight job completed successfully on commit 4ef165eec58630ba468b30614e7056b3046124fa. It generated a valid report but still records 14 study-readiness blockers, zero accepted cases, and ready_for_inference=false. Candidate reproduction matrix is a separate workflow."
+    "note": "Latest branch-head no-inference preflight job completed successfully on commit 3e191afe4d10d76be1176dd8dfcf812868b8e57c. The five recorded test groups total 66 passing tests. The generated readiness report remains blocked with 14 study-readiness blockers, zero accepted cases and ready_for_inference=false. No model loading, inference or fine-tuning occurred."
   },
   "project_lead_decisions": [
     {
@@ -1879,10 +1881,10 @@
     }
   ],
   "latest_candidate_matrix_recheck": {
-    "workflow_run_id": 44331092872,
-    "head_commit": "4ef165eec58630ba468b30614e7056b3046124fa",
-    "status": "partially_completed_candidate_recheck",
-    "summary": "Dishka, NumPyro, Dymos, Amaranth, EODAG, Python-Control, Meltano, Robocop and PyFar Stage 2 repeat jobs succeeded. Nox, Moto and Werkzeug remained blocked under their unchanged strict selector/data-scope contracts. QuTiP was in progress at the time of this ledger update; no result is inferred for it.",
+    "workflow_run_id": 44332892793,
+    "head_commit": "3e191afe4d10d76be1176dd8dfcf812868b8e57c",
+    "status": "completed_with_candidate_specific_failures",
+    "summary": "Latest branch-head candidate repeat completed 10 reproduction jobs successfully: Dishka, NumPyro, Dymos, PyFar, Amaranth, Robocop, Meltano, Python-Control, QuTiP and EODAG. Nox, Moto and Werkzeug jobs failed at their dataset-selector reproduction steps; those failures remain candidate-specific and are not counted as successful reproductions. NumPyro's latest artifact and exact 2/2 base-fail plus 2/2 fixed-pass result are recorded in its candidate row. The preflight job succeeded, but its readiness report still has 14 blockers and zero accepted cases.",
     "no_inference": true,
     "artifacts_are_github_actions_artifacts": true
   }
