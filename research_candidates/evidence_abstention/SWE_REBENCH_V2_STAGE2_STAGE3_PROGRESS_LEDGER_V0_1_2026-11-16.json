@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-18T15:52:21.713Z",
+  "generated_at_utc": "2026-11-18T15:53:23.380Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -1902,5 +1902,18 @@
     "qutip_job_conclusion": "success",
     "qutip_artifact_id": 14442074993,
     "qutip_artifact_digest": "sha256:05cd87ffec35546fc7c1484cd4eeca8601973696553c4afab4cb20cfc59553a7"
+  },
+  "project_lead_supplementary_cross_check": {
+    "status": "user_reported_supporting_statement",
+    "reported_on": "2026-11-18",
+    "statement": "The project lead reported that he independently reached the same result using his own coding knowledge, then gave the same prompt to another AI system and obtained the same result.",
+    "evidence_class": "conversation_report_not_raw_artifact",
+    "source": "Project lead statement in the 2026-11-18 conversation",
+    "original_prompt_attached": false,
+    "raw_outputs_attached": false,
+    "hashed_reproduction_substitute": false,
+    "independent_blinded_rater": false,
+    "scope_note": "This is recorded at project level because the exact candidate/file scope and the original prompt/output bundle were not attached to this record. It is supplementary corroboration only and is not assigned to the NumPyro case or any individual candidate.",
+    "impact_on_acceptance": "No change to candidate acceptance, gold adjudication, exposure review, or inference authorization."
   }
 }
