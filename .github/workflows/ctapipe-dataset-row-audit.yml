@@ -155,7 +155,7 @@ jobs:
                   "license": row["license"],
                   "fail_to_pass_count": len(row["FAIL_TO_PASS"]),
                   "row_sha256": digest,
-                  "upstream_project_dataset_row_count": len(project_rows),
+                  "upstream_project_dataset_row_count": len(project_rows_raw),
               }, f, indent=2)
               f.write("\n")
           print("dataset_row_sha256=" + digest)
@@ -166,7 +166,7 @@ jobs:
               print("FAIL_TO_PASS_SELECTOR=" + selector)
           PY
           rm ctapipe-row-evidence/train-00000-of-00001.parquet
-          (cd ctapipe-row-evidence && find . -maxdepth 1 -type f ! -name SHA256SUMS.txt -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+          (cd ctapipe-row-evidence && find . -type f ! -name SHA256SUMS.txt -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
           cat ctapipe-row-evidence/dataset-row-summary.json
           cat ctapipe-row-evidence/dataset-fail-to-pass-selectors.txt
 
