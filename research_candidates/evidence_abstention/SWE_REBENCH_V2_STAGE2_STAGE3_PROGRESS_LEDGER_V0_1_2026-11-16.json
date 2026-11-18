@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-18T14:02:16.922Z",
+  "generated_at_utc": "2026-11-18T14:03:47.493Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -581,17 +581,17 @@
       "static_screening_classification": "provisional_candidate",
       "static_scope_decision": "Geçici bug adayı",
       "second_pass_disposition": "conditional_hold",
-      "second_pass_reason": "Technical Stage 2 fully passed and is independently artifact-verified. Remain conditionally held because the published issue YAML (write_muon_parameters=False) is incompatible with the reporter traceback (muon writer executed) unless an unknown override/transcription error occurred; dependency/changed-file license documentary review awaits human project-lead sign-off; full researcher source exposure and any prior pipeline-debug exclusion require human decision; gold and E1/E2/E3 remain proposals only. The complete five-row same-repository scan confirms only one CTAPIpe case can be counted; #2732 is the only selected member of the muon HDF5 defect family. E1/E2/E3 nested packet files are created and audited (run 44316015132) with clean independent artifact checksums. Human gold/tier, exposure, license-scope and final acceptance decisions remain pending. Latest branch-head Stage 2 repeat 44317298277/artifact 14433995574 has independently passed archive CRC and 136/136 inner SHA-256 verification; exact base/fixed outcomes are unchanged. The clean E1/E2/E3 packet audit is run 44316015132 (not the earlier self-referential checksum attempt). The v0.2 exploratory acceptance schema/validator was checked: `exposure.prior_pipeline_debug_exposure` must equal `none`; any other value is a permanent candidate-exclusion blocker. The record also allows `researcher_source_exposure=full`, so full source exposure itself is discloseable but does not clear the prior-pipeline-debug gate. CTAPIpe's test harness was refined against this case; the project lead must classify that exposure explicitly before acceptance. No value was silently assigned.",
+      "second_pass_reason": "Technical Stage 2 fully passed and is independently artifact-verified. Remain conditionally held because the published issue YAML (write_muon_parameters=False) is incompatible with the reporter traceback (muon writer executed) unless an unknown override/transcription error occurred; dependency/changed-file license documentary review awaits human project-lead sign-off; full researcher source exposure and any prior pipeline-debug exclusion require human decision; gold and E1/E2/E3 remain proposals only. The complete five-row same-repository scan confirms only one CTAPIpe case can be counted; #2732 is the only selected member of the muon HDF5 defect family. E1/E2/E3 nested packet files are created and audited (run 44316015132) with clean independent artifact checksums. Human gold/tier, exposure, license-scope and final acceptance decisions remain pending. Latest branch-head Stage 2 repeat 44317298277/artifact 14433995574 has independently passed archive CRC and 136/136 inner SHA-256 verification; exact base/fixed outcomes are unchanged. The clean E1/E2/E3 packet audit is run 44316015132 (not the earlier self-referential checksum attempt). The v0.2 exploratory acceptance schema/validator was checked: `exposure.prior_pipeline_debug_exposure` must equal `none`; any other value is a permanent candidate-exclusion blocker. The record also allows `researcher_source_exposure=full`, so full source exposure itself is discloseable but does not clear the prior-pipeline-debug gate. CTAPIpe's test harness was refined against this case; the project lead must classify that exposure explicitly before acceptance. No value was silently assigned. A newer repeat on the updated PR branch (run 44318994654, artifact 14434206824) has now also passed exact-base/fixed reproduction and independent archive checks (CRC PASS, 136/136 internal hashes).",
       "candidate_review_document": "research_candidates/evidence_abstention/CTAPIPE_2730_CANDIDATE_REVIEW_2026-11-16.md",
       "stage2_status": "passed_exact_frozen_selector_and_real_DataWriter_call_path_base_fail_fixed_pass",
-      "stage2_workflow_job_id": 134846673050,
+      "stage2_workflow_job_id": 134852611469,
       "stage2_evidence_note": "Authoritative latest run 44308927754/job 134817682862. Exact frozen selector failed on buggy base with defect-specific Quantity-vs-float assertion and passed on exact fixed PR head (1/1). Direct test executes exact DataWriter.__call__ with flag false and true, keeps the real _write_muon_telescope_events and HDF5TableWriter: false branch skips muon writer (PASS); true branch writes a calculated Quantity-valued event then a default float event, reproducing AttributeError 'float' object has no attribute 'to_value' at QuantityColumnTransform on base. Fixed revision: both flag branches pass (2/2) and two HDF5 rows are written. Both containers pass Container.validate() on base before the writer error. CPython 3.11.9; pip check clean. Artifact SHA-256 55b08b31634afcdc052c2f8ef973db35a1fea49c342e9e5974adf386729bbd4f; ZIP contains 137 members and 136/136 SHA256SUMS entries pass. 51 installed distributions; 106/106 detected license/NOTICE file entries captured. Three exact PR changed files are hashed and documented as repository BSD-3-Clause; root LICENSE and pyproject are unchanged base-to-fix. Student project-lead license review pending. Issue YAML says write_muon_parameters=False, which the new direct DataWriter.__call__ test proves skips muon writer; reporter traceback proves the writer executed. Thus published YAML and traceback cannot be the same effective unoverridden config; actual reporter config unresolved. Full researcher source exposure; gold/E1-E2-E3 adjudication and related issue family review pending. Latest repeat run 44311798828/job 134827539863/artifact 14430672248 SHA-256 bc2fff5cd42ad137b18a45a529732f14e0d4d265c651488cbc89994ab3c580e0: exact frozen selector fails base with type assertion and passes fixed; DataWriter.__call__ false branch skips muon writer; true branch reproduces base float.to_value exception and fixed branch writes 2 rows; fixed results 2 HDF5 tests passed. 136/136 checksum entries verified. ",
       "stage3_status": "technical_evidence_family_review_and_nested_packet_integrity_passed_human_adjudication_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44317298277,
-      "stage2_artifact_id": 14433995574,
-      "stage2_artifact_sha256": "9494954a09a956887a2f1610e948d89eb84a5fb0f776f65285ac4a224e47337e",
+      "stage2_latest_run_id": 44318994654,
+      "stage2_artifact_id": 14434206824,
+      "stage2_artifact_sha256": "aeb4666c0c69c581199c41a4a0fc140f8e0e643ea4a43a2a818005fb5b0d0100",
       "stage2_row_audit_run_id": 44314613445,
       "stage2_row_audit_artifact_id": 14430743741,
       "stage2_dataset_row_sha256": "9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d",
@@ -632,11 +632,11 @@
       },
       "stage3_human_adjudication_status": "pending_project_lead",
       "stage3_packet_audit_note": "Workflow 44316015132/job 134842193908/artifact 14432113942; ZIP SHA-256 fd7fc7ed0cf7953f51efae7ef174aa6593b4860806bafdf9e03ba8fa88a25a38. ZIP CRC PASS, 4/4 SHA256SUMS entries independently verified, no checksum self-reference. E2 starts with E3 exact bytes; E1 starts with E2 exact bytes; hidden-label leakage audit PASS. Packet set manifest SHA-256 123bcba10ed241c466299297dbf6582d45a92e8e75ad5b3e881db63d5fd14998.",
-      "stage2_latest_artifact_size_bytes": 295208,
+      "stage2_latest_artifact_size_bytes": 295206,
       "stage2_latest_artifact_members": 137,
       "stage2_latest_artifact_crc": "PASS",
       "stage2_latest_internal_sha256_entries_verified": "136/136",
-      "stage2_latest_run_note": "Latest branch-head repeat: run 44317298277, job 134846673050, artifact 14433995574. Exact frozen selector: defect-specific FAIL on buggy base (Quantity rather than float), PASS on exact fixed PR head (1/1). Real DataWriter.__call__ test: false flag skips muon writer; true flag reproduces float.to_value AttributeError on base; fixed false/true branches both pass and write both rows (2/2). Artifact independently downloaded: ZIP SHA-256 9494954a09a956887a2f1610e948d89eb84a5fb0f776f65285ac4a224e47337e; CRC PASS; 137 members; 136/136 internal SHA256SUMS entries pass. `pip check` clean. No model loading, inference, or training.",
+      "stage2_latest_run_note": "Latest completed repeat on the refreshed branch: run 44318994654, job 134852611469, artifact 14434206824. Exact frozen selector: defect-specific FAIL on buggy base (Quantity rather than float), PASS on exact fixed PR head (1/1). Real DataWriter.__call__/HDF5 reproducer: false flag skips muon writer; true flag reproduces float.to_value AttributeError on base; fixed false/true branches both pass (2/2). Artifact independently downloaded: ZIP SHA-256 aeb4666c0c69c581199c41a4a0fc140f8e0e643ea4a43a2a818005fb5b0d0100; 137 members; CRC PASS; 136/136 internal SHA256SUMS entries pass. pip check clean. No model loading, inference, or training.",
       "stage2_latest_project_family_audit": {
         "workflow_run_id": 44313191520,
         "job_id": 134832360579,
@@ -646,6 +646,12 @@
         "artifact_internal_hashes": "10/10 passed",
         "full_ctapipe_rows": 5,
         "selected_defect_family": "Only #2732 belongs to the selected muon Quantity/float HDF5 defect family; the other four same-project rows are distinct defect families and are not independent project cases."
+      },
+      "stage2_previous_verified_run": {
+        "workflow_run_id": 44317298277,
+        "job_id": 134846673050,
+        "artifact_id": 14433995574,
+        "artifact_sha256": "9494954a09a956887a2f1610e948d89eb84a5fb0f776f65285ac4a224e47337e"
       }
     },
     {
