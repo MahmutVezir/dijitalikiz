@@ -29,11 +29,22 @@ class TestV02ExploratoryPreflight(unittest.TestCase):
             report["blockers"],
         )
 
-    def test_single_human_design_does_not_require_second_rater(self):
+    def test_dual_human_output_scoring_requires_rater_b_confirmation(self):
         report = evaluate(ROOT)
-        self.assertEqual(report["human_review_mode"], "single_researcher_adjudicator")
-        self.assertFalse(report["second_human_rater_required"])
+        self.assertEqual(
+            report["human_review_mode"],
+            "two_human_raters_for_model_outputs_single_project_lead_for_gold_and_tiers",
+        )
+        self.assertTrue(report["second_human_rater_required"])
+        self.assertEqual(
+            report["second_human_rater_status"],
+            "identified_pending_explicit_consent_and_case_specific_independence_screen",
+        )
         self.assertFalse(report["interrater_reliability_claimed"])
+        self.assertIn(
+            "Rater B participation and case-specific independence/exposure screening are not confirmed.",
+            report["blockers"],
+        )
 
     def test_external_preregistration_is_not_a_v02_gate(self):
         report = evaluate(ROOT)
