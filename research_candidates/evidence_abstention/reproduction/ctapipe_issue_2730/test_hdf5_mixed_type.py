@@ -77,7 +77,7 @@ def test_config_false_does_not_execute_muon_writer(tmp_path):
         writer(make_event(11, MuonParametersContainer()))
 
         assert writer.muon_writer_calls == 0
-        assert len(table_writer.h5file.root) == 0
+        assert not table_writer.h5file.root._v_children
 
 
 def test_config_true_reproduces_hdf5_mixed_type_failure_and_fixed_success(tmp_path):
