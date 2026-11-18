@@ -123,16 +123,54 @@
   "human_review": {
     "working_team": [
       "student_project_lead",
+      "human_rater_B_identified_pending_confirmation",
       "ChatGPT_AI_research_assistant"
     ],
-    "human_human_second_rater": false,
+    "human_human_second_rater": true,
     "human_human_interrater_reliability_claimed": false,
     "cohen_kappa_calculated": false,
     "ai_critique_is_human_rating": false,
     "ai_critique_role": "advisory_only_separately_logged",
     "independent_external_audit_claimed": false,
-    "researcher_semantic_tier_decision": "single_researcher_with_explicit_rationale",
-    "institutional_approval_status": "not_assessed"
+    "researcher_semantic_tier_decision": "single_project_lead_with_explicit_rationale_and_separate_AI_advisory_critique",
+    "institutional_approval_status": "not_assessed",
+    "second_human_rater": {
+      "public_pseudonym": "Rater_B",
+      "private_working_name_not_stored_in_repository": true,
+      "status": "identified_pending_explicit_consent_and_case_specific_independence_screen",
+      "proposed_role": "independent_blinded_model_output_evidence_support_rater",
+      "consent_confirmed": false,
+      "independence_screen_complete": false,
+      "case_specific_exposure_screen_required": true,
+      "calibration_complete": false,
+      "must_not_see": [
+        "case_or_project_identity",
+        "repository_or_issue_PR",
+        "hidden_E1_E2_E3_label",
+        "P0_P1_policy_identity",
+        "source_patch_or_fixed_source",
+        "hidden_gold_mechanism",
+        "paired_response",
+        "other_rater_score"
+      ],
+      "adjudicator": "student_project_lead",
+      "is_external_auditor": false,
+      "is_gold_or_tier_adjudicator": false
+    },
+    "agreement_statistics_planned": [
+      "exact_percentage_agreement",
+      "six_category_confusion_matrix",
+      "six_category_nominal_cohen_kappa",
+      "E3_binary_endpoint_agreement_and_cohen_kappa_when_estimable",
+      "case_cluster_bootstrap_confidence_interval_if_reported"
+    ],
+    "second_human_tier_review": false,
+    "output_scoring_raters": [
+      "student_project_lead",
+      "Rater_B"
+    ],
+    "scoring_rubric_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md",
+    "amendment_path": "research_candidates/evidence_abstention/HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md"
   },
   "preregistration": {
     "status": "draft_not_registered",
@@ -155,6 +193,16 @@
       "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_ANALYSIS_PLAN_V0_2_EXPLORATORY_DRAFT_2026-11-16.md",
       "sha256": null,
       "status": "draft_not_frozen"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md",
+      "sha256": null,
+      "status": "draft_pending_Rater_B_consent_exposure_screen_and_freeze"
+    },
+    {
+      "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md",
+      "sha256": null,
+      "status": "draft_pending_Rater_B_calibration_and_freeze"
     }
   ],
   "case_registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json",
@@ -173,12 +221,12 @@
     "The exact pinned model revision identifies its license as qwen-research, not Apache-2.0. Its license evidence and non-commercial scope require human/legal review before model use.",
     "The 113-row timestamp register has 112 exact matches under the earlier issue/PR field-level fetch. The sole apparent one-second exception (simpeg/simpeg#1633) was reconciled on 2026-11-16: GitHub GET /pulls/1633 reports 2025-03-20T23:46:00Z, matching the dataset, while GET /issues/1633 reports 23:46:01Z for the same PR URL. This is an endpoint-resource distinction, not evidence of a timestamp conversion. Apply resource-type-matched comparison for all candidates. The connector did not provide response headers/request IDs or byte-authenticated raw payloads, so broader source-provenance gate remains OPEN.",
     "v0.2 sequential exploratory design amendment: target 20 cases from 20 distinct upstream projects; 15 is a preferred analysis threshold, not an eligibility floor. Retain every case that passes unchanged criteria. One case per upstream project. The earlier v0.1 confirmatory 60-project requirement remains historical and is not the selected working design.",
-    "No second human rater is part of the selected working arrangement. No human-human Cohen kappa or inter-rater reliability claim is permitted. ChatGPT critique is advisory AI input, not a human rating or independent external audit.",
+    "A second human output rater (public pseudonym Rater_B) has been identified; explicit consent, case-specific independence/exposure screening and calibration are pending. No human-human ratings or Cohen kappa have yet been produced. E1/E2/E3 tier and gold decisions remain single-project-lead judgments; ChatGPT critique is advisory only.",
     "At one raw output per six condition cells, 15 cases yield 90 outputs and 20 cases yield 120 outputs. These are planned counts, not observed outputs.",
     "The v0.2 exploratory case-acceptance schema and validator are drafted as versioned artifacts; they require CI tests and human review. Passing structural validation does not authenticate artifacts, establish legal clearance, or authorize inference.",
     "The v0.1 confirmatory manifest, case schema/validator, and two-human Panel B rubric are historical artifacts only. They do not govern v0.2 exploratory case acceptance or scoring; do not use them to claim v0.2 readiness.",
-    "The v0.2 study remains a draft and is not preregistered. No second human rater, Cohen's kappa, or independent external audit is part of this design. ChatGPT critique is advisory AI input only.",
-    "The v0.2 single-researcher scoring rubric and case-acceptance schema/validator have dedicated drafts; CI validation and human review remain required before any case is accepted or model inference is considered.",
+    "The v0.2 study remains a draft and is not preregistered. A second human output rater has been identified but is not yet consent-confirmed or exposure-cleared. No human-human agreement statistic has been calculated. No independent external audit is part of this design.",
+    "The v0.2 dual-human model-output scoring rubric and case-acceptance schema/validator are drafted. The second human rater must confirm participation, pass exposure screening and complete separate calibration; CI validation and hash freeze remain required before any output scoring.",
     "Sequential intake amendment approved by project lead: target 20 independent cases; 15 is a preferred analysis threshold, not an eligibility floor. Retain all cases that pass unchanged criteria. If N<15, report only the achieved pilot/feasibility scope under predeclared N bands; no confirmatory efficacy claim. Candidate intake order: 96 primary rows, same-project alternates as replacements, then 17 distinct-project reserves.",
     "Dishka issue #435 at primary rank 2 passed an exact issue reproducer on the pinned buggy base and fixed revision (run 43876245379). It remains not accepted pending student project lead sign-off on gold mechanism, E1/E2/E3 tiers, independence/exposure, and minimal-environment license-screen scope. No model inference was performed.",
     "Dishka #435 follow-up reproduction run 43878434875 applied the exact dataset test patch to the pinned base and ran all eight dataset FAIL_TO_PASS selectors: 8 failed on base with defect assertions and 8 passed on the fixed revision. The independent issue reproducer also failed on base and passed on fixed. Artifact 14231031919 SHA-256 6d16f0802a9e4d28e99b8e08d595c6edeeb0afce739629975e7839a4072628ce. This strengthens technical reproduction but does not constitute case acceptance or human gold/tier adjudication.",
@@ -198,7 +246,10 @@
     "EODAG Stage 2 closed on run 44117944004: exact pinned row cs-si__eodag-1536, row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47, timestamp 2025-02-21T10:04:30Z; issue reproducer base-fail/fixed-pass and both exact dataset selectors base-fail/fixed-pass (2/2 each). Artifact 14344421574 SHA-256 0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33. No inference/training; final case not accepted.",
     "Stage 2 update 2026-11-17: EODAG #1530 progressed from exact-row verification to full technical pass. Two issue-related dataset selectors executed on the exact pinned base and fixed commits: 2/2 base failures and 2/2 fixed passes; test-only patch touches tests/units/test_core.py only. The 52-distribution environment inventory, dependency lock resolution, pip check and 22-entry artifact SHA manifest are recorded. Dymos #1166 remains Stage 2 pass with 1/1 base-fail/fixed-pass and 18/18 inner hashes verified. Dymos PR creation precedes the linked issue by 2m25s; PR timestamp is the dataset timestamp resource and this chronology is disclosed. Neither case is finally accepted; no model load/inference/training authorized.",
     "Stage 2 update 2026-11-17: SkyPilot #5981 / PR #5985 passed the exact frozen dataset test selector on the exact pinned base and fixed revisions. Base failure is the expected assertion: str.lstrip('ssh-') drops the initial s in staging, returning only ssh-prod instead of ssh-prod + ssh-staging. The exact same selector passes on fixed revision. Test-only diff touched tests/unit_tests/test_sky/clouds/test_ssh.py only; no production code was applied to buggy base. Python 3.11.9; requirements.lock contains 85 pinned external distributions; pinned repeat verified all installed versions equal lock, 86 installed distributions including editable SkyPilot had complete license metadata, and pip check passed. Discovery artifact 14344533255 SHA b0df249... (17 internal hashes verified); pinned artifact 14345590500 SHA c9b41... (18 internal hashes verified). Row SHA a846e85...; lock SHA a5f56951.... Stage 2 technical pass only; Stage 3 and final acceptance remain pending; no inference.",
-    "Latest SkyPilot pinned repeat: run 44121262451, job 134172933160, artifact 14344534041, ZIP SHA-256 10f5505f390426e003a833ffa60cd026a9513c33da9b5a0d288844374057f34c. The 85-pin lock matched exactly; all 86 installed distribution records had license metadata; pip check, dataset JSON/selector serialization checks, test-only patch scope, and 1/1 base-fail plus 1/1 fixed-pass contracts succeeded. Artifact ZIP CRC and all 19 internal SHA256SUMS entries independently verified. This supersedes earlier pinned repeat 44120296408 as the latest technical run; accepted case count remains 0."
+    "Latest SkyPilot pinned repeat: run 44121262451, job 134172933160, artifact 14344534041, ZIP SHA-256 10f5505f390426e003a833ffa60cd026a9513c33da9b5a0d288844374057f34c. The 85-pin lock matched exactly; all 86 installed distribution records had license metadata; pip check, dataset JSON/selector serialization checks, test-only patch scope, and 1/1 base-fail plus 1/1 fixed-pass contracts succeeded. Artifact ZIP CRC and all 19 internal SHA256SUMS entries independently verified. This supersedes earlier pinned repeat 44120296408 as the latest technical run; accepted case count remains 0.",
+    "Human-evaluator amendment dated 2026-11-18: Rater_B is identified for independent blinded scoring of the same raw model responses as the student project lead; public repo stores no personal name. Written agreement, independence/exposure screen and calibration are pending.",
+    "Rater_B is restricted to model-output evidence-support scoring and must not see hidden gold, source patch, case identity, tier or policy labels before lock. The project lead alone retains gold and E1/E2/E3 tier decisions. Two original output ratings are preserved; disagreement adjudication occurs only after both are locked.",
+    "The dual-human scoring amendment does not waive the existing candidate exclusion for prior pipeline debugging, test-oracle troubleshooting or prompt calibration. It does not authorize model loading or inference."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
