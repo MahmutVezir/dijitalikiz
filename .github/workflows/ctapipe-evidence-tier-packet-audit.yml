@@ -75,9 +75,9 @@ jobs:
                   "sha256": hashlib.sha256(packets["E3"]).hexdigest(),
                   "byte_length": len(packets["E3"]),
                   "surviving_hypotheses": [
-                      "mixed Quantity/float values are being serialized through one HDF5 column transform",
-                      "the intended field contract may instead require all Quantity values including defaults",
-                      "the intended field contract may instead require plain dimensionless numeric values",
+                      "a row-dependent representation mismatch is causing the reported Quantity-specific conversion error",
+                      "the intended canonical field representation may be dimensionless Quantity values, including defaults",
+                      "the intended canonical field representation may be plain dimensionless numeric values",
                       "the published config may not be the effective runtime config represented by the reported error",
                   ],
                   "visible_evidence": ["original bug-report title and body"],
@@ -95,8 +95,8 @@ jobs:
                   "byte_length": len(packets["E2"]),
                   "inherits": ["E3"],
                   "surviving_hypotheses": [
-                      "mixed scalar representations trigger a Quantity-specific transform on a later float",
-                      "the field's intended canonical type may be Quantity or plain float",
+                      "the immediate failure is a plain float passed to a Quantity-specific transform registered for that column",
+                      "the intended canonical field representation remains unresolved (Quantity or plain float)",
                       "the report's effective configuration remains inconsistent with the published YAML",
                   ],
                   "visible_evidence": [
@@ -119,9 +119,9 @@ jobs:
                   "byte_length": len(packets["E1"]),
                   "inherits": ["E2", "E3"],
                   "surviving_hypotheses": [
-                      "a calculated Quantity value and a default plain float can enter the same muon telescope table, and the HDF5 transform is reused across rows",
-                      "the normative contract direction remains a separate question because the docstring and container declaration differ",
-                      "the published config/effective-config discrepancy remains a provenance caveat",
+                      "causal mechanism: a calculated Quantity and a default plain float can enter the same muon telescope table; the HDF5 transform is registered from one row and reused for the later row",
+                      "normative contract direction remains separate: the docstring says Quantity while the container default is a unitless float",
+                      "the published config/effective-config discrepancy remains a separate provenance caveat",
                   ],
                   "visible_evidence": [
                       "E2 evidence unchanged",
