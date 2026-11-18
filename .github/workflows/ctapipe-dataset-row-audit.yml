@@ -46,6 +46,30 @@ jobs:
           import pyarrow.parquet as pq
 
           parquet_path = "ctapipe-row-evidence/train-00000-of-00001.parquet"
+          project_table = pq.read_table(
+              parquet_path,
+              columns=["instance_id", "repo"],
+              filters=[("repo", "=", "cta-observatory/ctapipe")],
+          )
+          project_rows = sorted(
+              project_table.to_pylist(),
+              key=lambda x: (x["instance_id"], x["repo"]),
+          )
+          project_record = {
+              "repository": "cta-observatory/ctapipe",
+              "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+              "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+              "matching_row_count": len(project_rows),
+              "instances": project_rows,
+              "interpretation": "A count of frozen dataset rows for this exact repository identity; not a semantic related-issue-family adjudication and not proof of independent defect mechanisms.",
+          }
+          with open("ctapipe-row-evidence/upstream-project-row-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(project_record, f, indent=2)
+              f.write("\\n")
+          print("upstream_project_row_count=" + str(len(project_rows)))
+          for project_row in project_rows:
+              print("UPSTREAM_PROJECT_INSTANCE=" + str(project_row["instance_id"]))
+
           columns = [
               "instance_id", "repo", "base_commit", "created_at",
               "language", "license", "FAIL_TO_PASS", "problem_statement",
@@ -84,6 +108,7 @@ jobs:
                   "license": row["license"],
                   "fail_to_pass_count": len(row["FAIL_TO_PASS"]),
                   "row_sha256": digest,
+                  "upstream_project_dataset_row_count": len(project_rows),
               }, f, indent=2)
               f.write("\n")
           print("dataset_row_sha256=" + digest)
