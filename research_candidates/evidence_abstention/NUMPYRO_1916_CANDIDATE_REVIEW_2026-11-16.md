@@ -43,14 +43,14 @@ The source-level difference matches the observed runtime trace. These anchors su
 
 ## 3. Latest exact Stage 2 reproduction — 18 November 2026
 
-Latest branch-head workflow: https://github.com/MahmutVezir/dijitalikiz/actions/runs/44337982370
+Latest branch-head workflow: https://github.com/MahmutVezir/dijitalikiz/actions/runs/44338919763
 
-- Workflow run: `44337982370`
-- Job: `134919948613` (`numpyro-issue-1916-reproduction`)
+- Workflow run: `44338919763`
+- Job: `134923384282` (`numpyro-issue-1916-reproduction`)
 - Job conclusion: **success**
-- Artifact ID: `14443210820`
+- Artifact ID: `14441559416`
 - Artifact: `numpyro-issue-1916-reproduction`
-- Artifact ZIP SHA-256: `f39d21e0d3d2c4719b16d8639ca84d8349ebba42c99a7c5276ed81e916a720d5`
+- Artifact ZIP SHA-256: `b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360`
 - Independent local verification: outer SHA-256 matched the GitHub artifact digest; ZIP CRC passed; all 15 payload-file hashes in `SHA256SUMS.txt` passed.
 
 Observed selector results, using the same pinned CPU environment and the same two test selectors:
