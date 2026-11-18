@@ -688,7 +688,17 @@
       },
       "stage3_rater_b_ctapipe_exposure_concurrence_reported": true,
       "stage3_rater_b_ctapipe_exposure_concurrence_reported_date": "2026-11-18",
-      "stage3_rater_b_ctapipe_exposure_concurrence_scope": "CTAPIpe #2732 prior pipeline/debug exposure classification and exclusion only; does not establish role consent, case-specific independence screening or calibration."
+      "stage3_rater_b_ctapipe_exposure_concurrence_scope": "CTAPIpe #2732 prior pipeline/debug exposure classification and exclusion only; does not establish role consent, case-specific independence screening or calibration.",
+      "project_lead_reported_supplementary_cross_check": {
+        "date": "2026-11-18",
+        "status": "reported_by_project_lead_not_independently_archived",
+        "self_check": "Project lead reports independently reproducing the same technical conclusion using their programming knowledge.",
+        "separate_ai_check": "Project lead reports a separate AI tool returned the same conclusion.",
+        "exact_code_language_environment_and_logs": "not supplied in the report; not invented",
+        "ai_model_prompt_and_raw_output": "not supplied in the report; not invented",
+        "interpretation": "Supplementary corroboration only; neither is a substitute for the pinned exact-base/fixed reproduction artifact or an independent human audit.",
+        "record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_REPORTED_CROSS_CHECK_CTAPIPE_2732_2026-11-18.md"
+      }
     },
     {
       "cohort_rank": 32,
@@ -1803,64 +1813,27 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44324115970,
-    "job_id": 134870648464,
-    "artifact_id": 14435758108,
-    "artifact_name": "evidence-abstention-preflight-logs-44324115970-1",
-    "artifact_zip_sha256": "a8695a297f9a9a5e2d51c5f7afc37a8daed771d6069f94f12efc3e61a22f08c8",
-    "artifact_size_bytes": 3752,
-    "archive_members": 5,
-    "zip_crc": "PASS",
+    "workflow_run_id": 44331092872,
+    "job_id": 134895387234,
+    "artifact_id": 14439042840,
+    "artifact_name": "evidence-abstention-preflight-logs-44331092872-1",
+    "artifact_zip_sha256": "dcc0913d2d65cb57221942b853d2d8a4f001b4da09865ccc01c1d8d3e0097c7b",
     "status": "blocked_before_inference",
     "ready_for_inference": false,
-    "blocker_count": 11,
+    "blocker_count": 14,
     "accepted_case_count": 0,
     "accepted_project_count": 0,
     "registry_status": "valid_empty_registry",
     "schema_valid": true,
-    "test_groups": [
-      {
-        "name": "packet_audit",
-        "tests": 12,
-        "result": "PASS"
-      },
-      {
-        "name": "operational_packet_and_triage",
-        "tests": 24,
-        "result": "PASS"
-      },
-      {
-        "name": "selector_runner_contract",
-        "tests": 6,
-        "result": "PASS"
-      },
-      {
-        "name": "v0.2_exploratory_acceptance_and_preflight",
-        "tests": 15,
-        "result": "PASS"
-      }
-    ],
-    "total_tests_passed": 57,
-    "runner_smoke_test": {
-      "workflow_run_id": 44324115634,
-      "job_id": 134870646270,
-      "result": "PASS",
-      "executable_steps": 1
+    "tests": {
+      "selector_runner_contract": "15 passed",
+      "v0_2_exploratory_acceptance_and_preflight": "9 passed",
+      "evidence_packet_and_operational_packet_groups": "passed"
     },
-    "blockers": [
-      "Dataset validation gate remains open: source provenance/license and raw timestamp authentication are not fully closed.",
-      "Underlying upstream source and changed-file license review is not closed.",
-      "Dataset timestamp provenance is not yet authenticated against raw upstream payloads.",
-      "The exact immutable model revision's license/use review is not approved.",
-      "The exact model/tokenizer/runtime environment has not been verified.",
-      "Generation settings are still draft and have not been frozen.",
-      "The protocol, analysis plan, generation settings, and scoring rules have not completed the internal hash freeze.",
-      "Artifact is not frozen and hash-recorded: research_candidates/evidence_abstention/STUDY_DESIGN_DECISION_V0_2_EXPLORATORY_2026-11-16.md.",
-      "Artifact is not frozen and hash-recorded: research_candidates/evidence_abstention/SWE_REBENCH_V2_PROTOCOL_V0_2_EXPLORATORY_DRAFT_2026-11-16.md.",
-      "Artifact is not frozen and hash-recorded: research_candidates/evidence_abstention/SWE_REBENCH_V2_ANALYSIS_PLAN_V0_2_EXPLORATORY_DRAFT_2026-11-16.md.",
-      "No accepted case is registered; at least one fully accepted independent-project case is required before any model inference."
-    ],
-    "note": "Latest completed no-inference preflight job on the PR branch: 57/57 tests pass and report generation succeeds, but 11 study-readiness blockers remain. Hosted runner smoke test passes; runner allocation is not the current blocker in this report. The full workflow's candidate reproduction matrix is separate from this completed preflight job. Valid empty registry does not imply an accepted case or inference authorization."
+    "model_loading_performed": false,
+    "model_inference_performed": false,
+    "fine_tuning_performed": false,
+    "note": "Latest branch-head no-inference preflight job completed successfully on commit 4ef165eec58630ba468b30614e7056b3046124fa. It generated a valid report but still records 14 study-readiness blockers, zero accepted cases, and ready_for_inference=false. Candidate reproduction matrix is a separate workflow."
   },
   "project_lead_decisions": [
     {
