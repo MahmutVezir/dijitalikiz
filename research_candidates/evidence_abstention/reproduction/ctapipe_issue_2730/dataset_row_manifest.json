@@ -18,5 +18,11 @@
   "discovery_workflow_run_id": 44296556380,
   "discovery_artifact_id": 14423413288,
   "discovery_artifact_sha256": "5c43e72263632057c87046d72c494aa7fc50ecbe8a207fead7bc39eca55d3a94",
-  "note": "Canonical row bytes and problem_statement were not saved into the artifact; row hash and selector were generated from the exact pinned Parquet file. The row hash still needs independent recalculation from a retained canonical row or a repeat row-audit artifact."
+  "note": "The canonical row JSON and exact original selector were saved in the successful Python 3.11.9 row-audit artifact; its SHA-256 matches the GitHub artifact digest and all internal SHA256SUMS checks passed. Canonical row SHA-256 9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d was independently recalculated from retained canonical row JSON. The row problem_statement reproduces the issue YAML with write_muon_parameters: False; this remains inconsistent with the full traceback showing the muon writer executed.",
+  "row_audit_workflow_run_id": 44298746628,
+  "row_audit_artifact_id": 14424887790,
+  "row_audit_artifact_sha256": "4653884c0f6f127c0d8150b3011924bc1be0c515800a5df762ac839be67c151c",
+  "canonical_row_sha256_independently_reverified": true,
+  "canonical_row_retained_in_audit_artifact": true,
+  "fail_to_pass_selector_status": "exactly one selector extracted unchanged and hash recorded"
 }
