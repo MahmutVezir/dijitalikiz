@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-18T13:56:58.608Z",
+  "generated_at_utc": "2026-11-18T14:02:16.922Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -581,7 +581,7 @@
       "static_screening_classification": "provisional_candidate",
       "static_scope_decision": "Geçici bug adayı",
       "second_pass_disposition": "conditional_hold",
-      "second_pass_reason": "Technical Stage 2 fully passed and is independently artifact-verified. Remain conditionally held because the published issue YAML (write_muon_parameters=False) is incompatible with the reporter traceback (muon writer executed) unless an unknown override/transcription error occurred; dependency/changed-file license documentary review awaits human project-lead sign-off; full researcher source exposure and any prior pipeline-debug exclusion require human decision; gold and E1/E2/E3 remain proposals only. The complete five-row same-repository scan confirms only one CTAPIpe case can be counted; #2732 is the only selected member of the muon HDF5 defect family. E1/E2/E3 nested packet files are created and audited (run 44316015132) with clean independent artifact checksums. Human gold/tier, exposure, license-scope and final acceptance decisions remain pending. Latest branch-head Stage 2 repeat 44317298277/artifact 14433995574 has independently passed archive CRC and 136/136 inner SHA-256 verification; exact base/fixed outcomes are unchanged. The clean E1/E2/E3 packet audit is run 44316015132 (not the earlier self-referential checksum attempt).",
+      "second_pass_reason": "Technical Stage 2 fully passed and is independently artifact-verified. Remain conditionally held because the published issue YAML (write_muon_parameters=False) is incompatible with the reporter traceback (muon writer executed) unless an unknown override/transcription error occurred; dependency/changed-file license documentary review awaits human project-lead sign-off; full researcher source exposure and any prior pipeline-debug exclusion require human decision; gold and E1/E2/E3 remain proposals only. The complete five-row same-repository scan confirms only one CTAPIpe case can be counted; #2732 is the only selected member of the muon HDF5 defect family. E1/E2/E3 nested packet files are created and audited (run 44316015132) with clean independent artifact checksums. Human gold/tier, exposure, license-scope and final acceptance decisions remain pending. Latest branch-head Stage 2 repeat 44317298277/artifact 14433995574 has independently passed archive CRC and 136/136 inner SHA-256 verification; exact base/fixed outcomes are unchanged. The clean E1/E2/E3 packet audit is run 44316015132 (not the earlier self-referential checksum attempt). The v0.2 exploratory acceptance schema/validator was checked: `exposure.prior_pipeline_debug_exposure` must equal `none`; any other value is a permanent candidate-exclusion blocker. The record also allows `researcher_source_exposure=full`, so full source exposure itself is discloseable but does not clear the prior-pipeline-debug gate. CTAPIpe's test harness was refined against this case; the project lead must classify that exposure explicitly before acceptance. No value was silently assigned.",
       "candidate_review_document": "research_candidates/evidence_abstention/CTAPIPE_2730_CANDIDATE_REVIEW_2026-11-16.md",
       "stage2_status": "passed_exact_frozen_selector_and_real_DataWriter_call_path_base_fail_fixed_pass",
       "stage2_workflow_job_id": 134846673050,
@@ -1759,5 +1759,58 @@
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false
     }
-  ]
+  ],
+  "latest_no_inference_preflight": {
+    "workflow_run_id": 44318994967,
+    "job_id": 134852608128,
+    "artifact_id": 14434555521,
+    "artifact_name": "evidence-abstention-preflight-logs-44318994967-1",
+    "artifact_zip_sha256": "85d23c485ff9007b6a5f9311d723dc757b540dee46551271724dc1e0f6e4dc7d",
+    "artifact_size_bytes": 3750,
+    "archive_members": 5,
+    "zip_crc": "PASS",
+    "status": "blocked_before_inference",
+    "ready_for_inference": false,
+    "blocker_count": 11,
+    "accepted_case_count": 0,
+    "accepted_project_count": 0,
+    "registry_status": "valid_empty_registry",
+    "schema_valid": true,
+    "test_groups": [
+      {
+        "name": "packet_audit",
+        "tests": 12,
+        "result": "PASS"
+      },
+      {
+        "name": "operational_packet_and_triage",
+        "tests": 24,
+        "result": "PASS"
+      },
+      {
+        "name": "selector_runner_contract",
+        "tests": 6,
+        "result": "PASS"
+      },
+      {
+        "name": "v0.2_exploratory_acceptance_and_preflight",
+        "tests": 15,
+        "result": "PASS"
+      }
+    ],
+    "blockers": [
+      "Dataset validation gate remains open: source provenance/license and raw timestamp authentication are not fully closed.",
+      "Underlying upstream source and changed-file license review is not closed.",
+      "Dataset timestamp provenance is not yet authenticated against raw upstream payloads.",
+      "The exact immutable model revision's license/use review is not approved.",
+      "The exact model/tokenizer/runtime environment has not been verified.",
+      "Generation settings are still draft and have not been frozen.",
+      "The protocol, analysis plan, generation settings, and scoring rules have not completed the internal hash freeze.",
+      "Study design decision file is not frozen and hash-recorded.",
+      "v0.2 protocol draft is not frozen and hash-recorded.",
+      "v0.2 analysis plan is not frozen and hash-recorded.",
+      "No accepted case is registered; at least one fully accepted independent-project case is required before any model inference."
+    ],
+    "note": "The workflow succeeded as a no-inference audit: tests and report generation passed, but the reported project readiness is blocked. A valid empty registry and valid schema are not case acceptance or inference authorization."
+  }
 }
