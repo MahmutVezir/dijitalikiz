@@ -137,3 +137,15 @@ The updated PR head was audited again by workflow run `44321922276`, job `134862
 All 57 tests passed: 12 packet-audit, 24 operational-packet/triage, 6 selector-runner, and 15 v0.2 acceptance/preflight tests. The resulting report nevertheless remains `blocked_before_inference`, `ready_for_inference=false`, with 11 blockers and 0 accepted cases/projects. It confirms a valid empty registry and a valid acceptance schema, not an accepted case. The blocker list is unchanged from section 9; no inference, fine-tuning, or training was performed.
 
 This run supersedes section 9's earlier completed preflight reference. The separate workflow fan-out for candidate reproductions continued independently; those results must be assessed and recorded per candidate rather than counted from job completion alone.
+
+
+## 11. Latest Dishka reproduction repeat and project preflight (2026-11-18)
+
+The most recent Dishka repeat on this branch completed successfully:
+- Run `44322262968`, job `134864350055`, artifact `14436220610` (`dishka-issue-435-reproduction-44322262968-1`).
+- Downloaded ZIP SHA-256: `c40178034053a7d2f3eead80cb8dc22027578767406384711d54e670d9234a5a`; archive size 54,107,858 bytes; 33 members; CRC PASS; **32/32** internal SHA256SUMS entries passed.
+- Issue reproducer: buggy base `AssertionError: 1 != 42`; fixed revision PASS.
+- Frozen dataset selectors: **8/8 fail** on the buggy base and **8/8 pass** on the fixed revision (`8 passed in 0.07s`).
+- This is another technical replication only; it does not constitute final case acceptance or close the limited license/exposure gates.
+
+The same PR-head no-inference preflight run `44322262968`, job `134864024369`, artifact `14434582787`, was downloaded and checked. ZIP SHA-256: `529b14f588d7850930aa94dc49b0b1caa1f05d56919f8e3b5f4b6d324b27e4e7`; CRC PASS; five members. The report remains `blocked_before_inference`, `ready_for_inference=false`, with 11 blockers, 0 accepted cases/projects, and no model loading/inference/fine-tuning. All 57 preflight tests passed (12 + 24 + 6 + 15).
