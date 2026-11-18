@@ -107,7 +107,7 @@ Any confidence interval for agreement statistics must resample at the independen
 
 Before scoring, Rater B must confirm willingness to participate and complete a case-specific screen for prior source/gold/patch/prompt/output exposure, candidate-specific pipeline/debug work and involvement in packet construction. A separate calibration set must be permanently excluded from the study sample. Calibration must occur before any study outputs are generated or exposed.
 
-The student project lead retains final responsibility for protocol, candidate acceptance, gold/tier decisions, deviations and interpretation. Rater B is a second human output rater, not an external auditor or legal reviewer. ChatGPT may provide a separately labelled advisory critique but is never counted as a human rater.
+The student project lead retains final responsibility for protocol, candidate acceptance, gold/tier decisions, deviations and interpretation. Rater B is a second human output rater, not an external auditor or legal reviewer. ChatGPT is an AI assistant. ChatGPT is never counted as a human rater.
 
 ## 9. Prohibited practices
 
