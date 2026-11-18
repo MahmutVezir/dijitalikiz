@@ -292,3 +292,17 @@ The project-wide no-inference preflight was rerun on the updated PR head:
 The 11 blockers are: dataset/source provenance and license gate open; upstream changed-file/source license review open; raw upstream timestamp authentication open; exact Qwen revision license/use approval open; model/tokenizer/runtime verification not run; generation settings not frozen; protocol/analysis/generation/scoring hash freeze incomplete; the study-design decision, v0.2 protocol, and v0.2 analysis plan are not yet frozen/hash-recorded; and no accepted independent-project case is registered. The first five are substantive evidence/model gates; the remaining items include protocol finalization and the minimum one accepted case.
 
 **Current conclusion:** CTAPIpe Stage 2 is technically reproducible and its packet artefacts are structurally clean. It is not accepted. The v0.2 study is not ready for inference. No model loading, inference, fine-tuning, or training has occurred or is authorized.
+
+
+## 15. Latest CTAPIpe Stage 2 repeat on the refreshed branch (2026-11-18)
+
+This section supersedes section 13's “latest repeat” reference. After the evidence records were refreshed, the CTAPIpe workflow ran again on the updated branch:
+
+- Run `44318994654`; job `134852611469`; all substantive workflow steps completed successfully.
+- Artifact `14434206824`, `ctapipe-2732-stage2-base-fixed-44318994654-1`.
+- ZIP SHA-256: `aeb4666c0c69c581199c41a4a0fc140f8e0e643ea4a43a2a818005fb5b0d0100`; 295,206 bytes; 137 members; ZIP CRC PASS; **136/136** internal SHA256SUMS entries independently verified.
+- Frozen selector: exact buggy base FAIL on the Quantity-vs-float assertion; exact fixed PR head PASS (1/1).
+- Direct `DataWriter.__call__`/HDF5 reproduction: false flag skips muon writer; true flag produces the expected `float.to_value` AttributeError on buggy base. Fixed revision passes both config branches and writes both rows (2/2).
+- `pip check` reports no broken requirements. No model was loaded; no inference, fine-tuning, or training occurred.
+
+The new run is a repeat of technical reproduction only. It does not resolve the published YAML versus reporter-traceback effective-configuration discrepancy, supply student project-lead adjudication, or change the conditional-hold / not-accepted disposition.
