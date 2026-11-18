@@ -29,6 +29,8 @@ ARTIFACT_PATHS = {
     "analysis_plan": TRACK / "SWE_REBENCH_V2_ANALYSIS_PLAN_V0_2_EXPLORATORY_DRAFT_2026-11-16.md",
     "human_evaluator_amendment": TRACK / "HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md",
     "dual_human_scoring_rubric": TRACK / "SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md",
+    "rater_b_consent_and_exposure_template": TRACK / "RATER_B_CONSENT_AND_EXPOSURE_SCREEN_TEMPLATE_V0_1_2026-11-18.md",
+    "ctapipe_exposure_decision_proposal": TRACK / "CTAPIPE_2732_EXPOSURE_DECISION_PROPOSAL_2026-11-18.md",
     "candidate_ledger": TRACK / "SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
 }
 
