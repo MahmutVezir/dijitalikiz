@@ -163,3 +163,68 @@ No model was loaded; no inference or fine-tuning was performed.
 - Stage 3: **not started**.
 - Final case acceptance: **not accepted**.
 - Model loading/inference/training: **not performed**.
+
+
+## 8. Authoritative Stage 2 rerun and flag-discrepancy experiment (2026-11-18 addendum)
+
+The earlier Stage 2 runs established the frozen selector and direct HDF5 base-fail/fixed-pass result. The latest complete run now strengthens the direct reproducer by exercising the actual upstream `DataWriter.__call__` method and explicitly testing the flag stated in the issue YAML.
+
+### Latest successful run
+
+- Workflow run: `44308927754`
+- Job: `134817682862`
+- Artifact ID: `14429866192`
+- Artifact name: `ctapipe-2732-stage2-base-fixed-44308927754-1`
+- Artifact ZIP SHA-256: `55b08b31634afcdc052c2f8ef973db35a1fea49c342e9e5974adf386729bbd4f`
+- ZIP file count: 137 (including `SHA256SUMS.txt`)
+- Internal SHA256SUMS entries independently rechecked: **136/136 passed**.
+
+### Exact DataWriter flag-path test
+
+The updated reproduction calls the exact production `DataWriter.__call__` method, with unrelated trigger/DL1 writers isolated and the real `DataWriter._write_muon_telescope_events` and `HDF5TableWriter` retained.
+
+- With `write_muon_parameters=False`: the call passed and the muon writer call count stayed at zero.
+- With `write_muon_parameters=True` on the buggy base: first calculated Quantity-valued muon event was written; the second default-float event reached the actual muon writer and failed at `QuantityColumnTransform.__call__` with `AttributeError: 'float' object has no attribute 'to_value'`.
+- On the exact fixed PR head: both false/true branches passed; the enabled branch wrote both rows to the HDF5 muon table.
+- Frozen upstream selector: defect-specific failure on base and one pass on fixed, unchanged.
+
+This establishes that the issue's published `write_muon_parameters: False` YAML cannot, if effective and unoverridden, generate the traceback in the same run. Exact-base `ProcessorTool.should_compute_muon_parameters` also gates MuonProcessor on this flag. Therefore the YAML and traceback are internally inconsistent as published. **The reporter's actual effective configuration remains unknown**. We must not call it a typo, assert an override, or silently change the source YAML.
+
+### Updated dependency and changed-file license inventory
+
+The latest artifact includes:
+- Exact-base root LICENSE (BSD-3-Clause), SHA-256 `c6bbc92e621766f4c19c9cd223d377cfa40df0073908da2398b2efbf9e5085b2`.
+- Exact fixed-revision snapshots of all 3 PR-changed files, including Git blob SHA-1 and SHA-256.
+- A changed-file BSD-3-Clause inheritance manifest, SHA-256 `25f3c1a633a0df6a604fd301efad7c47ba74a8a8867d37292959c8aff99a626e`.
+- Installed-distribution metadata for 51 distributions.
+- 106 detected license/NOTICE file entries captured (106/106); no detected file exceeded the capture limit.
+- Dependency license file manifest SHA-256 `51a9b64dfca57fa03a0553e2ad23bb96dcb0f70d85c4a8d263f4a019ee5fa66f`.
+- `pip check`: no broken requirements.
+
+The exact changed-file and dependency inventory is recorded in `CTAPIPE_2730_LICENSE_SCREEN_DRAFT_2026-11-18.md`. It flags third-party or bundled license notices in NumPy/SciPy, Blosc2, Docutils, llvmlite/Numba, tqdm, and other installed packages. This remains documentary screening only, not legal advice or a blanket redistribution clearance. Student project-lead review is pending.
+
+## 9. Researcher exposure and cohort independence caveat
+
+The upstream repository metadata identifies `cta-observatory/ctapipe` as canonical (`fork=false`). The frozen 96-primary-candidate queue lists a single CTAPIpe row at rank 31; no second CTAPIpe project row is listed for counting as an independent project. This is not a complete semantic related-defect-family audit, which remains pending.
+
+The student researcher and AI research assistant have now reviewed the issue, reporter traceback, base/fixed source, regression test, HDF5 mechanism, and direct reproduction. Record **full researcher source exposure**. No model prompt calibration, model output scoring, model inference, or model training occurred. The selected model release predates the issue/PR timestamps, but its complete training-data cutoff and absence of related code cannot be independently proven.
+
+This candidate's technical test harness was also refined against this specific case; that is a candidate-level technical exposure, not a blinded review. Under the exploratory protocol, it must not be described as researcher-blinded or as an independent human adjudication. Whether this candidate can remain in the exploratory feasibility sample versus being excluded under the prior pipeline-debug exposure rule must be explicitly decided by the project lead; do not infer that it qualifies for a confirmatory sample.
+
+## 10. Current decision after the 2026-11-18 rerun
+
+- Frozen dataset row and original selector: **authenticated**.
+- Exact frozen selector: **base-fail / fixed-pass**.
+- Direct DataWriter/HDF5 reproduction: **base-fail / fixed-pass**, with the false/true config branch tested.
+- Container validation: both mixed-value containers pass; HDF5 transform later fails on base.
+- Source-level mechanism: **corroborated** by source, reporter traceback, and direct reproduction.
+- Source license: exact base BSD-3-Clause; all PR changed files recorded as inheriting that license in documentary screen.
+- Dependency notices: 106 captured files across 51 installed distributions; human scope review pending.
+- Issue YAML/effective-config inconsistency: **proven, actual reporter configuration unresolved**.
+- Gold and E3/E2/E1: AI proposal drafted; human project-lead decision pending.
+- Independence / related issue family / exposure adjudication: pending; full source exposure disclosed.
+- Technical Stage 2: **PASS**.
+- Candidate disposition: **conditional hold**.
+- Stage 3 human adjudication: not complete.
+- Final case acceptance: **not accepted**.
+- Model load, inference, or training: not performed or authorized.
