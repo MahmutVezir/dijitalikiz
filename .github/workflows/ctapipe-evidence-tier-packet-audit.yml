@@ -178,7 +178,7 @@ jobs:
           out.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + chr(10), encoding="utf-8")
           print(json.dumps(manifest, indent=2, ensure_ascii=False))
           PY
-          (cd research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/evidence_tiers && find . -type f -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
+          (cd research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/evidence_tiers && find . -type f ! -name SHA256SUMS.txt -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
           sha256sum research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/evidence_tiers/PACKET_SET_MANIFEST.json
 
       - name: Upload nested packet audit
