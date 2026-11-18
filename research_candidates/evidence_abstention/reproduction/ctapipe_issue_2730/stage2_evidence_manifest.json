@@ -45,22 +45,39 @@
     "installed_distribution_count": 51,
     "dependency_license_metadata_artifact": "dependency-license-metadata.json",
     "dependency_license_metadata_sha256": "f9151d1e3824a96da76dff15401e4e112a904fd4f25a52c2865903e1e1d3a868",
-    "dependency_license_status": "metadata captured for 51 installed distributions; no distribution lacked all of license field, license classifier, and detected license file. 50 had detected license files; tqdm had SPDX-like license field and classifiers but no license file in captured metadata. Human scope review remains pending."
+    "dependency_license_status": "metadata captured for 51 installed distributions; no distribution lacked all of license field, license classifier, and detected license file. 50 had detected license files; tqdm had SPDX-like license field and classifiers but no license file in captured metadata. Human scope review remains pending.",
+    "dependency_license_file_manifest": "dependency-license-file-manifest.json",
+    "dependency_license_file_manifest_sha256": "51a9b64dfca57fa03a0553e2ad23bb96dcb0f70d85c4a8d263f4a019ee5fa66f",
+    "dependency_license_capture": "106/106 detected installed license/notice files captured across 51 distributions; zero detected candidates uncaptured by the 2 MB file-size rule.",
+    "root_license": {
+      "path": "LICENSE",
+      "expression": "BSD-3-Clause",
+      "base_commit": "287e7685e0e963f3fb44d92832ca97ac8c265c40",
+      "git_blob_sha1": "7d85dda24fa481e24c4b33dd98dbc13245ee1fd2",
+      "content_sha256": "c6bbc92e621766f4c19c9cd223d377cfa40df0073908da2398b2efbf9e5085b2"
+    },
+    "changed_file_license_manifest": "changed-file-license-manifest.json",
+    "changed_file_license_manifest_sha256": "25f3c1a633a0df6a604fd301efad7c47ba74a8a8867d37292959c8aff99a626e",
+    "changed_file_license_status": "3/3 PR changed paths captured with fixed Git blob SHA-1 and content SHA-256; LICENSE and pyproject.toml unchanged between base and fixed; no root NOTICE at base; documentary repository BSD-3-Clause inheritance screen. Human project-lead review pending.",
+    "license_screen_document": "research_candidates/evidence_abstention/CTAPIPE_2730_LICENSE_SCREEN_DRAFT_2026-11-18.md",
+    "scipy": "1.15.2",
+    "numba": "0.60.0",
+    "llvmlite": "0.43.0"
   },
   "reproduction": {
-    "workflow_run_id": 44300812600,
-    "job_id": 134789741250,
-    "artifact_id": 14424704542,
-    "artifact_name": "ctapipe-2732-stage2-base-fixed-44300812600-1",
-    "artifact_zip_sha256": "bc5c7c022cb0b7685415877beea3d678945a5740dcc21b44b1989e224a0f3426",
-    "artifact_internal_hashes": "22/22 evidence-file hashes verified",
+    "workflow_run_id": 44308927754,
+    "job_id": 134817682862,
+    "artifact_id": 14429866192,
+    "artifact_name": "ctapipe-2732-stage2-base-fixed-44308927754-1",
+    "artifact_zip_sha256": "55b08b31634afcdc052c2f8ef973db35a1fea49c342e9e5974adf386729bbd4f",
+    "artifact_internal_hashes": "136/136 SHA256SUMS entries independently verified; 137 archive members including SHA256SUMS.txt",
     "exact_frozen_selector": {
       "buggy_base": "FAIL: defect-specific assertion; observed skewness type astropy.units.quantity.Quantity instead of float or numpy.floating",
       "fixed_revision": "PASS: 1 passed in 0.02s"
     },
     "direct_hdf5_mixed_type_reproducer": {
-      "buggy_base": "FAIL: AttributeError: 'float' object has no attribute 'to_value' at QuantityColumnTransform.__call__ while writing default MuonParametersContainer after calculated Quantity-valued parameters",
-      "fixed_revision": "PASS: 1 passed in 1.07s"
+      "buggy_base": "PASS as defect reproduction: the config=False branch passed and made zero calls to the muon writer; config=True ran the actual DataWriter.__call__ -> _write_muon_telescope_events -> HDF5TableWriter path. The second calculated/default event failed at QuantityColumnTransform.__call__ with AttributeError: 'float' object has no attribute 'to_value'. Pytest summary: 1 failed, 1 passed.",
+      "fixed_revision": "PASS: both config=False and config=True branches passed (2 passed in 0.86s); HDF5 muon table contained both rows."
     },
     "base_exit_codes": {
       "dataset_selector": 1,
@@ -68,16 +85,18 @@
     },
     "fixed_test_counts": {
       "dataset_selector": "1 passed",
-      "hdf5_reproducer": "1 passed"
+      "hdf5_reproducer": "2 passed"
     },
     "explicit_container_validation_test": true,
-    "validation_finding": "calculated_parameters.validate() and default_parameters.validate() both return successfully on exact buggy base and fixed head; on buggy base the HDF5 writer then fails only when the later float value is passed to the transform registered from the first Quantity value.",
+    "validation_finding": "Both Quantity-valued calculated parameters and default float parameters pass exact-base Container.validate(). The DataWriter config=False branch does not invoke the muon writer. With write_muon_parameters=True, the real DataWriter.__call__ invokes the actual muon-table method and the HDF5 writer raises only when a later float is sent through the QuantityColumnTransform registered from the first Quantity.",
     "reproduction_input_sha256": {
-      "workflow": "8b75f506c90237c2b00c8d9eba92a6c1833f942e2c15f11dc61ed3c5bacc2c3d",
-      "hdf5_test": "606bb08373f846814c07e4e2fcbe881ab81e3459cd361b7889eb7f1e468391d5",
+      "workflow": "9e1605b6e7912355e5870bed945da2cbbbb47b9e6c538a85ac124c7cb94f26d6",
+      "hdf5_test": "bb7c26793529fe97528f174c21400d3b7e9cc3b49b4c00d978905ab9dca3cac7",
       "dataset_selector": "a9170e6e9b3b1cfc89c2f04f0950614a5a6f1c4621ed96b3a51ea56c5b833fed",
       "dataset_row_manifest": "3e2b0a8968a9c75eb6aaac631dc9de17705479b512d0c417af2634e1072c987e",
-      "environment_lock": "1b6e82f8db8dcad6a1720666f19c8868ae5d6ef6e13cae2228d9c0e7e7a62edb"
+      "environment_lock": "1b6e82f8db8dcad6a1720666f19c8868ae5d6ef6e13cae2228d9c0e7e7a62edb",
+      "changed_file_license_manifest": "25f3c1a633a0df6a604fd301efad7c47ba74a8a8867d37292959c8aff99a626e",
+      "dependency_license_file_manifest": "51a9b64dfca57fa03a0553e2ad23bb96dcb0f70d85c4a8d263f4a019ee5fa66f"
     },
     "repeat_run": {
       "workflow_run_id": 44299388651,
@@ -85,20 +104,36 @@
       "artifact_id": 14424942732,
       "artifact_sha256": "f6ddfd91afa97b3720c10c0f7816f409a7c354f85883fa61b837bfc823621ea",
       "outcome": "same frozen selector and HDF5 reproducer base-fail/fixed-pass; the later run adds explicit Container.validate calls and input hashes"
-    }
+    },
+    "previous_validation_runs": [
+      {
+        "workflow_run_id": 44308616818,
+        "job_id": 134816598354,
+        "artifact_id": 14429830992,
+        "artifact_sha256": "d5c48326cd4534e90dda9690b653b48ded63ff8c77db131ef2653b6a0b4c1489",
+        "outcome": "DataWriter.__call__ False/True test base-fail/fixed-pass; 131/131 prior internal SHA256SUMS entries verified. The later run adds the changed-file BSD-3 manifest."
+      },
+      {
+        "workflow_run_id": 44300812600,
+        "job_id": 134789741250,
+        "artifact_id": 14424704542,
+        "artifact_sha256": "bc5c7c022cb0b7685415877beea3d678945a5740dcc21b44b1989e224a0f3426",
+        "outcome": "earlier direct HDF5 reproducer plus frozen selector; repeated base-fail/fixed-pass"
+      }
+    ]
   },
   "unresolved": {
-    "issue_configuration_discrepancy": "Issue #2730 problem_statement YAML says DataWriter.write_muon_parameters=False, but the reporter traceback proves _write_muon_telescope_events executed. Effective config override or transcription error is not established.",
+    "issue_configuration_discrepancy": "The issue body YAML sets DataWriter.write_muon_parameters=False. Exact-base ProcessorTool.should_compute_muon_parameters only enables MuonProcessor if that flag is true; DataWriter.__call__ only invokes _write_muon_telescope_events if the same flag is true. A new test calls the real DataWriter.__call__: false makes zero calls to muon writer; true runs the exact traceback path and reproduces the error on base. Thus the published YAML and reporter traceback cannot represent the same effective configuration unless an override or transcription error occurred. The actual reporter effective configuration is unknown.",
     "docstring_contract": "radial_light_distribution docstring still declares skewness and excess_kurtosis as astropy.units.Quantity, inconsistent with unitless MuonParametersContainer fields and fixed implementation.",
-    "license_human_signoff": "Dependency metadata inventory is recorded, but dependency/third-party license scope has not received human signoff.",
-    "independence_and_exposure_review": "Pending Stage 3.",
-    "gold_and_evidence_tier_adjudication": "Pending Stage 3.",
-    "container_validation_comment": "The PR author's comment says the mixed unit/no-unit values would fail container validation. Exact-base Field.validate only checks Quantity when field.unit is not None, and these fields have unit/type/dtype/ndim all None. The second Stage 2 HDF5 reproducer explicitly calls validate() for both the Quantity-valued and default-float containers and both calls pass. This makes the upstream comment inconsistent with the exact-base implementation; the failure is observed later in the HDF5 column transform."
+    "license_human_signoff": "Machine-readable source/dependency license inventory and exact changed-file screen completed (51 installed dists, 106 notice files captured; three PR files documented under repository BSD-3-Clause). Student project-lead decision pending; not legal advice.",
+    "independence_and_exposure_review": "Canonical upstream repository is not a fork; frozen cohort queue lists one CTAPIpe row at rank 31 and no second CTAPIpe candidate. Researcher has full source exposure. Model-training contamination status cannot be independently established. Formal Stage 3 independence/exposure review and human limitation acknowledgement pending.",
+    "gold_and_evidence_tier_adjudication": "AI-assisted proposal created in CTAPIPE_2730_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-18.md; gold and E3/E2/E1 decisions have not been approved by the student project lead.",
+    "container_validation_comment": "The PR author's comment says Container validation would reject the mixed values. Exact-base Field.validate accepts both because these fields have no unit/type/dtype/ndim constraints; our HDF5 reproduction calls validate() on both. The error occurs in the HDF5 column transform."
   },
   "decision": {
-    "stage2_technical_reproduction": "PASS, repeated in two workflow executions; latest artifact additionally hashes all reproduction inputs and explicitly verifies both containers pass validate() before the HDF5 writer raises the base error",
-    "candidate_disposition": "Conditional hold pending issue configuration/provenance reconciliation and Stage 3",
-    "stage3": "not_started",
+    "stage2_technical_reproduction": "PASS: exact frozen selector base-fail/fixed-pass and independent real DataWriter.__call__/HDF5 reproducer base-fail/fixed-pass, with an explicit false/true config branch test; latest run 44308927754.",
+    "candidate_disposition": "Conditional hold pending project-lead review of effective-config/provenance discrepancy, documented researcher exposure, license inventory, and technical gold/E1-E2-E3 draft.",
+    "stage3": "technical evidence assembled; human adjudication and independent acceptance audit not started",
     "final_case_acceptance": "not_accepted",
     "model_loading_performed": false,
     "model_inference_performed": false,
