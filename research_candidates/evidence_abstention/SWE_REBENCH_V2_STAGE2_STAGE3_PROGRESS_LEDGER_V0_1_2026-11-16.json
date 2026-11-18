@@ -1772,14 +1772,12 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44322262968,
-    "job_id": 134864024369,
-    "artifact_id": 14434582787,
-    "artifact_name": "evidence-abstention-preflight-logs-44322262968-1",
-    "artifact_zip_sha256": "529b14f588d7850930aa94dc49b0b1caa1f05d56919f8e3b5f4b6d324b27e4e7",
-    "artifact_size_bytes": 3750,
-    "archive_members": 5,
-    "zip_crc": "PASS",
+    "workflow_run_id": 44323929444,
+    "job_id": 134869977362,
+    "artifact_id": 14435264770,
+    "artifact_name": "evidence-abstention-preflight-logs-44323929444-1",
+    "artifact_zip_sha256": "aa331f460cc54faa6ed8d89f7fb885ea797f30dbbcc927fe1b573d2d1f53f574",
+    "artifact_size_bytes": 3752,
     "status": "blocked_before_inference",
     "ready_for_inference": false,
     "blocker_count": 11,
@@ -1810,6 +1808,12 @@
       }
     ],
     "total_tests_passed": 57,
+    "runner_smoke_test": {
+      "workflow_run_id": 44323929301,
+      "job_id": 134869976902,
+      "result": "PASS",
+      "executable_steps": 1
+    },
     "blockers": [
       "Dataset validation gate remains open: source provenance/license and raw timestamp authentication are not fully closed.",
       "Underlying upstream source and changed-file license review is not closed.",
@@ -1823,6 +1827,6 @@
       "Artifact is not frozen and hash-recorded: research_candidates/evidence_abstention/SWE_REBENCH_V2_ANALYSIS_PLAN_V0_2_EXPLORATORY_DRAFT_2026-11-16.md.",
       "No accepted case is registered; at least one fully accepted independent-project case is required before any model inference."
     ],
-    "note": "Latest PR-head no-inference preflight: all tests and report generation pass, but 11 study-readiness blockers remain. Valid empty registry does not imply an accepted case or inference authorization."
+    "note": "Latest PR-head no-inference preflight: 57/57 tests pass and readiness report generation succeeds, but 11 study-readiness blockers remain. Hosted runner smoke test now passes; runner allocation is no longer the current blocker in this run. Valid empty registry does not imply an accepted case or inference authorization."
   }
 }
