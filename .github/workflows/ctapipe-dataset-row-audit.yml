@@ -19,6 +19,11 @@ jobs:
       - name: Checkout research repository
         uses: actions/checkout@v4
 
+      - name: Set up Python 3.11.9 for the pinned PyArrow wheel
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
       - name: Download frozen SWE-rebench Parquet and verify file hash
         shell: bash
         run: |
@@ -34,7 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m venv .venv-dataset
-          .venv-dataset/bin/python -m pip install --disable-pip-version-check "pyarrow==19.0.1"
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps "pyarrow==19.0.1"
           .venv-dataset/bin/python - <<'PY'
           import hashlib
           import json
