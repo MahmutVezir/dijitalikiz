@@ -1,0 +1,1 @@
+src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution
