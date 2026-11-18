@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-18T14:20:00.511Z",
+  "generated_at_utc": "2026-11-18T14:25:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -589,9 +589,9 @@
       "stage3_status": "technical_evidence_family_review_and_nested_packet_integrity_passed_human_adjudication_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44321922328,
-      "stage2_artifact_id": 14436170101,
-      "stage2_artifact_sha256": "9575c5f120d01c6bd9618aa512d299946d6c1564f3bba3c9699705386d405360",
+      "stage2_latest_run_id": 44323129719,
+      "stage2_artifact_id": 14435552722,
+      "stage2_artifact_sha256": "ce533dcf5f62d22c4dfb89041c20fe80347fd4b3e542bbe94a6efd1297f9b45b",
       "stage2_row_audit_run_id": 44314613445,
       "stage2_row_audit_artifact_id": 14430743741,
       "stage2_dataset_row_sha256": "9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d",
@@ -632,11 +632,11 @@
       },
       "stage3_human_adjudication_status": "pending_project_lead",
       "stage3_packet_audit_note": "Workflow 44316015132/job 134842193908/artifact 14432113942; ZIP SHA-256 fd7fc7ed0cf7953f51efae7ef174aa6593b4860806bafdf9e03ba8fa88a25a38. ZIP CRC PASS, 4/4 SHA256SUMS entries independently verified, no checksum self-reference. E2 starts with E3 exact bytes; E1 starts with E2 exact bytes; hidden-label leakage audit PASS. Packet set manifest SHA-256 123bcba10ed241c466299297dbf6582d45a92e8e75ad5b3e881db63d5fd14998.",
-      "stage2_latest_artifact_size_bytes": 295208,
+      "stage2_latest_artifact_size_bytes": 295210,
       "stage2_latest_artifact_members": 137,
       "stage2_latest_artifact_crc": "PASS",
       "stage2_latest_internal_sha256_entries_verified": "136/136",
-      "stage2_latest_run_note": "Latest repeat on refreshed branch: run 44321922328, job 134862837802, artifact 14436170101. Frozen selector: defect-specific FAIL on buggy base, PASS on fixed. Real DataWriter.__call__/HDF5 reproducer: false flag skips muon writer; true flag reproduces float.to_value AttributeError on buggy base; fixed false/true branches both pass (2/2). Artifact independently downloaded: SHA-256 9575c5f120d01c6bd9618aa512d299946d6c1564f3bba3c9699705386d405360; 137 members; CRC PASS; 136/136 inner hashes passed. pip check clean; no model execution.",
+      "stage2_latest_run_note": "Latest branch-head repeat 44323129719/job 134867141719/artifact 14435552722. Frozen selector: defect-specific FAIL on buggy base, PASS on exact fixed revision. Real DataWriter.__call__/HDF5 reproducer: false flag skips muon writer; true flag reproduces float.to_value AttributeError on buggy base; fixed false/true branches both pass and write two HDF5 rows. Artifact independently downloaded: ZIP SHA-256 ce533dcf5f62d22c4dfb89041c20fe80347fd4b3e542bbe94a6efd1297f9b45b; 137 members; CRC PASS; 136/136 inner hashes passed. pip check clean; no model execution.",
       "stage2_latest_project_family_audit": {
         "workflow_run_id": 44313191520,
         "job_id": 134832360579,
@@ -652,7 +652,12 @@
         "job_id": 134852611469,
         "artifact_id": 14434206824,
         "artifact_sha256": "aeb4666c0c69c581199c41a4a0fc140f8e0e643ea4a43a2a818005fb5b0d0100"
-      }
+      },
+      "stage2_row_discovery_run_id": 44323129579,
+      "stage2_row_discovery_artifact_id": 14436116424,
+      "stage2_row_discovery_artifact_sha256": "12e70e450bc7270a8f0e5abd11e142f932fe166e653e324a3c1618973d02fada",
+      "stage2_row_discovery_artifact_internal_hashes": "3/3 passed; ZIP CRC PASS; 4 members",
+      "stage2_row_discovery_note": "Latest selector-only discovery run 44323129579/job 134867140641/artifact 14436116424 independently downloaded and verified. Frozen instance cta-observatory__ctapipe-2732; selected-columns row SHA-256 9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d; one FAIL_TO_PASS selector: src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution. Full 16-column row SHA-256 remains e7d40ebfdfa47f6d2b92940d83d4e1c74afea6a096e9dca0d682ebb0854e7006, authenticated in the separate five-row family audit."
     },
     {
       "cohort_rank": 32,
