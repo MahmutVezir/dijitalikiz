@@ -144,7 +144,14 @@
       "stage3_status": "not_started_stage2_not_passed",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44112905745
+      "stage2_latest_run_id": 44331092872,
+      "stage2_latest_recheck": {
+        "workflow_run_id": 44331092872,
+        "job_id": 134895967480,
+        "artifact_id": 14440900386,
+        "result": "blocked_dataset_selector_integrity",
+        "note": "Latest branch-head repeat in workflow 44331092872 (job 134895967480; artifact 14440900386) did not pass the frozen selector contract. 24/27 selectors met the expected buggy-base failure contract; three entries were selector/collection errors, including parameterized node IDs truncated around JSON commas (two test_uv_version selectors and one test__option_set selector produced 'not found'/'no tests ran'). The exact dataset row is therefore not a clean executable defect oracle. Do not count this as a Stage 2 pass or repair the frozen row silently."
+      }
     },
     {
       "cohort_rank": 7,
@@ -196,7 +203,14 @@
       "stage3_status": "not_started_stage2_not_passed",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44112905745
+      "stage2_latest_run_id": 44331092872,
+      "stage2_latest_recheck": {
+        "workflow_run_id": 44331092872,
+        "job_id": 134895967925,
+        "artifact_id": 14439487048,
+        "result": "blocked_mixed_scope_and_invalid_dataset_selectors",
+        "note": "Latest branch-head repeat in workflow 44331092872 (job 134895967925; artifact 14439487048) found 18 FAIL_TO_PASS selectors, of which only one is the issue-specific ECR selector. That ECR selector reproduced the expected failure on buggy base and passed on fixed revision. The other 17 selectors are IoT-related; 12 had fixed-revision mismatches and other selectors had collection errors. The row is mixed-scope and not a valid one-defect sample under the frozen candidate contract. Preserve the passing ECR result as engineering evidence only; do not count the mixed row as an accepted case."
+      }
     },
     {
       "cohort_rank": 10,
@@ -716,7 +730,14 @@
       "stage3_status": "not_started_stage2_not_passed",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44112905745
+      "stage2_latest_run_id": 44331092872,
+      "stage2_latest_recheck": {
+        "workflow_run_id": 44331092872,
+        "job_id": 134895968102,
+        "artifact_id": 14439836637,
+        "result": "blocked_dataset_selector_integrity",
+        "note": "Latest branch-head repeat in workflow 44331092872 (job 134895968102; artifact 14439836637) had two frozen FAIL_TO_PASS selectors. The first parameterized node ID is truncated at 'tests/test_http.py::TestHTTPUtility::test_dict_header[=foo,' and produced pytest 'not found' / 'no tests ran'; the second executed and failed on buggy base with IndexError: string index out of range. Only 1/2 selectors met the base-fail contract, so the exact frozen row cannot pass the strict reproduction gate. Do not silently repair or drop the malformed selector."
+      }
     },
     {
       "cohort_rank": 33,
@@ -1701,13 +1722,20 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/PYFAR_721_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "passed",
+      "stage2_status": "passed_exact_dataset_selector_base_fail_fixed_pass_latest_branch_repeat",
       "stage2_workflow_job_id": 134137813769,
       "stage2_evidence_note": "Exact row and dependency-license inventory artifact saved. All 23 selectors fail on buggy base and pass on exact fixed revision (23/23 in both directions).",
       "stage3_status": "not_started_stage2_passed",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44111403900
+      "stage2_latest_run_id": 44331092872,
+      "stage2_latest_recheck": {
+        "workflow_run_id": 44331092872,
+        "job_id": 134895967816,
+        "artifact_id": 14440390942,
+        "result": "passed",
+        "note": "Latest branch-head repeat in workflow 44331092872 (job 134895967816; artifact 14440390942) completed successfully. This confirms the prior Stage 2 pass; it does not change Stage 3/license/exposure/final acceptance status."
+      }
     },
     {
       "cohort_rank": 91,
@@ -1845,5 +1873,13 @@
       "approval_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_DECISION_AND_REVIEWER_CONCURRENCE_2026-11-18.md",
       "inference_authorized": false
     }
-  ]
+  ],
+  "latest_candidate_matrix_recheck": {
+    "workflow_run_id": 44331092872,
+    "head_commit": "4ef165eec58630ba468b30614e7056b3046124fa",
+    "status": "partially_completed_candidate_recheck",
+    "summary": "Dishka, NumPyro, Dymos, Amaranth, EODAG, Python-Control, Meltano, Robocop and PyFar Stage 2 repeat jobs succeeded. Nox, Moto and Werkzeug remained blocked under their unchanged strict selector/data-scope contracts. QuTiP was in progress at the time of this ledger update; no result is inferred for it.",
+    "no_inference": true,
+    "artifacts_are_github_actions_artifacts": true
+  }
 }
