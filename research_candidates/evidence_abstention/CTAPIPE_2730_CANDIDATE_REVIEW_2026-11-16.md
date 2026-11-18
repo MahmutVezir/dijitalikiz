@@ -77,7 +77,11 @@ This is an unresolved provenance/reproduction discrepancy. Possibilities include
 6. Record raw logs, environment lock, source and row hashes, artifact manifest, and independent project/exposure review.
 7. Only after Stage 2, perform human gold-mechanism and nested E1/E2/E3 adjudication. No model inference or training is authorized.
 
-## 6. Current decision
+## 6. Frozen-row audit workflow
+
+A dedicated no-inference GitHub Actions workflow was added at `.github/workflows/ctapipe-dataset-row-audit.yml` in research-repository commit `d59ee09fa8908511896b9e112aa677efee0d785d`. It downloads the already-frozen Parquet revision, verifies its known file SHA-256, extracts exactly the CTAPIpe row, asserts repository/base identity, writes canonical JSON and the unchanged FAIL_TO_PASS selector list, and uploads raw evidence. The workflow does not install ctapipe, execute upstream tests, load a model, or run inference. **Its run/artifact result has not yet been retrieved or verified**, so row authentication remains pending.
+
+## 7. Current decision
 
 - Source-level mechanism: **corroborated** by exact-base implementation and reporter traceback.
 - Intended field/storage contract: **plain unitless numeric values**, supported by container field declarations and HDF5 serialization behavior.
