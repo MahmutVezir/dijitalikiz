@@ -14,6 +14,13 @@ on:
       - "research_candidates/evidence_abstention/reproduction/**/reproduction_environment_lock.json"
       - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json"
       - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json"
+      - "research_candidates/evidence_abstention/STUDY_DESIGN_DECISION_V0_2_EXPLORATORY_2026-11-16.md"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_PROTOCOL_V0_2_EXPLORATORY_DRAFT_2026-11-16.md"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_ANALYSIS_PLAN_V0_2_EXPLORATORY_DRAFT_2026-11-16.md"
+      - "research_candidates/evidence_abstention/HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md"
+      - "tests/test_swe_rebench_v2_exploratory_design.py"
       - "scripts/evidence_abstention_preflight.py"
       - "scripts/swe_rebench_v2_exploratory_preflight.py"
       - "tests/test_evidence_abstention_preflight.py"
@@ -104,6 +111,17 @@ jobs:
           echo "v0.2 exploratory contract test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
           exit "$test_status"
 
+      - name: Unit-test v0.2 study design and dual-human scoring amendment
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/test_swe_rebench_v2_exploratory_design.py > v0.2-design-tests.log 2>&1
+          test_status=$?
+          cat v0.2-design-tests.log
+          echo "v0.2 study-design and dual-human scoring tests exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
+
       - name: Report SWE-rebench V2 readiness blockers without model execution
         if: always()
         shell: bash
@@ -125,6 +143,7 @@ jobs:
             packet-audit-tests.log
             operational-packet-tests.log
             v0.2-exploratory-tests.log
+            v0.2-design-tests.log
             swe-rebench-v2-readiness-report.json
           if-no-files-found: warn
           retention-days: 14
