@@ -83,7 +83,7 @@ GlobalPeakWindowSum:
 normal operation with output file together with muon parameters 
 
 
-## Additional source evidence
+## Additional technical source evidence
 
 Reported execution traceback (machine-specific home paths removed; stack frames and exception text preserved from the reporter's comment):
 
@@ -118,6 +118,26 @@ Container field declarations at the pinned source revision:
 Relevant field validation logic at the pinned source revision:
 
 ```python
+132:     def validate(self, value):
+133:         """
+134:         check that a given value is appropriate for this Field
+135: 
+136:         Parameters
+137:         ----------
+138:         value: Any
+139:            the value to test
+140: 
+141:         Raises
+142:         ------
+143:         FieldValidationError:
+144:             if the value is not valid
+145:         """
+146: 
+147:         if self.allow_none and value is None:
+148:             return
+149: 
+150:         errorstr = f"the value '{value}' ({type(value)}) is invalid: "
+151: 
 152:         if self.type is not None and not isinstance(value, self.type):
 153:             raise FieldValidationError(
 154:                 f"{errorstr} Should be an instance of {self.type}"
