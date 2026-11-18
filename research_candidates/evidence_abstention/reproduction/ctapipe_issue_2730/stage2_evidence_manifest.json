@@ -153,22 +153,22 @@
       }
     ],
     "latest_verified_repeat": {
-      "workflow_run_id": 44321922328,
-      "job_id": 134862837802,
-      "artifact_id": 14436170101,
-      "artifact_name": "ctapipe-2732-stage2-base-fixed-44321922328-1",
-      "artifact_zip_sha256": "9575c5f120d01c6bd9618aa512d299946d6c1564f3bba3c9699705386d405360",
-      "artifact_size_bytes": 295208,
+      "workflow_run_id": 44323129719,
+      "job_id": 134867141719,
+      "artifact_id": 14435552722,
+      "artifact_name": "ctapipe-2732-stage2-base-fixed-44323129719-1",
+      "artifact_zip_sha256": "ce533dcf5f62d22c4dfb89041c20fe80347fd4b3e542bbe94a6efd1297f9b45b",
+      "artifact_size_bytes": 295210,
       "archive_members": 137,
       "zip_crc": "PASS",
       "artifact_internal_hashes": "136/136 SHA256SUMS entries independently verified",
       "exact_frozen_selector": {
-        "buggy_base": "FAIL: defect-specific Quantity-vs-float assertion (1 failed in 0.07s)",
-        "fixed_revision": "PASS: 1 passed in 0.03s"
+        "buggy_base": "FAIL: defect-specific Quantity-vs-float assertion",
+        "fixed_revision": "PASS: 1 passed"
       },
       "direct_hdf5_mixed_type_reproducer": {
-        "buggy_base": "FAIL as expected: false config branch passes/skips muon writer; true branch executes DataWriter.__call__ and HDF5 writer, then AttributeError: 'float' object has no attribute 'to_value' (1 failed, 1 passed in 1.43s)",
-        "fixed_revision": "PASS: both config branches pass and both HDF5 rows are written (2 passed in 1.41s)"
+        "buggy_base": "FAIL as expected: false config branch skips muon writer; true branch executes real DataWriter.__call__/HDF5 path and raises AttributeError: 'float' object has no attribute 'to_value'",
+        "fixed_revision": "PASS: false and true config branches both pass; both HDF5 rows are written"
       },
       "pip_check": "No broken requirements found",
       "no_model_loading_inference_or_training": true
@@ -193,6 +193,22 @@
       },
       "pip_check": "No broken requirements found",
       "no_model_loading_inference_or_training": true
+    },
+    "latest_row_discovery": {
+      "workflow_run_id": 44323129579,
+      "job_id": 134867140641,
+      "artifact_id": 14436116424,
+      "artifact_name": "ctapipe-2732-frozen-row-selector-discovery",
+      "artifact_zip_sha256": "12e70e450bc7270a8f0e5abd11e142f932fe166e653e324a3c1618973d02fada",
+      "archive_members": 4,
+      "zip_crc": "PASS",
+      "artifact_internal_hashes": "3/3 SHA256SUMS entries independently verified",
+      "instance_id": "cta-observatory__ctapipe-2732",
+      "selected_columns_row_sha256": "9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d",
+      "selector_count": 1,
+      "selector": "src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution",
+      "full_row_sha256": "e7d40ebfdfa47f6d2b92940d83d4e1c74afea6a096e9dca0d682ebb0854e7006",
+      "note": "Discovery artifact retains selector-only evidence; full row payload and five-row family audit remain in the separate authenticated row-audit artifact."
     }
   },
   "unresolved": {
@@ -204,7 +220,7 @@
     "container_validation_comment": "The PR author's comment says Container validation would reject the mixed values. Exact-base Field.validate accepts both because these fields have no unit/type/dtype/ndim constraints; our HDF5 reproduction calls validate() on both. The error occurs in the HDF5 column transform."
   },
   "decision": {
-    "stage2_technical_reproduction": "PASS: latest branch-head repeat 44321922328/job 134862837802, artifact 14436170101. Exact frozen selector: defect-specific FAIL on buggy base and PASS on exact fixed revision. Direct DataWriter.__call__/HDF5 reproducer: false config skips muon writer; true config reproduces float.to_value AttributeError on buggy base; fixed revision passes both branches and writes both rows. Artifact independently downloaded: SHA-256 9575c5f120d01c6bd9618aa512d299946d6c1564f3bba3c9699705386d405360; 137 members; CRC PASS; 136/136 inner checksums passed. pip check clean. No model loading, inference, fine-tuning or training.",
+    "stage2_technical_reproduction": "PASS: latest branch-head repeat 44323129719/job 134867141719, artifact 14435552722. Exact frozen selector: defect-specific FAIL on buggy base and PASS on exact fixed revision. Direct DataWriter.__call__/HDF5 reproducer: false flag skips muon writer; true flag reproduces float.to_value AttributeError on buggy base; fixed revision passes both branches and writes both rows. Artifact independently downloaded and verified: ZIP SHA-256 ce533dcf5f62d22c4dfb89041c20fe80347fd4b3e542bbe94a6efd1297f9b45b; 137 members; CRC PASS; 136/136 inner checksums passed. pip check clean. Latest selector-only discovery run 44323129579/artifact 14436116424 independently verified: ZIP SHA-256 12e70e450bc7270a8f0e5abd11e142f932fe166e653e324a3c1618973d02fada; 4 members; 3/3 inner checksums passed. No model loading, inference, fine-tuning or training.",
     "candidate_disposition": "Conditional hold pending project-lead gold/alternatives/tier approval, explicit acceptance or exclusion decision for full researcher source exposure and prior pipeline-debug exposure, documentary license scope acknowledgement, formal related-defect/one-project independence approval, and separate final case acceptance. The published issue YAML/effective-configuration discrepancy is reproducibly demonstrated but reporter's actual effective configuration is unknown.",
     "stage3": "technical evidence, repository-family screen, nested packet preparation, packet leakage audit, and independent artifact integrity verification complete; human adjudication and final acceptance gate still pending",
     "final_case_acceptance": "not_accepted",
