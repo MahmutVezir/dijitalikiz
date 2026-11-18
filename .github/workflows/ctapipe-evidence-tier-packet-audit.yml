@@ -63,7 +63,7 @@ jobs:
           assert "write_muon_parameters: False" in e3
           assert "AttributeError: 'float' object has no attribute 'to_value'" in e2
           assert "QuantityColumnTransform" in e2
-          assert "Field.validate" in e2
+          assert "def validate(self, value)" in e2
           assert "INVALID_PARAMETERS" in e1
           assert "radial_light_distribution" in e1
           assert "should_compute_muon_parameters" in e1
@@ -175,7 +175,7 @@ jobs:
               ],
           }
           out = root / "PACKET_SET_MANIFEST.json"
-          out.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+          out.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + chr(10), encoding="utf-8")
           print(json.dumps(manifest, indent=2, ensure_ascii=False))
           PY
           (cd research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/evidence_tiers && find . -type f -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
