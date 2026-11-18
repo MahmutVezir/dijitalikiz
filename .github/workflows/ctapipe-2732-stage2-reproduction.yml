@@ -221,7 +221,7 @@ jobs:
           echo "$status" > ctapipe-stage2-evidence/base-hdf5-reproducer-exit-code.txt
           test "$status" -ne 0
           grep -F "'float' object has no attribute 'to_value'" ctapipe-stage2-evidence/base-hdf5-reproducer.log
-          grep -E "1 passed, 1 failed" ctapipe-stage2-evidence/base-hdf5-reproducer.log
+          grep -E "1 failed, 1 passed|1 passed, 1 failed" ctapipe-stage2-evidence/base-hdf5-reproducer.log
           if grep -q "ERROR collecting" ctapipe-stage2-evidence/base-hdf5-reproducer.log; then
             echo "Collection failure is not an accepted defect-specific failure."
             exit 1
