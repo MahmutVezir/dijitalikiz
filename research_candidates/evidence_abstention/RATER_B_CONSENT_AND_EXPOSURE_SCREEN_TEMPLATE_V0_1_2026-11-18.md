@@ -49,3 +49,10 @@ Any "no" or uncertainty must be disclosed for the affected case. Do not claim bl
 - Project-lead verification: pending
 
 Do not fill unknown items by assumption. Any exposed or uncertain case must be flagged and kept out of the blinded-rater agreement set unless the protocol supplies a separate predeclared treatment.
+
+
+## F. Decision log note — 18 November 2026
+
+The project lead reports that Hasan concurred with the CTAPIpe #2732 prior pipeline/debug exposure classification and its exclusion from the model-evaluation sample. This is a case-disposition concurrence only. It is not used as a substitute for Rater B's separate role agreement, case-specific independence/exposure screen, or calibration.
+
+The role-specific checkboxes above remain unmarked until the relevant statements have been directly confirmed by Rater B. No personal name or signature is stored in this public file. See `research_candidates/evidence_abstention/PROJECT_LEAD_DECISION_AND_REVIEWER_CONCURRENCE_2026-11-18.md`.
