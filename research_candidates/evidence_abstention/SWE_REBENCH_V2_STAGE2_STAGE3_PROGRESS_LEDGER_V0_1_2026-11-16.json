@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-18T15:51:26.103Z",
+  "generated_at_utc": "2026-11-18T15:52:21.713Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -1889,13 +1889,18 @@
   "latest_candidate_matrix_recheck": {
     "workflow_run_id": 44338919763,
     "head_commit": "f838660fdfcdd2ec92a3983a70e5f3f894732675",
-    "status": "partially_completed_with_candidate_specific_failures",
+    "status": "completed_with_candidate_specific_failures",
     "candidate_job_count": 13,
-    "successful_reproductions": 9,
+    "successful_reproductions": 10,
     "failed_reproductions": 3,
-    "in_progress_reproductions": 1,
-    "summary": "At the latest poll, nine candidate jobs completed successfully: Dishka, Python-Control, EODAG, Amaranth, Robocop, NumPyro, PyFar, Meltano and Dymos. Nox, Moto and Werkzeug completed with selector-reproduction failures and are not counted as successful. QuTiP was still in progress. NumPyro job 134923384282 succeeded and its artifact 14441559416 has SHA-256 b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360. The separate no-inference preflight job succeeded, but readiness still has 14 blockers and zero accepted cases.",
+    "in_progress_reproductions": 0,
+    "summary": "All 13 candidate reproduction jobs are now complete in run 44338919763. Ten completed successfully: Dishka, Python-Control, EODAG, Amaranth, Robocop, NumPyro, PyFar, Meltano, Dymos and QuTiP. Three completed with candidate-specific selector reproduction failures: Nox, Moto and Werkzeug; these are not counted as successful reproductions. The no-inference preflight job succeeded separately, but the readiness report still has 14 blockers and zero accepted cases. NumPyro job 134923384282 succeeded and artifact 14441559416 independently passed SHA-256, ZIP CRC and all 15 internal payload hash checks.",
     "no_inference": true,
-    "artifacts_are_github_actions_artifacts": true
+    "artifacts_are_github_actions_artifacts": true,
+    "completed_candidate_jobs": 13,
+    "qutip_job_id": 134923384101,
+    "qutip_job_conclusion": "success",
+    "qutip_artifact_id": 14442074993,
+    "qutip_artifact_digest": "sha256:05cd87ffec35546fc7c1484cd4eeca8601973696553c4afab4cb20cfc59553a7"
   }
 }
