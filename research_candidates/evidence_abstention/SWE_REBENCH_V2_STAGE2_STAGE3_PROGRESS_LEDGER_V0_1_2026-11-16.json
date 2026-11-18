@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-18T14:34:00Z",
+  "generated_at_utc": "2026-11-18T14:35:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -1773,12 +1773,14 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44323929444,
-    "job_id": 134869977362,
-    "artifact_id": 14435264770,
-    "artifact_name": "evidence-abstention-preflight-logs-44323929444-1",
-    "artifact_zip_sha256": "aa331f460cc54faa6ed8d89f7fb885ea797f30dbbcc927fe1b573d2d1f53f574",
+    "workflow_run_id": 44324115970,
+    "job_id": 134870648464,
+    "artifact_id": 14435758108,
+    "artifact_name": "evidence-abstention-preflight-logs-44324115970-1",
+    "artifact_zip_sha256": "a8695a297f9a9a5e2d51c5f7afc37a8daed771d6069f94f12efc3e61a22f08c8",
     "artifact_size_bytes": 3752,
+    "archive_members": 5,
+    "zip_crc": "PASS",
     "status": "blocked_before_inference",
     "ready_for_inference": false,
     "blocker_count": 11,
@@ -1810,8 +1812,8 @@
     ],
     "total_tests_passed": 57,
     "runner_smoke_test": {
-      "workflow_run_id": 44323929301,
-      "job_id": 134869976902,
+      "workflow_run_id": 44324115634,
+      "job_id": 134870646747,
       "result": "PASS",
       "executable_steps": 1
     },
@@ -1828,6 +1830,6 @@
       "Artifact is not frozen and hash-recorded: research_candidates/evidence_abstention/SWE_REBENCH_V2_ANALYSIS_PLAN_V0_2_EXPLORATORY_DRAFT_2026-11-16.md.",
       "No accepted case is registered; at least one fully accepted independent-project case is required before any model inference."
     ],
-    "note": "Latest PR-head no-inference preflight: 57/57 tests pass and readiness report generation succeeds, but 11 study-readiness blockers remain. Hosted runner smoke test now passes; runner allocation is no longer the current blocker in this run. Valid empty registry does not imply an accepted case or inference authorization."
+    "note": "Latest completed no-inference preflight job on the PR branch: 57/57 tests pass and report generation succeeds, but 11 study-readiness blockers remain. Hosted runner smoke test passes; runner allocation is not the current blocker in this report. The full workflow's candidate reproduction matrix is separate from this completed preflight job. Valid empty registry does not imply an accepted case or inference authorization."
   }
 }
