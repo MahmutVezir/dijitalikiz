@@ -265,7 +265,7 @@ jobs:
           license_bytes = license_path.read_bytes()
           rows = []
           for line in Path("ctapipe-stage2-evidence/changed-file-identities.txt").read_text().splitlines():
-              path, blob, sha256 = line.split("\\t")
+              path, blob, sha256 = line.split("\t")
               rows.append({
                   "path": path,
                   "fixed_git_blob_sha1": blob,
@@ -294,7 +294,7 @@ jobs:
               "screening_conclusion": "All three PR-changed files are covered by the repository BSD-3-Clause license at the pinned base. This is a documentary source review, not legal advice. No third-party vendored source was identified in the changed paths during the current screening; student project-lead review remains required.",
           }
           Path("ctapipe-stage2-evidence/changed-file-license-manifest.json").write_text(
-              json.dumps(manifest, indent=2, ensure_ascii=False) + "\\n",
+              json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
               encoding="utf-8",
           )
           print(json.dumps(manifest, indent=2))
