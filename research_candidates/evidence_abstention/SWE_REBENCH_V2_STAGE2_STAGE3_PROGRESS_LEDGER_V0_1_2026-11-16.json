@@ -71,11 +71,15 @@
       "candidate_review_document": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_STAGE2_STAGE3_GATE_REVIEW_V0_1_2026-11-16.md",
       "stage2_status": "passed",
       "stage2_workflow_job_id": 134137813966,
-      "stage2_evidence_note": "Latest no-inference run: independent issue reproducer plus all 8 exact dataset selectors passed the strict buggy-base failure / fixed-revision pass contract. Stage 3 gold/alternatives and E1/E2/E3 technical adjudication remain approved under the recorded single-human-adjudicator/source-exposure limitations. Final acceptance record and registry validation still pending.",
+      "stage2_evidence_note": "Latest no-inference run: independent issue reproducer plus all 8 exact dataset selectors passed the strict buggy-base failure / fixed-revision pass contract. Stage 3 gold/alternatives and E1/E2/E3 technical adjudication remain approved under the recorded single-human-adjudicator/source-exposure limitations. Final acceptance record and registry validation still pending. Latest branch-head repeat: run 44331092872/job 134895967726/artifact 14438674343; downloaded ZIP SHA-256 7aabccb73d71d6d725b0eaa0f711f45033255a8da0ef36b32e9d8c435e484365; 33 members; CRC PASS; 32/32 internal hashes verified; issue reproducer base-fail/fixed-pass; dataset selectors 8/8 base-fail and 8/8 fixed-pass. This is technical replication only, not final acceptance.",
       "stage3_status": "passed_technical_adjudication",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44111403900
+      "stage2_latest_run_id": 44331092872,
+      "stage2_latest_job_id": 134895967726,
+      "stage2_latest_artifact_id": 14438674343,
+      "stage2_latest_artifact_sha256": "7aabccb73d71d6d725b0eaa0f711f45033255a8da0ef36b32e9d8c435e484365",
+      "stage2_latest_artifact_integrity": "ZIP CRC PASS; 33 members; 32/32 internal SHA256SUMS entries independently verified"
     },
     {
       "cohort_rank": 3,
