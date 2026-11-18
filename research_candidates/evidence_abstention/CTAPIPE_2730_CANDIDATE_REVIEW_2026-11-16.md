@@ -253,3 +253,22 @@ The first successful packet audit artifact had a self-referential checksum entry
 The latest Stage 2 repeat remains `44311798828`, artifact `14430672248`, ZIP SHA-256 `bc2fff5cd42ad137b18a45a529732f14e0d4d265c651488cbc89994ab3c580e0`; both exact frozen selector and real `DataWriter.__call__`/HDF5 reproducer pass the strict base-fail/fixed-pass comparison, including the explicit false/true configuration gate test.
 
 **Candidate disposition remains conditional hold.** The technical evidence is assembled and the packet hierarchy passes its structural/leakage audit, but the following still require explicit project-lead decisions: gold mechanism, normative contract alternatives, tier membership/sufficiency, full researcher-exposure and one-adjudicator limitations, prior pipeline-debug exposure classification, dependency license-scope acknowledgement, and separate final case acceptance. No model inference is authorized.
+
+
+## 13. Branch-head Stage 2 verification and final packet-audit correction (2026-11-18)
+
+The follow-up branch now has a newer complete Stage 2 repeat than the runs listed above. This addendum supersedes the older “latest repeat” reference in section 12:
+
+- Workflow run: `44317298277`
+- Job: `134846673050` — all 14 substantive workflow steps completed successfully.
+- Artifact: `14433995574` (`ctapipe-2732-stage2-base-fixed-44317298277-1`)
+- Artifact ZIP SHA-256: `9494954a09a956887a2f1610e948d89eb84a5fb0f776f65285ac4a224e47337e`
+- Downloaded archive size: 295,208 bytes; 137 members; ZIP CRC: PASS; internal `SHA256SUMS.txt`: **136/136 passed** under independent recalculation.
+- Exact frozen selector: defect-specific failure on the exact buggy base (Quantity returned where float is asserted); 1/1 pass on the exact fixed PR head.
+- Real `DataWriter.__call__`/HDF5 reproducer: `write_muon_parameters=False` skips the muon writer; with the flag true, the actual HDF5 path reproduces `AttributeError: 'float' object has no attribute 'to_value'` on the buggy base. Both branches pass on the fixed revision; 2/2 tests pass and both rows are written.
+- The base worktree contains only the upstream test-file patch, not a production fix. `pip check` is clean.
+- No model was loaded; no inference, fine-tuning, or training was performed.
+
+The packet-audit status in section 12 is also superseded by the final clean audit: run `44316015132`, job `134842193908`, artifact `14432113942`, ZIP SHA-256 `fd7fc7ed0cf7953f51efae7ef174aa6593b4860806bafdf9e03ba8fa88a25a38`. That archive passed ZIP CRC and **4/4** internal checksums, excluded the checksum file from its own checksum list, verified exact E3→E2→E1 byte inheritance, and passed the hidden-label leakage checks. The earlier self-referential checksum attempt is not the final packet artifact.
+
+**Scientific disposition is unchanged:** technical Stage 2 PASS; E1/E2/E3 technical packaging and integrity audit PASS; CTAPIpe remains on conditional hold. The actual reporter configuration behind the issue/traceback mismatch is still unknown; human gold/tier adjudication, prior pipeline-debug exposure classification, independence approval, dependency-license scope acknowledgement, and separate final acceptance remain pending. The global accepted-case count remains zero. No inference is authorized.
