@@ -126,17 +126,54 @@
     "issue_configuration_discrepancy": "The issue body YAML sets DataWriter.write_muon_parameters=False. Exact-base ProcessorTool.should_compute_muon_parameters only enables MuonProcessor if that flag is true; DataWriter.__call__ only invokes _write_muon_telescope_events if the same flag is true. A new test calls the real DataWriter.__call__: false makes zero calls to muon writer; true runs the exact traceback path and reproduces the error on base. Thus the published YAML and reporter traceback cannot represent the same effective configuration unless an override or transcription error occurred. The actual reporter effective configuration is unknown.",
     "docstring_contract": "radial_light_distribution docstring still declares skewness and excess_kurtosis as astropy.units.Quantity, inconsistent with unitless MuonParametersContainer fields and fixed implementation.",
     "license_human_signoff": "Machine-readable source/dependency license inventory and exact changed-file screen completed (51 installed dists, 106 notice files captured; three PR files documented under repository BSD-3-Clause). Student project-lead decision pending; not legal advice.",
-    "independence_and_exposure_review": "Canonical upstream repository is not a fork; frozen cohort queue lists one CTAPIpe row at rank 31 and no second CTAPIpe candidate. Researcher has full source exposure. Model-training contamination status cannot be independently established. Formal Stage 3 independence/exposure review and human limitation acknowledgement pending.",
+    "independence_and_exposure_review": "A frozen dataset whole-file scan found five rows with repo=cta-observatory/ctapipe: cta-observatory__ctapipe-1872, -1883, -2320, -2732, and -2738. The scan artifact inventory currently authenticates those instance IDs only; the expanded second run that saves all problem_statement/selector details and canonical row hashes is pending. The single-upstream-project rule means at most one accepted case across this repository. GitHub issue family search found only issue #2730 for the direct muonparameters_skewness and radial_light_distribution terms; the broader to_value/muon search also returned unrelated #1139. Full semantic related-case comparison among the five dataset rows remains pending. Researcher source exposure is full.",
     "gold_and_evidence_tier_adjudication": "AI-assisted proposal created in CTAPIPE_2730_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-18.md; gold and E3/E2/E1 decisions have not been approved by the student project lead.",
     "container_validation_comment": "The PR author's comment says Container validation would reject the mixed values. Exact-base Field.validate accepts both because these fields have no unit/type/dtype/ndim constraints; our HDF5 reproduction calls validate() on both. The error occurs in the HDF5 column transform."
   },
   "decision": {
     "stage2_technical_reproduction": "PASS: exact frozen selector base-fail/fixed-pass and independent real DataWriter.__call__/HDF5 reproducer base-fail/fixed-pass, with an explicit false/true config branch test; latest run 44308927754.",
-    "candidate_disposition": "Conditional hold pending project-lead review of effective-config/provenance discrepancy, documented researcher exposure, license inventory, and technical gold/E1-E2-E3 draft.",
+    "candidate_disposition": "Conditional hold pending whole-repository dataset row family review, human source-exposure classification, issue effective-config/provenance caveat, human license screen, and gold/E1-E2-E3 adjudication.",
     "stage3": "technical evidence assembled; human adjudication and independent acceptance audit not started",
     "final_case_acceptance": "not_accepted",
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false
+  },
+  "source_snapshot_audit": {
+    "workflow_run_id": 44311004864,
+    "job_id": 134824823265,
+    "artifact_id": 14430756945,
+    "artifact_name": "ctapipe-2730-source-snapshot-audit-44311004864-1",
+    "artifact_zip_sha256": "33770c571614d741c70fc60507b8c7bd11c7241b39c83d093c7f47dc85b2b82b",
+    "internal_hashes": "1/1 manifest file verified",
+    "source_snapshots_count": 8,
+    "all_source_snapshots_byte_identical_to_exact_base": true,
+    "source_snapshot_manifest_sha256": "pending-extract-manifest-file-sha256",
+    "issue_snapshot_sha256": "fd089bdaecd80c04c9b04c82508bc896a40a4e3d747dd33342018321f533402c",
+    "reporter_traceback_comment_sha256": "9c3e49a88e0a8d9b69f13043e62818138f693a3eb7b16f4dd0f8e38e685d4a91",
+    "pr_author_container_validation_comment_sha256": "480db3dcba66f6563d2fd251717a42bfa40d0cb36676643dc8c28064e5aab6ec",
+    "pr_metadata_snapshot_sha256": "2c803675129a4232bb56a772b87193c93ff7d711cc7c2a1a3bb89f109925d8ce",
+    "reporter_comment_created_at": "2025-04-02T16:25:41Z",
+    "issue_created_at": "2025-04-02T15:59:14Z",
+    "pr_created_at": "2025-04-02T17:48:48Z",
+    "source_snapshot_paths": [
+      "source_snapshots/base/src__ctapipe__containers.py.txt",
+      "source_snapshots/base/src__ctapipe__core__container.py.txt",
+      "source_snapshots/base/src__ctapipe__image__muon__features.py.txt",
+      "source_snapshots/base/src__ctapipe__image__muon__processor.py.txt",
+      "source_snapshots/base/src__ctapipe__io__tableio.py.txt",
+      "source_snapshots/base/src__ctapipe__io__hdf5tableio.py.txt",
+      "source_snapshots/base/src__ctapipe__io__datawriter.py.txt",
+      "source_snapshots/base/src__ctapipe__tools__process.py.txt",
+      "source_snapshots/issue_2730.json",
+      "source_snapshots/reporter_comment_2773115947.json",
+      "source_snapshots/pr_author_comment_2775258008.json",
+      "source_snapshots/pr_2732.json"
+    ],
+    "limitations": [
+      "The issue and PR snapshots are API representations, not cryptographically signed statements.",
+      "Snapshot byte hashes and Git blob checks establish identity of retrieved bytes, not semantic sufficiency or independence.",
+      "No model load, inference, or training occurred."
+    ]
   }
 }
