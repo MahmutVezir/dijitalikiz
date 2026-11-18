@@ -99,6 +99,97 @@ jobs:
           print(json.dumps(rows, indent=2))
           PY
 
+      - name: Snapshot exact-base root license and installed dependency license texts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ctapipe-stage2-evidence/dependency-license-files
+          cp upstream-ctapipe/LICENSE ctapipe-stage2-evidence/ctapipe-root-LICENSE
+          .venv-ctapipe/bin/python - <<'PY'
+          import hashlib
+          import importlib.metadata as md
+          import json
+          import re
+          import shutil
+          from pathlib import Path
+
+          output = Path("ctapipe-stage2-evidence/dependency-license-files")
+          output.mkdir(parents=True, exist_ok=True)
+          terms = ("license", "licence", "copying", "notice", "copyright", "patent")
+          records = []
+          for dist in sorted(md.distributions(), key=lambda d: (d.metadata.get("Name") or "").lower()):
+              name = dist.metadata.get("Name") or "UNKNOWN"
+              version = dist.version
+              dist_key = re.sub(r"[^A-Za-z0-9._+-]+", "_", f"{name}-{version}")
+              dist_root = Path(dist.locate_file("")).resolve()
+              files = []
+              for item in dist.files or []:
+                  rel = Path(str(item))
+                  if not any(term in rel.name.lower() for term in terms):
+                      continue
+                  try:
+                      source = Path(dist.locate_file(item)).resolve(strict=True)
+                      relative = source.relative_to(dist_root)
+                  except (OSError, ValueError):
+                      continue
+                  if not source.is_file() or source.suffix.lower() in {".pyc", ".pyo"}:
+                      continue
+                  size = source.stat().st_size
+                  if size > 2_000_000:
+                      files.append({
+                          "distribution_path": str(relative),
+                          "captured": False,
+                          "reason": "over_2MB",
+                          "size_bytes": size,
+                      })
+                      continue
+                  destination = output / dist_key / relative
+                  destination.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copyfile(source, destination)
+                  digest = hashlib.sha256(destination.read_bytes()).hexdigest()
+                  files.append({
+                      "distribution_path": str(relative),
+                      "artifact_path": str(destination),
+                      "captured": True,
+                      "size_bytes": size,
+                      "sha256": digest,
+                  })
+              records.append({
+                  "distribution": name,
+                  "version": version,
+                  "license": dist.metadata.get("License"),
+                  "license_classifiers": [
+                      x for x in (dist.metadata.get_all("Classifier") or [])
+                      if x.startswith("License ::")
+                  ],
+                  "license_notice_file_count": len(files),
+                  "license_notice_files": files,
+              })
+          manifest = {
+              "scope": "installed runtime, test, and build environment for CTAPIpe exact-base reproduction",
+              "distribution_count": len(records),
+              "capture_rule": "Capture installed distribution files whose basename contains license/licence/copying/notice/copyright/patent; maximum 2 MB per file; preserve package-relative paths and record SHA-256.",
+              "limitations": [
+                  "This is an installed-distribution notice inventory, not a legal opinion.",
+                  "It does not establish upstream source-code redistribution rights or substitute for student project-lead review.",
+                  "Files not present in installed distribution metadata cannot be captured by this procedure.",
+              ],
+              "distributions": records,
+          }
+          Path("ctapipe-stage2-evidence/dependency-license-file-manifest.json").write_text(
+              json.dumps(manifest, indent=2, ensure_ascii=False) + "\\n",
+              encoding="utf-8",
+          )
+          print("distribution_count=", len(records))
+          print("captured_license_or_notice_files=", sum(
+              1 for d in records for f in d["license_notice_files"] if f.get("captured")
+          ))
+          print("uncaptured_license_or_notice_files=", sum(
+              1 for d in records for f in d["license_notice_files"] if not f.get("captured")
+          ))
+          PY
+          sha256sum ctapipe-stage2-evidence/ctapipe-root-LICENSE > ctapipe-stage2-evidence/ctapipe-root-LICENSE.sha256
+
       - name: Run exact frozen FAIL_TO_PASS selector on buggy base
         shell: bash
         run: |
@@ -175,9 +266,10 @@ jobs:
             echo "- Frozen row SHA-256: 9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d"
             echo "- Exact selector: src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution"
             echo "- DataWriter.__call__ reproducer: config False skips muon writer; config True executes the real muon writer and reproduces the mixed Quantity/float HDF5 failure on base"
+            echo "- Installed dependency LICENSE/NOTICE files and the exact-base CTAPIpe root LICENSE are included with SHA-256 records"
             echo "- No model loading, inference, or training was performed."
           } >> "$GITHUB_STEP_SUMMARY"
-          (cd ctapipe-stage2-evidence && find . -maxdepth 1 -type f ! -name SHA256SUMS.txt -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
+          (cd ctapipe-stage2-evidence && find . -type f ! -name SHA256SUMS.txt -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
           exit 0
 
       - name: Upload raw CTAPIpe Stage 2 evidence
