@@ -101,7 +101,7 @@ Report both original ratings before adjudication:
 - E3 primary binary endpoint agreement and Cohen's kappa, where estimable;
 - counts/rates of disagreements, adjudications, exposed ratings and unscorable ratings.
 
-Any confidence interval for agreement statistics must resample at the independent case level, preserving all six cells within a sampled case. Agreement statistics are exploratory and descriptive only. They do not establish criterion validity, universal rubric validity or external audit. No minimum kappa threshold is a case-acceptance rule.
+Any confidence interval for agreement statistics must resample at the independent case level, preserving all six cells within a sampled case. Use a case-cluster bootstrap over independent cases; do not treat repeated responses from the same case as independent sampling units. Agreement statistics are exploratory and descriptive only. They do not establish criterion validity, universal rubric validity or external audit. No minimum kappa threshold is a case-acceptance rule.
 
 ## 8. Exposure, calibration and role limits
 
