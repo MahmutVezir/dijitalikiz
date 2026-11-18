@@ -98,7 +98,7 @@ jobs:
                       str(project_row.get("test_patch") or "").encode("utf-8")
                   ).hexdigest(),
                   "canonical_row_sha256": row_hash,
-                  "artifact_row_path": row_path,
+                  "artifact_row_path": f"project_rows/{project_row['instance_id']}.json",
               })
               print(
                   "UPSTREAM_PROJECT_INSTANCE="
