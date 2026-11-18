@@ -1,0 +1,103 @@
+name: CTAPIpe Frozen Dataset Row Audit (No Inference)
+
+on:
+  push:
+    branches:
+      - "research/**"
+    paths:
+      - ".github/workflows/ctapipe-dataset-row-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  extract-exact-row:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Download frozen SWE-rebench Parquet and verify file hash
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ctapipe-row-evidence
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output ctapipe-row-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  ctapipe-row-evidence/train-00000-of-00001.parquet" | sha256sum --check
+
+      - name: Extract and authenticate exact CTAPIpe row
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check "pyarrow==19.0.1"
+          .venv-dataset/bin/python - <<'PY'
+          import hashlib
+          import json
+          import pyarrow.parquet as pq
+
+          parquet_path = "ctapipe-row-evidence/train-00000-of-00001.parquet"
+          columns = [
+              "instance_id", "repo", "base_commit", "created_at",
+              "language", "license", "FAIL_TO_PASS", "problem_statement",
+          ]
+          table = pq.read_table(
+              parquet_path,
+              columns=columns,
+              filters=[("instance_id", "=", "cta-observatory__ctapipe-2732")],
+          )
+          rows = table.to_pylist()
+          assert len(rows) == 1, f"Expected exactly one row, got {len(rows)}"
+          row = rows[0]
+          assert row["instance_id"] == "cta-observatory__ctapipe-2732", row
+          assert row["repo"] == "cta-observatory/ctapipe", row
+          assert row["base_commit"] == "287e7685e0e963f3fb44d92832ca97ac8c265c40", row
+          assert row["language"] == "python", row
+          assert isinstance(row["FAIL_TO_PASS"], list) and row["FAIL_TO_PASS"], row
+
+          canonical = json.dumps(
+              row, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+          ).encode("utf-8")
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("ctapipe-row-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          with open("ctapipe-row-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\n")
+          with open("ctapipe-row-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
+          with open("ctapipe-row-evidence/dataset-row-summary.json", "w", encoding="utf-8") as f:
+              json.dump({
+                  "instance_id": row["instance_id"],
+                  "repo": row["repo"],
+                  "base_commit": row["base_commit"],
+                  "created_at": row["created_at"],
+                  "language": row["language"],
+                  "license": row["license"],
+                  "fail_to_pass_count": len(row["FAIL_TO_PASS"]),
+                  "row_sha256": digest,
+              }, f, indent=2)
+              f.write("\n")
+          print("dataset_row_sha256=" + digest)
+          print("dataset_created_at=" + str(row["created_at"]))
+          print("dataset_license=" + str(row["license"]))
+          print("fail_to_pass_count=" + str(len(row["FAIL_TO_PASS"])))
+          for selector in row["FAIL_TO_PASS"]:
+              print("FAIL_TO_PASS_SELECTOR=" + selector)
+          PY
+          rm ctapipe-row-evidence/train-00000-of-00001.parquet
+          (cd ctapipe-row-evidence && find . -maxdepth 1 -type f ! -name SHA256SUMS.txt -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+          cat ctapipe-row-evidence/dataset-row-summary.json
+          cat ctapipe-row-evidence/dataset-fail-to-pass-selectors.txt
+
+      - name: Upload raw row-audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ctapipe-2730-dataset-row-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ctapipe-row-evidence/
+          if-no-files-found: warn
+          retention-days: 30
