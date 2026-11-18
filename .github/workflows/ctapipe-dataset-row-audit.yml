@@ -46,54 +46,76 @@ jobs:
           import pyarrow.parquet as pq
 
           parquet_path = "ctapipe-row-evidence/train-00000-of-00001.parquet"
-          project_columns = [
-              "instance_id", "repo", "base_commit", "created_at",
-              "language", "license", "FAIL_TO_PASS", "problem_statement",
-          ]
           project_table = pq.read_table(
               parquet_path,
-              columns=project_columns,
               filters=[("repo", "=", "cta-observatory/ctapipe")],
           )
-          raw_project_rows = sorted(
+          project_rows_raw = sorted(
               project_table.to_pylist(),
-              key=lambda x: (x["instance_id"], x["base_commit"]),
+              key=lambda row: (row["instance_id"], row.get("base_commit") or ""),
           )
-          project_rows = []
-          for project_row in raw_project_rows:
-              canonical_project_row = json.dumps(
-                  project_row, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-              ).encode("utf-8")
-              project_rows.append({
-                  **project_row,
-                  "canonical_row_sha256": hashlib.sha256(canonical_project_row).hexdigest(),
-                  "fail_to_pass_count": len(project_row["FAIL_TO_PASS"] or []),
-              })
-          project_record = {
+          inventory = {
               "repository": "cta-observatory/ctapipe",
               "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
               "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
-              "matching_row_count": len(project_rows),
-              "instances": project_rows,
-              "interpretation": "A count and inventory of frozen dataset rows for this exact repository identity; not a semantic related-issue-family adjudication and not proof that distinct issue rows represent independent defect mechanisms.",
+              "schema_columns": project_table.schema.names,
+              "matching_row_count": len(project_rows_raw),
+              "instances": [],
+              "interpretation": "Every frozen row for this exact repository identity. Repository-level row membership does not prove semantic defect independence.",
           }
-          with open("ctapipe-row-evidence/upstream-project-row-inventory.json", "w", encoding="utf-8") as f:
-              json.dump(project_record, f, indent=2, ensure_ascii=False)
-              f.write("\n")
-          print("upstream_project_row_count=" + str(len(project_rows)))
-          for project_row in project_rows:
+          for project_row in project_rows_raw:
+              canonical = json.dumps(
+                  project_row,
+                  sort_keys=True,
+                  separators=(",", ":"),
+                  ensure_ascii=False,
+              ).encode("utf-8")
+              row_hash = hashlib.sha256(canonical).hexdigest()
+              row_path = f"ctapipe-row-evidence/project_rows/{project_row['instance_id']}.json"
+              import os
+              os.makedirs("ctapipe-row-evidence/project_rows", exist_ok=True)
+              with open(row_path, "wb") as f:
+                  f.write(json.dumps(
+                      project_row, sort_keys=True, indent=2, ensure_ascii=False
+                  ).encode("utf-8"))
+                  f.write(bytes([10]))
+              inventory["instances"].append({
+                  "instance_id": project_row["instance_id"],
+                  "repo": project_row["repo"],
+                  "base_commit": project_row.get("base_commit"),
+                  "created_at": str(project_row.get("created_at")),
+                  "language": project_row.get("language"),
+                  "license": project_row.get("license"),
+                  "fail_to_pass": project_row.get("FAIL_TO_PASS"),
+                  "pass_to_pass_count": len(project_row.get("PASS_TO_PASS") or []),
+                  "problem_statement_sha256": hashlib.sha256(
+                      str(project_row.get("problem_statement") or "").encode("utf-8")
+                  ).hexdigest(),
+                  "patch_sha256": hashlib.sha256(
+                      str(project_row.get("patch") or "").encode("utf-8")
+                  ).hexdigest(),
+                  "test_patch_sha256": hashlib.sha256(
+                      str(project_row.get("test_patch") or "").encode("utf-8")
+                  ).hexdigest(),
+                  "canonical_row_sha256": row_hash,
+                  "artifact_row_path": row_path,
+              })
               print(
                   "UPSTREAM_PROJECT_INSTANCE="
-                  + str(project_row["instance_id"])
+                  + project_row["instance_id"]
                   + " base="
-                  + str(project_row["base_commit"])
+                  + str(project_row.get("base_commit"))
                   + " created_at="
-                  + str(project_row["created_at"])
-                  + " f2p_count="
-                  + str(project_row["fail_to_pass_count"])
+                  + str(project_row.get("created_at"))
+                  + " fail_to_pass="
+                  + str(len(project_row.get("FAIL_TO_PASS") or []))
                   + " row_sha256="
-                  + project_row["canonical_row_sha256"]
+                  + row_hash
               )
+          with open("ctapipe-row-evidence/upstream-project-row-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write(chr(10))
+          print("upstream_project_row_count=" + str(len(project_rows_raw)))
 
           columns = [
               "instance_id", "repo", "base_commit", "created_at",
