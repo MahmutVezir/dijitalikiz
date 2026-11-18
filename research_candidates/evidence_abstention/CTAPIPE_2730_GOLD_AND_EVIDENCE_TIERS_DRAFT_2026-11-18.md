@@ -78,13 +78,12 @@ The tiers are to be prepared from verbatim, provenance-backed source snapshots a
 
 **E2 is retained unchanged**, plus:
 - Exact-base MuonProcessor source showing the INVALID / INVALID_PARAMETERS default paths and the calculated-parameter path through radial_light_distribution.
-- Exact-base ProcessorTool event loop and DataWriter configuration gate showing the order of muon processing and writing, and that the published false flag skips this path.
-- Exact fixed PR implementation and regression assertion (used only in the hidden adjudication/source package; the model-visible packet may show the relevant fixed source only if the final protocol allows fix-source evidence at E1).
-- Exact frozen-selector base-fail/fixed-pass logs and the independent HDF5 reproducer logs, with the researcher-created test source withheld if it contains hidden labels or prompt-adaptation material.
+- Exact-base ProcessorTool event loop and DataWriter configuration gate showing that the published false flag suppresses muon processing and that the writer method is gated by the same flag.
+- No fixed source, PR patch, fix/test result, researcher-created reproducer source, gold label, or tier label is included in the model-facing E1 packet. Those remain in the separate hidden adjudication package.
 
 **Proposed surviving mechanism:** G1 only.
 
-**Rationale:** the event processor can populate the same telescope's muon table with default plain-float values and calculated skewness/kurtosis values. The HDF5 writer registers the conversion transform based on the first observed value and reuses it for subsequent rows. The independent reproduction executes the real DataWriter.__call__ method under an enabled flag, with its unrelated writers isolated, and exercises the actual muon writer plus HDF5TableWriter. The frozen upstream selector independently fails on the exact buggy base and passes on the exact PR head. This combination supports G1 and excludes A1/A2 as explanations of the observed exception. The published YAML/effective-config mismatch remains a separate report-provenance caveat and is not erased by E1.
+**Rationale:** E1 shows both producer paths in the exact buggy source. Skipped/invalid muon events can be assigned the default `MuonParametersContainer` whose fields are ordinary floats; processed muon events receive values from `radial_light_distribution`, whose non-empty-image branch returns dimensionless Astropy quantities for skewness and excess kurtosis. Both paths populate the same per-telescope muon output structure. HDF5 registers a Quantity-specific column transform from a value observed during schema creation and reuses that transform for later rows. Thus G1 is the surviving causal mechanism. A1 (uniform dimensionless Quantity values) and A2 (uniform plain dimensionless floats) remain competing *normative contract choices*, not competing explanations for why a Python float fails inside `QuantityColumnTransform`. The report's `False` flag remains a separate provenance caveat: exact source gates make the pasted configuration incompatible with the observed traceback unless there was an unrecorded override or transcription error.
 
 ## 4. Reproduction evidence already available
 
@@ -92,24 +91,28 @@ Frozen row:
 - Instance: cta-observatory__ctapipe-2732
 - Dataset revision: fb9aa226b2ce37c708ea7732e7b980abacdadb67
 - Parquet SHA-256: 7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9
-- Canonical row SHA-256: 9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d
+- Discovery-subset row SHA-256 (8 selected columns): 9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d
+- Full 16-column frozen row SHA-256: e7d40ebfdfa47f6d2b92940d83d4e1c74afea6a096e9dca0d682ebb0854e7006
 - Frozen selector: src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution
 - Exact base: 287e7685e0e963f3fb44d92832ca97ac8c265c40
 - Exact fixed PR head: 5007b6ab61887d7555155edb4d1d296603a9735e
 
-Previously verified Stage 2:
-- Frozen selector: defect-specific fail on base, pass on fixed.
-- Direct HDF5 reproducer: AttributeError: 'float' object has no attribute 'to_value' on base, pass on fixed.
-- Both calculated and default containers pass exact-base Container.validate().
-- A later reproducer revision calls the real DataWriter._write_muon_telescope_events method through the unbound class method and reproduced base-fail/fixed-pass. The stronger current rerun executes DataWriter.__call__ itself with the muon-write flag both false and true; its result is pending and must be recorded separately.
+Latest fully verified Stage 2 repeat:
+- Workflow run 44311798828; job 134827539863; artifact 14430672248.
+- Artifact ZIP SHA-256: `bc2fff5cd42ad137b18a45a529732f14e0d4d265c651488cbc89994ab3c580e0`.
+- All 136/136 internal SHA256SUMS entries independently passed.
+- Frozen selector: defect-specific fail on exact base; 1/1 pass on exact fixed PR head.
+- Real `DataWriter.__call__` reproducer: false flag branch skipped the muon writer; true flag branch failed on base at `QuantityColumnTransform.__call__` with the expected `AttributeError`; both branches passed on fixed (2/2), including writing two HDF5 rows.
+- Both calculated Quantity-valued and default-float containers passed exact-base `Container.validate()` before the HDF5 writer failed.
+- CPython 3.11.9; `pip check` clean. No model load, inference, or training.
 
 ## 5. Exposure, independence, and license limitations
 
 - Upstream repository API reports cta-observatory/ctapipe as canonical (fork=false).
-- The frozen primary cohort queue contains one CTAPIpe candidate at rank 31; no second CTAPIpe candidate is currently listed in the queue.
+- The full frozen Parquet contains five CTAPIpe rows (#1872, #1883, #2320, #2732 and #2738). The row/patch family audit finds distinct defect classes; #2732 alone belongs to the selected muon Quantity/float HDF5 failure family. The one-upstream-project rule permits at most one accepted CTAPIpe case. See `CTAPIPE_2730_FROZEN_PROJECT_ROW_FAMILY_REVIEW_2026-11-18.md`.
 - The researcher has full source exposure to the issue, source, PR, and reproduction through this review. Do not claim researcher blinding.
 - The selected Qwen2.5-3B-Instruct release predates the issue/PR dates; this reduces the likelihood that this exact public issue/PR text was in the original released weights, but does not establish the model's full training-data cutoff or prove absence of related code from training.
-- Exact-base root license is BSD-3-Clause. A metadata inventory exists for the 51 installed runtime/test/build distributions; human scope review is not complete. The installed-license notice files are being captured in the latest Stage 2 artifact. This is documentary screening only, not legal advice or a license grant.
+- Exact-base root license is BSD-3-Clause. The installed environment contains 51 inventoried distributions; all 106 detected license/NOTICE files were captured and hashed in the latest Stage 2 artifact. Three PR-changed files are separately hashed and recorded as covered by the repository BSD-3-Clause license; root `LICENSE` and `pyproject.toml` are unchanged from base to fixed. Human scope sign-off remains pending. This is documentary screening only, not legal advice or a blanket redistribution clearance.
 - The issue YAML and reporter traceback remain inconsistent unless an effective-config override or transcription error is established. The independent reproducer uses write_muon_parameters=True because the exact source path requires it; that is not a claim that the reporter's pasted YAML was true.
 
 ## 6. Human decision boundary
@@ -124,3 +127,21 @@ The student project lead must decide whether to:
 5. approve the documentary license screen after reviewing the captured notices.
 
 This draft does not mark any of these as human-approved. ChatGPT is an AI research assistant, not a human co-investigator or independent human rater. No model load, inference, or training has been performed or authorized.
+
+
+## 11. Final packet-integrity result (2026-11-18)
+
+- Packet audit workflow run: `44314922057`
+- Job: `134838386926`
+- Artifact ID: `14432203104`
+- Artifact ZIP SHA-256: `d01e245530599ee690b8ffb1b2effacb40aca7f2652b817937cf28ac9c1da0da`
+- E3 packet SHA-256: `472bf4e37606ed8910555d50e4d5d97ef467010222f32b2ae1cc5fabe8775630` (2,061 bytes)
+- E2 packet SHA-256: `d8f82e5a53bb9fffe2060d7bb15b8792adb73827f1ca1ab97980f601f0606bf2` (6,979 bytes)
+- E1 packet SHA-256: `861a427fa215105d5f0e86db2fbc2d76c5c23f44e93da6481504264b49597173` (11,599 bytes)
+- E2 begins with E3 byte-for-byte; E1 begins with E2 byte-for-byte.
+- Automated packet audit passed the hidden-label leakage guards and confirmed no fixed source, PR patch, or test outcome appears in the model-facing packet text.
+- Generated packet-set manifest SHA-256: `123bcba10ed241c466299297dbf6582d45a92e8e75ad5b3e881db63d5fd14998`.
+
+The packet audit artifact itself is being independently checked. The first artifact's checksum list included a self-referential empty-file hash for `SHA256SUMS.txt`; its four packet/manifest entries were correct. The checksum generator was corrected to exclude itself and a fresh run was queued separately. This does not invalidate the packet files or the successful nested/leakage assertions, but the clean final artifact will replace the first audit artifact as the integrity handoff.
+
+**Human approval remains pending:** the evidence tiers are proposed, not approved. No model inference is authorized by packet generation or audit success.
