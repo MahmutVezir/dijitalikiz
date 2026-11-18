@@ -16,7 +16,38 @@
     "row_audit_artifact_id": 14424887790,
     "row_audit_artifact_sha256": "4653884c0f6f127c0d8150b3011924bc1be0c515800a5df762ac839be67c151c",
     "canonical_row_sha256_recalculated_from_retained_json": true,
-    "internal_artifact_hashes": "4/4 files verified"
+    "internal_artifact_hashes": "4/4 files verified",
+    "full_row_canonical_sha256": "e7d40ebfdfa47f6d2b92940d83d4e1c74afea6a096e9dca0d682ebb0854e7006",
+    "selected_columns_row_sha256": "9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d",
+    "selected_columns_row_scope": [
+      "instance_id",
+      "repo",
+      "base_commit",
+      "created_at",
+      "language",
+      "license",
+      "FAIL_TO_PASS",
+      "problem_statement"
+    ],
+    "full_row_hash_scope": "All 16 columns in the frozen Parquet row, sorted keys, compact UTF-8 JSON",
+    "canonical_row_hash_note": "The original 9d8... digest is the canonical JSON hash of the original 8-column discovery subset. The full 16-column row hash is e7d40...; do not confuse them.",
+    "project_family_inventory": {
+      "repository": "cta-observatory/ctapipe",
+      "row_count": 5,
+      "audit_workflow_run_id": 44314613445,
+      "audit_job_id": 134837324906,
+      "audit_artifact_id": 14430743741,
+      "audit_artifact_zip_sha256": "26e47b9bf0a7bdef5525e399d114faf343d7c65d7ca2402e1a71e1e9c2fd6f8d",
+      "audit_artifact_internal_hashes": "10/10 passed",
+      "full_row_hashes": {
+        "cta-observatory__ctapipe-1872": "59d1aeb7e62bd9f53e560f0522fefd7541b5f2681a4a549b59a6dba26659631b",
+        "cta-observatory__ctapipe-1883": "04e0fc47b2c83c8b55d1e3dce73191478a9f56c6a7bac4d5153be77156f76329",
+        "cta-observatory__ctapipe-2320": "29aa95ca29633ca6cae342f83a5240fddc26a847781587ff71df919aeef294ec",
+        "cta-observatory__ctapipe-2732": "e7d40ebfdfa47f6d2b92940d83d4e1c74afea6a096e9dca0d682ebb0854e7006",
+        "cta-observatory__ctapipe-2738": "db357eac53cf7fb6675b16b0ad56af595eba2edb357dab35f50808c092bb8a3b"
+      },
+      "interpretation": "Only one accepted case may be counted per upstream project. The five rows concern five distinct defect families; only row 2732 is the selected muon HDF5 defect."
+    }
   },
   "source": {
     "repository": "cta-observatory/ctapipe",
@@ -126,13 +157,13 @@
     "issue_configuration_discrepancy": "The issue body YAML sets DataWriter.write_muon_parameters=False. Exact-base ProcessorTool.should_compute_muon_parameters only enables MuonProcessor if that flag is true; DataWriter.__call__ only invokes _write_muon_telescope_events if the same flag is true. A new test calls the real DataWriter.__call__: false makes zero calls to muon writer; true runs the exact traceback path and reproduces the error on base. Thus the published YAML and reporter traceback cannot represent the same effective configuration unless an override or transcription error occurred. The actual reporter effective configuration is unknown.",
     "docstring_contract": "radial_light_distribution docstring still declares skewness and excess_kurtosis as astropy.units.Quantity, inconsistent with unitless MuonParametersContainer fields and fixed implementation.",
     "license_human_signoff": "Machine-readable source/dependency license inventory and exact changed-file screen completed (51 installed dists, 106 notice files captured; three PR files documented under repository BSD-3-Clause). Student project-lead decision pending; not legal advice.",
-    "independence_and_exposure_review": "A frozen dataset whole-file scan found five rows with repo=cta-observatory/ctapipe: cta-observatory__ctapipe-1872, -1883, -2320, -2732, and -2738. The scan artifact inventory currently authenticates those instance IDs only; the expanded second run that saves all problem_statement/selector details and canonical row hashes is pending. The single-upstream-project rule means at most one accepted case across this repository. GitHub issue family search found only issue #2730 for the direct muonparameters_skewness and radial_light_distribution terms; the broader to_value/muon search also returned unrelated #1139. Full semantic related-case comparison among the five dataset rows remains pending. Researcher source exposure is full.",
-    "gold_and_evidence_tier_adjudication": "AI-assisted proposal created in CTAPIPE_2730_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-18.md; gold and E3/E2/E1 decisions have not been approved by the student project lead.",
+    "independence_and_exposure_review": "The complete frozen Parquet scan authenticated five exact cta-observatory/ctapipe rows. Full row hashes: 1872=59d1aeb7..., 1883=04e0fc47..., 2320=29aa95ca..., 2732=e7d40ebf..., 2738=db357eac.... The corresponding issue/PR descriptions, production patch paths, and F2P selectors indicate distinct issue families. Only #2732 is the selected muon Quantity/float HDF5 defect; the one-case-per-upstream-project rule means at most one accepted CTAPIpe case. Human formal independence approval and researcher-exposure classification remain pending.",
+    "gold_and_evidence_tier_adjudication": "E3/E2/E1 model-facing nested packet files have been prepared with E2 inheriting E3 and E1 inheriting E2. Packet integrity/leakage audit rerun pending after a source signature fix. Gold and tier memberships are proposed only; human project-lead approval pending.",
     "container_validation_comment": "The PR author's comment says Container validation would reject the mixed values. Exact-base Field.validate accepts both because these fields have no unit/type/dtype/ndim constraints; our HDF5 reproduction calls validate() on both. The error occurs in the HDF5 column transform."
   },
   "decision": {
     "stage2_technical_reproduction": "PASS: exact frozen selector base-fail/fixed-pass and independent real DataWriter.__call__/HDF5 reproducer base-fail/fixed-pass, with an explicit false/true config branch test; latest run 44308927754.",
-    "candidate_disposition": "Conditional hold pending whole-repository dataset row family review, human source-exposure classification, issue effective-config/provenance caveat, human license screen, and gold/E1-E2-E3 adjudication.",
+    "candidate_disposition": "Conditional hold: technical Stage 2 passed; frozen repository family screen completed with one selected CTAPIpe row; remain held for project-lead gold/tier approval, full exposure decision, and documentary license scope approval.",
     "stage3": "technical evidence assembled; human adjudication and independent acceptance audit not started",
     "final_case_acceptance": "not_accepted",
     "model_loading_performed": false,
@@ -148,7 +179,7 @@
     "internal_hashes": "1/1 manifest file verified",
     "source_snapshots_count": 8,
     "all_source_snapshots_byte_identical_to_exact_base": true,
-    "source_snapshot_manifest_sha256": "pending-extract-manifest-file-sha256",
+    "source_snapshot_manifest_sha256": "e6d0892cb85e2fc153baf492f8f74645de4c33912a40a9ed89ada905a7fa6005",
     "issue_snapshot_sha256": "fd089bdaecd80c04c9b04c82508bc896a40a4e3d747dd33342018321f533402c",
     "reporter_traceback_comment_sha256": "9c3e49a88e0a8d9b69f13043e62818138f693a3eb7b16f4dd0f8e38e685d4a91",
     "pr_author_container_validation_comment_sha256": "480db3dcba66f6563d2fd251717a42bfa40d0cb36676643dc8c28064e5aab6ec",
@@ -174,6 +205,14 @@
       "The issue and PR snapshots are API representations, not cryptographically signed statements.",
       "Snapshot byte hashes and Git blob checks establish identity of retrieved bytes, not semantic sufficiency or independence.",
       "No model load, inference, or training occurred."
-    ]
+    ],
+    "artifact_internal_hashes": "1/1 source-snapshot-manifest checksum independently verified"
+  },
+  "evidence_tier_packet_audit": {
+    "status": "pending latest successful run after packet correction",
+    "packet_root": "research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/evidence_tiers/",
+    "nested_inheritance": "E2 starts with E3 exact bytes; E1 starts with E2 exact bytes",
+    "leakage_guards": "automated audit checks hidden case ID, PR/issue numbers, commit hashes, gold labels and tier labels are absent from model-facing packet text",
+    "inference_performed": false
   }
 }
