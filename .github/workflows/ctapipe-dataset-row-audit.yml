@@ -177,4 +177,4 @@ jobs:
           name: ctapipe-2730-dataset-row-audit-${{ github.run_id }}-${{ github.run_attempt }}
           path: ctapipe-row-evidence/
           if-no-files-found: warn
-          retention-days: 30
+          retention-days: 90
