@@ -228,3 +228,28 @@ This candidate's technical test harness was also refined against this specific c
 - Stage 3 human adjudication: not complete.
 - Final case acceptance: **not accepted**.
 - Model load, inference, or training: not performed or authorized.
+
+
+## 12. Final packet, project-family, and latest reproduction corrections (2026-11-18)
+
+The previous section 9 statement that the frozen primary queue contained one CTAPIpe row has been superseded by a complete scan of the frozen Parquet: there are five task rows for `cta-observatory/ctapipe`. The five rows have distinct defect families and are itemized, with complete 16-column row hashes, in `CTAPIPE_2730_FROZEN_PROJECT_ROW_FAMILY_REVIEW_2026-11-18.md`. Under the one-project rule, CTAPIpe contributes at most one accepted case; #2732 is the only selected row in the muon Quantity/float HDF5 defect family. The other four are not separately counted.
+
+The full 16-column frozen #2732 row hash is `e7d40ebfdfa47f6d2b92940d83d4e1c74afea6a096e9dca0d682ebb0854e7006`. The previous `9d8e145e...` hash is retained as the canonical hash of the eight-column discovery subset, not the full row.
+
+The current model-facing packet hierarchy is:
+- E3: original issue title and body only.
+- E2: E3 verbatim plus reporter traceback, container field declarations, `Field.validate`, and the HDF5 transform source.
+- E1: E2 verbatim plus exact-base producer paths and processing/write configuration gates.
+- No fixed source, PR patch, fixed test results, researcher-created reproducer, gold labels, or tier labels appear in the model-facing packets.
+
+Packet audit run `44314922057` succeeded:
+- Artifact ID `14432203104`; ZIP SHA-256 `d01e245530599ee690b8ffb1b2effacb40aca7f2652b817937cf28ac9c1da0da`.
+- E2 begins with E3 exact bytes; E1 begins with E2 exact bytes.
+- E3/E2/E1 packet hashes are recorded in the gold/tier draft and generated manifest.
+- Hidden-label leakage guards passed.
+
+The first successful packet audit artifact had a self-referential checksum entry for `SHA256SUMS.txt` (the empty-file hash). Four actual packet/manifest file entries were correct. The checksum generator has been fixed to exclude `SHA256SUMS.txt` from its own list; a new audit run is in progress. We do not treat the first artifact as the final checksum handoff.
+
+The latest Stage 2 repeat remains `44311798828`, artifact `14430672248`, ZIP SHA-256 `bc2fff5cd42ad137b18a45a529732f14e0d4d265c651488cbc89994ab3c580e0`; both exact frozen selector and real `DataWriter.__call__`/HDF5 reproducer pass the strict base-fail/fixed-pass comparison, including the explicit false/true configuration gate test.
+
+**Candidate disposition remains conditional hold.** The technical evidence is assembled and the packet hierarchy passes its structural/leakage audit, but the following still require explicit project-lead decisions: gold mechanism, normative contract alternatives, tier membership/sufficiency, full researcher-exposure and one-adjudicator limitations, prior pipeline-debug exposure classification, dependency license-scope acknowledgement, and separate final case acceptance. No model inference is authorized.
