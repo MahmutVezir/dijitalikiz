@@ -68,6 +68,8 @@ jobs:
           assert "radial_light_distribution" in e1
           assert "should_compute_muon_parameters" in e1
           assert "write_muon_parameters" in e1
+          assert "skewness : `astropy.units.Quantity`" in e1
+          assert "excess_kurtosis : `astropy.units.Quantity`" in e1
 
           tiers = {
               "E3": {
@@ -127,6 +129,7 @@ jobs:
                       "E2 evidence unchanged",
                       "MuonProcessor default/invalid paths",
                       "MuonProcessor calculated parameter path",
+                      "radial_light_distribution return-type docstring",
                       "radial_light_distribution base return values",
                       "ProcessorTool processing order and configuration gate",
                       "DataWriter muon-write flag gate",
