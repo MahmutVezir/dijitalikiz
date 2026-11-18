@@ -12,9 +12,9 @@
 - Fixed upstream merge commit: `5692d2da335945b756aeae02e3720b9b7f3efef2`
 - Dataset row: `pyro-ppl__numpyro-1918`
 - Canonical dataset-row SHA-256: `d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646`
-- Latest reproduction workflow: https://github.com/MahmutVezir/dijitalikiz/actions/runs/44337982370
-- NumPyro job: `134919948613`; artifact ID: `14443210820`
-- Artifact ZIP SHA-256: `f39d21e0d3d2c4719b16d8639ca84d8349ebba42c99a7c5276ed81e916a720d5`
+- Latest reproduction workflow: https://github.com/MahmutVezir/dijitalikiz/actions/runs/44338919763
+- NumPyro job: `134923384282`; artifact ID: `14441559416`
+- Artifact ZIP SHA-256: `b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360`
 
 The run authenticated the pinned SWE-rebench row and ran both frozen FAIL_TO_PASS selectors in the same pinned CPU environment. Both selectors executed and failed on the buggy base with JAX's batched-key error; both passed on the fixed merge revision. This is technical Stage 2 evidence, not semantic tier adjudication.
 
@@ -111,7 +111,7 @@ The student project lead has already reviewed the public issue, PR, patch and re
 
 ## 8. Current disposition
 
-- Stage 2 technical reproduction: **passed**, latest run `44337982370`.
+- Stage 2 technical reproduction: **passed**, latest run `44338919763`.
 - Proposed technical gold: **not adjudicated**.
 - Alternatives: **proposed; project-lead review pending**.
 - E1/E2/E3 packet set: **not operationalized, not validated and not frozen**.
