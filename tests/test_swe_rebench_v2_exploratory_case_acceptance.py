@@ -251,3 +251,35 @@ def test_dishka_proposed_case_does_not_change_empty_accepted_registry():
     assert result["status"] == "valid_empty_registry", result["blockers"]
     assert result["accepted_case_count"] == 0
     assert result["inference_authorized"] is False
+
+
+
+def test_committed_dishka_proposed_record_passes_and_remains_outside_registry():
+    proposal_path = (
+        RESEARCH
+        / "reproduction"
+        / "dishka_issue_435"
+        / "DISHKA_435_EXPLORATORY_CASE_ACCEPTANCE_PROPOSAL_V0_1_2026-11-19.json"
+    )
+    proposal = json.loads(proposal_path.read_text(encoding="utf-8"))
+    result = validate_case_record(proposal)
+
+    assert result["status"] == "structurally_complete_candidate", result["blockers"]
+    assert result["acceptance_decision"] == "proposed"
+    assert result["eligible_for_registry"] is False
+    assert result["inference_authorized"] is False
+    assert proposal["final_acceptance"]["status"] == "pending"
+    assert proposal["final_acceptance"]["decision_timestamp_utc"] is None
+    assert proposal["final_acceptance"]["decision_record"] is None
+    assert proposal["exposure"]["prior_pipeline_debug_exposure"] == "none"
+    assert proposal["exposure"]["researcher_source_exposure"] == "full"
+    assert proposal["license_review"]["scope_limitation"] == "documentary_screening_only_not_legal_advice"
+    assert [len(proposal["evidence_tiers"][level]["evidence_items"]) for level in ("E3", "E2", "E1")] == [7, 9, 13]
+
+    registry = json.loads(
+        (RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text(encoding="utf-8")
+    )
+    registry_result = validate_registry(registry)
+    assert registry_result["status"] == "valid_empty_registry"
+    assert registry_result["accepted_case_count"] == 0
+    assert registry_result["inference_authorized"] is False
