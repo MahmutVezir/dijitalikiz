@@ -12,7 +12,8 @@ from swe_rebench_v2_exploratory_case_acceptance import load_schema, validate_cas
 def test_v02_acceptance_schema_is_valid_json_schema():
     schema = load_schema()
     assert schema["$schema"].endswith("/2020-12/schema")
-    assert schema["properties"]["acceptance_decision"]["const"] == "accepted"
+    assert set(schema["properties"]["acceptance_decision"]["enum"]) == {"proposed", "accepted", "rejected"}
+    assert "final_acceptance" in schema["required"]
 
 
 def test_v02_empty_registry_is_valid_but_does_not_authorize_inference():
@@ -45,6 +46,10 @@ def _minimal_case():
                 "evidence_items":ids}
     return {
       "schema_version":"0.1-v02-exploratory","case_id":"SRV2E-CASE1","acceptance_decision":"accepted",
+      "final_acceptance":{"status":"approved","decision_maker_role":"student_project_lead",
+                          "decision_timestamp_utc":"2026-11-19T13:00:00Z",
+                          "rationale":"Separate project-lead case-acceptance decision recorded after all candidate gates passed.",
+                          "decision_record":artifact},
       "dataset":{"dataset_id":"PrimeIntellect/SWE-rebench-V2-Filtered-Verified","file_revision":"fb9aa226b2ce37c708ea7732e7b980abacdadb67",
                  "file_sha256":"7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
                  "created_at_dataset_utc":"2024-01-01T00:00:00Z","created_at_upstream_utc":"2024-01-01T00:00:00Z",
@@ -80,6 +85,52 @@ def test_valid_structural_case_is_candidate_not_inference_authorization():
     result = validate_case_record(_minimal_case())
     assert result["status"] == "structurally_complete_candidate"
     assert result["inference_authorized"] is False
+
+
+
+def test_proposed_case_can_be_structurally_checked_without_premature_acceptance():
+    record = _minimal_case()
+    record["acceptance_decision"] = "proposed"
+    record["final_acceptance"] = {
+        "status": "pending",
+        "decision_maker_role": "student_project_lead",
+        "decision_timestamp_utc": None,
+        "rationale": "Awaiting the separate project-lead yes/no decision.",
+        "decision_record": None,
+    }
+    result = validate_case_record(record)
+    assert result["status"] == "structurally_complete_candidate"
+    assert result["acceptance_decision"] == "proposed"
+    assert result["eligible_for_registry"] is False
+    assert result["inference_authorized"] is False
+
+
+def test_accepted_case_requires_timestamped_hashed_final_project_lead_decision():
+    record = _minimal_case()
+    record["final_acceptance"]["decision_record"] = None
+    result = validate_case_record(record)
+    assert result["status"] == "invalid"
+    assert any("timestamped, hashed project-lead" in item for item in result["blockers"])
+
+
+def test_accepted_registry_rejects_proposed_case_even_if_structurally_complete():
+    registry = json.loads((RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text())
+    record = _minimal_case()
+    record["acceptance_decision"] = "proposed"
+    record["final_acceptance"] = {
+        "status": "pending",
+        "decision_maker_role": "student_project_lead",
+        "decision_timestamp_utc": None,
+        "rationale": "Awaiting decision.",
+        "decision_record": None,
+    }
+    registry["records"] = [record]
+    registry["accepted_case_count"] = 1
+    registry["accepted_project_count"] = 1
+    registry["status"] = "contains_structurally_complete_candidates"
+    result = validate_registry(registry)
+    assert result["status"] == "invalid"
+    assert any("only explicitly accepted cases" in item for item in result["blockers"])
 
 
 def test_case_rejects_non_nested_evidence_and_mechanisms():
