@@ -4,7 +4,7 @@
 **Dataset instance:** `pyro-ppl__numpyro-1918`  
 **Issue:** https://github.com/pyro-ppl/numpyro/issues/1916  
 **Fix PR:** https://github.com/pyro-ppl/numpyro/pull/1918  
-**Review status:** next candidate after Dishka's project-lead-declared prior pipeline/debug exposure exclusion. NumPyro remains a provisional technical candidate: Stage 2 exact base-fail/fixed-pass is verified; the real E1/E2/E3 packet set has now passed the structural CI contract; semantic tier adjudication, candidate exposure/independence, documentary license-scope review and final acceptance remain open. The case is **not accepted**.
+**Review status:** verified fallback candidate if Dishka fails a remaining gate. NumPyro remains a provisional technical candidate: Stage 2 exact base-fail/fixed-pass is verified; the real E1/E2/E3 packet set has now passed the structural CI contract; semantic tier adjudication, candidate exposure/independence, documentary license-scope review and final acceptance remain open. The case is **not accepted**.
 
 ## 1. Defect contract
 
@@ -130,7 +130,7 @@ Current disposition: Stage 2 passed; Stage 3 packet construction complete; struc
 **Source hash clarification:** For the two source-code items, `source_snapshot_sha256` binds the exact verbatim excerpt snapshot; the parent files are independently anchored by immutable upstream commit and Git blob SHA-1. The excerpt's own bytes are separately bound by `content_sha256`.
 
 
-## Stage 3 handoff after Dishka exclusion — 19 November 2026
+## Stage 3 fallback readiness after Dishka exposure correction — 19 November 2026
 
 ### Latest repeat and structural CI result
 
@@ -183,3 +183,8 @@ The existing protocol explicitly excludes Panel Reviewer H from Panel B because 
 6. Only after the case record is complete may the proposed v0.2 schema validation and a separate final project-lead acceptance decision be performed.
 
 **Current disposition:** Stage 2 PASS; real packet structure PASS; semantic review pending; independence/exposure/license gates open; final accepted-case count remains 0; no model load, inference or training.
+
+
+## Candidate order correction — 19 November 2026
+
+An earlier note described NumPyro as the next candidate after Dishka had been excluded. That ordering is superseded: the project lead later clarified Dishka's prior pipeline/debug exposure as `none`, so Dishka remains first for formal proposed-case and acceptance checks. NumPyro remains the fallback candidate, not the current first-priority case. Its own Stage 2 PASS and structural packet validation remain valid, but its semantic adjudication, exposure/independence and dependency-license gates remain open.
