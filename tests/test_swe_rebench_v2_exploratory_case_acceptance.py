@@ -315,7 +315,7 @@ def test_dishka_proposed_case_document_hash_references_match_current_files():
         ),
     ]
 
-    pinned_commit = "13b4a0c80575cd2de9575cc884038666f34dfaa1"
+    pinned_commit = "1a87e6ce4b468cadff75b366b012b994803abae0"
     for artifact_ref, source_path in references:
         actual_sha256 = hashlib.sha256(source_path.read_bytes()).hexdigest()
         relative_path = str(source_path.relative_to(ROOT)).replace("\\", "/")
