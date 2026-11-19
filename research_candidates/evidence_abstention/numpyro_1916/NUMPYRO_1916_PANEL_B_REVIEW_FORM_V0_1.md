@@ -8,7 +8,9 @@
 - Reviewer code:
 - Date/time (UTC):
 - Conflict-of-interest screen completed: YES / NO
-- Prior access to source/issue/PR/patch/fix: NO / YES (if YES, stop; do not rate)
+- Prior access to source/issue/PR/patch/fix/reproduction logs/packet construction: NO / YES (if YES, stop; do not rate)
+- Prior access to this candidate's proposed gold, alternatives, E1/E2/E3 design, or evidence-tier proposal: NO / YES (if YES, stop; do not rate)
+- Prior participation in technical reproduction, evidence excerpt selection, or packet construction: NO / YES (if YES, stop; do not rate)
 - External search performed: NO / YES (if YES, stop and disclose)
 - Packet code:
 - Review order position:
