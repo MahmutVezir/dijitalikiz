@@ -185,3 +185,14 @@ A detailed current gate assessment is maintained in `DISHKA_435_V02_CANDIDATE_GA
 2. project-lead sign-off may cover only the bounded documentary source-license screen, not formal legal clearance.
 
 If either gate fails or a substantive source/evidence mismatch is found, retain Dishka outside the registry and move to NumPyro #1916 rather than relaxing the standard.
+
+
+## 14. Superseding project-lead exposure decision — 19 November 2026
+
+This section supersedes the pending prior-exposure classification in sections 7–8 above.
+
+The project lead explicitly declared `prior_pipeline_debug_exposure = some` on 19 November 2026. The separate declaration and rationale are recorded in `PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`.
+
+Under the active v0.2 rule, which requires `prior_pipeline_debug_exposure = none`, Dishka is **excluded from the model-evaluation sample**. Do not prepare an acceptance record, do not add it to the registry, and do not alter the validator. Keep the successful reproduction archives, hashes, source pins and Stage 3 technical adjudication as engineering evidence only.
+
+The researcher source exposure remains `full`; it is a distinct variable and is not used to overwrite the prior pipeline/debug declaration. The next candidate is NumPyro #1916.
