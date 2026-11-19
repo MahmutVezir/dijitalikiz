@@ -4,20 +4,20 @@
 **Candidate:** `reagento__dishka-436`  
 **Upstream project:** `reagento/dishka` (one case maximum for this project)  
 **Dataset role:** primary cohort, rank 2  
-**Current disposition:** `proposed_pending_license_and_formal_record`  
+**Current disposition:** `proposed_pending_final_project_lead_acceptance`  
 **Accepted registry:** still 0  
 **Model loading / inference / training:** not performed and not authorized
 
-This record is a pre-acceptance dossier. The project lead has clarified the prior pipeline/debug/test-oracle exposure answer as `none`; this satisfies that one v0.2 eligibility requirement. The case remains not accepted because license-scope sign-off, full proposed record, schema/registry checks and a separate final project-lead decision remain.
+This pre-acceptance dossier is superseded by the final candidate-level preparation record in section 14. The project lead's bounded documentary license-scope decision is recorded, the complete v0.2 proposal exists, all in-repository reference hashes/paths are checked, and the active Draft 2020-12 case validator plus fail-closed registry checks passed. The only Dishka-specific decision still pending is the separate project-lead YES/NO on final case acceptance. The case remains proposed and not accepted.
 
 ## 1. Technical evidence — repeated and independently rechecked
 
 Latest complete reproduction:
-- Workflow run: [44537219541](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44537219541)
+- Workflow run: [44570230531](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44570230531)
 - Job: `135605947696`
-- Artifact: [14536192821](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44537219541/artifacts/14536192821)
-- GitHub ZIP SHA-256: `b8dfe9e89e44f246fbf8d093ba31dc01c74c6dc167434555405693d6a0f1df52`
-- Downloaded ZIP SHA-256: `b8dfe9e89e44f246fbf8d093ba31dc01c74c6dc167434555405693d6a0f1df52` — exact match
+- Artifact: [14553612258](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44570230531/artifacts/14553612258)
+- GitHub ZIP SHA-256: `f24f43f48b2678407b381bee40b947b5a02dd9286743c12d3a6adf728af6ba2a`
+- Downloaded ZIP SHA-256: `f24f43f48b2678407b381bee40b947b5a02dd9286743c12d3a6adf728af6ba2a` — exact match
 - ZIP CRC: PASS
 - Archive members: 33
 - Internal SHA256SUMS: 32/32 PASS
@@ -148,8 +148,8 @@ The corrected value `none` satisfies the active v0.2 prior pipeline/debug exposu
 - Researcher source exposure: full, disclosed.
 - Prior pipeline/debug exposure: `none` (clarified project-lead declaration, 2026-11-19; correction record linked).
 - Study eligibility: eligible to continue case-level checks, subject to every remaining gate.
-- Bounded documentary license-scope decision: approved for the exact listed experimental environment only; not legal advice/redistribution approval.
-- Full v0.2 proposed acceptance record: created at `SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`; SHA-256 `c368612330cfde6f57d2a2e65520b014a6026b357b3e9b028c40c64a517b25da`.
+- Bounded documentary license-scope decision: approved for the exact listed experimental environment only; not legal advice/redistribution approval. Record SHA-256: `96f89e28ee026fcced8aca6d854770f5a0aefcb47690405f7d1a022fc9405d4d`.
+- Full v0.2 proposed acceptance record: `SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`; current SHA-256 `a23a6b23fb6a8cddde352eb415d52c62c364aa3af3a38a50da72d6c3aa40886f`.
 - Active validator result: `structurally_complete_candidate`; final decision remains pending.
 - Final case acceptance: NOT ACCEPTED; accepted registry remains empty.
 - Accepted registry: 0.
@@ -194,7 +194,7 @@ The project lead approved the bounded documentary license/provenance screen only
 
 The complete v0.2 proposed case record is:
 - Path: `SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`
-- SHA-256: `c368612330cfde6f57d2a2e65520b014a6026b357b3e9b028c40c64a517b25da`
+- SHA-256: `a23a6b23fb6a8cddde352eb415d52c62c364aa3af3a38a50da72d6c3aa40886f`
 - `acceptance_decision = proposed`
 - `final_acceptance.status = pending`; timestamp and decision record are null.
 - Exposure: prior pipeline/debug exposure `none`; researcher source exposure `full`.
@@ -208,3 +208,41 @@ The real-record regression tests were added to `tests/test_swe_rebench_v2_explor
 - The real case validator result is `structurally_complete_candidate`; registry validation remains `valid_empty_registry`, 0 accepted cases, and inference unauthorized.
 
 **Still pending:** the separate final project-lead YES/NO case-acceptance decision. Dishka remains **not accepted** and must not be counted toward the feasibility minimum until that decision is recorded. The same preflight report remains `ready_for_inference=false`, 14 global blockers, no model load/inference/fine-tuning.
+
+
+## 14. Superseding final preparation and CI evidence — 19 November 2026, 19:55 UTC
+
+This section supersedes earlier sections where the proposal SHA, bounded-license decision hash, last reproduction artifact, or CI run numbers are older.
+
+### Canonical case file
+- Path: `research_candidates/evidence_abstention/reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`
+- Current SHA-256: `a23a6b23fb6a8cddde352eb415d52c62c364aa3af3a38a50da72d6c3aa40886f`
+- Git blob SHA-1: `d171fcaec5f5a4b8e9112e44369bd59c918885af`
+- `acceptance_decision=proposed`; `final_acceptance.status=pending`; no final-decision timestamp or record exists.
+- All 12 in-repository evidence references in this record are pinned to immutable commit `13b4a0c80575cd2de9575cc884038666f34dfaa1`. The case-specific hash regression test also checks that each URI points to the exact local file whose bytes are hashed.
+
+### Bounded documentary scope decision
+- Record: `PROJECT_LEAD_LICENSE_SCOPE_DECISION_2026-11-19.md`
+- SHA-256: `96f89e28ee026fcced8aca6d854770f5a0aefcb47690405f7d1a022fc9405d4d`
+- The decision is limited to the exact pinned source, five changed paths, dependency-free issue reproducer, the four locked dataset-test packages, and isolated PyArrow extraction environment. It is not legal clearance or blanket redistribution approval.
+
+### Latest independently verified Stage 2 artifact
+- Workflow run: [44570230531](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44570230531)
+- Job: `135723082451` — success.
+- Artifact: [14553612258](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44570230531/artifacts/14553612258)
+- Outer ZIP SHA-256: `f24f43f48b2678407b381bee40b947b5a02dd9286743c12d3a6adf728af6ba2a` — locally recalculated and equal to GitHub's digest.
+- ZIP CRC: PASS; 33 members; all 32 internal `SHA256SUMS.txt` entries PASS.
+- Independent issue reproducer: buggy base fails with `AssertionError: 1 != 42`; same reproducer passes on the fixed revision.
+- Frozen dataset selectors: 8/8 defect-related failures on buggy base; same 8/8 pass on fixed revision.
+
+### Latest no-inference case-preflight validation
+- Workflow run: [44571127276](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44571127276)
+- Job: `135726142556` — success.
+- Artifact: `14552969335`, SHA-256 `44b768f7d76d65c19935b88b4856ec8aacc59b691ad625113c853ade0f2ad3e9`.
+- Case acceptance tests: 22 passed, including the real Dishka proposal, unchanged empty registry, and 12-reference immutable-URI/path/hash consistency regression.
+- Study-design / dual-human scoring tests: 10 passed.
+- The validator returns `structurally_complete_candidate`. The accepted registry remains `valid_empty_registry`, 0 cases, 0 projects, and inference unauthorized.
+
+**Current Dishka-specific state:** the bounded documentary scope decision, proposal construction, hash/path consistency audit, schema validation and fail-closed registry validation are complete. Dishka remains **not accepted** until the project lead separately records an explicit YES/NO final case-acceptance decision. Do not count it as a feasibility case or add it to the accepted registry before that decision.
+
+**Project-wide state:** the no-inference readiness report still has 14 blockers, including raw dataset provenance, exact model license/runtime, frozen generation/protocol artifacts, and Rater B consent/exposure. No model loading, inference, fine-tuning or training has occurred or is authorized.
