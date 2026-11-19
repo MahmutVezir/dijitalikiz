@@ -61,7 +61,7 @@ Any expansion requires a new scope review. Where a legal determination is requir
 ## 5. Evidence references
 
 - Changed-file license manifest: `REAGENTO_DISHKA_436_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json`, SHA-256 `34e09fdcf5d33849659490e2e50cdf80c8c5c8e6f01108dd542c60de203cf360`.
-- Reproduction environment lock: `reproduction_environment_lock.json`, SHA-256 `2900c96dc32539abdb34b89a3a8444277cb03ec6f5455c3c7d861b12c49807e7`.
+- Reproduction environment lock: `reproduction_environment_lock.json`, SHA-256 `2900c96dc32539abdb34b89a3a8444277cb03ec6f5455c3c7d861b12d8e94dab`.
 - Dataset selector lock: `dataset_test_requirements.lock`, SHA-256 `86df530333234a4da0407f344d39b7851aac892fd9ad485a5c1ed7b9d8870d5d`.
 - Candidate-specific source and Stage 2 evidence: `DISHKA_435_V02_CANDIDATE_GATE_ASSESSMENT_2026-11-19.md` and the independently checked run 44537219541 artifact 14536192821.
 
