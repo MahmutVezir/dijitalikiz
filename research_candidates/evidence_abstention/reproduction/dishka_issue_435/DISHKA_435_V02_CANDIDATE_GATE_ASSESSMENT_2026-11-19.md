@@ -4,11 +4,11 @@
 **Candidate:** `reagento__dishka-436`  
 **Upstream project:** `reagento/dishka` (one case maximum for this project)  
 **Dataset role:** primary cohort, rank 2  
-**Current disposition:** `excluded_prior_pipeline_debug_exposure`  
+**Current disposition:** `proposed_pending_license_and_formal_record`  
 **Accepted registry:** still 0  
 **Model loading / inference / training:** not performed and not authorized
 
-This record began as a pre-acceptance dossier. The project lead has since declared prior pipeline/debug/test-oracle exposure as `some`; this candidate is therefore excluded from the v0.2 model-evaluation sample and is not eligible for an acceptance record under the current protocol.
+This record is a pre-acceptance dossier. The project lead has clarified the prior pipeline/debug/test-oracle exposure answer as `none`; this satisfies that one v0.2 eligibility requirement. The case remains not accepted because license-scope sign-off, full proposed record, schema/registry checks and a separate final project-lead decision remain.
 
 ## 1. Technical evidence — repeated and independently rechecked
 
@@ -110,19 +110,19 @@ This is separate from:
 
 The readiness audit notes that Dishka is not listed in the prior pipeline/debug exclusion records, but the project-lead classification `none` was only proposed and still requires an explicit factual confirmation. Full source exposure does **not** imply prior pipeline-debug exposure, and one must not be substituted for the other.
 
-**Prior pipeline/debug classification: `some` — explicitly declared by the project lead on 19 November 2026.** The declaration is preserved in `PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`. Under the current v0.2 eligibility rule this excludes Dishka from the model-evaluation sample. We will not edit the rule to retain it. The separate researcher source-exposure classification remains `full`.
+**Prior pipeline/debug classification: `none` — clarified by the project lead on 19 November 2026.** The corrected declaration and superseded earlier answer are preserved in `PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`. The earlier `some` answer is not the current factual classification; the project lead explained that the earlier question had not yet been read carefully. The separate researcher source-exposure classification remains `full` and must not be conflated with prior pipeline/debug exposure.
 
 ## 7. Reviewer roles
 
 The project lead reports shared agreement with the previously discussed technical result, gold mechanism, alternatives, evidence-tier rationale and disclosed limitations.
 
 Proposed technical reviewers:
-- Panel Reviewer H — technical/methodology reviewer; private identity mapping is held outside the public repository.
-- Panel Reviewer T — technical/methodology reviewer; private identity mapping is held outside the public repository.
+- Panel Reviewer H — technical/methodology reviewer; identity mapping is held outside the public repository.
+- Panel Reviewer B — technical/methodology reviewer; identity mapping is held outside the public repository.
 
 Their technical/methodology review may be unblinded. If either sees the issue, PR, source, patch, gold mechanism or hidden E-tier decisions, that person must not later be described as a blind model-output scorer for this case.
 
-The active v0.2 `Rater_B` role is separate and is not automatically assigned to Hasan or Batuhan. It requires separate consent and case-specific exposure screening. A panel review is not a legal opinion or independent external audit.
+The active v0.2 `Rater_B` role is separate from Panel Reviewer B and is not automatically assigned to either technical reviewer. It requires separate consent and case-specific exposure screening. A panel review is not a legal opinion or independent external audit.
 
 ## 8. Acceptance workflow — no premature acceptance
 
@@ -134,11 +134,9 @@ The active v0.2 accepted-case schema now supports a distinct `proposed` state:
 
 This corrects the previous circular procedure where a schema-valid record had to say `accepted` before the project lead could make the final decision.
 
-### Disposition after the project-lead exposure declaration
+### Current disposition after the corrected exposure declaration
 
-The case-level acceptance workflow is closed for model-evaluation inclusion: the declared value `some` violates the active `none` requirement. Do not create a proposed acceptance JSON, do not run the case through a weakened validator, and do not add it to the registry. The bounded license-screen sign-off is no longer a prerequisite for this excluded case's sample eligibility; any remaining documentation may be retained for engineering provenance only.
-
-Preserve all technical artifacts and the Stage 2/Stage 3 technical history. Proceed to NumPyro #1916 as the next candidate, under unchanged acceptance criteria.
+The corrected value `none` satisfies the active v0.2 prior pipeline/debug exposure requirement. Continue with a complete proposed acceptance JSON and the remaining evidence gates; do not mark the case accepted in advance. The bounded documentary license-screen sign-off, source/timestamp evidence, independence/exposure references, E1/E2/E3 evidence manifests, schema validation, fail-closed registry checks and separate final project-lead decision remain required.
 
 ## 9. Current result
 
@@ -148,10 +146,10 @@ Preserve all technical artifacts and the Stage 2/Stage 3 technical history. Proc
 - Candidate PR timestamp/resource reconciliation: PASS; project-wide raw-payload authentication remains open.
 - Independence: documented.
 - Researcher source exposure: full, disclosed.
-- Prior pipeline/debug exposure: `some` (project-lead declaration, 2026-11-19).
-- Study eligibility: EXCLUDED under the active v0.2 rule; no exception requested.
-- Full v0.2 acceptance record: deliberately not prepared because the case is ineligible.
-- Final case acceptance: NOT ACCEPTED; not eligible for the study sample.
+- Prior pipeline/debug exposure: `none` (clarified project-lead declaration, 2026-11-19; correction record linked).
+- Study eligibility: eligible to continue case-level checks, subject to every remaining gate.
+- Full v0.2 proposed acceptance record: still to be prepared.
+- Final case acceptance: NOT ACCEPTED; no registry entry exists.
 - Accepted registry: 0.
 - Model loading/inference/training: not authorized or performed.
 
@@ -161,3 +159,16 @@ Preserve all technical artifacts and the Stage 2/Stage 3 technical history. Proc
 The project lead explicitly declared prior pipeline/debug/test-oracle exposure as `some`. The separate decision record is `PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`.
 
 Dishka is therefore **excluded from the model-evaluation sample** under the unchanged v0.2 rule. Its successful technical reproduction and prior Stage 3 technical adjudication remain valid engineering evidence; they do not make the candidate eligible. No acceptance record will be constructed for the study registry. The next candidate is NumPyro #1916.
+
+
+## 11. Superseding exposure correction — 19 November 2026
+
+The prior section 10 exclusion statement is superseded by the project's corrected exposure record. The project lead clarified that the earlier `some` answer was entered before the question had been read carefully and confirmed the intended factual answer:
+
+`prior_pipeline_debug_exposure = none`
+
+The exact project-lead wording was: “Hayır — Prospektif doğrulama öncesinde pipeline/debug amacıyla kullanılmadı.”
+
+The original `some` entry remains in the correction-history record as superseded; it is not treated as the current factual value. The separate `researcher_source_exposure = full` remains disclosed.
+
+**Current disposition:** continue Dishka's formal v0.2 proposed-case workflow. The case is not yet accepted. Do not skip the bounded license-scope decision, full record preparation, schema/registry validation or separate final decision.
