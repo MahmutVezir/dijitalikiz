@@ -54,7 +54,7 @@
     "related_case_ids": [],
     "review_record": {
       "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_CASE_ACCEPTANCE_READINESS_2026-11-18.md",
-      "sha256": "3b48a1b327722e16b146363b7b928cf124ccb792dedc9d89547a5489189ba680"
+      "sha256": "7278defddfc6d339436cfb80a6b8a11c8305e91e4bd845de6e4400b2f75af30d"
     }
   },
   "exposure": {
@@ -117,7 +117,7 @@
     },
     "review_record": {
       "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_V02_CANDIDATE_GATE_ASSESSMENT_2026-11-19.md",
-      "sha256": "76bdf179e4cb86aa9ac78a7738bfd086b4327f019dab5f31a3a5971afeb5c0b4"
+      "sha256": "205f156bd872f7b85dbe3056d7e96e70550e31bba51f69523535008899185916"
     }
   },
   "gold_standard": {
