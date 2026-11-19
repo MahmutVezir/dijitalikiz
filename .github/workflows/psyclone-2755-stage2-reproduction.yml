@@ -251,6 +251,76 @@ jobs:
           print(json.dumps(records, indent=2))
           PY
 
+      - name: Apply the frozen test_patch to the buggy-base checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="a33a99b7953130220ed7d3ad38d358c1124276af"
+          PATCH="$RUNNER_TEMP/psyclone-2755-evidence/test-patch.diff"
+          test "$(git -C psyclone-buggy rev-parse HEAD)" = "$BASE"
+          git -C psyclone-buggy apply --check "$PATCH"
+          git -C psyclone-buggy apply "$PATCH"
+          python - <<'PY'
+          import ast
+          import json
+          from pathlib import Path
+          import subprocess
+
+          root = Path("psyclone-buggy")
+          changed = subprocess.run(
+              ["git", "-C", str(root), "diff", "--name-only"],
+              check=True, capture_output=True, text=True
+          ).stdout.splitlines()
+          if not changed:
+              raise SystemExit("Applying the frozen test_patch produced no source changes")
+          unexpected = [name for name in changed if not name.startswith("src/psyclone/tests/")]
+          if unexpected:
+              raise SystemExit(f"test_patch modified non-test paths: {unexpected}")
+
+          provenance = json.loads(
+              (Path(__import__("os").environ["RUNNER_TEMP"]) /
+               "psyclone-2755-evidence" / "dataset-row-provenance.json")
+              .read_text(encoding="utf-8")
+          )
+          selector_checks = []
+          for selector in provenance["FAIL_TO_PASS"]:
+              filename, function = selector.split("::", 1)
+              source = (root / filename).read_text(encoding="utf-8")
+              tree = ast.parse(source, filename=str(root / filename))
+              found = any(
+                  isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                  and node.name == function
+                  for node in ast.walk(tree)
+              )
+              selector_checks.append({"selector": selector, "defined_after_test_patch": found})
+          if not all(item["defined_after_test_patch"] for item in selector_checks):
+              raise SystemExit(f"Frozen FAIL_TO_PASS selectors are not all present after test_patch: {selector_checks}")
+
+          expected_base = "a33a99b7953130220ed7d3ad38d358c1124276af"
+          actual_base = subprocess.run(
+              ["git", "-C", str(root), "rev-parse", "HEAD"],
+              check=True, capture_output=True, text=True
+          ).stdout.strip()
+          if actual_base != expected_base:
+              raise SystemExit(f"Buggy-base commit changed after applying test_patch: {actual_base}")
+
+          summary = {
+              "buggy_base_commit_unchanged": actual_base,
+              "frozen_test_patch_applied_to_actual_buggy_base_test_tree": True,
+              "changed_paths": changed,
+              "production_source_paths_modified": False,
+              "FAIL_TO_PASS_selector_presence": selector_checks,
+              "production_patch_applied_to_buggy_base": False,
+              "model_inference_performed": False,
+          }
+          out = Path(__import__("os").environ["RUNNER_TEMP"]) / "psyclone-2755-evidence"
+          (out / "buggy-base-test-patch-application.json").write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + "\\n",
+              encoding="utf-8"
+          )
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+          PY
+
       - name: Install exact wheel-hashed Python environment
         shell: bash
         run: |
