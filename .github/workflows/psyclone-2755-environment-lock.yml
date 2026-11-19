@@ -192,12 +192,12 @@ jobs:
               )
 
           hashed_lock = "".join(
-              f"{item['name']}=={item['version']} --hash=sha256:{item['sha256']}\\n"
+              f"{item['name']}=={item['version']} --hash=sha256:{item['sha256']}\n"
               for item in sorted(records, key=lambda x: x["name"])
           )
           (root / "requirements.hashed.lock.txt").write_text(hashed_lock, encoding="utf-8")
           (root / "wheel-hashes.json").write_text(
-              json.dumps(records, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+              json.dumps(records, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
           )
 
           fingerprint_path = root / "runtime-fingerprint.json"
@@ -210,7 +210,7 @@ jobs:
               hashed_lock.encode("utf-8")
           ).hexdigest()
           fingerprint_path.write_text(
-              json.dumps(fingerprint, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+              json.dumps(fingerprint, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
           )
           print(json.dumps({
               "wheel_count": len(records),
