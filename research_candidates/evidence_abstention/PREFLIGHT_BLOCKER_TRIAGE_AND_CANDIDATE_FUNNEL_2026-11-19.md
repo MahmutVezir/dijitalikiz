@@ -88,7 +88,7 @@ The 15 Stage 2 passes are not 15 accepted cases. CTAPIpe #2732 is retained as an
 The project lead has said that Hasan and Batuhan can be presented with the project's research and asked to make explicit yes/no decisions on scientifically relevant approvals. This is recorded as **proposed reviewer availability**, not as consent or completed review.
 
 - Mahmut remains student project lead and final decision-maker.
-- Reviewer H is the pseudonym for Hasan; Reviewer B is the pseudonym for Batuhan. `Rater_B` in the v0.2 scoring manifest is a separate, unassigned role and must not be confused with Reviewer B. Their participation, relevant expertise, case-specific prior exposure, independence and consent must be recorded individually.
+- Reviewer H and Reviewer B are public pseudonyms; identity mapping is kept outside the repository. `Rater_B` in the v0.2 scoring manifest is a separate, unassigned role and must not be confused with Panel Reviewer B. Participation, relevant expertise, case-specific prior exposure, independence and consent must be recorded individually.
 - ChatGPT remains advisory only and is not a human panel member.
 - A reviewer who sees an issue, patch, hidden gold, or tier adjudication for a case cannot later be described as blind to those items when scoring that case's model output.
 - If reviewers make documentary license recommendations, those are not formal legal opinions. Unresolved legal scope remains open.
