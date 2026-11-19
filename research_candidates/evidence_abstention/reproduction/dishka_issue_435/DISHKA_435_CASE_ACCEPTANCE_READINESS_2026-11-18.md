@@ -237,7 +237,7 @@ This section supersedes older "latest artifact" and "latest preflight" numbers i
 
 **Canonical v0.2 proposed case record**
 - Path: `SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`
-- Current SHA-256 after updating its reproduction run record to the newest verified artifact: `1ac859ca76e53f673f232b2ce233b2dc9ad289893ac3b237aa329fb614f67bc3`
+- Current SHA-256 after updating its reproduction run record to the newest verified artifact: `0a234c0f16668e5b58dace671483d4bc94b7f8167150e44662b339dc995ff9ee`
 - Git blob SHA-1: `ec884cda706b5a66d2439ea4df60580ae26a0656`
 - It remains `acceptance_decision=proposed`; `final_acceptance.status=pending`; no final acceptance timestamp or decision record exists.
 
@@ -260,3 +260,14 @@ The overall 13-candidate matrix run failed because independent Nox, Werkzeug and
 - Case validator: `structurally_complete_candidate`; accepted registry: `valid_empty_registry`, 0 cases and 0 projects.
 
 **Current gate boundary:** The case remains proposed and outside the accepted registry. The final project-lead YES/NO case-inclusion decision remains pending. The preflight report still has 14 global blockers and `ready_for_inference=false`; there has been no model load, inference, fine-tuning or training.
+
+
+## 18. Patch reference reconciliation and current proposed-record hash — 19 November 2026
+
+The canonical proposed case JSON's `source.patch` URI has been corrected. The previous mutable upstream PR diff URL did not match the recorded SHA-256, which actually belonged to the `full-pr.diff` file generated from the exact pinned base/fixed commits. The canonical record now links to `full-pr.diff` inside the independently verified run 44572926370 / artifact 14553229664 archive, with the inner SHA-256 `c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde`. The archive digest is `7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10`; ZIP CRC PASS; 32/32 internal hashes PASS.
+
+The reconciliation note is `DISHKA_435_PATCH_REFERENCE_RECONCILIATION_2026-11-19.md`, SHA-256 `b1f550033797d0f82cf4f4f49fb3c0bb42ad883520fbbf81e7608b0814ccdf09`. Artifact retention is 90 days; the exact regeneration command and pinned source revisions are in that note.
+
+The final-acceptance rationale now reflects the verified state: proposed-case preparation, in-repository hash/path references and structural checks are complete; the separate final project-lead YES/NO decision remains pending.
+
+Updated canonical case record SHA-256: `0a234c0f16668e5b58dace671483d4bc94b7f8167150e44662b339dc995ff9ee`; Git blob SHA-1 `c17d908a937c32c7372d1eb19bb9b29990b338e2`. It remains `proposed`, not accepted. The registry remains empty and model inference remains unauthorized.
