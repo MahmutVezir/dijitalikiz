@@ -1,4 +1,5 @@
 import copy
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -252,3 +253,71 @@ def test_dishka_proposed_case_does_not_change_empty_accepted_registry():
     assert result["accepted_case_count"] == 0
     assert result["inference_authorized"] is False
 
+
+
+def test_dishka_proposed_case_document_hash_references_match_current_files():
+    case_path = (
+        RESEARCH
+        / "reproduction"
+        / "dishka_issue_435"
+        / "SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json"
+    )
+    record = json.loads(case_path.read_text(encoding="utf-8"))
+
+    references = [
+        (
+            record["dataset"]["timestamp_review_record"],
+            RESEARCH / "reproduction" / "dishka_issue_435" / "DISHKA_435_POST_RUN_PROVENANCE_CORRECTION_V0_1_2026-11-16.md",
+        ),
+        (
+            record["independence"]["review_record"],
+            RESEARCH / "reproduction" / "dishka_issue_435" / "DISHKA_435_CASE_ACCEPTANCE_READINESS_2026-11-18.md",
+        ),
+        (
+            record["exposure"]["review_record"],
+            RESEARCH / "reproduction" / "dishka_issue_435" / "PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md",
+        ),
+        (
+            record["license_review"]["review_record"],
+            RESEARCH / "reproduction" / "dishka_issue_435" / "PROJECT_LEAD_LICENSE_SCOPE_DECISION_2026-11-19.md",
+        ),
+        (
+            record["license_review"]["changed_file_license_manifest"],
+            RESEARCH / "REAGENTO_DISHKA_436_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json",
+        ),
+        (
+            record["technical_reproduction"]["review_record"],
+            RESEARCH / "reproduction" / "dishka_issue_435" / "DISHKA_435_STAGE2_STAGE3_GATE_REVIEW_V0_1_2026-11-16.md",
+        ),
+        (
+            record["gold_standard"]["review_record"],
+            RESEARCH / "reproduction" / "dishka_issue_435" / "HUMAN_ADJUDICATION_DECISION_DISHKA_435_V0_1_DRAFT_2026-11-16.md",
+        ),
+        (
+            record["evidence_tiers"]["tier_decision_record"],
+            RESEARCH / "reproduction" / "dishka_issue_435" / "HUMAN_ADJUDICATION_DECISION_DISHKA_435_V0_1_DRAFT_2026-11-16.md",
+        ),
+        (
+            record["human_decision"]["ai_critique_record"],
+            RESEARCH / "reproduction" / "dishka_issue_435" / "CHATGPT_ADVISORY_CRITIQUE_DISHKA_435_2026-11-17.md",
+        ),
+        (
+            record["evidence_tiers"]["E1"]["packet"],
+            RESEARCH / "reproduction" / "dishka_issue_435" / "E1_PACKET_MANIFEST_V0_1.json",
+        ),
+        (
+            record["evidence_tiers"]["E2"]["packet"],
+            RESEARCH / "reproduction" / "dishka_issue_435" / "E2_PACKET_MANIFEST_V0_1.json",
+        ),
+        (
+            record["evidence_tiers"]["E3"]["packet"],
+            RESEARCH / "reproduction" / "dishka_issue_435" / "E3_PACKET_MANIFEST_V0_1.json",
+        ),
+    ]
+
+    for artifact_ref, source_path in references:
+        actual_sha256 = hashlib.sha256(source_path.read_bytes()).hexdigest()
+        assert actual_sha256 == artifact_ref["sha256"], (
+            f"Stale SHA-256 reference for {source_path.relative_to(ROOT)}: "
+            f"record has {artifact_ref['sha256']}, file has {actual_sha256}"
+        )
