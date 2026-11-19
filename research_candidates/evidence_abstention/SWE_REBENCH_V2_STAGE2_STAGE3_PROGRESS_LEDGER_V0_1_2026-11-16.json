@@ -846,7 +846,47 @@
       "stage2_evidence_note": null,
       "stage3_status": "not_started_stage2_or_scope_gate",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_discovery": {
+        "status": "row_identity_verified_selectors_extracted_test_patch_provenance_pending",
+        "discovery_workflow_run_id": 44505558452,
+        "discovery_job_id": 135496102908,
+        "discovery_artifact_id": 14518479738,
+        "discovery_artifact_sha256": "a1dd81946a6222da60fd44f5c26c3bbc187573ec7d38ae2f60f57332db4bf061",
+        "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+        "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+        "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+        "instance_id": "stfc__psyclone-2767",
+        "canonical_row_sha256": "963be5fb18ed5c42da6ccdde26696be51993206c91f6883e79607511fadaa0ea",
+        "repo": "stfc/PSyclone",
+        "base_commit": "a33a99b7953130220ed7d3ad38d358c1124276af",
+        "dataset_created_at": "2024-11-05 14:18:14",
+        "github_pr_created_at": "2024-11-05T14:18:14Z",
+        "issue_created_at": "2024-10-24T10:03:42Z",
+        "timestamp_note": "Dataset created_at lacks explicit timezone; its wall-clock components match the GitHub PR created_at UTC value. Retain timezone-serialization caveat.",
+        "upstream_license": "BSD-3-Clause",
+        "selector_count": 3,
+        "selectors": [
+          "src/psyclone/tests/psyad/tl2ad_test.py::test_generate_adjoint_str_trans_error",
+          "src/psyclone/tests/psyad/transformations/test_preprocess.py::test_preprocess_arrayassign2loop_failure",
+          "src/psyclone/tests/psyir/nodes/array_mixin_test.py::test_get_effective_shape"
+        ],
+        "static_test_source_check": {
+          "base_commit_tree": {
+            "test_generate_adjoint_str_trans_error": "absent from base test file; introduced by PR test diff",
+            "test_preprocess_arrayassign2loop_failure": "absent from base test file; introduced by PR test diff",
+            "test_get_effective_shape": "present on base and modified by PR test diff"
+          },
+          "note": "The first two selectors can be executed on the buggy base only if the authenticated dataset test_patch injects the new test cases. The third selector exists on the base and its test body is changed in the PR. Do not interpret source absence as a failure until test_patch provenance is checked."
+        },
+        "test_patch_audit_workflow_run_id": 44506930534,
+        "test_patch_audit_outcome": "failed_due_to_discovery_script_regex_bug_before_candidate_result",
+        "test_patch_audit_retry_run_id": 44507464159,
+        "upstream_source_built": false,
+        "upstream_tests_executed": false,
+        "model_inference_performed": false,
+        "case_accepted": false
+      }
     },
     {
       "cohort_rank": 37,
