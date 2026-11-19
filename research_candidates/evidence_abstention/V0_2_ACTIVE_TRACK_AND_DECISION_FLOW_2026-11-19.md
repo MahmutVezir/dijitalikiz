@@ -54,21 +54,29 @@ Three roles must not be conflated:
 
 If both technical panel reviewers inspect full technical case materials, they remain valid technical reviewers but are not eligible as blinded output scorers for that case. A separate unexposed scorer or a prospectively amended scoring design is needed. ChatGPT remains advisory and is never a human rater or external auditor.
 
-## 5. Dishka #435 — excluded after factual exposure declaration
+## 5. Dishka #435 — first formal acceptance candidate, not yet accepted
 
-Dishka remains a technically reproduced and Stage 3 technically adjudicated engineering record:
+Dishka is the first candidate to complete the formal v0.2 case-acceptance route because:
 - exact issue reproducer failed on the buggy base and passed on the fixed revision;
 - all 8 frozen dataset selectors failed on the buggy base and the same 8 passed on the fixed revision;
 - latest artifact 14536192821 has an outer SHA-256 matching GitHub, CRC passes, and 32/32 inner hashes pass;
-- the project lead's technical gold, alternatives and E1/E2/E3 rationale approvals remain in the engineering history.
+- the project lead's technical gold, alternatives and E1/E2/E3 rationale approvals are recorded;
+- `researcher_source_exposure = full` is disclosed; single-human-adjudicator and exploratory-only limitations remain explicit.
 
-On 19 November 2026, the project lead explicitly declared `prior_pipeline_debug_exposure = some`. The active v0.2 rule requires `none`. Dishka is therefore **excluded from the model-evaluation sample**. This decision is recorded in `reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md` and the candidate gate assessment.
+The project lead's corrected factual declaration is `prior_pipeline_debug_exposure = none`. The earlier `some` answer is superseded because the project lead clarified that the question had not yet been read carefully and explicitly selected NO. The correction history is preserved in `reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`. The separate full source exposure remains `full`; it is not conflated with prior pipeline/debug exposure.
 
-Do not prepare a v0.2 acceptance JSON for Dishka, do not edit the eligibility validator, do not add it to the accepted registry, and do not count it toward the one-case feasibility minimum or the 15-project primary target. Preserve the source, test artifacts, hashes, Stage 2 result and Stage 3 technical record as engineering evidence. The exclusion does not mean the technical reproduction failed.
+Remaining Dishka-specific steps:
+1. Project-lead decision on the bounded documentary license-screen scope (Apache-2.0 exact base, changed files, pinned reproduction/test/extraction environments). This is not formal legal advice or blanket redistribution approval.
+2. Complete the full proposed v0.2 case JSON with verified artifact URIs/hashes, row/timestamp provenance, independence, exposure, license and tier references.
+3. Run active Draft 2020-12 case schema validation and fail-closed registry checks with the record in `proposed` state.
+4. Resolve any structural/evidentiary mismatch without relaxing criteria.
+5. Present a separate final YES/NO project-lead case-acceptance decision. Until that decision and validators pass, Dishka is **not accepted**.
+
+If any remaining Dishka gate fails, do not make an exception; preserve the result and move to NumPyro #1916. Case acceptance alone would still not authorize model inference or training.
 
 ## 6. Candidate fallback rule
 
-The first candidate is not privileged over the evidence. Dishka's prior pipeline/debug classification is now recorded as `some`, so it is excluded under the unchanged rule. The next candidate is **NumPyro #1916 / PR #1918**. If NumPyro's semantic tiers, prior-exposure eligibility, independence, documentary source/dependency license scope, timestamp provenance or acceptance record fail, do not relax the standard; preserve the evidence and proceed to the next Stage 2-passed candidate in the existing order.
+Dishka is first because it currently satisfies the prior pipeline/debug exposure rule and has the most complete candidate-level technical and Stage 3 record. This priority does not waive its remaining gates. If Dishka's bounded license scope, evidence provenance, schema/registry checks or final project-lead decision fail, do not relax the standard; preserve the evidence and proceed to **NumPyro #1916 / PR #1918**, whose Stage 2 and packet structural checks have already passed but whose semantic adjudication remains open.
 
 ## 7. Current state
 
@@ -82,7 +90,7 @@ The first candidate is not privileged over the evidence. Dishka's prior pipeline
 - No model load, inference, fine-tuning or training performed.
 
 
-## 8. NumPyro #1916 — next candidate handoff (19 November 2026)
+## 8. NumPyro #1916 — verified fallback candidate (19 November 2026)
 
 - Upstream issue #1916 / fix PR #1918; dataset row `pyro-ppl__numpyro-1918`.
 - Exact Stage 2 rerun: workflow run `44537219541`, NumPyro job `135605947673` completed successfully. Both frozen AIES and ESS selectors ran and met the exact buggy-base-fail/fixed-revision-pass contract.
@@ -99,3 +107,10 @@ The existing NumPyro Panel B protocol requires at least two independent, source-
 Panel A technical review is also separate: at least two source-aware reviewers must make independent mechanism/alternative assessments, with their initial records preserved. Reviewers cannot serve simultaneously as Panel A and Panel B for this case. Reviewer delivery must be restricted, randomized and access-logged; the public GitHub repository is not a controlled review channel.
 
 **Next operational gate:** complete the reviewer exposure/role screen and confirm that the required independent human panel and restricted delivery route can actually be assembled. Only then prepare and deliver coded packet copies. No model load, inference or training is authorized.
+
+
+## 9. Dishka exposure correction — 19 November 2026
+
+The earlier section 5–8 entry that treated Dishka as excluded for `some` exposure has been superseded. The corrected current project-lead declaration is `prior_pipeline_debug_exposure = none`; the previous `some` answer is retained only as correction history. See `reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`.
+
+Current active order: Dishka formal case checks first; NumPyro second if Dishka cannot pass the remaining unchanged requirements. Accepted-case count remains 0; no model load, inference or training is authorized.
