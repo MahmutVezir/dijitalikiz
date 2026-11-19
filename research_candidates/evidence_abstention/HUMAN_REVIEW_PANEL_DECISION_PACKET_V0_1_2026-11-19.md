@@ -12,7 +12,7 @@
 | Mahmut — student project lead | Own protocol, maintain source records, propose candidate decisions, record deviations, and make the final project-lead decision | Has prior source exposure to screened candidate issues/patches; must not be described as blinded |
 | Panel Reviewer H | Independent technical/methodology review; identity mapping held outside the public repository | Not automatically a legal reviewer, external auditor or blind output rater |
 | Panel Reviewer B | Independent technical/methodology review; identity mapping held outside the public repository | Not automatically a legal reviewer, external auditor or blind output rater |
-| Rater B | Separate role in the active v0.2 manifest for independent blind model-output scoring; no individual is assigned by this packet | Must not be conflated with Panel Reviewer H or T; requires separate consent and case-specific exposure screen |
+| `Rater_B` | Separate, currently unassigned role in the active v0.2 manifest for blind model-output scoring | Not the same as Panel Reviewer B; requires a different unexposed person or a prospective protocol amendment |
 | ChatGPT | Research-assistant critique, structured evidence and reproducibility support | Not a human reviewer, not a voting member, not a human rater, and never counted for inter-rater reliability |
 
 The repository uses pseudonyms only: Reviewer H = Hasan; Reviewer B = Batuhan. Their willingness, relevant expertise, assigned scope and case-specific prior exposure must still be confirmed directly before either review is treated as completed. This mapping is maintained outside public-facing records.
