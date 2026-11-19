@@ -65,12 +65,13 @@ Dishka is the first candidate to complete the formal v0.2 case-acceptance route 
 
 The project lead's corrected factual declaration is `prior_pipeline_debug_exposure = none`. The earlier `some` answer is superseded because the project lead clarified that the question had not yet been read carefully and explicitly selected NO. The correction history is preserved in `reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`. The separate full source exposure remains `full`; it is not conflated with prior pipeline/debug exposure.
 
-Remaining Dishka-specific steps:
-1. Project-lead decision on the bounded documentary license-screen scope (Apache-2.0 exact base, changed files, pinned reproduction/test/extraction environments). This is not formal legal advice or blanket redistribution approval.
-2. Complete the full proposed v0.2 case JSON with verified artifact URIs/hashes, row/timestamp provenance, independence, exposure, license and tier references.
-3. Run active Draft 2020-12 case schema validation and fail-closed registry checks with the record in `proposed` state.
-4. Resolve any structural/evidentiary mismatch without relaxing criteria.
-5. Present a separate final YES/NO project-lead case-acceptance decision. Until that decision and validators pass, Dishka is **not accepted**.
+Completed Dishka-specific steps:
+1. The project lead approved the bounded documentary license-screen scope for the exact listed research/reproduction/test/extraction environment only; this is not legal advice or blanket redistribution approval.
+2. Created the full v0.2 case JSON with exact dataset, source, test, artifact, gold and tier references; the record is `proposed`.
+3. Active Draft 2020-12 schema and fail-closed case validator passed in GitHub Actions run `44561953996`, job `135693344292` (no-inference preflight success). The real-case test asserts `structurally_complete_candidate`, `eligible_for_registry=false`, and inference unauthorized.
+4. Fail-closed registry validation passed as `valid_empty_registry`; accepted count remains 0.
+
+**Only Dishka-specific decision still open:** the separate final YES/NO project-lead case-acceptance decision. Until then, Dishka is **not accepted**.
 
 If any remaining Dishka gate fails, do not make an exception; preserve the result and move to NumPyro #1916. Case acceptance alone would still not authorize model inference or training.
 
@@ -114,3 +115,10 @@ Panel A technical review is also separate: at least two source-aware reviewers m
 The earlier section 5–8 entry that treated Dishka as excluded for `some` exposure has been superseded. The corrected current project-lead declaration is `prior_pipeline_debug_exposure = none`; the previous `some` answer is retained only as correction history. See `reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`.
 
 Current active order: Dishka formal case checks first; NumPyro second if Dishka cannot pass the remaining unchanged requirements. Accepted-case count remains 0; no model load, inference or training is authorized.
+
+
+## 10. Dishka proposed record validation — 19 November 2026
+
+The proposed case file is `reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json` (SHA-256 `c368612330cfde6f57d2a2e65520b014a6026b357b3e9b028c40c64a517b25da`). It binds the project-lead limited documentary license-scope decision, prior-exposure correction, exact dataset row/timestamp, source pins, latest reproduction artifact, human gold record and original E1/E2/E3 manifests.
+
+GitHub Actions run `44561953996` / no-inference job `135693344292` passed. The five test groups total 74 passes (12 + 25 + 6 + 21 + 10). The active case validator reports `structurally_complete_candidate`; the fail-closed accepted registry validator reports `valid_empty_registry` with 0 accepted cases. The workflow's readiness report remains `ready_for_inference=false`, 14 global blockers, and no model loading/inference/fine-tuning. The separate final project-lead acceptance decision has not been made.
