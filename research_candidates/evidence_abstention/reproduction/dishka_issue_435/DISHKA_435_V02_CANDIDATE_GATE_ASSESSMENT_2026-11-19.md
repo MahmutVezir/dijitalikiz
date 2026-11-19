@@ -95,7 +95,7 @@ Scope limitations:
 - It is not legal advice, formal legal clearance, blanket clearance for optional integrations/development extras, nor permission to redistribute upstream source or third-party dependencies.
 - The project-wide source/license inventory and raw provenance gate remain open.
 
-**Project-lead scope decision: pending.** A YES would mean only that the documented, bounded screening is adequate for this exploratory case file, with the limitations above preserved. It must not be recorded as formal legal approval.
+**Project-lead scope decision: APPROVED within the documented bounded scope on 19 November 2026.** The separate decision record is `PROJECT_LEAD_LICENSE_SCOPE_DECISION_2026-11-19.md`. This is not legal advice, formal legal clearance or blanket redistribution approval.
 
 ## 6. Exposure — two separate variables
 
@@ -148,8 +148,10 @@ The corrected value `none` satisfies the active v0.2 prior pipeline/debug exposu
 - Researcher source exposure: full, disclosed.
 - Prior pipeline/debug exposure: `none` (clarified project-lead declaration, 2026-11-19; correction record linked).
 - Study eligibility: eligible to continue case-level checks, subject to every remaining gate.
-- Full v0.2 proposed acceptance record: still to be prepared.
-- Final case acceptance: NOT ACCEPTED; no registry entry exists.
+- Bounded documentary license-scope decision: approved for the exact listed experimental environment only; not legal advice/redistribution approval.
+- Full v0.2 proposed acceptance record: created at `SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`; SHA-256 `c368612330cfde6f57d2a2e65520b014a6026b357b3e9b028c40c64a517b25da`.
+- Active validator result: `structurally_complete_candidate`; final decision remains pending.
+- Final case acceptance: NOT ACCEPTED; accepted registry remains empty.
 - Accepted registry: 0.
 - Model loading/inference/training: not authorized or performed.
 
@@ -184,3 +186,25 @@ Remaining gates:
 5. Separate final project-lead YES/NO acceptance decision.
 
 The case remains not accepted; registry count remains zero; model loading/inference/training remain unauthorized.
+
+
+## 13. Proposed case record and active validator result — 19 November 2026
+
+The project lead approved the bounded documentary license/provenance screen only for the exact pinned scope in `PROJECT_LEAD_LICENSE_SCOPE_DECISION_2026-11-19.md` (record SHA-256 `cf1f1a7344ced441d04b212292edc0dfefd28986e61bfdadcbb282319e90cbbd`). It expressly excludes legal clearance, optional integrations/extras and blanket redistribution approval.
+
+The complete v0.2 proposed case record is:
+- Path: `SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`
+- SHA-256: `c368612330cfde6f57d2a2e65520b014a6026b357b3e9b028c40c64a517b25da`
+- `acceptance_decision = proposed`
+- `final_acceptance.status = pending`; timestamp and decision record are null.
+- Exposure: prior pipeline/debug exposure `none`; researcher source exposure `full`.
+- Tier membership is linked to the exact pinned E1/E2/E3 manifests (13/9/7 items); approved survivor sets are retained.
+
+The real-record regression tests were added to `tests/test_swe_rebench_v2_exploratory_case_acceptance.py` and run in GitHub Actions:
+- Workflow run: [44561953996](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44561953996)
+- No-inference preflight job: `135693344292` — **success**
+- Preflight log artifact: `14550531292`, SHA-256 `d628b1f56d69edc4a249b929931f1fe43134c3c41eafe9887b16dc1c8c5e3e4a`
+- Test groups: 12 + 25 + 6 + 21 + 10 = **74 passed**. The 21-case v0.2 suite includes the two new tests for the actual Dishka proposed record and the unchanged empty accepted registry.
+- The real case validator result is `structurally_complete_candidate`; registry validation remains `valid_empty_registry`, 0 accepted cases, and inference unauthorized.
+
+**Still pending:** the separate final project-lead YES/NO case-acceptance decision. Dishka remains **not accepted** and must not be counted toward the feasibility minimum until that decision is recorded. The same preflight report remains `ready_for_inference=false`, 14 global blockers, no model load/inference/fine-tuning.
