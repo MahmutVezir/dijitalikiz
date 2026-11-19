@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-19T09:55:00Z",
+  "generated_at_utc": "2026-11-19T10:05:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -266,14 +266,43 @@
       "stage2_status": "passed",
       "stage2_workflow_job_id": 134923384282,
       "stage2_evidence_note": "Latest repeat in run 44338919763 on workflow head f838660fdfcdd2ec92a3983a70e5f3f894732675 (job 134923384282, artifact 14441559416) independently verified. Downloaded ZIP SHA-256 b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360 matches GitHub artifact digest; ZIP CRC passed and all 15 payload-file hashes in SHA256SUMS.txt passed. The exact AIES and ESS selectors both executed and failed on pinned buggy base 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d with JAX key-array shape (10,2), then both passed on fixed upstream merge 5692d2da335945b756aeae02e3720b9b7f3efef2 (2/2 expected base failures, 2/2 fixed passes). Source-level handoff/sampler split was independently cross-checked against pinned source blobs. Stage 3 semantic adjudication, exposure/independence, human license-scope acknowledgement and final acceptance remain open.",
-      "stage3_status": "draft_prepared_pending_project_lead_adjudication",
+      "stage3_status": "packet_set_created_structural_ci_validation_pending_semantic_review",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44338919763,
       "stage2_artifact_id": 14441559416,
       "stage2_artifact_sha256": "b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360",
       "stage3_proposal_document": "research_candidates/evidence_abstention/NUMPYRO_1916_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-18.md",
-      "model_visible_packet_status": "not_operationalized_or_semantically_adjudicated"
+      "model_visible_packet_status": "not_operationalized_or_semantically_adjudicated",
+      "stage3_project_lead_decision": {
+        "date": "2026-11-19",
+        "status": "approved_to_proceed_conditionally",
+        "reported_approvers": [
+          "project_lead",
+          "Hasan"
+        ],
+        "scope": "Proceed with cohort-ledger reconciliation, exact E1/E2/E3 packet construction, structural validation, blinded semantic review, and exposure/license reconciliation.",
+        "not_approved": [
+          "semantic tier sufficiency",
+          "final case acceptance",
+          "model inference",
+          "fine-tuning"
+        ]
+      },
+      "stage3_packet_set_path": "research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_V0_1_2026-11-19.json",
+      "stage3_provenance_path": "research_candidates/evidence_abstention/numpyro_1916/EVIDENCE_PACKET_PROVENANCE_V0_1_2026-11-19.json",
+      "stage3_packet_set_sha256": "7156e7c0bebf694946495b638f8dd21fbe45b7fbafde2607e6cc11e8b4f9bdfc",
+      "stage3_packet_structure": {
+        "E3_item_count": 1,
+        "E2_item_count": 2,
+        "E1_item_count": 4,
+        "strictly_nested_by_manifest": true,
+        "shared_item_content_hashes_checked": true,
+        "source_excerpt_hashes_match_recorded_byte_ranges": true,
+        "operational_validator_ci_test_added": true,
+        "ci_result": "pending"
+      },
+      "stage3_semantic_adjudication": "pending_independent_blinded_panel"
     },
     {
       "cohort_rank": 13,
@@ -1945,5 +1974,13 @@
     ],
     "interpretation": "The 10/3/0 result is a completed focused matrix, not the full 96-row cohort and not the cumulative Stage 2 count. The cohort ledger separately records 15 Stage 2-passed rows, including candidates outside the 13-job focused matrix, and 42 rows whose Stage 2 status remains not_started/not_started_conditional_gate. The remaining cohort records include static exclusions, explicit holds, blocked selector/provenance rows and other dispositions. Do not say all Stage 2 work across the frozen cohort is complete.",
     "reconciliation_method": "Counts recomputed from the 96 per-record stage2_status fields on 2026-11-19; the focused-matrix counts are retained as a separate run-scoped result."
+  },
+  "stage3_approval_and_packet_status": {
+    "date": "2026-11-19",
+    "numpyro_packet_set_sha256": "7156e7c0bebf694946495b638f8dd21fbe45b7fbafde2607e6cc11e8b4f9bdfc",
+    "structural_ci_test": "added_not_yet_observed_green",
+    "semantic_panel": "not_started",
+    "case_acceptance": "0",
+    "inference_authorized": false
   }
 }
