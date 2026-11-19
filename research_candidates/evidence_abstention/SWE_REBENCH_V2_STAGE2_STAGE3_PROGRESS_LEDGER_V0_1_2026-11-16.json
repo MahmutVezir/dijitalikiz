@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-19T18:05:00Z",
+  "generated_at_utc": "2026-11-19T18:14:18Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -99,7 +99,7 @@
         "correction_reason": "The project lead clarified that the earlier answer was given before the question had been read carefully and explicitly selected the NO response: Dishka was not used for pipeline/debug purposes before prospective validation.",
         "correction_record": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md"
       },
-      "study_evaluation_status_note": "Prior pipeline/debug exposure corrected to none; researcher source exposure full remains disclosed. Bounded documentary license-scope decision approved only for the exact listed research/reproduction/test/extraction environment (not legal advice or redistribution approval). The canonical v0.2 proposed case record has all 12 in-repository evidence references pinned to immutable commit 13b4a0c80575cd2de9575cc884038666f34dfaa1, with file-content SHA-256 checks passing in CI. The current case JSON is structurally complete but remains proposed; final project-lead acceptance is pending. The accepted registry remains empty; no model inference is authorized. Latest repeat (run 44572926370/job 135733170187/artifact 14553229664) has independently verified ZIP integrity and repeats the same base-fail/fixed-pass issue reproducer plus 8/8 dataset selector outcomes. Latest preflight (same run/job 135732610579) passed 22 v0.2 case tests including 12 immutable document URI/hash checks; design/scoring tests 10 passed. The report remains blocked_before_inference, 14 global blockers, 0 accepted cases; no model action. Patch URI/hash reconciliation completed: the old mutable upstream PR .diff URI did not match the pinned git diff SHA. The canonical case now points to full-pr.diff inside the latest independently verified artifact; digest c5a6e5ed... is corroborated by the archive's internal SHA256SUMS. The 90-day artifact retention and exact regeneration command from pinned commits are recorded in DISHKA_435_PATCH_REFERENCE_RECONCILIATION_2026-11-19.md.",
+      "study_evaluation_status_note": "Prior pipeline/debug exposure corrected to none; researcher source exposure full remains disclosed. Bounded documentary license-scope decision approved only for the exact listed research/reproduction/test/extraction environment (not legal advice or redistribution approval). The canonical v0.2 proposed case record has all 12 in-repository evidence references pinned to immutable commit 13b4a0c80575cd2de9575cc884038666f34dfaa1, with file-content SHA-256 checks passing in CI. The current case JSON is structurally complete but remains proposed; final project-lead acceptance is pending. The accepted registry remains empty; no model inference is authorized. Latest repeat (run 44572926370/job 135733170187/artifact 14553229664) has independently verified ZIP integrity and repeats the same base-fail/fixed-pass issue reproducer plus 8/8 dataset selector outcomes. Latest preflight (same run/job 135732610579) passed 22 v0.2 case tests including 12 immutable document URI/hash checks; design/scoring tests 10 passed. The report remains blocked_before_inference, 14 global blockers, 0 accepted cases; no model action. Patch URI/hash reconciliation completed: the old mutable upstream PR .diff URI did not match the pinned git diff SHA. The canonical case now points to full-pr.diff inside the latest independently verified artifact; digest c5a6e5ed... is corroborated by the archive's internal SHA256SUMS. The 90-day artifact retention and exact regeneration command from pinned commits are recorded in DISHKA_435_PATCH_REFERENCE_RECONCILIATION_2026-11-19.md. Latest PR-head no-inference preflight after the immutable-reference and patch-URI reconciliation: run 44585592253/job 135777525833 PASS; 23 v0.2 case tests + 10 design/scoring tests passed, including the patch URI/hash regression. Canonical proposed case SHA-256 ab6826c1e9ef85ca4e4aea6ba246df07f86e07e716d8aade348de6d65d9c9274; 12 document refs pinned to commit 1a87e6ce4b468cadff75b366b012b994803abae0. Readiness still blocked_before_inference, 14 global blockers, 0 accepted cases; no model operation.",
       "bounded_documentary_license_scope_decision": {
         "status": "approved_bounded_scope_only",
         "decision_timestamp_utc": "2026-11-19T15:55:16Z",
@@ -111,8 +111,8 @@
       },
       "proposed_case_acceptance_record": {
         "path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
-        "sha256": "0a234c0f16668e5b58dace671483d4bc94b7f8167150e44662b339dc995ff9ee",
-        "git_blob_sha1": "c17d908a937c32c7372d1eb19bb9b29990b338e2",
+        "sha256": "ab6826c1e9ef85ca4e4aea6ba246df07f86e07e716d8aade348de6d65d9c9274",
+        "git_blob_sha1": "926f5230fadebba4c837089ebc486e3ae309f47c",
         "acceptance_decision": "proposed",
         "final_acceptance_status": "pending",
         "final_decision_timestamp_utc": null,
@@ -128,19 +128,20 @@
         "status": "structurally_complete_candidate",
         "validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
         "schema": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
-        "ci_workflow_run_id": 44572926370,
-        "ci_job_id": 135732610579,
+        "ci_workflow_run_id": 44585592253,
+        "ci_job_id": 135777525833,
         "ci_job_conclusion": "success",
-        "artifact_id": 14554972064,
-        "artifact_sha256": "b0dc39e127a375206e7fbe8613292fef6d3f4a77af56b23080b5fd5691665c61",
-        "v0_2_tests_passed": 22,
+        "artifact_id": 14559794523,
+        "artifact_sha256": "e1ae0eeca3a6ace8ca50c51ec9db2cce001262b0bbce451cfe6d4b107605af29",
+        "v0_2_tests_passed": 23,
         "test_names": [
           "test_dishka_real_proposed_case_is_structurally_complete_but_not_accepted",
           "test_dishka_proposed_case_does_not_change_empty_accepted_registry",
-          "test_dishka_proposed_case_document_hash_references_match_current_files"
+          "test_dishka_proposed_case_document_hash_references_match_current_files",
+          "test_dishka_patch_and_reproduction_artifact_references_are_pinned"
         ],
         "document_hash_reference_count": 12,
-        "immutable_uri_commit": "13b4a0c80575cd2de9575cc884038666f34dfaa1",
+        "immutable_uri_commit": "1a87e6ce4b468cadff75b366b012b994803abae0",
         "structural_only": true,
         "semantic_truth_not_established_by_validator": true,
         "study_design_dual_human_scoring_tests_passed": 10,
@@ -148,11 +149,12 @@
         "preflight_ready_for_inference": false,
         "preflight_blocker_count": 14,
         "preflight_accepted_case_count": 0,
-        "artifact_integrity": "Independently downloaded ZIP SHA-256 matched GitHub digest; ZIP CRC PASS.",
+        "artifact_integrity": "GitHub Actions preflight artifact SHA-256 recorded; no independent local archive download recorded for this latest small preflight artifact.",
         "patch_reference_test": "test_dishka_patch_and_reproduction_artifact_references_are_pinned",
         "patch_reference_test_added": true,
         "patch_reference_uri_kind": "verified_file_inside_pinned_reproduction_artifact",
-        "case_json_sha256": "0a234c0f16668e5b58dace671483d4bc94b7f8167150e44662b339dc995ff9ee"
+        "case_json_sha256": "ab6826c1e9ef85ca4e4aea6ba246df07f86e07e716d8aade348de6d65d9c9274",
+        "patch_reference_test_passed": true
       },
       "accepted_registry_validation": {
         "status": "valid_empty_registry",
@@ -163,12 +165,12 @@
         "inference_authorized": false
       },
       "latest_no_inference_preflight": {
-        "run_id": 44572926370,
-        "job_id": 135732610579,
+        "run_id": 44585592253,
+        "job_id": 135777525833,
         "job_conclusion": "success",
-        "artifact_id": 14554972064,
-        "artifact_sha256": "b0dc39e127a375206e7fbe8613292fef6d3f4a77af56b23080b5fd5691665c61",
-        "v0_2_case_acceptance_tests": 22,
+        "artifact_id": 14559794523,
+        "artifact_sha256": "e1ae0eeca3a6ace8ca50c51ec9db2cce001262b0bbce451cfe6d4b107605af29",
+        "v0_2_case_acceptance_tests": 23,
         "design_and_scoring_tests": 10,
         "report_status": "blocked_before_inference",
         "ready_for_inference": false,
@@ -179,7 +181,7 @@
         "model_inference_performed": false,
         "fine_tuning_performed": false,
         "inference_authorized": false,
-        "artifact_zip_independently_verified": true
+        "artifact_zip_independently_verified": false
       }
     },
     {
