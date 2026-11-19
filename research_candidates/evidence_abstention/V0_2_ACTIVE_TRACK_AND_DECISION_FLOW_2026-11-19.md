@@ -143,3 +143,19 @@ This section controls over older hashes and artifact/run numbers in sections 5, 
 NumPyro #1916 / PR #1918 remains the next candidate in the approved sequence, not an already accepted case. Stage 2 technical reproduction and packet structural validation have passed in prior runs. The open Stage 3 question remains whether the E1 excerpts genuinely eliminate the alternative mechanism that the ensemble sampler itself should support/map batched PRNG keys. An independent reviewer must be free to retain that alternative or reject the proposed E1 tier.
 
 Do not convert an unblinded technical YES into semantic Stage 3 approval. The current reviewer protocol requires separate source-aware technical review and source-unexposed semantic rating; role, consent, exposure, conflicts, and restricted delivery route must be established first. Reviewer H is ineligible for the blind Panel B role because that reviewer has seen the design proposal; Reviewer B's eligibility is not known until a case-specific exposure/conflict declaration is completed. The project lead is the custodian, not a blind rater. If the independent human setup cannot be assembled, keep NumPyro Stage 3 pending and report that limitation rather than weakening the rubric.
+
+
+## 13. Dishka latest artifact and exact case-preflight — superseding update (19 November 2026)
+
+This section supersedes earlier latest-run IDs and artifact digests for Dishka in sections 10–11.
+
+- Canonical proposed case JSON: `reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`; SHA-256 `1ac859ca76e53f673f232b2ce233b2dc9ad289893ac3b237aa329fb614f67bc3`; Git blob `ec884cda706b5a66d2439ea4df60580ae26a0656`.
+- The case record remains `proposed`; final acceptance remains `pending`; registry remains empty.
+- Latest Dishka repeat: run `44572926370`, Dishka job `135733170187` success, artifact `14553229664`; ZIP SHA-256 `7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10` independently matches GitHub; 33 members, CRC PASS, 32/32 internal hash entries PASS.
+- Issue reproducer: buggy base fails `AssertionError: 1 != 42`; fixed revision passes. All 8 dataset selectors fail with defect-related failures on buggy base and the same 8 pass on fixed revision.
+- The overall 13-candidate workflow run is failure because Nox, Werkzeug and Moto candidate jobs failed. This does not change the successful Dishka reproduction job.
+- Same-run no-inference job `135732610579` succeeded. Preflight artifact `14554972064`, SHA-256 `b0dc39e127a375206e7fbe8613292fef6d3f4a77af56b23080b5fd5691665c61`, was independently downloaded and CRC-checked.
+- The case test group passed 22 tests (including the canonical proposed record, empty registry guard and 12 immutable document-reference checks); design/scoring group passed 10 tests.
+- Case validator: `structurally_complete_candidate`; registry: `valid_empty_registry`; accepted cases/projects 0. Global readiness still reports 14 blockers and `ready_for_inference=false`.
+
+Dishka remains the first proposed case and is **not accepted**. The separate final project-lead YES/NO decision is still required. NumPyro #1916 remains fallback if Dishka is rejected or a substantive case-level defect is discovered. No model operation is authorized.
