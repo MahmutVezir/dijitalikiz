@@ -312,3 +312,28 @@ The final-acceptance rationale in the JSON is also corrected: case-specific reco
 - SHA-256: `0a234c0f16668e5b58dace671483d4bc94b7f8167150e44662b339dc995ff9ee`
 - Git blob SHA-1: `c17d908a937c32c7372d1eb19bb9b29990b338e2`
 - `acceptance_decision=proposed`; `final_acceptance.status=pending`; registry unchanged.
+
+## 17. Superseding current PR-head verification — 19 November 2026, 18:16 UTC
+
+### Dishka Stage 2 repeat and archive integrity
+
+- Tested PR-head commit: `3c64519737130cf156eda71ea6e9d2fda47b2b72`.
+- Workflow run: [44586011672](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44586011672).
+- Dishka reproduction job `135779190633`: **success**.
+- Artifact `14559803463`; outer ZIP SHA-256 `7284f44942c684eef0f1740fd1c13aa856b9552c6e675e8a7cede8abedc612b7`.
+- Independently downloaded archive: outer SHA-256 matched GitHub, ZIP CRC passed, 33 members, 32/32 internal SHA256SUMS entries passed.
+- The exact `full-pr.diff` file inside the new archive retains SHA-256 `c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde`. The pinned buggy base and fixed revision remain unchanged.
+- Independent issue reproducer: base fails with `AssertionError: 1 != 42`; fixed revision passes.
+- Dataset FAIL_TO_PASS selectors: 8/8 defect-related failures on the buggy base and 8/8 passes on the fixed revision.
+- Canonical proposed case JSON SHA-256 after advancing the patch/archive references: `bac70ef6a844c5f1d374ef8197c1b41e802e70e0e94556d581699e7f43fe614b`.
+
+### Current no-inference preflight and candidate matrix
+
+- The no-inference preflight job `135778987976` in run `44586011672` completed successfully. Its five test groups passed: 12 + 25 + 6 + 23 + 10 = **76 tests passed**.
+- The readiness report is still `blocked_before_inference`, `ready_for_inference=false`, with **14 blockers**, **0 accepted cases**, and **0 accepted projects**. The readiness blocker state is not a failing test result.
+- The focused 13-job candidate matrix completed with **10 successful reproductions** (Dishka, NumPyro, PyFar, Python-Control, Meltano, Amaranth, Dymos, EODAG, QuTiP and Robocop) and **3 candidate-specific selector failures** (Nox, Moto and Werkzeug). The matrix is therefore not globally green; these three outcomes do not reverse the successful Dishka job.
+- Research Validation run `44586010807`, the uncertainty unit-test workflow `44586011562`, and the Qwen adapter test workflow `44586011558` completed successfully.
+
+### Decision boundary
+
+Dishka remains a proposed candidate, not an accepted case. Its final project-lead YES/NO decision remains pending; accepted registry count remains 0. The newer archive pointer does not change gold/tier adjudication, exposure classification, license-scope limitations, candidate independence, or case acceptance. No model loading, inference, fine-tuning or training was performed or authorized.
