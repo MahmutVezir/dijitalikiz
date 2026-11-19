@@ -15,7 +15,7 @@
 | `Rater_B` | Separate, currently unassigned role in the active v0.2 manifest for blind model-output scoring | Not the same as Panel Reviewer B; requires a different unexposed person or a prospective protocol amendment |
 | ChatGPT | Research-assistant critique, structured evidence and reproducibility support | Not a human reviewer, not a voting member, not a human rater, and never counted for inter-rater reliability |
 
-The repository uses pseudonyms only: Reviewer H = Hasan; Reviewer B = Batuhan. Their willingness, relevant expertise, assigned scope and case-specific prior exposure must still be confirmed directly before either review is treated as completed. This mapping is maintained outside public-facing records.
+The repository uses only the pseudonyms Reviewer H and Reviewer B. Identity mappings are kept outside public-facing records. Each reviewer's willingness, relevant expertise, assigned scope and case-specific prior exposure must be confirmed directly before a review is treated as completed.
 
 ## 2. Critical role separation before sharing case materials
 
@@ -156,8 +156,8 @@ Mahmut's final project-lead decision and rationale must be recorded separately a
 
 ## 9. Role mapping and decision boundary — corrected 19 November 2026
 
-- Reviewer H is the repository pseudonym for Hasan; Reviewer B is the repository pseudonym for Batuhan. Their actual consent, relevant expertise and case-specific exposure declarations remain pending until each person answers.
-- `Rater_B` is a separate v0.2 scoring-role identifier. It does not refer to Batuhan and must not be filled by a technical reviewer who has seen the hidden gold or case materials for that same case.
+- Reviewer H and Reviewer B are pseudonyms only. Their actual consent, relevant expertise and case-specific exposure declarations remain pending until each person answers.
+- `Rater_B` is a separate v0.2 scoring-role identifier. It is not the same role as Panel Reviewer B and must not be filled by a technical reviewer who has seen the hidden gold or case materials for that same case.
 - A technical YES means “recommend proceeding under the stated gates”; it does not mean the case is accepted, the license is legally cleared, or inference is authorized.
 - The project lead's agreement with the Dishka-first route is a prioritization decision only. It is not the missing prior-pipeline-exposure declaration, bounded license-scope sign-off, schema/registry pass, or final case-acceptance decision.
 - Reviewer decisions must be recorded only after Hasan and Batuhan actually submit their own answers. No individual vote, consent or concurrence is inferred from the project lead's statement.
