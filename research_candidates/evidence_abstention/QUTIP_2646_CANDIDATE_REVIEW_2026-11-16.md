@@ -4,7 +4,7 @@
 **Dataset instance:** qutip__qutip-2694 (exact row identity to be authenticated by the workflow)  
 **Issue:** https://github.com/qutip/qutip/issues/2646  
 **Fix PR:** https://github.com/qutip/qutip/pull/2694  
-**Review status:** issue/patch alignment and root-license screen passed; exact source build and dataset reproduction pending. Not an accepted case.
+**Review status:** Stage 2 exact source build, independent reproducer, frozen dataset row and exact selector base-fail/fixed-pass completed twice; latest artifact integrity independently verified. Stage 3 semantic adjudication, human license/exposure review and final acceptance remain open. Not an accepted case.
 
 ## 1. Defect contract
 
@@ -52,3 +52,28 @@ Build dependency/license inventory: pending workflow evidence and human review.
 Gold mechanism and E1/E2/E3 packet: pending human adjudication.  
 Final case acceptance: not accepted.  
 Model loading/inference authorization: false.
+
+
+## 7. Latest independently audited Stage 2 repeat — 2026-11-19
+
+- Workflow: [run 44500943717](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44500943717)
+- Job: `135481445830` — successful
+- Artifact: [qutip-issue-2646-reproduction](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44500943717/artifacts/14518471928)
+- Artifact SHA-256: `ecbc4ff3f3640f15603020331bffb177d4a1c51282b66358c11a3a6078c673cc`
+- Independent local audit: ZIP CRC passed; all 14 entries in `SHA256SUMS.txt` verified.
+- Dataset row: `qutip__qutip-2694`
+- Canonical dataset-row SHA-256: `16ed66f7a865915697f5fbed540a56e3017ccfe460f3d5bc94d5918a63e9c1ee`
+- Frozen buggy base: `b821b1aa8c98a00f58014e7ec02cc9cbef701ce4`
+- Fixed revision: `61df3c7bccf474aba393940581ffbbeccf5da366`
+- Exact `FAIL_TO_PASS` selector: `qutip/tests/core/test_coefficient.py::test_coefficient_update_args`
+- Selector result: 1/1 expected failure on buggy base; 1/1 pass on fixed revision.
+- Independent reproducer: failure on buggy base (`AssertionError: 1 != 2)); pass on fixed revision.
+- Exact upstream `LICENSE.txt`: BSD 3-Clause. Dependency license inventory retained in the artifact; this is not a substitute for human license review.
+
+### Scope caveat
+
+The issue's report demonstrates the stale-argument behavior through `QobjEvo`; the independent reproducer and frozen selector exercise the underlying public coefficient-argument update behavior more narrowly. The base/fix contrast is reproducible, but the Stage 3 gold record must explicitly preserve this difference rather than imply the reproducer is a verbatim replay of the complete issue example.
+
+### Decision after repeat
+
+Stage 2 technical reproduction: **passed**. Stage 3 gold mechanism/alternative adjudication, independent E1/E2/E3 semantic review, training-exposure assessment, human license review and final case acceptance: **not completed**. Model loading, inference and fine-tuning remain unauthorized.
