@@ -177,19 +177,19 @@
       "panel_reviewers": [
         {
           "reviewer_id": "PANEL_H",
-          "private_identity_mapping": "Hasan",
           "participation_confirmed": false,
           "case_specific_exposure_screen_complete": false,
           "permitted_role": "technical_methodology_review",
-          "blind_output_scoring_eligible": false
+          "blind_output_scoring_eligible": false,
+          "identity_mapping_location": "restricted_project_lead_record_not_stored_in_public_repository"
         },
         {
           "reviewer_id": "PANEL_T",
-          "private_identity_mapping": "Batuhan",
           "participation_confirmed": false,
           "case_specific_exposure_screen_complete": false,
           "permitted_role": "technical_methodology_review",
-          "blind_output_scoring_eligible": false
+          "blind_output_scoring_eligible": false,
+          "identity_mapping_location": "restricted_project_lead_record_not_stored_in_public_repository"
         }
       ],
       "project_lead_reported_concurrence": {
