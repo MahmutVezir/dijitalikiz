@@ -3,7 +3,7 @@
   "generated_date": "2026-11-19",
   "candidate": "pyro-ppl/numpyro issue 1916 / PR 1918",
   "packet_set_path": "research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_V0_1_2026-11-19.json",
-  "packet_set_sha256": "754b0ce644c7769f0eeed4249d2c7ab89a66cc5d69dc8f6630bb23eeb22ff831",
+  "packet_set_sha256": "7156e7c0bebf694946495b638f8dd21fbe45b7fbafde2607e6cc11e8b4f9bdfc",
   "source_row": {
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
     "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
@@ -48,7 +48,7 @@
         660
       ],
       "content_sha256": "f2b649fd9a8c9771ef857c01c04c36dc98f75bea82a2da908be6fe4147401e4f",
-      "source_snapshot_sha256": "cddf4ff407d7ce04860b7f51c3c8c06b86acbb6b383d6062ba2a7705f0805321",
+      "source_snapshot_sha256": "f2b649fd9a8c9771ef857c01c04c36dc98f75bea82a2da908be6fe4147401e4f",
       "source_url": "https://github.com/pyro-ppl/numpyro/blob/07e4c9bc4524cc0a741ba8f8ad41339d34a0288d/numpyro/infer/mcmc.py"
     },
     {
@@ -62,7 +62,7 @@
         193
       ],
       "content_sha256": "de79ca7039c71eb3999ca8daf9f190d6a70c1659221514e945a554d6218be190",
-      "source_snapshot_sha256": "600dea5f58720ceb1c9d9c48b3ce4dd8c6a0fe90ba3c667fd71738a1da209210",
+      "source_snapshot_sha256": "de79ca7039c71eb3999ca8daf9f190d6a70c1659221514e945a554d6218be190",
       "source_url": "https://github.com/pyro-ppl/numpyro/blob/07e4c9bc4524cc0a741ba8f8ad41339d34a0288d/numpyro/infer/ensemble.py"
     }
   ],
@@ -82,7 +82,7 @@
     ]
   },
   "structural_validation": {
-    "status": "canonical_hashes_recomputed_from_exact_utf8_contents",
+    "status": "canonical_hashes_recomputed_from_exact_excerpt_snapshots",
     "validator_modules": [
       "operational_packet_validator.py",
       "evidence_level_packet_set.py"
@@ -102,6 +102,7 @@
     "outer_packet_set_is_model_input": false
   },
   "limitations": [
-    "Structural validity does not establish causal entailment or semantic tier sufficiency."
+    "Structural validity does not establish causal entailment or semantic tier sufficiency.",
+    "For source-code items, source_snapshot_sha256 is the SHA-256 of the exact verbatim excerpt snapshot; the parent file is separately identified by immutable upstream commit and Git blob SHA-1, while content_sha256 binds the included excerpt bytes."
   ]
 }
