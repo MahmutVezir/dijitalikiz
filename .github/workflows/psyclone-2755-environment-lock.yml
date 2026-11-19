@@ -1,0 +1,160 @@
+name: "PSyclone #2755 Pinned Test Environment Lock (No Tests, No Inference)"
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/psyclone-2755-environment-lock.yml"
+      - "research_candidates/evidence_abstention/PSYCLONE_2755_REQUIREMENTS_LOCK_PY313_2026-11-19.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  resolve_environment:
+    name: Resolve and fingerprint PSyclone test environment
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Checkout exact PSyclone buggy base and submodules
+        uses: actions/checkout@v4
+        with:
+          repository: stfc/PSyclone
+          ref: a33a99b7953130220ed7d3ad38d358c1124276af
+          path: psyclone
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up exact Python 3.13.0
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13.0"
+
+      - name: Install pinned bootstrap installer
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import platform
+          import sys
+          expected = "3.13.0"
+          actual = platform.python_version()
+          print("expected_python=" + expected)
+          print("observed_python=" + actual)
+          print("executable=" + sys.executable)
+          if actual != expected:
+              raise SystemExit("Python patch version differs from frozen environment selection")
+          PY
+          python -m pip install --disable-pip-version-check "pip==24.3.1"
+
+      - name: Resolve PSyclone test dependencies (no test execution)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check "setuptools==75.3.0" "wheel==0.45.0"
+          python -m pip install --disable-pip-version-check ".[test]"
+          python -m pip check
+          python - <<'PY'
+          import importlib.metadata as md
+          import json
+          import platform
+          import sys
+          from pathlib import Path
+          from packaging.utils import canonicalize_name
+
+          excluded = {"psyclone"}
+          packages = []
+          licenses = []
+          for dist in md.distributions():
+              name = dist.metadata.get("Name")
+              version = dist.version
+              if not name:
+                  continue
+              normalized = canonicalize_name(name)
+              if normalized in excluded:
+                  continue
+              packages.append((normalized, version))
+              meta = dist.metadata
+              licenses.append({
+                  "name": name,
+                  "version": version,
+                  "license": meta.get("License"),
+                  "license_expression": meta.get("License-Expression"),
+                  "home_page": meta.get("Home-page"),
+                  "project_urls": meta.get_all("Project-URL") or [],
+              })
+
+          # A duplicate normalized distribution name is a resolver anomaly.
+          names = [name for name, _ in packages]
+          if len(names) != len(set(names)):
+              raise SystemExit("Duplicate normalized package names in environment")
+          packages.sort()
+          lock = "".join(f"{name}=={version}\n" for name, version in packages)
+          Path("psyclone-environment-lock").mkdir(exist_ok=True)
+          Path("psyclone-environment-lock/requirements.lock.txt").write_text(
+              lock, encoding="utf-8"
+          )
+          fingerprint = {
+              "purpose": "PSyclone #2755 paired Stage 2 environment lock discovery",
+              "python": platform.python_version(),
+              "python_implementation": platform.python_implementation(),
+              "python_executable": sys.executable,
+              "platform": platform.platform(),
+              "pip_version": md.version("pip"),
+              "setuptools_version": md.version("setuptools"),
+              "wheel_version": md.version("wheel"),
+              "upstream_repository": "stfc/PSyclone",
+              "buggy_base_commit": "a33a99b7953130220ed7d3ad38d358c1124276af",
+              "upstream_test_matrix_at_base": ["3.7", "3.8", "3.13"],
+              "selected_python_rationale": "Exact 3.13.0 patch release, from the Python 3.13 line explicitly exercised by the upstream base commit's python-package CI workflow. Dataset row did not declare a Python runtime.",
+              "submodules": __import__("subprocess").run(
+                  ["git", "submodule", "status", "--recursive"],
+                  cwd="psyclone", capture_output=True, text=True, check=True
+              ).stdout.splitlines(),
+              "package_count_excluding_local_psyclone": len(packages),
+              "packages": [{"name": n, "version": v} for n, v in packages],
+              "package_license_metadata": licenses,
+              "test_execution_performed": False,
+              "source_build_performed": False,
+              "model_inference_performed": False,
+          }
+          import hashlib
+          fingerprint["requirements_lock_sha256"] = hashlib.sha256(lock.encode("utf-8")).hexdigest()
+          Path("psyclone-environment-lock/runtime-fingerprint.json").write_text(
+              json.dumps(fingerprint, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8"
+          )
+          print(json.dumps({
+              "python": fingerprint["python"],
+              "pip": fingerprint["pip_version"],
+              "setuptools": fingerprint["setuptools_version"],
+              "wheel": fingerprint["wheel_version"],
+              "package_count": fingerprint["package_count_excluding_local_psyclone"],
+              "requirements_lock_sha256": fingerprint["requirements_lock_sha256"],
+              "test_execution_performed": False,
+          }, indent=2))
+          PY
+          cp psyclone/setup.py psyclone-environment-lock/upstream-setup.py
+          cp psyclone/setup.cfg psyclone-environment-lock/upstream-setup.cfg
+          cp psyclone/requirements.txt psyclone-environment-lock/upstream-requirements.txt
+          cp psyclone/.github/workflows/python-package.yml psyclone-environment-lock/upstream-python-package.yml
+          cp psyclone/LICENSE psyclone-environment-lock/upstream-LICENSE
+
+      - name: Hash and upload immutable environment lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd psyclone-environment-lock
+          find . -maxdepth 1 -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt
+          sha256sum --check SHA256SUMS.txt
+
+      - name: Upload pinned environment and dependency-license inventory
+        uses: actions/upload-artifact@v4
+        with:
+          name: psyclone-2755-python313-environment-lock
+          path: psyclone-environment-lock/
+          if-no-files-found: error
+          retention-days: 90
