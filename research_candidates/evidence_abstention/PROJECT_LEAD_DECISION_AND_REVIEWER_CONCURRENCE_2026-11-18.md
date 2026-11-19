@@ -15,7 +15,7 @@ The project lead approved the evidence-based classification:
 - Do not add this candidate to the accepted-case registry.
 - Do not treat the second-reviewer concurrence as a waiver of the exposure rule.
 
-**Approval source:** Explicit project-lead confirmation in the ChatGPT conversation on 18 November 2026. The project lead stated that both the project lead and Hasan approved the proposal. This record captures that statement as a contemporaneous project decision; it is not represented as a cryptographic signature or a separately signed statement from the second reviewer.
+**Approval source:** Explicit project-lead confirmation in the ChatGPT conversation on 18 November 2026. The project lead reported that Panel Reviewer H concurred with this CTAPIpe exposure classification. This is a project-lead-reported concurrence, not a separately signed reviewer statement or cryptographic signature.
 
 ## 2. Evidence supporting the classification
 
@@ -32,7 +32,7 @@ The technical reproduction can remain valid as an engineering result while the c
 
 ## 3. Second-reviewer concurrence — scope limitation
 
-The project lead reports that Hasan also agreed with the above candidate-exposure decision. That concurrence is recorded only for this decision. It is **not** treated as:
+The project lead reports that Panel Reviewer H also agreed with the above candidate-exposure decision. That concurrence is recorded only for this decision. It is **not** treated as:
 - a signed consent form for the separate Rater B role;
 - a completed case-specific source/gold/patch/prompt/output exposure screen;
 - proof that Rater B is blind to any particular candidate;
@@ -40,7 +40,7 @@ The project lead reports that Hasan also agreed with the above candidate-exposur
 - independent gold/E1/E2/E3 adjudication; or
 - an external audit.
 
-For public documents, the second reviewer is referred to as `Rater_B`. No private identity, school, contact information or signature is stored here.
+For public documents, the second reviewer for this CTAPIpe decision is referred to as `Panel Reviewer H`. This limited concurrence does not assign that person to the separate active v0.2 blind-scoring role `Rater_B`. No private identity, school, contact information or signature is stored here.
 
 ## 4. Remaining gates
 
