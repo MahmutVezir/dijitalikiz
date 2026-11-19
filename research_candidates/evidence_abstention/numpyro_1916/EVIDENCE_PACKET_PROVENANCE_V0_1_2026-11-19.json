@@ -3,7 +3,7 @@
   "generated_date": "2026-11-19",
   "candidate": "pyro-ppl/numpyro issue 1916 / PR 1918",
   "packet_set_path": "research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_V0_1_2026-11-19.json",
-  "packet_set_sha256": "8eaf4e41c4bbf355d915365c99098786269056b7c017c20f26606d2023f90d4e",
+  "packet_set_sha256": "754b0ce644c7769f0eeed4249d2c7ab89a66cc5d69dc8f6630bb23eeb22ff831",
   "source_row": {
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
     "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
@@ -48,7 +48,7 @@
         660
       ],
       "content_sha256": "f2b649fd9a8c9771ef857c01c04c36dc98f75bea82a2da908be6fe4147401e4f",
-      "source_snapshot_sha256": "a012b541c42aa3b197dd5083a01d711ea53b9df7954c461a73967f26755a63d0",
+      "source_snapshot_sha256": "cddf4ff407d7ce04860b7f51c3c8c06b86acbb6b383d6062ba2a7705f0805321",
       "source_url": "https://github.com/pyro-ppl/numpyro/blob/07e4c9bc4524cc0a741ba8f8ad41339d34a0288d/numpyro/infer/mcmc.py"
     },
     {
@@ -62,7 +62,7 @@
         193
       ],
       "content_sha256": "de79ca7039c71eb3999ca8daf9f190d6a70c1659221514e945a554d6218be190",
-      "source_snapshot_sha256": "03c234dc42a8bb5164c5626c43c1d6cda0379ca3c57892bc0dcaec5001a02b27",
+      "source_snapshot_sha256": "600dea5f58720ceb1c9d9c48b3ce4dd8c6a0fe90ba3c667fd71738a1da209210",
       "source_url": "https://github.com/pyro-ppl/numpyro/blob/07e4c9bc4524cc0a741ba8f8ad41339d34a0288d/numpyro/infer/ensemble.py"
     }
   ],
