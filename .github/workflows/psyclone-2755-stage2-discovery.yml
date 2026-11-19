@@ -99,7 +99,7 @@ jobs:
           test_patch = row.get("test_patch") or ""
           if not patch.strip() or not test_patch.strip():
               raise SystemExit("Frozen PSyclone row has an empty production patch or test_patch")
-          test_patch_files = sorted(set(re.findall(r"^\\+\\+\\+ b/(.+)$", test_patch, flags=re.MULTILINE)))
+          test_patch_files = sorted(set(re.findall(r"^\+\+\+ b/(.+)$", test_patch, flags=re.MULTILINE)))
           expected_test_files = {
               "src/psyclone/tests/psyad/tl2ad_test.py",
               "src/psyclone/tests/psyad/transformations/test_preprocess.py",
