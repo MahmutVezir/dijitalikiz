@@ -177,3 +177,10 @@ NumPyro #1916 is the fallback candidate. Its Stage 2 reproduction is passed, and
 The project lead clarified the earlier exposure answer after reading the question and explicitly confirmed `prior_pipeline_debug_exposure = none`. The earlier `some` entry is preserved as superseded correction history. The current value and audit trail are in `reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`.
 
 Dishka therefore remains the first case for formal v0.2 proposed-record and acceptance checks. It is **not accepted**. NumPyro #1916 is fallback if a remaining Dishka gate fails. CTAPIpe #2732 remains separately excluded because its prior exposure is still `some`.
+
+
+## 11. Superseding Dishka correction — 19 November 2026
+
+The project lead clarified the earlier exposure answer and confirmed `prior_pipeline_debug_exposure = none`. The earlier `some` entry is retained only as superseded correction history in `reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`. Researcher source exposure remains `full`.
+
+Dishka is first for formal case-acceptance checks; NumPyro is fallback if a Dishka gate fails. Neither case is currently accepted.
