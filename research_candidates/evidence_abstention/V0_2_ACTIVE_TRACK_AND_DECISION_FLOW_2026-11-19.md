@@ -54,27 +54,21 @@ Three roles must not be conflated:
 
 If both technical panel reviewers inspect full technical case materials, they remain valid technical reviewers but are not eligible as blinded output scorers for that case. A separate unexposed scorer or a prospectively amended scoring design is needed. ChatGPT remains advisory and is never a human rater or external auditor.
 
-## 5. Dishka #435 — first candidate, not pre-accepted
+## 5. Dishka #435 — excluded after factual exposure declaration
 
-Dishka is the first candidate to complete the formal v0.2 case-review route because:
-- exact buggy/fixed source pins are recorded;
-- exact issue reproducer fails on the buggy base and passes on the fixed revision;
-- all 8 frozen dataset selectors fail on the buggy base and the same 8 pass on the fixed revision;
+Dishka remains a technically reproduced and Stage 3 technically adjudicated engineering record:
+- exact issue reproducer failed on the buggy base and passed on the fixed revision;
+- all 8 frozen dataset selectors failed on the buggy base and the same 8 passed on the fixed revision;
 - latest artifact 14536192821 has an outer SHA-256 matching GitHub, CRC passes, and 32/32 inner hashes pass;
-- the project lead's gold, alternatives and E1/E2/E3 rationale approvals are recorded;
-- researcher source exposure is openly acknowledged as full; exploratory-only use and single-human-adjudicator limitations are recorded.
+- the project lead's technical gold, alternatives and E1/E2/E3 rationale approvals remain in the engineering history.
 
-Remaining Dishka-specific decisions:
-- confirm `prior_pipeline_debug_exposure = none` as a fact. This is separate from the already acknowledged full researcher source exposure. If the answer is prior debug exposure, the current protocol excludes the case; do not weaken the rule.
-- project-lead acceptance of the bounded documentary source-license screen (Apache-2.0 exact base, five changed files, minimal reproduction and pinned test/extraction environments). This is not formal legal advice or blanket redistribution approval.
-- complete proposed case JSON, validate it as `proposed`, resolve all structural/provenance inconsistencies, then present one short final YES/NO project-lead decision.
-- YES: create separate timestamped/hash-recorded acceptance decision, update the record to accepted, rerun case and registry validators, then insert into registry.
-- NO: preserve the rejection/hold record outside registry and move to NumPyro #1916.
-- No model inference or training is authorized by case acceptance alone; all global v0.2 gates and separate authorization still apply.
+On 19 November 2026, the project lead explicitly declared `prior_pipeline_debug_exposure = some`. The active v0.2 rule requires `none`. Dishka is therefore **excluded from the model-evaluation sample**. This decision is recorded in `reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md` and the candidate gate assessment.
+
+Do not prepare a v0.2 acceptance JSON for Dishka, do not edit the eligibility validator, do not add it to the accepted registry, and do not count it toward the one-case feasibility minimum or the 15-project primary target. Preserve the source, test artifacts, hashes, Stage 2 result and Stage 3 technical record as engineering evidence. The exclusion does not mean the technical reproduction failed.
 
 ## 6. Candidate fallback rule
 
-The first candidate is not privileged over the evidence. If Dishka's prior pipeline/debug classification is not `none`, its bounded license scope is unacceptable, a source/timestamp/hash mismatch emerges, or the proposed case fails the active schema/registry checks for a substantive reason, do not patch the standard to force it in. Record the reason and proceed to **NumPyro #1916**, then other Stage 2 passes in the existing order.
+The first candidate is not privileged over the evidence. Dishka's prior pipeline/debug classification is now recorded as `some`, so it is excluded under the unchanged rule. The next candidate is **NumPyro #1916 / PR #1918**. If NumPyro's semantic tiers, prior-exposure eligibility, independence, documentary source/dependency license scope, timestamp provenance or acceptance record fail, do not relax the standard; preserve the evidence and proceed to the next Stage 2-passed candidate in the existing order.
 
 ## 7. Current state
 
@@ -86,3 +80,22 @@ The first candidate is not privileged over the evidence. If Dishka's prior pipel
 - Bounded documentary license-screen scope: sign-off pending.
 - Project-wide model/license/runtime/protocol/hash and Rater_B gates: still open.
 - No model load, inference, fine-tuning or training performed.
+
+
+## 8. NumPyro #1916 — next candidate handoff (19 November 2026)
+
+- Upstream issue #1916 / fix PR #1918; dataset row `pyro-ppl__numpyro-1918`.
+- Exact Stage 2 rerun: workflow run `44537219541`, NumPyro job `135605947673` completed successfully. Both frozen AIES and ESS selectors ran and met the exact buggy-base-fail/fixed-revision-pass contract.
+- Latest 19 November artifact `14536697284` has GitHub-reported digest `88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556`; independent local archive verification is not yet recorded for this newest artifact. The 18 November artifact remains independently archive-verified (ZIP CRC and 15/15 internal payload hashes passed).
+- Real E1/E2/E3 packet-set SHA-256: `7156e7c0bebf694946495b638f8dd21fbe45b7fbafde2607e6cc11e8b4f9bdfc`.
+- The exact real-packet structural test passed in the no-inference preflight at run `44537219541`, job `135605725983`. It asserts the external packet hash, strict nesting and exact tier additions; it also asserts that semantic sufficiency is not assessed and that no model inference occurred.
+- The entire candidate workflow run concluded failure because Nox, Werkzeug and Moto candidate jobs failed their own selector contracts. The NumPyro job and no-inference preflight job themselves succeeded; do not report the full matrix as green.
+- The main Stage 3 question remains open: do the two E1 source excerpts actually eliminate the plausible alternative that the ensemble sampler itself should support/map batched PRNG keys? Independent reviewers must be allowed to reject the proposed E1 tier if that alternative remains defensible.
+
+### Reviewer eligibility boundary
+
+The existing NumPyro Panel B protocol requires at least two independent, source-unexposed semantic reviewers who are disjoint from Panel A, the project lead and Hasan. Hasan has already seen the design proposal and is explicitly ineligible for Panel B under the current protocol. Batuhan's eligibility is unknown until he completes the case-specific exposure/conflict declaration. Mahmut is the custodian and is not a blinded rater. If two eligible Panel B reviewers and a separate adjudicator cannot be appointed, keep the semantic tier review pending; do not substitute simple YES votes from people who have seen the design or code.
+
+Panel A technical review is also separate: at least two source-aware reviewers must make independent mechanism/alternative assessments, with their initial records preserved. Reviewers cannot serve simultaneously as Panel A and Panel B for this case. Reviewer delivery must be restricted, randomized and access-logged; the public GitHub repository is not a controlled review channel.
+
+**Next operational gate:** complete the reviewer exposure/role screen and confirm that the required independent human panel and restricted delivery route can actually be assembled. Only then prepare and deliver coded packet copies. No model load, inference or training is authorized.
