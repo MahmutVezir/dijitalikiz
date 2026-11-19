@@ -22,13 +22,13 @@ A correct root-cause guess is not necessarily supported by a packet. Evidence su
 ### Packet custodian / technical preparer
 The project lead has already inspected the public issue, PR, patch, and reproduction evidence. The project lead may prepare anonymized delivery copies and preserve the private code-to-packet map, but must not act as a blinded rater, adjudicate Panel B disagreements, or score confirmatory model outputs.
 
-Hasan's earlier approval was approval of the proposed design, not an independent semantic rating. It does not qualify as Panel B review.
+Panel Reviewer H's earlier approval was approval of the proposed design, not an independent semantic rating. It does not qualify as Panel B review.
 
 ### Panel A — technical gold and alternatives
 At least two independent reviewers establish the defect mechanism, competing explanations, relationship between the frozen selectors and the issue, and any scope limitation. Panel A may inspect upstream source, issue, PR, patch, and fixed revision. Panel A must not serve on Panel B or as the confirmatory analyst. Preserve each initial review before adjudication.
 
 ### Panel B — semantic packet reviewers
-At least two independent reviewers rate every coded packet separately. They must be disjoint from Panel A, the project lead, Hasan (who has seen the design proposal), the technical preparer, and any person who has inspected the NumPyro patch/fixed source for this case.
+At least two independent reviewers rate every coded packet separately. They must be disjoint from Panel A, the project lead, Panel Reviewer H (who has seen the design proposal), the technical preparer, and any person who has inspected the NumPyro patch/fixed source for this case.
 
 Before accepting the role, each reviewer must attest:
 - no prior access to the NumPyro issue/PR, patch, fixed source, gold mechanism, or this candidate's adjudication notes;
