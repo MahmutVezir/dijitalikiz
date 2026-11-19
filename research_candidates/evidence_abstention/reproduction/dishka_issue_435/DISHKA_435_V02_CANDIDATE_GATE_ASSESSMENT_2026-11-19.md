@@ -117,8 +117,8 @@ The readiness audit notes that Dishka is not listed in the prior pipeline/debug 
 The project lead reports shared agreement with the previously discussed technical result, gold mechanism, alternatives, evidence-tier rationale and disclosed limitations.
 
 Proposed technical reviewers:
-- Panel Reviewer H — Hasan.
-- Panel Reviewer T — Batuhan.
+- Panel Reviewer H — technical/methodology reviewer; private identity mapping is held outside the public repository.
+- Panel Reviewer T — technical/methodology reviewer; private identity mapping is held outside the public repository.
 
 Their technical/methodology review may be unblinded. If either sees the issue, PR, source, patch, gold mechanism or hidden E-tier decisions, that person must not later be described as a blind model-output scorer for this case.
 
