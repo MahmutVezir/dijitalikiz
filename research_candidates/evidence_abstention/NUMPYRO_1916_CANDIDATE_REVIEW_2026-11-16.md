@@ -4,7 +4,7 @@
 **Dataset instance:** `pyro-ppl__numpyro-1918`  
 **Issue:** https://github.com/pyro-ppl/numpyro/issues/1916  
 **Fix PR:** https://github.com/pyro-ppl/numpyro/pull/1918  
-**Review status:** provisional technical candidate. The 18 November 2026 branch-head repeat now confirms the exact dataset selectors fail on the pinned buggy base and pass on the pinned upstream merge revision. Stage 3 human adjudication, exposure/independence and license-scope review remain open. The case is **not accepted**.
+**Review status:** next candidate after Dishka's project-lead-declared prior pipeline/debug exposure exclusion. NumPyro remains a provisional technical candidate: Stage 2 exact base-fail/fixed-pass is verified; the real E1/E2/E3 packet set has now passed the structural CI contract; semantic tier adjudication, candidate exposure/independence, documentary license-scope review and final acceptance remain open. The case is **not accepted**.
 
 ## 1. Defect contract
 
@@ -101,7 +101,7 @@ Current disposition:
 - Stage 2 exact base-fail/fixed-pass: passed, repeated on the 18 November branch head.
 - Source/dependency documentary metadata: recorded; human license-scope sign-off pending.
 - Technical gold and at least two alternatives: proposed, not adjudicated.
-- E1/E2/E3 semantics and packet hashes: proposed, not frozen or validated as a packet set.
+- E1/E2/E3 packet construction and packet-set hash: built and pinned; structural CI validation passed in run `44537219541`. Semantic adequacy remains unadjudicated and the packets have not been released for blind review.
 - Independence/exposure review: open.
 - Stage 3 adjudication: not complete.
 - Final case acceptance: **not accepted**.
@@ -128,3 +128,58 @@ Current disposition: Stage 2 passed; Stage 3 packet construction complete; struc
 
 
 **Source hash clarification:** For the two source-code items, `source_snapshot_sha256` binds the exact verbatim excerpt snapshot; the parent files are independently anchored by immutable upstream commit and Git blob SHA-1. The excerpt's own bytes are separately bound by `content_sha256`.
+
+
+## Stage 3 handoff after Dishka exclusion — 19 November 2026
+
+### Latest repeat and structural CI result
+
+The most recent NumPyro Stage 2 job on this branch is:
+- Run: [44537219541](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44537219541)
+- Job: `135605947673` — success
+- Artifact ID: `14536697284`
+- GitHub-reported artifact SHA-256: `88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556`
+
+The earlier 18 November artifact remains the latest artifact whose full archive was independently downloaded and verified in the recorded audit: run `44338919763`, artifact `14441559416`, SHA-256 `b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360`, ZIP CRC PASS and 15/15 payload hashes PASS. The newer 19 November artifact has a successful job and GitHub-reported digest; do not claim independent local archive verification for that newer artifact unless separately performed.
+
+The full workflow run `44537219541` concluded `failure` because Nox, Werkzeug and Moto candidate jobs failed their respective selector contracts. This does not negate the successful NumPyro job or no-inference preflight job, and it must not be described as a fully green candidate matrix.
+
+### Structural packet validation — passed, semantics still open
+
+The exact packet-set file:
+`numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_V0_1_2026-11-19.json`
+
+Pinned packet-set SHA-256:
+`7156e7c0bebf694946495b638f8dd21fbe45b7fbafde2607e6cc11e8b4f9bdfc`
+
+The dedicated real-packet test passed under the successful no-inference preflight job. It verified:
+- externally pinned packet-set digest;
+- identical evidence content across levels for shared evidence IDs;
+- strict E3 ⊂ E2 ⊂ E1 nesting;
+- E2's only addition over E3 is the traceback excerpt;
+- E1's additions over E2 are the two buggy-base source excerpts;
+- no gold/tier/fix fields in the model-facing packet set;
+- structural validator explicitly does **not** assess semantic sufficiency and performs no model inference.
+
+Thus, packet construction/integrity is no longer the blocker. The central open question is whether the source excerpts in E1 really exclude all but one defensible cause, especially the competing “sampler should accept/map batched keys” explanation. Reviewers must be allowed to conclude E1 is insufficient. If that happens, revise the evidence design prospectively or exclude NumPyro from the three-tier sample; do not force a unique-cause label.
+
+### Human review prerequisites — do not count a simple YES as semantic adjudication
+
+The active `NUMPYRO_1916_PANEL_B_SEMANTIC_REVIEW_PROTOCOL_V0_1_2026-11-19.md` requires separate roles:
+- Panel A: at least two independent source-aware technical reviewers to establish gold, alternatives and issue/test/fix alignment. Their initial independent records must be preserved.
+- Panel B: at least two independent reviewers, disjoint from Panel A and the project lead, who have not seen the NumPyro issue, PR, patch, fixed source, gold, reproduction or packet-construction material. They must rate each coded packet separately, without tier labels or a leading list of proposed mechanisms.
+- Disagreement adjudication: a third person independent of the two Panel B raters, after both initial reviews are locked.
+- Restricted reviewer delivery, access log, separate opaque packet codes and randomized presentation order are mandatory. The public GitHub repository is not an access-controlled reviewer store.
+
+The existing protocol explicitly excludes Hasan from Panel B because he has seen the design proposal. The project lead is also excluded. Batuhan's eligibility is **unknown** until his own case-specific exposure/independence declaration is completed. A simple yes/no endorsement from someone who has seen the design or source cannot be called a blinded semantic review. If two eligible Panel B raters and the independent adjudicator cannot be found, keep semantic adjudication pending; do not weaken the requirements.
+
+### Remaining NumPyro case-level gates
+
+1. Screen prior pipeline/debug/test-oracle exposure; current v0.2 acceptance requires `none`.
+2. Complete the candidate-specific fork/lineage, related-defect cluster and one-case-per-project independence check.
+3. Complete the source/dependency/fixture notice screen, including the recorded NumPy/OpenBLAS/LAPACK/libgfortran scope; this is documentary review, not legal clearance.
+4. Complete Panel A technical gold/alternative review independently and Panel B blind semantic packet review under the role restrictions above.
+5. If the E1/E2/E3 thresholds are not met, do not accept this as a three-tier case. Preserve the result and move to the next technically passing candidate or amend the design prospectively before any outcomes.
+6. Only after the case record is complete may the proposed v0.2 schema validation and a separate final project-lead acceptance decision be performed.
+
+**Current disposition:** Stage 2 PASS; real packet structure PASS; semantic review pending; independence/exposure/license gates open; final accepted-case count remains 0; no model load, inference or training.
