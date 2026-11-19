@@ -122,7 +122,7 @@ Proposed technical reviewers:
 
 Their technical/methodology review may be unblinded. If either sees the issue, PR, source, patch, gold mechanism or hidden E-tier decisions, that person must not later be described as a blind model-output scorer for this case.
 
-The active v0.2 `Rater_B` role is separate from Panel Reviewer B and is not automatically assigned to either technical reviewer. It requires separate consent and case-specific exposure screening. A panel review is not a legal opinion or independent external audit.
+The active v0.2 `Rater_B` role is separate from both technical panel reviewers and is not automatically assigned to either. It requires separate consent and case-specific exposure screening. A panel review is not a legal opinion or independent external audit.
 
 ## 8. Acceptance workflow — no premature acceptance
 
@@ -154,11 +154,9 @@ The corrected value `none` satisfies the active v0.2 prior pipeline/debug exposu
 - Model loading/inference/training: not authorized or performed.
 
 
-## 10. Final exposure disposition — 19 November 2026
+## 10. Superseded preliminary exposure disposition — 19 November 2026
 
-The project lead explicitly declared prior pipeline/debug/test-oracle exposure as `some`. The separate decision record is `PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`.
-
-Dishka is therefore **excluded from the model-evaluation sample** under the unchanged v0.2 rule. Its successful technical reproduction and prior Stage 3 technical adjudication remain valid engineering evidence; they do not make the candidate eligible. No acceptance record will be constructed for the study registry. The next candidate is NumPyro #1916.
+An earlier answer was temporarily recorded as `some`, which would have excluded Dishka. This value was later corrected by the project lead after rereading the question; it is not the current factual classification. The correction history is preserved in `PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`.
 
 
 ## 11. Superseding exposure correction — 19 November 2026
@@ -172,3 +170,17 @@ The exact project-lead wording was: “Hayır — Prospektif doğrulama öncesin
 The original `some` entry remains in the correction-history record as superseded; it is not treated as the current factual value. The separate `researcher_source_exposure = full` remains disclosed.
 
 **Current disposition:** continue Dishka's formal v0.2 proposed-case workflow. The case is not yet accepted. Do not skip the bounded license-scope decision, full record preparation, schema/registry validation or separate final decision.
+
+
+## 12. Active next steps after exposure correction — 19 November 2026
+
+The current project-lead value is `prior_pipeline_debug_exposure = none`; see `PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`. Dishka therefore satisfies this specific eligibility gate and is first for formal v0.2 case checks. The prior `some` answer remains only as superseded history.
+
+Remaining gates:
+1. Bounded documentary license-screen decision by the project lead, limited to the exact base, five changed files, the minimal dependency-free reproducer, four explicitly pinned test-runner packages, and the isolated PyArrow 19.0.1 dataset-extraction environment.
+2. Complete full proposed v0.2 case JSON with verified hashes/URIs and all approved gold/tier references.
+3. Draft 2020-12 schema validation and fail-closed registry validation.
+4. Resolve any provenance or semantic mismatch without changing the cohort row or weakening criteria.
+5. Separate final project-lead YES/NO acceptance decision.
+
+The case remains not accepted; registry count remains zero; model loading/inference/training remain unauthorized.
