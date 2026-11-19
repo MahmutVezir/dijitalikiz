@@ -246,3 +246,49 @@ This section supersedes earlier sections where the proposal SHA, bounded-license
 **Current Dishka-specific state:** the bounded documentary scope decision, proposal construction, hash/path consistency audit, schema validation and fail-closed registry validation are complete. Dishka remains **not accepted** until the project lead separately records an explicit YES/NO final case-acceptance decision. Do not count it as a feasibility case or add it to the accepted registry before that decision.
 
 **Project-wide state:** the no-inference readiness report still has 14 blockers, including raw dataset provenance, exact model license/runtime, frozen generation/protocol artifacts, and Rater B consent/exposure. No model loading, inference, fine-tuning or training has occurred or is authorized.
+
+
+## 15. Latest immutable case-file, reproduction-artifact and preflight verification — 19 November 2026
+
+This section supersedes the earlier "latest repeat" references in sections 13–14 where a newer Dishka reproduction/preflight is now available. It does not supersede the case eligibility, exposure, license-scope or final-acceptance decisions.
+
+### Canonical proposed case record
+
+- Canonical path: `research_candidates/evidence_abstention/reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`
+- SHA-256 after pinning the latest verified reproduction artifact: `1ac859ca76e53f673f232b2ce233b2dc9ad289893ac3b237aa329fb614f67bc3`
+- Git blob SHA-1: `ec884cda706b5a66d2439ea4df60580ae26a0656`
+- State remains `acceptance_decision=proposed`, `final_acceptance.status=pending`; no final decision timestamp or final-decision artifact exists.
+- The baseline and fixed reproduction records now point to the latest repeat archive: [run 44572926370 / artifact 14553229664](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44572926370/artifacts/14553229664), SHA-256 `7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10`.
+
+### Independent archive verification of latest Dishka repeat
+
+The artifact was downloaded and checked locally:
+- ZIP archive SHA-256: `7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10`, matching the GitHub-reported digest.
+- Archive contents: 33 members; ZIP CRC test PASS.
+- Internal `SHA256SUMS.txt`: 32 entries, all 32 verified.
+- Issue reproducer on buggy base: failed with `AssertionError: 1 != 42`.
+- Same issue reproducer on fixed revision: passed.
+- Dataset FAIL_TO_PASS selectors on buggy base: 8/8 executed defect-related failures (not collection failures).
+- Same 8 selectors on fixed revision: 8/8 passed.
+
+Dishka job `135733170187` completed successfully. The overall 13-candidate run concluded failure because separate Nox, Werkzeug and Moto candidate jobs failed their own selector contracts. Those failures do not change the successful Dishka job result; the full candidate matrix must not be called green.
+
+### Latest no-inference preflight
+
+- Workflow run: [44572926370](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44572926370)
+- No-inference preflight job: `135732610579` — success.
+- Log artifact: [14554972064](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44572926370/artifacts/14554972064), SHA-256 `b0dc39e127a375206e7fbe8613292fef6d3f4a77af56b23080b5fd5691665c61`; downloaded ZIP digest independently matched and ZIP CRC passed.
+- v0.2 case-acceptance tests: 22 passed, including the actual Dishka proposed record, empty-registry guard, and the 12-reference immutable-URI/path/content-hash regression.
+- Study-design / dual-human scoring tests: 10 passed.
+- Actual proposed record result: `structurally_complete_candidate`.
+- Accepted registry: `valid_empty_registry`; accepted cases 0; accepted projects 0; proposed case not inserted.
+
+The preflight readiness report remains `blocked_before_inference`, `ready_for_inference=false`, with 14 global blockers. Model loading, inference and fine-tuning remain false and unauthorized.
+
+### Current Dishka-specific disposition
+
+The bounded documentary license-scope decision is approved only for its exact pinned research/reproduction/test/extraction environment; it is not legal clearance or redistribution approval. The project-lead prior pipeline/debug exposure value remains `none`; researcher source exposure remains `full`.
+
+The record's internal URI/content-hash references are pinned to immutable commit `13b4a0c80575cd2de9575cc884038666f34dfaa1` and the CI regression confirms all 12 referenced files' content SHA-256 values and path suffixes. This verifies repository-local references; the structural validator does not fetch and authenticate every external URI or confer semantic/legal approval.
+
+**Only the separate final project-lead YES/NO case-acceptance decision remains as the Dishka-specific decision.** Until it is recorded, Dishka stays proposed, does not count toward the one-case feasibility minimum, and remains outside the accepted registry. NumPyro #1916 stays the fallback if the final Dishka decision is NO or a substantive case-level issue is discovered.
