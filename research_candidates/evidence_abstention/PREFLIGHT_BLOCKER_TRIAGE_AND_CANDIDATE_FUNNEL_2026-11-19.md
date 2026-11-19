@@ -60,12 +60,12 @@ The equation is `65 = 15 + 42 + 8`. The separately tracked reserve pool contains
 
 ### Technical-pass caution
 
-The 15 Stage 2 passes are not 15 accepted cases. CTAPIpe #2732 is retained as an engineering/feasibility pilot but excluded from model evaluation because the project lead recorded candidate-specific prior pipeline/debug exposure as `some`. Modin remains on a scope hold because the issue title says AutoSwitchBackend ON while the PR/frozen selectors test OFF/False. Napalm has a Cisco fixture provenance/license hold. PyThaiNLP has native/dependency license and human adjudication gates. Amaranth has a temporal exposure review. Other technically passing cases still need Stage 3, provenance/license and final acceptance.
+The 15 Stage 2 passes are not 15 accepted cases. CTAPIpe #2732 is retained as an engineering/feasibility pilot but excluded from model evaluation because the project lead recorded candidate-specific prior pipeline/debug exposure as `some`. Dishka #435 remains eligible to continue the case-level acceptance workflow: its corrected prior pipeline/debug exposure is `none`, while researcher source exposure remains `full`. Modin remains on a scope hold because the issue title says AutoSwitchBackend ON while the PR/frozen selectors test OFF/False. Napalm has a Cisco fixture provenance/license hold. PyThaiNLP has native/dependency license and human adjudication gates. Amaranth has a temporal exposure review. Other technically passing cases still need Stage 3, provenance/license and final acceptance.
 
 ## 3. Shortest defensible route to reduce the blockers
 
-1. **Dishka #435 is excluded from the model-evaluation sample.** On 19 November 2026 the project lead declared `prior_pipeline_debug_exposure = some`; the active v0.2 eligibility rule requires `none`. Preserve its successful Stage 2 and Stage 3 technical records as engineering evidence, do not prepare an acceptance JSON, and do not weaken the validator.
-2. **Proceed to NumPyro #1916 / PR #1918 as the next candidate.** Stage 2 is passed and the real E1/E2/E3 packet-set structural test passed in run `44537219541`. Semantic tier sufficiency, candidate exposure/independence, dependency/source license scope and final acceptance remain open. Do not count the packet structural PASS as semantic approval.
+1. **Dishka #435 is the first formal acceptance candidate.** The project lead's corrected prior pipeline/debug exposure value is `none`, satisfying that specific gate. Researcher source exposure remains `full` and disclosed. Complete the bounded license-scope decision, proposed record, schema/registry checks and separate final decision; do not mark it accepted early.
+2. **NumPyro #1916 / PR #1918 is the fallback candidate.** Stage 2 is passed and the real E1/E2/E3 packet-set structural test passed in run `44537219541`. Semantic tier sufficiency, candidate exposure/independence, dependency/source license scope and final acceptance remain open. Do not count the packet structural PASS as semantic approval.
 3. **Finish candidate-specific provenance/licensing.** Preserve exact source, changed-file, test fixture, dependency/native notice and timestamp evidence. A package's license metadata being present is not legal clearance.
 4. **Continue technical intake sequentially.** PSyclone #2755 has successful row discovery and Python 3.13 environment lock, but its manual Stage 2 base-fail/fixed-pass workflow still has not run. Nox, Moto and Werkzeug stay held; never delete or rewrite frozen selectors just to make CI green.
 5. **Complete governance before generating outputs.** Confirm the required independent Panel A and Panel B reviewers, conflict/exposure declarations, restricted delivery, and calibration. The Panel B semantic review cannot be replaced by simple YES/NO endorsements from exposed reviewers.
@@ -81,12 +81,12 @@ The 15 Stage 2 passes are not 15 accepted cases. CTAPIpe #2732 is retained as an
 - Do not load, generate with, fine-tune or train the model while the relevant gate is closed.
 - Do not claim confirmatory efficacy, general model self-awareness, or universal hallucination reduction from this exploratory design.
 
-**Latest inspected status:** 14 readiness messages in preflight run 44537219541; 0 accepted cases; Dishka excluded for prior exposure; NumPyro is next with Stage 2 PASS and real-packet structural CI PASS but semantic review pending; 65 broad technical shortlist candidates; 17 distinct-project reserves; no model operation performed.
+**Latest inspected status:** 14 readiness messages in preflight run 44537219541; 0 accepted cases; Dishka has corrected prior pipeline/debug exposure `none` and is first for formal case checks; NumPyro remains the fallback with Stage 2 PASS and real-packet structural CI PASS but semantic review pending; 65 broad technical shortlist candidates; 17 distinct-project reserves; no model operation performed.
 
 
 ## 5. Human review team now proposed by the project lead
 
-The project lead has said that Hasan and Batuhan can be presented with the project's research and asked to make explicit yes/no decisions on scientifically relevant approvals. This is recorded as **proposed reviewer availability**, not as consent or completed review.
+The project lead has said that two proposed technical reviewers can be presented with the project's research and asked to make explicit yes/no decisions on scientifically relevant approvals. Their repository pseudonyms are Reviewer H and Reviewer B. This is recorded as **proposed reviewer availability**, not as consent or completed review.
 
 - Mahmut remains student project lead and final decision-maker.
 - Reviewer H and Reviewer B are public pseudonyms; identity mapping is kept outside the repository. `Rater_B` in the v0.2 scoring manifest is a separate, unassigned role and must not be confused with Panel Reviewer B. Participation, relevant expertise, case-specific prior exposure, independence and consent must be recorded individually.
@@ -120,11 +120,22 @@ Two process-conflict risks have been corrected:
 
 The file `V0_2_ACTIVE_TRACK_AND_DECISION_FLOW_2026-11-19.md` names the active v0.2 artifacts and marks the v0.1 confirmatory case schema/validator and historical Panel A/B governance as legacy. The historical v0.1 files remain preserved; they must not be applied to the v0.2 feasibility study.
 
-Latest Dishka evidence is independently checked in `DISHKA_435_V02_CANDIDATE_GATE_ASSESSMENT_2026-11-19.md`: run 44537219541 / artifact 14536192821, outer SHA-256 matches GitHub, ZIP CRC passes, and 32/32 internal hashes pass. The case remains not accepted pending truthful prior pipeline/debug exposure confirmation and project-lead sign-off of the bounded documentary license-screen scope. If either fails, move to NumPyro #1916; do not lower the bar.
+Latest Dishka evidence is independently checked in `DISHKA_435_V02_CANDIDATE_GATE_ASSESSMENT_2026-11-19.md`: run 44537219541 / artifact 14536192821, outer SHA-256 matches GitHub, ZIP CRC passes, and 32/32 internal hashes pass. The corrected prior pipeline/debug exposure is `none`; Dishka remains not accepted pending bounded documentary license-scope sign-off, full proposed acceptance record, schema/registry checks and separate final project-lead decision. If a remaining gate fails, move to NumPyro #1916; do not lower the bar.
 
 
-## 8. Dishka exposure declaration and NumPyro transition — 19 November 2026
+## 8. Superseded Dishka exposure declaration and NumPyro transition — 19 November 2026
 
-The project lead explicitly declared Dishka prior pipeline/debug/test-oracle exposure as `some`. The v0.2 rule requires `none`; Dishka is excluded from the study sample and retained as engineering evidence only. Its Stage 2 and Stage 3 technical statuses are not erased.
+An earlier project-lead answer recorded Dishka prior pipeline/debug/test-oracle exposure as `some`; that answer is superseded by the later clarification and is retained only in the audit history. The current value is `none`, as documented in `reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`. Dishka is eligible to continue formal case checks, but remains not accepted.
 
-NumPyro #1916 is the next candidate. Its exact Stage 2 AIES/ESS selectors passed again in run `44537219541`. Its real packet-set test passed in the no-inference preflight job, which asserted the pinned packet-set SHA and strict nesting. Semantic sufficiency was explicitly not assessed. The current preflight report remains `blocked_before_inference`, with 14 blockers, 0 accepted cases, and no model loading, inference or fine-tuning.
+NumPyro #1916 remains the fallback candidate. Its exact Stage 2 AIES/ESS selectors passed again in run `44537219541`. Its real packet-set test passed in the no-inference preflight job, which asserted the pinned packet-set SHA and strict nesting. Semantic sufficiency was explicitly not assessed. The current preflight report remains `blocked_before_inference`, with 14 blockers, 0 accepted cases, and no model loading, inference or fine-tuning.
+
+
+## 9. Corrected Dishka exposure and active order — 19 November 2026
+
+The project lead clarified the earlier answer after reading the question and confirmed the intended factual value: `prior_pipeline_debug_exposure = none`. The earlier `some` entry is superseded, not silently erased. See the correction history in `reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`.
+
+The active order is now:
+1. Dishka #435 — complete remaining formal proposed-case, bounded license, schema/registry and final-decision steps. Do not pre-accept.
+2. NumPyro #1916 — fallback if a Dishka gate fails; its Stage 2 and structural packet validation have passed, while semantic adjudication and other case gates remain open.
+
+CTAPIpe #2732 remains separately excluded because its earlier project-lead exposure declaration is `some`. The two exposure cases must not be conflated.
