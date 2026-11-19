@@ -127,7 +127,9 @@ jobs:
               "package_license_metadata": licenses,
               "duplicate_same_version_metadata_records_collapsed": duplicate_metadata,
               "test_execution_performed": False,
-              "source_build_performed": False,
+              "source_build_performed": True,
+              "source_build_note": "Environment resolution ran pip install .[test] from the exact upstream PSyclone checkout; pip built and installed the local PSyclone wheel as part of dependency resolution. Stage 2 will not reinstall this wheel and will import the target tree through PYTHONPATH=src.",
+              "source_tests_executed": False,
               "model_inference_performed": False,
           }
           import hashlib
@@ -146,6 +148,77 @@ jobs:
               "test_execution_performed": False,
           }, indent=2))
           PY
+          mkdir -p psyclone-environment-lock/wheelhouse
+          python -m pip download --disable-pip-version-check --only-binary=:all: --no-deps \
+            --requirement psyclone-environment-lock/requirements.lock.txt \
+            --dest psyclone-environment-lock/wheelhouse
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          from packaging.utils import canonicalize_name, parse_wheel_filename
+
+          root = Path("psyclone-environment-lock")
+          wheelhouse = root / "wheelhouse"
+          expected = {}
+          for line in (root / "requirements.lock.txt").read_text(encoding="utf-8").splitlines():
+              name, version = line.split("==", 1)
+              expected[canonicalize_name(name)] = version
+
+          observed = {}
+          records = []
+          for wheel in sorted(wheelhouse.glob("*.whl")):
+              name, version, build, tags = parse_wheel_filename(wheel.name)
+              normalized = canonicalize_name(name)
+              if normalized in observed:
+                  raise SystemExit(f"Multiple wheel artifacts selected for {normalized}; require a single exact platform artifact")
+              digest = hashlib.sha256(wheel.read_bytes()).hexdigest()
+              observed[normalized] = str(version)
+              records.append({
+                  "name": normalized,
+                  "version": str(version),
+                  "wheel_filename": wheel.name,
+                  "sha256": digest,
+                  "size_bytes": wheel.stat().st_size,
+                  "tags": sorted(str(tag) for tag in tags),
+              })
+
+          if observed != expected:
+              raise SystemExit(
+                  "Downloaded wheel set differs from resolved package lock: "
+                  f"missing={sorted(set(expected)-set(observed))}; "
+                  f"unexpected={sorted(set(observed)-set(expected))}; "
+                  f"version_mismatches={[(n, expected[n], observed.get(n)) for n in expected if observed.get(n) != expected[n]]}"
+              )
+
+          hashed_lock = "".join(
+              f"{item['name']}=={item['version']} --hash=sha256:{item['sha256']}\\n"
+              for item in sorted(records, key=lambda x: x["name"])
+          )
+          (root / "requirements.hashed.lock.txt").write_text(hashed_lock, encoding="utf-8")
+          (root / "wheel-hashes.json").write_text(
+              json.dumps(records, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+          )
+
+          fingerprint_path = root / "runtime-fingerprint.json"
+          fingerprint = json.loads(fingerprint_path.read_text(encoding="utf-8"))
+          fingerprint["wheel_artifact_count"] = len(records)
+          fingerprint["wheel_hashes_sha256"] = hashlib.sha256(
+              json.dumps(records, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+          ).hexdigest()
+          fingerprint["hashed_requirements_lock_sha256"] = hashlib.sha256(
+              hashed_lock.encode("utf-8")
+          ).hexdigest()
+          fingerprint_path.write_text(
+              json.dumps(fingerprint, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+          )
+          print(json.dumps({
+              "wheel_count": len(records),
+              "hashed_requirements_lock_sha256": fingerprint["hashed_requirements_lock_sha256"],
+              "wheel_hashes_sha256": fingerprint["wheel_hashes_sha256"],
+          }, indent=2))
+          PY
+          rm -rf psyclone-environment-lock/wheelhouse
           cp psyclone/setup.py psyclone-environment-lock/upstream-setup.py
           cp psyclone/setup.cfg psyclone-environment-lock/upstream-setup.cfg
           cp psyclone/requirements.txt psyclone-environment-lock/upstream-requirements.txt
