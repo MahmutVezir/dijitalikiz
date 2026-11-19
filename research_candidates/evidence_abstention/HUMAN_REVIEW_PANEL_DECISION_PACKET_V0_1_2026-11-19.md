@@ -10,8 +10,9 @@
 | Person / role | Proposed responsibility | Boundary |
 |---|---|---|
 | Mahmut — student project lead | Own protocol, maintain source records, propose candidate decisions, record deviations, and make the final project-lead decision | Has prior source exposure to screened candidate issues/patches; must not be described as blinded |
-| Reviewer H (Hasan) | Independent technical/methodology review, subject to agreement and per-case exposure/independence declaration | Not automatically a legal reviewer or external auditor |
-| Reviewer B (Batuhan) | Independent technical/methodology review, subject to agreement and per-case exposure/independence declaration | Not automatically a legal reviewer or external auditor |
+| Panel Reviewer H | Independent technical/methodology review; proposed for Hasan | Not automatically a legal reviewer, external auditor or blind output rater |
+| Panel Reviewer T | Independent technical/methodology review; proposed for Batuhan | Not automatically a legal reviewer, external auditor or blind output rater |
+| Rater B | Separate role in the active v0.2 manifest for independent blind model-output scoring; no individual is assigned by this packet | Must not be conflated with Panel Reviewer H or T; requires separate consent and case-specific exposure screen |
 | ChatGPT | Research-assistant critique, structured evidence and reproducibility support | Not a human reviewer, not a voting member, not a human rater, and never counted for inter-rater reliability |
 
 The two reviewers' public identities are kept pseudonymous in repository records. Their participation, expertise/role, and per-case exposure are not assumed; they must be confirmed directly.
@@ -24,7 +25,7 @@ Each reviewer must choose a role for each candidate before receiving its full pa
 - **Blind model-output scoring:** reviewer sees only the exact evidence packet visible to the model and a randomized raw response ID. They must not see repository/issue/PR, source patch/fixed source, hidden gold, hidden E1/E2/E3 label, P0/P1 identity, paired response, or another rater's score. They must not take part in full technical case review for that case.
 - **Protocol-only review:** reviewer assesses the study design/rubric without case identities, patches, gold, or outputs. This can preserve eligibility for later blind output scoring if they remain unexposed.
 
-If both Hasan and Batuhan review full case sources, neither may be claimed as a blinded scorer for those cases. We then need a separate unexposed scorer, or a prospectively amended non-blinded exploratory scoring design with limitations stated. Do not make a false blinding claim just to preserve a dual-rater plan.
+If both Panel Reviewer H and Panel Reviewer T review full case sources, neither may be claimed as a blinded scorer for those cases. The active v0.2 role Rater B must then be a different, unexposed person, or the scoring plan must be prospectively amended before model outputs are generated. Do not make a false blinding claim just to preserve a dual-rater plan.
 
 ## 3. Reviewer declaration — required before case-level review
 
@@ -146,9 +147,9 @@ For unresolved questions, the valid answer is **OUT OF SCOPE / external legal re
 7. Only then authorize the primary P0/P1 inference study.
 8. The separate LoRA training study follows only when its higher, project-disjoint dataset gate is met and separately authorized.
 
-## 8. Decision record template — one copy per human reviewer
+## 8. Decision record template — one copy per technical panel reviewer
 
-- Reviewer pseudonym:
+- Reviewer pseudonym (Panel Reviewer H or Panel Reviewer T):
 - Date:
 - Proposed role for this review:
 - Relevant expertise / scope:
@@ -160,3 +161,14 @@ For unresolved questions, the valid answer is **OUT OF SCOPE / external legal re
 - Reviewer consent to be identified by pseudonym in the research record: YES / NO
 
 Mahmut's final project-lead decision and rationale must be recorded separately after the independent reviewer responses. No reviewer decision is presumed from silence.
+
+
+## 9. Role-conflict correction — 19 November 2026
+
+The initial draft used “Reviewer B” for Batuhan while the active v0.2 manifest separately uses the technical role code `Rater_B` for a future blinded model-output scorer. Those labels could be mistaken for the same person/role. They are now explicitly separated:
+
+- Panel Reviewer H and Panel Reviewer T are the two proposed technical/methodology reviewers (Hasan and Batuhan respectively).
+- `Rater_B` remains an unassigned role for a separate blind model-output scorer.
+- A panel reviewer who sees a case's issue/PR/source/patch/gold/tier material is not eligible to be called blinded to those materials for that case's output scoring.
+- The technical reviewers' yes/no recommendations are advisory evidence for the project lead; they do not automatically populate the accepted registry and do not constitute legal clearance.
+- The project lead reports shared agreement with the previously discussed Dishka technical/gold/tier/limitations proposal. Individual reviewer decisions and signatures are not fabricated; any formal concurrence record must be based on the reviewers' actual submitted decisions.
