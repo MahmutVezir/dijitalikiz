@@ -116,7 +116,7 @@ Two real-case files were added:
 - `numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_V0_1_2026-11-19.json`
 - `numpyro_1916/EVIDENCE_PACKET_PROVENANCE_V0_1_2026-11-19.json`
 
-Packet-set SHA-256: `754b0ce644c7769f0eeed4249d2c7ab89a66cc5d69dc8f6630bb23eeb22ff831`.
+Packet-set SHA-256: `7156e7c0bebf694946495b638f8dd21fbe45b7fbafde2607e6cc11e8b4f9bdfc`.
 
 The exact issue-row excerpts were reconstructed from the immutable dataset row and checked against the recorded UTF-8 byte ranges and SHA-256 values: narrative/reproducer bytes [0,836), traceback bytes [838,5775). The two buggy-base source excerpts were fetched at commit `07e4c9bc4524cc0a741ba8f8ad41339d34a0288d` and their excerpt hashes match the proposal: `mcmc.py` lines 654–660 and `ensemble.py` lines 190–193. The inner packets contain 1, 2 and 4 items for E3, E2 and E1 respectively; repeated items are byte-identical and the evidence ID sets are strictly nested.
 
@@ -125,3 +125,6 @@ A real-packet regression test was added to `implementation/test_evidence_level_p
 Semantic adequacy remains open. In particular, the E1 source excerpts expose both the MCMC key-array handoff and the ensemble sampler's scalar `random.split` call, but an independent panel must decide whether this truly eliminates the sampler-contract alternative. The project lead's design approval cannot substitute for Panel B's blinded mechanism ratings. No fix patch, fixed-pass log, gold label, or E-level label is included in the model-facing inner packets. The outer packet set is for preparation/validation only.
 
 Current disposition: Stage 2 passed; Stage 3 packet construction complete; structural CI validation pending; semantic adjudication pending; exposure/independence and human license-scope review open; final case acceptance remains `not_accepted`; inference remains unauthorized.
+
+
+**Source hash clarification:** For the two source-code items, `source_snapshot_sha256` binds the exact verbatim excerpt snapshot; the parent files are independently anchored by immutable upstream commit and Git blob SHA-1. The excerpt's own bytes are separately bound by `content_sha256`.
