@@ -893,14 +893,37 @@
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/QUTIP_2646_CANDIDATE_REVIEW_2026-11-16.md",
       "stage2_status": "passed",
-      "stage2_workflow_job_id": 134161227186,
-      "stage2_evidence_note": "Repeat run 44117944004 independently completed all stages successfully: exact buggy-base build, independent stale-coefficient reproducer, exact dataset row, one selector base-fail and same selector fixed-pass. Artifact 14344317505 SHA-256 659f20be3d691a7689a3c38e069470b2d2f4e11ddb72461f3d4e89a18e57d67d. Stage 3 and final acceptance remain pending.",
+      "stage2_workflow_job_id": 135481445830,
+      "stage2_evidence_note": "Repeat run 44117944004 independently completed all stages successfully: exact buggy-base build, independent stale-coefficient reproducer, exact dataset row, one selector base-fail and same selector fixed-pass. Artifact 14344317505 SHA-256 659f20be3d691a7689a3c38e069470b2d2f4e11ddb72461f3d4e89a18e57d67d. Stage 3 and final acceptance remain pending. Latest independent repeat (workflow run 44500943717, job 135481445830, artifact 14518471928) re-authenticated dataset row qutip__qutip-2694 (canonical row SHA-256 16ed66f7a865915697f5fbed540a56e3017ccfe460f3d5bc94d5918a63e9c1ee; base b821b1aa8c98a00f58014e7ec02cc9cbef701ce4), reproduced the stale coefficient argument failure on buggy base and pass on fixed revision 61df3c7bccf474aba393940581ffbbeccf5da366; exact selector qutip/tests/core/test_coefficient.py::test_coefficient_update_args was 1/1 expected base failure and 1/1 fixed pass. Artifact SHA-256 ecbc4ff3f3640f15603020331bffb177d4a1c51282b66358c11a3a6078c673cc; ZIP CRC and all 14 internal SHA256SUMS entries independently verified. Issue's QobjEvo example is represented by a narrower public coefficient API reproducer; preserve that scope caveat. Human license review and Stage 3 remain open.",
       "stage3_status": "not_started_stage2_passed",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44117944004,
+      "stage2_latest_run_id": 44500943717,
       "stage2_artifact_id": 14344317505,
-      "stage2_artifact_sha256": "659f20be3d691a7689a3c38e069470b2d2f4e11ddb72461f3d4e89a18e57d67d"
+      "stage2_artifact_sha256": "659f20be3d691a7689a3c38e069470b2d2f4e11ddb72461f3d4e89a18e57d67d",
+      "stage2_latest_job_id": 135481445830,
+      "stage2_latest_artifact_id": 14518471928,
+      "stage2_latest_artifact_sha256": "ecbc4ff3f3640f15603020331bffb177d4a1c51282b66358c11a3a6078c673cc",
+      "stage2_latest_recheck": {
+        "workflow_run_id": 44500943717,
+        "workflow_head_sha": "5ecefe67b80ba731cf4f145b901850e2232b5cb4",
+        "job_id": 135481445830,
+        "artifact_id": 14518471928,
+        "result": "passed_exact_base_fail_fixed_pass",
+        "dataset_instance_id": "qutip__qutip-2694",
+        "dataset_row_sha256": "16ed66f7a865915697f5fbed540a56e3017ccfe460f3d5bc94d5918a63e9c1ee",
+        "dataset_base_commit": "b821b1aa8c98a00f58014e7ec02cc9cbef701ce4",
+        "fixed_revision": "61df3c7bccf474aba393940581ffbbeccf5da366",
+        "fail_to_pass_selectors": [
+          "qutip/tests/core/test_coefficient.py::test_coefficient_update_args"
+        ],
+        "independent_reproducer": "base failure AssertionError: 1 != 2; fixed revision pass",
+        "selector_result": "1/1 expected failure on buggy base and 1/1 pass on fixed revision",
+        "artifact_sha256": "ecbc4ff3f3640f15603020331bffb177d4a1c51282b66358c11a3a6078c673cc",
+        "artifact_integrity": "ZIP CRC passed; all 14 SHA256SUMS entries independently verified",
+        "license_scope": "exact upstream LICENSE.txt is BSD-3-Clause; dependency license inventory captured; human license review remains open",
+        "caveat": "Issue's QobjEvo example and the independent/selector tests exercise the same coefficient-argument update defect through the public coefficient API, but the reproducer is narrower than the full QobjEvo example. No Stage 3 gold/alternatives/E1-E2-E3 adjudication or final case acceptance."
+      }
     },
     {
       "cohort_rank": 40,
@@ -1919,21 +1942,38 @@
     }
   ],
   "latest_candidate_matrix_recheck": {
-    "workflow_run_id": 44338919763,
-    "head_commit": "f838660fdfcdd2ec92a3983a70e5f3f894732675",
+    "workflow_run_id": 44500943717,
+    "head_commit": "5ecefe67b80ba731cf4f145b901850e2232b5cb4",
     "status": "completed_with_candidate_specific_failures",
     "candidate_job_count": 13,
     "successful_reproductions": 10,
     "failed_reproductions": 3,
     "in_progress_reproductions": 0,
-    "summary": "All 13 candidate reproduction jobs are now complete in run 44338919763. Ten completed successfully: Dishka, Python-Control, EODAG, Amaranth, Robocop, NumPyro, PyFar, Meltano, Dymos and QuTiP. Three completed with candidate-specific selector reproduction failures: Nox, Moto and Werkzeug; these are not counted as successful reproductions. The no-inference preflight job succeeded separately, but the readiness report still has 14 blockers and zero accepted cases. NumPyro job 134923384282 succeeded and artifact 14441559416 independently passed SHA-256, ZIP CRC and all 15 internal payload hash checks.",
+    "summary": "Repeat of the 13-job focused candidate matrix completed in run 44500943717. Ten jobs succeeded: PyFar, EODAG, Dishka, Robocop, NumPyro, Python-Control, Amaranth, QuTiP, Dymos and Meltano. Three remained candidate-specific selector failures: Nox, Werkzeug and Moto. QuTiP's repeat now has independently downloaded evidence: exact row hash, independent reproducer and exact dataset selector both show buggy-base failure/fixed-revision pass; artifact ZIP CRC and 14/14 internal hashes verified. The workflow overall concluded failure because of the three candidate-specific jobs; this does not negate successful candidate jobs. The no-inference preflight job succeeded separately. This 13-job matrix remains distinct from the 96-row cohort.",
     "no_inference": true,
     "artifacts_are_github_actions_artifacts": true,
     "completed_candidate_jobs": 13,
-    "qutip_job_id": 134923384101,
+    "successful_candidate_names": [
+      "PyFar",
+      "EODAG",
+      "Dishka",
+      "Robocop",
+      "NumPyro",
+      "Python-Control",
+      "Amaranth",
+      "QuTiP",
+      "Dymos",
+      "Meltano"
+    ],
+    "failed_candidate_names": [
+      "Nox",
+      "Werkzeug",
+      "Moto"
+    ],
+    "qutip_job_id": 135481445830,
     "qutip_job_conclusion": "success",
-    "qutip_artifact_id": 14442074993,
-    "qutip_artifact_digest": "sha256:05cd87ffec35546fc7c1484cd4eeca8601973696553c4afab4cb20cfc59553a7"
+    "qutip_artifact_id": 14518471928,
+    "qutip_artifact_digest": "sha256:ecbc4ff3f3640f15603020331bffb177d4a1c51282b66358c11a3a6078c673cc"
   },
   "project_lead_supplementary_cross_check": {
     "status": "user_reported_supporting_statement",
