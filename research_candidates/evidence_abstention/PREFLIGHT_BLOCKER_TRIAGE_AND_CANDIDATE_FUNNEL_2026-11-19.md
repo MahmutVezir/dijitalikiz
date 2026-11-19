@@ -158,4 +158,13 @@ The same workflow's no-inference job `135732610579` succeeded. Its preflight art
 
 **Do not overstate the matrix:** workflow run `44572926370` itself concluded failure because the independent Nox, Werkzeug and Moto candidate jobs failed their own selector contracts. Dishka's job and the no-inference preflight job both succeeded.
 
-Current Dishka case file SHA-256: `1ac859ca76e53f673f232b2ce233b2dc9ad289893ac3b237aa329fb614f67bc3`. It remains proposed, not accepted. The registry contains 0 accepted cases, and project-wide readiness remains blocked with 14 gates; no model loading/inference/fine-tuning occurred.
+Current Dishka case file SHA-256: `0a234c0f16668e5b58dace671483d4bc94b7f8167150e44662b339dc995ff9ee`. It remains proposed, not accepted. The registry contains 0 accepted cases, and project-wide readiness remains blocked with 14 gates; no model loading/inference/fine-tuning occurred.
+
+
+## 12. Dishka patch URI and SHA-256 reconciliation — 19 November 2026
+
+The canonical Dishka record no longer uses the mutable upstream PR `.diff` URL for a digest that belongs to a different byte sequence. Its patch reference now points to `full-pr.diff` inside the verified artifact from run `44572926370` / artifact `14553229664`. Inner file SHA-256: `c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde`; outer ZIP SHA-256: `7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10`; CRC PASS; 32/32 internal hashes PASS.
+
+The exact base/fixed commits and regeneration command are preserved in `DISHKA_435_PATCH_REFERENCE_RECONCILIATION_2026-11-19.md`; GitHub artifact retention is 90 days. This is a reference correction, not a change to the technical gold, exposure classification, eligibility rule, or license decision.
+
+Current case JSON SHA-256: `0a234c0f16668e5b58dace671483d4bc94b7f8167150e44662b339dc995ff9ee`; `acceptance_decision=proposed`; accepted registry count 0; separate final project-lead decision pending.
