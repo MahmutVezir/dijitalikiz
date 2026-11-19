@@ -191,11 +191,7 @@ If either gate fails or a substantive source/evidence mismatch is found, retain 
 
 This section supersedes the pending prior-exposure classification in sections 7–8 above.
 
-The project lead explicitly declared `prior_pipeline_debug_exposure = some` on 19 November 2026. The separate declaration and rationale are recorded in `PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`.
-
-Under the active v0.2 rule, which requires `prior_pipeline_debug_exposure = none`, Dishka is **excluded from the model-evaluation sample**. Do not prepare an acceptance record, do not add it to the registry, and do not alter the validator. Keep the successful reproduction archives, hashes, source pins and Stage 3 technical adjudication as engineering evidence only.
-
-The researcher source exposure remains `full`; it is a distinct variable and is not used to overwrite the prior pipeline/debug declaration. The next candidate is NumPyro #1916.
+An earlier answer was temporarily recorded as `some`, but the project lead later corrected it and explicitly confirmed `prior_pipeline_debug_exposure = none`. The earlier value is retained only as superseded correction history in `PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`. The separate `researcher_source_exposure = full` remains disclosed.
 
 
 ## 15. Superseding corrected project-lead exposure declaration — 19 November 2026
@@ -213,3 +209,23 @@ The corrected declaration and correction history are recorded in `PROJECT_LEAD_E
 The separate `researcher_source_exposure = full` remains unchanged and disclosed. It does not, by itself, mean prior pipeline/debug exposure.
 
 **Current case disposition:** eligible to proceed with formal v0.2 acceptance checks, not accepted. The bounded documentary license-scope decision, complete proposed record, schema validation, fail-closed registry validation and separate final project-lead acceptance remain open. No model inference or training is authorized.
+
+
+## 16. Proposed record and structural validation completed — 19 November 2026
+
+The project-lead bounded documentary license-scope decision is recorded in `PROJECT_LEAD_LICENSE_SCOPE_DECISION_2026-11-19.md`, SHA-256 `cf1f1a7344ced441d04b212292edc0dfefd28986e61bfdadcbb282319e90cbbd`. It covers only the exact pinned Dishka source, five changed files, dependency-free issue reproducer, four pinned pytest/test packages and isolated PyArrow 19.0.1 extraction environment. It is not legal advice or blanket redistribution approval.
+
+The complete v0.2 proposed record now exists:
+- `SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`
+- SHA-256: `c368612330cfde6f57d2a2e65520b014a6026b357b3e9b028c40c64a517b25da`
+- `acceptance_decision=proposed`, final status pending, no final-decision timestamp or decision artifact.
+
+The actual record was validated by the active Draft 2020-12 v0.2 case validator in GitHub Actions:
+- Run `44561953996`, no-inference job `135693344292`: success.
+- Test-log artifact `14550531292`, SHA-256 `d628b1f56d69edc4a249b929931f1fe43134c3c41eafe9887b16dc1c8c5e3e4a`.
+- The v0.2 test group passed 21 tests, including the new tests against the actual Dishka proposed record.
+- Case status: `structurally_complete_candidate`; not eligible for registry because it is proposed.
+- The accepted registry remains `valid_empty_registry`, with 0 accepted cases and inference unauthorized.
+- The no-inference preflight report still has 14 global blockers and `ready_for_inference=false`.
+
+**Remaining case-level decision:** a separate explicit YES/NO by the student project lead on final inclusion. No case acceptance or model execution is implied by structural validation.
