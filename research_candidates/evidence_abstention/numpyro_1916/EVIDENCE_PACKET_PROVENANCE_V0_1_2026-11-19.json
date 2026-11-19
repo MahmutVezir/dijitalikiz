@@ -1,0 +1,108 @@
+{
+  "schema_version": "0.1-numpyro-1916-evidence-provenance",
+  "generated_date": "2026-11-19",
+  "candidate": "pyro-ppl/numpyro issue 1916 / PR 1918",
+  "packet_set_path": "research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_V0_1_2026-11-19.json",
+  "packet_set_sha256": "7156e7c0bebf694946495b638f8dd21fbe45b7fbafde2607e6cc11e8b4f9bdfc",
+  "source_row": {
+    "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "row_id": "pyro-ppl__numpyro-1918",
+    "canonical_row_sha256": "d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646",
+    "field": "problem_statement",
+    "source_url": "https://github.com/pyro-ppl/numpyro/issues/1916"
+  },
+  "evidence_items": [
+    {
+      "id": "NP1916_ISSUE_NARRATIVE_CODE",
+      "kind": "documentation",
+      "source": "dataset row problem_statement",
+      "byte_range_utf8_exclusive": [
+        0,
+        836
+      ],
+      "content_sha256": "3a1b4b412dfeb9f33a5fa9a6534a4a7522d79dddd7a8760540c358f21d81bf2c",
+      "source_snapshot_sha256": "d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646",
+      "source_url": "https://github.com/pyro-ppl/numpyro/issues/1916"
+    },
+    {
+      "id": "NP1916_ISSUE_TRACEBACK",
+      "kind": "stack_trace",
+      "source": "dataset row problem_statement",
+      "byte_range_utf8_exclusive": [
+        838,
+        5775
+      ],
+      "content_sha256": "4ba5d2d4d78a306adce6b8ce850a3f47fc66b6a1ebce934fcb3b318eed6ada36",
+      "source_snapshot_sha256": "d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646",
+      "source_url": "https://github.com/pyro-ppl/numpyro/issues/1916"
+    },
+    {
+      "id": "NP1916_BASE_MCMC_RUN_HANDOFF",
+      "kind": "source_excerpt",
+      "source_path": "numpyro/infer/mcmc.py",
+      "source_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+      "source_git_blob_sha1": "dd3ec0c3a782c1e1530b138153d821392ee5bebd",
+      "source_lines_1based": [
+        654,
+        660
+      ],
+      "content_sha256": "f2b649fd9a8c9771ef857c01c04c36dc98f75bea82a2da908be6fe4147401e4f",
+      "source_snapshot_sha256": "f2b649fd9a8c9771ef857c01c04c36dc98f75bea82a2da908be6fe4147401e4f",
+      "source_url": "https://github.com/pyro-ppl/numpyro/blob/07e4c9bc4524cc0a741ba8f8ad41339d34a0288d/numpyro/infer/mcmc.py"
+    },
+    {
+      "id": "NP1916_BASE_ENSEMBLE_SPLIT",
+      "kind": "source_excerpt",
+      "source_path": "numpyro/infer/ensemble.py",
+      "source_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+      "source_git_blob_sha1": "64a2870ade0565cb6547cc92d97c11502e769bfd",
+      "source_lines_1based": [
+        190,
+        193
+      ],
+      "content_sha256": "de79ca7039c71eb3999ca8daf9f190d6a70c1659221514e945a554d6218be190",
+      "source_snapshot_sha256": "de79ca7039c71eb3999ca8daf9f190d6a70c1659221514e945a554d6218be190",
+      "source_url": "https://github.com/pyro-ppl/numpyro/blob/07e4c9bc4524cc0a741ba8f8ad41339d34a0288d/numpyro/infer/ensemble.py"
+    }
+  ],
+  "tier_membership": {
+    "E3": [
+      "NP1916_ISSUE_NARRATIVE_CODE"
+    ],
+    "E2": [
+      "NP1916_ISSUE_NARRATIVE_CODE",
+      "NP1916_ISSUE_TRACEBACK"
+    ],
+    "E1": [
+      "NP1916_ISSUE_NARRATIVE_CODE",
+      "NP1916_ISSUE_TRACEBACK",
+      "NP1916_BASE_MCMC_RUN_HANDOFF",
+      "NP1916_BASE_ENSEMBLE_SPLIT"
+    ]
+  },
+  "structural_validation": {
+    "status": "locally_constructed_with_canonical_sha256",
+    "validator_modules": [
+      "operational_packet_validator.py",
+      "evidence_level_packet_set.py"
+    ],
+    "semantic_sufficiency_assessed": false,
+    "model_inference_performed": false
+  },
+  "semantic_review": {
+    "status": "pending_independent_human_panel",
+    "note": "Project-lead and Hasan approval is design approval only; no semantic tier ratings, adjudication, or case acceptance."
+  },
+  "blinding": {
+    "model_visible_packet_contains_fix": false,
+    "model_visible_packet_contains_fixed_test_logs": false,
+    "model_visible_packet_contains_gold_label": false,
+    "model_visible_packet_contains_level_label": false,
+    "outer_packet_set_is_model_input": false
+  },
+  "limitations": [
+    "source_snapshot_sha256 for source-code items hashes the exact verbatim excerpt snapshot; the upstream parent file is separately anchored by immutable commit and Git blob SHA-1, not a full-file SHA-256.",
+    "Structural validity does not establish causal entailment or semantic tier sufficiency."
+  ]
+}
