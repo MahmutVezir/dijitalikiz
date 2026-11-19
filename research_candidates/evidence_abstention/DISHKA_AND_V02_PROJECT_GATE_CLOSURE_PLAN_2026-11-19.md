@@ -103,3 +103,14 @@ The Dishka-first Actions path is now verified end to end on PR head `fb7d1763345
 - Dishka's PR creation timestamp matches its SWE-rebench row timestamp exactly. Dataset card declares CC-BY-4.0. This is a candidate-specific timestamp result, not cohort-wide timestamp closure.
 - The exact Qwen revision's Research License Agreement is hashed and archived, but qualified human/mentor review is still pending.
 - The no-inference preflight still reports 14 global blockers and an empty accepted registry. The case remains proposed until the project lead records a distinct YES/NO acceptance decision.
+
+## 8. Latest successful run and remaining decision — 19 November 2026
+
+The final pre-decision pipeline on PR head `dcea5055b086644a3b1b3307a3be38e59740b67f` passed:
+- Dishka focused workflow `44602442485`: success.
+- Raw provenance, Qwen read-only license evidence and no-inference preflight: success.
+- All 12 other candidate jobs: skipped.
+- 76 no-inference tests; 171 unit tests; 171 CPU tests plus two additional checks; repository/configuration validation passed.
+- Latest Dishka archive independently checked: 33 members, CRC PASS, 32/32 internal hashes.
+
+The case is ready for the project lead's separate acceptance decision. This is not a model-readiness milestone: 14 global readiness blockers remain, including cohort-wide dataset provenance/licenses, Qwen human/mentor use-scope review, exact runtime and generation freeze, protocol/rubric hash freeze, Rater_B consent/exposure/calibration, and the currently empty accepted registry.

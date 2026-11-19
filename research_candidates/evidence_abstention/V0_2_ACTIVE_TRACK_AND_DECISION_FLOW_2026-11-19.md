@@ -203,3 +203,17 @@ PR #222 head `ef89cd9bbc04531f576a3b46ce00b1ff524f7274` was checked end to end:
 - Qwen pinned license capture [14566504228](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44600772416/artifacts/14566504228): SHA-256 `a1357b695ef01cc15277260f578a99e4f3bcc495faf6ccfe149a514014a1bf0c`, CRC PASS, 10 members, 9/9 internal hashes.
 - Readiness remains 14 blockers, 0 accepted cases, valid empty registry; no model inference authorization.
 - Dishka candidate remains proposed; final project-lead YES/NO acceptance decision remains pending.
+
+## 18. Last checked run before final acceptance — 19 November 2026
+
+PR head `dcea5055b086644a3b1b3307a3be38e59740b67f` has a fully successful Dishka-focused pipeline:
+
+- Run [44602442485](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485): **success**.
+- Dishka reproduction, raw provenance, Qwen license capture and no-inference preflight: all success.
+- Other 12 candidate jobs: skipped.
+- Preflight tests: 76 passed; global readiness remains 14 blockers, 0 accepted cases, 0 accepted projects.
+- Dishka artifact [14569001619](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485/artifacts/14569001619): CRC PASS, 33 members, 32/32 internal hashes.
+- Raw provenance artifact [14567824500](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485/artifacts/14567824500): CRC PASS, 12 members, 11/11 internal hashes.
+- Qwen evidence artifact [14569350314](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485/artifacts/14569350314): CRC PASS, 10 members, 9/9 internal hashes.
+- Separate repo validation, 171 unit tests and CPU tests passed.
+- Case record remains proposed; final YES/NO acceptance is the sole Dishka-specific project-lead step; no inference is authorized.

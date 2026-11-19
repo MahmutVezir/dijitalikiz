@@ -414,3 +414,19 @@ Dishka technical Stage 2 and candidate-level packet/structural checks remain pas
 
 ### Exact interpretation
 The Dishka-specific technical, candidate raw-timestamp and bounded documentary checks are now reproducible and archived. They do **not** close the other 112 timestamp records, the cohort-wide upstream source-license review, the Qwen human/mentor use-scope decision, runtime/generation/protocol freezes or the second-rater gate. Dishka remains `proposed`; final project-lead decision remains pending. No case is inserted into the accepted registry and no inference is authorized.
+
+## 21. Final artifact refresh on current PR head — 19 November 2026
+
+**PR head:** `dcea5055b086644a3b1b3307a3be38e59740b67f`.
+
+- Focused workflow [44602442485](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485): **success**.
+- Jobs: no-inference preflight `135837142311` PASS; Dishka reproduction `135837278218` PASS; Dishka raw provenance `135837278190` PASS; Qwen no-load license evidence `135837278505` PASS.
+- Twelve non-Dishka candidate reproductions: skipped.
+- Preflight: 76 tests passed; readiness still `blocked_before_inference`, 14 blockers, 0 accepted cases/projects, valid empty registry.
+- Dishka [artifact 14569001619](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485/artifacts/14569001619): outer SHA-256 `064e8aec01eaccb30849bfb7535e856c721db628c983d2207f7f0efec136419e`; ZIP CRC PASS; 33 members; 32/32 inner hashes PASS. Independent reproducer base-fail/fixed-pass and 8/8 selectors base-fail/fixed-pass.
+- Raw provenance [artifact 14567824500](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485/artifacts/14567824500): outer SHA-256 `8a97c280d63c951c41d012743d90aff44d5ebf970722f13ec66af848b4debae0`; CRC PASS; 12 members; 11/11 inner hashes PASS. Dishka PR time = dataset row time; `CC-BY-4.0` card license.
+- Qwen evidence [artifact 14569350314](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485/artifacts/14569350314): outer SHA-256 `1ff756b0eedb8d7ed85c139c5b15c02d3461baaf18d09d33653aaf5f2e54fb18`; CRC PASS; 10 members; 9/9 inner hashes PASS. Exact revision/license pinned; no weights or model load.
+- Preflight [artifact 14569820364](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485/artifacts/14569820364): outer SHA-256 `943b8f5e1fb72f5447b1983a607a6dbb770beb41c229b5c279c3ac98ef480246`; CRC PASS; 6 members.
+- Separate general validation on the same commit: repository/config validation run `44602442573` PASS; unit tests run `44602442013` PASS (171 tests); CPU tests run `44602442445` PASS (171 tests plus two additional checks).
+
+The current case record references only the latest independently checked Dishka reproduction archive. The accepted registry remains empty and the project-lead final YES/NO remains pending.
