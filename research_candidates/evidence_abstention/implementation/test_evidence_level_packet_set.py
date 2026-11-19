@@ -148,5 +148,32 @@ class EvidenceLevelPacketSetTests(unittest.TestCase):
         self.assertFalse(report["model_inference_performed"])
 
 
+    def test_numpyro_1916_real_packet_set_is_structurally_valid(self):
+        import json
+        from pathlib import Path
+
+        packet_path = (
+            Path(__file__).resolve().parents[1]
+            / "numpyro_1916"
+            / "OPERATIONAL_EVIDENCE_PACKET_SET_V0_1_2026-11-19.json"
+        )
+        packet_set = json.loads(packet_path.read_text(encoding="utf-8"))
+        expected_sha256 = "7156e7c0bebf694946495b638f8dd21fbe45b7fbafde2607e6cc11e8b4f9bdfc"
+        report = validate_packet_set(packet_set, expected_sha256=expected_sha256)
+
+        self.assertEqual(report["status"], "valid", report["blockers"])
+        self.assertTrue(report["strictly_nested"])
+        self.assertEqual(
+            report["additional_evidence_ids"]["E2_over_E3"],
+            ["NP1916_ISSUE_TRACEBACK"],
+        )
+        self.assertEqual(
+            report["additional_evidence_ids"]["E1_over_E2"],
+            ["NP1916_BASE_ENSEMBLE_SPLIT", "NP1916_BASE_MCMC_RUN_HANDOFF"],
+        )
+        self.assertFalse(report["semantic_sufficiency_assessed"])
+        self.assertFalse(report["model_inference_performed"])
+
+
 if __name__ == "__main__":
     unittest.main()
