@@ -448,7 +448,7 @@
     "status": "pending",
     "decision_maker_role": "student_project_lead",
     "decision_timestamp_utc": null,
-    "rationale": "Pending independent final verification of the complete proposed record, Draft 2020-12 schema validation, fail-closed registry validation and a separate explicit YES/NO project-lead case-acceptance decision. No final decision has been made.",
+    "rationale": "The candidate-specific proposed-record, evidence-hash/path, pinned-source, exposure, bounded documentary license-scope and structural validation checks are recorded as complete. The separate explicit YES/NO project-lead case-acceptance decision remains pending and must be recorded as a distinct timestamped, hashed decision before registry insertion. Proposed status is not acceptance and does not authorize model loading or inference.",
     "decision_record": null
   }
 }
