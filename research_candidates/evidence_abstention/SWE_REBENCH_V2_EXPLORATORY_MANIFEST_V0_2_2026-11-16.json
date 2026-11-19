@@ -170,7 +170,39 @@
       "Rater_B"
     ],
     "scoring_rubric_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md",
-    "amendment_path": "research_candidates/evidence_abstention/HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md"
+    "amendment_path": "research_candidates/evidence_abstention/HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md",
+    "technical_review_panel": {
+      "status": "proposed_by_project_lead_pending_individual_role_and_exposure_records",
+      "purpose": "unblinded technical and methodological yes/no review of candidate suitability and study design",
+      "panel_reviewers": [
+        {
+          "reviewer_id": "PANEL_H",
+          "private_identity_mapping": "Hasan",
+          "participation_confirmed": false,
+          "case_specific_exposure_screen_complete": false,
+          "permitted_role": "technical_methodology_review",
+          "blind_output_scoring_eligible": false
+        },
+        {
+          "reviewer_id": "PANEL_T",
+          "private_identity_mapping": "Batuhan",
+          "participation_confirmed": false,
+          "case_specific_exposure_screen_complete": false,
+          "permitted_role": "technical_methodology_review",
+          "blind_output_scoring_eligible": false
+        }
+      ],
+      "project_lead_reported_concurrence": {
+        "reported": true,
+        "reported_on": "2026-11-19",
+        "scope": "agreement with the previously presented Dishka technical reproduction, gold mechanism, alternative mechanisms, E1/E2/E3 rationale, disclosed researcher exposure, and exploratory-only limitations",
+        "independent_written_decision_records_captured": false,
+        "note": "This field records the project lead's report of group agreement; it does not fabricate individual reviewer statements, signatures, consent, or legal approval."
+      },
+      "distinct_from_output_rater_b": true,
+      "output_rater_b_role": "Rater_B remains a separate role for a possible blinded model-output scorer; Panel H/T must not be treated as Rater_B if they inspect case source, patch, gold, or hidden tiers.",
+      "legal_review_boundary": "Technical reviewers may flag license/provenance risks but are not presumed to provide formal legal opinions."
+    }
   },
   "preregistration": {
     "status": "draft_not_registered",
