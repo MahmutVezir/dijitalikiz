@@ -201,3 +201,53 @@ def test_registry_accepts_valid_smaller_sample_below_primary_target():
     assert result["stretch_target_met"] is False
     assert result["inference_authorized"] is False
     assert result["comparative_efficacy_claim_permitted"] is False
+
+
+def test_dishka_real_proposed_case_is_structurally_complete_but_not_accepted():
+    case_path = (
+        RESEARCH
+        / "reproduction"
+        / "dishka_issue_435"
+        / "SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json"
+    )
+    record = json.loads(case_path.read_text(encoding="utf-8"))
+
+    result = validate_case_record(record)
+
+    assert result["status"] == "structurally_complete_candidate", result["blockers"]
+    assert result["case_id"] == "SRV2E-DISHKA_435"
+    assert result["acceptance_decision"] == "proposed"
+    assert result["eligible_for_registry"] is False
+    assert result["inference_authorized"] is False
+    assert record["final_acceptance"]["status"] == "pending"
+    assert record["final_acceptance"]["decision_timestamp_utc"] is None
+    assert record["final_acceptance"]["decision_record"] is None
+    assert record["exposure"]["prior_pipeline_debug_exposure"] == "none"
+    assert record["exposure"]["researcher_source_exposure"] == "full"
+    assert record["license_review"]["scope_limitation"] == "documentary_screening_only_not_legal_advice"
+    assert record["evidence_tiers"]["E1"]["surviving_mechanism_ids"] == [
+        "G1_STALE_PER_SCOPE_FACTORY_REGISTRATION"
+    ]
+    assert len(record["evidence_tiers"]["E1"]["evidence_items"]) == 13
+    assert len(record["evidence_tiers"]["E2"]["evidence_items"]) == 9
+    assert len(record["evidence_tiers"]["E3"]["evidence_items"]) == 7
+
+
+def test_dishka_proposed_case_does_not_change_empty_accepted_registry():
+    case_path = (
+        RESEARCH
+        / "reproduction"
+        / "dishka_issue_435"
+        / "SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json"
+    )
+    proposed = json.loads(case_path.read_text(encoding="utf-8"))
+    registry = json.loads(
+        (RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text(encoding="utf-8")
+    )
+
+    assert proposed["acceptance_decision"] == "proposed"
+    assert registry["records"] == []
+    result = validate_registry(registry)
+    assert result["status"] == "valid_empty_registry", result["blockers"]
+    assert result["accepted_case_count"] == 0
+    assert result["inference_authorized"] is False
