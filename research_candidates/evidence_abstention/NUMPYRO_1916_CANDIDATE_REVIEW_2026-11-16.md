@@ -116,7 +116,7 @@ Two real-case files were added:
 - `numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_V0_1_2026-11-19.json`
 - `numpyro_1916/EVIDENCE_PACKET_PROVENANCE_V0_1_2026-11-19.json`
 
-Packet-set SHA-256: `7156e7c0bebf694946495b638f8dd21fbe45b7fbafde2607e6cc11e8b4f9bdfc`.
+Packet-set SHA-256: `754b0ce644c7769f0eeed4249d2c7ab89a66cc5d69dc8f6630bb23eeb22ff831`.
 
 The exact issue-row excerpts were reconstructed from the immutable dataset row and checked against the recorded UTF-8 byte ranges and SHA-256 values: narrative/reproducer bytes [0,836), traceback bytes [838,5775). The two buggy-base source excerpts were fetched at commit `07e4c9bc4524cc0a741ba8f8ad41339d34a0288d` and their excerpt hashes match the proposal: `mcmc.py` lines 654–660 and `ensemble.py` lines 190–193. The inner packets contain 1, 2 and 4 items for E3, E2 and E1 respectively; repeated items are byte-identical and the evidence ID sets are strictly nested.
 
