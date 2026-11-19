@@ -59,7 +59,7 @@ If both technical panel reviewers inspect full technical case materials, they re
 Dishka is the first candidate to complete the formal v0.2 case-acceptance route because:
 - exact issue reproducer failed on the buggy base and passed on the fixed revision;
 - all 8 frozen dataset selectors failed on the buggy base and the same 8 passed on the fixed revision;
-- latest artifact 14536192821 has an outer SHA-256 matching GitHub, CRC passes, and 32/32 inner hashes pass;
+- latest independently verified Stage 2 artifact is 14553612258 from run 44570230531; outer SHA-256 matches GitHub, ZIP CRC passes, 33 members are present, and 32/32 inner hashes pass;
 - the project lead's technical gold, alternatives and E1/E2/E3 rationale approvals are recorded;
 - `researcher_source_exposure = full` is disclosed; single-human-adjudicator and exploratory-only limitations remain explicit.
 
@@ -68,7 +68,7 @@ The project lead's corrected factual declaration is `prior_pipeline_debug_exposu
 Completed Dishka-specific steps:
 1. The project lead approved the bounded documentary license-screen scope for the exact listed research/reproduction/test/extraction environment only; this is not legal advice or blanket redistribution approval.
 2. Created the full v0.2 case JSON with exact dataset, source, test, artifact, gold and tier references; the record is `proposed`.
-3. Active Draft 2020-12 schema and fail-closed case validator passed in GitHub Actions run `44561953996`, job `135693344292` (no-inference preflight success). The real-case test asserts `structurally_complete_candidate`, `eligible_for_registry=false`, and inference unauthorized.
+3. Active Draft 2020-12 schema and fail-closed case validator passed in latest no-inference preflight run `44571127276`, job `135726142556`. The actual proposed-record regression test checks the complete Dishka JSON, confirms `eligible_for_registry=false`, confirms the registry remains empty, and checks 12 in-repository document references against file hashes and immutable commit-pinned URIs.
 4. Fail-closed registry validation passed as `valid_empty_registry`; accepted count remains 0.
 
 **Only Dishka-specific decision still open:** the separate final YES/NO project-lead case-acceptance decision. Until then, Dishka is **not accepted**.
@@ -85,8 +85,8 @@ Dishka is first because it currently satisfies the prior pipeline/debug exposure
 - Dishka gold/tier decision: project-lead approval recorded.
 - Dishka accepted registry state: **not accepted**.
 - Active case registry: 0.
-- Prior pipeline/debug exposure: confirmation pending.
-- Bounded documentary license-screen scope: sign-off pending.
+- Prior pipeline/debug exposure: `none` (explicit corrected project-lead declaration; earlier `some` answer is preserved as superseded history).
+- Bounded documentary license-screen scope: approved only for the exact listed source/reproduction/test/extraction environment; not legal advice, formal legal clearance, or redistribution approval.
 - Project-wide model/license/runtime/protocol/hash and Rater_B gates: still open.
 - No model load, inference, fine-tuning or training performed.
 
@@ -119,6 +119,27 @@ Current active order: Dishka formal case checks first; NumPyro second if Dishka 
 
 ## 10. Dishka proposed record validation — 19 November 2026
 
-The proposed case file is `reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json` (SHA-256 `c368612330cfde6f57d2a2e65520b014a6026b357b3e9b028c40c64a517b25da`). It binds the project-lead limited documentary license-scope decision, prior-exposure correction, exact dataset row/timestamp, source pins, latest reproduction artifact, human gold record and original E1/E2/E3 manifests.
+The proposed case file is `reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json` (current SHA-256 `a23a6b23fb6a8cddde352eb415d52c62c364aa3af3a38a50da72d6c3aa40886f`). It binds the project-lead limited documentary license-scope decision, prior-exposure correction, exact dataset row/timestamp, source pins, latest reproduction artifact, human gold record and original E1/E2/E3 manifests.
 
-GitHub Actions run `44561953996` / no-inference job `135693344292` passed. The five test groups total 74 passes (12 + 25 + 6 + 21 + 10). The active case validator reports `structurally_complete_candidate`; the fail-closed accepted registry validator reports `valid_empty_registry` with 0 accepted cases. The workflow's readiness report remains `ready_for_inference=false`, 14 global blockers, and no model loading/inference/fine-tuning. The separate final project-lead acceptance decision has not been made.
+GitHub Actions run `44571127276` / no-inference job `135726142556` passed. The preflight artifact is `14552969335` (SHA-256 `44b768f7d76d65c19935b88b4856ec8aacc59b691ad625113c853ade0f2ad3e9`). The v0.2 case-acceptance group passed 22 tests; the study-design/dual-human scoring group passed 10 tests. The active case validator reports `structurally_complete_candidate`; the fail-closed accepted registry validator reports `valid_empty_registry` with 0 accepted cases. The workflow's readiness report remains `ready_for_inference=false`, 14 global blockers, and no model loading/inference/fine-tuning. The separate final project-lead acceptance decision has not been made.
+
+
+## 11. Dishka — superseding current case and reproduction evidence (19 November 2026)
+
+This section controls over older hashes and artifact/run numbers in sections 5, 7 and 10.
+
+- Canonical proposed record: `reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`.
+- Current record SHA-256: `a23a6b23fb6a8cddde352eb415d52c62c364aa3af3a38a50da72d6c3aa40886f`; Git blob `d171fcaec5f5a4b8e9112e44369bd59c918885af`.
+- The record has 12 in-repository evidence references, all pinned to immutable commit `13b4a0c80575cd2de9575cc884038666f34dfaa1`; latest CI regression checks each local file hash and matching URI path.
+- Bounded license-scope decision SHA-256: `96f89e28ee026fcced8aca6d854770f5a0aefcb47690405f7d1a022fc9405d4d`. It remains limited to the exact listed experimental scope and is not legal clearance.
+- Latest Stage 2 rerun: run `44570230531`, job `135723082451`, artifact `14553612258`; downloaded outer ZIP SHA-256 `f24f43f48b2678407b381bee40b947b5a02dd9286743c12d3a6adf728af6ba2a` matches GitHub, ZIP CRC PASS, 33 members, 32/32 inner hashes PASS. The issue reproducer is base-fail/fixed-pass and all 8 dataset selectors are base-fail/fixed-pass.
+- Latest no-inference preflight: run `44571127276`, job `135726142556`, success; 22 v0.2 case acceptance tests + 10 design/scoring tests; artifact `14552969335`, SHA-256 `44b768f7d76d65c19935b88b4856ec8aacc59b691ad625113c853ade0f2ad3e9`.
+- Registry: `valid_empty_registry`, accepted_case_count 0, accepted_project_count 0; proposal is not inserted.
+- Dishka's single remaining case-level decision is Mahmut's separate final YES/NO. It remains `proposed`, not accepted, and cannot be counted toward the minimum feasibility case until this decision is recorded.
+- Global no-inference readiness remains blocked with 14 gates. No model load, inference, fine-tuning or training has occurred or is authorized.
+
+## 12. NumPyro — next scientific gate after Dishka preparation
+
+NumPyro #1916 / PR #1918 remains the next candidate in the approved sequence, not an already accepted case. Stage 2 technical reproduction and packet structural validation have passed in prior runs. The open Stage 3 question remains whether the E1 excerpts genuinely eliminate the alternative mechanism that the ensemble sampler itself should support/map batched PRNG keys. An independent reviewer must be free to retain that alternative or reject the proposed E1 tier.
+
+Do not convert an unblinded technical YES into semantic Stage 3 approval. The current reviewer protocol requires separate source-aware technical review and source-unexposed semantic rating; role, consent, exposure, conflicts, and restricted delivery route must be established first. Reviewer H is ineligible for the blind Panel B role because that reviewer has seen the design proposal; Reviewer B's eligibility is not known until a case-specific exposure/conflict declaration is completed. The project lead is the custodian, not a blind rater. If the independent human setup cannot be assembled, keep NumPyro Stage 3 pending and report that limitation rather than weakening the rubric.
