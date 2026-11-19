@@ -148,3 +148,14 @@ Dishka's bounded documentary license-scope decision has been recorded as a proje
 The full proposed case JSON is present at `reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`, SHA-256 `c368612330cfde6f57d2a2e65520b014a6026b357b3e9b028c40c64a517b25da`. It remains `acceptance_decision=proposed`.
 
 The real case validator and registry guard test passed in GitHub Actions run `44561953996`, job `135693344292`. Preflight artifact `14550531292` has SHA-256 `d628b1f56d69edc4a249b929931f1fe43134c3c41eafe9887b16dc1c8c5e3e4a`. The five groups total 74 passes. The case is structurally complete, but the accepted registry is still empty and no model operation is authorized. The separate final project-lead case-acceptance decision is the only remaining Dishka-specific decision.
+
+
+## 11. Latest Dishka repeat and no-inference readiness — 19 November 2026
+
+The newest independent Dishka reproduction is run `44572926370`, job `135733170187`, artifact `14553229664`. The archive was independently downloaded; SHA-256 `7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10` matches GitHub; ZIP CRC passed; 33 members and all 32 internal hash entries verified. The issue reproducer is base-fail/fixed-pass, and the 8/8 original dataset selectors fail on the buggy base and pass on the fixed revision.
+
+The same workflow's no-inference job `135732610579` succeeded. Its preflight artifact `14554972064` has SHA-256 `b0dc39e127a375206e7fbe8613292fef6d3f4a77af56b23080b5fd5691665c61`; independent download and CRC check passed. The 22 v0.2 acceptance tests and 10 design/scoring tests passed. The actual canonical Dishka proposed record was structurally complete, and the fail-closed registry remained empty.
+
+**Do not overstate the matrix:** workflow run `44572926370` itself concluded failure because the independent Nox, Werkzeug and Moto candidate jobs failed their own selector contracts. Dishka's job and the no-inference preflight job both succeeded.
+
+Current Dishka case file SHA-256: `1ac859ca76e53f673f232b2ce233b2dc9ad289893ac3b237aa329fb614f67bc3`. It remains proposed, not accepted. The registry contains 0 accepted cases, and project-wide readiness remains blocked with 14 gates; no model loading/inference/fine-tuning occurred.
