@@ -172,6 +172,17 @@ def test_case_rejects_different_buggy_and_fixed_test_selectors():
     assert any("exact same defect-specific test selector" in item for item in result["blockers"])
 
 
+
+def test_registry_fails_closed_on_non_object_record_without_crashing():
+    registry = json.loads((RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text())
+    registry["records"] = [None]
+    registry["accepted_case_count"] = 1
+    registry["accepted_project_count"] = 0
+    registry["status"] = "contains_structurally_complete_candidates"
+    result = validate_registry(registry)
+    assert result["status"] == "invalid"
+    assert any("registry record must be an object" in item for item in result["blockers"])
+
 def test_registry_accepts_valid_smaller_sample_below_primary_target():
     registry = json.loads((RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text())
     record = _minimal_case()
