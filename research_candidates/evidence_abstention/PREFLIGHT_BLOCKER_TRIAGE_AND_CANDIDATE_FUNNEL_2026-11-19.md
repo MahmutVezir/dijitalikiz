@@ -108,3 +108,15 @@ The frozen 96-row cohort and original second-pass entries are unchanged. Until a
 - Additional conditional re-review records: 2.
 - Separate project reserves: 17.
 - Total tracked candidate pathways when reconsideration is shown separately: 84 (not 84 accepted or currently eligible cases).
+
+
+## 7. 19 Nov correction: pre-acceptance schema and reviewer-role separation
+
+Two process-conflict risks have been corrected:
+
+1. **Premature acceptance / circular validation.** The v0.2 case schema previously required `acceptance_decision="accepted"` even when the complete record still needed validation and the project lead's final decision. It now supports `proposed`, `accepted` and `rejected`; proposed records require a pending decision and no final-decision artifact. The active registry validator explicitly rejects proposed/rejected records and accepts only an `accepted` case with a separate timestamped, hashed project-lead decision record. Unit tests cover both sides of this boundary. This does not weaken any evidence or eligibility rule.
+2. **Panel reviewer vs Rater B role collision.** Hasan and Batuhan are proposed as Panel Reviewer H and Panel Reviewer T for unblinded technical/methodology yes/no review. The active manifest's `Rater_B` is a separate role for blind model-output scoring and is not automatically assigned to either person. Anyone who sees the issue/source/patch/gold/hidden tiers for a case cannot be described as blind for that case's response scoring. The group concurrence is recorded as the project lead's report, not as fabricated individual signatures.
+
+The file `V0_2_ACTIVE_TRACK_AND_DECISION_FLOW_2026-11-19.md` names the active v0.2 artifacts and marks the v0.1 confirmatory case schema/validator and historical Panel A/B governance as legacy. The historical v0.1 files remain preserved; they must not be applied to the v0.2 feasibility study.
+
+Latest Dishka evidence is independently checked in `DISHKA_435_V02_CANDIDATE_GATE_ASSESSMENT_2026-11-19.md`: run 44537219541 / artifact 14536192821, outer SHA-256 matches GitHub, ZIP CRC passes, and 32/32 internal hashes pass. The case remains not accepted pending truthful prior pipeline/debug exposure confirmation and project-lead sign-off of the bounded documentary license-screen scope. If either fails, move to NumPyro #1916; do not lower the bar.
