@@ -280,7 +280,7 @@
     "E2": {
       "packet": {
         "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/f6044d079b0441f2f7c644449dc7eb7fd7cb7d11/research_candidates/evidence_abstention/reproduction/dishka_issue_435/E2_PACKET_MANIFEST_V0_1.json",
-        "sha256": "8a39ab8622a1bcf3bf839dc6520ef5f29ad72b57"
+        "sha256": "8a39ab862393954451f403badd5ccea40350902b39f95ae4e0d7885e9d6751d5"
       },
       "surviving_mechanism_ids": [
         "G1_STALE_PER_SCOPE_FACTORY_REGISTRATION",
