@@ -1,0 +1,169 @@
+name: "PSyclone #2755 Frozen Dataset Row Discovery (No Reproduction, No Inference)"
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/psyclone-2755-stage2-discovery.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  psyclone-2755-row-discovery:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Download and authenticate frozen SWE-rebench V2 snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv "$RUNNER_TEMP/psyclone-data-venv"
+          "$RUNNER_TEMP/psyclone-data-venv/bin/python" -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  $RUNNER_TEMP/train-00000-of-00001.parquet" | sha256sum --check
+          mkdir -p psyclone-discovery-evidence
+
+      - name: Extract exact PSyclone row and selectors only
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/psyclone-data-venv/bin/python" - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import pyarrow.parquet as pq
+
+          parquet = Path(os.environ["RUNNER_TEMP"]) / "train-00000-of-00001.parquet"
+          schema = pq.read_schema(parquet)
+          required = {
+              "instance_id", "repo", "base_commit", "created_at",
+              "language", "license", "FAIL_TO_PASS", "problem_statement"
+          }
+          missing = sorted(required.difference(schema.names))
+          if missing:
+              raise SystemExit(f"Frozen Parquet schema lacks required columns: {missing}")
+
+          table = pq.read_table(
+              parquet,
+              columns=sorted(required),
+              filters=[("repo", "=", "stfc/PSyclone")]
+          )
+          rows = [
+              row for row in table.to_pylist()
+              if str(row["instance_id"]).lower().endswith("-2767")
+          ]
+          if len(rows) != 1:
+              raise SystemExit(
+                  "Expected exactly one stfc/PSyclone PR #2767 row; "
+                  f"observed {len(rows)} candidates: {[r['instance_id'] for r in rows]}"
+              )
+
+          row = rows[0]
+          expected = {
+              "repo": "stfc/PSyclone",
+              "base_commit": "a33a99b7953130220ed7d3ad38d358c1124276af",
+              "language": "python",
+              "license": "BSD-3-Clause",
+          }
+          for key, value in expected.items():
+              if str(row[key]) != value:
+                  raise SystemExit(
+                      f"Frozen row {key} mismatch: expected={value!r}; observed={row[key]!r}"
+                  )
+
+          selectors = row["FAIL_TO_PASS"]
+          if not isinstance(selectors, list) or not selectors:
+              raise SystemExit("Frozen PSyclone row has no non-empty FAIL_TO_PASS selector list")
+          if any(not isinstance(x, str) or not x.strip() for x in selectors):
+              raise SystemExit("Frozen PSyclone row contains an empty or non-string selector")
+          if len(selectors) != len(set(selectors)):
+              raise SystemExit("Frozen PSyclone row contains duplicate FAIL_TO_PASS selectors")
+
+          problem = row.get("problem_statement") or ""
+          alignment = {
+              "mentions_active_vector": "vector" in problem.lower(),
+              "mentions_array_assignment": "vector(:)" in problem,
+              "mentions_constant": "constant(:)" in problem,
+              "mentions_scalar": "scalar" in problem.lower(),
+              "mentions_adjoint_or_adjointed": (
+                  "adjoint" in problem.lower() or "adjoints" in problem.lower()
+              ),
+          }
+          canonical = json.dumps(
+              row, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+          ).encode("utf-8")
+          row_sha = hashlib.sha256(canonical).hexdigest()
+          problem_sha = hashlib.sha256(problem.encode("utf-8")).hexdigest()
+
+          summary = {
+              "discovery_status": "row_identity_and_selector_extraction_only",
+              "instance_id": row["instance_id"],
+              "repo": row["repo"],
+              "base_commit": row["base_commit"],
+              "created_at": str(row["created_at"]),
+              "language": row["language"],
+              "license": row["license"],
+              "canonical_row_sha256": row_sha,
+              "problem_statement_sha256": problem_sha,
+              "selector_count": len(selectors),
+              "selectors": selectors,
+              "problem_statement_alignment_checks": alignment,
+              "pr_created_at_expected": "2024-11-05T14:18:14Z",
+              "issue_created_at_reference": "2024-10-24T10:03:42Z",
+              "issue_created_at_is_not_dataset_pr_created_at": True,
+              "upstream_pr_base_expected": "a33a99b7953130220ed7d3ad38d358c1124276af",
+              "upstream_pr_head_reference": "fbd511fa5ba096b84d8756bb9d84fc8efb0d5706",
+              "upstream_pr_merge_commit_reference": "816177c33851f96a840aea1041fe1894bc2b3e25",
+              "upstream_tests_executed": False,
+              "upstream_source_built": False,
+              "dataset_row_saved_verbatim": False,
+              "model_inference_performed": False,
+              "case_accepted": False,
+          }
+
+          evidence = Path("psyclone-discovery-evidence")
+          (evidence / "dataset-row-summary.json").write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + "\n",
+              encoding="utf-8"
+          )
+          (evidence / "dataset-fail-to-pass-selectors.txt").write_text(
+              "\n".join(selectors) + "\n", encoding="utf-8"
+          )
+          (evidence / "dataset-row-sha256.txt").write_text(
+              row_sha + "  canonical-row-not-stored\n", encoding="utf-8"
+          )
+          (evidence / "problem-statement-sha256.txt").write_text(
+              problem_sha + "  problem-statement-not-stored\n", encoding="utf-8"
+          )
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Remove temporary dataset bytes and hash discovery evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          rm -rf "$RUNNER_TEMP/psyclone-data-venv"
+          test ! -e "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          (cd psyclone-discovery-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
+          (cd psyclone-discovery-evidence && sha256sum --check SHA256SUMS.txt)
+
+      - name: Upload selector-only discovery evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: psyclone-2755-frozen-row-selector-discovery
+          path: psyclone-discovery-evidence/
+          if-no-files-found: error
+          retention-days: 90
