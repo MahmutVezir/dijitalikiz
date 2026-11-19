@@ -843,16 +843,16 @@
       "candidate_review_document": null,
       "stage2_status": "not_started",
       "stage2_workflow_job_id": null,
-      "stage2_evidence_note": null,
+      "stage2_evidence_note": "Dataset row, exact selector list, test-patch provenance, static patch application, and Python 3.13.0 hashed environment are verified. The Stage 2 execution workflow was corrected so the frozen test_patch is applied to the actual buggy-base test tree before pytest. The workflow has not been dispatched; no PSyclone upstream tests have executed.",
       "stage3_status": "not_started_stage2_or_scope_gate",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_discovery": {
-        "status": "row_identity_verified_selectors_extracted_test_patch_provenance_pending",
-        "discovery_workflow_run_id": 44505558452,
-        "discovery_job_id": 135496102908,
-        "discovery_artifact_id": 14518479738,
-        "discovery_artifact_sha256": "a1dd81946a6222da60fd44f5c26c3bbc187573ec7d38ae2f60f57332db4bf061",
+        "status": "row_identity_and_selector_provenance_static_patch_preflight_passed",
+        "discovery_workflow_run_id": 44515272981,
+        "discovery_job_id": 135529580897,
+        "discovery_artifact_id": 14524882143,
+        "discovery_artifact_sha256": "0433b7e6b0bdf06d325ff34aebd2bb9dcbb58e1cf60ffd029274eaac67dc6a7f",
         "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
         "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
         "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
@@ -863,7 +863,7 @@
         "dataset_created_at": "2024-11-05 14:18:14",
         "github_pr_created_at": "2024-11-05T14:18:14Z",
         "issue_created_at": "2024-10-24T10:03:42Z",
-        "timestamp_note": "Dataset created_at lacks explicit timezone; its wall-clock components match the GitHub PR created_at UTC value. Retain timezone-serialization caveat.",
+        "timestamp_note": "Dataset created_at lacks an explicit timezone suffix; its wall-clock components match the upstream PR created_at UTC value. The issue creation timestamp is separately recorded.",
         "upstream_license": "BSD-3-Clause",
         "selector_count": 3,
         "selectors": [
@@ -879,13 +879,75 @@
           },
           "note": "The first two selectors can be executed on the buggy base only if the authenticated dataset test_patch injects the new test cases. The third selector exists on the base and its test body is changed in the PR. Do not interpret source absence as a failure until test_patch provenance is checked."
         },
-        "test_patch_audit_workflow_run_id": 44506930534,
-        "test_patch_audit_outcome": "failed_due_to_discovery_script_regex_bug_before_candidate_result",
+        "test_patch_audit_workflow_run_id": 44515272981,
+        "test_patch_audit_outcome": "success",
         "test_patch_audit_retry_run_id": 44507464159,
         "upstream_source_built": false,
         "upstream_tests_executed": false,
         "model_inference_performed": false,
-        "case_accepted": false
+        "case_accepted": false,
+        "selected_fields_row_sha256": "8da9b19d64375edb59bb3ebcdc2e27cf5d350411fa4ccdcdeeb5a31e590bf10a",
+        "prior_canonical_row_sha256_preserved": "963be5fb18ed5c42da6ccdde26696be51993206c91f6883e79607511fadaa0ea",
+        "production_patch_sha256": "65480091a2d3f05c9929e6a0cc7974b2fdd46d697edef7fb068087dcf52013ca",
+        "test_patch_sha256": "f72b5a377528d246aa0a8c14ff01ee12b49d0f312e3624d7bd272c785b71e295",
+        "test_patch_audit_job_id": 135529580897,
+        "static_patch_preflight": {
+          "production_patch_applies_cleanly_to_buggy_base": true,
+          "test_patch_applies_cleanly_to_buggy_base": true,
+          "all_three_selectors_defined_after_test_patch_on_buggy_base": true,
+          "all_three_selectors_defined_on_fixed_revision": true,
+          "buggy_base_commit_unchanged": "a33a99b7953130220ed7d3ad38d358c1124276af",
+          "upstream_tests_executed": false,
+          "source_build_performed": false,
+          "model_inference_performed": false,
+          "case_accepted": false
+        },
+        "discovery_artifact_integrity": {
+          "github_artifact_sha256": "0433b7e6b0bdf06d325ff34aebd2bb9dcbb58e1cf60ffd029274eaac67dc6a7f",
+          "local_outer_sha256_match": true,
+          "zip_crc_passed": true,
+          "internal_hashes_passed": "7/7"
+        }
+      },
+      "stage2_preparation": {
+        "environment_lock": {
+          "workflow_run_id": 44515272937,
+          "job_id": 135529580884,
+          "artifact_id": 14525047011,
+          "artifact_sha256": "cf58728ebf785c906e59a1ddc42f5bf822f84885eb484921a47a576f73a6c209",
+          "python": "3.13.0",
+          "pip": "24.3.1",
+          "setuptools": "75.3.0",
+          "wheel": "0.45.0",
+          "package_count_excluding_local_psyclone": 37,
+          "requirements_lock_sha256": "e80073977fea7ebca9ce25a554f63593f5abf499e5c7b6ff21bd8078795a09a7",
+          "hashed_requirements_lock_sha256": "2c17aa350aa253a1ee75c10e27069a5aa46157511791108a63b1a071a24085ca",
+          "wheel_hashes_sha256": "0773f43f4c924d630aebfcd067bb17b53a2ec31697332e1fe29b07d460e6a5fd",
+          "artifact_integrity": {
+            "github_artifact_sha256": "cf58728ebf785c906e59a1ddc42f5bf822f84885eb484921a47a576f73a6c209",
+            "local_outer_sha256_match": true,
+            "zip_crc_passed": true,
+            "internal_hashes_passed": "9/9",
+            "committed_hashed_lock_matches_generated_sha256": true
+          },
+          "upstream_tests_executed": false,
+          "source_wheel_built_during_dependency_resolution": true,
+          "note": "The exact PSyclone checkout was installed with [test] to resolve dependencies and generate the environment lock. No upstream tests were run in this job."
+        },
+        "stage2_workflow": {
+          "path": ".github/workflows/psyclone-2755-stage2-reproduction.yml",
+          "workflow_fix_commit": "f14e73166f5bb5685003018ca2f1505682083589",
+          "workflow_blob_sha256": "d9e0163f4420087613f36acd1f503efa5f1cbb80",
+          "status": "prepared_not_dispatched",
+          "correction": "The authenticated test_patch is now applied to the actual buggy-base checkout before pytest; the workflow asserts only test paths change, all three F2P functions exist, and the base commit remains unchanged. The production patch is not applied to the buggy-base test tree.",
+          "dispatch_mode": "workflow_dispatch_with_two_required_boolean_confirmations",
+          "execution_started": false,
+          "workflow_run_id": null,
+          "upstream_tests_executed": false,
+          "model_loading_performed": false,
+          "model_inference_performed": false,
+          "case_accepted": false
+        }
       }
     },
     {
@@ -1944,12 +2006,12 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44338919763,
-    "head_commit": "f838660fdfcdd2ec92a3983a70e5f3f894732675",
-    "job_id": 134923156970,
-    "artifact_id": 14442213140,
-    "artifact_name": "evidence-abstention-preflight-logs-44338919763-1",
-    "artifact_zip_sha256": "6719f07d344647d97a62a743bfd831ba688937a8733cbf5d887dd07116603e13",
+    "workflow_run_id": 44515273082,
+    "head_commit": "f14e73166f5bb5685003018ca2f1505682083589",
+    "job_id": 135529581458,
+    "artifact_id": 14524797238,
+    "artifact_name": "evidence-abstention-preflight-logs-44515273082-1",
+    "artifact_zip_sha256": "c6e715f4a9a4e3034bd3c54b66e5e4a36fdfe08ef52f4143a496125976d518c3",
     "status": "blocked_before_inference",
     "ready_for_inference": false,
     "blocker_count": 14,
@@ -1958,17 +2020,17 @@
     "registry_status": "valid_empty_registry",
     "schema_valid": true,
     "tests": {
-      "selector_runner_contract": "6 passed",
       "evidence_packet_and_citation_audit": "12 passed",
-      "operational_packet_and_candidate_ledger": "24 passed",
+      "packet_set_and_candidate_ledger": "25 passed",
+      "selector_runner_contract": "6 passed",
       "v0_2_exploratory_acceptance_and_preflight": "15 passed",
-      "v0_2_design_and_scoring_amendment": "9 passed",
-      "total": "66 passed"
+      "v0_2_design_and_dual_human_scoring": "9 passed",
+      "total": "67 passed"
     },
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
-    "note": "The no-inference preflight job succeeded on workflow commit f838660fdfcdd2ec92a3983a70e5f3f894732675. The readiness report still has 14 blockers, zero accepted cases/projects and ready_for_inference=false. No model loading, inference or fine-tuning occurred. This is a code/preflight check for the tested branch head; later PR head changes were documentation/ledger updates only."
+    "note": "This no-inference preflight job succeeded on PR head f14e73166f5bb5685003018ca2f1505682083589. Its readiness report remains blocked with 14 blockers, zero accepted cases/projects and ready_for_inference=false. The 67 contract tests passed, including structural validation of the real NumPyro packet set. No model loading, inference or fine-tuning occurred."
   },
   "project_lead_decisions": [
     {
@@ -1982,14 +2044,14 @@
     }
   ],
   "latest_candidate_matrix_recheck": {
-    "workflow_run_id": 44500943717,
-    "head_commit": "5ecefe67b80ba731cf4f145b901850e2232b5cb4",
+    "workflow_run_id": 44515273082,
+    "head_commit": "f14e73166f5bb5685003018ca2f1505682083589",
     "status": "completed_with_candidate_specific_failures",
     "candidate_job_count": 13,
     "successful_reproductions": 10,
     "failed_reproductions": 3,
     "in_progress_reproductions": 0,
-    "summary": "Repeat of the 13-job focused candidate matrix completed in run 44500943717. Ten jobs succeeded: PyFar, EODAG, Dishka, Robocop, NumPyro, Python-Control, Amaranth, QuTiP, Dymos and Meltano. Three remained candidate-specific selector failures: Nox, Werkzeug and Moto. QuTiP's repeat now has independently downloaded evidence: exact row hash, independent reproducer and exact dataset selector both show buggy-base failure/fixed-revision pass; artifact ZIP CRC and 14/14 internal hashes verified. The workflow overall concluded failure because of the three candidate-specific jobs; this does not negate successful candidate jobs. The no-inference preflight job succeeded separately. This 13-job matrix remains distinct from the 96-row cohort.",
+    "summary": "The 13-job focused candidate matrix completed in run 44515273082. Ten jobs succeeded: PyFar, EODAG, Dishka, Robocop, NumPyro, Python-Control, Amaranth, QuTiP, Dymos and Meltano. Three remained candidate-specific selector failures: Nox, Werkzeug and Moto. QuTiP's latest repeat was independently downloaded and verified: the exact dataset selector and independent reproducer fail on the buggy base and pass on the fixed revision; ZIP CRC and 14/14 internal hashes pass. The overall matrix has three candidate-specific failures; this remains separate from the 96-row cohort. The no-inference preflight job succeeded separately but still reports 14 readiness blockers.",
     "no_inference": true,
     "artifacts_are_github_actions_artifacts": true,
     "completed_candidate_jobs": 13,
@@ -2010,10 +2072,21 @@
       "Werkzeug",
       "Moto"
     ],
-    "qutip_job_id": 135481445830,
+    "qutip_job_id": 135529724743,
     "qutip_job_conclusion": "success",
-    "qutip_artifact_id": 14518471928,
-    "qutip_artifact_digest": "sha256:ecbc4ff3f3640f15603020331bffb177d4a1c51282b66358c11a3a6078c673cc"
+    "qutip_artifact_id": 14524588776,
+    "qutip_artifact_digest": "sha256:a042cf8014cf46cbb66304a10a2dab0170ec0318d9b81730b3542d07ae43b9da",
+    "qutip_dataset_row_sha256": "16ed66f7a865915697f5fbed540a56e3017ccfe460f3d5bc94d5918a63e9c1ee",
+    "qutip_artifact_integrity": {
+      "local_outer_sha256_match": true,
+      "zip_crc_passed": true,
+      "internal_hashes_passed": "14/14",
+      "buggy_base_independent_reproducer": "AssertionError: 1 != 2",
+      "fixed_revision_independent_reproducer": "passed",
+      "dataset_FAIL_TO_PASS": "qutip/tests/core/test_coefficient.py::test_coefficient_update_args",
+      "buggy_base_dataset_selector": "failed as expected",
+      "fixed_revision_dataset_selector": "passed"
+    }
   },
   "project_lead_supplementary_cross_check": {
     "status": "user_reported_supporting_statement",
@@ -2033,8 +2106,8 @@
     "stage2_passed_record_count": 15,
     "stage2_not_started_record_count": 42,
     "stage2_blocked_or_held_record_count": 8,
-    "focused_matrix_run_id": 44338919763,
-    "focused_matrix_scope": "13 jobs in the later focused matrix only; 10 successful reproductions, 3 candidate-specific selector failures, 0 in progress",
+    "focused_matrix_run_id": 44515273082,
+    "focused_matrix_scope": "13 jobs in the latest focused reproduction matrix only; 10 successful reproductions, 3 candidate-specific selector failures, 0 in progress",
     "focused_matrix_successes": [
       "Dishka",
       "Python-Control",
@@ -2052,26 +2125,26 @@
       "Moto",
       "Werkzeug"
     ],
-    "interpretation": "The 10/3/0 result is a completed focused matrix, not the full 96-row cohort and not the cumulative Stage 2 count. The cohort ledger separately records 15 Stage 2-passed rows, including candidates outside the 13-job focused matrix, and 42 rows whose Stage 2 status remains not_started/not_started_conditional_gate. The remaining cohort records include static exclusions, explicit holds, blocked selector/provenance rows and other dispositions. Do not say all Stage 2 work across the frozen cohort is complete.",
+    "interpretation": "The latest 10/3/0 result is a completed focused matrix, not the full 96-row cohort and not the cumulative Stage 2 count. The cohort ledger separately records 15 Stage 2-passed rows, including candidates outside the 13-job focused matrix, and 42 rows whose Stage 2 status remains not_started/not_started_conditional_gate. Do not say all Stage 2 work across the frozen cohort is complete.",
     "reconciliation_method": "Counts recomputed from the 96 per-record stage2_status fields on 2026-11-19; the focused-matrix counts are retained as a separate run-scoped result."
   },
   "stage3_approval_and_packet_status": {
     "date": "2026-11-19",
     "numpyro_packet_set_sha256": "7156e7c0bebf694946495b638f8dd21fbe45b7fbafde2607e6cc11e8b4f9bdfc",
-    "structural_ci_test": "added_not_yet_observed_green",
+    "structural_ci_test": "passed_in_preflight_run_44515273082",
     "semantic_panel": "not_started",
     "case_acceptance": "0",
     "inference_authorized": false,
     "structural_validation_workflow": {
-      "workflow_run_id": 44500773592,
-      "job_id": 135479646297,
-      "status": "queued",
-      "purpose": "Run the existing operational packet validator unit suite including the newly added real NumPyro packet-set test; no inference."
+      "workflow_run_id": 44515273082,
+      "job_id": 135529581458,
+      "status": "passed_in_no_inference_preflight",
+      "purpose": "The existing operational packet validator suite and the real NumPyro packet-set structural test passed; no inference."
     },
     "repository_validation_workflow": {
-      "workflow_run_id": 44500773681,
-      "job_id": 135479650624,
-      "status": "queued",
+      "workflow_run_id": 44515272810,
+      "job_id": 135529580654,
+      "status": "passed",
       "purpose": "Repository/configuration validation; no inference."
     }
   }
