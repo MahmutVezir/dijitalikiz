@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-19T14:47:58Z",
+  "generated_at_utc": "2026-11-19T14:58:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -85,11 +85,19 @@
       "stage2_latest_artifact_id": 14438674343,
       "stage2_latest_artifact_sha256": "7aabccb73d71d6d725b0eaa0f711f45033255a8da0ef36b32e9d8c435e484365",
       "stage2_latest_artifact_integrity": "ZIP CRC PASS; 33 members; 32/32 internal SHA256SUMS entries independently verified",
-      "study_evaluation_eligibility": "excluded_prior_pipeline_debug_exposure",
-      "prior_pipeline_debug_exposure": "some",
+      "study_evaluation_eligibility": "eligible_pending_other_case_gates",
+      "prior_pipeline_debug_exposure": "none",
       "exposure_decision_record": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md",
       "exposure_decision_date": "2026-11-19",
-      "study_evaluation_exclusion_reason": "Project lead explicitly declared prior pipeline/debug/test-oracle exposure as some; active v0.2 eligibility requires none. Preserve technical Stage 2 and Stage 3 engineering evidence; do not insert into study registry."
+      "study_evaluation_exclusion_reason": null,
+      "exposure_decision_history": {
+        "initial_value": "some",
+        "initial_status": "superseded_by_project_lead_correction",
+        "corrected_value": "none",
+        "correction_reason": "The project lead clarified that the earlier answer was given before the question had been read carefully and explicitly selected the NO response: Dishka was not used for pipeline/debug purposes before prospective validation.",
+        "correction_record": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md"
+      },
+      "study_evaluation_status_note": "Eligible to continue formal v0.2 case checks under prior pipeline/debug exposure rule; not accepted; bounded documentary license scope, complete proposed record, schema/registry validation and separate final decision remain."
     },
     {
       "cohort_rank": 3,
