@@ -177,3 +177,15 @@ Current canonical case JSON SHA-256 is `0a234c0f16668e5b58dace671483d4bc94b7f816
 - Dishka raw issue/PR and dataset-card responses were captured in artifact `14566406023`; the first validator script failed on a regex syntax error. Manual inspection confirms the Dishka PR timestamp matches the frozen row and the pinned dataset card declares CC-BY-4.0. A corrected rerun is required before treating the workflow audit as passed.
 - Case acceptance remains pending and must not be inferred from Stage 2 success, archive integrity, or structural validation.
 - The detailed 14-gate owners, evidence requirements and closure order are recorded in `DISHKA_AND_V02_PROJECT_GATE_CLOSURE_PLAN_2026-11-19.md`.
+
+## 16. Verified successful Dishka-only run — 19 November 2026
+
+The corrected workflow now completes successfully on PR head `fb7d17633458978406cdc4a37750752f93658e16`:
+
+- Run [44599553076](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44599553076): **success**.
+- no-inference preflight: 76 tests passed; readiness still 14 blockers and 0 accepted cases.
+- Dishka reproduction passed and its new archive is independently verified (33 members, CRC PASS, 32/32 inner hashes).
+- Dishka raw provenance passed and its archive is independently verified (12 members, CRC PASS, 11/11 inner hashes); PR timestamp matches the frozen row.
+- Qwen pinned license/config capture passed; archive 9/9 inner hashes; no weights or model load.
+- The 12 non-Dishka candidate jobs were skipped. All separate candidate-specific PR workflows in the run were also skipped by their dispatch-only guard.
+- Dishka remains proposed and final acceptance pending; no model inference is authorized.

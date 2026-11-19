@@ -82,3 +82,15 @@ Only after readiness is clear and a separate user authorization is recorded:
 - No loosening selectors, license rules, independence or exposure criteria to increase N.
 - No model weights, load, inference, fine-tuning or training before their gates and separate authorization.
 - GitHub Actions is the evidence/CI channel for repo checks and CPU reproductions. GPU execution is a later, separately fingerprinted step; standard hosted runners are not assumed to supply CUDA.
+
+## 6. Post-plan verification — 19 November 2026
+
+The Dishka-first Actions path is now verified end to end on PR head `fb7d17633458978406cdc4a37750752f93658e16`:
+
+- Run [44599553076](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44599553076): successful.
+- 76 no-inference tests passed.
+- Dishka base-fail/fixed-pass reproducer and 8/8 frozen selector pair passed.
+- Dishka raw issue/PR/dataset-card evidence job passed, with raw response headers and bodies preserved. The Dishka row timestamp exactly matches PR creation.
+- Pinned Qwen license/config evidence job passed without model weights or model load.
+- The 12 non-Dishka candidate jobs were skipped, and separate non-Dishka candidate workflows were manual-only on this PR.
+- The 14 project-wide readiness blockers remain open; this is expected. Dishka-specific reproduction and metadata verification do not authenticate all 113 timestamp rows, complete all source-license reviews, freeze the model/protocol/runtime, recruit/calibrate Rater_B or authorize inference.

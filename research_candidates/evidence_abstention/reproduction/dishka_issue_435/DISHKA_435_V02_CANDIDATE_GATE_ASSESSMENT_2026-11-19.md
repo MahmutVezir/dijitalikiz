@@ -379,3 +379,16 @@ Dishka remains a proposed candidate, not an accepted case. Its final project-lea
 ### Current disposition
 
 Dishka technical Stage 2 and candidate-level packet/structural checks remain passed. The separate final project-lead YES/NO acceptance is still pending. The accepted registry remains empty. Project-wide readiness remains blocked; no model operation is authorized.
+
+## 19. Successful Dishka-only workflow and corrected provenance rerun — 19 November 2026
+
+- PR head: `fb7d17633458978406cdc4a37750752f93658e16`.
+- Focused workflow: [44599553076](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44599553076) — **success**.
+- The four active jobs all succeeded: no-inference preflight `135826905001`; Dishka raw provenance `135827095421`; Qwen pinned license evidence `135827095472`; Dishka Stage 2 reproduction `135827095607`.
+- All 12 non-Dishka candidate jobs in the main matrix were skipped. Separate non-Dishka candidate workflows also report `skipped` on the new PR head. Shared file edits no longer launch unrelated candidate reproductions.
+- Preflight: 76 tests passed (12 + 25 + 6 + 23 + 10); readiness still `blocked_before_inference`, 14 blockers, 0 accepted cases/projects, registry `valid_empty_registry`.
+- Dishka artifact [14567057835](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44599553076/artifacts/14567057835), outer SHA-256 `de85c1828528ead79bcb0af00a5d2a307dc44c3839477d8e7ebb7329854a68a6`; independent download, ZIP CRC PASS, 33 members, 32/32 inner hashes PASS. Inner `full-pr.diff` SHA-256 `c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde`.
+- Reproducer remains base-fail with `AssertionError: 1 != 42` / fixed-pass; frozen selectors remain 8/8 base-fail / 8/8 fixed-pass.
+- Raw Dishka provenance artifact [14566683002](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44599553076/artifacts/14566683002), outer SHA-256 `e0e107b9d38649d21a159f95586832103d772230ca9ec4348ef936ff107f3d41`; 12 members; ZIP CRC PASS; 11/11 inner hashes PASS. The successful summary records issue #435 time, PR #436 time, the same dataset-row PR timestamp, fixed source commits, immutable dataset revision and `CC-BY-4.0` card license. The other 112 timestamp rows and cohort-wide source-license review remain open.
+- Qwen read-only license evidence [14567706680](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44599553076/artifacts/14567706680), outer SHA-256 `eb8d9fcbf17a1f59457b5ca6298778fde91c95096163294431a6de63b1a470b8`; 10 members; ZIP CRC PASS; 9/9 inner hashes PASS. Pinned revision and Research License Agreement confirmed; no weights, model load, tokenizer load, inference or fine-tuning.
+- Updated canonical proposed case JSON SHA-256: `a7f284ecfacc1be448791cf1a07a3b8f63cc8e0143e1453bbd0262fe785ca036`. It remains `acceptance_decision=proposed`, `final_acceptance.status=pending`; accepted registry stays 0.
