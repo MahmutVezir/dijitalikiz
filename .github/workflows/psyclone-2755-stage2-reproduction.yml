@@ -419,22 +419,36 @@ jobs:
               safe = selector.replace("/", "__").replace("::", "__").replace("[", "_").replace("]", "_")
               log = root / f"{side}-F2P-{safe}.log"
               log.write_text(proc.stdout, encoding="utf-8")
+              observed_signatures = []
               if expectation == "base_fail":
-                  if proc.returncode == 0:
-                      raise SystemExit(f"Expected bug-specific failure on base, but test passed: {selector}")
-                  if "DID NOT RAISE" not in proc.stdout and "NotImplementedError" not in proc.stdout:
-                      raise SystemExit(f"Base failure was not defect-specific for {selector}; see {log}")
+                  selector_name = selector.split("::", 1)[1].split("[", 1)[0]
+                  allowed_signatures = {
+                      "test_generate_adjoint_str_trans_error": ("TransformationError",),
+                      "test_preprocess_arrayassign2loop_failure": ("NotImplementedError", "DID NOT RAISE"),
+                      "test_get_effective_shape": ("NotImplementedError",),
+                  }.get(selector_name)
+                  if not allowed_signatures:
+                      raise SystemExit(f"No frozen defect-specific base-failure signature for selector: {selector}")
+                  if proc.returncode != 1 or "FAILED" not in proc.stdout or "1 failed" not in proc.stdout:
+                      raise SystemExit(f"Base selector did not produce exactly one executed pytest failure: {selector}; see {log}")
+                  observed_signatures = [marker for marker in allowed_signatures if marker in proc.stdout]
+                  if not observed_signatures:
+                      raise SystemExit(
+                          f"Base failure did not match the predeclared defect-specific signature for {selector}; "
+                          f"allowed={allowed_signatures}; see {log}"
+                      )
                   status = "expected_bug_specific_failure"
               else:
                   if proc.returncode != 0:
                       raise SystemExit(f"Expected fixed pass, exit={proc.returncode}: {selector}; see {log}")
-                  if " passed" not in proc.stdout:
-                      raise SystemExit(f"Fixed selector did not report pytest pass: {selector}; see {log}")
+                  if "1 passed" not in proc.stdout:
+                      raise SystemExit(f"Fixed selector did not report exactly one pytest pass: {selector}; see {log}")
                   status = "passed"
               result = {
                   "selector": selector,
                   "exit_code": proc.returncode,
                   "status": status,
+                  "observed_expected_failure_signatures": observed_signatures,
                   "log_file": log.name,
               }
               return result
@@ -459,8 +473,8 @@ jobs:
               )
               log = root / f"{side}-PASS_TO_PASS.log"
               log.write_text(proc.stdout, encoding="utf-8")
-              if proc.returncode != 0:
-                  raise SystemExit(f"{side} PASS_TO_PASS controls failed; see {log}")
+              if proc.returncode != 0 or f"{len(p2p)} passed" not in proc.stdout:
+                  raise SystemExit(f"{side} PASS_TO_PASS controls did not all pass without skips; see {log}")
               results[side]["PASS_TO_PASS"] = {
                   "selector_count": len(p2p),
                   "exit_code": proc.returncode,
