@@ -196,3 +196,20 @@ The project lead explicitly declared `prior_pipeline_debug_exposure = some` on 1
 Under the active v0.2 rule, which requires `prior_pipeline_debug_exposure = none`, Dishka is **excluded from the model-evaluation sample**. Do not prepare an acceptance record, do not add it to the registry, and do not alter the validator. Keep the successful reproduction archives, hashes, source pins and Stage 3 technical adjudication as engineering evidence only.
 
 The researcher source exposure remains `full`; it is a distinct variable and is not used to overwrite the prior pipeline/debug declaration. The next candidate is NumPyro #1916.
+
+
+## 15. Superseding corrected project-lead exposure declaration — 19 November 2026
+
+This section supersedes the prior `some` value stated in section 14.
+
+The project lead clarified that the earlier answer was given before the specific question had been read carefully, and confirmed:
+
+`prior_pipeline_debug_exposure = none`
+
+Exact response: “Hayır — Prospektif doğrulama öncesinde pipeline/debug amacıyla kullanılmadı.”
+
+The corrected declaration and correction history are recorded in `PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md`. The earlier `some` response remains in that correction history as superseded; it is not the current factual classification.
+
+The separate `researcher_source_exposure = full` remains unchanged and disclosed. It does not, by itself, mean prior pipeline/debug exposure.
+
+**Current case disposition:** eligible to proceed with formal v0.2 acceptance checks, not accepted. The bounded documentary license-scope decision, complete proposed record, schema validation, fail-closed registry validation and separate final project-lead acceptance remain open. No model inference or training is authorized.
