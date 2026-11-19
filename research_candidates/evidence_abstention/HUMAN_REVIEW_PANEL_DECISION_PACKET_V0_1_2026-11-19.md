@@ -11,11 +11,11 @@
 |---|---|---|
 | Mahmut — student project lead | Own protocol, maintain source records, propose candidate decisions, record deviations, and make the final project-lead decision | Has prior source exposure to screened candidate issues/patches; must not be described as blinded |
 | Panel Reviewer H | Independent technical/methodology review; identity mapping held outside the public repository | Not automatically a legal reviewer, external auditor or blind output rater |
-| Panel Reviewer T | Independent technical/methodology review; identity mapping held outside the public repository | Not automatically a legal reviewer, external auditor or blind output rater |
+| Panel Reviewer B | Independent technical/methodology review; identity mapping held outside the public repository | Not automatically a legal reviewer, external auditor or blind output rater |
 | Rater B | Separate role in the active v0.2 manifest for independent blind model-output scoring; no individual is assigned by this packet | Must not be conflated with Panel Reviewer H or T; requires separate consent and case-specific exposure screen |
 | ChatGPT | Research-assistant critique, structured evidence and reproducibility support | Not a human reviewer, not a voting member, not a human rater, and never counted for inter-rater reliability |
 
-The two reviewers' public identities are kept pseudonymous in repository records. Their participation, expertise/role, and per-case exposure are not assumed; they must be confirmed directly.
+The repository uses pseudonyms only: Reviewer H = Hasan; Reviewer B = Batuhan. Their willingness, relevant expertise, assigned scope and case-specific prior exposure must still be confirmed directly before either review is treated as completed. This mapping is maintained outside public-facing records.
 
 ## 2. Critical role separation before sharing case materials
 
@@ -25,7 +25,7 @@ Each reviewer must choose a role for each candidate before receiving its full pa
 - **Blind model-output scoring:** reviewer sees only the exact evidence packet visible to the model and a randomized raw response ID. They must not see repository/issue/PR, source patch/fixed source, hidden gold, hidden E1/E2/E3 label, P0/P1 identity, paired response, or another rater's score. They must not take part in full technical case review for that case.
 - **Protocol-only review:** reviewer assesses the study design/rubric without case identities, patches, gold, or outputs. This can preserve eligibility for later blind output scoring if they remain unexposed.
 
-If both Panel Reviewer H and Panel Reviewer T review full case sources, neither may be claimed as a blinded scorer for those cases. The active v0.2 role Rater B must then be a different, unexposed person, or the scoring plan must be prospectively amended before model outputs are generated. Do not make a false blinding claim just to preserve a dual-rater plan.
+If both technical reviewers inspect a case's issue/source/patch/gold/tier packet, neither may later be counted as blinded to those materials when scoring that case's model output. The separate `Rater_B` role must be filled by another unexposed person, or the scoring plan must be amended prospectively before outputs are generated. Do not make a false blinding claim just to preserve a dual-rater plan.
 
 ## 3. Reviewer declaration — required before case-level review
 
@@ -136,20 +136,20 @@ They must not record “legal clearance” unless they are qualified and authori
 
 For unresolved questions, the valid answer is **OUT OF SCOPE / external legal review required**, not an assumed YES.
 
-## 7. Priority order approved for project execution (subject to review feedback)
+## 7. Priority order proposed for project execution (subject to reviewer feedback and project-lead gates)
 
 1. Finish Dishka's formal acceptance record and checks; keep registry at zero until the separate final decision.
 2. Complete NumPyro's packet structural test, then independent semantic review.
-3. Progress other Stage 2 passes through Stage 3 and candidate-specific provenance/license/exposure checks.
+3. Progress the remaining Stage 2 technical passes through Stage 3 and candidate-specific provenance/license/exposure checks; retain each candidate's individual hold and do not equate technical PASS with acceptance.
 4. Execute PSyclone #2755 Stage 2 after the project lead manually confirms the exact workflow inputs; discovery and environment lock alone are not Stage 2.
-5. Run the two candidate reconsideration checks (dbt and SimPEG) without changing the frozen cohort selectors.
-6. Close global source/timestamp, protocol freeze, human reviewer consent, model license and runtime gates.
-7. Only then authorize the primary P0/P1 inference study.
-8. The separate LoRA training study follows only when its higher, project-disjoint dataset gate is met and separately authorized.
+5. Re-review dbt and SimPEG as separate conditional candidates using independently authored, defect-sensitive tests; do not edit the frozen cohort selectors or restore either to the primary cohort without a versioned protocol/ledger decision.
+6. Close global source/timestamp, protocol freeze, evaluator consent/role separation, exact model-license and runtime gates. A documentary license screen is not legal clearance.
+7. Only after all case-level and global gates pass, and after an explicit separate authorization, consider the primary P0/P1 inference study.
+8. Keep LoRA training disabled. Consider it only after its higher project-disjoint dataset gate is met, a separate protocol is frozen, and separate explicit authorization is recorded.
 
 ## 8. Decision record template — one copy per technical panel reviewer
 
-- Reviewer pseudonym (Panel Reviewer H or Panel Reviewer T):
+- Reviewer pseudonym (Panel Reviewer H or Panel Reviewer B):
 - Date:
 - Proposed role for this review:
 - Relevant expertise / scope:
@@ -163,12 +163,10 @@ For unresolved questions, the valid answer is **OUT OF SCOPE / external legal re
 Mahmut's final project-lead decision and rationale must be recorded separately after the independent reviewer responses. No reviewer decision is presumed from silence.
 
 
-## 9. Role-conflict correction — 19 November 2026
+## 9. Role mapping and decision boundary — corrected 19 November 2026
 
-The initial draft used “Reviewer B” for Batuhan while the active v0.2 manifest separately uses the technical role code `Rater_B` for a future blinded model-output scorer. Those labels could be mistaken for the same person/role. They are now explicitly separated:
-
-- Panel Reviewer H and Panel Reviewer T are the two proposed technical/methodology reviewers (Hasan and Batuhan respectively).
-- `Rater_B` remains an unassigned role for a separate blind model-output scorer.
-- A panel reviewer who sees a case's issue/PR/source/patch/gold/tier material is not eligible to be called blinded to those materials for that case's output scoring.
-- The technical reviewers' yes/no recommendations are advisory evidence for the project lead; they do not automatically populate the accepted registry and do not constitute legal clearance.
-- The project lead reports shared agreement with the previously discussed Dishka technical/gold/tier/limitations proposal. Individual reviewer decisions and signatures are not fabricated; any formal concurrence record must be based on the reviewers' actual submitted decisions.
+- Reviewer H is the repository pseudonym for Hasan; Reviewer B is the repository pseudonym for Batuhan. Their actual consent, relevant expertise and case-specific exposure declarations remain pending until each person answers.
+- `Rater_B` is a separate v0.2 scoring-role identifier. It does not refer to Batuhan and must not be filled by a technical reviewer who has seen the hidden gold or case materials for that same case.
+- A technical YES means “recommend proceeding under the stated gates”; it does not mean the case is accepted, the license is legally cleared, or inference is authorized.
+- The project lead's agreement with the Dishka-first route is a prioritization decision only. It is not the missing prior-pipeline-exposure declaration, bounded license-scope sign-off, schema/registry pass, or final case-acceptance decision.
+- Reviewer decisions must be recorded only after Hasan and Batuhan actually submit their own answers. No individual vote, consent or concurrence is inferred from the project lead's statement.
