@@ -88,11 +88,11 @@ The 15 Stage 2 passes are not 15 accepted cases. CTAPIpe #2732 is retained as an
 The project lead has said that Hasan and Batuhan can be presented with the project's research and asked to make explicit yes/no decisions on scientifically relevant approvals. This is recorded as **proposed reviewer availability**, not as consent or completed review.
 
 - Mahmut remains student project lead and final decision-maker.
-- Two reviewers are proposed under repository pseudonyms Reviewer H and Reviewer B. Their participation, scope of expertise, case-specific prior exposure, independence, and consent must be recorded individually.
+- Reviewer H is the pseudonym for Hasan; Reviewer B is the pseudonym for Batuhan. `Rater_B` in the v0.2 scoring manifest is a separate, unassigned role and must not be confused with Reviewer B. Their participation, relevant expertise, case-specific prior exposure, independence and consent must be recorded individually.
 - ChatGPT remains advisory only and is not a human panel member.
 - A reviewer who sees an issue, patch, hidden gold, or tier adjudication for a case cannot later be described as blind to those items when scoring that case's model output.
 - If reviewers make documentary license recommendations, those are not formal legal opinions. Unresolved legal scope remains open.
-- The yes/no review instrument is `HUMAN_REVIEW_PANEL_DECISION_PACKET_V0_1_2026-11-19.md`.
+- The technical yes/no recommendations are advisory only. A YES permits the proposed next step under its stated gates; it does not accept a case, close a legal gate or authorize model inference. Individual reviewer decisions are not recorded until actually submitted. instrument is `HUMAN_REVIEW_PANEL_DECISION_PACKET_V0_1_2026-11-19.md`.
 
 Thus the former single “Rater B not confirmed” blocker is now assigned an actionable review route, but it is not yet closed. Explicit agreement, role selection, per-case exposure declarations, calibration, and protocol/human-review amendment are still required.
 
