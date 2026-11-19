@@ -46,6 +46,12 @@ on:
       - "tests/test_swe_rebench_v2_exploratory_case_acceptance.py"
       - "tests/test_swe_rebench_v2_exploratory_preflight.py"
   workflow_dispatch:
+    inputs:
+      run_non_dishka_candidates:
+        description: "Run the 12 other candidate reproductions; leave false for Dishka-only validation."
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -325,6 +331,7 @@ jobs:
 
 
   nox-issue-919-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
@@ -564,6 +571,7 @@ jobs:
 
 
   numpyro-issue-1916-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 35
@@ -735,6 +743,7 @@ jobs:
 
 
   werkzeug-issue-2955-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 20
@@ -900,6 +909,7 @@ jobs:
 
 
   robocop-issue-1371-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
@@ -1076,6 +1086,7 @@ jobs:
 
 
   pyfar-issue-721-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 30
@@ -1238,6 +1249,7 @@ jobs:
 
 
   eodag-issue-1530-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 20
@@ -1558,6 +1570,7 @@ jobs:
 
 
   moto-issue-8269-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
@@ -1845,6 +1858,7 @@ jobs:
 
 
   meltano-issue-3090-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
@@ -2050,6 +2064,7 @@ jobs:
 
 
   python-control-issue-1144-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
@@ -2251,6 +2266,7 @@ jobs:
 
 
   qutip-issue-2646-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 40
@@ -2454,6 +2470,7 @@ jobs:
 
 
   amaranth-issue-1518-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 20
@@ -2651,6 +2668,7 @@ jobs:
           retention-days: 90
 
   dymos-issue-1166-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 35
