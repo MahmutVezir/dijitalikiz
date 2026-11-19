@@ -121,6 +121,9 @@ jobs:
               "array_mixin_test_file_in_test_patch": (
                   "src/psyclone/tests/psyir/nodes/array_mixin_test.py" in test_patch
               ),
+              "array_mixin_regression_expression_in_test_patch": (
+                  "b(idx, 1+indices(1,1):) = 1" in test_patch
+              ),
           }
           if not all(test_patch_checks.values()):
               raise SystemExit(f"Original test_patch does not cover the expected selectors: {test_patch_checks}")
@@ -149,7 +152,8 @@ jobs:
               "created_at": str(row["created_at"]),
               "language": row["language"],
               "license": row["license"],
-              "canonical_row_sha256": row_sha,
+              "selected_fields_row_sha256": row_sha,
+              "selected_fields": selected_columns,
               "problem_statement_sha256": problem_sha,
               "patch_sha256": hashlib.sha256(patch.encode("utf-8")).hexdigest(),
               "patch_utf8_bytes": len(patch.encode("utf-8")),
@@ -186,7 +190,8 @@ jobs:
               "\n".join(selectors) + "\n", encoding="utf-8"
           )
           (evidence / "dataset-row-sha256.txt").write_text(
-              row_sha + "  canonical-row-not-stored\n", encoding="utf-8"
+              row_sha + "  selected-fields-row-serialization-not-entire-parquet-row\n",
+              encoding="utf-8"
           )
           (evidence / "problem-statement-sha256.txt").write_text(
               problem_sha + "  problem-statement-not-stored\n", encoding="utf-8"
