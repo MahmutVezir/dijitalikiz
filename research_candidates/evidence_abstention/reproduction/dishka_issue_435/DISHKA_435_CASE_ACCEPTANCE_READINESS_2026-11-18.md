@@ -229,3 +229,34 @@ The actual record was validated by the active Draft 2020-12 v0.2 case validator 
 - The no-inference preflight report still has 14 global blockers and `ready_for_inference=false`.
 
 **Remaining case-level decision:** a separate explicit YES/NO by the student project lead on final inclusion. No case acceptance or model execution is implied by structural validation.
+
+
+## 17. Latest independent Dishka archive and exact current proposal — 19 November 2026
+
+This section supersedes older "latest artifact" and "latest preflight" numbers in the preceding historical sections.
+
+**Canonical v0.2 proposed case record**
+- Path: `SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`
+- Current SHA-256 after updating its reproduction run record to the newest verified artifact: `1ac859ca76e53f673f232b2ce233b2dc9ad289893ac3b237aa329fb614f67bc3`
+- Git blob SHA-1: `ec884cda706b5a66d2439ea4df60580ae26a0656`
+- It remains `acceptance_decision=proposed`; `final_acceptance.status=pending`; no final acceptance timestamp or decision record exists.
+
+**Latest Dishka technical repeat**
+- Workflow run: `44572926370`
+- Dishka job: `135733170187` — success
+- Artifact: `14553229664`
+- Downloaded ZIP SHA-256: `7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10`, exact match to GitHub digest.
+- ZIP CRC: PASS; 33 members; 32/32 internal SHA256SUMS entries independently verified.
+- Buggy base reproducer: `AssertionError: 1 != 42`; fixed revision: PASS.
+- Dataset selectors: 8/8 defect-related failures on buggy base; same 8/8 pass on fixed revision.
+
+The overall 13-candidate matrix run failed because independent Nox, Werkzeug and Moto candidate jobs failed their selector contracts. The Dishka job itself succeeded; do not call the whole matrix green.
+
+**Latest case-preflight**
+- Same workflow run `44572926370`; no-inference job `135732610579` — success.
+- Artifact `14554972064`, SHA-256 `b0dc39e127a375206e7fbe8613292fef6d3f4a77af56b23080b5fd5691665c61`; independently downloaded ZIP digest matched GitHub and CRC passed.
+- 22 v0.2 case tests passed, including the actual canonical proposed record, empty-registry guard and all 12 pinned URI/path/content-hash references.
+- 10 study-design / dual-human scoring tests passed.
+- Case validator: `structurally_complete_candidate`; accepted registry: `valid_empty_registry`, 0 cases and 0 projects.
+
+**Current gate boundary:** The case remains proposed and outside the accepted registry. The final project-lead YES/NO case-inclusion decision remains pending. The preflight report still has 14 global blockers and `ready_for_inference=false`; there has been no model load, inference, fine-tuning or training.
