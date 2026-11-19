@@ -196,7 +196,80 @@ jobs:
           (evidence / "problem-statement-sha256.txt").write_text(
               problem_sha + "  problem-statement-not-stored\n", encoding="utf-8"
           )
+          (evidence / "production-patch.diff").write_text(patch, encoding="utf-8")
+          (evidence / "test-patch.diff").write_text(test_patch, encoding="utf-8")
           print(json.dumps(summary, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Static patch application and selector-source preflight (no tests)
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="a33a99b7953130220ed7d3ad38d358c1124276af"
+          fixed="816177c33851f96a840aea1041fe1894bc2b3e25"
+          git clone --filter=blob:none https://github.com/stfc/PSyclone.git "$RUNNER_TEMP/psyclone-base-testpatch"
+          git -C "$RUNNER_TEMP/psyclone-base-testpatch" checkout --detach "$base"
+          test "$(git -C "$RUNNER_TEMP/psyclone-base-testpatch" rev-parse HEAD)" = "$base"
+          git -C "$RUNNER_TEMP/psyclone-base-testpatch" apply --check "$GITHUB_WORKSPACE/psyclone-discovery-evidence/test-patch.diff"
+          git -C "$RUNNER_TEMP/psyclone-base-testpatch" apply "$GITHUB_WORKSPACE/psyclone-discovery-evidence/test-patch.diff"
+
+          git clone --filter=blob:none https://github.com/stfc/PSyclone.git "$RUNNER_TEMP/psyclone-base-patch"
+          git -C "$RUNNER_TEMP/psyclone-base-patch" checkout --detach "$base"
+          test "$(git -C "$RUNNER_TEMP/psyclone-base-patch" rev-parse HEAD)" = "$base"
+          git -C "$RUNNER_TEMP/psyclone-base-patch" apply --check "$GITHUB_WORKSPACE/psyclone-discovery-evidence/production-patch.diff"
+
+          git clone --filter=blob:none https://github.com/stfc/PSyclone.git "$RUNNER_TEMP/psyclone-fixed"
+          git -C "$RUNNER_TEMP/psyclone-fixed" checkout --detach "$fixed"
+          test "$(git -C "$RUNNER_TEMP/psyclone-fixed" rev-parse HEAD)" = "$fixed"
+
+          python - <<'PY'
+          import ast
+          import json
+          import os
+          from pathlib import Path
+
+          evidence = Path("psyclone-discovery-evidence")
+          selectors = [
+              "src/psyclone/tests/psyad/tl2ad_test.py::test_generate_adjoint_str_trans_error",
+              "src/psyclone/tests/psyad/transformations/test_preprocess.py::test_preprocess_arrayassign2loop_failure",
+              "src/psyclone/tests/psyir/nodes/array_mixin_test.py::test_get_effective_shape",
+          ]
+
+          def check(root, label):
+              results = []
+              for selector in selectors:
+                  file_name, function_name = selector.split("::", 1)
+                  source = (root / file_name).read_text(encoding="utf-8")
+                  tree = ast.parse(source, filename=str(root / file_name))
+                  found = any(
+                      isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                      and node.name == function_name
+                      for node in ast.walk(tree)
+                  )
+                  results.append({"selector": selector, "function_defined": found})
+              missing = [item["selector"] for item in results if not item["function_defined"]]
+              if missing:
+                  raise SystemExit(f"{label}: selector functions missing after static inspection: {missing}")
+              return results
+
+          base_root = Path(os.environ["RUNNER_TEMP"]) / "psyclone-base-testpatch"
+          fixed_root = Path(os.environ["RUNNER_TEMP"]) / "psyclone-fixed"
+          summary = {
+              "test_patch_applies_cleanly_to_buggy_base": True,
+              "production_patch_applies_cleanly_to_buggy_base": True,
+              "buggy_base_commit": "a33a99b7953130220ed7d3ad38d358c1124276af",
+              "fixed_revision_commit": "816177c33851f96a840aea1041fe1894bc2b3e25",
+              "selectors_defined_after_test_patch_on_buggy_base": check(base_root, "buggy base + test_patch"),
+              "selectors_defined_on_fixed_revision": check(fixed_root, "fixed revision"),
+              "pytest_or_other_tests_executed": False,
+              "source_build_performed": False,
+              "model_inference_performed": False,
+              "case_accepted": False,
+          }
+          (evidence / "static-patch-application-preflight.json").write_text(
+              json.dumps(summary, indent=2) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(summary, indent=2))
           PY
 
       - name: Remove temporary dataset bytes and hash discovery evidence
