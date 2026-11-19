@@ -56,7 +56,7 @@ Each reviewer returns YES / NO / REVISE / OUT OF SCOPE with a short reason. Mahm
 | D7 | The planned train/validation/test split of 60/10/10 from at least 80 accepted independent projects is a reasonable minimum proposal for the secondary training study | The locked test projects remain unseen during training and tuning |
 | D8 | The human-evaluation workflow and exposure rules are acceptable | Roles, consent, calibration and blinding claims match what each reviewer actually saw |
 | D9 | The use of a pinned Qwen research-license model is acceptable in principle for the planned non-commercial research | This is a research-scope recommendation only, not legal clearance or permission to redistribute weights/adapters |
-| D10 | The first case should be Dishka #435, subject to its formal record and final gates | Proceed to prepare the full acceptance record; do not mark accepted until schema, registry and final project-lead decision pass |
+| D10 | NumPyro #1916 should be the next candidate after Dishka's exposure-based exclusion, subject to all remaining gates | Proceed with NumPyro's independent Stage 3 review; structural packet validation alone is not acceptance |
 
 ## 5. Candidate-specific decisions requested
 
@@ -159,7 +159,7 @@ Mahmut's final project-lead decision and rationale must be recorded separately a
 - Reviewer H and Reviewer B are pseudonyms only. Their actual consent, relevant expertise and case-specific exposure declarations remain pending until each person answers.
 - `Rater_B` is a separate v0.2 scoring-role identifier. It is not the same role as Panel Reviewer B and must not be filled by a technical reviewer who has seen the hidden gold or case materials for that same case.
 - A technical YES means “recommend proceeding under the stated gates”; it does not mean the case is accepted, the license is legally cleared, or inference is authorized.
-- The project lead's agreement with the Dishka-first route is a prioritization decision only. It is not the missing prior-pipeline-exposure declaration, bounded license-scope sign-off, schema/registry pass, or final case-acceptance decision.
+- The earlier Dishka-first prioritization was superseded when the project lead declared prior pipeline/debug exposure as `some`. The current next candidate is NumPyro #1916; this route is a prioritization decision, not semantic approval or case acceptance.
 - Reviewer decisions must be recorded only after each reviewer actually submits their own answers. No individual vote, consent or concurrence is inferred from the project lead's statement.
 
 
