@@ -1,3 +1,7 @@
+> **Legacy draft notice — 19 November 2026:** This document belongs to the superseded v0.1 confirmatory design. Its Panel A/Panel B/Panel C counts, external-auditor role and historical 60-case threshold are **not active requirements** for the v0.2 exploratory/feasibility study. For v0.2, use `SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json`, `HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md`, `SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md`, and `HUMAN_REVIEW_PANEL_DECISION_PACKET_V0_1_2026-11-19.md`. Hasan/Batuhan technical review is distinct from the active `Rater_B` blind-output-scoring role. Do not combine these role systems.
+
+---
+
 # İnsan değerlendirmesi — rol ayrımı, körleme ve yönetişim
 
 **Sürüm:** 0.1 taslak — 16 Kasım 2026  
