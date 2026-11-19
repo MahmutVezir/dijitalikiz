@@ -50,7 +50,7 @@ Three roles must not be conflated:
 
 1. **Project lead (Mahmut):** owns the final case and protocol decision.
 2. **Technical/methodology panel reviewers:** Panel Reviewer H and Panel Reviewer B (private identity mapping is held outside the public repository) are proposed for unblinded yes/no review of case evidence and research design. The project lead reports shared agreement with the previously presented Dishka technical/gold/tier/limitations summary, but this does not substitute for either reviewer's own recorded decision.
-3. **Blind model-output scorer `Rater_B`:** a separate role in the active v0.2 manifest. It is not automatically Hasan or Batuhan. Anyone who sees the case issue, PR, source, patch, gold mechanism or hidden evidence-tier decision cannot be called blind to those materials for the same case's model-output scoring.
+3. **Blind model-output scorer `Rater_B`:** a separate role in the active v0.2 manifest. It is not automatically either technical panel reviewer. Anyone who sees the case issue, PR, source, patch, gold mechanism or hidden evidence-tier decision cannot be called blind to those materials for the same case's model-output scoring.
 
 If both technical panel reviewers inspect full technical case materials, they remain valid technical reviewers but are not eligible as blinded output scorers for that case. A separate unexposed scorer or a prospectively amended scoring design is needed. ChatGPT remains advisory and is never a human rater or external auditor.
 
@@ -94,7 +94,7 @@ The first candidate is not privileged over the evidence. Dishka's prior pipeline
 
 ### Reviewer eligibility boundary
 
-The existing NumPyro Panel B protocol requires at least two independent, source-unexposed semantic reviewers who are disjoint from Panel A, the project lead and Hasan. Hasan has already seen the design proposal and is explicitly ineligible for Panel B under the current protocol. Batuhan's eligibility is unknown until he completes the case-specific exposure/conflict declaration. Mahmut is the custodian and is not a blinded rater. If two eligible Panel B reviewers and a separate adjudicator cannot be appointed, keep the semantic tier review pending; do not substitute simple YES votes from people who have seen the design or code.
+The existing NumPyro Panel B protocol requires at least two independent, source-unexposed semantic reviewers who are disjoint from Panel A, the project lead and Panel Reviewer H. Reviewer H has already seen the design proposal and is explicitly ineligible for Panel B under the current protocol. Panel Reviewer B's eligibility is unknown until this reviewer completes the case-specific exposure/conflict declaration. Mahmut is the custodian and is not a blinded rater. If two eligible Panel B reviewers and a separate adjudicator cannot be appointed, keep the semantic tier review pending; do not substitute simple YES votes from people who have seen the design or code.
 
 Panel A technical review is also separate: at least two source-aware reviewers must make independent mechanism/alternative assessments, with their initial records preserved. Reviewers cannot serve simultaneously as Panel A and Panel B for this case. Reviewer delivery must be restricted, randomized and access-logged; the public GitHub repository is not a controlled review channel.
 
