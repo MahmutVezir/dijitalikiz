@@ -171,7 +171,7 @@ The active `NUMPYRO_1916_PANEL_B_SEMANTIC_REVIEW_PROTOCOL_V0_1_2026-11-19.md` re
 - Disagreement adjudication: a third person independent of the two Panel B raters, after both initial reviews are locked.
 - Restricted reviewer delivery, access log, separate opaque packet codes and randomized presentation order are mandatory. The public GitHub repository is not an access-controlled reviewer store.
 
-The existing protocol explicitly excludes Panel Reviewer H from Panel B because this reviewer has seen the design proposal. The project lead is also excluded. Batuhan's eligibility is **unknown** until his own case-specific exposure/independence declaration is completed. A simple yes/no endorsement from someone who has seen the design or source cannot be called a blinded semantic review. If two eligible Panel B raters and the independent adjudicator cannot be found, keep semantic adjudication pending; do not weaken the requirements.
+The existing protocol explicitly excludes Panel Reviewer H from Panel B because this reviewer has seen the design proposal. The project lead is also excluded. Panel Reviewer B's eligibility is **unknown** until this reviewer's case-specific exposure/independence declaration is completed. A simple yes/no endorsement from someone who has seen the design or source cannot be called a blinded semantic review. If two eligible Panel B raters and the independent adjudicator cannot be found, keep semantic adjudication pending; do not weaken the requirements.
 
 ### Remaining NumPyro case-level gates
 
