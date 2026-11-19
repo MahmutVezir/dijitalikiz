@@ -122,7 +122,7 @@ The student project lead has already reviewed the public issue, PR, patch and re
 
 ## 8. Project-lead decision on the proposed tier split — 18 November 2026
 
-The project lead reports that he and Hasan approve the proposed E3/E2/E1 progression in principle, provided it does not weaken the scientific protocol:
+The project lead reports that the proposed E3/E2/E1 progression was discussed and approved in principle, provided it does not weaken the scientific protocol. This remains design-level input, not independent semantic adjudication:
 
 - E3 must leave all predeclared plausible mechanisms alive.
 - E2 must eliminate at least one plausible alternative while leaving at least two mechanisms alive.
