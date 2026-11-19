@@ -315,9 +315,17 @@ def test_dishka_proposed_case_document_hash_references_match_current_files():
         ),
     ]
 
+    pinned_commit = "13b4a0c80575cd2de9575cc884038666f34dfaa1"
     for artifact_ref, source_path in references:
         actual_sha256 = hashlib.sha256(source_path.read_bytes()).hexdigest()
+        relative_path = str(source_path.relative_to(ROOT)).replace("\\", "/")
         assert actual_sha256 == artifact_ref["sha256"], (
-            f"Stale SHA-256 reference for {source_path.relative_to(ROOT)}: "
+            f"Stale SHA-256 reference for {relative_path}: "
             f"record has {artifact_ref['sha256']}, file has {actual_sha256}"
+        )
+        assert f"/blob/{pinned_commit}/" in artifact_ref["uri"], (
+            f"Evidence URI is not pinned to the reviewed commit: {artifact_ref['uri']}"
+        )
+        assert artifact_ref["uri"].endswith("/" + relative_path), (
+            f"Evidence URI points to a different file than the hashed record: {artifact_ref['uri']}"
         )
