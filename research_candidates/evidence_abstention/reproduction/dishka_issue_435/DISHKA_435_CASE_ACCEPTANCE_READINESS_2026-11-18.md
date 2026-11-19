@@ -165,3 +165,23 @@ The same PR-head no-inference preflight run `44322262968`, job `134864024369`, a
 - No model loading, inference, fine-tuning or training.
 
 This repeat supersedes the prior Stage 2 repeat as the latest branch-head technical artifact reference. It does not change the unresolved case-level approvals: prior pipeline/debug exposure confirmation, bounded license-screen sign-off, schema-conformant acceptance record, validation, and separate final acceptance. It also does not close the project-wide dataset/model/runtime/hash-freeze gates.
+
+
+## 13. Latest 19 November repeat — artifact independently checked and v0.2 decision-flow correction
+
+The latest candidate-specific repeat was [run 44537219541](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44537219541), job `135605947696`, artifact [14536192821](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44537219541/artifacts/14536192821).
+
+- GitHub-reported ZIP SHA-256: `b8dfe9e89e44f246fbf8d093ba31dc01c74c6dc167434555405693d6a0f1df52`.
+- Independently downloaded ZIP SHA-256: same value; exact match.
+- ZIP CRC: PASS; 33 archive members.
+- Internal `SHA256SUMS.txt`: 32/32 entries independently verified.
+- Buggy base: all 8 frozen dataset selectors failed with executed defect-related failures; independent issue reproducer failed `AssertionError: 1 != 42`.
+- Fixed revision: same 8 selectors passed; issue reproducer passed.
+
+The v0.2 acceptance schema/validator was corrected so a complete candidate may be validated in `acceptance_decision="proposed"` state. The final decision must be a separate timestamped and hashed project-lead record. Registry validation rejects proposed/rejected candidates and accepts only a record explicitly marked accepted with an approved final decision record. This prevents a draft from being labelled accepted merely to run its pre-acceptance checks.
+
+A detailed current gate assessment is maintained in `DISHKA_435_V02_CANDIDATE_GATE_ASSESSMENT_2026-11-19.md`. The candidate is **still not accepted**. Remaining candidate-specific human confirmations are:
+1. prior pipeline/debug exposure must truthfully be `none` (full researcher source exposure is a separate, acknowledged variable);
+2. project-lead sign-off may cover only the bounded documentary source-license screen, not formal legal clearance.
+
+If either gate fails or a substantive source/evidence mismatch is found, retain Dishka outside the registry and move to NumPyro #1916 rather than relaxing the standard.
