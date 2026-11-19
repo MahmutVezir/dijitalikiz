@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-19T14:58:00Z",
+  "generated_at_utc": "2026-11-19T16:06:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -44,7 +44,9 @@
     "stage2_not_started": 42,
     "stage2_blocked_or_held": 8,
     "stage2_status_scope": "96-row frozen cohort record count; not the same denominator as the later 13-candidate focused reproduction matrix",
-    "study_evaluation_excluded_prior_pipeline_debug_exposure": 1
+    "study_evaluation_excluded_prior_pipeline_debug_exposure": 1,
+    "dishka_proposed_case_count": 1,
+    "dishka_final_acceptance_pending": true
   },
   "records": [
     {
@@ -85,7 +87,7 @@
       "stage2_latest_artifact_id": 14438674343,
       "stage2_latest_artifact_sha256": "7aabccb73d71d6d725b0eaa0f711f45033255a8da0ef36b32e9d8c435e484365",
       "stage2_latest_artifact_integrity": "ZIP CRC PASS; 33 members; 32/32 internal SHA256SUMS entries independently verified",
-      "study_evaluation_eligibility": "eligible_pending_other_case_gates",
+      "study_evaluation_eligibility": "eligible_pending_final_case_acceptance",
       "prior_pipeline_debug_exposure": "none",
       "exposure_decision_record": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md",
       "exposure_decision_date": "2026-11-19",
@@ -97,7 +99,50 @@
         "correction_reason": "The project lead clarified that the earlier answer was given before the question had been read carefully and explicitly selected the NO response: Dishka was not used for pipeline/debug purposes before prospective validation.",
         "correction_record": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md"
       },
-      "study_evaluation_status_note": "Eligible to continue formal v0.2 case checks under prior pipeline/debug exposure rule; not accepted; bounded documentary license scope, complete proposed record, schema/registry validation and separate final decision remain."
+      "study_evaluation_status_note": "Prior pipeline/debug exposure corrected to none; researcher source exposure full remains disclosed. Bounded documentary license-scope decision approved only for the exact listed research/reproduction/test/extraction environment (not legal advice or redistribution approval). Full v0.2 proposed case record created and structurally validated by the active Draft 2020-12 case validator; empty accepted registry validated successfully. Separate final project-lead case acceptance remains pending; model inference remains unauthorized.",
+      "bounded_documentary_license_scope_decision": {
+        "status": "approved_bounded_scope_only",
+        "decision_timestamp_utc": "2026-11-19T15:55:16Z",
+        "decision_record_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_LICENSE_SCOPE_DECISION_2026-11-19.md",
+        "decision_record_sha256": "cf1f1a7344ced441d04b212292edc0dfefd28986e61bfdadcbb282319e90cbbd",
+        "legal_advice_or_clearance": false,
+        "redistribution_approval": false,
+        "scope": "Exact pinned upstream Dishka source/base and five changed files, dependency-free issue reproducer, four pinned pytest packages for frozen selectors, and isolated PyArrow 19.0.1 dataset extraction environment only."
+      },
+      "proposed_case_acceptance_record": {
+        "path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
+        "sha256": "c368612330cfde6f57d2a2e65520b014a6026b357b3e9b028c40c64a517b25da",
+        "git_blob_sha1": "cd692b584576ca730234b89beed6035c3ddc27b0",
+        "acceptance_decision": "proposed",
+        "final_acceptance_status": "pending",
+        "final_decision_timestamp_utc": null,
+        "final_decision_record": null
+      },
+      "case_record_structural_validation": {
+        "status": "structurally_complete_candidate",
+        "validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
+        "schema": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
+        "ci_workflow_run_id": 44561953996,
+        "ci_job_id": 135693344292,
+        "ci_job_conclusion": "success",
+        "artifact_id": 14550531292,
+        "artifact_sha256": "d628b1f56d69edc4a249b929931f1fe43134c3c41eafe9887b16dc1c8c5e3e4a",
+        "v0_2_tests_passed": 21,
+        "test_names": [
+          "test_dishka_real_proposed_case_is_structurally_complete_but_not_accepted",
+          "test_dishka_proposed_case_does_not_change_empty_accepted_registry"
+        ],
+        "structural_only": true,
+        "semantic_truth_not_established_by_validator": true
+      },
+      "accepted_registry_validation": {
+        "status": "valid_empty_registry",
+        "registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json",
+        "accepted_case_count": 0,
+        "accepted_project_count": 0,
+        "proposed_case_inserted": false,
+        "inference_authorized": false
+      }
     },
     {
       "cohort_rank": 3,
