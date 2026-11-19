@@ -329,3 +329,27 @@ def test_dishka_proposed_case_document_hash_references_match_current_files():
         assert artifact_ref["uri"].endswith("/" + relative_path), (
             f"Evidence URI points to a different file than the hashed record: {artifact_ref['uri']}"
         )
+
+
+def test_dishka_patch_and_reproduction_artifact_references_are_pinned():
+    case_path = (
+        RESEARCH
+        / "reproduction"
+        / "dishka_issue_435"
+        / "SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json"
+    )
+    record = json.loads(case_path.read_text(encoding="utf-8"))
+
+    assert record["source"]["patch"] == {
+        "uri": (
+            "https://github.com/MahmutVezir/dijitalikiz/actions/runs/"
+            "44572926370/artifacts/14553229664#path=full-pr.diff"
+        ),
+        "sha256": "c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde",
+    }
+    latest_artifact = {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44572926370/artifacts/14553229664",
+        "sha256": "7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10",
+    }
+    assert record["technical_reproduction"]["buggy_baseline"]["run_record"] == latest_artifact
+    assert record["technical_reproduction"]["fixed_revision"]["run_record"] == latest_artifact
