@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-19T10:05:00Z",
+  "generated_at_utc": "2026-11-19T10:20:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -1981,6 +1981,18 @@
     "structural_ci_test": "added_not_yet_observed_green",
     "semantic_panel": "not_started",
     "case_acceptance": "0",
-    "inference_authorized": false
+    "inference_authorized": false,
+    "structural_validation_workflow": {
+      "workflow_run_id": 44500773592,
+      "job_id": 135479646297,
+      "status": "queued",
+      "purpose": "Run the existing operational packet validator unit suite including the newly added real NumPyro packet-set test; no inference."
+    },
+    "repository_validation_workflow": {
+      "workflow_run_id": 44500773681,
+      "job_id": 135479650624,
+      "status": "queued",
+      "purpose": "Repository/configuration validation; no inference."
+    }
   }
 }
