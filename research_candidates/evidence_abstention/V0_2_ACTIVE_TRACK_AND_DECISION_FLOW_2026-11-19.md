@@ -149,7 +149,7 @@ Do not convert an unblinded technical YES into semantic Stage 3 approval. The cu
 
 This section supersedes earlier latest-run IDs and artifact digests for Dishka in sections 10–11.
 
-- Canonical proposed case JSON: `reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`; SHA-256 `1ac859ca76e53f673f232b2ce233b2dc9ad289893ac3b237aa329fb614f67bc3`; Git blob `ec884cda706b5a66d2439ea4df60580ae26a0656`.
+- Canonical proposed case JSON: `reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`; SHA-256 `0a234c0f16668e5b58dace671483d4bc94b7f8167150e44662b339dc995ff9ee`; Git blob `ec884cda706b5a66d2439ea4df60580ae26a0656`.
 - The case record remains `proposed`; final acceptance remains `pending`; registry remains empty.
 - Latest Dishka repeat: run `44572926370`, Dishka job `135733170187` success, artifact `14553229664`; ZIP SHA-256 `7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10` independently matches GitHub; 33 members, CRC PASS, 32/32 internal hash entries PASS.
 - Issue reproducer: buggy base fails `AssertionError: 1 != 42`; fixed revision passes. All 8 dataset selectors fail with defect-related failures on buggy base and the same 8 pass on fixed revision.
@@ -159,3 +159,10 @@ This section supersedes earlier latest-run IDs and artifact digests for Dishka i
 - Case validator: `structurally_complete_candidate`; registry: `valid_empty_registry`; accepted cases/projects 0. Global readiness still reports 14 blockers and `ready_for_inference=false`.
 
 Dishka remains the first proposed case and is **not accepted**. The separate final project-lead YES/NO decision is still required. NumPyro #1916 remains fallback if Dishka is rejected or a substantive case-level defect is discovered. No model operation is authorized.
+
+
+## 14. Dishka patch-pointer correction — 19 November 2026
+
+The case record's `source.patch` URI was corrected because the mutable upstream PR diff URL did not correspond to the stored SHA-256. It now points to the exact `full-pr.diff` file inside verified artifact 14553229664 (run 44572926370), with inner SHA-256 `c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde`. Outer archive SHA-256 `7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10`; CRC PASS; 32/32 internal hashes PASS. The 90-day retention and exact regeneration command are documented in `DISHKA_435_PATCH_REFERENCE_RECONCILIATION_2026-11-19.md`.
+
+Current canonical case JSON SHA-256 is `0a234c0f16668e5b58dace671483d4bc94b7f8167150e44662b339dc995ff9ee` (blob `c17d908a937c32c7372d1eb19bb9b29990b338e2`). It remains proposed, with the separate final project-lead decision pending. Registry remains 0 accepted cases; global readiness remains blocked.
