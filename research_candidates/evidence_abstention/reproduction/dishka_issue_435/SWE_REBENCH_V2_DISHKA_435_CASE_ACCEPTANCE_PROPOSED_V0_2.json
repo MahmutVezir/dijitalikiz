@@ -100,8 +100,8 @@
       "exit_code": 1,
       "failure_signature": "AssertionError: 1 != 42",
       "run_record": {
-        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44570230531/artifacts/14553612258",
-        "sha256": "f24f43f48b2678407b381bee40b947b5a02dd9286743c12d3a6adf728af6ba2a"
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44572926370/artifacts/14553229664",
+        "sha256": "7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10"
       },
       "test_selector": "test_issue_435_override_lower_scope"
     },
@@ -110,8 +110,8 @@
       "exit_code": 0,
       "same_test_passed": true,
       "run_record": {
-        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44570230531/artifacts/14553612258",
-        "sha256": "f24f43f48b2678407b381bee40b947b5a02dd9286743c12d3a6adf728af6ba2a"
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44572926370/artifacts/14553229664",
+        "sha256": "7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10"
       },
       "test_selector": "test_issue_435_override_lower_scope"
     },
