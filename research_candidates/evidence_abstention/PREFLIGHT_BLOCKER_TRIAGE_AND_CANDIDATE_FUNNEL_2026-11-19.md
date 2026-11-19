@@ -81,3 +81,30 @@ The 15 Stage 2 passes are not 15 accepted cases. CTAPIpe #2732 is retained as an
 - Do not claim confirmatory efficacy, general model self-awareness, or universal hallucination reduction from this exploratory design.
 
 **Latest inspected status:** 14 readiness messages; 0 accepted cases; 65 broad primary candidates; 17 distinct-project reserves; no model operation performed.
+
+
+## 5. Human review team now proposed by the project lead
+
+The project lead has said that Hasan and Batuhan can be presented with the project's research and asked to make explicit yes/no decisions on scientifically relevant approvals. This is recorded as **proposed reviewer availability**, not as consent or completed review.
+
+- Mahmut remains student project lead and final decision-maker.
+- Two reviewers are proposed under repository pseudonyms Reviewer H and Reviewer B. Their participation, scope of expertise, case-specific prior exposure, independence, and consent must be recorded individually.
+- ChatGPT remains advisory only and is not a human panel member.
+- A reviewer who sees an issue, patch, hidden gold, or tier adjudication for a case cannot later be described as blind to those items when scoring that case's model output.
+- If reviewers make documentary license recommendations, those are not formal legal opinions. Unresolved legal scope remains open.
+- The yes/no review instrument is `HUMAN_REVIEW_PANEL_DECISION_PACKET_V0_1_2026-11-19.md`.
+
+Thus the former single “Rater B not confirmed” blocker is now assigned an actionable review route, but it is not yet closed. Explicit agreement, role selection, per-case exposure declarations, calibration, and protocol/human-review amendment are still required.
+
+## 6. Two second-pass exclusions: internal decision and controlled reconsideration
+
+The earlier two exclusions were produced by the project's own internal second-pass technical/oracle screen. They were **not** decisions made by TÜBİTAK, an external jury, Hasan, or Batuhan.
+
+- Databricks dbt-databricks #994/#995: original PR tests are defect-insensitive and omit session-close cleanup. It may be reconsidered only with a separately authored issue-specific reproducer, preserving the original frozen selectors and transparently classifying any approved path as supplemental or protocol-amended.
+- SimPEG #1609/PR #1633: the original issue itself acknowledges that the expected survey-level `components` value is undefined for heterogeneous receivers; the PR deprecates the misleading property. This may be a defensible API-contract resolution, so the previous “integer-return mismatch” exclusion is reopened for independent human scope review. It still needs exact row/selector and base/fix validation.
+
+The frozen 96-row cohort and original second-pass entries are unchanged. Until a documented human decision and evidence-based protocol amendment, the two remain outside the 65 strict primary shortlist. Funnel labels:
+- Strict primary shortlist: 65.
+- Additional conditional re-review records: 2.
+- Separate project reserves: 17.
+- Total tracked candidate pathways when reconsideration is shown separately: 84 (not 84 accepted or currently eligible cases).
