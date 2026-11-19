@@ -45,7 +45,7 @@ The machine-readable cohort ledger contains 96 primary records from 96 distinct 
 | Stage 3 technical adjudication completed | 1 | Dishka #435 |
 | Final accepted cases | **0** | Registry remains empty |
 
-The equation is `65 = 15 + 42 + 8`. The separately tracked reserve pool contains **17 additional distinct upstream projects**, so there are **82 primary-shortlist plus reserve candidates** in the wider intake pipeline. The 148 within-project alternatives are replacement options within their existing projects; they do not add 148 independent projects.
+The equation is `65 = 15 + 42 + 8`. The separately tracked reserve pool contains **17 additional distinct upstream projects**, so the baseline intake is **82 distinct projects** (65 primary shortlist + 17 reserves). The two second-pass exclusions (dbt and SimPEG) are tracked separately as conditional reconsideration routes; counting those two review paths as well gives **84 tracked pathways**, not 84 eligible or accepted cases. The 148 within-project alternatives are replacement options within their existing projects; they do not add independent projects.
 
 ### Stage 2 blocked/held candidates in the 8-count
 
@@ -115,7 +115,7 @@ The frozen 96-row cohort and original second-pass entries are unchanged. Until a
 Two process-conflict risks have been corrected:
 
 1. **Premature acceptance / circular validation.** The v0.2 case schema previously required `acceptance_decision="accepted"` even when the complete record still needed validation and the project lead's final decision. It now supports `proposed`, `accepted` and `rejected`; proposed records require a pending decision and no final-decision artifact. The active registry validator explicitly rejects proposed/rejected records and accepts only an `accepted` case with a separate timestamped, hashed project-lead decision record. Unit tests cover both sides of this boundary. This does not weaken any evidence or eligibility rule.
-2. **Panel reviewer vs Rater B role collision.** Hasan and Batuhan are proposed as Panel Reviewer H and Panel Reviewer T for unblinded technical/methodology yes/no review. The active manifest's `Rater_B` is a separate role for blind model-output scoring and is not automatically assigned to either person. Anyone who sees the issue/source/patch/gold/hidden tiers for a case cannot be described as blind for that case's response scoring. The group concurrence is recorded as the project lead's report, not as fabricated individual signatures.
+2. **Panel reviewer vs Rater B role collision.** Hasan and Batuhan are proposed as Panel Reviewer H and Panel Reviewer B respectively for unblinded technical/methodology yes/no review. The active manifest's `Rater_B` is a separate, unassigned role for blind model-output scoring and is not automatically assigned to Batuhan or Hasan. Anyone who sees the issue/source/patch/gold/hidden tiers for a case cannot be described as blind for that case's response scoring. The project lead's report of shared agreement is not a substitute for individual reviewer decisions or signatures.
 
 The file `V0_2_ACTIVE_TRACK_AND_DECISION_FLOW_2026-11-19.md` names the active v0.2 artifacts and marks the v0.1 confirmatory case schema/validator and historical Panel A/B governance as legacy. The historical v0.1 files remain preserved; they must not be applied to the v0.2 feasibility study.
 
