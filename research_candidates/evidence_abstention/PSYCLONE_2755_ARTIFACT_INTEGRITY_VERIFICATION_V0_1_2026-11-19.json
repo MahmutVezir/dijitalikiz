@@ -95,5 +95,30 @@
     "model_loading_or_inference": false,
     "case_accepted": false,
     "next_authorized_step": "Manually dispatch psyclone-2755-stage2-reproduction.yml with confirm_stage2_protocol=true and confirm_model_inference_disabled=true; inspect all three FAIL_TO_PASS selectors on the exact buggy base and fixed merge, plus the frozen PASS_TO_PASS controls. Do not treat environment-lock success as test reproduction."
+  },
+  "latest_branch_head_repeat": {
+    "recorded_at_utc": "2026-11-19T13:10:00Z",
+    "research_commit": "16a5288cebc96d5680a9dea9ae6a49a93267cb22",
+    "discovery": {
+      "workflow_run_id": 44529705944,
+      "job_id": 135579466556,
+      "artifact_id": 14532678535,
+      "github_digest": "sha256:f1ad35524d24bd165748301fadc781634a397e5f3905f459bd4bb38beceaca6f",
+      "downloaded_zip_sha256": "f1ad35524d24bd165748301fadc781634a397e5f3905f459bd4bb38beceaca6f",
+      "zip_crc": "PASS",
+      "archive_member_count": 8,
+      "internal_sha256": "7/7 PASS"
+    },
+    "environment_lock": {
+      "workflow_run_id": 44529704870,
+      "job_id": 135579463428,
+      "artifact_id": 14532673706,
+      "github_digest": "sha256:b0f9fc1ed159ddca93fa0dd9134a200b59c8e9c9fab4364fc3085ebd26049d27",
+      "downloaded_zip_sha256": "b0f9fc1ed159ddca93fa0dd9134a200b59c8e9c9fab4364fc3085ebd26049d27",
+      "zip_crc": "PASS",
+      "archive_member_count": 10,
+      "internal_sha256": "9/9 PASS"
+    },
+    "overall": "Both latest branch-head artifacts independently match GitHub digests; ZIP CRC and all inner SHA256SUMS entries pass. Dataset discovery and environment-lock only; no PSyclone source tests executed."
   }
 }
