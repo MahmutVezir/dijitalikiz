@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/MahmutVezir/dijitalikiz/blob/main/research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "title": "SWE-rebench V2 exploratory case acceptance record",
-  "description": "Structural contract for the v0.2 single-researcher exploratory study. Validation checks record shape and internal consistency only; it does not authenticate artifacts, reproduce defects, grant legal clearance, or authorize inference.",
+  "description": "Structural contract for the v0.2 single-researcher exploratory study. Validation checks record shape and internal consistency only; it does not authenticate artifacts, reproduce defects, grant legal clearance, or authorize inference. A proposed record may be structurally validated before the project lead's separate final decision; only an accepted record with a hashed final decision record may enter the accepted-case registry. Rejected records are retained outside the registry.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -17,7 +17,8 @@
     "technical_reproduction",
     "gold_standard",
     "evidence_tiers",
-    "human_decision"
+    "human_decision",
+    "final_acceptance"
   ],
   "properties": {
     "schema_version": {
@@ -28,7 +29,11 @@
       "pattern": "^SRV2E-[A-Z0-9_-]{1,48}$"
     },
     "acceptance_decision": {
-      "const": "accepted"
+      "enum": [
+        "proposed",
+        "accepted",
+        "rejected"
+      ]
     },
     "dataset": {
       "type": "object",
@@ -514,6 +519,54 @@
           ]
         }
       }
+    },
+    "final_acceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "decision_maker_role",
+        "decision_timestamp_utc",
+        "rationale",
+        "decision_record"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "pending",
+            "approved",
+            "rejected"
+          ]
+        },
+        "decision_maker_role": {
+          "const": "student_project_lead"
+        },
+        "decision_timestamp_utc": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "format": "date-time"
+            }
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decision_record": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
     }
   },
   "$defs": {
@@ -609,5 +662,96 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "acceptance_decision": {
+            "const": "proposed"
+          }
+        },
+        "required": [
+          "acceptance_decision"
+        ]
+      },
+      "then": {
+        "properties": {
+          "final_acceptance": {
+            "properties": {
+              "status": {
+                "const": "pending"
+              },
+              "decision_timestamp_utc": {
+                "type": "null"
+              },
+              "decision_record": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "acceptance_decision": {
+            "const": "accepted"
+          }
+        },
+        "required": [
+          "acceptance_decision"
+        ]
+      },
+      "then": {
+        "properties": {
+          "final_acceptance": {
+            "properties": {
+              "status": {
+                "const": "approved"
+              },
+              "decision_timestamp_utc": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "decision_record": {
+                "$ref": "#/$defs/artifact"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "acceptance_decision": {
+            "const": "rejected"
+          }
+        },
+        "required": [
+          "acceptance_decision"
+        ]
+      },
+      "then": {
+        "properties": {
+          "final_acceptance": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "decision_timestamp_utc": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "decision_record": {
+                "$ref": "#/$defs/artifact"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }
