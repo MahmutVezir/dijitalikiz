@@ -295,10 +295,11 @@ jobs:
           }
           if observed != expected:
               raise SystemExit(f"Runtime differs from exact environment lock: {observed}")
-          packages = sorted(
+          packages = [
               {"name": d.metadata["Name"].lower(), "version": d.version}
               for d in md.distributions() if d.metadata.get("Name")
-          , key=lambda x: x["name"])
+          ]
+          packages.sort(key=lambda x: x["name"])
           out = Path(__import__("os").environ["RUNNER_TEMP"]) / "psyclone-2755-evidence"
           (out / "runtime-fingerprint.json").write_text(
               json.dumps({
