@@ -49,6 +49,20 @@ def test_second_human_output_rater_is_identified_but_not_yet_approved():
     assert review["second_human_tier_review"] is False
 
 
+
+def test_technical_review_panel_is_distinct_from_blind_output_rater():
+    manifest = load_json("SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json")
+    human = manifest["human_review"]
+    panel = human["technical_review_panel"]
+    assert panel["distinct_from_output_rater_b"] is True
+    reviewer_ids = {item["reviewer_id"] for item in panel["panel_reviewers"]}
+    assert reviewer_ids == {"PANEL_H", "PANEL_T"}
+    assert all(item["blind_output_scoring_eligible"] is False for item in panel["panel_reviewers"])
+    assert human["second_human_rater"]["public_pseudonym"] == "Rater_B"
+    assert "not be treated as Rater_B" in panel["output_rater_b_role"]
+    assert panel["project_lead_reported_concurrence"]["reported"] is True
+    assert panel["project_lead_reported_concurrence"]["independent_written_decision_records_captured"] is False
+
 def test_qwen_remains_candidate_only_and_not_loaded():
     manifest = load_json("SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json")
     assert manifest["model"]["id"] == "Qwen/Qwen2.5-3B-Instruct"
