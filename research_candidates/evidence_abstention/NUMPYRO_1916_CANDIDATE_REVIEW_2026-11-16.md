@@ -110,7 +110,7 @@ Current disposition:
 
 ## Stage 3 packet construction addendum — 19 November 2026
 
-The project lead reports approval by himself and Hasan to proceed with the E1/E2/E3 design logic, conditional on preserving the scientific safeguards. This is not semantic tier adjudication or case acceptance.
+The project lead reports that a second reviewer concurred with proceeding on the E1/E2/E3 design logic, conditional on preserving the scientific safeguards. This is not semantic tier adjudication or case acceptance; the reviewer identity is retained outside the public record.
 
 Two real-case files were added:
 - `numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_V0_1_2026-11-19.json`
