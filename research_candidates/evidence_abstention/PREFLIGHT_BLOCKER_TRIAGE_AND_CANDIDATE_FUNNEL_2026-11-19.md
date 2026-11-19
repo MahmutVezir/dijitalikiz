@@ -64,7 +64,7 @@ The 15 Stage 2 passes are not 15 accepted cases. CTAPIpe #2732 is retained as an
 
 ## 3. Shortest defensible route to reduce the blockers
 
-1. **Dishka #435 is the first formal acceptance candidate.** The project lead's corrected prior pipeline/debug exposure value is `none`, satisfying that specific gate. Researcher source exposure remains `full` and disclosed. Complete the bounded license-scope decision, proposed record, schema/registry checks and separate final decision; do not mark it accepted early.
+1. **Dishka #435 is the first formal acceptance candidate.** Prior pipeline/debug exposure is `none`; researcher source exposure is `full` and disclosed. The bounded documentary license-scope decision is recorded for the listed environment only, and the proposed v0.2 JSON has passed the active case validator and empty-registry checks. The separate final project-lead case decision remains open; do not mark it accepted early.
 2. **NumPyro #1916 / PR #1918 is the fallback candidate.** Stage 2 is passed and the real E1/E2/E3 packet-set structural test passed in run `44537219541`. Semantic tier sufficiency, candidate exposure/independence, dependency/source license scope and final acceptance remain open. Do not count the packet structural PASS as semantic approval.
 3. **Finish candidate-specific provenance/licensing.** Preserve exact source, changed-file, test fixture, dependency/native notice and timestamp evidence. A package's license metadata being present is not legal clearance.
 4. **Continue technical intake sequentially.** PSyclone #2755 has successful row discovery and Python 3.13 environment lock, but its manual Stage 2 base-fail/fixed-pass workflow still has not run. Nox, Moto and Werkzeug stay held; never delete or rewrite frozen selectors just to make CI green.
@@ -81,7 +81,7 @@ The 15 Stage 2 passes are not 15 accepted cases. CTAPIpe #2732 is retained as an
 - Do not load, generate with, fine-tune or train the model while the relevant gate is closed.
 - Do not claim confirmatory efficacy, general model self-awareness, or universal hallucination reduction from this exploratory design.
 
-**Latest inspected status:** 14 readiness messages in preflight run 44537219541; 0 accepted cases; Dishka has corrected prior pipeline/debug exposure `none` and is first for formal case checks; NumPyro remains the fallback with Stage 2 PASS and real-packet structural CI PASS but semantic review pending; 65 broad technical shortlist candidates; 17 distinct-project reserves; no model operation performed.
+**Latest inspected status:** no-inference preflight run 44561953996 / job 135693344292 succeeded; its five test groups total 74 passes and it validates the real Dishka proposed case without accepting it. The readiness report still shows 14 blockers, `ready_for_inference=false`, 0 accepted cases. Dishka's bounded license-scope decision and proposed case record are complete; final case acceptance remains pending. NumPyro is fallback. No model operation performed.
 
 
 ## 5. Human review team now proposed by the project lead
@@ -139,3 +139,12 @@ The active order is now:
 2. NumPyro #1916 — fallback if a Dishka gate fails; its Stage 2 and structural packet validation have passed, while semantic adjudication and other case gates remain open.
 
 CTAPIpe #2732 remains separately excluded because its earlier project-lead exposure declaration is `some`. The two exposure cases must not be conflated.
+
+
+## 10. Dishka proposed acceptance-record validation — 19 November 2026
+
+Dishka's bounded documentary license-scope decision has been recorded as a project-lead scope approval for the exact pinned research/reproduction/test/extraction environment only. It is not legal advice, legal clearance or redistribution approval.
+
+The full proposed case JSON is present at `reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json`, SHA-256 `c368612330cfde6f57d2a2e65520b014a6026b357b3e9b028c40c64a517b25da`. It remains `acceptance_decision=proposed`.
+
+The real case validator and registry guard test passed in GitHub Actions run `44561953996`, job `135693344292`. Preflight artifact `14550531292` has SHA-256 `d628b1f56d69edc4a249b929931f1fe43134c3c41eafe9887b16dc1c8c5e3e4a`. The five groups total 74 passes. The case is structurally complete, but the accepted registry is still empty and no model operation is authorized. The separate final project-lead case-acceptance decision is the only remaining Dishka-specific decision.
