@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-19T14:41:52Z",
+  "generated_at_utc": "2026-11-19T14:47:58Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -272,15 +272,15 @@
       "candidate_review_document": "research_candidates/evidence_abstention/NUMPYRO_1916_CANDIDATE_REVIEW_2026-11-16.md",
       "stage2_status": "passed",
       "stage2_workflow_job_id": 134923384282,
-      "stage2_evidence_note": "Latest repeat in run 44338919763 on workflow head f838660fdfcdd2ec92a3983a70e5f3f894732675 (job 134923384282, artifact 14441559416) independently verified. Downloaded ZIP SHA-256 b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360 matches GitHub artifact digest; ZIP CRC passed and all 15 payload-file hashes in SHA256SUMS.txt passed. The exact AIES and ESS selectors both executed and failed on pinned buggy base 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d with JAX key-array shape (10,2), then both passed on fixed upstream merge 5692d2da335945b756aeae02e3720b9b7f3efef2 (2/2 expected base failures, 2/2 fixed passes). Source-level handoff/sampler split was independently cross-checked against pinned source blobs. Stage 3 semantic adjudication, exposure/independence, human license-scope acknowledgement and final acceptance remain open.",
-      "stage3_status": "packet_set_created_structural_ci_validation_pending_semantic_review",
+      "stage2_evidence_note": "Latest repeat in run 44338919763 on workflow head f838660fdfcdd2ec92a3983a70e5f3f894732675 (job 134923384282, artifact 14441559416) independently verified. Downloaded ZIP SHA-256 b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360 matches GitHub artifact digest; ZIP CRC passed and all 15 payload-file hashes in SHA256SUMS.txt passed. The exact AIES and ESS selectors both executed and failed on pinned buggy base 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d with JAX key-array shape (10,2), then both passed on fixed upstream merge 5692d2da335945b756aeae02e3720b9b7f3efef2 (2/2 expected base failures, 2/2 fixed passes). Source-level handoff/sampler split was independently cross-checked against pinned source blobs. Stage 3 semantic adjudication, exposure/independence, human license-scope acknowledgement and final acceptance remain open. Latest rerun on 19 November 2026: run 44537219541/job 135605947673 passed the exact AIES and ESS selectors on the pinned buggy/fixed revisions. Artifact 14536697284 has GitHub-reported SHA-256 88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556; no independent local archive verification is claimed for this newest archive.",
+      "stage3_status": "packet_structure_validated_semantic_review_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44338919763,
+      "stage2_latest_run_id": 44537219541,
       "stage2_artifact_id": 14441559416,
       "stage2_artifact_sha256": "b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360",
       "stage3_proposal_document": "research_candidates/evidence_abstention/NUMPYRO_1916_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-18.md",
-      "model_visible_packet_status": "not_operationalized_or_semantically_adjudicated",
+      "model_visible_packet_status": "constructed_hash_pinned_structurally_validated_pending_blind_semantic_adjudication",
       "stage3_project_lead_decision": {
         "date": "2026-11-19",
         "status": "approved_to_proceed_conditionally",
@@ -307,9 +307,31 @@
         "shared_item_content_hashes_checked": true,
         "source_excerpt_hashes_match_recorded_byte_ranges": true,
         "operational_validator_ci_test_added": true,
-        "ci_result": "pending"
+        "ci_result": "passed",
+        "validation_run_id": 44537219541,
+        "validation_job_id": 135605725983,
+        "validation_test": "test_numpyro_1916_real_packet_set_is_structurally_valid",
+        "validation_commit": "0339f542abe0386d1e515ca038d096214687e7ff",
+        "validation_artifact_id": 14535952746,
+        "validation_artifact_sha256": "fd1ac19a15c2492aad47574a80dc4b8a8d81132f1c4902efe8ead318bb995a68",
+        "validation_test_groups": {
+          "packet_audit": 12,
+          "operational_packet_and_ledger": 25,
+          "selector_runner": 6,
+          "exploratory_acceptance": 15,
+          "study_design": 9,
+          "total": 67
+        },
+        "semantic_sufficiency_assessed": false,
+        "model_inference_performed": false
       },
-      "stage3_semantic_adjudication": "pending_independent_blinded_panel"
+      "stage3_semantic_adjudication": "pending_two_independent_blinded_panel_b_raters_and_separate_adjudicator",
+      "stage2_latest_job_id": 135605947673,
+      "stage2_latest_artifact_id": 14536697284,
+      "stage2_latest_artifact_sha256": "88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556",
+      "stage2_latest_artifact_integrity": "Job success and GitHub-reported digest recorded; independent archive verification not yet recorded for this newest artifact. The 18 November artifact remains independently verified.",
+      "study_evaluation_eligibility": "provisional_pending_exposure_independence_license_and_semantic_review",
+      "next_required_gate": "Confirm candidate prior pipeline/debug exposure=none; complete source/dependency license and independence review; satisfy Panel A/Panel B role separation; conduct blind semantic review and adjudication; then prepare proposed v0.2 case record."
     },
     {
       "cohort_rank": 13,
