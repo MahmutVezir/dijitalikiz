@@ -64,12 +64,13 @@ The 15 Stage 2 passes are not 15 accepted cases. CTAPIpe #2732 is retained as an
 
 ## 3. Shortest defensible route to reduce the blockers
 
-1. **Use Dishka #435 as the first acceptance candidate.** Stage 2 passed; Stage 3 gold/alternatives/E1-E2-E3 was approved; the project lead has acknowledged its full researcher-source exposure and single-human-adjudicator limitations. The remaining formal work is the complete case record, required artifact/timestamp/license fields, JSON Schema validation, registry validation and a separate final project-lead acceptance. Do not mark it accepted before those checks and that separate decision.
-2. **In parallel, finish candidate provenance/licensing.** Start with the candidate actually intended for acceptance, then continue per candidate. Preserve exact source, changed-file, test fixture, dependency/native notice and timestamp evidence. A package's license metadata being present is not legal clearance.
-3. **Continue technical intake sequentially.** PSyclone #2755 has successful row discovery and Python 3.13 environment lock, but its manual Stage 2 base-fail/fixed-pass workflow still has not run. Nox, Moto and Werkzeug stay held; never delete or rewrite frozen selectors just to make CI green.
-4. **Complete governance before generating outputs.** Confirm Rater B or amend the protocol before outcomes; finish calibration; freeze the five named design/review documents and generation manifest.
-5. **Then complete exact model-license and runtime verification.** Only the exact frozen model revision and authorized operations are in scope. The present audit authorizes neither load nor generation.
-6. **Keep model training separate.** The secondary LoRA plan proposes 80 accepted independent projects with a project-disjoint 60/10/10 train/validation/locked-test split. It is a separate hypothesis and training authorization; the 15-case primary target or one-case feasibility minimum does not authorize training.
+1. **Dishka #435 is excluded from the model-evaluation sample.** On 19 November 2026 the project lead declared `prior_pipeline_debug_exposure = some`; the active v0.2 eligibility rule requires `none`. Preserve its successful Stage 2 and Stage 3 technical records as engineering evidence, do not prepare an acceptance JSON, and do not weaken the validator.
+2. **Proceed to NumPyro #1916 / PR #1918 as the next candidate.** Stage 2 is passed and the real E1/E2/E3 packet-set structural test passed in run `44537219541`. Semantic tier sufficiency, candidate exposure/independence, dependency/source license scope and final acceptance remain open. Do not count the packet structural PASS as semantic approval.
+3. **Finish candidate-specific provenance/licensing.** Preserve exact source, changed-file, test fixture, dependency/native notice and timestamp evidence. A package's license metadata being present is not legal clearance.
+4. **Continue technical intake sequentially.** PSyclone #2755 has successful row discovery and Python 3.13 environment lock, but its manual Stage 2 base-fail/fixed-pass workflow still has not run. Nox, Moto and Werkzeug stay held; never delete or rewrite frozen selectors just to make CI green.
+5. **Complete governance before generating outputs.** Confirm the required independent Panel A and Panel B reviewers, conflict/exposure declarations, restricted delivery, and calibration. The Panel B semantic review cannot be replaced by simple YES/NO endorsements from exposed reviewers.
+6. **Then complete exact model-license and runtime verification.** Only the exact frozen model revision and authorized operations are in scope. The present audit authorizes neither load nor generation.
+7. **Keep model training separate.** The secondary LoRA plan proposes 80 accepted independent projects with a project-disjoint 60/10/10 train/validation/locked-test split. It is a separate hypothesis and training authorization; the 15-case primary target or one-case feasibility minimum does not authorize training.
 
 ## 4. What must not be done to make the counters green
 
@@ -80,7 +81,7 @@ The 15 Stage 2 passes are not 15 accepted cases. CTAPIpe #2732 is retained as an
 - Do not load, generate with, fine-tune or train the model while the relevant gate is closed.
 - Do not claim confirmatory efficacy, general model self-awareness, or universal hallucination reduction from this exploratory design.
 
-**Latest inspected status:** 14 readiness messages; 0 accepted cases; 65 broad primary candidates; 17 distinct-project reserves; no model operation performed.
+**Latest inspected status:** 14 readiness messages in preflight run 44537219541; 0 accepted cases; Dishka excluded for prior exposure; NumPyro is next with Stage 2 PASS and real-packet structural CI PASS but semantic review pending; 65 broad technical shortlist candidates; 17 distinct-project reserves; no model operation performed.
 
 
 ## 5. Human review team now proposed by the project lead
@@ -115,8 +116,15 @@ The frozen 96-row cohort and original second-pass entries are unchanged. Until a
 Two process-conflict risks have been corrected:
 
 1. **Premature acceptance / circular validation.** The v0.2 case schema previously required `acceptance_decision="accepted"` even when the complete record still needed validation and the project lead's final decision. It now supports `proposed`, `accepted` and `rejected`; proposed records require a pending decision and no final-decision artifact. The active registry validator explicitly rejects proposed/rejected records and accepts only an `accepted` case with a separate timestamped, hashed project-lead decision record. Unit tests cover both sides of this boundary. This does not weaken any evidence or eligibility rule.
-2. **Panel reviewer vs Rater B role collision.** Hasan and Batuhan are proposed as Panel Reviewer H and Panel Reviewer B respectively for unblinded technical/methodology yes/no review. The active manifest's `Rater_B` is a separate, unassigned role for blind model-output scoring and is not automatically assigned to Batuhan or Hasan. Anyone who sees the issue/source/patch/gold/hidden tiers for a case cannot be described as blind for that case's response scoring. The project lead's report of shared agreement is not a substitute for individual reviewer decisions or signatures.
+2. **Panel reviewer vs Rater B role collision.** Panel Reviewer H and Panel Reviewer B are public pseudonyms for proposed unblinded technical/methodology review. The active manifest's `Rater_B` is a separate, unassigned role for blind model-output scoring and is not automatically assigned to either technical reviewer. Anyone who sees the issue/source/patch/gold/hidden tiers for a case cannot be described as blind for that case's response scoring. The project lead's report of concurrence is not a substitute for individual reviewer decisions or consent.
 
 The file `V0_2_ACTIVE_TRACK_AND_DECISION_FLOW_2026-11-19.md` names the active v0.2 artifacts and marks the v0.1 confirmatory case schema/validator and historical Panel A/B governance as legacy. The historical v0.1 files remain preserved; they must not be applied to the v0.2 feasibility study.
 
 Latest Dishka evidence is independently checked in `DISHKA_435_V02_CANDIDATE_GATE_ASSESSMENT_2026-11-19.md`: run 44537219541 / artifact 14536192821, outer SHA-256 matches GitHub, ZIP CRC passes, and 32/32 internal hashes pass. The case remains not accepted pending truthful prior pipeline/debug exposure confirmation and project-lead sign-off of the bounded documentary license-screen scope. If either fails, move to NumPyro #1916; do not lower the bar.
+
+
+## 8. Dishka exposure declaration and NumPyro transition — 19 November 2026
+
+The project lead explicitly declared Dishka prior pipeline/debug/test-oracle exposure as `some`. The v0.2 rule requires `none`; Dishka is excluded from the study sample and retained as engineering evidence only. Its Stage 2 and Stage 3 technical statuses are not erased.
+
+NumPyro #1916 is the next candidate. Its exact Stage 2 AIES/ESS selectors passed again in run `44537219541`. Its real packet-set test passed in the no-inference preflight job, which asserted the pinned packet-set SHA and strict nesting. Semantic sufficiency was explicitly not assessed. The current preflight report remains `blocked_before_inference`, with 14 blockers, 0 accepted cases, and no model loading, inference or fine-tuning.
