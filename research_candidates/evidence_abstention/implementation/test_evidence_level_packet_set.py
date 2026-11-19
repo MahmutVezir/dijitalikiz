@@ -158,7 +158,7 @@ class EvidenceLevelPacketSetTests(unittest.TestCase):
             / "OPERATIONAL_EVIDENCE_PACKET_SET_V0_1_2026-11-19.json"
         )
         packet_set = json.loads(packet_path.read_text(encoding="utf-8"))
-        expected_sha256 = "7156e7c0bebf694946495b638f8dd21fbe45b7fbafde2607e6cc11e8b4f9bdfc"
+        expected_sha256 = "754b0ce644c7769f0eeed4249d2c7ab89a66cc5d69dc8f6630bb23eeb22ff831"
         report = validate_packet_set(packet_set, expected_sha256=expected_sha256)
 
         self.assertEqual(report["status"], "valid", report["blockers"])
