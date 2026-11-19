@@ -82,3 +82,34 @@ This is a design record only. It authorizes no model download, load, generation,
 6. Explicit, separately recorded authorization for the permitted operation.
 
 **Current final state:** accepted cases 0; inference readiness false; 14 blockers; no model loading, inference, fine-tuning or training performed.
+
+
+## 6. Latest branch-head repeat — commit `a6c4ca3d8edddb3adedcf13185fdc178b69530a3` (13:07 UTC)
+
+The documentation and PSyclone integrity-record update triggered another independent set of workflows on the updated branch head.
+
+Completed:
+- Research Validation run [44530391459](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391459): PASS.
+- Uncertainty unit tests run [44530392002](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530392002): PASS.
+- Qwen adapter tests run [44530391635](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391635): PASS.
+- Runner smoke test run [44530391474](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391474): PASS.
+- PyThaiNLP #1046 exact-selector repeat [44530391899](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391899): PASS.
+- PyThaiNLP #1046 pinned sanitized Stage 2 [44530391414](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391414): PASS.
+- CTAPIpe #2732 engineering-pilot Stage 2 [44530391450](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391450): PASS technically; prior pipeline/debug exposure still excludes it from model evaluation.
+- Napalm #2151 pinned Stage 2 [44530391712](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391712): PASS technically; Cisco fixture provenance/license hold remains.
+- Napalm synthetic reproducer [44530391677](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391677): PASS.
+- Modin #7554 exact selector repeat [44530391704](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391704): PASS technically; ON vs OFF/False scope hold remains.
+- SkyPilot #5981 pinned repeat [44530391449](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391449): PASS technically; Stage 3/license/independence gates remain.
+- PSyclone row discovery [44530391485](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391485): PASS (discovery only).
+- PSyclone Python 3.13 environment lock [44530391587](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391587): PASS (environment build only).
+- DataComPy #404 row discovery [44530391592](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391592): PASS (discovery only).
+- Modin #7554 row discovery [44530391585](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391585): PASS (discovery only).
+
+The aggregate no-inference preflight run [44530391462](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44530391462) remains in progress at the latest poll because QuTiP's exact buggy-base source build has not completed. Its no-inference preflight job [135581824587] has completed successfully. That job passed the same five test groups (67 tests total) and reports `ready_for_inference=false`, 14 blockers, 0 accepted cases, `model_loading_performed=false`, and `model_inference_performed=false`.
+
+The current matrix still shows three immutable-selector contract failures:
+- Nox: malformed/incompatible selectors and base-source attribute mismatch; no full row reproduction claim.
+- Werkzeug: a malformed parameterized node ID; one selector is not found and no test runs.
+- Moto: the full dataset row has 12 collection errors among 18 selectors; its independent ECR reproducer does not cure the row-level failure.
+
+At the latest review, no PSyclone Stage 2 Exact Base-Fail / Fixed-Pass run exists. A search of the recent workflow history found no run with that Stage 2 workflow name. The manual-only Stage 2 workflow still needs the project lead to open the Actions page and explicitly set both required confirmations true. No model loading, inference or training was performed.
