@@ -55,8 +55,10 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --disable-pip-version-check "setuptools==75.3.0" "wheel==0.45.0"
+          cd psyclone
           python -m pip install --disable-pip-version-check ".[test]"
           python -m pip check
+          cd ..
           python - <<'PY'
           import importlib.metadata as md
           import json
@@ -66,8 +68,9 @@ jobs:
           from packaging.utils import canonicalize_name
 
           excluded = {"psyclone"}
-          packages = []
-          licenses = []
+          package_versions = {}
+          license_records = {}
+          duplicate_metadata = []
           for dist in md.distributions():
               name = dist.metadata.get("Name")
               version = dist.version
@@ -76,22 +79,27 @@ jobs:
               normalized = canonicalize_name(name)
               if normalized in excluded:
                   continue
-              packages.append((normalized, version))
+              prior = package_versions.get(normalized)
+              if prior is not None and prior != version:
+                  raise SystemExit(
+                      f"Conflicting installed versions for {normalized}: {prior} vs {version}"
+                  )
+              if prior is not None:
+                  duplicate_metadata.append({"name": normalized, "version": version})
+                  continue
+              package_versions[normalized] = version
               meta = dist.metadata
-              licenses.append({
+              license_records[normalized] = {
                   "name": name,
                   "version": version,
                   "license": meta.get("License"),
                   "license_expression": meta.get("License-Expression"),
                   "home_page": meta.get("Home-page"),
                   "project_urls": meta.get_all("Project-URL") or [],
-              })
+              }
 
-          # A duplicate normalized distribution name is a resolver anomaly.
-          names = [name for name, _ in packages]
-          if len(names) != len(set(names)):
-              raise SystemExit("Duplicate normalized package names in environment")
-          packages.sort()
+          packages = sorted(package_versions.items())
+          licenses = [license_records[name] for name, _ in packages]
           lock = "".join(f"{name}=={version}\n" for name, version in packages)
           Path("psyclone-environment-lock").mkdir(exist_ok=True)
           Path("psyclone-environment-lock/requirements.lock.txt").write_text(
@@ -117,6 +125,7 @@ jobs:
               "package_count_excluding_local_psyclone": len(packages),
               "packages": [{"name": n, "version": v} for n, v in packages],
               "package_license_metadata": licenses,
+              "duplicate_same_version_metadata_records_collapsed": duplicate_metadata,
               "test_execution_performed": False,
               "source_build_performed": False,
               "model_inference_performed": False,
