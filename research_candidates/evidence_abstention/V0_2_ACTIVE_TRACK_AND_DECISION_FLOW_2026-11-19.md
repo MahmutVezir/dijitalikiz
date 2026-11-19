@@ -189,3 +189,17 @@ The corrected workflow now completes successfully on PR head `fb7d17633458978406
 - Qwen pinned license/config capture passed; archive 9/9 inner hashes; no weights or model load.
 - The 12 non-Dishka candidate jobs were skipped. All separate candidate-specific PR workflows in the run were also skipped by their dispatch-only guard.
 - Dishka remains proposed and final acceptance pending; no model inference is authorized.
+
+## 17. Latest final verification — 19 November 2026
+
+PR #222 head `ef89cd9bbc04531f576a3b46ce00b1ff524f7274` was checked end to end:
+
+- Focused workflow [44600772416](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44600772416): **success**.
+- Dishka reproduction, raw Dishka provenance, Qwen license evidence and no-inference preflight: all **success**.
+- Other 12 candidate jobs: **skipped**.
+- 76 no-inference contract tests passed; separate repository/config validation, unit tests (171) and CPU tests also passed.
+- Dishka Stage 2 archive [14566758994](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44600772416/artifacts/14566758994): SHA-256 `1bc714ec60e6315907d8273b5842891953af7ba4296d785ba29603feb4d6eed6`, CRC PASS, 33 members, 32/32 internal hashes.
+- Dishka raw provenance [14567568737](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44600772416/artifacts/14567568737): SHA-256 `f099a1e5b8a0a0da45b706b162a634a4a4f9b5c3c4d2335e12389a1cf916f8b9`, CRC PASS, 12 members, 11/11 internal hashes.
+- Qwen pinned license capture [14566504228](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44600772416/artifacts/14566504228): SHA-256 `a1357b695ef01cc15277260f578a99e4f3bcc495faf6ccfe149a514014a1bf0c`, CRC PASS, 10 members, 9/9 internal hashes.
+- Readiness remains 14 blockers, 0 accepted cases, valid empty registry; no model inference authorization.
+- Dishka candidate remains proposed; final project-lead YES/NO acceptance decision remains pending.

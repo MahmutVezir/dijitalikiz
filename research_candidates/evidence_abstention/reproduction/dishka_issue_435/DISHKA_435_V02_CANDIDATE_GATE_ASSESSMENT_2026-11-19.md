@@ -392,3 +392,25 @@ Dishka technical Stage 2 and candidate-level packet/structural checks remain pas
 - Raw Dishka provenance artifact [14566683002](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44599553076/artifacts/14566683002), outer SHA-256 `e0e107b9d38649d21a159f95586832103d772230ca9ec4348ef936ff107f3d41`; 12 members; ZIP CRC PASS; 11/11 inner hashes PASS. The successful summary records issue #435 time, PR #436 time, the same dataset-row PR timestamp, fixed source commits, immutable dataset revision and `CC-BY-4.0` card license. The other 112 timestamp rows and cohort-wide source-license review remain open.
 - Qwen read-only license evidence [14567706680](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44599553076/artifacts/14567706680), outer SHA-256 `eb8d9fcbf17a1f59457b5ca6298778fde91c95096163294431a6de63b1a470b8`; 10 members; ZIP CRC PASS; 9/9 inner hashes PASS. Pinned revision and Research License Agreement confirmed; no weights, model load, tokenizer load, inference or fine-tuning.
 - Updated canonical proposed case JSON SHA-256: `a7f284ecfacc1be448791cf1a07a3b8f63cc8e0143e1453bbd0262fe785ca036`. It remains `acceptance_decision=proposed`, `final_acceptance.status=pending`; accepted registry stays 0.
+
+## 20. Final PR-head verification and current artifact reconciliation — 19 November 2026
+
+**Verified PR head:** `ef89cd9bbc04531f576a3b46ce00b1ff524f7274`.
+
+### CI result
+- Focused Dishka workflow [44600772416](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44600772416): **success**.
+- No-inference preflight job `135831247836`: success; five groups 12 + 25 + 6 + 23 + 10 = **76 tests passed**.
+- Dishka reproduction job `135831401881`: success.
+- Dishka raw provenance job `135831401970`: success.
+- Qwen read-only license/config evidence job `135831401859`: success.
+- All 12 non-Dishka matrix jobs: **skipped**.
+- Repository/configuration validation run `44600785064`: success; unit tests run `44600785300`: 171 tests; CPU tests run `44600785425`: 171 tests plus 2 additional checks.
+
+### Independently downloaded artifacts
+- Dishka [artifact 14566758994](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44600772416/artifacts/14566758994), outer SHA-256 `1bc714ec60e6315907d8273b5842891953af7ba4296d785ba29603feb4d6eed6`; ZIP CRC PASS; 33 members; 32/32 internal SHA256SUMS entries PASS. The base reproducer fails with `AssertionError: 1 != 42`; fixed revision passes; all eight frozen dataset selectors fail on buggy base and pass on fixed. Inner `full-pr.diff` SHA-256 `c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde`.
+- Raw provenance [artifact 14567568737](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44600772416/artifacts/14567568737), outer SHA-256 `f099a1e5b8a0a0da45b706b162a634a4a4f9b5c3c4d2335e12389a1cf916f8b9`; ZIP CRC PASS; 12 members; 11/11 internal hashes PASS. Raw issue/PR response bodies and headers preserved. Dishka PR creation timestamp equals the frozen dataset-row timestamp (`2025-04-15T22:52:26Z)); pinned dataset revision `fb9aa226b2ce37c708ea7732e7b980abacdadb67`; card license `CC-BY-4.0`.
+- Qwen license/config [artifact 14566504228](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44600772416/artifacts/14566504228), outer SHA-256 `a1357b695ef01cc15277260f578a99e4f3bcc495faf6ccfe149a514014a1bf0c`; ZIP CRC PASS; 10 members; 9/9 internal hashes PASS. Exact pinned revision confirmed; license SHA-256 remains `ef52482bb785733093dc9a2e8edd8e764c77d12d8e9d8f10a80c9b547d32d0f9`. No weights or model/tokenizer load, inference or fine-tuning.
+- Preflight [artifact 14568006031](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44600772416/artifacts/14568006031), outer SHA-256 `ba8cca34f1ed4dfc2ae596da82463f6adf005687d4b14d6addb2547f387bd019`; ZIP CRC PASS; six members. Readiness remains `blocked_before_inference`, 14 blockers, 0 accepted cases/projects, `valid_empty_registry`, `inference_authorized=false`.
+
+### Exact interpretation
+The Dishka-specific technical, candidate raw-timestamp and bounded documentary checks are now reproducible and archived. They do **not** close the other 112 timestamp records, the cohort-wide upstream source-license review, the Qwen human/mentor use-scope decision, runtime/generation/protocol freezes or the second-rater gate. Dishka remains `proposed`; final project-lead decision remains pending. No case is inserted into the accepted registry and no inference is authorized.

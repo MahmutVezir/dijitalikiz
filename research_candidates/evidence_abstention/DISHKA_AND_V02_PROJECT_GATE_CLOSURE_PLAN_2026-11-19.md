@@ -94,3 +94,12 @@ The Dishka-first Actions path is now verified end to end on PR head `fb7d1763345
 - Pinned Qwen license/config evidence job passed without model weights or model load.
 - The 12 non-Dishka candidate jobs were skipped, and separate non-Dishka candidate workflows were manual-only on this PR.
 - The 14 project-wide readiness blockers remain open; this is expected. Dishka-specific reproduction and metadata verification do not authenticate all 113 timestamp rows, complete all source-license reviews, freeze the model/protocol/runtime, recruit/calibrate Rater_B or authorize inference.
+
+## 7. Latest evidence check — 19 November 2026
+
+- PR #222 head `ef89cd9bbc04531f576a3b46ce00b1ff524f7274` has passed focused Dishka workflow, raw provenance, Qwen license evidence and no-inference preflight.
+- The 12 non-Dishka candidate jobs are skipped on this automatic path.
+- Independent ZIP checks passed: Dishka 32/32 inner hashes; raw provenance 11/11; Qwen license 9/9; all archive CRC checks passed.
+- Dishka's PR creation timestamp matches its SWE-rebench row timestamp exactly. Dataset card declares CC-BY-4.0. This is a candidate-specific timestamp result, not cohort-wide timestamp closure.
+- The exact Qwen revision's Research License Agreement is hashed and archived, but qualified human/mentor review is still pending.
+- The no-inference preflight still reports 14 global blockers and an empty accepted registry. The case remains proposed until the project lead records a distinct YES/NO acceptance decision.

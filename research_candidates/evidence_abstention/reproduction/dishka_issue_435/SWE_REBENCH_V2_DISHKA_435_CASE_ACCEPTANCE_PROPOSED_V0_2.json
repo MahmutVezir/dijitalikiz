@@ -33,7 +33,7 @@
       "tests/unit/container/test_context_vars.py"
     ],
     "patch": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44599553076/artifacts/14567057835#path=full-pr.diff",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44600772416/artifacts/14566758994#path=full-pr.diff",
       "sha256": "c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde"
     },
     "base_source_snapshot": {
@@ -100,8 +100,8 @@
       "exit_code": 1,
       "failure_signature": "AssertionError: 1 != 42",
       "run_record": {
-        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44599553076/artifacts/14567057835",
-        "sha256": "de85c1828528ead79bcb0af00a5d2a307dc44c3839477d8e7ebb7329854a68a6"
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44600772416/artifacts/14566758994",
+        "sha256": "1bc714ec60e6315907d8273b5842891953af7ba4296d785ba29603feb4d6eed6"
       },
       "test_selector": "test_issue_435_override_lower_scope"
     },
@@ -110,8 +110,8 @@
       "exit_code": 0,
       "same_test_passed": true,
       "run_record": {
-        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44599553076/artifacts/14567057835",
-        "sha256": "de85c1828528ead79bcb0af00a5d2a307dc44c3839477d8e7ebb7329854a68a6"
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44600772416/artifacts/14566758994",
+        "sha256": "1bc714ec60e6315907d8273b5842891953af7ba4296d785ba29603feb4d6eed6"
       },
       "test_selector": "test_issue_435_override_lower_scope"
     },
