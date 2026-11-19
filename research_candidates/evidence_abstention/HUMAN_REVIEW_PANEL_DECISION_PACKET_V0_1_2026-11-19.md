@@ -160,7 +160,7 @@ Mahmut's final project-lead decision and rationale must be recorded separately a
 - `Rater_B` is a separate v0.2 scoring-role identifier. It is not the same role as Panel Reviewer B and must not be filled by a technical reviewer who has seen the hidden gold or case materials for that same case.
 - A technical YES means “recommend proceeding under the stated gates”; it does not mean the case is accepted, the license is legally cleared, or inference is authorized.
 - The project lead's agreement with the Dishka-first route is a prioritization decision only. It is not the missing prior-pipeline-exposure declaration, bounded license-scope sign-off, schema/registry pass, or final case-acceptance decision.
-- Reviewer decisions must be recorded only after Hasan and Batuhan actually submit their own answers. No individual vote, consent or concurrence is inferred from the project lead's statement.
+- Reviewer decisions must be recorded only after each reviewer actually submits their own answers. No individual vote, consent or concurrence is inferred from the project lead's statement.
 
 
 ## 10. Candidate transition update — 19 November 2026
