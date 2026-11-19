@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-18T15:53:23.380Z",
+  "generated_at_utc": "2026-11-19T09:55:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -14,7 +14,7 @@
     "one_accepted_case_per_upstream_project": true,
     "do_not_count_test_selectors_as_independent_cases": true,
     "inference_authorized": false,
-    "latest_stage2_disposition_note": "14 technical Stage 2 reproductions: Dishka, NumPyro, Robocop, PyFar, Python-Control, Meltano, Amaranth, QuTiP, Dymos, EODAG, SkyPilot, Napalm, PyThaiNLP and Modin. Modin #7554 has a pinned exact-selector base-fail/fixed-pass for both DataFrameGroupBy and SeriesGroupBy selectors, but remains conditional because issue #7553 title says AutoSwitchBackend is on whereas PR #7554 and both frozen selectors target AutoSwitchBackend=False; issue body is empty, so human scope reconciliation is required. Napalm technically passes but Cisco PR fixture provenance/legal scope remains a Stage 3 hold. PyThaiNLP passes but dependency/native license scope and human adjudication remain pending. Nox and Werkzeug remain blocked by malformed selectors in immutable dataset rows. Moto has a valid ECR-specific fail/pass but its full row is mixed-scope and includes invalid unrelated IoT selectors. Earthkit-data remains blocked by external fixture/provenance. Stage 3 technical adjudication pass remains Dishka only. Final accepted independent cases remain 0; no model load/inference/training."
+    "latest_stage2_disposition_note": "14 technical Stage 2 reproductions: Dishka, NumPyro, Robocop, PyFar, Python-Control, Meltano, Amaranth, QuTiP, Dymos, EODAG, SkyPilot, Napalm, PyThaiNLP and Modin. Modin #7554 has a pinned exact-selector base-fail/fixed-pass for both DataFrameGroupBy and SeriesGroupBy selectors, but remains conditional because issue #7553 title says AutoSwitchBackend is on whereas PR #7554 and both frozen selectors target AutoSwitchBackend=False; issue body is empty, so human scope reconciliation is required. Napalm technically passes but Cisco PR fixture provenance/legal scope remains a Stage 3 hold. PyThaiNLP passes but dependency/native license scope and human adjudication remain pending. Nox and Werkzeug remain blocked by malformed selectors in immutable dataset rows. Moto has a valid ECR-specific fail/pass but its full row is mixed-scope and includes invalid unrelated IoT selectors. Earthkit-data remains blocked by external fixture/provenance. Stage 3 technical adjudication pass remains Dishka only. Final accepted independent cases remain 0; no model load/inference/training. Clarification added 2026-11-19: the later 13-job focused matrix (run 44338919763) completed with 10 successes and 3 selector failures; it is not the full 96-row cohort. Recounting this ledger's 96 records gives 15 Stage 2-passed records, 42 not_started/not_started_conditional_gate records, and 5 blocked/held records (the remaining rows are static exclusions or other dispositions). Thus Stage 2 is not complete across the frozen cohort."
   },
   "global_execution_blocker": {
     "status": "historical_zero_step_runner_allocation_failures_not_reproduced_in_current_SkyPilot_runs",
@@ -39,7 +39,10 @@
     "stage3_technical_passed": 1,
     "final_accepted_cases": 0,
     "runner_blocked_candidates": 0,
-    "separately_blocked_external_fixture": 1
+    "separately_blocked_external_fixture": 1,
+    "stage2_not_started": 42,
+    "stage2_blocked_or_held": 8,
+    "stage2_status_scope": "96-row frozen cohort record count; not the same denominator as the later 13-candidate focused reproduction matrix"
   },
   "records": [
     {
@@ -1915,5 +1918,32 @@
     "independent_blinded_rater": false,
     "scope_note": "This is recorded at project level because the exact candidate/file scope and the original prompt/output bundle were not attached to this record. It is supplementary corroboration only and is not assigned to the NumPyro case or any individual candidate.",
     "impact_on_acceptance": "No change to candidate acceptance, gold adjudication, exposure review, or inference authorization."
+  },
+  "stage2_scope_reconciliation": {
+    "frozen_cohort_rows": 96,
+    "stage2_passed_record_count": 15,
+    "stage2_not_started_record_count": 42,
+    "stage2_blocked_or_held_record_count": 8,
+    "focused_matrix_run_id": 44338919763,
+    "focused_matrix_scope": "13 jobs in the later focused matrix only; 10 successful reproductions, 3 candidate-specific selector failures, 0 in progress",
+    "focused_matrix_successes": [
+      "Dishka",
+      "Python-Control",
+      "EODAG",
+      "Amaranth",
+      "Robocop",
+      "NumPyro",
+      "PyFar",
+      "Meltano",
+      "Dymos",
+      "QuTiP"
+    ],
+    "focused_matrix_failures": [
+      "Nox",
+      "Moto",
+      "Werkzeug"
+    ],
+    "interpretation": "The 10/3/0 result is a completed focused matrix, not the full 96-row cohort and not the cumulative Stage 2 count. The cohort ledger separately records 15 Stage 2-passed rows, including candidates outside the 13-job focused matrix, and 42 rows whose Stage 2 status remains not_started/not_started_conditional_gate. The remaining cohort records include static exclusions, explicit holds, blocked selector/provenance rows and other dispositions. Do not say all Stage 2 work across the frozen cohort is complete.",
+    "reconciliation_method": "Counts recomputed from the 96 per-record stage2_status fields on 2026-11-19; the focused-matrix counts are retained as a separate run-scoped result."
   }
 }
