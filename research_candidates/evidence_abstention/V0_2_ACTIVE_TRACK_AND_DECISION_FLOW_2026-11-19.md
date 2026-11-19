@@ -49,10 +49,10 @@ The validator remains structural and consistency-only. It does not verify URLs/a
 Three roles must not be conflated:
 
 1. **Project lead (Mahmut):** owns the final case and protocol decision.
-2. **Technical/methodology panel reviewers:** Panel Reviewer H (Hasan) and Panel Reviewer T (Batuhan) are proposed for unblinded yes/no review of case evidence and research design. The project lead reports shared agreement with the previously presented Dishka technical/gold/tier/limitations summary. Individual signed decision records are not fabricated; when formal concurrence is recorded, it must be based on the reviewers' actual submitted decisions.
+2. **Technical/methodology panel reviewers:** Panel Reviewer H and Panel Reviewer T (private identity mapping is held outside the public repository) are proposed for unblinded yes/no review of case evidence and research design. The project lead reports shared agreement with the previously presented Dishka technical/gold/tier/limitations summary. Individual signed decision records are not fabricated; when formal concurrence is recorded, it must be based on the reviewers' actual submitted decisions.
 3. **Blind model-output scorer `Rater_B`:** a separate role in the active v0.2 manifest. It is not automatically Hasan or Batuhan. Anyone who sees the case issue, PR, source, patch, gold mechanism or hidden evidence-tier decision cannot be called blind to those materials for the same case's model-output scoring.
 
-If Hasan and Batuhan inspect full technical case materials, they remain valid technical reviewers but are not eligible as blinded output scorers for that case. A separate unexposed scorer or a prospectively amended scoring design is needed. ChatGPT remains advisory and is never a human rater or external auditor.
+If both technical panel reviewers inspect full technical case materials, they remain valid technical reviewers but are not eligible as blinded output scorers for that case. A separate unexposed scorer or a prospectively amended scoring design is needed. ChatGPT remains advisory and is never a human rater or external auditor.
 
 ## 5. Dishka #435 — first candidate, not pre-accepted
 
