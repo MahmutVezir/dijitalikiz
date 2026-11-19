@@ -60,22 +60,13 @@ Each reviewer returns YES / NO / REVISE / OUT OF SCOPE with a short reason. Mahm
 
 ## 5. Candidate-specific decisions requested
 
-### C1 — Dishka #435 / PR #436 (first acceptance candidate)
+### C1 — Dishka #435 / PR #436 (exposure-based exclusion)
 
-Evidence already recorded:
-- Exact dataset selectors: 8/8 actual defect failures on buggy base and 8/8 passes on fixed revision.
-- Independent issue reproducer: buggy-base failure / fixed-revision pass.
-- Project-lead technical gold, alternatives and E1/E2/E3 design approval.
-- Researcher full source exposure and single-human-adjudicator limitations disclosed and acknowledged.
-- Stage 3 technical adjudication completed.
+The project lead declared `prior_pipeline_debug_exposure = some` on 19 November 2026. The active v0.2 case-eligibility rule requires `none`. Dishka is therefore excluded from the model-evaluation sample. Its exact 8/8 base-fail/fixed-pass reproduction and Stage 3 technical adjudication remain preserved as engineering evidence.
 
-Open before formal acceptance:
-- Build the complete v0.2 case record with exact dataset row, source, artifact hashes, timestamp evidence, independence/exposure, documentary license scope and tier manifests.
-- Run Draft 2020-12 schema validation and fail-closed registry checks.
-- Record a separate final project-lead acceptance decision.
-- Keep model inference/training unauthorized until the independent global gates also pass.
+No v0.2 acceptance record will be prepared, the validator will not be weakened, and the case will not enter the registry or count toward sample targets.
 
-**Question:** approve Dishka as the first case to complete formal acceptance checks, without pre-accepting it? YES / NO / REVISE.
+**Question:** does this exclusion correctly apply the unchanged exposure rule while preserving the technical record? YES / NO / REVISE. A reviewer NO does not itself authorize a protocol exception; it requires a documented rationale and project-lead review.
 
 ### C2 — NumPyro #1916
 
@@ -84,17 +75,17 @@ Open before formal acceptance:
 - Real-packet structural CI check and independent semantic review remain pending.
 - Dependency/native component notice scope, independence and exposure review remain open.
 
-**Question:** prioritize NumPyro as the next Stage 3 case after Dishka? YES / NO / REVISE.
+**Question:** approve NumPyro as the next candidate to complete Stage 3 and its case-specific gates, subject to the strict blind-review, independence and license requirements? YES / NO / REVISE.
 
 ### C3 — Remaining Stage 2 technical passes
 
 The current 15-pass list is: Dishka, NumPyro, Dymos, EODAG, SkyPilot, Napalm, PyThaiNLP, Modin, Robocop, Meltano, Amaranth, CTAPIpe, Python-Control, QuTiP and PyFar.
 
-A Stage 2 pass means only that a pinned technical reproduction contract passed. It does not mean the candidate is invalid or unusable. Fourteen are eligible for continued Stage 3/provenance/exposure review, each subject to its own gates. CTAPIpe is different: the project lead recorded prior candidate-specific pipeline/debug exposure as `some`; the current protocol requires `none` for model-evaluation inclusion. Keep CTAPIpe as an engineering/feasibility pilot, not a model-evaluation case, unless a prospectively revised protocol and independent review establish a scientifically defensible alternative.
+A Stage 2 pass means only that a pinned technical reproduction contract passed. It does not mean the candidate is accepted or automatically usable. After the two exposure exclusions (Dishka and CTAPIpe), thirteen Stage 2 technical-pass candidates remain in the further-review queue, each subject to its own Stage 3/provenance/independence/license gates. CTAPIpe remains an engineering/feasibility pilot because prior candidate-specific pipeline/debug exposure is `some`. Dishka is also an engineering record only because the project lead has now declared prior pipeline/debug/test-oracle exposure as `some`. Neither is counted in the model-evaluation sample under the current protocol.
 
 | Candidate | Why it is not accepted yet | Proposed next step |
 |---|---|---|
-| Dishka | Formal acceptance record, schema/registry and separate final decision | First priority |
+| Dishka | Prior pipeline/debug/test-oracle exposure declared `some`; active v0.2 rule requires `none` | Excluded from sample; preserve technical record |
 | NumPyro | Packet structural CI, blind semantic review, dependency/native notices, independence/exposure | Second priority |
 | Dymos | Stage 3 gold/alternatives/E tiers and dependency/license/human review | Stage 3 |
 | EODAG | Stage 3 gold/E tiers, related-issue and dependency-license review | Stage 3 |
@@ -138,8 +129,8 @@ For unresolved questions, the valid answer is **OUT OF SCOPE / external legal re
 
 ## 7. Priority order proposed for project execution (subject to reviewer feedback and project-lead gates)
 
-1. Finish Dishka's formal acceptance record and checks; keep registry at zero until the separate final decision.
-2. Complete NumPyro's packet structural test, then independent semantic review.
+1. Record Dishka's exposure-based exclusion; do not build an acceptance record or weaken the validator.
+2. NumPyro is next: its real-packet structural CI test has passed; proceed to independent semantic review only after the reviewer-role and exposure prerequisites are satisfied.
 3. Progress the remaining Stage 2 technical passes through Stage 3 and candidate-specific provenance/license/exposure checks; retain each candidate's individual hold and do not equate technical PASS with acceptance.
 4. Execute PSyclone #2755 Stage 2 after the project lead manually confirms the exact workflow inputs; discovery and environment lock alone are not Stage 2.
 5. Re-review dbt and SimPEG as separate conditional candidates using independently authored, defect-sensitive tests; do not edit the frozen cohort selectors or restore either to the primary cohort without a versioned protocol/ledger decision.
@@ -170,3 +161,10 @@ Mahmut's final project-lead decision and rationale must be recorded separately a
 - A technical YES means “recommend proceeding under the stated gates”; it does not mean the case is accepted, the license is legally cleared, or inference is authorized.
 - The project lead's agreement with the Dishka-first route is a prioritization decision only. It is not the missing prior-pipeline-exposure declaration, bounded license-scope sign-off, schema/registry pass, or final case-acceptance decision.
 - Reviewer decisions must be recorded only after Hasan and Batuhan actually submit their own answers. No individual vote, consent or concurrence is inferred from the project lead's statement.
+
+
+## 10. Candidate transition update — 19 November 2026
+
+The project lead has declared Dishka prior pipeline/debug/test-oracle exposure as `some`. C1 is superseded as a case-acceptance proposal: Dishka is excluded from the model-evaluation sample under the unchanged v0.2 rule and remains an engineering/reproducibility record only.
+
+NumPyro #1916 is now the next candidate. Its Stage 2 reproduction is passed, and the real E1/E2/E3 packet-set structural test passed in run `44537219541`. Semantic sufficiency remains unadjudicated. The NumPyro review protocol requires two Panel A technical reviewers, two disjoint source-unexposed Panel B raters, a separate disagreement adjudicator, restricted delivery and exposure/consent records. Hasan is not eligible for Panel B because he has seen the design proposal; Batuhan's eligibility is not yet established. A simple YES/NO endorsement is not a substitute for the required free-form causal-mechanism ratings.
