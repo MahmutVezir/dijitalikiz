@@ -330,6 +330,196 @@ jobs:
           retention-days: 90
 
 
+
+  dishka-435-raw-provenance-audit:
+    needs: no-inference-preflight
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Capture raw upstream GitHub and pinned dataset-card payloads
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dishka-raw-provenance
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header dishka-raw-provenance/issue-435-response-headers.txt \
+            --output dishka-raw-provenance/issue-435-response.json \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/reagento/dishka/issues/435"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header dishka-raw-provenance/pull-436-response-headers.txt \
+            --output dishka-raw-provenance/pull-436-response.json \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/reagento/dishka/pulls/436"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header dishka-raw-provenance/dataset-revision-response-headers.txt \
+            --output dishka-raw-provenance/dataset-revision-response.json \
+            "https://huggingface.co/api/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/revision/fb9aa226b2ce37c708ea7732e7b980abacdadb67"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header dishka-raw-provenance/dataset-card-response-headers.txt \
+            --output dishka-raw-provenance/dataset-README.md \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/README.md"
+          cp research_candidates/evidence_abstention/reproduction/dishka_issue_435/dataset_parquet_row_canonical.json dishka-raw-provenance/
+          cp research_candidates/evidence_abstention/reproduction/dishka_issue_435/cohort_selection_row_snapshot.json dishka-raw-provenance/
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          out = Path("dishka-raw-provenance")
+          issue = json.loads((out / "issue-435-response.json").read_text(encoding="utf-8"))
+          pull = json.loads((out / "pull-436-response.json").read_text(encoding="utf-8"))
+          dataset_revision = json.loads((out / "dataset-revision-response.json").read_text(encoding="utf-8"))
+          readme = (out / "dataset-README.md").read_text(encoding="utf-8")
+
+          assert issue["number"] == 435
+          assert issue["title"] == "bug: Provider doesn't override factory with lower scope"
+          assert issue["created_at"] == "2025-04-14T17:22:16Z"
+          assert issue["state"] == "closed"
+
+          assert pull["number"] == 436
+          assert pull["title"] == "Defer scopes processing to handle overriding properly"
+          assert pull["created_at"] == "2025-04-15T22:52:26Z"
+          assert pull["merged_at"] == "2025-04-24T20:51:58Z"
+          assert pull["base"]["sha"] == "8718d5af93f9e48bc2506c64827663fdccc5ad89"
+          assert pull["head"]["sha"] == "b1eae11734e64551d7b101195f27cb6870e1c364"
+
+          expected_revision = "fb9aa226b2ce37c708ea7732e7b980abacdadb67"
+          assert dataset_revision["sha"] == expected_revision
+          card_license = (dataset_revision.get("cardData") or {}).get("license")
+          if card_license is not None:
+              assert str(card_license).lower() == "cc-by-4.0", card_license
+          front_matter = readme.split("---", 2)[1] if readme.startswith("---") else readme
+          match = re.search(r"(?im)^license:\\s*['\\"]?([^'\\"]+)['\\"]?\\s*$", front_matter)
+          assert match, "Dataset README has no explicit license field."
+          assert match.group(1).strip().lower() == "cc-by-4.0", match.group(1)
+
+          row = json.loads((out / "dataset_parquet_row_canonical.json").read_text(encoding="utf-8"))
+          assert row["row_locator"]["value"] == "reagento__dishka-436" if "row_locator" in row else row.get("instance_id") == "reagento__dishka-436"
+
+          summary = {
+              "audit_scope": "Dishka #435/#436 raw upstream metadata and pinned SWE-rebench dataset card only",
+              "model_loading": False,
+              "model_inference": False,
+              "issue_created_at_utc": issue["created_at"],
+              "pull_request_created_at_utc": pull["created_at"],
+              "dataset_row_created_at_utc": "2025-04-15T22:52:26Z",
+              "dataset_row_timestamp_matches_pr_resource": True,
+              "buggy_base_commit": pull["base"]["sha"],
+              "fixed_commit": pull["head"]["sha"],
+              "dataset_revision": dataset_revision["sha"],
+              "dataset_card_license": card_license or match.group(1).strip(),
+              "raw_json_bodies_preserved": True,
+              "response_headers_preserved": True,
+              "scope_limitation": "This audit does not authenticate the other 112 timestamp-register rows or close cohort-wide source-license review."
+          }
+          (out / "raw-provenance-audit-summary.json").write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + "\\n",
+              encoding="utf-8"
+          )
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          PY
+          (cd dishka-raw-provenance && sha256sum ./* > SHA256SUMS.txt)
+          sha256sum dishka-raw-provenance/SHA256SUMS.txt
+
+      - name: Upload raw source provenance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dishka-435-raw-provenance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: dishka-raw-provenance/
+          if-no-files-found: error
+          retention-days: 90
+
+  qwen-pinned-license-evidence-no-load:
+    needs: no-inference-preflight
+    runs-on: ubuntu-22.04
+    timeout-minutes: 8
+    steps:
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Download only the pinned model license and small metadata files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p qwen-license-evidence
+          REVISION="aa8e72537993ba99e69dfaafa59ed015b17504d1"
+          BASE="https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/${REVISION}"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header qwen-license-evidence/license-response-headers.txt \
+            --output qwen-license-evidence/LICENSE "${BASE}/LICENSE"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header qwen-license-evidence/config-response-headers.txt \
+            --output qwen-license-evidence/config.json "${BASE}/config.json"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header qwen-license-evidence/tokenizer-config-response-headers.txt \
+            --output qwen-license-evidence/tokenizer_config.json "${BASE}/tokenizer_config.json"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header qwen-license-evidence/revision-response-headers.txt \
+            --output qwen-license-evidence/revision-metadata.json \
+            "https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/revision/${REVISION}"
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          root = Path("qwen-license-evidence")
+          revision = "aa8e72537993ba99e69dfaafa59ed015b17504d1"
+          metadata = json.loads((root / "revision-metadata.json").read_text(encoding="utf-8"))
+          config = json.loads((root / "config.json").read_text(encoding="utf-8"))
+          license_text = (root / "LICENSE").read_text(encoding="utf-8")
+
+          assert metadata["sha"] == revision
+          assert "QWEN RESEARCH LICENSE AGREEMENT" in license_text.upper()
+          assert config.get("model_type") == "qwen2"
+          assert config.get("num_hidden_layers") == 36
+          license_sha = hashlib.sha256((root / "LICENSE").read_bytes()).hexdigest()
+          summary = {
+              "model_id": "Qwen/Qwen2.5-3B-Instruct",
+              "immutable_revision": revision,
+              "verified_revision_sha": metadata["sha"],
+              "model_type": config["model_type"],
+              "num_hidden_layers": config["num_hidden_layers"],
+              "license_title_detected": "QWEN RESEARCH LICENSE AGREEMENT",
+              "license_file_sha256": license_sha,
+              "license_use_review_status": "evidence_collected_human_noncommercial_scope_review_still_required",
+              "model_weights_downloaded": False,
+              "model_loaded": False,
+              "tokenizer_loaded": False,
+              "inference_performed": False,
+              "fine_tuning_performed": False
+          }
+          (root / "license-evidence-summary.json").write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + "\\n",
+              encoding="utf-8"
+          )
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          PY
+          (cd qwen-license-evidence && sha256sum ./* > SHA256SUMS.txt)
+
+      - name: Upload pinned model license evidence without weights or inference
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-pinned-license-evidence-no-load-${{ github.run_id }}-${{ github.run_attempt }}
+          path: qwen-license-evidence/
+          if-no-files-found: error
+          retention-days: 90
+
+
   nox-issue-919-reproduction:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
     needs: no-inference-preflight
