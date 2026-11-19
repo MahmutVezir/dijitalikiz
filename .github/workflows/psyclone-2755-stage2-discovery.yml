@@ -49,15 +49,18 @@ jobs:
           schema = pq.read_schema(parquet)
           required = {
               "instance_id", "repo", "base_commit", "created_at",
-              "language", "license", "FAIL_TO_PASS", "problem_statement"
+              "language", "license", "FAIL_TO_PASS", "problem_statement",
+              "patch", "test_patch"
           }
           missing = sorted(required.difference(schema.names))
           if missing:
               raise SystemExit(f"Frozen Parquet schema lacks required columns: {missing}")
+          optional = {"PASS_TO_PASS", "environment_setup_commit", "version"}
+          selected_columns = sorted(required | (optional & set(schema.names)))
 
           table = pq.read_table(
               parquet,
-              columns=sorted(required),
+              columns=selected_columns,
               filters=[("repo", "=", "stfc/PSyclone")]
           )
           rows = [
@@ -91,6 +94,37 @@ jobs:
           if len(selectors) != len(set(selectors)):
               raise SystemExit("Frozen PSyclone row contains duplicate FAIL_TO_PASS selectors")
 
+          import re
+          patch = row.get("patch") or ""
+          test_patch = row.get("test_patch") or ""
+          if not patch.strip() or not test_patch.strip():
+              raise SystemExit("Frozen PSyclone row has an empty production patch or test_patch")
+          test_patch_files = sorted(set(re.findall(r"^\\+\\+\\+ b/(.+)$", test_patch, flags=re.MULTILINE)))
+          expected_test_files = {
+              "src/psyclone/tests/psyad/tl2ad_test.py",
+              "src/psyclone/tests/psyad/transformations/test_preprocess.py",
+              "src/psyclone/tests/psyir/nodes/array_mixin_test.py",
+          }
+          missing_test_files = sorted(expected_test_files.difference(test_patch_files))
+          if missing_test_files:
+              raise SystemExit(
+                  "Frozen test_patch does not include every selector test file: "
+                  f"{missing_test_files}; observed={test_patch_files}"
+              )
+          test_patch_checks = {
+              "new_adjoint_error_test_in_test_patch": (
+                  "test_generate_adjoint_str_trans_error" in test_patch
+              ),
+              "new_preprocess_failure_test_in_test_patch": (
+                  "test_preprocess_arrayassign2loop_failure" in test_patch
+              ),
+              "array_mixin_test_file_in_test_patch": (
+                  "src/psyclone/tests/psyir/nodes/array_mixin_test.py" in test_patch
+              ),
+          }
+          if not all(test_patch_checks.values()):
+              raise SystemExit(f"Original test_patch does not cover the expected selectors: {test_patch_checks}")
+
           problem = row.get("problem_statement") or ""
           alignment = {
               "mentions_active_vector": "vector" in problem.lower(),
@@ -117,12 +151,22 @@ jobs:
               "license": row["license"],
               "canonical_row_sha256": row_sha,
               "problem_statement_sha256": problem_sha,
+              "patch_sha256": hashlib.sha256(patch.encode("utf-8")).hexdigest(),
+              "patch_utf8_bytes": len(patch.encode("utf-8")),
+              "test_patch_sha256": hashlib.sha256(test_patch.encode("utf-8")).hexdigest(),
+              "test_patch_utf8_bytes": len(test_patch.encode("utf-8")),
+              "test_patch_files": test_patch_files,
+              "test_patch_selector_checks": test_patch_checks,
+              "dataset_optional_environment_metadata": {
+                  name: row.get(name) for name in sorted(optional) if name in row
+              },
               "selector_count": len(selectors),
               "selectors": selectors,
               "problem_statement_alignment_checks": alignment,
               "pr_created_at_expected": "2024-11-05T14:18:14Z",
               "issue_created_at_reference": "2024-10-24T10:03:42Z",
               "issue_created_at_is_not_dataset_pr_created_at": True,
+              "created_at_timezone_note": "The dataset value is serialized without an explicit timezone suffix; its wall-clock components match the GitHub PR created_at UTC timestamp. Preserve this serialization caveat in the record.",
               "upstream_pr_base_expected": "a33a99b7953130220ed7d3ad38d358c1124276af",
               "upstream_pr_head_reference": "fbd511fa5ba096b84d8756bb9d84fc8efb0d5706",
               "upstream_pr_merge_commit_reference": "816177c33851f96a840aea1041fe1894bc2b3e25",
