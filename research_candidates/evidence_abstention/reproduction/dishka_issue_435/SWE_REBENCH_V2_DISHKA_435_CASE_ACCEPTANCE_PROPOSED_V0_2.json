@@ -16,7 +16,7 @@
     "created_at_upstream_utc": "2025-04-15T22:52:26Z",
     "timestamp_reconciliation_status": "exact_match",
     "timestamp_review_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/13b4a0c80575cd2de9575cc884038666f34dfaa1/research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_POST_RUN_PROVENANCE_CORRECTION_V0_1_2026-11-16.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/1a87e6ce4b468cadff75b366b012b994803abae0/research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_POST_RUN_PROVENANCE_CORRECTION_V0_1_2026-11-16.md",
       "sha256": "18d21ce820bbeb55be7c86d7dfb37b3061d5f2e942dfc04a3c023c858eabf0ec"
     }
   },
@@ -53,7 +53,7 @@
     "is_fork_or_mirror": false,
     "related_case_ids": [],
     "review_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/13b4a0c80575cd2de9575cc884038666f34dfaa1/research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_CASE_ACCEPTANCE_READINESS_2026-11-18.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/1a87e6ce4b468cadff75b366b012b994803abae0/research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_CASE_ACCEPTANCE_READINESS_2026-11-18.md",
       "sha256": "7278defddfc6d339436cfb80a6b8a11c8305e91e4bd845de6e4400b2f75af30d"
     }
   },
@@ -62,7 +62,7 @@
     "researcher_source_exposure": "full",
     "exposure_notes": "The project lead's corrected factual declaration is prior_pipeline_debug_exposure=none. An earlier 'some' answer is retained only as superseded correction history. Researcher source exposure remains full: the project lead reviewed the issue, PR, patch and source; no researcher blinding is claimed. One human adjudicator is disclosed; ChatGPT is advisory only.",
     "review_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/13b4a0c80575cd2de9575cc884038666f34dfaa1/research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/1a87e6ce4b468cadff75b366b012b994803abae0/research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md",
       "sha256": "7e96d8300a24d107e0004f05bdc82bd21bf0d33e817f25b9edc927a0afb5826c"
     }
   },
@@ -74,11 +74,11 @@
     "notice_and_provenance_review": "passed",
     "reviewer_role": "student_project_lead",
     "review_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/13b4a0c80575cd2de9575cc884038666f34dfaa1/research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_LICENSE_SCOPE_DECISION_2026-11-19.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/1a87e6ce4b468cadff75b366b012b994803abae0/research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_LICENSE_SCOPE_DECISION_2026-11-19.md",
       "sha256": "96f89e28ee026fcced8aca6d854770f5a0aefcb47690405f7d1a022fc9405d4d"
     },
     "changed_file_license_manifest": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/13b4a0c80575cd2de9575cc884038666f34dfaa1/research_candidates/evidence_abstention/REAGENTO_DISHKA_436_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/1a87e6ce4b468cadff75b366b012b994803abae0/research_candidates/evidence_abstention/REAGENTO_DISHKA_436_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json",
       "sha256": "34e09fdcf5d33849659490e2e50cdf80c8c5c8e6f01108dd542c60de203cf360"
     },
     "research_use_decision": "no_obvious_prohibition_identified",
@@ -116,7 +116,7 @@
       "test_selector": "test_issue_435_override_lower_scope"
     },
     "review_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/13b4a0c80575cd2de9575cc884038666f34dfaa1/research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_STAGE2_STAGE3_GATE_REVIEW_V0_1_2026-11-16.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/1a87e6ce4b468cadff75b366b012b994803abae0/research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_STAGE2_STAGE3_GATE_REVIEW_V0_1_2026-11-16.md",
       "sha256": "205f156bd872f7b85dbe3056d7e96e70550e31bba51f69523535008899185916"
     }
   },
@@ -152,19 +152,19 @@
       "UPSTREAM_CROSS_SCOPE_TEST"
     ],
     "review_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/13b4a0c80575cd2de9575cc884038666f34dfaa1/research_candidates/evidence_abstention/reproduction/dishka_issue_435/HUMAN_ADJUDICATION_DECISION_DISHKA_435_V0_1_DRAFT_2026-11-16.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/1a87e6ce4b468cadff75b366b012b994803abae0/research_candidates/evidence_abstention/reproduction/dishka_issue_435/HUMAN_ADJUDICATION_DECISION_DISHKA_435_V0_1_DRAFT_2026-11-16.md",
       "sha256": "67de375d351f73d7d612048d357a75caf673611cbd2ca6becb3fcee8fcc13ae6"
     }
   },
   "evidence_tiers": {
     "status": "human_recorded",
     "tier_decision_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/13b4a0c80575cd2de9575cc884038666f34dfaa1/research_candidates/evidence_abstention/reproduction/dishka_issue_435/HUMAN_ADJUDICATION_DECISION_DISHKA_435_V0_1_DRAFT_2026-11-16.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/1a87e6ce4b468cadff75b366b012b994803abae0/research_candidates/evidence_abstention/reproduction/dishka_issue_435/HUMAN_ADJUDICATION_DECISION_DISHKA_435_V0_1_DRAFT_2026-11-16.md",
       "sha256": "67de375d351f73d7d612048d357a75caf673611cbd2ca6becb3fcee8fcc13ae6"
     },
     "E1": {
       "packet": {
-        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/13b4a0c80575cd2de9575cc884038666f34dfaa1/research_candidates/evidence_abstention/reproduction/dishka_issue_435/E1_PACKET_MANIFEST_V0_1.json",
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/1a87e6ce4b468cadff75b366b012b994803abae0/research_candidates/evidence_abstention/reproduction/dishka_issue_435/E1_PACKET_MANIFEST_V0_1.json",
         "sha256": "0fc59ca0ff6cf220b6b46784329b21cdd9d16af3f2211dd29210dd1031f94462"
       },
       "surviving_mechanism_ids": [
@@ -280,7 +280,7 @@
     },
     "E2": {
       "packet": {
-        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/13b4a0c80575cd2de9575cc884038666f34dfaa1/research_candidates/evidence_abstention/reproduction/dishka_issue_435/E2_PACKET_MANIFEST_V0_1.json",
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/1a87e6ce4b468cadff75b366b012b994803abae0/research_candidates/evidence_abstention/reproduction/dishka_issue_435/E2_PACKET_MANIFEST_V0_1.json",
         "sha256": "8a39ab862393954451f403badd5ccea40350902b39f95ae4e0d7885e9d6751d5"
       },
       "surviving_mechanism_ids": [
@@ -365,7 +365,7 @@
     },
     "E3": {
       "packet": {
-        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/13b4a0c80575cd2de9575cc884038666f34dfaa1/research_candidates/evidence_abstention/reproduction/dishka_issue_435/E3_PACKET_MANIFEST_V0_1.json",
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/1a87e6ce4b468cadff75b366b012b994803abae0/research_candidates/evidence_abstention/reproduction/dishka_issue_435/E3_PACKET_MANIFEST_V0_1.json",
         "sha256": "d75d32da95bfdef73d3824677b6d6df445712967a777580b8867e769c133f131"
       },
       "surviving_mechanism_ids": [
@@ -440,7 +440,7 @@
     "rationale": "The project lead accepted the bounded documentary license/provenance screen only for the exact pinned Dishka source, five changed files, dependency-free issue reproducer, four pinned test-runner packages and separate PyArrow 19.0.1 dataset-extraction environment. This decision is not legal advice or blanket redistribution approval. Earlier project-lead approvals of the technical gold, alternatives, evidence tiers and disclosed limitations remain recorded in the cited human adjudication file. This is an interim case-preparation decision only, not final case acceptance.",
     "ai_critique_used": true,
     "ai_critique_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/13b4a0c80575cd2de9575cc884038666f34dfaa1/research_candidates/evidence_abstention/reproduction/dishka_issue_435/CHATGPT_ADVISORY_CRITIQUE_DISHKA_435_2026-11-17.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/1a87e6ce4b468cadff75b366b012b994803abae0/research_candidates/evidence_abstention/reproduction/dishka_issue_435/CHATGPT_ADVISORY_CRITIQUE_DISHKA_435_2026-11-17.md",
       "sha256": "ea0215e41382409e109d0b3587bd95df400e94887d2f9c137a64fd90173c45ca"
     }
   },
