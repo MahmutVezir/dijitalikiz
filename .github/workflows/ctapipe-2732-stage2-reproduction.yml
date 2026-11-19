@@ -18,6 +18,7 @@ permissions:
 
 jobs:
   ctapipe-2732-base-fixed:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-22.04
     timeout-minutes: 35
     steps:

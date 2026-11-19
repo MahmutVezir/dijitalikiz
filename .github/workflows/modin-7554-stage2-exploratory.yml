@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   modin-7554-exact-selectors:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-22.04
     timeout-minutes: 55
     env:

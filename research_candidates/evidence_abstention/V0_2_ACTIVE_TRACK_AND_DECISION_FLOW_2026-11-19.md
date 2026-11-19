@@ -166,3 +166,14 @@ Dishka remains the first proposed case and is **not accepted**. The separate fin
 The case record's `source.patch` URI was corrected because the mutable upstream PR diff URL did not correspond to the stored SHA-256. It now points to the exact `full-pr.diff` file inside verified artifact 14553229664 (run 44572926370), with inner SHA-256 `c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde`. Outer archive SHA-256 `7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10`; CRC PASS; 32/32 internal hashes PASS. The 90-day retention and exact regeneration command are documented in `DISHKA_435_PATCH_REFERENCE_RECONCILIATION_2026-11-19.md`.
 
 Current canonical case JSON SHA-256 is `0a234c0f16668e5b58dace671483d4bc94b7f8167150e44662b339dc995ff9ee` (blob `c17d908a937c32c7372d1eb19bb9b29990b338e2`). It remains proposed, with the separate final project-lead decision pending. Registry remains 0 accepted cases; global readiness remains blocked.
+
+## 15. Current execution update — Dishka-only focus and global gate plan (19 November 2026)
+
+- The automatic main preflight now keeps the no-inference tests and Dishka reproduction active by default; its 12 other candidate jobs require an explicit manual-dispatch input.
+- Separate non-Dishka Stage 2 candidate workflows are being changed to manual-dispatch-only so shared research-file edits do not start unrelated candidate reproductions.
+- Latest Dishka Stage 2 job: run `44596435482`, job `135816057850`, artifact `14564379897`; ZIP and 32/32 internal hashes verified; independent reproducer and 8/8 selectors remain base-fail/fixed-pass.
+- Latest no-inference preflight job: run `44596435482`, job `135815854250`; 76 tests passed. Readiness remains blocked with 14 global gates, 0 accepted cases and 0 accepted projects.
+- The pinned Qwen revision LICENSE/config evidence was collected without downloading weights (artifact `14565807914`); human/mentor research-use review remains pending.
+- Dishka raw issue/PR and dataset-card responses were captured in artifact `14566406023`; the first validator script failed on a regex syntax error. Manual inspection confirms the Dishka PR timestamp matches the frozen row and the pinned dataset card declares CC-BY-4.0. A corrected rerun is required before treating the workflow audit as passed.
+- Case acceptance remains pending and must not be inferred from Stage 2 success, archive integrity, or structural validation.
+- The detailed 14-gate owners, evidence requirements and closure order are recorded in `DISHKA_AND_V02_PROJECT_GATE_CLOSURE_PLAN_2026-11-19.md`.

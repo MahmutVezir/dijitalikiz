@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   psyclone-2755-row-discovery:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-22.04
     timeout-minutes: 25
     steps:

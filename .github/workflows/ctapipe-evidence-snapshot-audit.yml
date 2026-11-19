@@ -18,6 +18,7 @@ permissions:
 
 jobs:
   audit-source-snapshots:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     steps:

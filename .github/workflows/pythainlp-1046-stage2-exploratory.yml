@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   pythainlp-1046-exact-selector:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-22.04
     timeout-minutes: 45
     env:

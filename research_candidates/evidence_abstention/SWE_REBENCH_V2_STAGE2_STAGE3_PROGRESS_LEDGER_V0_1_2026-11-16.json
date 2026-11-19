@@ -77,16 +77,16 @@
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_STAGE2_STAGE3_GATE_REVIEW_V0_1_2026-11-16.md",
       "stage2_status": "passed",
-      "stage2_workflow_job_id": 135723082451,
-      "stage2_evidence_note": "Latest independently verified Stage 2 repeat: workflow run 44572926370 / Dishka job 135733170187 / artifact 14553229664; downloaded ZIP SHA-256 7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10 matches GitHub digest; ZIP CRC PASS; 33 members; 32/32 internal hashes PASS. Base issue reproducer fails with AssertionError 1 != 42 and fixed passes; all 8 frozen dataset selectors fail on buggy base with defect-specific failures and pass on fixed revision. The overall matrix run failed only because Nox, Werkzeug and Moto candidate jobs failed; the Dishka job itself passed. This is technical replication, not case acceptance.",
+      "stage2_workflow_job_id": 135816057850,
+      "stage2_evidence_note": "Latest Dishka-only reproduction on PR head af12f54f8d3900b79f0264aa7f6739c68dff0e17: run 44596435482 / job 135816057850 / artifact 14564379897. Outer ZIP SHA-256 bed2f0a7b04b21e2753747b1ed3324c4ff15bc789bdf1cfa1264f976178d349c; independently downloaded, ZIP CRC PASS, 33 members, 32/32 inner hashes PASS. full-pr.diff SHA-256 c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde. Issue reproducer base-fail (AssertionError 1 != 42) / fixed-pass; all eight frozen selectors base-fail / fixed-pass. Technical pass only; case remains proposed and not accepted.",
       "stage3_status": "passed_technical_adjudication",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44572926370,
-      "stage2_latest_job_id": 135733170187,
-      "stage2_latest_artifact_id": 14553229664,
-      "stage2_latest_artifact_sha256": "7f10db7e6f1b033eef7cd34476e3e34b3dbd28687310ccb3707ffddc5d5a6f10",
-      "stage2_latest_artifact_integrity": "Independently downloaded and verified latest artifact: outer ZIP SHA-256 exactly matches GitHub digest; compressed size 54,107,854 bytes, 33 members, ZIP CRC PASS, and all 32 internal SHA256SUMS entries verified. The Dishka job completed success (135733170187) even though the overall 13-candidate workflow run failed because separate Nox, Werkzeug and Moto jobs failed. Issue reproducer: base fails AssertionError 1 != 42; fixed revision passes. Dataset selectors: all 8 fail on buggy base with executed defect-related failures and the same 8 pass on fixed revision.",
+      "stage2_latest_run_id": 44596435482,
+      "stage2_latest_job_id": 135816057850,
+      "stage2_latest_artifact_id": 14564379897,
+      "stage2_latest_artifact_sha256": "bed2f0a7b04b21e2753747b1ed3324c4ff15bc789bdf1cfa1264f976178d349c",
+      "stage2_latest_artifact_integrity": "Independent local outer ZIP SHA-256 matches GitHub; CRC PASS; 33 members; 32/32 internal SHA256SUMS entries PASS. The same eight frozen selector outcomes and independent reproducer base-fail/fixed-pass were reproduced.",
       "study_evaluation_eligibility": "eligible_pending_final_case_acceptance",
       "prior_pipeline_debug_exposure": "none",
       "exposure_decision_record": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md",
@@ -118,10 +118,13 @@
         "final_decision_timestamp_utc": null,
         "final_decision_record": null,
         "source_patch_reference": {
-          "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44572926370/artifacts/14553229664#path=full-pr.diff",
+          "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44596435482/artifacts/14564379897#path=full-pr.diff",
           "sha256": "c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde",
-          "reconciliation_record": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_PATCH_REFERENCE_RECONCILIATION_2026-11-19.md",
-          "reconciliation_sha256": "b1f550033797d0f82cf4f4f49fb3c0bb42ad883520fbbf81e7608b0814ccdf09"
+          "reconciliation_record": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/DISHKA_435_PATCH_REFERENCE_RECONCILIATION_2026-11-19.md"
+        },
+        "stage2_artifact_reference": {
+          "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44596435482/artifacts/14564379897",
+          "sha256": "bed2f0a7b04b21e2753747b1ed3324c4ff15bc789bdf1cfa1264f976178d349c"
         }
       },
       "case_record_structural_validation": {
@@ -182,6 +185,23 @@
         "fine_tuning_performed": false,
         "inference_authorized": false,
         "artifact_zip_independently_verified": false
+      },
+      "raw_provenance_audit": {
+        "workflow_run_id": 44596435482,
+        "job_id": 135816056778,
+        "job_conclusion": "failure_due_to_python_regex_syntax_error_after_raw_capture",
+        "artifact_id": 14566406023,
+        "artifact_zip_sha256": "e3a3558b7d0789b5a16e168010cfb618c94c4bbc514d758fdc51b72232a082e0",
+        "independent_local_checks": {
+          "zip_crc_passed": true,
+          "issue_and_pr_raw_http_responses": "200",
+          "dataset_revision_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "dataset_card_license": "CC-BY-4.0",
+          "dishka_row_sha256": "c548969ec886af21b56c93daae34db1a86b3a10c8dd1473d3d5c886549a9e86d",
+          "dataset_row_timestamp_matches_pr_created_at": true,
+          "buggy_base_and_fixed_commit_pins_match": true
+        },
+        "limitation": "The workflow job did not complete its checksum-manifest/summary step; a corrected rerun is required. This candidate-specific capture does not authenticate the other 112 timestamp records or complete the cohort-wide license audit."
       }
     },
     {
@@ -2174,12 +2194,12 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44518328302,
-    "head_commit": "1eff88bfaf2772bba0395985f3fd51437b0db401",
-    "job_id": 135540083559,
-    "artifact_id": 14526347689,
-    "artifact_name": "evidence-abstention-preflight-logs-44518328302-1",
-    "artifact_zip_sha256": "a5aceec9c765b31147429598b37d670759b04924006c50d317862f88d71920f5",
+    "workflow_run_id": 44596435482,
+    "head_commit": "af12f54f8d3900b79f0264aa7f6739c68dff0e17",
+    "job_id": 135815854250,
+    "artifact_id": 14565817178,
+    "artifact_name": "evidence-abstention-preflight-logs-44596435482-1",
+    "artifact_zip_sha256": "f4b5c94ea1be629fabea4757b31ddb5176b2da7c75663493e9868da9b97fa013",
     "artifact_integrity": {
       "local_outer_sha256_match": true,
       "zip_crc_passed": true,
@@ -2196,14 +2216,15 @@
       "evidence_packet_and_citation_audit": "12 passed",
       "packet_set_and_candidate_ledger": "25 passed",
       "selector_runner_contract": "6 passed",
-      "v0_2_exploratory_acceptance_and_preflight": "15 passed",
-      "v0_2_design_and_dual_human_scoring": "9 passed",
-      "total": "67 passed"
+      "v0_2_exploratory_acceptance_and_preflight": "23 passed",
+      "v0_2_design_and_dual_human_scoring": "10 passed",
+      "total": "76 passed"
     },
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
-    "note": "No-inference preflight succeeded on PR head 1eff88bfaf2772bba0395985f3fd51437b0db401. Its readiness report remains blocked with 14 explicit blockers and zero accepted cases/projects. The 67 contract tests passed, including structural validation of the real NumPyro packet set. No model loading, inference or fine-tuning occurred."
+    "inference_authorized": false,
+    "note": "No-inference preflight passed on PR head af12f54f8d3900b79f0264aa7f6739c68dff0e17. The readiness report remains blocked with 14 global gates, zero accepted cases/projects, and no model operation."
   },
   "project_lead_decisions": [
     {
@@ -2318,5 +2339,23 @@
       "status": "passed",
       "purpose": "Repository/configuration validation on the same Stage 2 workflow code commit; no inference."
     }
+  },
+  "latest_dishka_focused_run": {
+    "workflow_run_id": 44596435482,
+    "head_commit": "af12f54f8d3900b79f0264aa7f6739c68dff0e17",
+    "workflow_conclusion": "failure_due_to_raw_provenance_audit_script_syntax_error",
+    "dishka_job_id": 135816057850,
+    "dishka_job_conclusion": "success",
+    "dishka_artifact_id": 14564379897,
+    "dishka_artifact_sha256": "bed2f0a7b04b21e2753747b1ed3324c4ff15bc789bdf1cfa1264f976178d349c",
+    "other_candidate_jobs": "12 skipped in the focused workflow",
+    "qwen_license_audit_job_id": 135816056966,
+    "qwen_license_audit_conclusion": "success",
+    "qwen_license_artifact_id": 14565807914,
+    "qwen_license_artifact_sha256": "2b23c6d58c1862105ba4e3cbde739b90b04301a38f014ac22d2ccdd74bfdc0fc",
+    "qwen_license_file_sha256": "ef52482bb785733093dc9a2e8edd8e764c77d12d8e9d8f10a80c9b547d32d0f9",
+    "qwen_weights_downloaded": false,
+    "qwen_model_loaded": false,
+    "inference_performed": false
   }
 }

@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   datacompy-404-row-discovery:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:

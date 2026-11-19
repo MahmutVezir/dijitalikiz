@@ -337,3 +337,45 @@ The final-acceptance rationale in the JSON is also corrected: case-specific reco
 ### Decision boundary
 
 Dishka remains a proposed candidate, not an accepted case. Its final project-lead YES/NO decision remains pending; accepted registry count remains 0. The newer archive pointer does not change gold/tier adjudication, exposure classification, license-scope limitations, candidate independence, or case acceptance. No model loading, inference, fine-tuning or training was performed or authorized.
+
+## 18. Focused Dishka run, provenance capture and Qwen license evidence — 19 November 2026
+
+### Dishka technical reproduction — newest checked artifact
+
+- PR-head commit: `af12f54f8d3900b79f0264aa7f6739c68dff0e17`.
+- Workflow run: [44596435482](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44596435482).
+- Dishka job `135816057850`: **success**.
+- Artifact [14564379897](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44596435482/artifacts/14564379897).
+- Outer ZIP SHA-256: `bed2f0a7b04b21e2753747b1ed3324c4ff15bc789bdf1cfa1264f976178d349c`; independent download matched GitHub, ZIP CRC passed, 33 members, 32/32 internal SHA256SUMS entries verified.
+- Inner `full-pr.diff` SHA-256 remains `c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde`.
+- Independent issue reproducer: buggy base failed with `AssertionError: 1 != 42`; fixed revision passed.
+- Frozen dataset selectors: 8/8 executed defect-related failures on buggy base and 8/8 passes on fixed revision.
+- Canonical proposed JSON and its regression test now point at this newer archive. The case remains `proposed`; final acceptance remains `pending`.
+
+### No-inference preflight
+
+- Job `135815854250`: **success**.
+- 76 tests passed (12 + 25 + 6 + 23 + 10).
+- Artifact [14565817178](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44596435482/artifacts/14565817178), downloaded SHA-256 `f4b5c94ea1be629fabea4757b31ddb5176b2da7c75663493e9868da9b97fa013`, ZIP CRC PASS.
+- Readiness remains `blocked_before_inference`, 14 blockers, 0 accepted cases/projects, `valid_empty_registry`; no model loading, inference or fine-tuning.
+
+### Dishka raw source metadata — partial evidence captured, script correction required
+
+- Job `135816056778` attempted raw GitHub issue/PR API capture (response bodies and headers) and the pinned Hugging Face dataset revision/card.
+- Artifact [14566406023](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44596435482/artifacts/14566406023), ZIP SHA-256 `e3a3558b7d0789b5a16e168010cfb618c94c4bbc514d758fdc51b72232a082e0`, ZIP CRC PASS.
+- The job ended on a Python regex syntax error after uploading the captured files; checksum-manifest/summary generation did not complete. The artifact was therefore inspected independently rather than called a successful workflow.
+- Independent local inspection of the artifact found HTTP 200 response headers for issue #435 and PR #436; issue created at `2025-04-14T17:22:16Z`; PR created at `2025-04-15T22:52:26Z`; frozen row `reagento__dishka-436` carries that same PR timestamp; base/fixed pins match; the dataset revision SHA is `fb9aa226b2ce37c708ea7732e7b980abacdadb67`; both revision metadata and README identify `CC-BY-4.0`.
+- This closes neither the 113-row raw payload audit nor the broader per-upstream-source license review. The cohort-level one-second SimPEG exception remains open.
+
+### Pinned Qwen license/configuration evidence — successful read-only collection
+
+- Job `135816056966`: **success**.
+- Artifact [14565807914](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44596435482/artifacts/14565807914), outer SHA-256 `2b23c6d58c1862105ba4e3cbde739b90b04301a38f014ac22d2ccdd74bfdc0fc`; independent ZIP CRC PASS and 9/9 internal hashes PASS.
+- Immutable revision confirmed: `aa8e72537993ba99e69dfaafa59ed015b17504d1`.
+- Exact LICENSE SHA-256: `ef52482bb785733093dc9a2e8edd8e764c77d12d8e9d8f10a80c9b547d32d0f9`.
+- License title: Qwen Research License Agreement; config metadata confirms `model_type=qwen2` and 36 layers.
+- No model weights or model/tokenizer loading occurred. This is collected license evidence, **not** the required human/mentor non-commercial-use decision or legal clearance.
+
+### Current disposition
+
+Dishka technical Stage 2 and candidate-level packet/structural checks remain passed. The separate final project-lead YES/NO acceptance is still pending. The accepted registry remains empty. Project-wide readiness remains blocked; no model operation is authorized.

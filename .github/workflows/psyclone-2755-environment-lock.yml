@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   resolve_environment:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     name: Resolve and fingerprint PSyclone test environment
     runs-on: ubuntu-22.04
     timeout-minutes: 30

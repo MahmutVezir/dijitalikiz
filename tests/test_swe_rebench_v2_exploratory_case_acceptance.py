@@ -343,13 +343,13 @@ def test_dishka_patch_and_reproduction_artifact_references_are_pinned():
     assert record["source"]["patch"] == {
         "uri": (
             "https://github.com/MahmutVezir/dijitalikiz/actions/runs/"
-            "44586011672/artifacts/14559803463#path=full-pr.diff"
+            "44596435482/artifacts/14564379897#path=full-pr.diff"
         ),
         "sha256": "c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde",
     }
     latest_artifact = {
-        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44586011672/artifacts/14559803463",
-        "sha256": "7284f44942c684eef0f1740fd1c13aa856b9552c6e675e8a7cede8abedc612b7",
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44596435482/artifacts/14564379897",
+        "sha256": "bed2f0a7b04b21e2753747b1ed3324c4ff15bc789bdf1cfa1264f976178d349c",
     }
     assert record["technical_reproduction"]["buggy_baseline"]["run_record"] == latest_artifact
     assert record["technical_reproduction"]["fixed_revision"]["run_record"] == latest_artifact

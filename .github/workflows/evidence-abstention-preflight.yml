@@ -400,12 +400,12 @@ jobs:
           if card_license is not None:
               assert str(card_license).lower() == "cc-by-4.0", card_license
           front_matter = readme.split("---", 2)[1] if readme.startswith("---") else readme
-          match = re.search(r"(?im)^license:\\s*['\\"]?([^'\\"]+)['\\"]?\\s*$", front_matter)
+          match = re.search(r"(?im)^license:\s*([A-Za-z0-9.-]+)\s*$", front_matter)
           assert match, "Dataset README has no explicit license field."
           assert match.group(1).strip().lower() == "cc-by-4.0", match.group(1)
 
           row = json.loads((out / "dataset_parquet_row_canonical.json").read_text(encoding="utf-8"))
-          assert row["row_locator"]["value"] == "reagento__dishka-436" if "row_locator" in row else row.get("instance_id") == "reagento__dishka-436"
+          assert row.get("instance_id") == "reagento__dishka-436", row
 
           summary = {
               "audit_scope": "Dishka #435/#436 raw upstream metadata and pinned SWE-rebench dataset card only",
@@ -424,7 +424,7 @@ jobs:
               "scope_limitation": "This audit does not authenticate the other 112 timestamp-register rows or close cohort-wide source-license review."
           }
           (out / "raw-provenance-audit-summary.json").write_text(
-              json.dumps(summary, indent=2, ensure_ascii=False) + "\\n",
+              json.dumps(summary, indent=2, ensure_ascii=False) + "\n",
               encoding="utf-8"
           )
           print(json.dumps(summary, indent=2, ensure_ascii=False))
@@ -503,7 +503,7 @@ jobs:
               "fine_tuning_performed": False
           }
           (root / "license-evidence-summary.json").write_text(
-              json.dumps(summary, indent=2, ensure_ascii=False) + "\\n",
+              json.dumps(summary, indent=2, ensure_ascii=False) + "\n",
               encoding="utf-8"
           )
           print(json.dumps(summary, indent=2, ensure_ascii=False))
