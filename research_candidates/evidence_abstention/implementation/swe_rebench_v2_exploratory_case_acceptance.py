@@ -190,10 +190,13 @@ def validate_registry(registry: Any) -> dict[str, Any]:
     for index, (record, result) in enumerate(zip(records, results)):
         if result["status"] != "structurally_complete_candidate":
             blockers.extend(f"records[{index}]: {item}" for item in result["blockers"])
+        if not isinstance(record, Mapping):
+            blockers.append(f"records[{index}]: registry record must be an object.")
+            continue
         if record.get("acceptance_decision") != "accepted":
             blockers.append(f"records[{index}]: only explicitly accepted cases may enter the accepted-case registry.")
         final_decision = record.get("final_acceptance", {})
-        if final_decision.get("status") != "approved":
+        if not isinstance(final_decision, Mapping) or final_decision.get("status") != "approved":
             blockers.append(f"records[{index}]: an approved project-lead final decision is required for registry inclusion.")
     case_ids = [result.get("case_id") for result in results if result.get("case_id")]
     project_ids = [result.get("upstream_project_id") for result in results if result.get("upstream_project_id")]
