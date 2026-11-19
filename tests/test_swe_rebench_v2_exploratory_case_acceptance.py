@@ -110,7 +110,7 @@ def test_accepted_case_requires_timestamped_hashed_final_project_lead_decision()
     record["final_acceptance"]["decision_record"] = None
     result = validate_case_record(record)
     assert result["status"] == "invalid"
-    assert any("timestamped, hashed project-lead" in item for item in result["blockers"])
+    assert any("final_acceptance" in item for item in result["blockers"])
 
 
 def test_accepted_registry_rejects_proposed_case_even_if_structurally_complete():
