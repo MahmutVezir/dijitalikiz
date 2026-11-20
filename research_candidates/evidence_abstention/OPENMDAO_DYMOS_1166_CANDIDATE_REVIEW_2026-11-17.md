@@ -199,3 +199,16 @@ The active v0.2 protocol and Dishka #435 accepted precedent allow the student pr
 The project lead's gold/tier decision for Dymos remains **pending**. The bounded documentary license acknowledgement, exact pinned dataset-card license authentication, and explicit candidate-specific prior pipeline/debug exposure declaration also remain pending. Dymos #531 is a historical related predecessor and is not counted as a second case. No inference is authorized.
 
 **Current Dymos disposition:** Stage 2 dataset selector PASS; independent public-API reproducer PASS; proposed E1/E2/E3 structural contract PASS; single-project issue-family screen recorded; not yet accepted. Final case acceptance must remain unchanged until the project lead's technical decision, exposure/license declarations, complete schema-conformant case record, registry validation, and separate final YES/NO decision are recorded.
+
+
+### Latest branch-head rerun — 20 November 2026
+
+The independent public-API reproducer was rerun after the portfolio/adjudication-record updates on branch head `efe677f49088eb9493fef6e8c6615b5bcb061dcb`.
+
+- Run: [44745436377](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44745436377), job `136319403418`, success.
+- Artifact: `14632153920`; GitHub SHA-256 `b70d1572ed0a8dbc89f1331da09caaa8848a7581efb2b85c9aceefef09874be2`.
+- Local re-download verification: outer SHA-256 exact match; ZIP CRC PASS; 15/15 internal SHA256SUMS entries PASS.
+- Buggy base: the fresh Brachistochrone API test executed and failed with actual `[[1.0], [1.0]]` rather than requested `[[5.0], [15.0]]`.
+- Fixed PR head: same test passed (`1 passed in 0.66s`).
+
+This is a repeat of the same Dymos case, not an additional case. The related #531 issue remains a historical predecessor in the same broad family and is not double-counted. Final acceptance remains pending source-aware project-lead gold/tier decision, bounded license acknowledgement, exact dataset-card scope, exposure declaration, case record and registry check.
