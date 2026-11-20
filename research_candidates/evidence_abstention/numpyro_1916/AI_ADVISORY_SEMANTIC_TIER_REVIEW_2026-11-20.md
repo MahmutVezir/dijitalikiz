@@ -55,13 +55,13 @@ This remains AI advisory reasoning only. Under the superseding v0.2 adjudication
 
 E3 contains only the frozen issue narrative and reproducer code. It establishes the reported setting (AIES, 100 vectorized chains, a `warmup()` call followed by `run()`) but contains neither the traceback nor implementation internals. On the information actually visible in this packet, caller/API misuse, a sampler-state contract problem, and an internal warmup-resume handoff problem remain possible. No root-cause alternative is defensibly eliminated. This matches the E3 definition.
 
-### E2 — current proposal: not yet robustly demonstrated
+### E2 — pre-amendment gap (addressed by the approved packet amendment)
 
 The current E2 adds the issue traceback. The traceback localizes the exception to `EnsembleSampler.sample -> random.split(rng_key)` and reports a key array with shape `(100, 2)`; JAX's error text says that this call accepts a single key and directs batching through `jax.vmap`. This is useful narrowing evidence and weighs against treating the event as an unexplained JAX failure on a scalar key.
 
 However, the current E2 does not establish from the visible packet that the reporter's `warmup()` → `run()` sequence is a documented supported lifecycle, nor that passing a scalar key to `run()` for multiple chains is an allowed input. Consequently, the caller/API-misuse alternative is not cleanly eliminated. The trace also does not show whether the batched key was intentionally part of the ensemble sampler's state contract or was introduced by an internal state replacement. I would not record E2 as a fully established semantic tier in its current form.
 
-### E1 — current proposal: strong causal chain, but should inherit the API-contract evidence
+### E1 — pre-amendment packet and the required API-contract evidence
 
 The three existing pinned buggy-base source excerpts form a strong implementation chain:
 
@@ -71,7 +71,7 @@ The three existing pinned buggy-base source excerpts form a strong implementatio
 
 Together with the traceback, these excerpts support the approved gold mechanism: the warmup-resume handoff replaces the scalar sampler-state key with a per-chain batch, after which the sampler treats that field as a single key. The initializer excerpt materially resolves the alternative that the ordinary ensemble sampler state is designed to store a batch.
 
-For a strict E1 decision, the packet should also carry the pinned public API contract that the reported call sequence and scalar key are supported. Without that bridge, a reviewer could still argue caller misuse rather than the internal state transition.
+For a strict E1 decision, the pre-amendment packet needed to carry the pinned public API contract that the reported call sequence and scalar key are supported. Without that bridge, a reviewer could still argue caller misuse rather than the internal state transition.
 
 ### Minimal prospective amendment to the packet set
 
@@ -82,12 +82,24 @@ Add the following two immutable source excerpts from the exact buggy-base revisi
 
 These are source-contract excerpts from the pinned buggy base, not current online documentation. They do not disclose the sampler's internal state transition. With these two items, E2 would eliminate the caller-misuse/unsupported-lifecycle alternative while leaving at least two materially distinct explanations open: (a) the MCMC warmup-resume handoff violates the sampler state's scalar-key invariant, or (b) the ensemble sampler's per-step state contract is intended to be batched and its split operation is the faulty layer. E1's three existing implementation excerpts then distinguish those explanations.
 
-**Proposed counts after amendment:** E3=1, E2=4, E1=7. The project lead approved this prospective amendment on 20 November 2026. The packet set has now been amended to E3=1, E2=4, E1=7, with regenerated packet, packet-set and provenance hashes. Branch-head structural CI is the remaining validation step; semantic sufficiency and final acceptance remain separate decisions.
+**Proposed counts after amendment:** E3=1, E2=4, E1=7. The project lead approved the packet-construction amendment on 20 November 2026. The amended E3=1, E2=4, E1=7 packet set passed structural/no-inference CI on branch-head commit `43b06b48b843bbca78cde608a96edce2344cca90` (run `44761690559`, 90 tests). This proves packet structure, nesting and hashes only; semantic sufficiency and final acceptance remain separate decisions.
 
 ### Advisory recommendation — not an approval
 
 - E3: retain as proposed.
-- E2: do not finalize in its current form; add the two pinned API-contract excerpts prospectively, then re-evaluate.
-- E1: retain the three current implementation excerpts and inherit the two API-contract excerpts through nesting; on that amended set, E1 is likely to leave only the approved warmup-state key-shape handoff mechanism.
+- E2: the two pinned API-contract excerpts are now included in E2; structural CI passed. The project lead's semantic-sufficiency decision remains separate.
+- E1: the amended E1 inherits the two API-contract excerpts and adds the three implementation excerpts; this supports the approved warmup-state key-shape handoff mechanism. The project lead must still decide whether exactly one mechanism remains plausible.
 - Do not add the fixed patch, fixed-source excerpts, fixed-pass logs, hidden gold statement, or tier labels to model-facing packets.
 - Keep the project's source-aware decision and the later blinded raw-output scoring roles separate. No human Panel B ratings or independent adjudication are being claimed here.
+
+
+## Branch-head verification — 20 November 2026
+
+- Amended packet counts: E3=1, E2=4, E1=7.
+- Packet-set SHA-256: `b53d655f38466f2aa5b164a3a96c13a630e4419986401e472f2ed4371ffd7edb`.
+- Structural/no-inference preflight: run `44761690559`, job `136375587794`, commit `43b06b48b843bbca78cde608a96edce2344cca90` — success; 90 tests passed.
+- Research Validation (No Inference): run `44761690466` — success.
+- Independent NumPyro reproducer: run `44761690320`, job `136375585065` — success. The pinned buggy base produced the expected (100, 2) key-shape error; the exact fixed merge passed the same reproducer (1 passed in 3.89s). Artifact `14640974491`, GitHub digest `sha256:7717fe6ed53ae6752325cf954ea20285279ffff679403f7a5c2c9bf20216ac49`; this latest artifact was not locally downloaded and re-hashed.
+- Readiness remains blocked with 13 global blockers, one accepted case (Dishka), and `ready_for_inference=false`. No model loading, inference, fine-tuning or training occurred.
+
+These checks do not adjudicate semantic evidence sufficiency and do not accept NumPyro as a case.
