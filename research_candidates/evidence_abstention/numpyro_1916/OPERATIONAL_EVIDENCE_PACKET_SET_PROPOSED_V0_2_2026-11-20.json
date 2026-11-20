@@ -21,6 +21,20 @@
           "source_snapshot_sha256": "d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646"
         },
         {
+          "id": "NP1916_BASE_MCMC_WARMUP_METHOD_CONTRACT",
+          "kind": "source_excerpt",
+          "content": "        Run the MCMC warmup adaptation phase. After this call, `self.post_warmup_state` will be set\n        and the :meth:`run` method will skip the warmup adaptation phase. To run `warmup` again\n        for the new data, it is required to run :meth:`warmup` again.",
+          "content_sha256": "af4b22cb0bf337b141ca89fa98f5f5969b22f8d48a5de826256a85069f55efd8",
+          "source_snapshot_sha256": "af4b22cb0bf337b141ca89fa98f5f5969b22f8d48a5de826256a85069f55efd8"
+        },
+        {
+          "id": "NP1916_BASE_MCMC_RUN_KEY_CONTRACT",
+          "kind": "source_excerpt",
+          "content": "        :param random.PRNGKey rng_key: Random number generator key to be used for the sampling.\n            For multi-chains, a batch of `num_chains` keys can be supplied. If `rng_key`\n            does not have batch_size, it will be split in to a batch of `num_chains` keys.",
+          "content_sha256": "f5771b132e123a8ea8237cb74d57dd1e6485598427e0792de9464b398bc974ea",
+          "source_snapshot_sha256": "f5771b132e123a8ea8237cb74d57dd1e6485598427e0792de9464b398bc974ea"
+        },
+        {
           "id": "NP1916_BASE_MCMC_RUN_HANDOFF",
           "kind": "source_excerpt",
           "content": "        init_state = self._get_cached_init_state(rng_key, args, kwargs)\n        if self.num_chains > 1 and is_prng_key(rng_key):\n            rng_key = random.split(rng_key, self.num_chains)\n\n        if self._warmup_state is not None:\n            self._set_collection_params(0, self.num_samples, self.num_samples, \"sample\")\n            init_state = self._warmup_state._replace(rng_key=rng_key)",
@@ -40,23 +54,9 @@
           "content": "    def init(\n        self, rng_key, num_warmup, init_params=None, model_args=(), model_kwargs={}\n    ):\n        assert not is_prng_key(rng_key), (\n            \"EnsembleSampler only supports chain_method='vectorized' with num_chains > 1.\\n\"\n            \"If you want to run chains in parallel, please raise a github issue.\"\n        )\n        assert rng_key.shape[0] % 2 == 0, \"Number of chains must be even.\"\n        self._num_chains = rng_key.shape[0]\n        if init_params is not None:\n            assert all(\n                [\n                    param.shape[0] == self._num_chains\n                    for param in jax.tree.leaves(init_params)\n                ]\n            ), \"The batch dimension of each param must match n_chains\"\n\n        rng_key, rng_key_inner_state, rng_key_init_model = random.split(rng_key[0], 3)\n        rng_key_init_model = random.split(rng_key_init_model, self._num_chains)\n\n        init_params = self._init_state(\n            rng_key_init_model, model_args, model_kwargs, init_params\n        )\n\n        if self._potential_fn and init_params is None:\n            raise ValueError(\n                \"Valid value of `init_params` must be provided with `potential_fn`.\"\n            )\n\n        self._num_warmup = num_warmup\n\n        return EnsembleSamplerState(\n            init_params, self.init_inner_state(rng_key_inner_state), rng_key\n        )",
           "content_sha256": "3792bc9a542c5a8896cb5f399ca4147c97fadbbe4e80b0e20bb542611a82ae07",
           "source_snapshot_sha256": "3792bc9a542c5a8896cb5f399ca4147c97fadbbe4e80b0e20bb542611a82ae07"
-        },
-        {
-          "id": "NP1916_BASE_MCMC_WARMUP_METHOD_CONTRACT",
-          "kind": "source_excerpt",
-          "content": "        Run the MCMC warmup adaptation phase. After this call, `self.post_warmup_state` will be set\n        and the :meth:`run` method will skip the warmup adaptation phase. To run `warmup` again\n        for the new data, it is required to run :meth:`warmup` again.",
-          "content_sha256": "af4b22cb0bf337b141ca89fa98f5f5969b22f8d48a5de826256a85069f55efd8",
-          "source_snapshot_sha256": "af4b22cb0bf337b141ca89fa98f5f5969b22f8d48a5de826256a85069f55efd8"
-        },
-        {
-          "id": "NP1916_BASE_MCMC_RUN_KEY_CONTRACT",
-          "kind": "source_excerpt",
-          "content": "        :param random.PRNGKey rng_key: Random number generator key to be used for the sampling.\n            For multi-chains, a batch of `num_chains` keys can be supplied. If `rng_key`\n            does not have batch_size, it will be split in to a batch of `num_chains` keys.",
-          "content_sha256": "f5771b132e123a8ea8237cb74d57dd1e6485598427e0792de9464b398bc974ea",
-          "source_snapshot_sha256": "f5771b132e123a8ea8237cb74d57dd1e6485598427e0792de9464b398bc974ea"
         }
       ],
-      "packet_sha256": "c2dc3ca1093824983b63be2246687536a91d9687f1984667b1a2b9feb218af81"
+      "packet_sha256": "c6dcaac924e6a2e94107c77d252b137797dfa371e8a41738a0575e436531eaee"
     },
     "E2": {
       "schema_version": "1.0",
@@ -108,5 +108,5 @@
       "packet_sha256": "91816e0d035168e52df12f364f50ea8cd5cea5a2fca9712777cdeb9e632843a4"
     }
   },
-  "packet_set_sha256": "3f159f3f46f7fa6e10b7323870f66115c4c2012fd28ed4676b71013c0f94c9c7"
+  "packet_set_sha256": "b53d655f38466f2aa5b164a3a96c13a630e4419986401e472f2ed4371ffd7edb"
 }
