@@ -30,9 +30,22 @@
     "row_license_field": "Apache-2.0",
     "row_license_scope": "Per-row identifier of the upstream source repository, not the dataset repository's own license.",
     "current_hub_card_license": "CC-BY-4.0",
-    "current_hub_card_metadata_source": "Hugging Face Hub repository details retrieved 2026-11-20",
-    "exact_pinned_dataset_card_license_verified": false,
-    "attribution_and_source_repository_licenses_must_both_be_respected": true
+    "current_hub_card_metadata_source": "Hugging Face Hub immutable commit page for exact dataset revision fb9aa226b2ce37c708ea7732e7b980abacdadb67, retrieved 2026-11-20",
+    "exact_pinned_dataset_card_license_verified": true,
+    "attribution_and_source_repository_licenses_must_both_be_respected": true,
+    "pinned_card_verification": {
+      "repo_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+      "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+      "immutable_commit_page": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commit/fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+      "license_displayed_at_exact_revision": "CC-BY-4.0",
+      "commit_changes": [
+        "README.md",
+        "data/train-00000-of-00001.parquet"
+      ],
+      "verification_method": "Read the Hub commit page at the exact pinned SHA; the page displays CC-BY-4.0 and confirms README.md was present/changed at that commit.",
+      "verification_date": "2026-11-20",
+      "caveat": "This authenticates the pinned dataset-card license metadata; it is not a legal clearance and does not replace the row-specific Dymos Apache-2.0 license field."
+    }
   },
   "reproduction_environment": {
     "stage2_workflow_run_id": 44114656908,
@@ -136,7 +149,183 @@
       "zip_crc": "PASS",
       "internal_hashes": "15/15 PASS"
     },
-    "independent_reproducer_runtime": "CPython 3.11.9, CPU-compatible numerical environment; no optional optimizer installed or invoked"
+    "independent_reproducer_runtime": "CPython 3.11.9, CPU-compatible numerical environment; no optional optimizer installed or invoked",
+    "package_inventory": {
+      "artifact_id": 14341424466,
+      "artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
+      "zip_crc": "PASS",
+      "internal_hashes": "18/18 PASS",
+      "dependency_inventory_sha256": "6e8f21e813fd0332fa3a5c370f76a0a52653d49868348d4316cb0eb40d0c3c89",
+      "dataset_extraction_inventory_sha256": "ac40d99c0eeaa6654aa5197b320429c6efa6e720420692d146f4810798dfa068",
+      "runtime_package_count": 14,
+      "runtime_packages": [
+        {
+          "name": "numpy",
+          "version": "1.26.4",
+          "declared_license": "BSD family",
+          "binary_bundles": [
+            {
+              "name": "OpenBLAS",
+              "license": "BSD-3-Clause"
+            },
+            {
+              "name": "LAPACK",
+              "license": "BSD-3-Clause-Attribution"
+            },
+            {
+              "name": "GCC runtime library",
+              "license": "GPL-3.0-with-GCC-exception"
+            },
+            {
+              "name": "libquadmath",
+              "license": "LGPL-2.1-or-later"
+            }
+          ]
+        },
+        {
+          "name": "scipy",
+          "version": "1.13.1",
+          "declared_license": "BSD family",
+          "binary_bundles": [
+            {
+              "name": "OpenBLAS",
+              "license": "BSD-3-Clause-Attribution"
+            },
+            {
+              "name": "LAPACK",
+              "license": "BSD-3-Clause-Attribution"
+            },
+            {
+              "name": "GCC runtime library",
+              "license": "GPL-3.0-with-GCC-exception"
+            },
+            {
+              "name": "libquadmath",
+              "license": "LGPL-2.1-or-later"
+            }
+          ]
+        },
+        {
+          "name": "networkx",
+          "version": "3.3",
+          "license": "BSD"
+        },
+        {
+          "name": "packaging",
+          "version": "24.2",
+          "license": "Apache-2.0 and BSD classifiers; no single SPDX expression in captured metadata"
+        },
+        {
+          "name": "requests",
+          "version": "2.32.3",
+          "license": "Apache-2.0"
+        },
+        {
+          "name": "certifi",
+          "version": "2024.8.30",
+          "license": "MPL-2.0"
+        },
+        {
+          "name": "charset-normalizer",
+          "version": "3.4.0",
+          "license": "MIT"
+        },
+        {
+          "name": "idna",
+          "version": "3.10",
+          "license": "BSD"
+        },
+        {
+          "name": "urllib3",
+          "version": "2.2.3",
+          "license": "MIT"
+        },
+        {
+          "name": "openmdao",
+          "version": "3.38.0",
+          "license": "Apache-2.0"
+        },
+        {
+          "name": "pytest",
+          "version": "8.3.3",
+          "license": "MIT"
+        },
+        {
+          "name": "iniconfig",
+          "version": "2.0.0",
+          "license": "MIT"
+        },
+        {
+          "name": "pluggy",
+          "version": "1.5.0",
+          "license": "MIT"
+        },
+        {
+          "name": "Pygments",
+          "version": "2.18.0",
+          "license": "BSD-2-Clause"
+        }
+      ],
+      "separate_dataset_extraction_tool": {
+        "name": "pyarrow",
+        "version": "19.0.1",
+        "license": "Apache Software License",
+        "scope": "separate extraction environment, not part of the 14-package test runtime"
+      },
+      "source_or_sdist_only_components_listed_in_numpy_metadata": [
+        {
+          "name": "lapack-lite",
+          "license": "BSD-3-Clause"
+        },
+        {
+          "name": "Tempita",
+          "license": "MIT"
+        },
+        {
+          "name": "Dragon4",
+          "license": "MIT"
+        },
+        {
+          "name": "libdivide",
+          "license": "Zlib"
+        },
+        {
+          "name": "Meson",
+          "license": "Apache-2.0",
+          "scope": "repository/sdist not installed wheel"
+        },
+        {
+          "name": "spin",
+          "license": "BSD-3",
+          "scope": "repository/sdist not installed wheel"
+        }
+      ],
+      "binary_distributions_not_included_in_project_artifacts": true
+    },
+    "retained_artifacts": [
+      {
+        "artifact_id": 14341424466,
+        "sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
+        "contents": [
+          "one canonical dataset row and 517-character problem_statement",
+          "dataset-selector logs/results and test-only patch",
+          "full upstream PR #1165 patch (24,143 bytes)",
+          "upstream Dymos LICENSE text (10,760 bytes)",
+          "dependency and extraction license inventories",
+          "runtime/package metadata and source change inventory"
+        ]
+      },
+      {
+        "artifact_id": 14650442090,
+        "sha256": "9667f304d0a259ab3b1aedd19a5751bab9fc43a5d7544a21dc5f3b126b91ee00",
+        "contents": [
+          "full upstream PR patch (24,131 bytes)",
+          "complete captured buggy/fixed control_comp.py and misc.py source files",
+          "buggy-base LICENSE and pyproject metadata",
+          "reproduction logs, runtime freeze and hashes"
+        ]
+      }
+    ]
   },
   "human_review": {
     "project_lead_scope_acknowledgement": "pending",
@@ -149,9 +338,21 @@
   },
   "blockers": [
     "Project-lead bounded documentary license-scope acknowledgement is pending.",
-    "Exact pinned dataset-card license has not been authenticated; current card metadata is CC-BY-4.0.",
-    "NumPy/SciPy bundled-library notices are inventoried and must be included in the bounded scope acknowledgement.",
     "No formal legal review was performed; no legal clearance or redistribution permission is claimed."
   ],
-  "inference_authorized": false
+  "inference_authorized": false,
+  "project_lead_scope_acknowledgement_proposal": {
+    "status": "pending_project_lead_acknowledgement",
+    "path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_PROPOSAL_DYMOS_1166_2026-11-20.md",
+    "sha256": "844e36ea92bb947f990ecc2ec564e9ea5c718c380e1c6405aaf6ff46423530b2",
+    "proposed_scope": "Educational/scientific study of one Dymos defect, one selected dataset row, pinned CPU reproductions, limited source excerpts plus already-retained full PR patch/source snapshots in CI artifacts, proper Dymos/dataset/row/dependency attribution and notices.",
+    "explicit_exclusions": [
+      "complete SWE-rebench dataset",
+      "complete Dymos repository",
+      "redistribution of NumPy/SciPy/PyArrow wheels or binaries",
+      "commercial product use",
+      "legal clearance"
+    ],
+    "note": "Includes disclosure that the repo and CI artifacts are accessible through the project's GitHub repository/PR; not private-only."
+  }
 }
