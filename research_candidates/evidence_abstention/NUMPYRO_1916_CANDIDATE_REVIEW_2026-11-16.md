@@ -363,3 +363,21 @@ A second current-head repeat completed successfully on branch head `b73b3ef11b63
 - Buggy base produced the exact expected `(100, 2)` batched JAX key error; fixed revision passed the same test (`1 passed in 4.02s`).
 
 This is a verification repeat, not another case. All previously recorded adjudication, license, exposure, acceptance and no-inference boundaries remain unchanged.
+
+## Project-lead decision
+
+## Project-lead gold approval and first-batch selection — 20 November 2026
+
+The student project lead explicitly approved the following technical gold statement in the ChatGPT conversation on 20 November 2026:
+
+> MCMC.run(), warmup sonrasında saklanan sampler durumundaki skaler PRNG anahtarını vektörleştirilmiş zincirler için oluşturulan anahtar dizisiyle değiştiriyor. EnsembleSampler.sample() ise bu alanı skaler kabul ederek random.split() çağırıyor. Hata, sampler durumundaki anahtar biçiminin bu iki aşama arasında tutarsız hale gelmesinden kaynaklanıyor.
+
+**Decision:** APPROVED as the NumPyro #1916 source-aware technical gold mechanism.
+
+**Scope of approval:** This approves the stated root-cause mechanism only. It does not, by itself, approve the proposed E1/E2/E3 tier membership or semantic sufficiency, alternative-hypothesis disposition, bounded dependency/source/dataset license scope, prior pipeline/debug exposure declaration, or final case acceptance. The proposed evidence packet remains proposed until the project lead separately decides whether each tier is sufficient and whether E1 adds necessary and non-leaking implementation evidence.
+
+The project lead also explicitly accepted the five strong first-batch candidates for continued v0.2 Stage 3 case evaluation: NumPyro #1916, Dymos #1166, EODAG #1530, Meltano SDK #3090 and PyFar #721. This is candidate-selection approval, not final accepted-case registration.
+
+**Adjudication method:** the v0.2 Dishka-equivalent route remains in force: the project lead is the sole source-aware human gold/tier decision-maker; ChatGPT is advisory only; Hasan can be described only as project-lead-reported supplementary source-aware input. The two-human requirement applies later to blinded raw model-output evidence-support scoring, not to gold or tier approval.
+
+**Current status:** NumPyro gold mechanism approved; candidate selected for Stage 3; E1/E2/E3 membership and sufficiency decision pending; prior pipeline/debug exposure declaration and bounded license-scope acknowledgement pending; final case acceptance remains NOT ACCEPTED. No model load, inference, fine-tuning or training is authorized.
