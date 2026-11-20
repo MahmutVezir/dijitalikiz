@@ -77,8 +77,8 @@ class Numpyro1916LicenseAndIndependenceRecordTests(unittest.TestCase):
         import hashlib
         self.assertEqual(hashlib.sha256(note_bytes).hexdigest(), decision["sha256"])
         note = note_bytes.decode("utf-8")
-        self.assertIn("prior_pipeline_debug_exposure = `none`", note)
-        self.assertIn("researcher_source_exposure = `full`", note)
+        self.assertIn("prior_pipeline_debug_exposure = none", note)
+        self.assertIn("researcher_source_exposure = full", note)
         self.assertEqual(record["independence_status"]["prior_pipeline_debug_exposure"], "none")
         self.assertEqual(record["independence_status"]["researcher_source_exposure"], "full")
 
