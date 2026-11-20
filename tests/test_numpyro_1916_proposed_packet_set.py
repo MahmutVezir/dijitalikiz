@@ -55,7 +55,7 @@ class Numpyro1916ProposedPacketSetTests(unittest.TestCase):
         self.assertFalse(result["semantic_sufficiency_assessed"])
         self.assertFalse(result["model_inference_performed"])
 
-    def test_project_lead_gold_is_approved_while_tier_review_stays_pending(self):
+    def test_project_lead_gold_and_evidence_tiers_are_approved_exposure_and_license_pending(self):
         packet_set = json.loads(PACKET_PATH.read_text(encoding="utf-8"))
         provenance = json.loads(PROVENANCE_PATH.read_text(encoding="utf-8"))
         self.assertEqual(provenance["packet_set_sha256"], packet_set["packet_set_sha256"])
@@ -66,7 +66,7 @@ class Numpyro1916ProposedPacketSetTests(unittest.TestCase):
         semantic_review = provenance["semantic_review"]
         self.assertEqual(
             semantic_review["status"],
-            "project_lead_gold_mechanism_approved; packet_membership_construction_approved; semantic_sufficiency_pending",
+            "project_lead_gold_and_E1_E2_E3_semantic_decision_approved; prior_pipeline_debug_exposure_and_bounded_license_scope_pending",
         )
         self.assertEqual(
             semantic_review["project_lead_gold_decision"]["decision"],
@@ -78,8 +78,20 @@ class Numpyro1916ProposedPacketSetTests(unittest.TestCase):
         )
         self.assertEqual(
             semantic_review["tier_membership_decision"],
-            "PENDING_separate_project_lead_decision",
+            "APPROVED_E3_1_E2_4_E1_7",
         )
+        self.assertEqual(
+            semantic_review["alternative_hypotheses_decision"],
+            "APPROVED_E3_MULTIPLE_E2_TWO_E1_ONE_GOLD",
+        )
+        tier_decision = semantic_review["project_lead_tier_decision"]
+        self.assertEqual(tier_decision["decision"], "APPROVED")
+        self.assertEqual(tier_decision["approved_membership"], {"E3": 1, "E2": 4, "E1": 7})
+        self.assertEqual(len(tier_decision["surviving_mechanisms"]["E3"]), 4)
+        self.assertEqual(len(tier_decision["surviving_mechanisms"]["E2"]), 2)
+        self.assertEqual(tier_decision["surviving_mechanisms"]["E1"], ["H2_WARMUP_RESUME_STATE_KEY_SHAPE_HANDOFF"])
+        self.assertEqual(tier_decision["decision_record"]["sha256"], "6148aa21a6122c3552ef01394e4d314b792cacda7164aea74f22c36d6f217df9")
+        self.assertEqual(provenance["project_lead_tier_decision_record"]["uri"], "https://github.com/MahmutVezir/dijitalikiz/blob/44f00ea34708032476103b230967ee27290deeed/research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_TIER_DECISION_NUMPYRO_1916_2026-11-20.md")
         amendment = semantic_review["packet_membership_construction_decision"]
         self.assertEqual(amendment["decision"], "APPROVED_FOR_PACKET_CONSTRUCTION_AND_STRUCTURAL_VALIDATION")
         self.assertEqual(amendment["approved_membership"], {"E3": 1, "E2": 4, "E1": 7})
