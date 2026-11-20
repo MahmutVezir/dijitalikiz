@@ -212,3 +212,15 @@ The independent public-API reproducer was rerun after the portfolio/adjudication
 - Fixed PR head: same test passed (`1 passed in 0.66s`).
 
 This is a repeat of the same Dymos case, not an additional case. The related #531 issue remains a historical predecessor in the same broad family and is not double-counted. Final acceptance remains pending source-aware project-lead gold/tier decision, bounded license acknowledgement, exact dataset-card scope, exposure declaration, case record and registry check.
+
+
+### Final current-branch rerun — 20 November 2026
+
+A second current-head repeat completed successfully on branch head `b73b3ef11b633603ae84b5d85af47eb55fa7d1c9`.
+
+- Workflow: [44745926619](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44745926619), job `136321086021`, success.
+- Artifact: `14632443444`; SHA-256 `a59eea38a7a0384ade55d150f053cc8243fe1d27256a1a41178824101cf27241`.
+- Local verification: outer digest match, ZIP CRC PASS, 15/15 internal hashes PASS.
+- Buggy base produced the expected assertion mismatch `[[1.0], [1.0]]` vs `[[5.0], [15.0]]`; fixed PR head passed the same test (`1 passed in 0.63s`).
+
+This is a verification repeat, not another case. The issue-family, source-aware adjudication, license, exposure, acceptance and no-inference boundaries remain unchanged.
