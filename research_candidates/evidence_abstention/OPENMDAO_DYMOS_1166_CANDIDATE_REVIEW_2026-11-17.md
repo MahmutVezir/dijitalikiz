@@ -248,3 +248,17 @@ The project lead explicitly declared `prior_pipeline_debug_exposure = none` for 
 This closes only the candidate-specific prior pipeline/debug exposure declaration gate. It does not close source exposure, license scope, exact pinned dataset-card verification, source-aware gold/E1/E2/E3 adjudication, case-record validation, final acceptance, or inference authorization. Earlier references in this review to the prior pipeline/debug declaration being pending are superseded by this dated addendum.
 
 **Current disposition remains:** selected for Stage 3 evaluation; not a final accepted case; no model loading, inference, fine-tuning, or training authorized.
+
+
+## Superseding current-head verification after exposure declaration — 20 November 2026
+
+On the current research branch head `44882123757cad187dce27376eea051d92ad96a7`:
+
+- Dymos independent-reproducer workflow [44771791810](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44771791810), job `136411068945`: **success**.
+- The fresh-model public-API reproducer executed on the pinned buggy base and failed with the expected all-ones control input instead of the requested `[5.0, 15.0]`; the same test passed on exact fixed PR head `0ffc82225d6125dcb5c5b5acfb9be9fd712ef949` (`1 passed in 0.65s`).
+- New artifact `14648082079`; GitHub-reported SHA-256 `fe4a8754125ca750cc7080f631c6455f417cde9021cb82ebdd65190cdfd75218`. This newest archive was not locally downloaded and rehashed in this update; prior four Dymos independent-reproducer repeats have their own recorded local integrity checks.
+- No-inference preflight [44771791808](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44771791808), job `136411069190`: **success**. Dymos packet/provenance/license/independence/exposure review tests: **6 passed**. The readiness report remains blocked with 13 global blockers, one accepted case/project (Dishka #435), `ready_for_inference=false`, and `inference_authorized=false`. All other candidate reproduction jobs were skipped in this preflight.
+- Research Validation [44771791988](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44771791988), job `136411075528`: **success**, `469 passed, 6 skipped, 56 subtests passed`.
+- Implementation unit-test workflow [44771792053](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44771792053): **success**.
+
+These are no-inference technical/contract checks. They do not approve semantic gold/tier sufficiency, close the bounded license scope or exact pinned dataset-card license gate, create a final case record, or constitute final case acceptance. No model weights were loaded; no inference, fine-tuning, or training was performed or authorized.
