@@ -26,6 +26,8 @@ EXPOSURE_PATH = DYMOS / "PROJECT_LEAD_EXPOSURE_DECISION_DYMOS_1166_2026-11-20.md
 EXPOSURE_SHA256 = "3d38e3b45f2d27cc6531ede3d73d8f2439deee0b6970c6d4618d4e02e55733ea"
 DECISION_PATH = DYMOS / "PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md"
 DECISION_SHA256 = "9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392"
+SCOPE_PROPOSAL_PATH = DYMOS / "PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_PROPOSAL_DYMOS_1166_2026-11-20.md"
+SCOPE_PROPOSAL_SHA256 = "e8185465d8466512d3de08e622115a9442450f5665fbde4857facddc76341405"
 LEDGER_PATH = ROOT / "research_candidates" / "evidence_abstention" / "SWE_REBENCH_V2_STAGE2_STAGE3_PROGRESS_LEDGER_V0_1_2026-11-16.json"
 
 
@@ -122,6 +124,11 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertEqual(record["human_review"]["project_lead_scope_acknowledgement"], "pending")
         self.assertEqual(record["project_lead_scope_acknowledgement_proposal"]["path"],
                          "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_PROPOSAL_DYMOS_1166_2026-11-20.md")
+        self.assertEqual(record["project_lead_scope_acknowledgement_proposal"]["sha256"],
+                         SCOPE_PROPOSAL_SHA256)
+        scope_proposal = SCOPE_PROPOSAL_PATH.read_bytes()
+        self.assertEqual(hashlib.sha256(scope_proposal).hexdigest(), SCOPE_PROPOSAL_SHA256)
+        self.assertEqual(record["human_review"]["project_lead_scope_acknowledgement"], "pending")
         self.assertTrue(record["dataset"]["exact_pinned_dataset_card_license_verified"])
         self.assertEqual(record["dataset"]["pinned_card_verification"]["revision"],
                          "fb9aa226b2ce37c708ea7732e7b980abacdadb67")
