@@ -103,5 +103,15 @@ class Numpyro1916LicenseAndIndependenceRecordTests(unittest.TestCase):
         self.assertFalse(record["inference_authorized"])
 
 
+    def test_numpyro_reproducer_workflow_is_manual_and_fails_closed_by_default(self):
+        workflow_path = ROOT / ".github" / "workflows" / "numpyro-1916-independent-reproducer.yml"
+        workflow = workflow_path.read_text(encoding="utf-8")
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertIn("default: not-approved", workflow)
+        self.assertIn("if: inputs.scope_approval == 'approved'", workflow)
+        self.assertNotIn("\n  push:", workflow)
+        self.assertNotIn("\n  pull_request:", workflow)
+
+
 if __name__ == "__main__":
     unittest.main()

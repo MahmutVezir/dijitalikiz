@@ -417,3 +417,14 @@ The project lead explicitly **DECLINED** the proposed bounded documentary resear
 Decision record: `research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_LICENSE_SCOPE_DECISION_NUMPYRO_1916_2026-11-20.md` (SHA-256 `463fc1aa3388f9236c78de7701aebbd46e6e71880386e78b9341912726d1b9db`). The existing dependency/license inventory now records `project_lead_scope_acknowledgement = declined`; it is not legal clearance. Do not proceed to a proposed case-acceptance record or accepted-registry entry under this scope. The existing Stage 2 reproduction outputs remain historical technical audit evidence only. Any materially different future scope needs its own pinned-revision dataset-card and dependency-notice review plus a new explicit project-lead decision.
 
 **NumPyro remains not accepted.** The one accepted case remains Dishka #435. No model loading, inference, fine-tuning or training is authorized.
+
+
+### Superseding license-scope refusal — 20 November 2026
+
+The project lead explicitly declined the proposed bounded documentary research-use scope. NumPyro #1916 must not be advanced to a proposed or accepted case record under that scope. Decision: `research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_LICENSE_SCOPE_DECISION_NUMPYRO_1916_2026-11-20.md` (SHA-256 `51f661449504167724e6ee4ab503592842365ea81f090e6a5fcc99c516a6f746`). The license review JSON records `project_lead_scope_acknowledgement = declined`.
+
+A pull-request path-filtered workflow automatically ran after the refusal (run [44768193233](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44768193233)). It reproduced the expected buggy-base key-shape failure and fixed-revision pass, but the event does not reverse the refusal and is not counted as case-acceptance evidence. Workflow triggers have been changed to manual-only with an explicit scope approval input defaulting to `not-approved`.
+
+Current post-decision checks: no-inference preflight subjob run [44768179097](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44768179097) completed successfully; 92 contract tests passed, 13 readiness blockers remain, and inference is not authorized. Full Research Validation run [44768193442](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44768193442) passed 467 tests, with 6 skipped and 56 subtests passed.
+
+The one accepted case remains Dishka #435. NumPyro remains not accepted.

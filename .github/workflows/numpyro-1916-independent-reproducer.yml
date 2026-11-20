@@ -1,22 +1,23 @@
 name: NumPyro #1916 Independent Issue Reproducer (No Inference)
 
 on:
-  push:
-    branches:
-      - "research/**"
-    paths:
-      - ".github/workflows/numpyro-1916-independent-reproducer.yml"
-      - "research_candidates/evidence_abstention/reproduction/numpyro_issue_1916/**"
-  pull_request:
-    paths:
-      - ".github/workflows/numpyro-1916-independent-reproducer.yml"
-      - "research_candidates/evidence_abstention/reproduction/numpyro_issue_1916/**"
+  workflow_dispatch:
+    inputs:
+      scope_approval:
+        description: "Use only after a separate, current project-lead decision approves the exact research-use scope."
+        required: true
+        type: choice
+        options:
+          - not-approved
+          - approved
+        default: not-approved
 
 permissions:
   contents: read
 
 jobs:
   independent-issue-reproducer:
+    if: inputs.scope_approval == 'approved'
     name: Exact buggy-base failure / fixed-revision pass
     runs-on: ubuntu-22.04
     timeout-minutes: 25

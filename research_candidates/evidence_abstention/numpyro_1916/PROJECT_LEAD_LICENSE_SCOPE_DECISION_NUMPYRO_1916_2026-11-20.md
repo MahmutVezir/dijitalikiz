@@ -32,3 +32,16 @@ The rejection applies to that exact proposal. No narrower or alternative use per
 This is a project governance decision, not a legal opinion. It does not claim that the underlying upstream code or dataset is categorically unusable under all possible permissions. It records that the project lead does not approve the exact scope proposed in the current review.
 
 **Final case acceptance: NOT ACCEPTED.** Model loading, inference, fine-tuning and training remain unauthorized.
+
+
+## Automated post-decision workflow event — 20 November 2026
+
+A repository push immediately after this refusal triggered the pre-existing pull-request path filter for the NumPyro independent-reproducer workflow. The run had already started before it was identified as an automated post-decision execution; the available GitHub action controls in this session did not expose a cancellation operation.
+
+- Workflow run: [44768193233](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44768193233), job `136398408189`, conclusion `success`.
+- The workflow again executed the exact public-API reproducer: the pinned buggy base produced the expected JAX key-array shape `(100, 2)` failure; the identical test passed on the pinned fixed revision (`1 passed in 4.02s`).
+- Artifact: `14645873400`, GitHub-reported ZIP digest `e595e5c8ce6e777f84fef1e3ab74d7dd1b3263ff43b7c915880711e4d189f51a`. No independent local re-download/hash verification is claimed.
+
+This automatic CI event does **not** reverse the project-lead refusal, approve the declined scope, or create a case acceptance. Its output is retained only as an operational trace of the already-triggered workflow and is not used to advance NumPyro in the exploratory case registry. The independent-reproducer workflow has now been changed to manual-only with an explicit scope-approval input defaulting to `not-approved`; no new run should occur unless a separate future scope decision is recorded and the manual gate is explicitly satisfied.
+
+**Decision unchanged: DECLINED. NumPyro #1916 remains not accepted.**

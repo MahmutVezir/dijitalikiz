@@ -252,10 +252,22 @@
     "project_lead_scope_decision_record": {
       "path": "research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_LICENSE_SCOPE_DECISION_NUMPYRO_1916_2026-11-20.md",
       "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_LICENSE_SCOPE_DECISION_NUMPYRO_1916_2026-11-20.md",
-      "sha256": "463fc1aa3388f9236c78de7701aebbd46e6e71880386e78b9341912726d1b9db"
+      "sha256": "51f661449504167724e6ee4ab503592842365ea81f090e6a5fcc99c516a6f746"
     },
     "project_lead_scope_decision_date": "2026-11-20",
-    "scope_decline_effect": "Do not advance NumPyro #1916 to case acceptance under the declined proposal; retain Stage 2 results as historical technical audit evidence only."
+    "scope_decline_effect": "Do not advance NumPyro #1916 to case acceptance under the declined proposal; retain Stage 2 results as historical technical audit evidence only.",
+    "post_decision_automatic_workflow": {
+      "workflow_run_id": 44768193233,
+      "job_id": 136398408189,
+      "conclusion": "success",
+      "workflow_path": ".github/workflows/numpyro-1916-independent-reproducer.yml",
+      "base_result": "Expected (100, 2) JAX key-array failure on pinned buggy base.",
+      "fixed_result": "Identical test passed on pinned fixed revision (1 passed in 4.02s).",
+      "artifact_id": 14645873400,
+      "github_reported_sha256": "e595e5c8ce6e777f84fef1e3ab74d7dd1b3263ff43b7c915880711e4d189f51a",
+      "local_artifact_rehash": "not performed",
+      "decision_effect": "Automatic CI execution only; not treated as project-lead scope approval or accepted-case evidence."
+    }
   },
   "inference_authorized": false
 }

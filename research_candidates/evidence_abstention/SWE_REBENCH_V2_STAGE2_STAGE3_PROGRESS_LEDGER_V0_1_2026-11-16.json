@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-20T15:55:26.478Z",
+  "generated_at_utc": "2026-11-20T15:58:42.904Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -447,7 +447,7 @@
       "stage2_latest_artifact_sha256": "88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556",
       "stage2_latest_artifact_integrity": "Locally downloaded artifact; outer SHA-256 matches GitHub digest; ZIP CRC passed; all 15/15 payload SHA256SUMS entries passed.",
       "study_evaluation_eligibility": "not_eligible_under_declined_proposed_license_scope; alternative_scope_not_approved",
-      "next_required_gate": "NumPyro #1916 is on hold for study use because the project lead declined the proposed bounded documentary license scope. Do not create a proposed case-acceptance record or add it to the accepted registry under this scope. A materially different alternative scope may be considered only after exact pinned-revision dataset-card licensing and dependency/bundled-library notices are reviewed and the project lead gives a new explicit decision. Historical Stage 2 evidence remains technical audit material only. No inference.",
+      "next_required_gate": "NumPyro #1916 remains on hold; project lead declined the proposed bounded documentary research-use scope. Do not advance it to a proposed case record or accepted-case registry under that scope. The independent reproduction workflow is now manual-only and requires an explicit scope_approval=approved dispatch input, defaulting to not-approved. Any future use requires a materially different scope, exact pinned-revision dataset-card and dependency-notice review, and a new explicit project-lead decision. The post-decline automatic workflow run is documented as an operational event, not case acceptance. No inference.",
       "stage3_proposed_packet_set_path": "research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_2_2026-11-20.json",
       "stage3_proposed_provenance_path": "research_candidates/evidence_abstention/numpyro_1916/EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_2_2026-11-20.json",
       "stage3_proposed_packet_set_sha256": "b53d655f38466f2aa5b164a3a96c13a630e4419986401e472f2ed4371ffd7edb",
@@ -534,22 +534,22 @@
         "cohort_wide_timestamp_gate": "remains_open"
       },
       "latest_review_contract_ci": {
-        "workflow_run_id": 44766776463,
-        "job_id": 136393372244,
-        "commit": "d2394ef769c2934c61b0592d8561a93776f9fc38",
+        "workflow_run_id": 44768179097,
+        "job_id": 136398356231,
+        "commit": "1e25211552fc46c1ae9ce0c70f69fc39bd64f2c5",
         "conclusion": "success",
         "test_groups": {
           "packet_audit": 12,
           "operational_and_nested_packet_contracts": 25,
-          "numpyro_review_contracts": 9,
+          "numpyro_review_contracts": 10,
           "dymos_review_contracts": 5,
           "selector_runner": 6,
           "exploratory_acceptance_and_readiness": 24,
           "study_design_and_dual_human_scoring": 10,
-          "total": 91
+          "total": 92
         },
-        "preflight_artifact_id": 14644022735,
-        "preflight_artifact_sha256": "db7de126c37b1f2b4d6b566109c15bedc7280e91424e7a748a4b5cdfaeb0b007",
+        "preflight_artifact_id": 14644688664,
+        "preflight_artifact_sha256": "906dca27c6edcada4b568846bafb0459eac1975e758b2b4be703b5bcb06d3405",
         "readiness": {
           "accepted_case_count": 1,
           "accepted_project_count": 1,
@@ -561,7 +561,7 @@
         "model_inference_performed": false,
         "fine_tuning_performed": false,
         "inference_authorized": false,
-        "exposure_declaration_regression": "passed; record SHA-256 matched the committed declaration"
+        "license_scope_decline_contract": "passed; proposed scope remains declined and NumPyro is not advanced to case registry"
       },
       "stage2_independent_issue_reproducer": {
         "status": "passed_buggy_base_fail_fixed_revision_pass_repeated_on_latest_branch_head",
@@ -762,6 +762,28 @@
         "decision_record_path": "research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_LICENSE_SCOPE_DECISION_NUMPYRO_1916_2026-11-20.md",
         "decision_record_sha256": "463fc1aa3388f9236c78de7701aebbd46e6e71880386e78b9341912726d1b9db",
         "effect": "No case acceptance under the declined scope; existing Stage 2 reproductions retained as historical technical audit evidence only."
+      },
+      "repository_validation_after_scope_decline": {
+        "workflow_run_id": 44768193442,
+        "job_id": 136398410235,
+        "commit": "1e25211552fc46c1ae9ce0c70f69fc39bd64f2c5",
+        "conclusion": "success",
+        "tests_passed": 467,
+        "tests_skipped": 6,
+        "subtests_passed": 56
+      },
+      "post_decline_automatic_reproduction": {
+        "workflow_run_id": 44768193233,
+        "job_id": 136398408189,
+        "commit": "1e25211552fc46c1ae9ce0c70f69fc39bd64f2c5",
+        "trigger": "Existing pull_request path filter matched the candidate's prior reproduction-path changes in the open PR.",
+        "conclusion": "success",
+        "base_result": "Expected JAX key-array shape (100, 2) failure reproduced on pinned buggy base.",
+        "fixed_result": "Identical reproducer passed on pinned fixed revision (1 passed in 4.02s).",
+        "artifact_id": 14645873400,
+        "github_reported_sha256": "e595e5c8ce6e777f84fef1e3ab74d7dd1b3263ff43b7c915880711e4d189f51a",
+        "local_artifact_rehash": false,
+        "governance_disposition": "Triggered automatically after scope refusal; not treated as renewed approval or accepted-case evidence."
       }
     },
     {
