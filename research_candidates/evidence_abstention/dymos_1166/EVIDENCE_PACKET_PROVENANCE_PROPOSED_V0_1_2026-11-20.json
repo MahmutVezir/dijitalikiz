@@ -200,11 +200,29 @@
     }
   },
   "semantic_review": {
-    "status": "pending_source_aware_project_lead_gold_and_tier_decision",
+    "status": "approved_source_aware_project_lead_gold_and_tier_decision",
     "method": "Same exploratory source-aware single-adjudicator route used for Dishka; no blind-panel or inter-rater reliability claim.",
     "hasan_role": "project-lead-reported supplementary technical concurrence only; no signed independent review is asserted.",
     "independent_review_required": false,
-    "note": "The user has conditionally requested counting Dymos only at Dishka-equivalent evidence strength. Technical base-fail/fixed-pass evidence has two routes; gold/tier decision is still to be explicitly recorded."
+    "note": "The project lead approved the source-aware technical gold mechanism and E3/E2 abstain, E1 answer decisions on 2026-11-20. This is the Dishka-equivalent exploratory route, not blinded adjudication or an inter-rater reliability claim. Structural validation remains separate and does not itself assess semantic sufficiency.",
+    "adjudication_completed": true,
+    "decision_method": "Dishka-equivalent v0.2 exploratory source-aware single-human-adjudicator route; project lead decides; ChatGPT advisory only; no blind or inter-rater reliability claim.",
+    "project_lead_decision": {
+      "decision": "APPROVED",
+      "decision_date": "2026-11-20",
+      "decision_record_path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
+      "decision_record_sha256": "9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392",
+      "approved_primary_mechanism": "Caller-provided polynomial-control val is forwarded and stored, and reaches ControlInterpComp options, but the buggy polynomial-control input initialization uses np.ones(input_shape) instead of options['val']; the value is therefore discarded at component input initialization.",
+      "approved_evidence_tier_outcomes": {
+        "E3": "ABSTAIN — issue narrative only; no reproduced observation or implementation-path support for the cause.",
+        "E2": "ABSTAIN — issue narrative plus independent public-API reproduction and observed output; implementation mechanism not evidenced.",
+        "E1": "ANSWER — adds active pinned source chain from API forwarding and storage through ControlInterpComp configuration to the all-ones input default."
+      },
+      "qualification": "Project lead approval explicitly conditioned on not disrupting project progress. This closes only the source-aware technical gold/tier gate within the existing Stage 3 sequence; all license, dataset-card, case-record, registry, final-acceptance and no-inference gates remain unchanged.",
+      "human_adjudicator": "student project lead; full source/reproduction exposure disclosed",
+      "assistant_role": "ChatGPT technical advisor only; not a human adjudicator",
+      "hasan_role": "supplementary project-lead-reported technical concurrence only; no signed independent review or second adjudication claimed"
+    }
   },
   "blinding": {
     "model_visible_packet_contains_fix": false,
