@@ -147,7 +147,7 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertIn("APPROVED", decision)
         self.assertIn("ABSTAIN", decision)
         self.assertIn("ANSWER", decision)
-        self.assertIn("Final case acceptance remains", decision)
+        self.assertIn("final acceptance of Dymos #1166 into the accepted case registry", decision)
 
         provenance = json.loads(PROVENANCE_PATH.read_text(encoding="utf-8"))
         semantic = provenance["semantic_review"]
