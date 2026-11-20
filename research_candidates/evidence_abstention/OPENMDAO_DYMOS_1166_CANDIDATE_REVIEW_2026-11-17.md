@@ -292,3 +292,17 @@ On branch head `98df08d0ddc4c8972ee653016bf6ac9f2912e560`:
 - Implementation uncertainty unit tests and Qwen adapter CPU tests succeeded; the runner smoke test also succeeded.
 
 No model weights were loaded; no inference, fine-tuning, or training occurred. Dymos remains a Stage 3 candidate. The bounded documentary license-scope acknowledgement, exact pinned dataset-card license verification, schema-conformant case record, fail-closed registry validation, and separate final YES/NO acceptance decision remain required.
+
+
+## Superseding exact pinned dataset-card license and bounded scope proposal — 20 November 2026
+
+The dataset-card license for the exact pinned revision is now authenticated from the immutable Hub commit page:
+
+- Dataset revision: `fb9aa226b2ce37c708ea7732e7b980abacdadb67`.
+- Exact revision page: https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commit/fb9aa226b2ce37c708ea7732e7b980abacdadb67
+- License displayed on that exact revision: **CC-BY-4.0**.
+- The selected row `openmdao__dymos-1165` has row-level `license=Apache-2.0`, which describes the Dymos source repository for that row, not the dataset repository's overall license.
+
+The bounded project-lead acknowledgement proposal is stored at `research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_PROPOSAL_DYMOS_1166_2026-11-20.md` (SHA-256 `844e36ea92bb947f990ecc2ec564e9ea5c718c380e1c6405aaf6ff46423530b2`). It inventories the exact current CI artifacts, including the full upstream PR patch and captured source snapshots, one dataset row, and the NumPy/SciPy bundled notices. It expressly excludes the full dataset/repository, binary wheel redistribution and commercial use. The project's repository and CI artifacts are not private-only.
+
+The exact pinned dataset-card verification is closed. **Project-lead scope acknowledgement remains pending**, and no legal clearance is claimed. Final case acceptance remains `not_accepted`; inference remains unauthorized.
