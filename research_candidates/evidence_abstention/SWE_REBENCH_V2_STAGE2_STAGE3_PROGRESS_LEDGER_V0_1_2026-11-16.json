@@ -2428,10 +2428,10 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44745438389,
-    "head_commit": "efe677f49088eb9493fef6e8c6615b5bcb061dcb",
-    "job_id": 136319411195,
-    "status": "workflow_success",
+    "workflow_run_id": 44745926469,
+    "head_commit": "b73b3ef11b633603ae84b5d85af47eb55fa7d1c9",
+    "job_id": 136321085978,
+    "status": "preflight_job_success; supplemental no-load verification jobs still running at record time",
     "ready_for_inference": false,
     "blocker_count": 13,
     "accepted_case_count": 1,
@@ -2448,13 +2448,13 @@
       "study_design_and_dual_human_scoring": 10,
       "total": 90
     },
-    "artifact_id": 14633071463,
-    "artifact_sha256": "cdcc1ad5bbc02794221561243c25462d8dda22cb45845cf0cae515c964edd95b",
+    "artifact_id": 14633466042,
+    "artifact_sha256": "b4c7bd3eb157c02fd0fecfbe3b34a1810ddc11d0f26b93bb8be4783373e73071",
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "Workflow run 44745438389 completed successfully. The no-inference preflight job completed successfully with 90 tests passed; NumPyro review contracts 8/8 and Dymos review contracts 5/5. Dishka raw provenance audit and issue reproducer also succeeded; the Qwen pinned model license evidence was captured without downloading weights or running inference. Readiness remains blocked before inference with 13 blockers and one accepted case."
+    "note": "No-inference preflight job succeeded on current branch head: 90 tests passed; NumPyro review contracts 8/8 and Dymos review contracts 5/5. The parent workflow was still completing supplementary Dishka reproduction/provenance and Qwen license-metadata capture without weights. Readiness remains blocked before inference with 13 blockers and one accepted case."
   },
   "project_lead_decisions": [
     {
