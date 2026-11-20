@@ -3,7 +3,7 @@
   "generated_date": "2026-11-20",
   "candidate": "OpenMDAO/dymos issue 1166 / PR 1165",
   "packet_set_path": "research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
-  "packet_set_sha256": "c918227f6b19b67dcebc61a6a8b77b1b90393144f1638d7d5a002c3d5b695fd4",
+  "packet_set_sha256": "7ca1e50290bc037e9147dc30eff10152cecc506e0cb1ac70de5c420cbf939474",
   "source_row": {
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
     "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
@@ -114,10 +114,10 @@
       "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
       "source_git_blob_sha1": "74a1449b45329c3f87927c1fec6d4bbf936af138",
       "source_lines_1based": [
-        120,
+        95,
         120
       ],
-      "content_sha256": "c94cc80d2ce6fd126b2c3045f736200e63916f9ca9ed0d21db4b2970e4304d6f"
+      "content_sha256": "f52ea74336cca69ae73b03aad91683e0d0f88f7667457796a64ab3ec78aa1fd4"
     },
     {
       "id": "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE",
