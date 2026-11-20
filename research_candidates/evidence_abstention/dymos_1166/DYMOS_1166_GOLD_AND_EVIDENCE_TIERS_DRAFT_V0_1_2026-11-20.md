@@ -45,9 +45,11 @@ Dymos issue #531 (2021) concerned a broader earlier default-value problem and wa
 - Independent public-API reproducer: workflow run 44739419824/job 136298973618; exact base failure `[[1.0],[1.0]]` vs `[[5.0],[15.0]]`; same test passes on fixed PR head; artifact 14629598269; SHA-256 `33bb899d7e4e56d177fe4c9d119eebea49519528e88d74af3efc4acf7def08d8`; CRC PASS; 15/15 inner hashes PASS.
 - Exact source and dependency scope are documented separately. Documentary inventory is not legal clearance.
 
-## Required project-lead decision
+## Superseded project-lead decision request — 20 November 2026
 
-The project lead should record whether the proposed mechanism and tier thresholds are accepted, revised, or unresolved. Hasan's input may be recorded as project-lead-reported supplementary concurrence only; it is not represented as a signed independent review. Before final case acceptance, complete the bounded documentary license-scope acknowledgement, candidate-specific prior pipeline/debug exposure declaration, schema-conformant case record, registry validation, and separate final YES/NO.
+This proposal-stage request is superseded by the recorded project-lead decision `PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md`. The technical gold mechanism and E3/E2/E1 tier outcomes are approved: E3=ABSTAIN, E2=ABSTAIN, E1=ANSWER.
+
+The prior pipeline/debug exposure declaration is also closed by its separate dated decision record. The remaining requirements are the bounded documentary license-scope acknowledgement, exact pinned dataset-card license authentication, schema-conformant case record, fail-closed registry validation, and separate final YES/NO case-acceptance decision.
 
 No model loading, inference, fine-tuning, or training is authorized.
 
