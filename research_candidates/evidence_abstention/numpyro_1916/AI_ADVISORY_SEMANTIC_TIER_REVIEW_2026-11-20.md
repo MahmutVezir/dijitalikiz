@@ -103,3 +103,17 @@ These are source-contract excerpts from the pinned buggy base, not current onlin
 - Readiness remains blocked with 13 global blockers, one accepted case (Dishka), and `ready_for_inference=false`. No model loading, inference, fine-tuning or training occurred.
 
 These checks do not adjudicate semantic evidence sufficiency and do not accept NumPyro as a case.
+
+
+## Superseding project-lead semantic decision — 20 November 2026
+
+The project lead has now approved the E3/E2/E1 semantic hierarchy and the alternative disposition. This decision supersedes the pending tier language above.
+
+- **E3 approved:** the issue narrative leaves caller/API usage, warmup-resume state handoff, ensemble per-step key batching, and general runtime explanations possible.
+- **E2 approved:** the pinned public API contract excerpts establish that the reported warmup-then-run sequence and scalar key input are supported. The traceback then leaves two internal explanations: the warmup-resume handoff changes the saved key shape, or the sampler per-step key contract is intended to be batched.
+- **E1 approved:** the pinned initializer excerpt demonstrates a scalar key in the initialized sampler state; the MCMC warmup-resume excerpt shows that field being replaced by a per-chain batch; and the sampler step excerpt shows scalar `random.split()`. The warmup-resume state key-shape handoff is the only surviving mechanism consistent with all visible E1 evidence and the approved technical gold.
+
+**Project-lead decision record:** [`research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_TIER_DECISION_NUMPYRO_1916_2026-11-20.md`](https://github.com/MahmutVezir/dijitalikiz/blob/44f00ea34708032476103b230967ee27290deeed/research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_TIER_DECISION_NUMPYRO_1916_2026-11-20.md)  
+**Decision-record SHA-256:** `6148aa21a6122c3552ef01394e4d314b792cacda7164aea74f22c36d6f217df9`
+
+This is a source-aware project-lead decision under the v0.2 exploratory route, not a blinded Panel A or Panel B rating. It does not close prior pipeline/debug exposure, bounded documentary license scope, case-record/registry validation, or the separate final acceptance decision.
