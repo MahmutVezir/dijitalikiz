@@ -238,8 +238,8 @@
     }
   ],
   "case_registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json",
-  "accepted_case_count": 0,
-  "accepted_project_count": 0,
+  "accepted_case_count": 1,
+  "accepted_project_count": 1,
   "model_loading_performed": false,
   "model_inference_performed": false,
   "fine_tuning_performed": false,
@@ -282,7 +282,8 @@
     "Human-evaluator amendment dated 2026-11-18: Rater_B is identified for independent blinded scoring of the same raw model responses as the student project lead; public repo stores no personal name. Written agreement, independence/exposure screen and calibration are pending.",
     "Rater_B is restricted to model-output evidence-support scoring and must not see hidden gold, source patch, case identity, tier or policy labels before lock. The project lead alone retains gold and E1/E2/E3 tier decisions. Two original output ratings are preserved; disagreement adjudication occurs only after both are locked.",
     "The dual-human scoring amendment does not waive the existing candidate exclusion for prior pipeline debugging, test-oracle troubleshooting or prompt calibration. It does not authorize model loading or inference.",
-    "As of 18 November 2026, no human-human ratings or Cohen kappa have yet been produced; Rater_B participation, case-specific exposure screening and calibration remain pending."
+    "As of 18 November 2026, no human-human ratings or Cohen kappa have yet been produced; Rater_B participation, case-specific exposure screening and calibration remain pending.",
+    "Superseding update 2026-11-20: Dishka #435 / SRV2E-DISHKA_435 was explicitly accepted by the project lead for v0.2 exploratory/feasibility only. Hasan's recommendation is recorded as project-lead-reported supplementary input, not as a separate signed decision or independent technical adjudication. The accepted registry contains one case from one upstream project. This does not close global readiness or authorize model loading, inference, fine-tuning or training."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -375,7 +376,7 @@
     {
       "instance_id": "reagento__dishka-436",
       "cohort_rank": 2,
-      "status": "stage2_stage3_technical_and_human_gold_tier_approvals_passed_case_acceptance_pending_project_lead_license_and_exposure_scope_signoff",
+      "status": "accepted_exploratory_v0_2_project_lead_yes_recorded_2026_11_20",
       "issue_url": "https://github.com/reagento/dishka/issues/435",
       "pull_request_url": "https://github.com/reagento/dishka/pull/436",
       "dataset_created_at": "2025-04-15T22:52:26Z",
@@ -394,7 +395,7 @@
       "reproducer_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/test_issue_435.py",
       "reproduction_workflow_path": ".github/workflows/evidence-abstention-preflight.yml#dishka-issue-435-reproduction",
       "reproduction_status": "passed_same_issue_reproducer_and_all_8_dataset_selectors_base_fail_fixed_pass",
-      "case_acceptance": "not_accepted",
+      "case_acceptance": "accepted",
       "inference_authorized": false,
       "reproduction_run_id": 43878434875,
       "reproduction_run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/43878434875",
@@ -453,13 +454,7 @@
       "dataset_fail_to_pass_reproduction_status": "passed_all_8_same_selectors_base_fail_fixed_pass",
       "dataset_fail_to_pass_reproduction_run_id": 43878434875,
       "dataset_fail_to_pass_reproduction_log_evidence": "workflow job 133337548925; base log reports 8 failed with defect-specific assertions; fixed log reports 8 passed",
-      "remaining_gates": [
-        "project_lead_confirm_prior_pipeline_debug_exposure_is_none_under_v0_2_protocol",
-        "student_project_lead_full_scope_documentary_license_review_signoff_or_recorded_scope_limitation",
-        "prepare_complete_schema_conformant_case_record_with_verified_artifacts_and_nested_E1_E2_E3_items",
-        "run_draft_2020_12_acceptance_schema_and_fail_closed_registry_validation",
-        "student_project_lead_separate_final_case_acceptance_decision"
-      ],
+      "remaining_gates": [],
       "human_limitation_acknowledgement": "approved_2026-11-17_single_human_adjudicator_full_researcher_source_exposure_no_inter_rater_or_cohens_kappa_claims_exploratory_only",
       "ai_critique_record_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/CHATGPT_ADVISORY_CRITIQUE_DISHKA_435_2026-11-17.md",
       "ai_critique_record_sha256": "ea0215e41382409e109d0b3587bd95df400e94887d2f9c137a64fd90173c45ca",
@@ -494,7 +489,18 @@
       },
       "latest_project_preflight_run_id": 44322262968,
       "latest_project_preflight_artifact_id": 14434582787,
-      "latest_project_preflight_status": "blocked_before_inference; 11 blockers; accepted cases/projects 0/0"
+      "latest_project_preflight_status": "blocked_before_inference; 11 blockers; accepted cases/projects 0/0",
+      "case_acceptance_record_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
+      "final_acceptance_record_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_DISHKA_435_2026-11-20.md",
+      "final_acceptance_record_sha256": "57d309d5ab02164612eda6f7e950673f9a1d505aa4f223504551caee7f946b80",
+      "final_acceptance_timestamp_utc": "2026-11-20T10:59:00Z",
+      "additional_stakeholder_input": {
+        "source": "project_lead_report_in_chat",
+        "person": "Hasan",
+        "statement": "Project lead reports Hasan also recommended acceptance.",
+        "independent_signed_record_provided": false,
+        "role_or_formal_decision_authority_claimed": false
+      }
     },
     {
       "instance_id": "ecmwf__earthkit-data-592",

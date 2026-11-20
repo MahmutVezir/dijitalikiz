@@ -217,3 +217,12 @@ PR head `dcea5055b086644a3b1b3307a3be38e59740b67f` has a fully successful Dishka
 - Qwen evidence artifact [14569350314](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485/artifacts/14569350314): CRC PASS, 10 members, 9/9 internal hashes.
 - Separate repo validation, 171 unit tests and CPU tests passed.
 - Case record remains proposed; final YES/NO acceptance is the sole Dishka-specific project-lead step; no inference is authorized.
+
+## 19. Dishka acceptance and next sequential candidate — 20 November 2026
+
+- The project lead recorded **YES** for `SRV2E-DISHKA_435`, accepted into the v0.2 exploratory/feasibility registry only. The final decision record is `reproduction/dishka_issue_435/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_DISHKA_435_2026-11-20.md`.
+- The project lead additionally reports that Hasan asked/recommended acceptance. This is supplementary reported input only; no separate signed statement or independent technical adjudication is claimed. The formal decision remains the project lead's.
+- The case record, exploratory registry, manifest and progress ledger are reconciled to one accepted case from one upstream project. The no-inference CI run must validate the amended documents and tests before the repository state is called technically verified.
+- The next sequential independent-project candidate is **NumPyro #1916 / PR #1918** (`pyro-ppl/numpyro`), as listed in the progress ledger. This supersedes earlier wording that NumPyro was only a fallback if Dishka failed; Dishka has now been accepted, so NumPyro is the next intake candidate.
+- NumPyro Stage 2 reproduction and E1/E2/E3 packet integrity have been demonstrated, but semantic sufficiency of the tiers, fork/lineage and exposure screens, human dependency/license-scope acknowledgement, and a schema-conformant case record remain open. E1 must not force a unique mechanism if the sampler-contract alternative remains plausible.
+- Model weights must not be downloaded; model loading, inference, fine-tuning and training remain prohibited. Dishka acceptance does not change this restriction.

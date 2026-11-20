@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-19T18:14:18Z",
+  "generated_at_utc": "2026-11-20T12:00:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -38,15 +38,17 @@
     "remaining_broad_shortlist": 65,
     "stage2_passed": 15,
     "stage3_technical_passed": 1,
-    "final_accepted_cases": 0,
+    "final_accepted_cases": 1,
     "runner_blocked_candidates": 0,
     "separately_blocked_external_fixture": 1,
     "stage2_not_started": 42,
     "stage2_blocked_or_held": 8,
     "stage2_status_scope": "96-row frozen cohort record count; not the same denominator as the later 13-candidate focused reproduction matrix",
     "study_evaluation_excluded_prior_pipeline_debug_exposure": 1,
-    "dishka_proposed_case_count": 1,
-    "dishka_final_acceptance_pending": true
+    "dishka_proposed_case_count": 0,
+    "dishka_final_acceptance_pending": false,
+    "accepted_exploratory_cases": 1,
+    "accepted_exploratory_projects": 1
   },
   "records": [
     {
@@ -87,7 +89,7 @@
       "stage2_latest_artifact_id": 14569001619,
       "stage2_latest_artifact_sha256": "064e8aec01eaccb30849bfb7535e856c721db628c983d2207f7f0efec136419e",
       "stage2_latest_artifact_integrity": "Independent outer ZIP SHA-256 matched GitHub; ZIP CRC PASS; 33 members; 32/32 internal SHA256SUMS entries PASS.",
-      "study_evaluation_eligibility": "eligible_pending_final_case_acceptance",
+      "study_evaluation_eligibility": "accepted_into_v0_2_exploratory_feasibility",
       "prior_pipeline_debug_exposure": "none",
       "exposure_decision_record": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md",
       "exposure_decision_date": "2026-11-19",
@@ -99,7 +101,7 @@
         "correction_reason": "The project lead clarified that the earlier answer was given before the question had been read carefully and explicitly selected the NO response: Dishka was not used for pipeline/debug purposes before prospective validation.",
         "correction_record": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_EXPOSURE_DECISION_2026-11-19.md"
       },
-      "study_evaluation_status_note": "Prior pipeline/debug exposure corrected to none; researcher source exposure full remains disclosed. Bounded documentary license-scope decision approved only for the exact listed research/reproduction/test/extraction environment (not legal advice or redistribution approval). The canonical v0.2 proposed case record has all 12 in-repository evidence references pinned to immutable commit 13b4a0c80575cd2de9575cc884038666f34dfaa1, with file-content SHA-256 checks passing in CI. The current case JSON is structurally complete but remains proposed; final project-lead acceptance is pending. The accepted registry remains empty; no model inference is authorized. Latest repeat (run 44572926370/job 135733170187/artifact 14553229664) has independently verified ZIP integrity and repeats the same base-fail/fixed-pass issue reproducer plus 8/8 dataset selector outcomes. Latest preflight (same run/job 135732610579) passed 22 v0.2 case tests including 12 immutable document URI/hash checks; design/scoring tests 10 passed. The report remains blocked_before_inference, 14 global blockers, 0 accepted cases; no model action. Patch URI/hash reconciliation completed: the old mutable upstream PR .diff URI did not match the pinned git diff SHA. The canonical case now points to full-pr.diff inside the latest independently verified artifact; digest c5a6e5ed... is corroborated by the archive's internal SHA256SUMS. The 90-day artifact retention and exact regeneration command from pinned commits are recorded in DISHKA_435_PATCH_REFERENCE_RECONCILIATION_2026-11-19.md. Latest PR-head no-inference preflight after the immutable-reference and patch-URI reconciliation: run 44585592253/job 135777525833 PASS; 23 v0.2 case tests + 10 design/scoring tests passed, including the patch URI/hash regression. Canonical proposed case SHA-256 ab6826c1e9ef85ca4e4aea6ba246df07f86e07e716d8aade348de6d65d9c9274; 12 document refs pinned to commit 1a87e6ce4b468cadff75b366b012b994803abae0. Readiness still blocked_before_inference, 14 global blockers, 0 accepted cases; no model operation.",
+      "study_evaluation_status_note": "Dishka #435 is accepted into the v0.2 exploratory/feasibility registry by the project lead on 2026-11-20 (YES; decision record at reproduction/dishka_issue_435/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_DISHKA_435_2026-11-20.md). The project lead reports Hasan also recommended acceptance; this is supplementary reported input, not a separate signed decision or independent technical adjudication. Prior pipeline/debug exposure is none; full researcher source exposure remains disclosed. Bounded documentary license screening is limited to the exact listed experimental scope and is not legal clearance or redistribution approval. The canonical case record and registry contain one accepted case from reagento/dishka. A no-inference CI rerun is required after reconciling manifest counts, decision hash and test expectations. No model loading, inference, fine-tuning or training is authorized.",
       "bounded_documentary_license_scope_decision": {
         "status": "approved_bounded_scope_only",
         "decision_timestamp_utc": "2026-11-19T15:55:16Z",
@@ -111,24 +113,14 @@
       },
       "proposed_case_acceptance_record": {
         "path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
-        "sha256": "04ee890fea8acf4d73c95122e7bee8c258534942829188f897216e043400fed8",
-        "git_blob_sha1": "updated_in_current_branch_commit",
         "acceptance_decision": "accepted",
         "final_acceptance_status": "approved",
         "final_decision_timestamp_utc": "2026-11-20T10:59:00Z",
         "final_decision_record": {
           "path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_DISHKA_435_2026-11-20.md",
-          "sha256": "7c532431844c44ef94399f377bc97d2fd98541482bd7f1f469369993372f1b5b"
+          "sha256": "57d309d5ab02164612eda6f7e950673f9a1d505aa4f223504551caee7f946b80"
         },
-        "source_patch_reference": {
-          "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485/artifacts/14569001619#path=full-pr.diff",
-          "sha256": "c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde"
-        },
-        "stage2_artifact_reference": {
-          "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485/artifacts/14569001619",
-          "sha256": "064e8aec01eaccb30849bfb7535e856c721db628c983d2207f7f0efec136419e"
-        },
-        "case_json_sha256": "4fa1a4eed315893072723d116533f6f2d2fd8568b592e43718cb8c0cc4859936"
+        "hasan_recommendation": "project_lead_reported_supplementary_input"
       },
       "case_record_structural_validation": {
         "status": "structurally_complete_candidate",
@@ -2250,11 +2242,18 @@
     {
       "date": "2026-11-20",
       "candidate": "reagento/dishka #435/#436",
-      "decision": "YES — accept SRV2E-DISHKA_435 into the v0.2 exploratory/feasibility registry only",
+      "decision": "YES — accept SRV2E-DISHKA_435 into v0.2 exploratory/feasibility registry only",
       "decision_source": "explicit_project_lead_chat_confirmation",
       "decision_timestamp_utc": "2026-11-20T10:59:00Z",
       "decision_record_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_DISHKA_435_2026-11-20.md",
-      "decision_record_sha256": "7c532431844c44ef94399f377bc97d2fd98541482bd7f1f469369993372f1b5b",
+      "decision_record_sha256": "57d309d5ab02164612eda6f7e950673f9a1d505aa4f223504551caee7f946b80",
+      "additional_stakeholder_input": {
+        "person": "Hasan",
+        "statement": "Project lead reports Hasan also asked/recommended acceptance.",
+        "source": "project_lead_report_in_chat_2026-11-20",
+        "independent_signed_statement_provided": false,
+        "formal_decision_authority_claimed": false
+      },
       "inference_authorized": false
     }
   ],

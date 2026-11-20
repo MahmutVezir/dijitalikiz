@@ -22,12 +22,14 @@ def test_v02_manifest_is_exploratory_and_not_confirmatory():
     assert design["planned_outputs_at_stretch_target"] == 120
 
 
-def test_v02_registry_is_empty_and_inference_is_disabled():
+def test_v02_registry_contains_dishka_and_inference_is_disabled():
     registry = load_json("SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json")
-    assert registry["status"] == "empty_no_cases_accepted"
-    assert registry["accepted_case_count"] == 0
-    assert registry["accepted_project_count"] == 0
-    assert registry["records"] == []
+    assert registry["status"] == "contains_structurally_complete_candidates"
+    assert registry["accepted_case_count"] == 1
+    assert registry["accepted_project_count"] == 1
+    assert len(registry["records"]) == 1
+    assert registry["records"][0]["case_id"] == "SRV2E-DISHKA_435"
+    assert registry["records"][0]["acceptance_decision"] == "accepted"
     assert registry["inference_authorized"] is False
 
 

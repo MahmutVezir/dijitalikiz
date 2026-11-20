@@ -114,3 +114,9 @@ The final pre-decision pipeline on PR head `dcea5055b086644a3b1b3307a3be38e59740
 - Latest Dishka archive independently checked: 33 members, CRC PASS, 32/32 internal hashes.
 
 The case is ready for the project lead's separate acceptance decision. This is not a model-readiness milestone: 14 global readiness blockers remain, including cohort-wide dataset provenance/licenses, Qwen human/mentor use-scope review, exact runtime and generation freeze, protocol/rubric hash freeze, Rater_B consent/exposure/calibration, and the currently empty accepted registry.
+
+## 9. Superseding intake update — 20 November 2026
+
+Dishka #435 has received the project lead's separate YES decision and is recorded as the first v0.2 exploratory/feasibility case. The project lead reports that Hasan also recommended acceptance; the record treats this as supplementary reported input, not a second signed decision or independent technical adjudication. The accepted registry contains one case from `reagento/dishka`; global readiness remains blocked and inference remains prohibited.
+
+The sequential intake now proceeds to **NumPyro #1916 / PR #1918** as the second independent upstream project. This supersedes the earlier fallback-only wording: Dishka did not fail, but has been accepted, so NumPyro is the next candidate in the active intake queue. NumPyro's Stage 2 reproduction and packet structural integrity are already recorded; semantic tier adequacy, independence/exposure, dependency-license scope and case-level acceptance still require their own evidence and human decisions. Do not relax those gates.

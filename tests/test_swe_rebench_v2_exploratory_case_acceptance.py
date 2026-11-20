@@ -17,11 +17,13 @@ def test_v02_acceptance_schema_is_valid_json_schema():
     assert "final_acceptance" in schema["required"]
 
 
-def test_v02_empty_registry_is_valid_but_does_not_authorize_inference():
+def test_v02_accepted_registry_is_valid_but_does_not_authorize_inference():
     registry = json.loads((RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text())
     result = validate_registry(registry)
-    assert result["status"] == "valid_empty_registry"
-    assert result["accepted_case_count"] == 0
+    assert result["status"] == "structurally_valid_candidate_registry"
+    assert result["accepted_case_count"] == 1
+    assert result["accepted_project_count"] == 1
+    assert result["minimum_feasibility_count_met"] is True
     assert result["inference_authorized"] is False
     assert result["comparative_efficacy_claim_permitted"] is False
 
@@ -204,7 +206,7 @@ def test_registry_accepts_valid_smaller_sample_below_primary_target():
     assert result["comparative_efficacy_claim_permitted"] is False
 
 
-def test_dishka_real_proposed_case_is_structurally_complete_but_not_accepted():
+def test_dishka_real_accepted_case_is_structurally_complete_and_not_inference_authorized():
     case_path = (
         RESEARCH
         / "reproduction"
@@ -234,7 +236,7 @@ def test_dishka_real_proposed_case_is_structurally_complete_but_not_accepted():
     assert len(record["evidence_tiers"]["E3"]["evidence_items"]) == 7
 
 
-def test_dishka_proposed_case_does_not_change_empty_accepted_registry():
+def test_dishka_accepted_case_is_in_the_v02_registry():
     case_path = (
         RESEARCH
         / "reproduction"
@@ -258,7 +260,7 @@ def test_dishka_proposed_case_does_not_change_empty_accepted_registry():
 
 
 
-def test_dishka_proposed_case_document_hash_references_match_current_files():
+def test_dishka_accepted_case_document_hash_references_match_current_files():
     case_path = (
         RESEARCH
         / "reproduction"
@@ -302,7 +304,7 @@ def test_dishka_proposed_case_document_hash_references_match_current_files():
         ),
         (
             record["human_decision"]["ai_critique_record"],
-            RESEARCH / "reproduction" / "dishka_issue_435" / "CHATGPT_ADVISORY_CRITIQUE_DISHKA_435_2026-11-17.md",
+            RESEARCH / "reproduction" / "dishka_issue_435" / "AI_ADVISORY_NOTE_DISHKA_435_FINAL_ACCEPTANCE_2026-11-20.md",
         ),
         (
             record["evidence_tiers"]["E1"]["packet"],

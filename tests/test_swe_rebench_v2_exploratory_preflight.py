@@ -18,16 +18,18 @@ class TestV02ExploratoryPreflight(unittest.TestCase):
         self.assertFalse(report["primary_target_met"])
         self.assertFalse(report["stretch_target_met"])
 
-    def test_empty_registry_blocks_inference_without_becoming_invalid(self):
+    def test_accepted_registry_is_valid_but_global_gates_still_block_inference(self):
         report = evaluate(ROOT)
-        self.assertEqual(report["registry_status"], "valid_empty_registry")
-        self.assertEqual(report["accepted_case_count"], 0)
-        self.assertEqual(report["accepted_project_count"], 0)
+        self.assertEqual(report["registry_status"], "structurally_valid_candidate_registry")
+        self.assertEqual(report["accepted_case_count"], 1)
+        self.assertEqual(report["accepted_project_count"], 1)
         self.assertFalse(report["ready_for_inference"])
-        self.assertIn(
+        self.assertNotIn(
             "No accepted case is registered; at least one fully accepted independent-project case is required before any model inference.",
             report["blockers"],
         )
+        self.assertIn("The exact immutable model revision's license/use review is not approved.", report["blockers"])
+        self.assertIn("Rater B participation and case-specific independence/exposure screening are not confirmed.", report["blockers"])
 
     def test_dual_human_output_scoring_requires_rater_b_confirmation(self):
         report = evaluate(ROOT)
