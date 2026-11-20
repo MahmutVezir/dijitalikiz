@@ -8,6 +8,10 @@ on:
     paths:
       - ".github/workflows/evidence-abstention-preflight.yml"
       - "research_candidates/evidence_abstention/implementation/**"
+      - "research_candidates/evidence_abstention/numpyro_1916/**"
+      - "tests/test_numpyro_1916_proposed_packet_set.py"
+      - "tests/test_numpyro_1916_license_and_independence_records.py"
+      - "tests/test_build_numpyro_1916_blinded_review_packets.py"
       - "research_candidates/evidence_abstention/reproduction/**/test_*.py"
       - "research_candidates/evidence_abstention/reproduction/**/requirements*.lock"
       - "research_candidates/evidence_abstention/reproduction/**/dataset_test_requirements.lock"
@@ -32,6 +36,10 @@ on:
     paths:
       - ".github/workflows/evidence-abstention-preflight.yml"
       - "research_candidates/evidence_abstention/implementation/**"
+      - "research_candidates/evidence_abstention/numpyro_1916/**"
+      - "tests/test_numpyro_1916_proposed_packet_set.py"
+      - "tests/test_numpyro_1916_license_and_independence_records.py"
+      - "tests/test_build_numpyro_1916_blinded_review_packets.py"
       - "research_candidates/evidence_abstention/reproduction/**/test_*.py"
       - "research_candidates/evidence_abstention/reproduction/**/requirements*.lock"
       - "research_candidates/evidence_abstention/reproduction/**/dataset_test_requirements.lock"
@@ -97,6 +105,17 @@ jobs:
           echo "Operational packet tests exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
           exit "$test_status"
 
+      - name: Unit-test NumPyro #1916 packet, license, independence and blind-bundle contracts
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/test_numpyro_1916_proposed_packet_set.py tests/test_numpyro_1916_license_and_independence_records.py tests/test_build_numpyro_1916_blinded_review_packets.py > numpyro-1916-review-tests.log 2>&1
+          test_status=$?
+          cat numpyro-1916-review-tests.log
+          echo "NumPyro #1916 review-contract test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
+
       - name: Unit-test fail-to-pass selector runner contract
         if: always()
         shell: bash
@@ -150,6 +169,7 @@ jobs:
             selector-runner-tests.log
             packet-audit-tests.log
             operational-packet-tests.log
+            numpyro-1916-review-tests.log
             v0.2-exploratory-tests.log
             v0.2-design-tests.log
             swe-rebench-v2-readiness-report.json
