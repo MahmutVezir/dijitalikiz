@@ -104,7 +104,15 @@ class Numpyro1916ProposedPacketSetTests(unittest.TestCase):
             self.assertNotIn(evidence_id, packet_items["E3"])
         self.assertEqual(
             provenance["structural_validation"]["status"],
-            "PENDING_BRANCH_HEAD_VALIDATION_OF_AMENDED_PACKET",
+            "CI_CONTRACT_TESTS_PASS_STRUCTURAL_ONLY",
+        )
+        self.assertEqual(provenance["structural_validation"]["latest_validation_run_id"], 44761690559)
+        self.assertEqual(provenance["structural_validation"]["latest_validation_commit"], "43b06b48b843bbca78cde608a96edce2344cca90")
+        self.assertEqual(provenance["latest_no_inference_preflight"]["conclusion"], "success")
+        self.assertFalse(provenance["latest_no_inference_preflight"]["inference_authorized"])
+        self.assertEqual(
+            {level: len(packet_set["packets"][level]["evidence_items"]) for level in ("E1", "E2", "E3")},
+            {"E1": 7, "E2": 4, "E3": 1},
         )
         self.assertIn("NOT_ACCEPTED", semantic_review["final_case_acceptance"])
         self.assertFalse(provenance["structural_validation"]["semantic_sufficiency_assessed"])
