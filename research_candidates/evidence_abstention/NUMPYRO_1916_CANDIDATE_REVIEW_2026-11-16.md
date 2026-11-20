@@ -248,3 +248,8 @@ The separate v0.2 proposed packet set (E3=1, E2=2, E1=5; SHA-256 `e1730956eb9cfc
 ### Current disposition
 
 Stage 2 reproduction and artifact integrity: PASS. Proposed E1 v0.2 packet structure and CI: PASS. Upstream project independence from Dishka: PASS. Related issue-family review: documented, with neighboring issues retained as one NumPyro cluster. Dependency/source and dataset-license scope: documented, project-lead scope acknowledgement and exact pinned dataset-card license authentication still pending. Panel A, two blinded Panel B reviewers, separate adjudicator and restricted access-controlled delivery: NOT completed. Final case acceptance: NOT accepted. Model load, inference and fine-tuning: prohibited.
+
+
+## 20 November 2026 — operational review handoff prepared
+
+The latest candidate-scope and structural CI updates are recorded in the progress ledger. A separate Panel A gold review form is available at `numpyro_1916/NUMPYRO_1916_PANEL_A_GOLD_REVIEW_FORM_V0_1_2026-11-20.md`. A local Panel B bundle builder is available at `implementation/build_numpyro_1916_blinded_review_packets.py`; its regression tests are at `tests/test_build_numpyro_1916_blinded_review_packets.py`. The builder emits two randomized reviewer ZIPs and a separate custodian mapping, but does not upload or send files. Do not use it until two eligible, source-unexposed Panel B reviewers are consented and a restricted delivery store/access log are available. No reviewer or adjudicator is currently recorded; no semantic rating or case acceptance is implied.

@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-20T13:45:00Z",
+  "generated_at_utc": "2026-11-20T14:15:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -447,7 +447,7 @@
       "stage2_latest_artifact_sha256": "88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556",
       "stage2_latest_artifact_integrity": "Locally downloaded artifact; outer SHA-256 matches GitHub digest; ZIP CRC passed; all 15/15 payload SHA256SUMS entries passed.",
       "study_evaluation_eligibility": "provisional_pending_human_license_scope_panel_review_and_final_project_lead_decision",
-      "next_required_gate": "Complete source/dependency/dataset license scope and human acknowledgement; appoint and document two Panel A reviewers, two eligible source-unexposed Panel B reviewers and a separate adjudicator; conduct blind semantic packet ratings; then prepare canonical schema-conformant case record and seek the project lead's separate YES/NO. No model inference.",
+      "next_required_gate": "Obtain and record consent/competence/exposure declarations for two source-aware Panel A reviewers, two source-unexposed Panel B reviewers and one disjoint adjudicator. Only after that, run the local Panel B bundle builder, place each reviewer ZIP in restricted storage, retain the custodian mapping separately and log access; collect locked blind ratings, Panel A gold and separate adjudication. Then prepare the schema-conformant canonical case record and obtain a separate project-lead YES/NO. No inference.",
       "stage3_proposed_packet_set_path": "research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_2_2026-11-20.json",
       "stage3_proposed_provenance_path": "research_candidates/evidence_abstention/numpyro_1916/EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_2_2026-11-20.json",
       "stage3_proposed_packet_set_sha256": "e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d",
@@ -473,7 +473,20 @@
       "stage3_proposed_packet_validation_run_id": 44730945050,
       "stage3_proposed_packet_validation_status": "passed_structural_only",
       "stage3_license_scope_review_path": "research_candidates/evidence_abstention/numpyro_1916/NUMPYRO_1916_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json",
-      "stage3_independence_review_path": "research_candidates/evidence_abstention/numpyro_1916/NUMPYRO_1916_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json"
+      "stage3_independence_review_path": "research_candidates/evidence_abstention/numpyro_1916/NUMPYRO_1916_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
+      "stage3_panel_a_form_path": "research_candidates/evidence_abstention/numpyro_1916/NUMPYRO_1916_PANEL_A_GOLD_REVIEW_FORM_V0_1_2026-11-20.md",
+      "stage3_panel_b_bundle_builder_path": "research_candidates/evidence_abstention/implementation/build_numpyro_1916_blinded_review_packets.py",
+      "stage3_panel_b_bundle_builder_test_path": "tests/test_build_numpyro_1916_blinded_review_packets.py",
+      "stage3_panel_b_bundle_builder_status": "prepared_not_executed; creates separate randomized reviewer ZIPs and private custodian map locally; no restricted delivery store, reviewers or completed ratings are recorded",
+      "stage3_panel_role_status": {
+        "panel_a_independent_reviewers_confirmed": 0,
+        "panel_b_independent_source_unexposed_reviewers_confirmed": 0,
+        "independent_adjudicator_confirmed": 0,
+        "project_lead_panel_b_eligible": false,
+        "hasan_panel_b_eligible": false,
+        "restricted_delivery_store_ready": false,
+        "access_log_started": false
+      }
     },
     {
       "cohort_rank": 13,
@@ -2223,9 +2236,9 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44730944964,
-    "head_commit": "848410738109f24bf3f87403760d15b29071dd66",
-    "job_id": 136270228247,
+    "workflow_run_id": 44732846526,
+    "head_commit": "e1ef38431bddd2db950bcb7ccebc8391417ba044",
+    "job_id": 136276723624,
     "status": "success",
     "ready_for_inference": false,
     "blocker_count": 13,
@@ -2237,7 +2250,7 @@
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "Post-NumPyro-packet no-inference preflight passed. Existing registry contains only accepted Dishka #435 (1 case / 1 project). NumPyro is provisional and not accepted. Thirteen global protocol/cohort/model/rater gates remain open."
+    "note": "Latest no-inference preflight passed. Dishka #435 remains the only accepted v0.2 exploratory case (1 case/1 project). NumPyro remains provisional and not accepted. Thirteen global readiness blockers remain."
   },
   "project_lead_decisions": [
     {
@@ -2408,26 +2421,26 @@
     "fine_tuning_performed": false
   },
   "latest_general_validation": {
-    "commit": "848410738109f24bf3f87403760d15b29071dd66",
+    "commit": "e1ef38431bddd2db950bcb7ccebc8391417ba044",
     "research_validation_run": {
-      "id": 44730945050,
-      "job_id": 136270228230,
+      "id": 44732846642,
+      "job_id": 136276723269,
       "conclusion": "success",
-      "tests": "454 passed, 6 skipped, 56 subtests passed"
+      "tests": "457 passed, 6 skipped, 56 subtests passed"
     },
     "no_inference_preflight_run": {
-      "id": 44730944964,
-      "job_id": 136270228247,
+      "id": 44732846526,
+      "job_id": 136276723624,
       "conclusion": "success"
     },
     "uncertainty_unit_test_run": {
-      "id": 44730944975,
+      "id": 44732846509,
       "conclusion": "success"
     },
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "Latest Research Validation and no-inference preflight succeeded after the NumPyro proposed v0.2 packet and its tests were added. The structural test is not a semantic tier judgment; NumPyro remains unaccepted."
+    "note": "Latest repository validation passed after fixing the complete NumPyro E1 evidence-delta assertion and adding the license/independence audit tests. The no-inference preflight passed. NumPyro remains provisional and not accepted; no model was loaded or executed."
   }
 }

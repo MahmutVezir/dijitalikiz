@@ -637,7 +637,9 @@
         "confirm two qualified independent Panel A reviewers and retain separate initial gold/alternative assessments",
         "confirm two consented, source-unexposed Panel B reviewers plus a disjoint adjudicator and restricted delivery/access logs; project lead and Hasan are ineligible for blinded Panel B",
         "obtain blind semantic ratings and adjudication; do not force E1 if any plausible competing mechanism remains",
-        "prepare and validate schema-conformant final case record, then obtain separate project-lead YES/NO"
+        "prepare and validate schema-conformant final case record, then obtain separate project-lead YES/NO",
+        "two independent source-aware Panel A reviewers and a separate technical adjudicator",
+        "restricted packet delivery and reviewer access log"
       ],
       "pr_head_commit": "d5367f16abee85a1d7788784c71eb908ecb12df7",
       "reproduction_fixed_revision": "upstream merge commit; PR head is retained as a separate provenance identifier",
@@ -697,7 +699,11 @@
         ],
         "same_project_case_cap": 1,
         "exact_duplicate_found": false
-      }
+      },
+      "panel_a_form_path": "research_candidates/evidence_abstention/numpyro_1916/NUMPYRO_1916_PANEL_A_GOLD_REVIEW_FORM_V0_1_2026-11-20.md",
+      "panel_b_bundle_builder_path": "research_candidates/evidence_abstention/implementation/build_numpyro_1916_blinded_review_packets.py",
+      "panel_b_bundle_builder_test_path": "tests/test_build_numpyro_1916_blinded_review_packets.py",
+      "panel_b_preparation_status": "builder_and_review_forms_prepared_not_executed; no reviewer appointment or restricted delivery record"
     },
     {
       "instance_id": "pallets__werkzeug-2956",
