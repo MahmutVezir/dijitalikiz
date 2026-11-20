@@ -16,9 +16,9 @@
 
 ## Proposed primary mechanism
 
-On the buggy base, the polynomial-control input created by `ControlInterpComp._configure_controls` is initialized unconditionally with `np.ones(input_shape)`. The requested `options['val']` is not used for that input: the earlier `reshape_val(options['val'], ...)` and `set_input_defaults(...)` path is commented out. The control component is configured and its `controls:*` input is promoted to the phase, so the default seen by the fresh phase model is the all-ones component input rather than the value supplied through `add_control(val=...)`.
+On the pinned buggy base, `Phase.set_control_options` stores the caller-supplied `val` in `phase.control_options` (`phase.py:785–786`). `TranscriptionBase` passes that same `phase.control_options` mapping into `ControlInterpComp(control_options=...)` (`transcription_base.py:145–147`). In the polynomial-control branch of `ControlInterpComp._configure_controls`, the corresponding input is nevertheless initialized unconditionally as `val=np.ones(input_shape)` (`control_comp.py:120`); that active input-construction statement does not use the stored `options['val']`. The requested value is therefore recorded and propagated, but is lost at the component input's default initialization. This directly explains the observed all-ones values.
 
-PR #1165 changes the input construction to normalize `options['val']` with `reshape_val` and pass that result directly into `add_input`. The exact frozen dataset selector and an independent fresh-model Brachistochrone reproducer both show the same base-fail/fixed-pass contrast.
+PR #1165 changes the polynomial-control input construction to normalize `options['val']` with `reshape_val` and pass that result directly into `add_input`. The exact frozen dataset selector and an independent fresh-model Brachistochrone reproducer both show the same base-fail/fixed-pass contrast.
 
 ## Competing explanations and present evidence
 
@@ -31,7 +31,7 @@ PR #1165 changes the input construction to normalize `options['val']` with `resh
 
 - **E3 — issue-level only:** the frozen issue narrative.
 - **E2 — observable failure:** E3 plus the independent public-API reproducer and its exact buggy-base assertion output.
-- **E1 — implementation-path evidence:** E2 plus the pinned buggy-base excerpts showing the unconditional ones input default, the commented-out option-value normalization/default path, and the phase promotion/configuration path.
+- **E1 — implementation-path evidence:** E2 plus active pinned buggy-base source excerpts linking (i) API `val` storage in `Phase.control_options`, (ii) that mapping being passed to `ControlInterpComp`, and (iii) the polynomial-control input being initialized with `np.ones(input_shape)`. The commented lines from the separate `_configure_desvars` method are excluded because they are not part of this active input-construction path.
 
 The exact inner-packet hashes and strict nesting are recorded in the proposed operational packet set. The fixed PR patch, fixed-revision output, hidden gold label, and tier names are not included in the inner packets.
 
