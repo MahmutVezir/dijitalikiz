@@ -303,3 +303,38 @@ The project lead's 20 November instruction is recorded as a **conditional prefer
 The proposed causal mechanism remains: during the documented warmup-resume path, `MCMC.run` replaces the ensemble sampler state's scalar PRNG key with the per-chain key batch; `EnsembleSampler.sample` then calls `random.split` as though it received a single key. The pinned initializer excerpt shows that the ordinary ensemble state stores a scalar key. The exact model-facing E1/E2/E3 proposal remains structural-only; the source-aware human project-lead gold/tier decision must be explicitly recorded, using the same single-adjudicator exploratory limitation accepted for Dishka. Hasan's concurrence may be recorded as project-lead-reported supplementary input; no blind-review or inter-rater reliability claim will be made.
 
 The bounded documentary license-scope acknowledgement and the project-lead's case-specific `prior_pipeline_debug_exposure` declaration also remain to be recorded. Dataset-card attribution and scope are not legal clearance. No model operation is authorized. Final NumPyro acceptance remains pending; Dishka's accepted record is unchanged.
+
+
+## Superseding v0.2 adjudication-route clarification — 20 November 2026
+
+This addendum supersedes candidate-specific wording above that treated two independent blinded Panel A reviewers, two blinded Panel B reviewers and a third adjudicator as mandatory **for technical gold and E1/E2/E3 tier construction**.
+
+The controlling v0.2 exploratory protocol and the Dishka #435 accepted precedent use this division of responsibility:
+
+- The student project lead is the single source-aware human adjudicator for the candidate's technical gold mechanism, alternatives, and E1/E2/E3 tier membership/rationale.
+- ChatGPT is an advisory critic only, not a human rater or adjudicator.
+- Hasan's contribution may be recorded as project-lead-reported, source-aware supplementary technical input. It is not a separate signed independent adjudication, a blind review, or inter-rater evidence.
+- The project lead's full source exposure must be disclosed. No researcher blinding or Cohen's kappa / human-human agreement claim is made for gold/tier construction.
+- The two-human requirement in the active v0.2 protocol applies to the later independent scoring of raw model responses for evidence support (Rater A and eligible, consented, case-unexposed Rater B). It does not make two external source-unexposed reviewers a precondition for the project lead to decide gold/E1/E2/E3.
+- Rater B's consent, exposure screen and scoring-rubric freeze remain required before model-output scoring. They do not replace or independently validate the gold/tier decision.
+
+Accordingly, NumPyro's next gold/tier gate is the project lead's explicit source-aware technical decision, with ChatGPT critique and any Hasan input separately labelled. The proposed E1 packet's causal sufficiency must be assessed honestly; the project lead may decide E1 is insufficient, in which case the three-tier case is not accepted or must be revised prospectively. No tier is forced.
+
+The technical evidence now meets the Dishka Stage 2 parity threshold: two frozen AIES/ESS selectors plus the independent 100-chain public-API warmup-to-run reproducer, all exact buggy-base failures and matching fixed-revision passes. This is **not** the final case-acceptance decision.
+
+### Latest independent reproducer repeat — branch head 20 November 2026
+
+- Workflow: [NumPyro #1916 independent reproducer run 44741768086](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44741768086).
+- Job: `136306920441`, conclusion: success.
+- Latest artifact: `14630982034`, GitHub SHA-256 `bdbe89447f1b1b5b4bbbd3c682d90d6f56e6abe0d2097eddce79acaf9e32fc0d`.
+- The archive was downloaded and independently checked: outer SHA-256 matched the GitHub digest, ZIP CRC passed, and all 10/10 internal SHA256SUMS entries passed.
+- The same public-API 100-chain AIES reproducer failed on the pinned buggy base with the expected `(100, 2)` JAX PRNG-key shape error and passed on the exact fixed merge (`1 passed in 3.00s`).
+
+### Remaining candidate-specific gates
+
+1. Project-lead source-aware gold, alternatives and E1/E2/E3 decision.
+2. Bounded documentary dependency/license scope acknowledgement, including the NumPy/OpenBLAS/LAPACK/GCC-runtime notices; this is not legal clearance.
+3. Explicit candidate-specific prior pipeline/debug exposure declaration. The value must be truthful; the v0.2 eligibility rule requires `none`.
+4. Complete case-acceptance record, fail-closed schema/registry validation, and a separate final project-lead YES/NO.
+
+The current proposed packet-set structural pass does not establish semantic sufficiency. No model weights have been loaded; inference, fine-tuning and training remain unauthorized.
