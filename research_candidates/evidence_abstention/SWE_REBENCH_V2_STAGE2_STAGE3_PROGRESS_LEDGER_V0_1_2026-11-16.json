@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-20T15:46:12.443Z",
+  "generated_at_utc": "2026-11-20T15:48:46.286Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -534,22 +534,22 @@
         "cohort_wide_timestamp_gate": "remains_open"
       },
       "latest_review_contract_ci": {
-        "workflow_run_id": 44764979467,
-        "job_id": 136387054032,
-        "commit": "927c6dc57a90f02c1089dc825d5fc42f88d5228c",
+        "workflow_run_id": 44766776463,
+        "job_id": 136393372244,
+        "commit": "d2394ef769c2934c61b0592d8561a93776f9fc38",
         "conclusion": "success",
         "test_groups": {
           "packet_audit": 12,
           "operational_and_nested_packet_contracts": 25,
-          "numpyro_review_contracts": 8,
+          "numpyro_review_contracts": 9,
           "dymos_review_contracts": 5,
           "selector_runner": 6,
           "exploratory_acceptance_and_readiness": 24,
           "study_design_and_dual_human_scoring": 10,
-          "total": 90
+          "total": 91
         },
-        "preflight_artifact_id": 14644060972,
-        "preflight_artifact_sha256": "5723567a421224785931fdaf119693f0a7d6fcb89bfeac0ce185f070c9a1f0d2",
+        "preflight_artifact_id": 14644022735,
+        "preflight_artifact_sha256": "db7de126c37b1f2b4d6b566109c15bedc7280e91424e7a748a4b5cdfaeb0b007",
         "readiness": {
           "accepted_case_count": 1,
           "accepted_project_count": 1,
@@ -561,8 +561,7 @@
         "model_inference_performed": false,
         "fine_tuning_performed": false,
         "inference_authorized": false,
-        "semantic_sufficiency_assessed": false,
-        "final_case_acceptance": "not_accepted"
+        "exposure_declaration_regression": "passed; record SHA-256 matched the committed declaration"
       },
       "stage2_independent_issue_reproducer": {
         "status": "passed_buggy_base_fail_fixed_revision_pass_repeated_on_latest_branch_head",
@@ -728,7 +727,34 @@
       "exposure_decision_record_path": "research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_EXPOSURE_DECISION_NUMPYRO_1916_2026-11-20.md",
       "exposure_decision_record_sha256": "18f46ab8186cdadce4ccf48eaf78c646fbbda0d4edfc7872166721f2368472c0",
       "exposure_prior_pipeline_debug": "none",
-      "exposure_researcher_source": "full"
+      "exposure_researcher_source": "full",
+      "exposure_declaration_followup": {
+        "initial_preflight": {
+          "workflow_run_id": 44766641712,
+          "commit": "f2871e570c1bd263755ae93bc0c7a4e325857755",
+          "conclusion": "failure",
+          "failure_scope": "One assertion expected backticks around the value token; the committed Markdown emphasized the entire declaration. The record hash and data fields were correct."
+        },
+        "corrected_preflight": {
+          "workflow_run_id": 44766776463,
+          "job_id": 136393372244,
+          "commit": "d2394ef769c2934c61b0592d8561a93776f9fc38",
+          "conclusion": "success",
+          "numpyro_specific_tests": 9,
+          "total_preflight_tests": 91,
+          "artifact_id": 14644022735,
+          "artifact_sha256": "db7de126c37b1f2b4d6b566109c15bedc7280e91424e7a748a4b5cdfaeb0b007"
+        },
+        "repository_validation": {
+          "workflow_run_id": 44766792616,
+          "job_id": 136393436647,
+          "commit": "d2394ef769c2934c61b0592d8561a93776f9fc38",
+          "conclusion": "success",
+          "tests_passed": 466,
+          "tests_skipped": 6,
+          "subtests_passed": 56
+        }
+      }
     },
     {
       "cohort_rank": 13,

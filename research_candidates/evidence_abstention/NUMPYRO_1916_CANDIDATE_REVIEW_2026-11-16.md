@@ -396,3 +396,15 @@ This remains the same single NumPyro case. The project lead's technical gold mec
 ## Superseding exposure declaration — 20 November 2026
 
 The project lead has now explicitly declared **`prior_pipeline_debug_exposure = none`** for NumPyro #1916 / PR #1918: before prospective case validation, the candidate was not used to debug shared pipeline, runner, test-selector or test-oracle problems. The separate **`researcher_source_exposure = full`** remains disclosed because the project lead reviewed the issue, PR, source/patch material and reproduction evidence. This declaration is recorded in `research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_EXPOSURE_DECISION_NUMPYRO_1916_2026-11-20.md` (SHA-256 `18f46ab8186cdadce4ccf48eaf78c646fbbda0d4edfc7872166721f2368472c0`). It closes only the factual prior pipeline/debug exposure gate. It does not grant blind-review eligibility or final case acceptance, and it does not alter the pending bounded license-scope gate. NumPyro remains not accepted; no model operation is authorized.
+
+
+### Prior pipeline/debug exposure declaration and CI verification — 20 November 2026
+
+The project lead explicitly declared `prior_pipeline_debug_exposure = none` for NumPyro #1916 / PR #1918; `researcher_source_exposure = full` remains separately disclosed. The signed-scope distinction and self-declaration limitation are recorded in `numpyro_1916/PROJECT_LEAD_EXPOSURE_DECISION_NUMPYRO_1916_2026-11-20.md` (SHA-256 `18f46ab8186cdadce4ccf48eaf78c646fbbda0d4edfc7872166721f2368472c0`).
+
+- The first preflight attempt, run [44766641712](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44766641712), exposed one test-string formatting mismatch; no data field or record hash failed. The assertion was corrected without changing the declaration record.
+- Corrected no-inference preflight: [run 44766776463](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44766776463), job `136393372244`, success. Test groups: packet audit 12; operational/nested packets 25; NumPyro 9; Dymos 5; selector runner 6; exploratory acceptance/readiness 24; study design 10. Total: **91 passed**. Artifact `14644022735`, SHA-256 `db7de126c37b1f2b4d6b566109c15bedc7280e91424e7a748a4b5cdfaeb0b007`.
+- Full repository Research Validation: [run 44766792616](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44766792616), success: **466 passed, 6 skipped, 56 subtests passed**.
+- Readiness remains `blocked_before_inference`: 13 global blockers, one already accepted case/project (Dishka #435), `ready_for_inference=false`, and `inference_authorized=false`. No model loading, inference, fine-tuning or training occurred.
+
+This CI update validates the exposure record and structural contracts only. It does not accept NumPyro or close the independent license-scope gate.
