@@ -66,7 +66,7 @@ class Numpyro1916ProposedPacketSetTests(unittest.TestCase):
         semantic_review = provenance["semantic_review"]
         self.assertEqual(
             semantic_review["status"],
-            "project_lead_gold_mechanism_approved; E1_E2_E3_membership_and_semantic_sufficiency_pending",
+            "project_lead_gold_mechanism_approved; packet_membership_construction_approved; semantic_sufficiency_pending",
         )
         self.assertEqual(
             semantic_review["project_lead_gold_decision"]["decision"],
