@@ -108,13 +108,31 @@ def write_private_json(path: Path, value: Any) -> None:
         pass
 
 
-def build_review_bundles(packet_set: dict[str, Any], output_dir: Path) -> dict[str, Any]:
+def build_review_bundles(
+    packet_set: dict[str, Any],
+    output_dir: Path,
+    custodian_dir: Path | None = None,
+) -> dict[str, Any]:
     report = validate_packet_set(packet_set)
     if report["status"] != "valid":
         raise ValueError("Packet set is not structurally valid: " + "; ".join(report["blockers"]))
+    output_dir = output_dir.resolve()
+    if custodian_dir is None:
+        custodian_dir = output_dir.parent / (output_dir.name + "-CUSTODIAN-PRIVATE")
+    custodian_dir = custodian_dir.resolve()
+    if output_dir == custodian_dir or output_dir in custodian_dir.parents or custodian_dir in output_dir.parents:
+        raise ValueError("Reviewer delivery directory and private custodian directory must be separate, non-nested paths.")
     if output_dir.exists() and any(output_dir.iterdir()):
-        raise FileExistsError("Output directory must be new or empty.")
+        raise FileExistsError("Reviewer delivery directory must be new or empty.")
+    if custodian_dir.exists() and any(custodian_dir.iterdir()):
+        raise FileExistsError("Private custodian directory must be new or empty.")
     output_dir.mkdir(parents=True, exist_ok=True)
+    custodian_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        output_dir.chmod(0o700)
+        custodian_dir.chmod(0o700)
+    except OSError:
+        pass
 
     mapping: dict[str, Any] = {
         "schema_version": "0.1-numpyro-1916-private-custodian-map",
@@ -179,11 +197,12 @@ def build_review_bundles(packet_set: dict[str, Any], output_dir: Path) -> dict[s
             "packet_codes": [row["packet_code"] for row in rows],
         }
 
-    mapping_path = output_dir / "CUSTODIAN_MAPPING_PRIVATE.json"
+    mapping_path = custodian_dir / "CUSTODIAN_MAPPING_PRIVATE.json"
     write_private_json(mapping_path, mapping)
     return {
         "status": "created",
         "reviewer_bundles": bundle_summaries,
+        "private_mapping_directory": str(custodian_dir),
         "private_mapping_file": mapping_path.name,
         "private_mapping_sha256": sha256_bytes(mapping_path.read_bytes()),
         "packet_set_sha256": packet_set["packet_set_sha256"],
@@ -196,11 +215,12 @@ def build_review_bundles(packet_set: dict[str, Any], output_dir: Path) -> dict[s
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Create reviewer-specific anonymized NumPyro #1916 Panel B ZIPs.")
     parser.add_argument("--packet-set", type=Path, required=True)
-    parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--output-dir", type=Path, required=True, help="Reviewer ZIPs only; share this directory, not its parent.")
+    parser.add_argument("--custodian-dir", type=Path, help="Separate private directory for the mapping key; defaults to a sibling directory.")
     args = parser.parse_args(argv)
     try:
         packet_set = json.loads(args.packet_set.read_text(encoding="utf-8"))
-        result = build_review_bundles(packet_set, args.output_dir)
+        result = build_review_bundles(packet_set, args.output_dir, args.custodian_dir)
     except (OSError, json.JSONDecodeError, ValueError, FileExistsError) as exc:
         print(json.dumps({"status": "error", "error": str(exc)}, indent=2))
         return 2

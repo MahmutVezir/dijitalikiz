@@ -23,11 +23,15 @@ class Numpyro1916BlindedReviewPacketBuilderTests(unittest.TestCase):
         packet_set = json.loads(PACKET_PATH.read_text(encoding="utf-8"))
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / "panel-b-delivery"
-            result = MODULE.build_review_bundles(packet_set, out)
+            private_dir = Path(tmp) / "panel-b-custodian-private"
+            result = MODULE.build_review_bundles(packet_set, out, private_dir)
             self.assertEqual(result["status"], "created")
             self.assertFalse(result["semantic_sufficiency_assessed"])
             self.assertFalse(result["model_inference_performed"])
-            private_map = json.loads((out / "CUSTODIAN_MAPPING_PRIVATE.json").read_text(encoding="utf-8"))
+            private_map_path = private_dir / "CUSTODIAN_MAPPING_PRIVATE.json"
+            self.assertTrue(private_map_path.is_file())
+            self.assertFalse((out / "CUSTODIAN_MAPPING_PRIVATE.json").exists())
+            private_map = json.loads(private_map_path.read_text(encoding="utf-8"))
             self.assertEqual(private_map["packet_set_sha256"], packet_set["packet_set_sha256"])
             self.assertIn("hidden_level", json.dumps(private_map))
             reviewer_packet_codes = {}
@@ -52,6 +56,15 @@ class Numpyro1916BlindedReviewPacketBuilderTests(unittest.TestCase):
                 reviewer_contents[reviewer] = sorted(contents)
             self.assertTrue(reviewer_packet_codes["A"].isdisjoint(reviewer_packet_codes["B"]))
             self.assertEqual(reviewer_contents["A"], reviewer_contents["B"])
+
+    def test_rejects_nested_or_shared_mapping_directory(self):
+        packet_set = json.loads(PACKET_PATH.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "delivery"
+            with self.assertRaises(ValueError):
+                MODULE.build_review_bundles(packet_set, out, out / "custodian")
+            with self.assertRaises(ValueError):
+                MODULE.build_review_bundles(packet_set, out, out)
 
     def test_refuses_to_overwrite_existing_output_directory(self):
         packet_set = json.loads(PACKET_PATH.read_text(encoding="utf-8"))
