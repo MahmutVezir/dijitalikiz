@@ -1,0 +1,83 @@
+{
+  "schema_version": "0.1-dymos-1166-issue-family-independence-review",
+  "generated_date": "2026-11-20",
+  "candidate": {
+    "dataset_row": "openmdao__dymos-1165",
+    "upstream_repository": "OpenMDAO/dymos",
+    "upstream_repository_is_fork": false,
+    "issue_url": "https://github.com/OpenMDAO/dymos/issues/1166",
+    "pull_request_url": "https://github.com/OpenMDAO/dymos/pull/1165",
+    "issue_created_at": "2025-04-04T20:26:09Z",
+    "pull_request_created_at": "2025-04-04T20:23:44Z",
+    "pull_request_merged_at": "2025-04-05T11:30:09Z",
+    "buggy_base": "3efd1035c3bf62890034eb9e07de543f3d117867",
+    "fixed_pr_head": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
+    "fix_pr_head_repository": "robfalck/dymos",
+    "fix_pr_head_is_fork": true,
+    "merge_commit": "da8cfbb1199021f9144f3205a6ccf2fabfa08298"
+  },
+  "timestamp_reconciliation": {
+    "dataset_row_created_at_raw": "2025-04-04 20:23:44",
+    "upstream_pr_created_at_utc": "2025-04-04T20:23:44Z",
+    "upstream_issue_created_at_utc": "2025-04-04T20:26:09Z",
+    "equality_after_utc_normalization_with_pr": true,
+    "equality_with_issue": false,
+    "difference_seconds": 145,
+    "semantic_interpretation": "The row timestamp corresponds to the PR resource created_at; the PR predates the linked issue by 145 seconds. Preserve the observed ordering."
+  },
+  "counting_rule": {
+    "independent_unit": "One upstream project and one issue-specific defect, not each reproduction route.",
+    "issue_count": 1,
+    "pull_request_count": 1,
+    "dataset_row_count": 1,
+    "frozen_dataset_selector_count": 1,
+    "independent_public_api_reproducer_count": 1,
+    "reproduction_routes_are_not_additional_cases": true,
+    "accepted_case_contribution_cap_for_repository": 1
+  },
+  "related_issue_family": [
+    {
+      "number": 531,
+      "created_at": "2021-02-02T19:48:59Z",
+      "title": "Default values for states, polynomial controls, and time are not sticking",
+      "related_resolution_pr": 533,
+      "related_resolution_pr_title": "Added a balanced field length example",
+      "related_resolution_pr_created_at": "2021-02-02T20:00:22Z",
+      "related_resolution_pr_merged_at": "2021-02-05T17:02:34Z",
+      "relationship": "Historical ancestor in the broad default-value family. PR #533 explicitly resolved #531. #1166 is a later regression after ControlInterpComp stopped being housed in a ControlGroup and the old set_input_defaults path disappeared. Treat #531 as related history, not a second independent case."
+    },
+    {
+      "number": 1131,
+      "created_at": "2024-11-19T18:53:12Z",
+      "title": "Polynomial control rates are not correctly evaluated in explicit shooting.",
+      "relationship": "Adjacent control/explicit-shooting topic, but different rate-target and phase-duration propagation mechanism; not counted as a duplicate."
+    }
+  ],
+  "issue_family_disposition": {
+    "exact_duplicate_found": false,
+    "related_predecessor_found": true,
+    "duplicate_candidates_excluded_from_independent_case_count": [
+      531
+    ],
+    "broader_family": "Dymos control/default initialization and interpolation behavior.",
+    "disposition": "Retain #1166 as one later issue-specific regression case; do not count #531 as an additional case and do not count its separate test/reproduction routes as cases."
+  },
+  "cross_project_independence": {
+    "distinct_from_first_accepted_project": true,
+    "first_accepted_repository": "reagento/dishka",
+    "distinct_from_numpyro_project": true,
+    "other_repository": "pyro-ppl/numpyro"
+  },
+  "exposure_and_roles": {
+    "project_lead_source_and_reproduction_exposure": "full (current review exposure)",
+    "hasan_source_and_reproduction_exposure": "full (current review exposure)",
+    "prior_candidate_specific_pipeline_debug_exposure": "pending explicit declaration",
+    "panel_b_blinded_eligible": false,
+    "independent_human_adjudicator": "not appointed; not required for the Dishka-equivalent exploratory gold/tier route"
+  },
+  "independence_status": {
+    "final_case_acceptance": "not_accepted",
+    "inference_authorized": false,
+    "stage2_technical_reproduction": "passed"
+  }
+}
