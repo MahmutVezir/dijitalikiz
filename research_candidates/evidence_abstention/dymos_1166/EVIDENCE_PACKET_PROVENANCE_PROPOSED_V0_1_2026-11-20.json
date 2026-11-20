@@ -3,7 +3,7 @@
   "generated_date": "2026-11-20",
   "candidate": "OpenMDAO/dymos issue 1166 / PR 1165",
   "packet_set_path": "research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
-  "packet_set_sha256": "8a0ee69a3c36d670c9bb56287401cbc637928fe532c760da5ad7ed431f0b023b",
+  "packet_set_sha256": "92b021e0c3d83b69f28bf18a2d8211f1f5c790ca637a6aa8b6d1ee38cef0c745",
   "source_row": {
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
     "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
@@ -68,7 +68,7 @@
       "kind": "other",
       "source_path": "research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py",
       "source_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
-      "content_sha256": "141e9e35e5359449800ae189065f2886ac37cf5a04a7670bffe77afb1f37fbb0",
+      "content_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
       "base_and_fixed_run": "44739419824",
       "note": "fresh Brachistochrone API fixture; no import of upstream PR's modified regression test"
     },
@@ -77,7 +77,8 @@
       "kind": "test_output",
       "source": "artifact 14629598269/base-reproducer.log",
       "full_log_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f",
-      "content_sha256": "f122604c748f77304bf483458b242f620f59d9f212144588dc79c1b2483debc3"
+      "content_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f",
+      "source_snapshot_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f"
     },
     {
       "id": "DYMOS_BASE_CONTROL_COMP_INPUT",
@@ -135,7 +136,7 @@
     ]
   },
   "structural_validation": {
-    "status": "proposed_not_yet_ci_validated",
+    "status": "proposed_hashes_recomputed_not_yet_ci_validated",
     "expected_inner_packet_counts": {
       "E3": 1,
       "E2": 3,
@@ -143,7 +144,12 @@
     },
     "strictly_nested_by_design": true,
     "semantic_sufficiency_assessed": false,
-    "model_inference_performed": false
+    "model_inference_performed": false,
+    "expected_packet_counts": {
+      "E3": 1,
+      "E2": 3,
+      "E1": 6
+    }
   },
   "semantic_review": {
     "status": "pending_source_aware_project_lead_gold_and_tier_decision",
