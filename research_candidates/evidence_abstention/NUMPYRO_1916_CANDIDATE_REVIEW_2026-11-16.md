@@ -351,3 +351,15 @@ The independent issue reproducer was rerun after the portfolio/adjudication-reco
 - Fixed merge: same test passed (`1 passed in 3.97s`).
 
 This is another repeat of the same NumPyro case, not a new case or selector. Final acceptance remains pending the source-aware project-lead gold/tier decision, bounded license acknowledgement, exposure declaration, case record and registry check.
+
+
+### Final current-branch rerun — 20 November 2026
+
+A second current-head repeat completed successfully on branch head `b73b3ef11b633603ae84b5d85af47eb55fa7d1c9`.
+
+- Workflow: [44745926817](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44745926817), job `136321086816`, success.
+- Artifact: `14632847111`; SHA-256 `800cb353b93f88001828f025d8f58a8516d699660d6d59cef3e7957d939a1aa9`.
+- Local verification: outer digest match, ZIP CRC PASS, 10/10 internal hashes PASS.
+- Buggy base produced the exact expected `(100, 2)` batched JAX key error; fixed revision passed the same test (`1 passed in 4.02s`).
+
+This is a verification repeat, not another case. All previously recorded adjudication, license, exposure, acceptance and no-inference boundaries remain unchanged.
