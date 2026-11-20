@@ -154,3 +154,7 @@ Candidate screening exposure is not automatically prior pipeline/debug exposure.
 - **No model weights loaded; no inference, fine-tuning or training performed or authorized.**
 
 The project lead's conditional selection is honoured: these five are the first cases to process, and a candidate should be accepted once it truly satisfies the same Dishka-equivalent standard. It is not an instruction to convert a Stage 2 pass into an accepted case without the remaining case-specific records and human decision.
+
+### EODAG scope note — superseding clarification
+
+The related #1517 report is a separate `KeyError: 'result_type'` in the remote `fetch_product_types_list` path. PR #1536's body says “Fixes #1530”; its diff only renames the duplicate key in `user_conf_template.yml`, adds `StacListAssets` to a config list, and updates expected `geodes_s3` provider/product-type/sortable lists. The frozen `test_list_product_types_for_provider_ok` selector uses `fetch_providers=False`, so it does not exercise #1517's remote-fetch path. Keep #1517 as a related distinct issue and keep `StacListAssets` out of the #1530 gold statement. The direct independent YAML reproducer remains the clearest isolated confirmation of the duplicate-key mechanism.
