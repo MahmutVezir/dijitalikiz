@@ -367,3 +367,33 @@ def test_dishka_final_decision_artifacts_are_hashed_and_inference_remains_disabl
     assert result["status"] == "structurally_valid_candidate_registry", result["blockers"]
     assert result["accepted_case_count"] == 1
     assert result["inference_authorized"] is False
+
+
+def test_dymos_proposed_case_record_is_structurally_complete_without_acceptance_or_inference():
+    case_path = (
+        RESEARCH
+        / "dymos_1166"
+        / "SWE_REBENCH_V2_DYMOS_1166_CASE_RECORD_PROPOSED_V0_1_2026-11-20.json"
+    )
+    record = json.loads(case_path.read_text(encoding="utf-8"))
+
+    result = validate_case_record(record)
+
+    assert result["status"] == "structurally_complete_candidate", result["blockers"]
+    assert result["case_id"] == "SRV2E-DYMOS_1166"
+    assert result["acceptance_decision"] == "proposed"
+    assert result["eligible_for_registry"] is False
+    assert result["inference_authorized"] is False
+    assert record["final_acceptance"]["status"] == "pending"
+    assert record["final_acceptance"]["decision_timestamp_utc"] is None
+    assert record["final_acceptance"]["decision_record"] is None
+    assert record["evidence_tiers"]["E1"]["surviving_mechanism_ids"] == [
+        "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED"
+    ]
+    assert set(record["evidence_tiers"]["E2"]["surviving_mechanism_ids"]) == {
+        "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+        "A1_POLYNOMIAL_VALUE_SHAPE_NORMALIZATION",
+    }
+    assert len(record["evidence_tiers"]["E1"]["evidence_items"]) == 6
+    assert len(record["evidence_tiers"]["E2"]["evidence_items"]) == 3
+    assert len(record["evidence_tiers"]["E3"]["evidence_items"]) == 1
