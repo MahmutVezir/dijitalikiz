@@ -542,7 +542,7 @@
         "final_case_acceptance": "not_accepted"
       },
       "stage2_independent_issue_reproducer": {
-        "status": "passed_buggy_base_fail_fixed_revision_pass_latest_branch_head_repeat_verified",
+        "status": "passed_buggy_base_fail_fixed_revision_pass_repeated_on_latest_branch_head",
         "workflow_run_id": 44737978562,
         "workflow_job_id": 136294098282,
         "workflow_commit": "2b0f4f95e951b6ab7079a20f057ada701660d1ce",
@@ -575,6 +575,20 @@
           "buggy_base": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
           "fixed_revision": "5692d2da335945b756aeae02e3720b9b7f3efef2",
           "result": "Same 100-chain AIES warmup()->run() reproducer failed on buggy base with key shape (100, 2) and passed on fixed revision (1 passed in 3.97s)."
+        },
+        "final_current_branch_repeat": {
+          "workflow_run_id": 44745926817,
+          "workflow_job_id": 136321086816,
+          "workflow_commit": "b73b3ef11b633603ae84b5d85af47eb55fa7d1c9",
+          "artifact_id": 14632847111,
+          "artifact_sha256": "800cb353b93f88001828f025d8f58a8516d699660d6d59cef3e7957d939a1aa9",
+          "local_integrity": {
+            "outer_sha256_matches": true,
+            "zip_crc": "PASS",
+            "internal_hashes": "10/10 PASS"
+          },
+          "buggy_base_result": "AIES 100-chain warmup()->run() executed and raised expected key array shape (100, 2) error.",
+          "fixed_result": "Same test passed (1 passed in 4.02s)."
         }
       },
       "stage3_adjudication_route_v0_2": {
@@ -693,6 +707,20 @@
           "buggy_base": "3efd1035c3bf62890034eb9e07de543f3d117867",
           "fixed_revision": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
           "result": "Same fresh Brachistochrone public-API reproducer failed on buggy base with actual [[1.0],[1.0]] vs expected [[5.0],[15.0]], then passed on fixed revision (1 passed in 0.66s)."
+        },
+        "final_current_branch_repeat": {
+          "workflow_run_id": 44745926619,
+          "workflow_job_id": 136321086021,
+          "workflow_commit": "b73b3ef11b633603ae84b5d85af47eb55fa7d1c9",
+          "artifact_id": 14632443444,
+          "artifact_sha256": "a59eea38a7a0384ade55d150f053cc8243fe1d27256a1a41178824101cf27241",
+          "local_integrity": {
+            "outer_sha256_matches": true,
+            "zip_crc": "PASS",
+            "internal_hashes": "15/15 PASS"
+          },
+          "buggy_base_result": "Fresh Brachistochrone public API assertion failed: actual [[1.0],[1.0]], expected [[5.0],[15.0]].",
+          "fixed_result": "Same test passed (1 passed in 0.63s)."
         }
       },
       "stage3_proposed_packet_set_path": "research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
@@ -733,9 +761,9 @@
       "stage2_latest_artifact_id": 14341424466,
       "stage2_latest_artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
       "stage2_latest_artifact_integrity": "Latest branch-head independent reproducer artifact downloaded and locally verified: outer SHA-256 matches GitHub digest; ZIP CRC PASS; 15/15 internal SHA256SUMS entries PASS.",
-      "stage2_latest_independent_reproducer_workflow_run_id": 44745436377,
-      "stage2_latest_independent_reproducer_artifact_id": 14632153920,
-      "stage2_latest_independent_reproducer_artifact_sha256": "b70d1572ed0a8dbc89f1331da09caaa8848a7581efb2b85c9aceefef09874be2"
+      "stage2_latest_independent_reproducer_workflow_run_id": 44745926619,
+      "stage2_latest_independent_reproducer_artifact_id": 14632443444,
+      "stage2_latest_independent_reproducer_artifact_sha256": "a59eea38a7a0384ade55d150f053cc8243fe1d27256a1a41178824101cf27241"
     },
     {
       "cohort_rank": 16,
@@ -2431,7 +2459,7 @@
     "workflow_run_id": 44745926469,
     "head_commit": "b73b3ef11b633603ae84b5d85af47eb55fa7d1c9",
     "job_id": 136321085978,
-    "status": "preflight_job_success; supplemental no-load verification jobs still running at record time",
+    "status": "workflow_success",
     "ready_for_inference": false,
     "blocker_count": 13,
     "accepted_case_count": 1,
@@ -2454,7 +2482,7 @@
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "No-inference preflight job succeeded on current branch head: 90 tests passed; NumPyro review contracts 8/8 and Dymos review contracts 5/5. The parent workflow was still completing supplementary Dishka reproduction/provenance and Qwen license-metadata capture without weights. Readiness remains blocked before inference with 13 blockers and one accepted case."
+    "note": "Workflow completed successfully. No-inference preflight: 90 tests passed; NumPyro review contracts 8/8 and Dymos review contracts 5/5. Dishka provenance/reproduction checks passed and Qwen license evidence was captured without model weights. NumPyro and Dymos independent reproducers also completed base-fail/fixed-pass on this branch head in separate successful workflows. Readiness remains blocked before inference with 13 global blockers and one accepted case."
   },
   "project_lead_decisions": [
     {
