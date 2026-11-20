@@ -60,3 +60,9 @@ Exact base-fail/fix-pass reproduction: not run.
 Gold mechanism and E1/E2/E3 packet: pending human adjudication.  
 Final case acceptance: not accepted.  
 Model loading and inference authorization: false.
+
+## Superseding sample-eligibility disposition — 20 November 2026
+
+Robocop's controlled Stage 2 reproduction passed, but that technical result does not make the row eligible for the v0.2 model-evaluation sample. The 15 November master audit and project roadmap explicitly record Robocop #1371 as previously used for technical debugging and excluded under the predeclared source-exposure/debugging rule.
+
+Therefore, preserve the successful base-fail/fixed-pass reproduction as engineering/feasibility evidence only. Do not include Robocop in the v0.2 accepted-case registry, model-evaluation cohort, or P0/P1 outcome analysis. The sample exclusion is based on prior exposure, not on a failed technical contract, and must not be reversed to fill the target sample count.
