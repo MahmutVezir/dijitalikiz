@@ -827,7 +827,7 @@
       "repository": "napalm-automation/napalm",
       "pull_request_number": 2152,
       "pull_request_url": "https://github.com/napalm-automation/napalm/pull/2152",
-      "static_screening_classification": "conditional",
+      "static_screening_classification": "project_lead_not_selected",
       "static_scope_decision": "Koşullu bug adayı — fixture/provenans hold",
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
@@ -835,7 +835,7 @@
       "stage2_status": "passed_exact_dataset_selector_buggy_base_fail_fixed_revision_pass_pinned_environment",
       "stage2_workflow_job_id": 134194652784,
       "stage2_evidence_note": "Canonical pinned exact-selector run 44127350027 (job 134194652784): frozen row napalm-automation__napalm-2152 and exact FAIL_TO_PASS selector authenticated; pinned CPython 3.11.9 / pip 24.3.1 / pytest 8.3.5 / NAPALM 5.0.0 environment (51 external lock entries; 52 installed distributions), exact freeze matched, pip check passed, all 52 distributions had license metadata. Exact selector failed on buggy base with os_version actual 'version' vs expected '10.3(5)' and passed on exact fixed revision. Test-only patch contained exactly six issue2151 fixture paths, no production source changes. Sanitized artifact 14348056824 SHA-256 b2d6934038baf751a43ec890fa1a98763bfc10f27b1dd60b3f47aea24f2ff30d; 15/15 inner hashes independently verified; no Parquet, raw fixture, patch contents, harness or raw stdout. Stage 3 remains pending due fixture provenance/legal scope and human adjudication; final acceptance not granted.",
-      "stage3_status": "not_started_stage2_passed_license_scope_and_human_adjudication_pending",
+      "stage3_status": "project_lead_not_selected_from_study_portfolio_2026-11-20",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false
     },
@@ -878,7 +878,7 @@
       "repository": "modin-project/modin",
       "pull_request_number": 7554,
       "pull_request_url": "https://github.com/modin-project/modin/pull/7554",
-      "static_screening_classification": "conditional",
+      "static_screening_classification": "project_lead_not_selected",
       "static_scope_decision": "Koşullu bug adayı — issue başlığı AutoSwitchBackend on derken PR açıklaması ve frozen selector'ler False/disabled kapsamını hedefliyor; insan kapsam kararı bekleniyor.",
       "second_pass_disposition": "conditional_hold_issue_title_vs_PR_and_frozen_selector_configuration",
       "second_pass_reason": "Issue #7553 title says AutoSwitchBackend is on, while PR #7554 body says the failure occurred when it was off and both frozen FAIL_TO_PASS selector IDs explicitly set AutoSwitchBackend=False. The issue body is empty and there are no issue comments. The technical reproduction therefore confirms the PR/frozen-selector False path only; an independent human must reconcile the issue title before issue-level scope can be accepted.",
@@ -886,7 +886,7 @@
       "stage2_status": "passed_exact_dataset_selectors_buggy_base_fail_fixed_revision_pass_pinned_environment",
       "stage2_workflow_job_id": 134230204005,
       "stage2_evidence_note": "Canonical pinned run 44137294820 / job 134230204005 authenticated frozen row modin-project__modin-7554 (row SHA-256 02d8f6266c2b60eb29cb417fb1c157bd56ebe2152e39b53bcadd423e4490631a), exact base/fixed commits and both FAIL_TO_PASS selectors. Both parameter selectors (DataFrameGroupBy and SeriesGroupBy, AutoSwitchBackend=False) executed and failed on buggy base with actual traceback exception 'E NotImplementedError: This functionality is not yet available in Modin.'; same selectors passed on exact fixed commit. Only the regression test method was inserted into the base test file; base production query_compiler_caster.py blob unchanged. Pinned CPython 3.11.9 / pip 24.3.1 / pytest 8.3.5 / pandas 2.2.3 / NumPy 1.26.4; 16 locked packages matched freeze exactly, pip check passed; all 17 installed distribution records had license metadata. Sanitized artifact 14352871592 SHA-256 1eb504d1eafedd1caf395d3731ac4b736302c87b00effdea4234fc9896fffded; 12/12 internal hashes independently verified; no Parquet/raw logs/PR patch/test source contents. IMPORTANT: issue title says AutoSwitchBackend is on; PR description and frozen selector IDs test AutoSwitchBackend=False. Issue body empty; no human resolution recorded. Technical Stage2 pass is not issue-level scope acceptance; candidate held conditional pending human reconciliation, license scope and other Stage3 gates.",
-      "stage3_status": "not_started_issue_scope_reconciliation_license_scope_and_human_adjudication_pending",
+      "stage3_status": "project_lead_not_selected_from_study_portfolio_2026-11-20",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44137294820
@@ -2510,6 +2510,56 @@
         "formal_decision_authority_claimed": false
       },
       "inference_authorized": false
+    },
+    {
+      "date": "2026-11-20",
+      "decision_scope": "candidate_portfolio_and_stage3_work_order",
+      "decision_source": "explicit_project_lead_chat_confirmation",
+      "approved_first_stage3_group": [
+        "pyro-ppl/numpyro #1916",
+        "OpenMDAO/dymos #1166",
+        "CS-SI/eodag #1530",
+        "MarketSquare/robotframework-robocop #1371",
+        "meltano/sdk #3090",
+        "pyfar/pyfar #721"
+      ],
+      "approved_second_evaluation_group": [
+        "skypilot-org/skypilot #5981",
+        "PyThaiNLP/pythainlp #1004",
+        "python-control/python-control #1144",
+        "amaranth-lang/amaranth #1518",
+        "qutip/qutip #2646"
+      ],
+      "not_selected": [
+        "modin-project/modin #7553",
+        "napalm-automation/napalm #2151"
+      ],
+      "exclusions_confirmed": {
+        "cta-observatory/ctapipe #2732": "Exclude from v0.2 model-evaluation sample because prior candidate-specific pipeline/debug exposure='some'; engineering/feasibility pilot only.",
+        "getmoto/moto #8269": "Exclude current frozen row; do not trim selectors.",
+        "capitalone/datacompy #58": "Exclude current frozen row; do not replace selectors."
+      },
+      "bounded_holds": [
+        "ecmwf/earthkit-data #571",
+        "wntrblm/nox #919",
+        "pallets/werkzeug #2955"
+      ],
+      "work_order": [
+        "NumPyro #1916",
+        "Dymos #1166",
+        "EODAG #1530",
+        "Robocop #1371",
+        "Meltano SDK #3090",
+        "PyFar #721",
+        "SkyPilot #5981",
+        "PyThaiNLP #1004",
+        "python-control #1144",
+        "Amaranth #1518",
+        "QuTiP #2646",
+        "Continue frozen primary cohort rank order; use reserve only if needed."
+      ],
+      "scientific_approval_boundary": "Project lead considers NumPyro and Dymos technical evidence sufficiently clear to proceed with source-aware scientific review. This is not approval of either gold mechanism, alternatives, E1/E2/E3 tiers, license scope, exposure declaration, or final case acceptance. ChatGPT remains advisory. No model loading, inference, fine-tuning, or training is authorized.",
+      "inference_authorized": false
     }
   ],
   "latest_candidate_matrix_recheck": {
@@ -2673,7 +2723,7 @@
   },
   "candidate_portfolio_review": {
     "review_path": "research_candidates/evidence_abstention/CANDIDATE_PORTFOLIO_REVIEW_2026-11-20.md",
-    "review_commit": "b3db07b5d1424ae32f2488762494f523a004ce10",
+    "review_commit": "2aa799779efcb1a72c6f32c8b00b12ff1a8d6820",
     "scope": "All 15 current Stage 2-passed upstream projects (including Dishka) plus five active row/oracle/fixture holds",
     "stage2_passed_distinct_projects_including_dishka": 15,
     "accepted_v0_2_projects": 1,
@@ -2700,11 +2750,37 @@
       "meltano/sdk",
       "pyfar/pyfar"
     ],
-    "source_of_truth_note": "Advisory triage only; candidate-specific technical and human gates remain separate. A current Stage 2 pass is not case acceptance.",
+    "source_of_truth_note": "Portfolio selection and work order explicitly approved by project lead on 2026-11-20. Candidate-specific scientific adjudication, license scope, exposure and final acceptance remain separate. A Stage 2 pass or Stage 3 review approval is not case acceptance.",
     "additional_stage2_passed_projects_excluding_dishka": 14,
     "additional_stage2_candidates_after_ctapipe_exclusion": 13,
     "current_project_count_if_all_13_pass_stage3": 14,
     "current_project_count_if_modin_also_excluded": 13,
-    "evidence_audit_boundary": "Older Stage 2 rows are assessed from canonical review documents and the current ledger; their historical artifacts were not all freshly downloaded/rehashed during the 20 November portfolio review. NumPyro and Dymos independent issue-reproducer artifacts were freshly downloaded and reverified on branch head efe677f."
+    "evidence_audit_boundary": "Older Stage 2 rows are assessed from canonical review documents and the current ledger; their historical artifacts were not all freshly downloaded/rehashed during the 20 November portfolio review. NumPyro and Dymos independent issue-reproducer artifacts were freshly downloaded and reverified on branch head efe677f.",
+    "project_lead_decision_date": "2026-11-20",
+    "first_stage3_group": [
+      "pyro-ppl/numpyro #1916",
+      "OpenMDAO/dymos #1166",
+      "CS-SI/eodag #1530",
+      "MarketSquare/robotframework-robocop #1371",
+      "meltano/sdk #3090",
+      "pyfar/pyfar #721"
+    ],
+    "second_evaluation_group": [
+      "skypilot-org/skypilot #5981",
+      "PyThaiNLP/pythainlp #1004",
+      "python-control/python-control #1144",
+      "amaranth-lang/amaranth #1518",
+      "qutip/qutip #2646"
+    ],
+    "project_lead_not_selected": [
+      "modin-project/modin #7553",
+      "napalm-automation/napalm #2151"
+    ],
+    "bounded_holds": [
+      "ecmwf/earthkit-data #571",
+      "wntrblm/nox #919",
+      "pallets/werkzeug #2955"
+    ],
+    "project_lead_decision_source": "explicit_project_lead_chat_confirmation"
   }
 }
