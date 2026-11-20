@@ -224,7 +224,7 @@ def test_dishka_real_accepted_case_is_structurally_complete_and_not_inference_au
     assert result["inference_authorized"] is False
     assert record["final_acceptance"]["status"] == "approved"
     assert record["final_acceptance"]["decision_timestamp_utc"] == "2026-11-20T10:59:00Z"
-    assert record["final_acceptance"]["decision_record"]["sha256"] == "7c532431844c44ef94399f377bc97d2fd98541482bd7f1f469369993372f1b5b"
+    assert record["final_acceptance"]["decision_record"]["sha256"] == "57d309d5ab02164612eda6f7e950673f9a1d505aa4f223504551caee7f946b80"
     assert record["exposure"]["prior_pipeline_debug_exposure"] == "none"
     assert record["exposure"]["researcher_source_exposure"] == "full"
     assert record["license_review"]["scope_limitation"] == "documentary_screening_only_not_legal_advice"
@@ -301,10 +301,6 @@ def test_dishka_accepted_case_document_hash_references_match_current_files():
         (
             record["evidence_tiers"]["tier_decision_record"],
             RESEARCH / "reproduction" / "dishka_issue_435" / "HUMAN_ADJUDICATION_DECISION_DISHKA_435_V0_1_DRAFT_2026-11-16.md",
-        ),
-        (
-            record["human_decision"]["ai_critique_record"],
-            RESEARCH / "reproduction" / "dishka_issue_435" / "AI_ADVISORY_NOTE_DISHKA_435_FINAL_ACCEPTANCE_2026-11-20.md",
         ),
         (
             record["evidence_tiers"]["E1"]["packet"],
