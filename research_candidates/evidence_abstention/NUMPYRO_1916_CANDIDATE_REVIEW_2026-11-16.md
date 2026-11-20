@@ -258,3 +258,21 @@ The latest candidate-scope and structural CI updates are recorded in the progres
 ## Case-specific timestamp reconciliation — 20 November 2026
 
 The exact pinned row's raw `created_at` value is `2024-11-28 00:54:29`. GitHub's upstream PR #1918 `created_at` value is `2024-11-28T00:54:29Z`; these match after UTC normalization. The issue itself was created earlier, at `2024-11-25T14:53:29Z`, so the dataset timestamp corresponds to the PR, not the issue. The pinned row SHA-256 is `d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646`, and the source Parquet SHA-256 is `7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9`. The raw row was included in the locally verified Stage 2 artifact. This verifies the NumPyro row's timestamp provenance; it does not close the cohort-wide dataset timestamp gate.
+
+
+## Branch-head CI and disposition update — 20 November 2026
+
+The no-inference preflight workflow was extended so that changes to the NumPyro evidence directory and its three dedicated review-test modules trigger an explicit NumPyro contract step. The step is included in the uploaded preflight log artifact.
+
+- Commit: `982ec18982591b1c21989f6fb3b68720f26241cc`.
+- Workflow run: `44736373993`, overall conclusion **success**.
+- No-inference preflight job: `136288676575`, **success**.
+- NumPyro-specific tests: **8 passed** across the proposed packet/provenance, license/independence, and blinded-bundle builder test modules.
+- All preflight groups: packet audit 12; operational/nested packets 25; NumPyro review contracts 8; selector runner 6; exploratory acceptance/readiness 24; study-design/dual-human scoring 10. Total: **85 passed**.
+- Preflight log artifact: `14628258416`; SHA-256 `33585baab1d76690ab23b01dc6888fd0f340dcccc2003a650a9b0c413f4dca52`.
+
+The readiness report remains `blocked_before_inference`: one accepted case/project (Dishka #435), 13 global blockers, `ready_for_inference=false`, and `inference_authorized=false`. The same run's Dishka reproduction and raw-provenance audit succeeded; its Qwen license-metadata capture ran without loading model weights and succeeded. Other candidate reproductions were skipped.
+
+The full repository Research Validation on the immediately preceding commit `62b5915ed1eec6d7460d6060de76122c66a6d1b3` passed 460 tests, with 6 skipped and 56 subtests passed. The following commit `982ec189` changed the preflight workflow only; its branch-head no-inference tests are the 85-pass result above.
+
+**NumPyro disposition is unchanged:** Stage 2 and structural packet validation remain technically passed; semantic sufficiency is not assessed; Panel A/Panel B human review, adjudication, exact pinned dataset-card license authentication, human license-scope acknowledgement, and final project-lead acceptance remain open. NumPyro is not accepted. Dishka's existing acceptance is unchanged. No model loading, inference, fine-tuning, or training was performed or authorized.
