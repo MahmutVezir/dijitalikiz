@@ -335,7 +335,13 @@
         "human_gold_root_cause_and_alternative_hypotheses_adjudication",
         "E1_E2_E3_nested_evidence_packet_preparation_and_human_approval",
         "complete_schema_conformant_final_case_record_and_fail_closed_registry_validation",
-        "student_project_lead_separate_final_case_acceptance_decision"
+        "student_project_lead_separate_final_case_acceptance_decision",
+        "project_lead_source_aware_gold_and_E1_E2_E3_membership_and_semantic_sufficiency_decision",
+        "truthful_candidate_specific_prior_pipeline_debug_exposure_declaration",
+        "project_lead_bounded_dependency_source_and_dataset_license_scope_acknowledgement",
+        "schema_conformant_final_case_record",
+        "fail_closed_registry_validation",
+        "separate_project_lead_final_case_acceptance_YES"
       ],
       "latest_reproduction_run_id": 44111403900,
       "latest_reproduction_job_id": 134137813769,
@@ -360,7 +366,12 @@
         "environment_lock_sha256": "48eded6c8371f7b20631b15c09961a6e039d7afd62487dd7f3dd0d74f1636bce"
       },
       "issue_reproducer_status": "No separate standalone test file was run; exact issue-aligned dataset regression selectors reproduce the numerical normalization failure and pass on fixed code.",
-      "technical_reproduction": "stage2_pass_exact_23_dataset_selectors_base_fail_fixed_pass"
+      "technical_reproduction": "stage2_pass_exact_23_dataset_selectors_base_fail_fixed_pass",
+      "project_lead_candidate_selection": {
+        "decision": "accepted_for_stage3_case_evaluation",
+        "decision_date": "2026-11-20",
+        "final_case_acceptance": "not_accepted"
+      }
     },
     {
       "instance_id": "mitmproxy__pdoc-813",
@@ -632,14 +643,12 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "authenticate the license field from the exact pinned dataset-card revision; current CC-BY-4.0 card metadata is not yet pinned-snapshot verified",
-        "project-lead written acknowledgement of narrow dependency/source/dataset license scope; no blanket redistribution clearance",
-        "confirm two qualified independent Panel A reviewers and retain separate initial gold/alternative assessments",
-        "confirm two consented, source-unexposed Panel B reviewers plus a disjoint adjudicator and restricted delivery/access logs; project lead and Hasan are ineligible for blinded Panel B",
-        "obtain blind semantic ratings and adjudication; do not force E1 if any plausible competing mechanism remains",
-        "prepare and validate schema-conformant final case record, then obtain separate project-lead YES/NO",
-        "two independent source-aware Panel A reviewers and a separate technical adjudicator",
-        "restricted packet delivery and reviewer access log"
+        "project_lead_separate_E1_E2_E3_membership_and_semantic_sufficiency_decision",
+        "truthful_candidate_specific_prior_pipeline_debug_exposure_declaration",
+        "project_lead_bounded_dependency_source_and_dataset_license_scope_acknowledgement",
+        "schema_conformant_final_case_record",
+        "fail_closed_registry_validation",
+        "separate_project_lead_final_case_acceptance_YES"
       ],
       "pr_head_commit": "d5367f16abee85a1d7788784c71eb908ecb12df7",
       "reproduction_fixed_revision": "upstream merge commit; PR head is retained as a separate provenance identifier",
@@ -711,6 +720,16 @@
         "issue_created_at_utc": "2024-11-25T14:53:29Z",
         "row_sha256": "d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646",
         "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+      },
+      "project_lead_candidate_selection": {
+        "decision": "accepted_for_stage3_case_evaluation",
+        "decision_date": "2026-11-20",
+        "final_case_acceptance": "not_accepted"
+      },
+      "project_lead_gold_mechanism_decision": {
+        "status": "approved",
+        "decision_date": "2026-11-20",
+        "wording_tr": "MCMC.run(), warmup sonrasında saklanan sampler durumundaki skaler PRNG anahtarını vektörleştirilmiş zincirler için oluşturulan anahtar dizisiyle değiştiriyor. EnsembleSampler.sample() ise bu alanı skaler kabul ederek random.split() çağırıyor. Hata, sampler durumundaki anahtar biçiminin bu iki aşama arasında tutarsız hale gelmesinden kaynaklanıyor."
       }
     },
     {
@@ -852,7 +871,13 @@
         "prepare_nested_E1_E2_E3_evidence_packets_and_manifests",
         "project_lead_approval_of_gold_and_E1_E2_E3_tiers",
         "construct_complete_schema_conformant_final_case_record_and_pass_fail_closed_registry_validation",
-        "project_lead_separate_final_case_acceptance_decision"
+        "project_lead_separate_final_case_acceptance_decision",
+        "project_lead_source_aware_gold_and_E1_E2_E3_membership_and_semantic_sufficiency_decision",
+        "truthful_candidate_specific_prior_pipeline_debug_exposure_declaration",
+        "project_lead_bounded_dependency_source_and_dataset_license_scope_acknowledgement",
+        "schema_conformant_final_case_record",
+        "fail_closed_registry_validation",
+        "separate_project_lead_final_case_acceptance_YES"
       ],
       "dataset_created_at": "2025-04-04T20:23:44Z",
       "dataset_created_at_raw": "2025-04-04 20:23:44",
@@ -936,7 +961,12 @@
       "independent_artifact_sha256_verified": true,
       "artifact_inner_sha256_entries_verified": 18,
       "artifact_inner_sha256_mismatches": 0,
-      "dataset_row_sha256_independently_verified": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5"
+      "dataset_row_sha256_independently_verified": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
+      "project_lead_candidate_selection": {
+        "decision": "accepted_for_stage3_case_evaluation",
+        "decision_date": "2026-11-20",
+        "final_case_acceptance": "not_accepted"
+      }
     },
     {
       "instance_id": "cs-si__eodag-1536",
@@ -966,7 +996,13 @@
         "prepare_nested_E1_E2_E3_evidence_packets_and_manifests",
         "project_lead_approval_of_gold_and_E1_E2_E3_tiers",
         "construct_complete_schema_conformant_final_case_record_and_pass_fail_closed_registry_validation",
-        "project_lead_separate_final_case_acceptance_decision"
+        "project_lead_separate_final_case_acceptance_decision",
+        "project_lead_source_aware_gold_and_E1_E2_E3_membership_and_semantic_sufficiency_decision",
+        "truthful_candidate_specific_prior_pipeline_debug_exposure_declaration",
+        "project_lead_bounded_dependency_source_and_dataset_license_scope_acknowledgement",
+        "schema_conformant_final_case_record",
+        "fail_closed_registry_validation",
+        "separate_project_lead_final_case_acceptance_YES"
       ],
       "issue_created_at": "2025-02-20T11:38:36Z",
       "pull_request_created_at": "2025-02-21T10:04:30Z",
@@ -1064,7 +1100,12 @@
         "source_provenance_sha256_file_entries": 4
       },
       "mixed_scope_assessment": "The PR also adds StacListAssets support, but both exact FAIL_TO_PASS selectors exercise geodes_s3 provider registration/sortables. The applied test-only patch is limited to tests/units/test_core.py, and the workflow confirms production_code_changed=false.",
-      "dependency_license_review_status": "52 installed distributions have license metadata and pip check passed; project-lead review of the complete dependency/bundled-license scope remains pending. Inventory is evidence, not legal clearance."
+      "dependency_license_review_status": "52 installed distributions have license metadata and pip check passed; project-lead review of the complete dependency/bundled-license scope remains pending. Inventory is evidence, not legal clearance.",
+      "project_lead_candidate_selection": {
+        "decision": "accepted_for_stage3_case_evaluation",
+        "decision_date": "2026-11-20",
+        "final_case_acceptance": "not_accepted"
+      }
     },
     {
       "instance_id": "pallets__click-2788",
@@ -1199,7 +1240,13 @@
         "human_gold_root_cause_and_alternative_hypotheses_adjudication",
         "E1_E2_E3_nested_evidence_packet_preparation_and_human_approval",
         "complete_schema_conformant_final_case_record_and_fail_closed_registry_validation",
-        "student_project_lead_separate_final_case_acceptance_decision"
+        "student_project_lead_separate_final_case_acceptance_decision",
+        "project_lead_source_aware_gold_and_E1_E2_E3_membership_and_semantic_sufficiency_decision",
+        "truthful_candidate_specific_prior_pipeline_debug_exposure_declaration",
+        "project_lead_bounded_dependency_source_and_dataset_license_scope_acknowledgement",
+        "schema_conformant_final_case_record",
+        "fail_closed_registry_validation",
+        "separate_project_lead_final_case_acceptance_YES"
       ],
       "latest_reproduction_run_id": 44111403900,
       "latest_reproduction_job_id": 134137814089,
@@ -1215,7 +1262,12 @@
       "issue_reproducer_status": "PASS_CONTRAST: independent base test fails because schema reference resolution drops a repeated property schema; fixed source passes.",
       "dataset_selector_status": "PASS: exact single selector fails on buggy base and passes on fixed revision.",
       "technical_reproduction": "stage2_pass_independent_issue_reproducer_and_1_dataset_selector_base_fail_fixed_pass",
-      "dependency_license_inventory_status": "recorded_in_artifact_pending_human_scope_review"
+      "dependency_license_inventory_status": "recorded_in_artifact_pending_human_scope_review",
+      "project_lead_candidate_selection": {
+        "decision": "accepted_for_stage3_case_evaluation",
+        "decision_date": "2026-11-20",
+        "final_case_acceptance": "not_accepted"
+      }
     },
     {
       "instance_id": "python-control__python-control-1145",
@@ -1528,5 +1580,24 @@
     "broad_shortlist_after_simpeg_row63_exclusion": 66,
     "inference_authorized": false
   },
-  "inference_authorized": false
+  "inference_authorized": false,
+  "project_lead_decisions": [
+    {
+      "date": "2026-11-20",
+      "scope": "candidate_selection_and_numpyro_technical_gold",
+      "candidate_selection": "The project lead accepts NumPyro #1916, Dymos #1166, EODAG #1530, Meltano SDK #3090 and PyFar #721 for continued v0.2 Stage 3 candidate evaluation.",
+      "numpyro_gold": {
+        "status": "approved",
+        "wording_tr": "MCMC.run(), warmup sonrasında saklanan sampler durumundaki skaler PRNG anahtarını vektörleştirilmiş zincirler için oluşturulan anahtar dizisiyle değiştiriyor. EnsembleSampler.sample() ise bu alanı skaler kabul ederek random.split() çağırıyor. Hata, sampler durumundaki anahtar biçiminin bu iki aşama arasında tutarsız hale gelmesinden kaynaklanıyor."
+      },
+      "boundaries": {
+        "tier_membership_and_sufficiency": "Not yet approved for NumPyro or any of the other four candidates; proposed packet tiers remain advisory pending separate project-lead decisions.",
+        "final_case_acceptance": "No new case has been added to CASE_REGISTRY. Dishka #435 remains the only accepted case.",
+        "prior_pipeline_debug_exposure": "Must be declared truthfully per candidate; not inferred from source review or absence of a recorded event.",
+        "license_scope": "Bounded project-lead documentary acknowledgement remains pending per candidate; not legal clearance or redistribution permission.",
+        "inference_authorized": false
+      }
+    }
+  ],
+  "case_acceptance_note": "The five candidates above are project-lead accepted for continued Stage 3 evaluation only. Candidate-selection approval is not final case acceptance. Dishka #435 remains the only accepted v0.2 case. No inference is authorized."
 }
