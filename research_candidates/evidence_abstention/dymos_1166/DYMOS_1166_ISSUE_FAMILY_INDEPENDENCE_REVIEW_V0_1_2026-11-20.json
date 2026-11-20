@@ -89,6 +89,20 @@
     "inference_authorized": false,
     "stage2_technical_reproduction": "passed",
     "prior_pipeline_debug_exposure": "none_declared_by_project_lead",
-    "researcher_source_exposure": "full_disclosed"
+    "researcher_source_exposure": "full_disclosed",
+    "source_aware_project_lead_gold_tier_decision": "approved_2026-11-20"
+  },
+  "source_aware_gold_tier_decision": {
+    "status": "approved_by_project_lead",
+    "decision_date": "2026-11-20",
+    "decision_record_path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
+    "decision_record_sha256": "9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392",
+    "approved_gold_mechanism": "API-provided polynomial-control val is recorded and propagated to ControlInterpComp options but the buggy polynomial-control input is initialized with np.ones(input_shape), discarding the supplied default.",
+    "tier_decisions": {
+      "E3": "abstain",
+      "E2": "abstain",
+      "E1": "answer"
+    },
+    "method": "Dishka-equivalent v0.2 exploratory source-aware single project-lead human adjudicator; no blind adjudication claim."
   }
 }
