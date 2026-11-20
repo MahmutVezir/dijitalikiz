@@ -166,3 +166,36 @@ The first run on the initial Dymos test draft failed at module import (missing i
 ### Current Dymos disposition
 
 Stage 2 dataset reproduction: PASS. Independent public-API reproduction: PASS. Proposed packet structure/CI: PASS. Issue-family grouping: documented, with #531 clustered as historical related context and not double-counted. Source/dependency inventory: recorded. Project-lead bounded license-scope acknowledgement, exact pinned dataset-card license authentication, candidate-specific prior pipeline/debug exposure declaration, and source-aware gold/E1-E2/E3 decision remain open. Final case acceptance remains **not accepted**; no model operation is authorized.
+
+
+## Superseding Stage 2 / Stage 3 status update — 20 November 2026
+
+The independent issue reproducer and the proposed Stage 3 packet contract have since passed on the refreshed branch head.
+
+### Latest independent reproducer
+
+- Workflow: [Dymos #1166 independent issue reproducer run 44741768163](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44741768163).
+- Job: `136306920964`, conclusion: success.
+- Buggy base: `3efd1035c3bf62890034eb9e07de543f3d117867`.
+- Fixed PR head: `0ffc82225d6125dcb5c5b5acfb9be9fd712ef949`.
+- Independent test: `reproduction/dymos_issue_1166/test_issue_1166.py`, SHA-256 `70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9`.
+- Base: the test executed and failed because the initial polynomial control values were `[[1.0], [1.0]]), not the requested `[[5.0], [15.0]]`.
+- Fixed: same test passed (`1 passed`) in the same pinned Python/OpenMDAO/NumPy/SciPy environment.
+- Artifact: `14631740733`; SHA-256 `3c3b2d96d0ad7b82d945aa7fcbc4014e64674496967eeb98288f070af8f39f00`. Downloaded independently: outer SHA-256 matched GitHub, ZIP CRC PASS, and all 15/15 internal SHA256SUMS entries PASS.
+
+### Stage 3 packet structure CI
+
+The proposed E1/E2/E3 packet set now passes its dedicated no-inference contract tests on the latest reviewed head. The successful branch-head preflight is run `44741767911`, job `136306921046`; the Dymos-specific test step reports **5 passed**. The run also passed the NumPyro review contracts (8 passed), general packet/selector/design tests and readiness reporting. This establishes packet hash/nesting and record-contract validity only, not semantic gold/tier sufficiency.
+
+- Packet set: `dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json`
+- Packet-set SHA-256: `07b9547ba6bc30dd525acff0b9916542b81e47f9ed8451f2b0fba5ca8a22b17d`
+- Nested counts: E3=1, E2=3, E1=6.
+- Provenance, issue-family and bounded dependency-license inventory records are stored alongside the packet set.
+
+### Adjudication route — same exploratory standard as Dishka
+
+The active v0.2 protocol and Dishka #435 accepted precedent allow the student project lead to make the source-aware technical gold, alternatives and E1/E2/E3 decision as the single human adjudicator, with full researcher-source exposure disclosed. ChatGPT is advisory only. Hasan's input may be recorded as project-lead-reported supplementary source-aware technical input; it is not a second signed independent adjudication or a blind rating. Two human raters remain required for the separate later task of scoring raw model responses for evidence support; that requirement is not a two-person gold/tier gate.
+
+The project lead's gold/tier decision for Dymos remains **pending**. The bounded documentary license acknowledgement, exact pinned dataset-card license authentication, and explicit candidate-specific prior pipeline/debug exposure declaration also remain pending. Dymos #531 is a historical related predecessor and is not counted as a second case. No inference is authorized.
+
+**Current Dymos disposition:** Stage 2 dataset selector PASS; independent public-API reproducer PASS; proposed E1/E2/E3 structural contract PASS; single-project issue-family screen recorded; not yet accepted. Final case acceptance must remain unchanged until the project lead's technical decision, exposure/license declarations, complete schema-conformant case record, registry validation, and separate final YES/NO decision are recorded.
