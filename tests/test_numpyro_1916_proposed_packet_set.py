@@ -47,7 +47,7 @@ class Numpyro1916ProposedPacketSetTests(unittest.TestCase):
         self.assertFalse(result["semantic_sufficiency_assessed"])
         self.assertFalse(result["model_inference_performed"])
 
-    def test_proposed_provenance_matches_packet_set_and_review_stays_pending(self):
+    def test_project_lead_gold_is_approved_while_tier_review_stays_pending(self):
         packet_set = json.loads(PACKET_PATH.read_text(encoding="utf-8"))
         provenance = json.loads(PROVENANCE_PATH.read_text(encoding="utf-8"))
         self.assertEqual(provenance["packet_set_sha256"], packet_set["packet_set_sha256"])
@@ -55,10 +55,24 @@ class Numpyro1916ProposedPacketSetTests(unittest.TestCase):
             provenance["packet_set_path"],
             str(PACKET_PATH.relative_to(ROOT)),
         )
+        semantic_review = provenance["semantic_review"]
         self.assertEqual(
-            provenance["semantic_review"]["status"],
-            "pending_source_aware_project_lead_gold_and_tier_decision",
+            semantic_review["status"],
+            "project_lead_gold_mechanism_approved; E1_E2_E3_membership_and_semantic_sufficiency_pending",
         )
+        self.assertEqual(
+            semantic_review["project_lead_gold_decision"]["decision"],
+            "APPROVED",
+        )
+        self.assertEqual(
+            semantic_review["project_lead_gold_decision"]["approved_gold_mechanism_tr"],
+            "MCMC.run(), warmup sonrasında saklanan sampler durumundaki skaler PRNG anahtarını vektörleştirilmiş zincirler için oluşturulan anahtar dizisiyle değiştiriyor. EnsembleSampler.sample() ise bu alanı skaler kabul ederek random.split() çağırıyor. Hata, sampler durumundaki anahtar biçiminin bu iki aşama arasında tutarsız hale gelmesinden kaynaklanıyor.",
+        )
+        self.assertEqual(
+            semantic_review["tier_membership_decision"],
+            "PENDING_separate_project_lead_decision",
+        )
+        self.assertIn("NOT_ACCEPTED", semantic_review["final_case_acceptance"])
         self.assertFalse(provenance["structural_validation"]["semantic_sufficiency_assessed"])
         self.assertFalse(provenance["structural_validation"]["model_inference_performed"])
 
