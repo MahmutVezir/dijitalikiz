@@ -255,3 +255,25 @@ After the CTAPIpe exposure exclusion, the project lead's non-selection of Modin 
 ### Status boundary
 
 The project lead's conditional instruction is to accept a candidate only when it is admissible under the same Dishka-equivalent v0.2 standard. The five corrected first-batch candidates have not yet been finally accepted. Their case-specific source-aware gold/E1/E2/E3 decisions, bounded documentary license-scope acknowledgements, truthful prior pipeline/debug exposure declarations, complete case records, fail-closed registry checks and separate final YES decisions remain candidate-specific. No prior-exposure value may be inferred from ordinary source review, and no 'some' value may be changed to 'none' for convenience.
+
+---
+
+## Superseding project-lead decision — 20 November 2026
+
+The project lead has accepted the five strong candidates identified in the first evaluation group for continued v0.2 Stage 3 case evaluation:
+
+1. NumPyro #1916
+2. Dymos #1166
+3. EODAG #1530
+4. Meltano SDK #3090
+5. PyFar #721
+
+The project lead has separately approved the exact NumPyro #1916 technical gold mechanism. The approved statement is preserved in `numpyro_1916/PROJECT_LEAD_GOLD_DECISION_NUMPYRO_1916_2026-11-20.md` and in the NumPyro provenance record.
+
+This decision supersedes the earlier wording that the five candidates were only conditionally selected for evaluation. They are now **accepted as Stage 3 candidates by the project lead**. It does not convert them into final accepted cases:
+- NumPyro's E1/E2/E3 membership and sufficiency remain undecided.
+- Dymos, EODAG, Meltano and PyFar still require separate project-lead gold and E1/E2/E3 decisions.
+- Each candidate still requires a truthful prior pipeline/debug exposure declaration, bounded documentary license-scope acknowledgement, complete v0.2 case record, fail-closed registry validation and a separate final case-specific YES.
+
+The existing prior-debug exclusion of Robocop #1371 remains unchanged. The accepted-case registry remains at **one final accepted case: Dishka #435**. No model weights were loaded; model inference, fine-tuning and training remain unauthorized.
+
