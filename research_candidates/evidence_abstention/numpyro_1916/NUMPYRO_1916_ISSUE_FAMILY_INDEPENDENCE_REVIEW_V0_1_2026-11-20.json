@@ -92,5 +92,24 @@
     "cross_project_independence": "Verified as distinct from Dishka at the upstream repository and defect identity level.",
     "final_case_acceptance": "not_accepted",
     "inference_authorized": false
+  },
+  "timestamp_reconciliation": {
+    "dataset_row_created_at_raw": "2024-11-28 00:54:29",
+    "upstream_pr_created_at_utc": "2024-11-28T00:54:29Z",
+    "equality_after_utc_normalization": true,
+    "semantic_interpretation": "The pinned SWE-rebench row timestamp corresponds to the upstream pull request creation timestamp, not the issue creation timestamp.",
+    "upstream_issue_created_at_utc": "2024-11-25T14:53:29Z",
+    "row_sha256": "d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646",
+    "parquet_file_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "local_artifact_evidence": {
+      "workflow_run_id": 44537219541,
+      "artifact_id": 14536697284,
+      "outer_sha256_verified": true,
+      "zip_crc": "PASS",
+      "payload_sums": "15/15 PASS"
+    },
+    "upstream_record_source": "GitHub REST API pull request #1918 created_at field retrieved 2026-11-20",
+    "case_level_timestamp_reconciliation": "verified",
+    "cohort_wide_timestamp_gate": "remains_open"
   }
 }

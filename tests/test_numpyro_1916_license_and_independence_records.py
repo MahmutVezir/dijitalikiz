@@ -46,6 +46,13 @@ class Numpyro1916LicenseAndIndependenceRecordTests(unittest.TestCase):
         self.assertEqual(record["counting_rule"]["frozen_selector_count"], 2)
         self.assertTrue(record["counting_rule"]["selectors_are_two_test_variants_of_one_defect"])
         self.assertFalse(record["issue_family_disposition"]["exact_duplicate_found"])
+        timestamp = record["timestamp_reconciliation"]
+        self.assertEqual(timestamp["dataset_row_created_at_raw"], "2024-11-28 00:54:29")
+        self.assertEqual(timestamp["upstream_pr_created_at_utc"], "2024-11-28T00:54:29Z")
+        self.assertTrue(timestamp["equality_after_utc_normalization"])
+        self.assertNotEqual(timestamp["dataset_row_created_at_raw"], timestamp["upstream_issue_created_at_utc"])
+        self.assertEqual(timestamp["case_level_timestamp_reconciliation"], "verified")
+        self.assertEqual(timestamp["cohort_wide_timestamp_gate"], "remains_open")
         self.assertEqual(
             set(record["issue_family_disposition"]["duplicate_candidates_excluded_from_independent_case_count"]),
             {2132, 2338, 2359, 2392},

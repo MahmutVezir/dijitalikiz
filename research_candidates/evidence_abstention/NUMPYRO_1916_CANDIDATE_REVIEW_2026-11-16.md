@@ -253,3 +253,8 @@ Stage 2 reproduction and artifact integrity: PASS. Proposed E1 v0.2 packet struc
 ## 20 November 2026 — operational review handoff prepared
 
 The latest candidate-scope and structural CI updates are recorded in the progress ledger. A separate Panel A gold review form is available at `numpyro_1916/NUMPYRO_1916_PANEL_A_GOLD_REVIEW_FORM_V0_1_2026-11-20.md`. A local Panel B bundle builder is available at `implementation/build_numpyro_1916_blinded_review_packets.py`; its regression tests are at `tests/test_build_numpyro_1916_blinded_review_packets.py`. The builder emits two randomized reviewer ZIPs and a separate custodian mapping, but does not upload or send files. Do not use it until two eligible, source-unexposed Panel B reviewers are consented and a restricted delivery store/access log are available. No reviewer or adjudicator is currently recorded; no semantic rating or case acceptance is implied.
+
+
+## Case-specific timestamp reconciliation — 20 November 2026
+
+The exact pinned row's raw `created_at` value is `2024-11-28 00:54:29`. GitHub's upstream PR #1918 `created_at` value is `2024-11-28T00:54:29Z`; these match after UTC normalization. The issue itself was created earlier, at `2024-11-25T14:53:29Z`, so the dataset timestamp corresponds to the PR, not the issue. The pinned row SHA-256 is `d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646`, and the source Parquet SHA-256 is `7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9`. The raw row was included in the locally verified Stage 2 artifact. This verifies the NumPyro row's timestamp provenance; it does not close the cohort-wide dataset timestamp gate.
