@@ -505,6 +505,41 @@
         "upstream_record_source": "GitHub REST API pull request #1918 created_at field retrieved 2026-11-20",
         "case_level_timestamp_reconciliation": "verified",
         "cohort_wide_timestamp_gate": "remains_open"
+      },
+      "latest_review_contract_ci": {
+        "workflow_run_id": 44736373993,
+        "job_id": 136288676575,
+        "commit": "982ec18982591b1c21989f6fb3b68720f26241cc",
+        "conclusion": "success",
+        "dedicated_numpyro_test_modules": {
+          "test_numpyro_1916_proposed_packet_set.py": 2,
+          "test_numpyro_1916_license_and_independence_records.py": 3,
+          "test_build_numpyro_1916_blinded_review_packets.py": 3
+        },
+        "test_groups": {
+          "packet_audit": 12,
+          "operational_and_nested_packet_contracts": 25,
+          "numpyro_review_contracts": 8,
+          "selector_runner": 6,
+          "exploratory_acceptance_and_readiness": 24,
+          "study_design_and_dual_human_scoring": 10,
+          "total": 85
+        },
+        "preflight_artifact_id": 14628258416,
+        "preflight_artifact_sha256": "33585baab1d76690ab23b01dc6888fd0f340dcccc2003a650a9b0c413f4dca52",
+        "readiness": {
+          "accepted_case_count": 1,
+          "accepted_project_count": 1,
+          "accepted_case": "reagento/dishka #435",
+          "blocker_count": 13,
+          "ready_for_inference": false
+        },
+        "model_loading_performed": false,
+        "model_inference_performed": false,
+        "fine_tuning_performed": false,
+        "inference_authorized": false,
+        "semantic_sufficiency_assessed": false,
+        "final_case_acceptance": "not_accepted"
       }
     },
     {
@@ -2255,9 +2290,9 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44732846526,
-    "head_commit": "e1ef38431bddd2db950bcb7ccebc8391417ba044",
-    "job_id": 136276723624,
+    "workflow_run_id": 44736373993,
+    "head_commit": "982ec18982591b1c21989f6fb3b68720f26241cc",
+    "job_id": 136288676575,
     "status": "success",
     "ready_for_inference": false,
     "blocker_count": 13,
@@ -2265,11 +2300,22 @@
     "accepted_project_count": 1,
     "registry_status": "structurally_valid_candidate_registry",
     "schema_valid": true,
+    "test_groups": {
+      "packet_audit": 12,
+      "operational_and_nested_packet_contracts": 25,
+      "numpyro_review_contracts": 8,
+      "selector_runner": 6,
+      "exploratory_acceptance_and_readiness": 24,
+      "study_design_and_dual_human_scoring": 10,
+      "total": 85
+    },
+    "artifact_id": 14628258416,
+    "artifact_sha256": "33585baab1d76690ab23b01dc6888fd0f340dcccc2003a650a9b0c413f4dca52",
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "Latest no-inference preflight passed. Dishka #435 remains the only accepted v0.2 exploratory case (1 case/1 project). NumPyro remains provisional and not accepted. Thirteen global readiness blockers remain."
+    "note": "Dishka #435 is the only accepted v0.2 exploratory case. NumPyro #1916 remains provisional and not accepted. The NumPyro-specific packet, provenance, license/independence and blinded-bundle contracts passed. Thirteen global readiness blockers remain."
   },
   "project_lead_decisions": [
     {
@@ -2440,26 +2486,22 @@
     "fine_tuning_performed": false
   },
   "latest_general_validation": {
-    "commit": "e1ef38431bddd2db950bcb7ccebc8391417ba044",
+    "commit": "62b5915ed1eec6d7460d6060de76122c66a6d1b3",
     "research_validation_run": {
-      "id": 44732846642,
-      "job_id": 136276723269,
+      "id": 44734204156,
+      "job_id": 136281363442,
       "conclusion": "success",
-      "tests": "457 passed, 6 skipped, 56 subtests passed"
+      "tests": "460 passed, 6 skipped, 56 subtests passed"
     },
     "no_inference_preflight_run": {
-      "id": 44732846526,
-      "job_id": 136276723624,
-      "conclusion": "success"
-    },
-    "uncertainty_unit_test_run": {
-      "id": 44732846509,
+      "id": 44734204470,
+      "job_id": 136281363825,
       "conclusion": "success"
     },
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "Latest repository validation passed after fixing the complete NumPyro E1 evidence-delta assertion and adding the license/independence audit tests. The no-inference preflight passed. NumPyro remains provisional and not accepted; no model was loaded or executed."
+    "note": "The last full repository/configuration validation passed on the preceding code-and-research head. The later commit 982ec189 changed only the no-inference preflight workflow; that workflow's new branch-head run passed its 85-test preflight suite. No model was loaded or executed."
   }
 }
