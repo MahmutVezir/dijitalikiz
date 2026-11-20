@@ -51,7 +51,22 @@
         "internal_sha256_entries": "15/15 PASS"
       },
       "reproducer_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
-      "dependency_lock_sha256": "e229e611a88f50484343090cbb79e73f9d90a5a66ac0be990d0b1523cc029ef3"
+      "dependency_lock_sha256": "e229e611a88f50484343090cbb79e73f9d90a5a66ac0be990d0b1523cc029ef3",
+      "latest_branch_head_repeat": {
+        "workflow_run_id": 44745436377,
+        "workflow_job_id": 136319403418,
+        "workflow_commit": "efe677f49088eb9493fef6e8c6615b5bcb061dcb",
+        "artifact_id": 14632153920,
+        "artifact_sha256": "b70d1572ed0a8dbc89f1331da09caaa8848a7581efb2b85c9aceefef09874be2",
+        "local_integrity": {
+          "outer_sha256_matches_github_digest": true,
+          "zip_crc": "PASS",
+          "internal_sha256sums": "15/15 PASS"
+        },
+        "buggy_base_result": "Executed fresh Brachistochrone add_control(val=[5.0,15.0]) reproducer; actual [[1.0],[1.0]] rather than requested [[5.0],[15.0]].",
+        "fixed_result": "Same test on pinned fixed PR head passed (1 passed in 0.66s).",
+        "inference_performed": false
+      }
     }
   },
   "evidence_items": [
@@ -146,6 +161,14 @@
       "E3": 1,
       "E2": 3,
       "E1": 6
+    },
+    "latest_preflight_run": {
+      "workflow_run_id": 44745438389,
+      "preflight_job_id": 136319411195,
+      "conclusion": "success",
+      "dymos_review_contract_tests": "5 passed",
+      "semantic_sufficiency_assessed": false,
+      "model_inference_performed": false
     }
   },
   "semantic_review": {
