@@ -1,3 +1,5 @@
+> **Supersession notice — 20 November 2026:** This form is an archived optional technical-review aid, not an active gate for NumPyro #1916 under the adopted v0.2 Dishka-equivalent route. The project lead is the single source-aware human adjudicator for technical gold and E1/E2/E3; ChatGPT is advisory only. Two independent human scorers remain required later for raw model-output evidence-support ratings only. No independent Panel A reviewers or signed reviews are claimed by this document. See `research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_TIER_DECISION_NUMPYRO_1916_2026-11-20.md` for the operative project-lead tier decision.
+
 # NumPyro #1916 — Panel A independent technical gold review
 
 **Version:** 0.1 draft  
