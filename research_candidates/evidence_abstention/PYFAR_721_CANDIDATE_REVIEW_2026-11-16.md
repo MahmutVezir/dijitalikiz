@@ -74,3 +74,13 @@ The issue/PR scope is coherent: issue #721 explicitly concerns both energy and p
 **Evidence limitation:** this latest Stage 2 result is based on the 23 exact frozen dataset selectors. The current record does not claim a separately authored independent public-API issue reproducer for PyFar. A minimal standalone reproducer is recommended as an additional parity check against the strongest cases; it is not represented as already run.
 
 **Current disposition:** Stage 2 technical reproduction PASS; strong numerical candidate, not accepted. The older assignment's proposed multi-panel gold/tier requirement is superseded by the Dishka-equivalent v0.2 route: the project lead is the single source-aware human adjudicator for gold and E1/E2/E3; ChatGPT is advisory; Hasan's input may be reported only as supplementary source-aware concurrence. Remaining gates: issue-family/lineage review, candidate-specific prior pipeline/debug exposure declaration, bounded license scope including the corrected runtime and native/system notices, source-aware gold/tier decision, complete proposed record and fail-closed registry validation.
+
+## Project-lead selection decision
+
+## Project-lead first-batch selection — 20 November 2026
+
+The student project lead explicitly accepted PyFar #721 as one of the strong first-batch candidates to continue through v0.2 Stage 3 case evaluation, applying the unchanged Dishka-equivalent criteria.
+
+This is candidate-selection approval only. It does **not** approve the proposed PyFar gold mechanism or E1/E2/E3 tier membership; those remain for a separate source-aware project-lead decision. The bounded corrected-runtime/native-system-notice scope acknowledgement, candidate-specific prior pipeline/debug exposure declaration, related issue/lineage review, complete case record, fail-closed registry validation and separate final case YES/NO remain pending.
+
+All 23 frozen selectors remain one PyFar case. A separately authored issue-level reproducer has not yet been run and must not be claimed as existing evidence. This candidate remains not accepted as a final case. No model load, inference, fine-tuning or training is authorized.
