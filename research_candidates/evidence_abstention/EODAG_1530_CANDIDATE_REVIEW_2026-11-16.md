@@ -90,3 +90,17 @@ Related issue-family / independence review: pending.
 Gold mechanism, alternatives and nested E1/E2/E3 evidence: pending human adjudication.  
 Final case acceptance: not accepted.  
 Model loading/inference authorization: false.
+
+## Superseding Stage 2 and scope addendum — 20 November 2026
+
+The later current-branch reproduction matrix completed EODAG #1530 successfully:
+- Workflow run: 44331092872; job: 134895967977 — success.
+- Artifact: 14440370494; GitHub-reported SHA-256: 6a732364873d12d78d407f41aa671cc56851f67b58492c4762ff33e36a59a437.
+- The same independent duplicate-key YAML reproducer failed on the exact buggy base and passed on the exact fixed revision.
+- The two exact frozen dataset selectors again failed on the test-only patched buggy base and passed on the exact fixed revision.
+
+This repeat confirms the earlier Stage 2 pass; it is not another case. The independent reproducer isolates the actual defect: in the pinned base YAML, the two top-level provider blocks both use the key geodes, so normal YAML parsing loses the first mapping; the fix preserves the public provider under geodes and gives the S3 provider the separate geodes_s3 key.
+
+**Scope limitation retained:** PR #1536 also contains a separate StacListAssets feature. The exact dataset selectors and minimal reproducer used for this case concern the geodes/geodes_s3 configuration defect, not the separate feature. Keep these scopes separate in the gold statement and evidence packets.
+
+**Current disposition:** Stage 2 technical reproduction PASS; candidate remains not accepted. Related issue/lineage review, project-lead source-aware gold/E1-E2-E3 decision, truthful candidate-specific prior pipeline/debug exposure declaration, bounded dependency/source/dataset license-scope acknowledgement, proposed case record and fail-closed registry validation remain open. The earlier scope review's 52-package inventory is evidence of captured metadata, not legal clearance.
