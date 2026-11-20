@@ -166,5 +166,22 @@
     "model_loading": false,
     "model_inference": false,
     "fine_tuning": false
+  },
+  "final_current_branch_repeat": {
+    "workflow_run_id": 44745926817,
+    "workflow_job_id": 136321086816,
+    "workflow_commit": "b73b3ef11b633603ae84b5d85af47eb55fa7d1c9",
+    "artifact_id": 14632847111,
+    "artifact_sha256": "800cb353b93f88001828f025d8f58a8516d699660d6d59cef3e7957d939a1aa9",
+    "local_integrity": {
+      "outer_sha256_matches_github_digest": true,
+      "zip_crc": "PASS",
+      "internal_sha256sums": "10/10 PASS"
+    },
+    "buggy_base_result": "100-chain AIES warmup()->run() executed and raised the expected JAX key array shape (100, 2) error.",
+    "fixed_revision_result": "Same test passed (1 passed in 4.02s).",
+    "model_loading": false,
+    "model_inference": false,
+    "fine_tuning": false
   }
 }
