@@ -35,21 +35,21 @@
           "source_snapshot_sha256": "c94cc80d2ce6fd126b2c3045f736200e63916f9ca9ed0d21db4b2970e4304d6f"
         },
         {
-          "id": "DYMOS_BASE_COMMENTED_VAL_NORMALIZATION",
+          "id": "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE",
           "kind": "source_excerpt",
-          "content": "                # default_val = reshape_val(options['val'], shape, num_input_nodes)\n",
-          "content_sha256": "058cb8cbc876f2003942646196dcb2f0bdde839260ae4bfc3a75cf8ca74ee306",
-          "source_snapshot_sha256": "058cb8cbc876f2003942646196dcb2f0bdde839260ae4bfc3a75cf8ca74ee306"
+          "content": "        if val is not _unspecified:\n            self.control_options[name]['val'] = val\n",
+          "content_sha256": "bc263738775dcb898909430afd85cdb6a4dd3989863d37d6c1f5d04245ab27e9",
+          "source_snapshot_sha256": "bc263738775dcb898909430afd85cdb6a4dd3989863d37d6c1f5d04245ab27e9"
         },
         {
-          "id": "DYMOS_BASE_COMMENTED_INPUT_DEFAULT",
+          "id": "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS",
           "kind": "source_excerpt",
-          "content": "                # self.set_input_defaults(name=f'controls:{name}', val=default_val, units=options['units'])\n",
-          "content_sha256": "de8647498a9058f1237c0614f4bd5764e6f4acbd61db65e38ab4cfdbe55b2cf8",
-          "source_snapshot_sha256": "de8647498a9058f1237c0614f4bd5764e6f4acbd61db65e38ab4cfdbe55b2cf8"
+          "content": "            control_comp = ControlInterpComp(control_options=phase.control_options,\n                                             time_units=phase.time_options['units'],\n                                             grid_data=self.grid_data)\n",
+          "content_sha256": "c1ff713481f44148bdefe4a9c493e692d8d2a3b9457038358134c6469da7137a",
+          "source_snapshot_sha256": "c1ff713481f44148bdefe4a9c493e692d8d2a3b9457038358134c6469da7137a"
         }
       ],
-      "packet_sha256": "2ac88be0a31271bb6ba4ab6e9e8cc2d78c0bc90fd100b8351d61265d4f23ee2c"
+      "packet_sha256": "2cc4e6d9770987beefe92203cbd950c68a3a2d1dc01572350665700cc3ff6183"
     },
     "E2": {
       "schema_version": "1.0",
@@ -94,5 +94,5 @@
       "packet_sha256": "3aa2320ac5fc464108e3a4e79a6a062c80708caec0bc9e332fe6cd742a6bfb53"
     }
   },
-  "packet_set_sha256": "07b9547ba6bc30dd525acff0b9916542b81e47f9ed8451f2b0fba5ca8a22b17d"
+  "packet_set_sha256": "b0cfd72838a7265468ce7c59f210d4a6660bd791cb784a3c342283b7e9f23ae6"
 }
