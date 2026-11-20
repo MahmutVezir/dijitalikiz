@@ -1,0 +1,168 @@
+{
+  "schema_version": "0.1-dymos-1166-evidence-provenance",
+  "generated_date": "2026-11-20",
+  "candidate": "OpenMDAO/dymos issue 1166 / PR 1165",
+  "packet_set_path": "research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
+  "packet_set_sha256": "8a0ee69a3c36d670c9bb56287401cbc637928fe532c760da5ad7ed431f0b023b",
+  "source_row": {
+    "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "row_id": "openmdao__dymos-1165",
+    "canonical_row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
+    "field": "problem_statement",
+    "source_url": "https://github.com/OpenMDAO/dymos/issues/1166",
+    "dataset_row_created_at_raw": "2025-04-04 20:23:44",
+    "matched_upstream_resource": "pull_request",
+    "upstream_pr_created_at_utc": "2025-04-04T20:23:44Z",
+    "upstream_issue_created_at_utc": "2025-04-04T20:26:09Z",
+    "timestamp_reconciliation": "row timestamp matches PR creation, not the later issue creation; 145 seconds difference"
+  },
+  "reproduction_evidence": {
+    "dataset_selector": {
+      "selector": "dymos/examples/balanced_field/test/test_balanced_field_length.py::TestBalancedFieldLengthDefaultValues::test_default_vals_stick",
+      "workflow_run_id": 44114656908,
+      "workflow_job_id": 134149456631,
+      "artifact_id": 14341424466,
+      "artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
+      "archive_integrity": {
+        "zip_crc": "PASS",
+        "internal_sha256_entries": "18/18 PASS"
+      },
+      "dataset_row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
+      "selector_scope_direct_default_value_regression": true,
+      "base_result": "executed and failed: actual [[1.0],[1.0]], expected [[0],[10]]",
+      "fixed_result": "same exact selector passed"
+    },
+    "independent_public_api_reproducer": {
+      "path": "research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py",
+      "sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
+      "workflow_run_id": 44739419824,
+      "workflow_job_id": 136298973618,
+      "commit": "5308d4b25a31acee1e3753818a1d67b972a640f2",
+      "buggy_base": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "fixed_revision": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
+      "runtime": "CPython 3.11.9; OpenMDAO 3.38.0; NumPy 1.26.4; SciPy 1.13.1; NetworkX 3.3; CPU-only; no optimizer",
+      "base_result": "executed and failed: actual [[1.0],[1.0]], expected [[5.0],[15.0]]",
+      "fixed_result": "1 passed in 0.49s",
+      "artifact_id": 14629598269,
+      "artifact_sha256": "33bb899d7e4e56d177fe4c9d119eebea49519528e88d74af3efc4acf7def08d8",
+      "archive_integrity": {
+        "zip_crc": "PASS",
+        "internal_sha256_entries": "15/15 PASS"
+      },
+      "reproducer_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
+      "dependency_lock_sha256": "e229e611a88f50484343090cbb79e73f9d90a5a66ac0be990d0b1523cc029ef3"
+    }
+  },
+  "evidence_items": [
+    {
+      "id": "DYMOS_ISSUE_NARRATIVE",
+      "kind": "documentation",
+      "source": "pinned SWE-rebench row problem_statement",
+      "row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
+      "content_sha256": "116de1caf121bf3542eb506148bb892898eaee0c8e06a7876fb429dcc25c7ab9",
+      "source_url": "https://github.com/OpenMDAO/dymos/issues/1166"
+    },
+    {
+      "id": "DYMOS_INDEPENDENT_API_REPRODUCER",
+      "kind": "other",
+      "source_path": "research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py",
+      "source_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
+      "content_sha256": "141e9e35e5359449800ae189065f2886ac37cf5a04a7670bffe77afb1f37fbb0",
+      "base_and_fixed_run": "44739419824",
+      "note": "fresh Brachistochrone API fixture; no import of upstream PR's modified regression test"
+    },
+    {
+      "id": "DYMOS_BASE_REPRODUCER_OUTPUT",
+      "kind": "test_output",
+      "source": "artifact 14629598269/base-reproducer.log",
+      "full_log_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f",
+      "content_sha256": "f122604c748f77304bf483458b242f620f59d9f212144588dc79c1b2483debc3"
+    },
+    {
+      "id": "DYMOS_BASE_CONTROL_COMP_INPUT",
+      "kind": "source_excerpt",
+      "source_path": "dymos/transcriptions/common/control_comp.py",
+      "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "source_git_blob_sha1": "74a1449b45329c3f87927c1fec6d4bbf936af138",
+      "source_lines_1based": [
+        86,
+        124
+      ],
+      "content_sha256": "5025efa8299c1b6fd1b3e04dcaa46c69de33ba17f16ed8180bea3d1ab838c9a3"
+    },
+    {
+      "id": "DYMOS_BASE_CONTROL_DEFAULT_PATH",
+      "kind": "source_excerpt",
+      "source_path": "dymos/transcriptions/common/control_comp.py",
+      "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "source_git_blob_sha1": "74a1449b45329c3f87927c1fec6d4bbf936af138",
+      "source_lines_1based": [
+        243,
+        270
+      ],
+      "content_sha256": "fca13cd095d64b07c58ca94c3d852274f607a6ce96464398ab033a5326b17ce9"
+    },
+    {
+      "id": "DYMOS_BASE_PSEUDOSPECTRAL_PROMOTION",
+      "kind": "source_excerpt",
+      "source_path": "dymos/transcriptions/pseudospectral/pseudospectral_base.py",
+      "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "source_git_blob_sha1": "93f77bafe6eec0ca18bc7dff2074999441a5f9b4",
+      "source_lines_1based": [
+        110,
+        128
+      ],
+      "content_sha256": "93490159609b9de41e2a81dc78c8357e8e3462d5612713b4896c0b22271aa713"
+    }
+  ],
+  "tier_membership": {
+    "E3": [
+      "DYMOS_ISSUE_NARRATIVE"
+    ],
+    "E2": [
+      "DYMOS_ISSUE_NARRATIVE",
+      "DYMOS_INDEPENDENT_API_REPRODUCER",
+      "DYMOS_BASE_REPRODUCER_OUTPUT"
+    ],
+    "E1": [
+      "DYMOS_ISSUE_NARRATIVE",
+      "DYMOS_INDEPENDENT_API_REPRODUCER",
+      "DYMOS_BASE_REPRODUCER_OUTPUT",
+      "DYMOS_BASE_CONTROL_COMP_INPUT",
+      "DYMOS_BASE_CONTROL_DEFAULT_PATH",
+      "DYMOS_BASE_PSEUDOSPECTRAL_PROMOTION"
+    ]
+  },
+  "structural_validation": {
+    "status": "proposed_not_yet_ci_validated",
+    "expected_inner_packet_counts": {
+      "E3": 1,
+      "E2": 3,
+      "E1": 6
+    },
+    "strictly_nested_by_design": true,
+    "semantic_sufficiency_assessed": false,
+    "model_inference_performed": false
+  },
+  "semantic_review": {
+    "status": "pending_source_aware_project_lead_gold_and_tier_decision",
+    "method": "Same exploratory source-aware single-adjudicator route used for Dishka; no blind-panel or inter-rater reliability claim.",
+    "hasan_role": "project-lead-reported supplementary technical concurrence only; no signed independent review is asserted.",
+    "independent_review_required": false,
+    "note": "The user has conditionally requested counting Dymos only at Dishka-equivalent evidence strength. Technical base-fail/fixed-pass evidence has two routes; gold/tier decision is still to be explicitly recorded."
+  },
+  "blinding": {
+    "model_visible_packet_contains_fix": false,
+    "model_visible_packet_contains_fixed_test_logs": false,
+    "model_visible_packet_contains_gold_label": false,
+    "model_visible_packet_contains_tier_label": false,
+    "outer_packet_set_is_model_input": false
+  },
+  "limitations": [
+    "Structural validity does not establish semantic causal entailment.",
+    "The source-aware project lead and Hasan have now seen candidate source and reproduction evidence; no claim of blinded review is made.",
+    "The historical Dymos #531 default-value issue is a related ancestor in the same broad family and must not be counted as another case.",
+    "Dependency metadata is not legal clearance; NumPy/SciPy bundled notices require bounded scope acknowledgement."
+  ]
+}
