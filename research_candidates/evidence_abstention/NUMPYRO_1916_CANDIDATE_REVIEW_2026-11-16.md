@@ -276,3 +276,30 @@ The readiness report remains `blocked_before_inference`: one accepted case/proje
 The full repository Research Validation on the immediately preceding commit `62b5915ed1eec6d7460d6060de76122c66a6d1b3` passed 460 tests, with 6 skipped and 56 subtests passed. The following commit `982ec189` changed the preflight workflow only; its branch-head no-inference tests are the 85-pass result above.
 
 **NumPyro disposition is unchanged:** Stage 2 and structural packet validation remain technically passed; semantic sufficiency is not assessed; Panel A/Panel B human review, adjudication, exact pinned dataset-card license authentication, human license-scope acknowledgement, and final project-lead acceptance remain open. NumPyro is not accepted. Dishka's existing acceptance is unchanged. No model loading, inference, fine-tuning, or training was performed or authorized.
+
+
+## Independent issue reproducer added and verified — 20 November 2026
+
+To match the Dishka evidence standard, a separate public-API reproducer was added in `reproduction/numpyro_issue_1916/test_issue_1916.py`. It does not call the upstream PR's parameterized test. It follows the reporter's actual `MCMC.warmup()` then `MCMC.run()` sequence with AIES, 100 vectorized chains, and the exact pinned CPU-only dependency lock.
+
+- Workflow: [NumPyro #1916 independent reproducer run 44737978562](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44737978562).
+- Commit: `2b0f4f95e951b6ab7079a20f057ada701660d1ce`.
+- Job: `136294098282`, conclusion: success.
+- Exact buggy base: `07e4c9bc4524cc0a741ba8f8ad41339d34a0288d`.
+- Exact fixed merge: `5692d2da335945b756aeae02e3720b9b7f3efef2`.
+- Buggy-base outcome: the independent reproducer executed and failed at `EnsembleSampler.sample -> jax.random.split` with the expected key-array shape `(100, 2)`; collection succeeded and the defect-specific signature was present.
+- Fixed-revision outcome: the same test and same environment passed (`1 passed in 3.70s`).
+- Runtime: CPython 3.11.9; CPU-only JAX/JAXlib 0.4.35; 17 pinned runtime/test packages; `pip check` passed.
+- Reproducer SHA-256: `90e6ed63eda943e6fd623e24b4b3cafcd0c7c5f43db80394135cfaac4bbbe71d`.
+- Dependency lock SHA-256: `8a160de15a15792632268e9840879fe262b98413ac1c5fe7bcf4253631f6bbb5`.
+- Artifact: `14629441931`; GitHub digest and independently downloaded outer SHA-256: `26142beee2bbb09c16933d59f54b3480a2445e52f7f2dbfa63fee0a5cb53f581`. ZIP CRC passed; all 10/10 internal SHA256SUMS entries passed.
+
+This closes the missing standalone issue-reproducer parity point against Dishka. Together with the separately verified two frozen AIES/ESS dataset selectors, NumPyro now has an independent public-API reproducer plus its exact dataset-selector base-fail/fixed-pass evidence.
+
+### Candidate disposition and remaining human decision
+
+The project lead's 20 November instruction is recorded as a **conditional preference to count NumPyro if its evidence is at least equivalent to Dishka**; the project lead reports Hasan shares that preference. The technical reproduction comparison now meets that threshold. This statement is not represented as Hasan's signed review or as a blinded assessment.
+
+The proposed causal mechanism remains: during the documented warmup-resume path, `MCMC.run` replaces the ensemble sampler state's scalar PRNG key with the per-chain key batch; `EnsembleSampler.sample` then calls `random.split` as though it received a single key. The pinned initializer excerpt shows that the ordinary ensemble state stores a scalar key. The exact model-facing E1/E2/E3 proposal remains structural-only; the source-aware human project-lead gold/tier decision must be explicitly recorded, using the same single-adjudicator exploratory limitation accepted for Dishka. Hasan's concurrence may be recorded as project-lead-reported supplementary input; no blind-review or inter-rater reliability claim will be made.
+
+The bounded documentary license-scope acknowledgement and the project-lead's case-specific `prior_pipeline_debug_exposure` declaration also remain to be recorded. Dataset-card attribution and scope are not legal clearance. No model operation is authorized. Final NumPyro acceptance remains pending; Dishka's accepted record is unchanged.
