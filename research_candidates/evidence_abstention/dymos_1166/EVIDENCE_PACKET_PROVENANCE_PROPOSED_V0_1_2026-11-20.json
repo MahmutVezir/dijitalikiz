@@ -3,7 +3,7 @@
   "generated_date": "2026-11-20",
   "candidate": "OpenMDAO/dymos issue 1166 / PR 1165",
   "packet_set_path": "research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
-  "packet_set_sha256": "07b9547ba6bc30dd525acff0b9916542b81e47f9ed8451f2b0fba5ca8a22b17d",
+  "packet_set_sha256": "b0cfd72838a7265468ce7c59f210d4a6660bd791cb784a3c342283b7e9f23ae6",
   "source_row": {
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
     "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
@@ -120,28 +120,28 @@
       "content_sha256": "c94cc80d2ce6fd126b2c3045f736200e63916f9ca9ed0d21db4b2970e4304d6f"
     },
     {
-      "id": "DYMOS_BASE_COMMENTED_VAL_NORMALIZATION",
+      "id": "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE",
       "kind": "source_excerpt",
-      "source_path": "dymos/transcriptions/common/control_comp.py",
+      "source_path": "dymos/phase/phase.py",
       "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
-      "source_git_blob_sha1": "74a1449b45329c3f87927c1fec6d4bbf936af138",
+      "source_git_blob_sha1": "06df4268245c5c14252fdeb5d03d3ec8ff91479f",
       "source_lines_1based": [
-        247,
-        247
+        785,
+        786
       ],
-      "content_sha256": "058cb8cbc876f2003942646196dcb2f0bdde839260ae4bfc3a75cf8ca74ee306"
+      "content_sha256": "bc263738775dcb898909430afd85cdb6a4dd3989863d37d6c1f5d04245ab27e9"
     },
     {
-      "id": "DYMOS_BASE_COMMENTED_INPUT_DEFAULT",
+      "id": "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS",
       "kind": "source_excerpt",
-      "source_path": "dymos/transcriptions/common/control_comp.py",
+      "source_path": "dymos/transcriptions/transcription_base.py",
       "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
-      "source_git_blob_sha1": "74a1449b45329c3f87927c1fec6d4bbf936af138",
+      "source_git_blob_sha1": "ae73763ffd26c40c9fe2da18bad5fa0ce28234c6",
       "source_lines_1based": [
-        269,
-        269
+        145,
+        147
       ],
-      "content_sha256": "de8647498a9058f1237c0614f4bd5764e6f4acbd61db65e38ab4cfdbe55b2cf8"
+      "content_sha256": "c1ff713481f44148bdefe4a9c493e692d8d2a3b9457038358134c6469da7137a"
     }
   ],
   "tier_membership": {
@@ -158,8 +158,8 @@
       "DYMOS_INDEPENDENT_API_REPRODUCER",
       "DYMOS_BASE_REPRODUCER_OUTPUT",
       "DYMOS_BASE_ONES_INPUT_DEFAULT",
-      "DYMOS_BASE_COMMENTED_VAL_NORMALIZATION",
-      "DYMOS_BASE_COMMENTED_INPUT_DEFAULT"
+      "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE",
+      "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS"
     ]
   },
   "structural_validation": {
