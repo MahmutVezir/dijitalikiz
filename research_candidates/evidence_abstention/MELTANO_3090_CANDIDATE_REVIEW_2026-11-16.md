@@ -69,3 +69,13 @@ The issue and reproducer agree on one mechanism: a mutable visited_refs set is s
 PR #3091 identifies #3009 as the introduction history. Record that relationship in the issue-family/lineage review; it does not create a second sample case. Meltano contributes at most one upstream-project case.
 
 **Current disposition:** Stage 2 technical reproduction PASS; candidate remains not accepted. Project-lead source-aware gold/E1-E2-E3 decision, candidate-specific prior pipeline/debug exposure declaration, bounded source/dependency/dataset license-scope acknowledgement, related-issue/lineage review, complete proposed case record and fail-closed registry validation remain open. The earlier sections saying the exact row/selectors/reproducer were pending are historical and superseded by this addendum.
+
+## Project-lead selection decision
+
+## Project-lead first-batch selection — 20 November 2026
+
+The student project lead explicitly accepted Meltano SDK #3090 as one of the strong first-batch candidates to continue through v0.2 Stage 3 case evaluation, applying the unchanged Dishka-equivalent criteria.
+
+This is candidate-selection approval only. It does **not** approve the proposed Meltano gold mechanism or E1/E2/E3 tier membership; those remain for a separate source-aware project-lead decision. The bounded source/dependency/dataset scope acknowledgement, candidate-specific prior pipeline/debug exposure declaration, related issue/lineage review, complete case record, fail-closed registry validation and separate final case YES/NO remain pending.
+
+PR #3091's link to #3009 remains introduction history for the same Meltano repository and does not create another independent case. This candidate remains not accepted as a final case. No model load, inference, fine-tuning or training is authorized.
