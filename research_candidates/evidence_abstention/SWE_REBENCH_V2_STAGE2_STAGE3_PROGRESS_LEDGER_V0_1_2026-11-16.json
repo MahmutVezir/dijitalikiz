@@ -3006,6 +3006,23 @@
       "github_sha256": "bd05413602aaf5de6e8b213708dee68cfc863a97dd9f7620ed196afc2b071d3a",
       "conclusion": "success",
       "local_rehash": "not performed in this update"
+    },
+    "portfolio_review_path": "research_candidates/evidence_abstention/CANDIDATE_PORTFOLIO_REVIEW_2026-11-20.md",
+    "portfolio_review_commit": "d00a2bf1b25a77fc1b4c7bba8abfc95c024d01a2",
+    "project_lead_final_first_batch_selection": {
+      "date": "2026-11-20",
+      "accepted_for_stage3_evaluation": [
+        "NumPyro #1916",
+        "Dymos #1166",
+        "EODAG #1530",
+        "Meltano SDK #3090",
+        "PyFar #721"
+      ],
+      "numpyro_technical_gold": "approved",
+      "other_gold_and_tier_decisions": "pending",
+      "final_case_acceptance_count": 1,
+      "accepted_case": "Dishka #435",
+      "inference_authorized": false
     }
   },
   "first_batch_case_assessment": {
