@@ -118,8 +118,16 @@ class Numpyro1916ProposedPacketSetTests(unittest.TestCase):
             provenance["structural_validation"]["status"],
             "CI_CONTRACT_TESTS_PASS_STRUCTURAL_ONLY",
         )
-        self.assertEqual(provenance["structural_validation"]["latest_validation_run_id"], 44761690559)
-        self.assertEqual(provenance["structural_validation"]["latest_validation_commit"], "43b06b48b843bbca78cde608a96edce2344cca90")
+        self.assertGreater(provenance["structural_validation"]["latest_validation_run_id"], 0)
+        self.assertRegex(provenance["structural_validation"]["latest_validation_commit"], r"^[0-9a-f]{40}$")
+        self.assertEqual(
+            provenance["latest_no_inference_preflight"]["workflow_run_id"],
+            provenance["structural_validation"]["latest_validation_run_id"],
+        )
+        self.assertEqual(
+            provenance["latest_no_inference_preflight"]["commit"],
+            provenance["structural_validation"]["latest_validation_commit"],
+        )
         self.assertEqual(provenance["latest_no_inference_preflight"]["conclusion"], "success")
         self.assertFalse(provenance["latest_no_inference_preflight"]["inference_authorized"])
         self.assertEqual(
