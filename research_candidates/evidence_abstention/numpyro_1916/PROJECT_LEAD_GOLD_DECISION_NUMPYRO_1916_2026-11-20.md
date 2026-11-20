@@ -59,3 +59,8 @@ The project lead subsequently approved the E3/E2/E1 semantic hierarchy and the a
 - SHA-256: `6148aa21a6122c3552ef01394e4d314b792cacda7164aea74f22c36d6f217df9`
 
 The technical-gold approval above remains the exact root-cause statement; the later tier decision records which evidence level is sufficient to distinguish it. Prior pipeline/debug exposure, bounded documentary license scope, case-record validation and final case acceptance remain separate gates.
+
+
+## Superseding exposure declaration — 20 November 2026
+
+The earlier statement that the candidate-specific prior pipeline/debug declaration was pending is superseded by the project lead's explicit `prior_pipeline_debug_exposure = none` declaration. Full `researcher_source_exposure = full` remains separately disclosed. The dated decision record is `research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_EXPOSURE_DECISION_NUMPYRO_1916_2026-11-20.md` (SHA-256 `18f46ab8186cdadce4ccf48eaf78c646fbbda0d4edfc7872166721f2368472c0`). This does not change the gold decision's scope or constitute final case acceptance.

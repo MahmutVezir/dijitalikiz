@@ -77,3 +77,8 @@ This decision approves the candidate's source-aware semantic E1/E2/E3 hierarchy 
 - authorize model loading, inference, fine-tuning or training.
 
 The project lead's researcher-source exposure remains fully disclosed. The next case-specific gates are the factual prior pipeline/debug exposure declaration, the bounded documentary license-scope acknowledgement, the schema-conformant proposed case record, fail-closed registry validation, and a separate final project-lead YES/NO decision.
+
+
+## Superseding exposure declaration — 20 November 2026
+
+The earlier statement that the prior pipeline/debug exposure declaration was missing is superseded by the project lead's explicit `prior_pipeline_debug_exposure = none` declaration. Full `researcher_source_exposure = full` remains separately disclosed. The dated decision record is `research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_EXPOSURE_DECISION_NUMPYRO_1916_2026-11-20.md` (SHA-256 `18f46ab8186cdadce4ccf48eaf78c646fbbda0d4edfc7872166721f2368472c0`). This does not change the approved E1/E2/E3 hierarchy, clear the bounded license-scope gate, or constitute final case acceptance.

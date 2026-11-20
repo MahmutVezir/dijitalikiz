@@ -85,13 +85,23 @@
     "panel_a_independent_human_reviewers_confirmed": 0,
     "panel_b_independent_source_unexposed_reviewers_confirmed": 0,
     "independent_adjudicator_confirmed": 0,
-    "restricted_delivery_store_and_access_log_ready": false
+    "restricted_delivery_store_and_access_log_ready": false,
+    "project_lead_prior_pipeline_debug_exposure": "none",
+    "project_lead_researcher_source_exposure": "full",
+    "project_lead_exposure_decision_record": {
+      "path": "research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_EXPOSURE_DECISION_NUMPYRO_1916_2026-11-20.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_EXPOSURE_DECISION_NUMPYRO_1916_2026-11-20.md",
+      "sha256": "18f46ab8186cdadce4ccf48eaf78c646fbbda0d4edfc7872166721f2368472c0"
+    }
   },
   "independence_status": {
-    "pipeline_or_debug_oracle_exposure": "No prior pipeline/debug-oracle exposure is documented in the candidate record; candidate-screening source/issue/patch/reproduction exposure is explicitly recorded and is not treated as blind.",
+    "pipeline_or_debug_oracle_exposure": "The project lead explicitly declared none for prior use of NumPyro #1916/PR #1918 to debug shared pipeline, runner, selector or test-oracle problems before prospective case validation. Full researcher source exposure remains separately disclosed.",
     "cross_project_independence": "Verified as distinct from Dishka at the upstream repository and defect identity level.",
     "final_case_acceptance": "not_accepted",
-    "inference_authorized": false
+    "inference_authorized": false,
+    "prior_pipeline_debug_exposure": "none",
+    "researcher_source_exposure": "full",
+    "exposure_decision_record_sha256": "18f46ab8186cdadce4ccf48eaf78c646fbbda0d4edfc7872166721f2368472c0"
   },
   "timestamp_reconciliation": {
     "dataset_row_created_at_raw": "2024-11-28 00:54:29",

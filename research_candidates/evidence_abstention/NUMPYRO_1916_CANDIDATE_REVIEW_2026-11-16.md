@@ -391,3 +391,8 @@ After the project-lead gold approval and the corresponding regression-contract u
 - The no-inference preflight: [44755547992](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44755547992), job `136354205627`, success. Its NumPyro packet-contract group and the other preflight contract groups passed.
 
 This remains the same single NumPyro case. The project lead's technical gold mechanism is approved in `PROJECT_LEAD_GOLD_DECISION_NUMPYRO_1916_2026-11-20.md`; the proposed E1/E2/E3 membership/sufficiency decision, prior pipeline/debug exposure declaration, bounded license-scope acknowledgement and final case acceptance remain pending. The artifact digest above is GitHub-reported; no local re-download/re-hash is claimed for this latest repeat.
+
+
+## Superseding exposure declaration — 20 November 2026
+
+The project lead has now explicitly declared **`prior_pipeline_debug_exposure = none`** for NumPyro #1916 / PR #1918: before prospective case validation, the candidate was not used to debug shared pipeline, runner, test-selector or test-oracle problems. The separate **`researcher_source_exposure = full`** remains disclosed because the project lead reviewed the issue, PR, source/patch material and reproduction evidence. This declaration is recorded in `research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_EXPOSURE_DECISION_NUMPYRO_1916_2026-11-20.md` (SHA-256 `18f46ab8186cdadce4ccf48eaf78c646fbbda0d4edfc7872166721f2368472c0`). It closes only the factual prior pipeline/debug exposure gate. It does not grant blind-review eligibility or final case acceptance, and it does not alter the pending bounded license-scope gate. NumPyro remains not accepted; no model operation is authorized.

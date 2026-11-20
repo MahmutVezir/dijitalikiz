@@ -62,5 +62,26 @@ class Numpyro1916LicenseAndIndependenceRecordTests(unittest.TestCase):
         self.assertFalse(record["independence_status"]["inference_authorized"])
 
 
+    def test_project_lead_pipeline_debug_exposure_is_explicit_and_separate_from_source_exposure(self):
+        record = json.loads(INDEPENDENCE_PATH.read_text(encoding="utf-8"))
+        exposure = record["exposure_and_roles"]
+        self.assertEqual(exposure["project_lead_prior_pipeline_debug_exposure"], "none")
+        self.assertEqual(exposure["project_lead_researcher_source_exposure"], "full")
+        decision = exposure["project_lead_exposure_decision_record"]
+        self.assertEqual(
+            decision["path"],
+            "research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_EXPOSURE_DECISION_NUMPYRO_1916_2026-11-20.md",
+        )
+        note_path = ROOT / decision["path"]
+        note_bytes = note_path.read_bytes()
+        import hashlib
+        self.assertEqual(hashlib.sha256(note_bytes).hexdigest(), decision["sha256"])
+        note = note_bytes.decode("utf-8")
+        self.assertIn("prior_pipeline_debug_exposure = `none`", note)
+        self.assertIn("researcher_source_exposure = `full`", note)
+        self.assertEqual(record["independence_status"]["prior_pipeline_debug_exposure"], "none")
+        self.assertEqual(record["independence_status"]["researcher_source_exposure"], "full")
+
+
 if __name__ == "__main__":
     unittest.main()
