@@ -1,0 +1,123 @@
+{
+  "schema_version": "0.1-eodag-1530-dependency-license-scope-review",
+  "generated_date": "2026-11-20",
+  "candidate": {
+    "repository": "CS-SI/eodag",
+    "issue": 1530,
+    "pull_request": 1536,
+    "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+    "fixed_pr_head": "312966a46513a082333d46cd7212bdce36aaf769"
+  },
+  "review_scope": "Narrow documentary inventory for one duplicate-key configuration defect, one exact dataset row, the upstream source files relevant to that defect, the exact CPU-only Stage 2 reproduction environment, and its dependency/NOTICE metadata. This is not legal advice, legal clearance, or a general redistribution permission.",
+  "upstream_source": {
+    "root_license_file": "LICENSE",
+    "root_license_expression": "Apache-2.0",
+    "root_license_git_blob_sha1": "1a9893b43e8e6d46ff5cda60ab6562850b7f78ff",
+    "root_license_content_sha256": "e0c01e71eb67453430e43947b628a40d2cca58ed7154bc33339fc3b0f3189671",
+    "project_metadata_file": "setup.cfg",
+    "project_metadata_git_blob_sha1": "fdf8cc087fe720c835e0bfceeeabd1c66aed47a4",
+    "project_metadata_sha256": "3c06abb5282a11b3f449acc5e50198c0058afc882598d2db95ed9713093c2967",
+    "project_metadata_license": "Apache 2.0",
+    "notice_file": "NOTICE",
+    "notice_git_blob_sha1": "9f763bc3c2f90854b8209ce60e23c8fc03c6ec7e",
+    "notice_content_sha256": "4f054acd147b5e20d96f1699fd975888392b24c33eef64801151379c7b3a4460",
+    "attribution_notice_requires_preservation_if_redistributing_upstream_work": true
+  },
+  "dataset": {
+    "repository": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "row_id": "cs-si__eodag-1536",
+    "canonical_row_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47",
+    "row_level_source_license": "Apache-2.0",
+    "row_level_license_scope": "Per-row identifier for the upstream CS-SI/eodag source repository, not the dataset repository license.",
+    "exact_pinned_dataset_card_license": "CC-BY-4.0",
+    "exact_pinned_dataset_card_license_verified": true,
+    "exact_revision_card_url": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commit/fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "attribution_and_source_repository_licenses_must_both_be_respected": true
+  },
+  "reproduction_environment": {
+    "workflow_run_id": 44331092872,
+    "workflow_job_id": 134895967977,
+    "artifact_id": 14440370494,
+    "artifact_sha256": "6a732364873d12d78d407f41aa671cc56851f67b58492c4762ff33e36a59a437",
+    "artifact_outer_sha256_locally_verified": true,
+    "zip_crc": "PASS",
+    "internal_sha256_entries": 22,
+    "internal_sha256_entries_verified": 22,
+    "python_version": "3.11.9",
+    "resolved_distribution_count": 52,
+    "all_installed_distributions_have_license_metadata": true,
+    "dependency_inventory_path": "dependency-license-inventory.json",
+    "dependency_inventory_sha256": "38caf508412912024f982e76f43f02021f5bb906e26c814edd4e5d266f29b124",
+    "dependency_lock_resolved_path": "dependency-lock-resolved.txt",
+    "dependency_lock_resolved_sha256": "a64b5196505f7a222976b61c0f0bf6a03344f2ea34a2f39935997a2f9b35f7b4",
+    "environment_summary": {
+      "explicit_source_test_pins": {
+        "pydantic": "2.10.6",
+        "PyYAML": "6.0.2",
+        "ecmwf-api-client": "1.6.3",
+        "usgs": "0.3.5",
+        "OWSLib": "0.31.0",
+        "fastapi": "0.115.8",
+        "pytest": "8.3.4",
+        "pytest-socket": "0.7.0"
+      },
+      "pip_check": "passed",
+      "test_network_policy": "pytest --disable-socket; no external service was used by the local YAML reproduction or frozen selectors"
+    },
+    "separate_dataset_row_extraction_tool": {
+      "package": "pyarrow",
+      "version": "19.0.1",
+      "license": "Apache Software License",
+      "scope": "Separate environment used only to extract the immutable Parquet row; not counted among the 52 source-test environment distributions."
+    },
+    "notable_license_metadata_review_points": [
+      "numpy 2.4.6 reports a compound expression: BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0.",
+      "cryptography 50.0.2 reports Apache-2.0 OR BSD-3-Clause.",
+      "orjson 3.10.15 reports Apache-2.0 OR MIT.",
+      "packaging 26.3 reports Apache-2.0 OR BSD-2-Clause.",
+      "pycryptodome 4.5.0 reports BSD-2-Clause AND Unlicense AND MIT.",
+      "tqdm 4.67.1 reports MPL-2.0 AND MIT.",
+      "python-dateutil 2.9.0.post0 reports Dual License; exact applied license text should be retained if distributing it.",
+      "setuptools-scm 8.1.0 provides a MIT license text in package metadata; keep the full notice if distributing it.",
+      "typing-extensions 4.12.2 reports the Python Software Foundation License."
+    ],
+    "limits_of_inventory": [
+      "The workflow inventory records package metadata fields/classifiers; metadata presence is not a complete SPDX/legal review.",
+      "The inventory does not independently inspect every wheel's native or bundled third-party library contents, including geospatial/cryptographic dependencies.",
+      "The retained CI artifact contains logs, source/license text, a dependency inventory and lock, not the installed wheel or binary packages.",
+      "The `dependency-lock-resolved.txt` records the actual resolved environment; the directly pinned requirements file alone does not describe all 52 resolved distributions."
+    ]
+  },
+  "retained_artifacts": [
+    {
+      "artifact_id": 14440370494,
+      "sha256": "6a732364873d12d78d407f41aa671cc56851f67b58492c4762ff33e36a59a437",
+      "contents": [
+        "canonical selected dataset row and row hash",
+        "exact frozen selector list and base/fixed logs",
+        "independent YAML reproducer logs",
+        "exact base user_conf_template.yml snapshot",
+        "issue-specific YAML patch and separate test-only patch",
+        "upstream LICENSE and NOTICE snapshots",
+        "52-distribution dependency-license metadata inventory",
+        "resolved dependency environment and SHA256SUMS"
+      ]
+    }
+  ],
+  "human_review": {
+    "project_lead_bounded_scope_acknowledgement": "pending",
+    "external_legal_review": "not_performed",
+    "accepted_as_legal_clearance": false,
+    "final_case_acceptance": "not_accepted"
+  },
+  "proposed_research_use_scope": "Educational/scientific reproduction of one defect and one selected dataset row, using a pinned CPU-only test environment, minimal source excerpts and immutable upstream links, with proper attribution and NOTICE preservation where applicable. Do not redistribute the complete EODAG repository, the full SWE-rebench dataset, installed wheels/binaries, native libraries or package bundles. No commercial product use is included in this proposal.",
+  "legal_status": {
+    "documentary_inventory_only": true,
+    "formal_legal_review_performed": false,
+    "legal_clearance_claimed": false,
+    "blanket_redistribution_permission_claimed": false
+  },
+  "inference_authorized": false
+}
