@@ -54,3 +54,18 @@ Minimal dependency/license inventory: pending workflow evidence and human review
 Gold mechanism and E1/E2/E3 packet: pending human adjudication.  
 Final case acceptance: not accepted.  
 Model loading/inference authorization: false.
+
+## Superseding Stage 2 addendum — 20 November 2026
+
+The Meltano #3090 reproduction job completed successfully in two recorded candidate-matrix runs. The latest branch repeat is:
+- Workflow run: 44331092872; job: 134895968235 — success.
+- Artifact: 14440520435; GitHub-reported SHA-256: b1336169d7b6d8e4e47edbcd920d842ad525c7a4e2df841b998182099bed1bd3.
+- The independent source reproducer executed against the exact buggy base and failed on the second sibling reference as expected; the same reproducer passed on the exact fixed revision.
+- The exact frozen dataset selector was authenticated and failed on the test-only patched buggy base, then passed on the fixed revision.
+- The row timestamp was authenticated against the linked PR resource.
+
+The issue and reproducer agree on one mechanism: a mutable visited_refs set is shared between sibling schema-property branches. After resolving the first property's $ref, the second identical $ref is incorrectly treated as a cycle and left as an empty object. PR #3091 changes this to recursion-path state, preserving cycle protection without treating sibling reuse as recursion.
+
+PR #3091 identifies #3009 as the introduction history. Record that relationship in the issue-family/lineage review; it does not create a second sample case. Meltano contributes at most one upstream-project case.
+
+**Current disposition:** Stage 2 technical reproduction PASS; candidate remains not accepted. Project-lead source-aware gold/E1-E2-E3 decision, candidate-specific prior pipeline/debug exposure declaration, bounded source/dependency/dataset license-scope acknowledgement, related-issue/lineage review, complete proposed case record and fail-closed registry validation remain open. The earlier sections saying the exact row/selectors/reproducer were pending are historical and superseded by this addendum.
