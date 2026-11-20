@@ -2431,7 +2431,7 @@
     "workflow_run_id": 44745438389,
     "head_commit": "efe677f49088eb9493fef6e8c6615b5bcb061dcb",
     "job_id": 136319411195,
-    "status": "preflight_job_success; additional no-inference verification jobs still running when recorded",
+    "status": "workflow_success",
     "ready_for_inference": false,
     "blocker_count": 13,
     "accepted_case_count": 1,
@@ -2454,7 +2454,7 @@
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "The no-inference preflight job completed successfully: 90 tests passed; NumPyro review contracts 8/8 and Dymos review contracts 5/5. The overall workflow was still running separate Dishka reproduction/provenance/Qwen-license-without-weights jobs at the time of this record. Readiness remains blocked before inference with 13 blockers and one accepted case."
+    "note": "Workflow run 44745438389 completed successfully. The no-inference preflight job completed successfully with 90 tests passed; NumPyro review contracts 8/8 and Dymos review contracts 5/5. Dishka raw provenance audit and issue reproducer also succeeded; the Qwen pinned model license evidence was captured without downloading weights or running inference. Readiness remains blocked before inference with 13 blockers and one accepted case."
   },
   "project_lead_decisions": [
     {
@@ -2645,7 +2645,7 @@
   },
   "candidate_portfolio_review": {
     "review_path": "research_candidates/evidence_abstention/CANDIDATE_PORTFOLIO_REVIEW_2026-11-20.md",
-    "review_commit": "bdfc56a3fa808f0bbff3c5409b471b316438311a",
+    "review_commit": "b3db07b5d1424ae32f2488762494f523a004ce10",
     "scope": "All 15 current Stage 2-passed upstream projects (including Dishka) plus five active row/oracle/fixture holds",
     "stage2_passed_distinct_projects_including_dishka": 15,
     "accepted_v0_2_projects": 1,
@@ -2676,6 +2676,7 @@
     "additional_stage2_passed_projects_excluding_dishka": 14,
     "additional_stage2_candidates_after_ctapipe_exclusion": 13,
     "current_project_count_if_all_13_pass_stage3": 14,
-    "current_project_count_if_modin_also_excluded": 13
+    "current_project_count_if_modin_also_excluded": 13,
+    "evidence_audit_boundary": "Older Stage 2 rows are assessed from canonical review documents and the current ledger; their historical artifacts were not all freshly downloaded/rehashed during the 20 November portfolio review. NumPyro and Dymos independent issue-reproducer artifacts were freshly downloaded and reverified on branch head efe677f."
   }
 }
