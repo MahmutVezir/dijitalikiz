@@ -1,0 +1,106 @@
+{
+  "schema_version": "0.1-eodag-1530-evidence-provenance",
+  "generated_date": "2026-11-20",
+  "candidate": "CS-SI/eodag issue #1530 / PR #1536",
+  "dataset_row": {
+    "repository": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "row_id": "cs-si__eodag-1536",
+    "row_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47",
+    "field": "problem_statement",
+    "content_sha256": "73d6b57f813432c75e29767922e7a9f54b06ea05cb1de04cd510aa9e50c8b988",
+    "created_at_dataset_raw": "2025-02-21 10:04:30",
+    "created_at_upstream_pr_utc": "2025-02-21T10:04:30Z",
+    "created_at_upstream_issue_utc": "2025-02-20T11:38:36Z"
+  },
+  "reproduction": {
+    "workflow_run_id": 44331092872,
+    "job_id": 134895967977,
+    "artifact_id": 14440370494,
+    "artifact_sha256": "6a732364873d12d78d407f41aa671cc56851f67b58492c4762ff33e36a59a437",
+    "base_issue_reproducer": {
+      "status": "executed_expected_failure",
+      "log_sha256": "35409ef103071d26e03913015c5d14e04d5725d13cf8d4b674c7e8b44a72d9a7",
+      "actual": "geodes_s3 absent from parsed mapping; surviving geodes credentials are AWS fields",
+      "fixed": "same reproducer passed on exact fixed PR head",
+      "fixed_log_sha256": "7e614c6cb542bc744f777d03ae16be0a2f9333cb6083782b2f672d6a12694b36"
+    },
+    "frozen_selectors": [
+      "tests/units/test_core.py::TestCore::test_available_sortables",
+      "tests/units/test_core.py::TestCore::test_list_product_types_for_provider_ok"
+    ],
+    "base_dataset_result": "2/2 selectors executed and failed on the expected missing geodes_s3 provider/sortables behavior",
+    "base_dataset_log_sha256": "8eb8c0d98137eef51c65a6a8579acfee970da81c129ddcae8ff7c6e77df16de3",
+    "fixed_dataset_result": "Same 2/2 selectors passed",
+    "fixed_dataset_log_sha256": "b037b97436f9da48b7575a364a225ac1bf1186b800ef58b9c7735e08e96cd2d1",
+    "test_only_patch_scope": "tests/units/test_core.py only; production_code_changed=false",
+    "runtime": {
+      "python": "3.11.9",
+      "resolved_distribution_count": 52,
+      "pip_check": "passed"
+    }
+  },
+  "evidence_items": [
+    {
+      "id": "EODAG_ISSUE_NARRATIVE",
+      "kind": "documentation",
+      "content_sha256": "73d6b57f813432c75e29767922e7a9f54b06ea05cb1de04cd510aa9e50c8b988",
+      "source_snapshot_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47"
+    },
+    {
+      "id": "EODAG_BASE_TEMPLATE_DUPLICATE_KEYS",
+      "kind": "configuration",
+      "content_sha256": "c2f48ed5612ec3f21e0a8f8cb14810323603b0994a60167752f31fd419225b3c",
+      "source_snapshot_sha256": "1bf1b945d09ae7805450dc9777175e35625ede2d6bf899c5d586bc6f08c297ff"
+    },
+    {
+      "id": "EODAG_INDEPENDENT_YAML_REPRODUCER",
+      "kind": "other",
+      "content_sha256": "ff45e54e3fb1a202aa75543fd9db9f98745a5722feada6158f702431d05163ac",
+      "source_snapshot_sha256": "ff45e54e3fb1a202aa75543fd9db9f98745a5722feada6158f702431d05163ac"
+    },
+    {
+      "id": "EODAG_BASE_YAML_PARSE_FAILURE",
+      "kind": "test_output",
+      "content_sha256": "291825b349815e03adcf1c24c9d58c31474360ec0cd50e3f148a39b9725819ba",
+      "source_snapshot_sha256": "6a732364873d12d78d407f41aa671cc56851f67b58492c4762ff33e36a59a437"
+    },
+    {
+      "id": "EODAG_TEST_FIXTURE_SAFE_LOAD_PATH",
+      "kind": "source_excerpt",
+      "content_sha256": "e3040adac1dbb538e3981a074dfb6f0f4ab461927f78c1fe8ddf2034ebb0c473",
+      "source_snapshot_sha256": "2859d5efb695434511575735e9a85ef3d2701db08f1284eacf3d50cc5613718b"
+    },
+    {
+      "id": "EODAG_TEST_SELECTOR_CALL_PATH",
+      "kind": "source_excerpt",
+      "content_sha256": "a62c2599494f25845f12903c7a5ef353db8389a98facd8d1ae2d5b95ecc21742",
+      "source_snapshot_sha256": "3bcd1300603a131db22d2008a798803f124f685a6a2122e58beca21d704710ef"
+    },
+    {
+      "id": "EODAG_BASE_SUPPORTED_PROVIDER_LIST",
+      "kind": "source_excerpt",
+      "content_sha256": "b1eca9436ca0a7947c0a0c0dc22e08a9291980846b8cfd86ef5b454337b86f7e",
+      "source_snapshot_sha256": "3bcd1300603a131db22d2008a798803f124f685a6a2122e58beca21d704710ef"
+    }
+  ],
+  "packet_set_path": "research_candidates/evidence_abstention/eodag_1530/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
+  "packet_set_sha256": "e1c15239ba0599c13d19c35ffad922d77ae10bb570aced8199d6db97163d3189",
+  "semantic_review": {
+    "status": "proposed_source_aware_project_lead_gold_and_tier_decision",
+    "adjudication_completed": false,
+    "assistant_role": "AI technical advisor only",
+    "proposed_gold": "The duplicated top-level geodes YAML key is parsed into a single mapping; the later AWS credential mapping overwrites the earlier public API-key mapping and no separate geodes_s3 provider mapping is emitted.",
+    "proposed_tier_outcomes": {
+      "E3": "ABSTAIN — the issue narrative shows a duplicate key and symptom but not the exact pinned parser output/source fixture path.",
+      "E2": "ANSWER — independent pinned parser reproducer plus buggy-base output show geodes_s3 absent and the surviving geodes mapping carrying AWS credentials.",
+      "E1": "ANSWER — E2 plus upstream test fixture source showing yaml.safe_load on the packaged template and generated provider mapping."
+    },
+    "project_lead_decision": "pending"
+  },
+  "structural_validation": {
+    "status": "not_yet_run_in_repository_CI",
+    "semantic_sufficiency_assessed": false,
+    "model_inference_performed": false
+  }
+}
