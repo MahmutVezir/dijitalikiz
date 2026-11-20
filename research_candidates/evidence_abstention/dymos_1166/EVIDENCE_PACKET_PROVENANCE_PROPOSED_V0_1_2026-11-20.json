@@ -3,7 +3,7 @@
   "generated_date": "2026-11-20",
   "candidate": "OpenMDAO/dymos issue 1166 / PR 1165",
   "packet_set_path": "research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
-  "packet_set_sha256": "92b021e0c3d83b69f28bf18a2d8211f1f5c790ca637a6aa8b6d1ee38cef0c745",
+  "packet_set_sha256": "07b9547ba6bc30dd525acff0b9916542b81e47f9ed8451f2b0fba5ca8a22b17d",
   "source_row": {
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
     "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
@@ -68,53 +68,50 @@
       "kind": "other",
       "source_path": "research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py",
       "source_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
-      "content_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
-      "base_and_fixed_run": "44739419824",
-      "note": "fresh Brachistochrone API fixture; no import of upstream PR's modified regression test"
+      "content_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9"
     },
     {
       "id": "DYMOS_BASE_REPRODUCER_OUTPUT",
       "kind": "test_output",
       "source": "artifact 14629598269/base-reproducer.log",
       "full_log_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f",
-      "content_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f",
-      "source_snapshot_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f"
+      "content_sha256": "698710d0e08d43a66371a3c973a8628875be300d2a0ea0991e7dbf7bca532a82"
     },
     {
-      "id": "DYMOS_BASE_CONTROL_COMP_INPUT",
+      "id": "DYMOS_BASE_ONES_INPUT_DEFAULT",
       "kind": "source_excerpt",
       "source_path": "dymos/transcriptions/common/control_comp.py",
       "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
       "source_git_blob_sha1": "74a1449b45329c3f87927c1fec6d4bbf936af138",
       "source_lines_1based": [
-        86,
-        124
+        120,
+        120
       ],
-      "content_sha256": "5025efa8299c1b6fd1b3e04dcaa46c69de33ba17f16ed8180bea3d1ab838c9a3"
+      "content_sha256": "c94cc80d2ce6fd126b2c3045f736200e63916f9ca9ed0d21db4b2970e4304d6f"
     },
     {
-      "id": "DYMOS_BASE_CONTROL_DEFAULT_PATH",
+      "id": "DYMOS_BASE_COMMENTED_VAL_NORMALIZATION",
       "kind": "source_excerpt",
       "source_path": "dymos/transcriptions/common/control_comp.py",
       "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
       "source_git_blob_sha1": "74a1449b45329c3f87927c1fec6d4bbf936af138",
       "source_lines_1based": [
-        243,
-        270
+        247,
+        247
       ],
-      "content_sha256": "fca13cd095d64b07c58ca94c3d852274f607a6ce96464398ab033a5326b17ce9"
+      "content_sha256": "058cb8cbc876f2003942646196dcb2f0bdde839260ae4bfc3a75cf8ca74ee306"
     },
     {
-      "id": "DYMOS_BASE_PSEUDOSPECTRAL_PROMOTION",
+      "id": "DYMOS_BASE_COMMENTED_INPUT_DEFAULT",
       "kind": "source_excerpt",
-      "source_path": "dymos/transcriptions/pseudospectral/pseudospectral_base.py",
+      "source_path": "dymos/transcriptions/common/control_comp.py",
       "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
-      "source_git_blob_sha1": "93f77bafe6eec0ca18bc7dff2074999441a5f9b4",
+      "source_git_blob_sha1": "74a1449b45329c3f87927c1fec6d4bbf936af138",
       "source_lines_1based": [
-        110,
-        128
+        269,
+        269
       ],
-      "content_sha256": "93490159609b9de41e2a81dc78c8357e8e3462d5612713b4896c0b22271aa713"
+      "content_sha256": "de8647498a9058f1237c0614f4bd5764e6f4acbd61db65e38ab4cfdbe55b2cf8"
     }
   ],
   "tier_membership": {
@@ -130,9 +127,9 @@
       "DYMOS_ISSUE_NARRATIVE",
       "DYMOS_INDEPENDENT_API_REPRODUCER",
       "DYMOS_BASE_REPRODUCER_OUTPUT",
-      "DYMOS_BASE_CONTROL_COMP_INPUT",
-      "DYMOS_BASE_CONTROL_DEFAULT_PATH",
-      "DYMOS_BASE_PSEUDOSPECTRAL_PROMOTION"
+      "DYMOS_BASE_ONES_INPUT_DEFAULT",
+      "DYMOS_BASE_COMMENTED_VAL_NORMALIZATION",
+      "DYMOS_BASE_COMMENTED_INPUT_DEFAULT"
     ]
   },
   "structural_validation": {
