@@ -344,7 +344,7 @@
   "project_lead_scope_acknowledgement_proposal": {
     "status": "pending_project_lead_acknowledgement",
     "path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_PROPOSAL_DYMOS_1166_2026-11-20.md",
-    "sha256": "844e36ea92bb947f990ecc2ec564e9ea5c718c380e1c6405aaf6ff46423530b2",
+    "sha256": "e8185465d8466512d3de08e622115a9442450f5665fbde4857facddc76341405",
     "proposed_scope": "Educational/scientific study of one Dymos defect, one selected dataset row, pinned CPU reproductions, limited source excerpts plus already-retained full PR patch/source snapshots in CI artifacts, proper Dymos/dataset/row/dependency attribution and notices.",
     "explicit_exclusions": [
       "complete SWE-rebench dataset",
