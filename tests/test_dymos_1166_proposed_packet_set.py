@@ -1,0 +1,102 @@
+import importlib.util
+import json
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+IMPLEMENTATION = ROOT / "research_candidates" / "evidence_abstention" / "implementation"
+SPEC = importlib.util.spec_from_file_location(
+    "evidence_level_packet_set",
+    IMPLEMENTATION / "evidence_level_packet_set.py",
+)
+MODULE = importlib.util.module_from_spec(SPEC)
+assert SPEC and SPEC.loader
+SPEC.loader.exec_module(MODULE)
+
+DYMOS = ROOT / "research_candidates" / "evidence_abstention" / "dymos_1166"
+PACKET_PATH = DYMOS / "OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json"
+PROVENANCE_PATH = DYMOS / "EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_1_2026-11-20.json"
+LICENSE_PATH = DYMOS / "DYMOS_1166_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json"
+INDEPENDENCE_PATH = DYMOS / "DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json"
+
+
+class Dymos1166ProposedPacketSetTests(unittest.TestCase):
+    def test_packet_set_is_hash_valid_strictly_nested_and_semantics_unassessed(self):
+        packet_set = json.loads(PACKET_PATH.read_text(encoding="utf-8"))
+        result = MODULE.validate_packet_set(packet_set)
+        self.assertEqual(result["status"], "valid", result["blockers"])
+        self.assertTrue(result["strictly_nested"])
+        self.assertEqual(
+            {level: len(packet_set["packets"][level]["evidence_items"]) for level in ("E1", "E2", "E3")},
+            {"E1": 6, "E2": 3, "E3": 1},
+        )
+        self.assertEqual(
+            result["additional_evidence_ids"]["E1_over_E2"],
+            [
+                "DYMOS_BASE_CONTROL_COMP_INPUT",
+                "DYMOS_BASE_CONTROL_DEFAULT_PATH",
+                "DYMOS_BASE_PSEUDOSPECTRAL_PROMOTION",
+            ],
+        )
+        self.assertFalse(result["semantic_sufficiency_assessed"])
+        self.assertFalse(result["model_inference_performed"])
+
+    def test_packet_provenance_matches_external_packet_hash_and_review_is_pending(self):
+        packet_set = json.loads(PACKET_PATH.read_text(encoding="utf-8"))
+        provenance = json.loads(PROVENANCE_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(provenance["packet_set_sha256"], packet_set["packet_set_sha256"])
+        self.assertEqual(
+            provenance["packet_set_path"],
+            str(PACKET_PATH.relative_to(ROOT)),
+        )
+        self.assertEqual(
+            provenance["semantic_review"]["status"],
+            "pending_source_aware_project_lead_gold_and_tier_decision",
+        )
+        self.assertFalse(provenance["structural_validation"]["semantic_sufficiency_assessed"])
+        self.assertFalse(provenance["structural_validation"]["model_inference_performed"])
+
+    def test_stage2_and_independent_reproducer_artifacts_are_recorded_without_inference(self):
+        provenance = json.loads(PROVENANCE_PATH.read_text(encoding="utf-8"))
+        stage2 = provenance["reproduction_evidence"]["dataset_selector"]
+        independent = provenance["reproduction_evidence"]["independent_public_api_reproducer"]
+        self.assertEqual(stage2["artifact_id"], 14341424466)
+        self.assertEqual(stage2["archive_integrity"]["internal_sha256_entries"], "18/18 PASS")
+        self.assertTrue("base" in stage2["base_result"])
+        self.assertIn("passed", stage2["fixed_result"])
+        self.assertEqual(independent["artifact_id"], 14629598269)
+        self.assertEqual(independent["archive_integrity"]["internal_sha256_entries"], "15/15 PASS")
+        self.assertIn("expected", independent["base_result"])
+        self.assertIn("passed", independent["fixed_result"])
+        self.assertFalse(provenance["structural_validation"]["model_inference_performed"])
+
+    def test_license_inventory_is_documented_but_not_legal_clearance(self):
+        record = json.loads(LICENSE_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(record["upstream_source"]["root_license_spdx"], "Apache-2.0")
+        self.assertEqual(len(record["upstream_source"]["changed_files"]), 6)
+        self.assertEqual(record["reproduction_environment"]["stage2_artifact_id"], 14341424466)
+        self.assertEqual(record["reproduction_environment"]["dependency_inventory_sha256"],
+                         "6e8f21e813fd0332fa3a5c370f76a0a52653d49868348d4316cb0eb40d0c3c89")
+        self.assertEqual(len(record["reproduction_environment"]["runtime_packages"]), 14)
+        self.assertFalse(record["human_review"]["accepted_as_legal_clearance"])
+        self.assertEqual(record["human_review"]["project_lead_scope_acknowledgement"], "pending")
+        self.assertFalse(record["dataset"]["exact_pinned_dataset_card_license_verified"])
+        self.assertFalse(record["inference_authorized"])
+
+    def test_related_default_value_issue_is_clustered_not_double_counted(self):
+        record = json.loads(INDEPENDENCE_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(record["counting_rule"]["issue_count"], 1)
+        self.assertEqual(record["counting_rule"]["dataset_row_count"], 1)
+        self.assertEqual(record["counting_rule"]["frozen_dataset_selector_count"], 1)
+        self.assertEqual(record["counting_rule"]["accepted_case_contribution_cap_for_repository"], 1)
+        self.assertTrue(record["cross_project_independence"]["distinct_from_numpyro_project"])
+        self.assertTrue(record["cross_project_independence"]["distinct_from_first_accepted_project"])
+        self.assertTrue(record["issue_family_disposition"]["related_predecessor_found"])
+        self.assertFalse(record["issue_family_disposition"]["exact_duplicate_found"])
+        self.assertEqual(record["issue_family_disposition"]["duplicate_candidates_excluded_from_independent_case_count"], [531])
+        self.assertEqual(record["independence_status"]["final_case_acceptance"], "not_accepted")
+        self.assertFalse(record["independence_status"]["inference_authorized"])
+
+
+if __name__ == "__main__":
+    unittest.main()
