@@ -104,3 +104,14 @@ This repeat confirms the earlier Stage 2 pass; it is not another case. The indep
 **Scope limitation retained:** PR #1536 also contains a separate StacListAssets feature. The exact dataset selectors and minimal reproducer used for this case concern the geodes/geodes_s3 configuration defect, not the separate feature. Keep these scopes separate in the gold statement and evidence packets.
 
 **Current disposition:** Stage 2 technical reproduction PASS; candidate remains not accepted. Related issue/lineage review, project-lead source-aware gold/E1-E2-E3 decision, truthful candidate-specific prior pipeline/debug exposure declaration, bounded dependency/source/dataset license-scope acknowledgement, proposed case record and fail-closed registry validation remain open. The earlier scope review's 52-package inventory is evidence of captured metadata, not legal clearance.
+
+## Superseding issue-family and frozen-selector scope correction — 20 November 2026
+
+A direct comparison of the exact upstream PR #1536 file list and the linked issue #1517 requires a more precise description than the earlier mixed-scope note.
+
+- PR #1536's upstream description says **“Fixes #1530”**. Its three changed files are `eodag/config.py` (adds `StacListAssets` to a search-type list), `eodag/resources/user_conf_template.yml` (renames the second duplicate `geodes` key to `geodes_s3`), and `tests/units/test_core.py` (adds `geodes_s3` to provider/product-type/sortables expectations).
+- Issue #1517 is a distinct report: `fetch_product_types_list` reaches `default_discovery_conf["result_type"]` and raises `KeyError: 'result_type'` when fetching Geodes S3 product types.
+- The exact frozen selector `test_list_product_types_for_provider_ok` calls `list_product_types(provider=..., fetch_providers=False)`; it does not enter the issue #1517 remote `fetch_product_types_list` path. The other frozen selector `test_available_sortables` checks the registered provider's local sortable metadata.
+- The reproduction artifact records the base-side failures as missing/unsupported `geodes_s3` and missing expected sortable metadata. These are consistent with the duplicate-key configuration preventing the default `geodes_s3` user configuration entry from being loaded. The independent minimal YAML reproducer directly isolates the core #1530 defect by showing that the later duplicate `geodes` mapping overwrites the earlier public Geodes mapping.
+
+Therefore, retain #1517 as a **related but distinct provider-discovery issue**, not as a second EODAG case and not as part of #1530's gold mechanism. Exclude the separate `StacListAssets` code path from the #1530 gold statement. Keep the existing two frozen selectors only with the above bounded interpretation; the independent YAML reproducer is direct corroboration, not a replacement for them.
