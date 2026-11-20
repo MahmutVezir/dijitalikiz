@@ -189,3 +189,33 @@ Proceed with NumPyro first, then Dymos. Next process EODAG, Robocop, Meltano SDK
 ### Approval boundary
 
 The project lead considers the technical evidence for NumPyro and Dymos sufficiently clear to proceed with their source-aware scientific review. This portfolio approval does **not** yet approve either candidate's proposed gold mechanism, alternatives, or E1/E2/E3 tier membership. Those decisions must be recorded candidate by candidate. The single source-aware project-lead adjudication route remains the v0.2 standard; ChatGPT's role is advisory. No model loading, inference, fine-tuning, or training is authorized by this portfolio decision.
+---
+
+## 10. Conditional project-lead authorization and exposure-rule correction — 20 November 2026
+
+The project lead stated that the first proposed group may be accepted as study cases where they are genuinely eligible under the unchanged Dishka-equivalent v0.2 standard, and asked that the group be evaluated in the previously proposed order. This is authorization to complete case-specific assessment and accept only candidates that satisfy every existing gate. It does not waive a gate, turn a technical Stage 2 pass into case acceptance, or authorize model inference.
+
+### First-group eligibility correction
+
+The previously listed first group included Robocop #1371. A historical project audit, however, explicitly records Robocop #1371 (together with pdoc #812) as having been used for technical debugging and excluded under the predeclared source-exposure/debugging rule. That exclusion predates the current portfolio decision and cannot be reversed merely because the later controlled reproduction passed.
+
+Accordingly:
+- Robocop #1371 is removed from the v0.2 model-evaluation sample. Preserve its successful technical reproduction as engineering/feasibility evidence only.
+- The remaining first-group case-assessment order is NumPyro → Dymos → EODAG → Meltano SDK → PyFar.
+- The order reflects the project lead's previously approved sequence with Robocop removed for the existing exposure rule; it does not re-rank based on favorable outcomes.
+
+### Current assessment boundary for the remaining five
+
+All five have Stage 2 technical base-fail/fixed-pass evidence recorded. Their eligibility for case acceptance is not yet established by that fact alone:
+
+- NumPyro #1916: proposed v0.2 evidence packets and structural validation exist; the added E1 initialization excerpt addresses a key alternative. The source-aware gold/E1-E2-E3 decision, candidate-specific prior pipeline/debug declaration, bounded license-scope acknowledgement (including the pinned dataset-card license issue), and final case record remain open.
+- Dymos #1166: proposed gold/tier packet exists and its structural tests pass. Preserve #531 as related history, not another case. The source-aware gold/tier decision, candidate-specific prior pipeline/debug declaration, and bounded license-scope acknowledgement (including bundled NumPy/SciPy notices and the pinned dataset-card license issue) remain open.
+- EODAG #1530: exact dataset selectors and an independent YAML reproducer pass base-fail/fixed-pass. Keep the scope limitation visible: PR #1536 also contains a separate StacListAssets change, while the issue-specific selectors and reproducer isolate the duplicate geodes/geodes_s3 configuration-key defect. Related-issue/lineage, source-aware gold/tier, exposure and bounded dependency-scope review remain open.
+- Meltano SDK #3090: exact dataset selector and independent repeated-sibling-reference reproducer pass base-fail/fixed-pass. The source-aware gold/tier, related-issue/lineage, candidate-specific exposure, and bounded dependency-scope review remain open.
+- PyFar #721: the corrected environment and latest recorded Stage 2 run pass all 23 frozen selectors base-fail/fixed-pass. The older candidate review and assignment files contain superseded pre-rerun statements; those statements must be preserved as history and superseded by a dated addendum. Complete current source/issue-family, exposure, independent-reproducer parity (if required by the case standard), and bounded dependency/native-notice scope review before acceptance.
+
+No candidate is declared accepted by this addendum. Each case must have one coherent issue/PR/dataset-row contract, source-aware gold and E1/E2/E3 rationale under the Dishka-equivalent single-human project-lead route, truthful prior_pipeline_debug_exposure=none, bounded documentary license-scope acknowledgement, a complete proposed v0.2 case record, schema/fail-closed registry validation, and the authorized separate final acceptance record. Full researcher source exposure remains disclosed. No blind-panel requirement is imposed for gold/tier construction; two human scorers remain required later for blind raw model-output evidence-support scoring.
+
+### Decision record boundary
+
+The project lead's conditional acceptance instruction is recorded as a portfolio-level authorization. It is not copied as a case-specific final YES for any of the five candidates. The accepted registry remains unchanged until each case's record is complete and the separate decision is written.
