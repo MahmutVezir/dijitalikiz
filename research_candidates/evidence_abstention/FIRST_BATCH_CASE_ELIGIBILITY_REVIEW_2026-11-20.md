@@ -176,3 +176,9 @@ For Dymos, EODAG, Meltano and PyFar, the project lead has approved candidate sel
 The five candidate selections are **not five final accepted cases**. The accepted-case registry remains unchanged until each candidate independently closes its prior pipeline/debug exposure declaration, bounded documentary license-scope acknowledgement, final gold/alternative/E1-E2-E3 decision, complete schema-conformant case record, fail-closed registry validation and separate case-specific final YES. Existing prior-debug exclusion of Robocop remains in force.
 
 The NumPyro and Dymos current-branch exact base/fix reproducer workflows both completed successfully on commit `8ab2c2cb36b8f8bee00d12a990d9cc76cc205aaa`: NumPyro run 44751142001/job 136339034841 and Dymos run 44751142114/job 136339035133. The no-inference preflight run 44751142329 completed successfully, and repository/configuration validation run 44751141885 completed successfully. These are structural/reproduction validations only; no model inference was performed.
+
+## Latest CI confirmation after project-lead decisions — 20 November 2026
+
+- NumPyro current-head independent reproduction: run 44755560775/job 136354249543 — success; artifact 14637651511, GitHub SHA-256 `bd05413602aaf5de6e8b213708dee68cfc863a97dd9f7620ed196afc2b071d3a`. Exact buggy base showed the expected `(100, 2)` PRNG-key error; the exact fixed revision passed.
+- No-inference preflight: run 44755547992/job 136354205627 — success. Packet audit, operational/nested packet contracts, NumPyro and Dymos review-contract tests, selector runner contract, v0.2 readiness/acceptance contract and dual-human scoring amendment tests passed.
+- The preflight's successful contract tests do not close its 13 global readiness blockers and do not authorize model loading or inference. Dishka remains the only final accepted case.
