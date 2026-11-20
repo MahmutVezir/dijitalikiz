@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import sys
 import unittest
 from pathlib import Path
 
@@ -11,6 +12,7 @@ SPEC = importlib.util.spec_from_file_location(
 )
 MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC and SPEC.loader
+sys.modules[SPEC.name] = MODULE
 SPEC.loader.exec_module(MODULE)
 
 DYMOS = ROOT / "research_candidates" / "evidence_abstention" / "dymos_1166"
@@ -62,7 +64,7 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         independent = provenance["reproduction_evidence"]["independent_public_api_reproducer"]
         self.assertEqual(stage2["artifact_id"], 14341424466)
         self.assertEqual(stage2["archive_integrity"]["internal_sha256_entries"], "18/18 PASS")
-        self.assertTrue("base" in stage2["base_result"])
+        self.assertIn("failed", stage2["base_result"])
         self.assertIn("passed", stage2["fixed_result"])
         self.assertEqual(independent["artifact_id"], 14629598269)
         self.assertEqual(independent["archive_integrity"]["internal_sha256_entries"], "15/15 PASS")
