@@ -143,7 +143,7 @@
     "hasan_scope_review": "not_recorded",
     "external_legal_review": "not_performed",
     "accepted_as_legal_clearance": false,
-    "prior_pipeline_debug_exposure_declaration": "pending",
+    "prior_pipeline_debug_exposure_declaration": "none_declared_by_project_lead_on_2026-11-20; direct self-report, not independently witnessed",
     "panel_b_blinded_review": "not_proposed for gold/tier; project lead will be source-exposed",
     "final_case_acceptance": "not_accepted"
   },
@@ -151,7 +151,6 @@
     "Project-lead bounded documentary license-scope acknowledgement is pending.",
     "Exact pinned dataset-card license has not been authenticated; current card metadata is CC-BY-4.0.",
     "NumPy/SciPy bundled-library notices are inventoried and must be included in the bounded scope acknowledgement.",
-    "Candidate-specific prior pipeline/debug exposure declaration is pending.",
     "No formal legal review was performed; no legal clearance or redistribution permission is claimed."
   ],
   "inference_authorized": false
