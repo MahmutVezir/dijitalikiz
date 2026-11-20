@@ -2881,6 +2881,17 @@
       "PyFar #721"
     ],
     "adjudication_route": "Dishka-equivalent v0.2: single source-aware project-lead human adjudicator for gold/E1/E2/E3; ChatGPT advisory only; Hasan may be recorded as project-lead-reported supplementary source-aware input. Two independent human scorers are required later for raw model-output evidence-support scoring only.",
-    "inference_authorized": false
+    "inference_authorized": false,
+    "candidate_review_addenda_commits": {
+      "EODAG #1530": "d2dbdc59456118c67528b05c802613bf72f5530a",
+      "Meltano SDK #3090": "b0aca0d73cfdbbac827c6695a52a89ec4b2680a3",
+      "PyFar #721": "148f3e59b2b32e5dea705563a6a9ab4e57bd41a1",
+      "Robocop #1371": "a886574e44ce278121bfee4ad3747f7b704049cd"
+    },
+    "notes": [
+      "Older EODAG/Meltano/PyFar/Robocop review text has dated addenda that supersede earlier pending status statements.",
+      "EODAG/Meltano/PyFar latest candidate-matrix Stage 2 artifacts are referenced by GitHub run digests; these three archives were not newly downloaded and locally rehashed in the present turn.",
+      "NumPyro and Dymos independent reproducer archives were previously locally downloaded and verified in the 20 November review workflow."
+    ]
   }
 }
