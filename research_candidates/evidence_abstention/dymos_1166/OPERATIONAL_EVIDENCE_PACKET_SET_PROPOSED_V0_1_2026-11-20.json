@@ -23,33 +23,33 @@
         {
           "id": "DYMOS_BASE_REPRODUCER_OUTPUT",
           "kind": "test_output",
-          "content": "F                                                                        [100%]\n=================================== FAILURES ===================================\n____________ test_issue_1166_polynomial_control_default_is_applied _____________\n\n    def test_issue_1166_polynomial_control_default_is_applied():\n        problem = om.Problem(model=om.Group())\n        phase = dm.Phase(\n            ode_class=BrachistochroneODE,\n            transcription=dm.GaussLobatto(num_segments=1, order=3),\n        )\n        problem.model.add_subsystem(\"phase0\", phase)\n    \n        phase.set_time_options(fix_initial=True, duration_val=2.0)\n        phase.add_state(\"x\", rate_source=\"xdot\", fix_initial=True, fix_final=False)\n        phase.add_state(\"y\", rate_source=\"ydot\", fix_initial=True, fix_final=False)\n        phase.add_state(\"v\", rate_source=\"vdot\", fix_initial=True, fix_final=False)\n        phase.add_control(\n            \"theta\",\n            order=1,\n            units=\"deg\",\n            lower=0.0,\n            upper=180.0,\n            control_type=\"polynomial\",\n            opt=True,\n            val=[5.0, 15.0],\n        )\n        phase.add_parameter(\"g\", units=\"m/s**2\", opt=False, val=9.80665)\n    \n        problem.setup()\n        problem.run_model()\n    \n        actual = problem.get_val(\"phase0.controls:theta\")\n>       np.testing.assert_allclose(\n            actual,\n            np.array([[5.0], [15.0]]),\n            rtol=0.0,\n            atol=1e-12,\n        )\n\nresearch_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py:41: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nargs = (<function assert_allclose.<locals>.compare at 0x7fab844dd300>, array([[1.],\n       [1.]]), array([[ 5.],\n       [15.]]))\nkwds = {'equal_nan': True, 'err_msg': '', 'header': 'Not equal to tolerance rtol=0, atol=1e-12', 'verbose': True}\n\n    @wraps(func, *args, **kwds):\n        with self._recreate_cm():\n>           return func(*args, **kwds)\nE           AssertionError: \nE           Not equal to tolerance rtol=0, atol=1e-12\nE           \nE           Mismatched elements: 2 / 2 (100%)\nE           Max absolute difference: 14.\nE           Max relative difference: 0.93333333\nE            x: array([[1.],\nE                  [1.]])\nE            y: array([[ 5.],\nE                  [15.]])\n\n/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/contextlib.py:81: AssertionError\n=========================== short test summary info ============================\nFAILED ../../../../../dev::test_issue_1166_polynomial_control_default_is_applied - AssertionError: \nNot equal to tolerance rtol=0, atol=1e-12\n\nMismatched elements: 2 / 2 (100%)\nMax absolute difference: 14.\nMax relative difference: 0.93333333\n x: array([[1.],\n       [1.]])\n y: array([[ 5.],\n       [15.]])\n1 failed in 0.72s\n",
-          "content_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f",
+          "content": "Independent fresh-model public-API reproducer on the pinned buggy base:\nactual control input = [[1.0], [1.0]]\nexpected control input = [[5.0], [15.0]]\nThe test collected and executed; the assertion failed with 2/2 mismatched values.\n",
+          "content_sha256": "698710d0e08d43a66371a3c973a8628875be300d2a0ea0991e7dbf7bca532a82",
           "source_snapshot_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f"
         },
         {
-          "id": "DYMOS_BASE_CONTROL_COMP_INPUT",
+          "id": "DYMOS_BASE_ONES_INPUT_DEFAULT",
           "kind": "source_excerpt",
-          "content": "    def _configure_controls(self):\n        gd = self.options['grid_data']\n        ogd = self.options['output_grid_data'] or gd\n        eval_nodes = ogd.node_ptau\n        control_options = self.options['control_options']\n        num_output_nodes = ogd.num_nodes\n        time_units = self.options['time_units']\n\n        for name, options in control_options.items():\n            if 'control_type' not in options:\n                options['control_type'] = 'full'\n            if options['control_type'] == 'polynomial':\n                disc_nodes, _ = lgl(options['order'] + 1)\n                num_control_input_nodes = len(disc_nodes)\n                shape = options['shape']\n                size = np.prod(shape)\n                units = options['units']\n                rate_units = get_rate_units(units, self.options['time_units'], deriv=1)\n                rate2_units = get_rate_units(units, self.options['time_units'], deriv=2)\n\n                input_shape = (num_control_input_nodes,) + shape\n                output_shape = (num_output_nodes,) + shape\n\n                L_de, D_de = lagrange_matrices(disc_nodes, eval_nodes)\n                _, D_dd = lagrange_matrices(disc_nodes, disc_nodes)\n                D2_de = np.dot(D_de, D_dd)\n\n                self._matrices[name] = L_de, D_de, D2_de\n\n                self._input_names[name] = f'controls:{name}'\n                self._output_val_names[name] = f'control_values:{name}'\n                self._output_rate_names[name] = f'control_rates:{name}_rate'\n                self._output_rate2_names[name] = f'control_rates:{name}_rate2'\n\n                self.add_input(self._input_names[name], val=np.ones(input_shape), units=units)\n",
-          "content_sha256": "5025efa8299c1b6fd1b3e04dcaa46c69de33ba17f16ed8180bea3d1ab838c9a3",
-          "source_snapshot_sha256": "5025efa8299c1b6fd1b3e04dcaa46c69de33ba17f16ed8180bea3d1ab838c9a3"
+          "content": "                self.add_input(self._input_names[name], val=np.ones(input_shape), units=units)\n",
+          "content_sha256": "c94cc80d2ce6fd126b2c3045f736200e63916f9ca9ed0d21db4b2970e4304d6f",
+          "source_snapshot_sha256": "c94cc80d2ce6fd126b2c3045f736200e63916f9ca9ed0d21db4b2970e4304d6f"
         },
         {
-          "id": "DYMOS_BASE_CONTROL_DEFAULT_PATH",
+          "id": "DYMOS_BASE_COMMENTED_VAL_NORMALIZATION",
           "kind": "source_excerpt",
-          "content": "        for name, options in control_options.items():\n            if options['control_type'] == 'polynomial':\n                num_input_nodes = options['order'] + 1\n                shape = options['shape']\n                # default_val = reshape_val(options['val'], shape, num_input_nodes)\n                if options['opt']:\n\n                    desvar_indices = np.arange(num_input_nodes, dtype=int)\n                    if options['fix_initial']:\n                        desvar_indices = desvar_indices[1:]\n                    if options['fix_final']:\n                        desvar_indices = desvar_indices[:-1]\n\n                    lb = -INF_BOUND if options['lower'] is None else options['lower']\n                    ub = INF_BOUND if options['upper'] is None else options['upper']\n\n                    self.add_design_var(f'controls:{name}',\n                                        lower=lb,\n                                        upper=ub,\n                                        ref=options['ref'],\n                                        ref0=options['ref0'],\n                                        adder=options['adder'],\n                                        scaler=options['scaler'],\n                                        indices=desvar_indices,\n                                        flat_indices=True)\n\n                # self.set_input_defaults(name=f'controls:{name}', val=default_val, units=options['units'])\n",
-          "content_sha256": "fca13cd095d64b07c58ca94c3d852274f607a6ce96464398ab033a5326b17ce9",
-          "source_snapshot_sha256": "fca13cd095d64b07c58ca94c3d852274f607a6ce96464398ab033a5326b17ce9"
+          "content": "                # default_val = reshape_val(options['val'], shape, num_input_nodes)\n",
+          "content_sha256": "058cb8cbc876f2003942646196dcb2f0bdde839260ae4bfc3a75cf8ca74ee306",
+          "source_snapshot_sha256": "058cb8cbc876f2003942646196dcb2f0bdde839260ae4bfc3a75cf8ca74ee306"
         },
         {
-          "id": "DYMOS_BASE_PSEUDOSPECTRAL_PROMOTION",
+          "id": "DYMOS_BASE_COMMENTED_INPUT_DEFAULT",
           "kind": "source_excerpt",
-          "content": "    def configure_controls(self, phase):\n        \\\"\\\"\\\"\n        Configure control I/O for the phase.\n\n        Parameters\n        ----------\n        phase : dymos.Phase\n            The phase object to which this transcription instance applies.\n        \\\"\\\"\\\"\n        super().configure_controls(phase)\n\n        if phase.control_options:\n            phase.control_comp.configure_io()\n            phase.promotes('control_comp',\n                           any=['*controls:*', '*control_values:*', '*control_rates:*'])\n\n            phase.connect('dt_dstau', 'control_comp.dt_dstau')\n",
-          "content_sha256": "93490159609b9de41e2a81dc78c8357e8e3462d5612713b4896c0b22271aa713",
-          "source_snapshot_sha256": "93490159609b9de41e2a81dc78c8357e8e3462d5612713b4896c0b22271aa713"
+          "content": "                # self.set_input_defaults(name=f'controls:{name}', val=default_val, units=options['units'])\n",
+          "content_sha256": "de8647498a9058f1237c0614f4bd5764e6f4acbd61db65e38ab4cfdbe55b2cf8",
+          "source_snapshot_sha256": "de8647498a9058f1237c0614f4bd5764e6f4acbd61db65e38ab4cfdbe55b2cf8"
         }
       ],
-      "packet_sha256": "e250a949abfcdceb67c5c0346701b013647dbf77a4fe1197b574b56bd0af2cba"
+      "packet_sha256": "2ac88be0a31271bb6ba4ab6e9e8cc2d78c0bc90fd100b8351d61265d4f23ee2c"
     },
     "E2": {
       "schema_version": "1.0",
@@ -72,12 +72,12 @@
         {
           "id": "DYMOS_BASE_REPRODUCER_OUTPUT",
           "kind": "test_output",
-          "content": "F                                                                        [100%]\n=================================== FAILURES ===================================\n____________ test_issue_1166_polynomial_control_default_is_applied _____________\n\n    def test_issue_1166_polynomial_control_default_is_applied():\n        problem = om.Problem(model=om.Group())\n        phase = dm.Phase(\n            ode_class=BrachistochroneODE,\n            transcription=dm.GaussLobatto(num_segments=1, order=3),\n        )\n        problem.model.add_subsystem(\"phase0\", phase)\n    \n        phase.set_time_options(fix_initial=True, duration_val=2.0)\n        phase.add_state(\"x\", rate_source=\"xdot\", fix_initial=True, fix_final=False)\n        phase.add_state(\"y\", rate_source=\"ydot\", fix_initial=True, fix_final=False)\n        phase.add_state(\"v\", rate_source=\"vdot\", fix_initial=True, fix_final=False)\n        phase.add_control(\n            \"theta\",\n            order=1,\n            units=\"deg\",\n            lower=0.0,\n            upper=180.0,\n            control_type=\"polynomial\",\n            opt=True,\n            val=[5.0, 15.0],\n        )\n        phase.add_parameter(\"g\", units=\"m/s**2\", opt=False, val=9.80665)\n    \n        problem.setup()\n        problem.run_model()\n    \n        actual = problem.get_val(\"phase0.controls:theta\")\n>       np.testing.assert_allclose(\n            actual,\n            np.array([[5.0], [15.0]]),\n            rtol=0.0,\n            atol=1e-12,\n        )\n\nresearch_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py:41: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nargs = (<function assert_allclose.<locals>.compare at 0x7fab844dd300>, array([[1.],\n       [1.]]), array([[ 5.],\n       [15.]]))\nkwds = {'equal_nan': True, 'err_msg': '', 'header': 'Not equal to tolerance rtol=0, atol=1e-12', 'verbose': True}\n\n    @wraps(func, *args, **kwds):\n        with self._recreate_cm():\n>           return func(*args, **kwds)\nE           AssertionError: \nE           Not equal to tolerance rtol=0, atol=1e-12\nE           \nE           Mismatched elements: 2 / 2 (100%)\nE           Max absolute difference: 14.\nE           Max relative difference: 0.93333333\nE            x: array([[1.],\nE                  [1.]])\nE            y: array([[ 5.],\nE                  [15.]])\n\n/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/contextlib.py:81: AssertionError\n=========================== short test summary info ============================\nFAILED ../../../../../dev::test_issue_1166_polynomial_control_default_is_applied - AssertionError: \nNot equal to tolerance rtol=0, atol=1e-12\n\nMismatched elements: 2 / 2 (100%)\nMax absolute difference: 14.\nMax relative difference: 0.93333333\n x: array([[1.],\n       [1.]])\n y: array([[ 5.],\n       [15.]])\n1 failed in 0.72s\n",
-          "content_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f",
+          "content": "Independent fresh-model public-API reproducer on the pinned buggy base:\nactual control input = [[1.0], [1.0]]\nexpected control input = [[5.0], [15.0]]\nThe test collected and executed; the assertion failed with 2/2 mismatched values.\n",
+          "content_sha256": "698710d0e08d43a66371a3c973a8628875be300d2a0ea0991e7dbf7bca532a82",
           "source_snapshot_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f"
         }
       ],
-      "packet_sha256": "105764ba5e9a9c4be128628655de81725b4e6e038e7ccf451bec9b9129835ee9"
+      "packet_sha256": "7c16c6c61dadb5217493946b42b2b02a9dbdc63a0500b2e51b66982f4439385b"
     },
     "E3": {
       "schema_version": "1.0",
@@ -94,5 +94,5 @@
       "packet_sha256": "3aa2320ac5fc464108e3a4e79a6a062c80708caec0bc9e332fe6cd742a6bfb53"
     }
   },
-  "packet_set_sha256": "92b021e0c3d83b69f28bf18a2d8211f1f5c790ca637a6aa8b6d1ee38cef0c745"
+  "packet_set_sha256": "07b9547ba6bc30dd525acff0b9916542b81e47f9ed8451f2b0fba5ca8a22b17d"
 }
