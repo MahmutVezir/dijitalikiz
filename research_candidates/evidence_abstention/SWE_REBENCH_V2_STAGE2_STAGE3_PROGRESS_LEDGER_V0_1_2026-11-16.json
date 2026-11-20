@@ -913,16 +913,16 @@
       "repository": "MarketSquare/robotframework-robocop",
       "pull_request_number": 1374,
       "pull_request_url": "https://github.com/MarketSquare/robotframework-robocop/pull/1374",
-      "static_screening_classification": "provisional_candidate",
+      "static_screening_classification": "excluded_due_predeclared_prior_debug_exposure",
       "static_scope_decision": "Geçici bug adayı",
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/ROBOCOP_1371_CANDIDATE_REVIEW_2026-11-16.md",
       "stage2_status": "passed",
       "stage2_workflow_job_id": 134137813750,
-      "stage2_evidence_note": "Exact row authenticated; the sole dataset selector fails on buggy base and passes on exact fixed revision (1/1 base-fail, 1/1 fixed-pass).",
-      "stage3_status": "not_started_stage2_passed",
-      "final_case_acceptance": "not_accepted",
+      "stage2_evidence_note": "Exact row authenticated; the sole dataset selector fails on buggy base and passes on exact fixed revision (1/1 base-fail, 1/1 fixed-pass). Portfolio correction 2026-11-20: historical project audit confirms prior technical debugging exposure; exclude from the v0.2 model-evaluation sample despite technical reproduction success.",
+      "stage3_status": "excluded_from_model_evaluation_sample_prior_pipeline_debug_exposure; retain_engineering_feasibility_only",
+      "final_case_acceptance": "not_accepted_excluded_from_sample",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44111403900
     },
@@ -2560,6 +2560,25 @@
       ],
       "scientific_approval_boundary": "Project lead considers NumPyro and Dymos technical evidence sufficiently clear to proceed with source-aware scientific review. This is not approval of either gold mechanism, alternatives, E1/E2/E3 tiers, license scope, exposure declaration, or final case acceptance. ChatGPT remains advisory. No model loading, inference, fine-tuning, or training is authorized.",
       "inference_authorized": false
+    },
+    {
+      "date": "2026-11-20",
+      "decision_scope": "conditional_case_acceptance_authorization_for_first_group",
+      "decision_source": "explicit_project_lead_chat_confirmation",
+      "project_lead_instruction": "The project lead agrees to accept the first-group candidates as study cases if they are genuinely eligible under the unchanged Dishka-equivalent v0.2 criteria, and authorizes their evaluation in the approved order. This does not waive any case-specific gate.",
+      "eligible_assessment_order": [
+        "pyro-ppl/numpyro #1916",
+        "OpenMDAO/dymos #1166",
+        "CS-SI/eodag #1530",
+        "meltano/sdk #3090",
+        "pyfar/pyfar #721"
+      ],
+      "excluded_from_model_evaluation_sample": {
+        "MarketSquare/robotframework-robocop #1371": "Historical project audit explicitly records this candidate as used for technical debugging and excluded under the predeclared source-exposure/debugging rule. Preserve successful reproduction as engineering/feasibility evidence only; do not include in v0.2 sample."
+      },
+      "gate_policy": "No candidate receives final acceptance from this portfolio-level instruction alone. Each must satisfy the unchanged Dishka-equivalent case gates: exact case identity/reproduction, one coherent issue/PR/dataset contract, source-aware project-lead gold and E1/E2/E3 decision, truthful prior_pipeline_debug_exposure=none, bounded documentary license-scope acknowledgement, complete proposed v0.2 record, schema and fail-closed registry validation, and final case-specific project-lead decision.",
+      "scientific_role_policy": "Single source-aware project-lead human adjudicator for gold and evidence tiers; ChatGPT advisory only; Hasan may be recorded as project-lead-reported supplementary source-aware input. No blind-panel requirement for gold/tier construction. Two independent human raters remain required for later blind scoring of raw model-output evidence support.",
+      "inference_authorized": false
     }
   ],
   "latest_candidate_matrix_recheck": {
@@ -2723,7 +2742,7 @@
   },
   "candidate_portfolio_review": {
     "review_path": "research_candidates/evidence_abstention/CANDIDATE_PORTFOLIO_REVIEW_2026-11-20.md",
-    "review_commit": "2aa799779efcb1a72c6f32c8b00b12ff1a8d6820",
+    "review_commit": "d18b84486791fa561922df87a4b77dad07dbce02",
     "scope": "All 15 current Stage 2-passed upstream projects (including Dishka) plus five active row/oracle/fixture holds",
     "stage2_passed_distinct_projects_including_dishka": 15,
     "accepted_v0_2_projects": 1,
@@ -2750,7 +2769,7 @@
       "meltano/sdk",
       "pyfar/pyfar"
     ],
-    "source_of_truth_note": "Portfolio selection and work order explicitly approved by project lead on 2026-11-20. Candidate-specific scientific adjudication, license scope, exposure and final acceptance remain separate. A Stage 2 pass or Stage 3 review approval is not case acceptance.",
+    "source_of_truth_note": "Project lead authorized conditional evaluation/acceptance of the first group only where all unchanged Dishka-equivalent gates pass. Robocop is excluded from the model-evaluation sample due previously recorded pipeline/debug exposure. Candidate-specific gold/tier, exposure, bounded license scope, case-record validation and final acceptance remain distinct.",
     "additional_stage2_passed_projects_excluding_dishka": 14,
     "additional_stage2_candidates_after_ctapipe_exclusion": 13,
     "current_project_count_if_all_13_pass_stage3": 14,
@@ -2761,7 +2780,6 @@
       "pyro-ppl/numpyro #1916",
       "OpenMDAO/dymos #1166",
       "CS-SI/eodag #1530",
-      "MarketSquare/robotframework-robocop #1371",
       "meltano/sdk #3090",
       "pyfar/pyfar #721"
     ],
@@ -2781,6 +2799,12 @@
       "wntrblm/nox #919",
       "pallets/werkzeug #2955"
     ],
-    "project_lead_decision_source": "explicit_project_lead_chat_confirmation"
+    "project_lead_decision_source": "explicit_project_lead_chat_confirmation",
+    "excluded_from_model_evaluation_sample": [
+      "MarketSquare/robotframework-robocop #1371"
+    ],
+    "robocop_exclusion_reason": "Historical project audit confirms prior technical pipeline/debug exposure; a successful Stage 2 reproduction does not override the predeclared exclusion.",
+    "conditional_case_acceptance_authorization": true,
+    "conditional_case_acceptance_authorization_date": "2026-11-20"
   }
 }
