@@ -1,0 +1,113 @@
+{
+  "schema_version": "0.1-eodag-1530-issue-family-independence-review",
+  "generated_date": "2026-11-20",
+  "candidate": {
+    "upstream_repository": "CS-SI/eodag",
+    "upstream_repository_is_fork": false,
+    "issue_number": 1530,
+    "issue_url": "https://github.com/CS-SI/eodag/issues/1530",
+    "issue_created_at_utc": "2025-02-20T11:38:36Z",
+    "pull_request_number": 1536,
+    "pull_request_url": "https://github.com/CS-SI/eodag/pull/1536",
+    "pull_request_created_at_utc": "2025-02-21T10:04:30Z",
+    "pull_request_merged_at_utc": "2025-02-21T12:28:31Z",
+    "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+    "fixed_pr_head": "312966a46513a082333d46cd7212bdce36aaf769",
+    "merge_commit": "697b5c851f7f15ccb48c9e749061314118f26e3b",
+    "dataset_row_id": "cs-si__eodag-1536",
+    "dataset_row_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47"
+  },
+  "timestamp_reconciliation": {
+    "dataset_created_at_raw": "2025-02-21 10:04:30",
+    "normalized_dataset_timestamp_utc": "2025-02-21T10:04:30Z",
+    "upstream_resource_match": "pull_request",
+    "upstream_pr_created_at_utc": "2025-02-21T10:04:30Z",
+    "upstream_issue_created_at_utc": "2025-02-20T11:38:36Z",
+    "exact_match_to_pr": true,
+    "exact_match_to_issue": false,
+    "semantic_interpretation": "The row timestamp matches PR #1536 creation, not issue #1530 creation. Preserve the one-day resource distinction."
+  },
+  "counting_rule": {
+    "independent_unit": "One upstream repository and one issue-specific defect; not each selector or reproduction route.",
+    "issue_count": 1,
+    "pull_request_count": 1,
+    "dataset_row_count": 1,
+    "frozen_dataset_selector_count": 2,
+    "independent_yaml_reproducer_count": 1,
+    "reproduction_routes_are_not_additional_cases": true,
+    "accepted_case_contribution_cap_for_repository": 1
+  },
+  "issue_family": [
+    {
+      "number": 1382,
+      "title": "geodes improvements",
+      "created_at": "2024-11-04T16:52:55Z",
+      "relationship": "Earlier feature-development context for Geodes and geodes_s3 provider capabilities; not the duplicate-key regression."
+    },
+    {
+      "number": 1517,
+      "title": "Fail to fetch product types with geodes_s3",
+      "created_at": "2025-02-11T14:51:39Z",
+      "relationship": "Related provider-area issue but distinct mechanism: missing result_type in product-type discovery configuration, leading to KeyError in fetch_product_types_list. The #1530 frozen selectors use fetch_providers=False and the local user-configuration template path; do not merge #1517 into #1530's gold."
+    },
+    {
+      "number": 1939,
+      "title": "Problem on geodes_s3 access",
+      "created_at": "2025-11-24T14:07:09Z",
+      "relationship": "Later user-configuration/plugin-loading issue involving None-valued nested mappings and a custom credential setup; no duplicate top-level geodes mapping mechanism established."
+    },
+    {
+      "number": 1941,
+      "title": "Wrong provider description for geodes/geodes_s3 for THEIA_REFLECTANCE_SENTINEL2_L2A collection",
+      "created_at": "2025-11-25T13:12:01Z",
+      "relationship": "Provider productType mapping defect; separate providers.yml mapping values, not duplicated user_conf_template YAML keys."
+    },
+    {
+      "number": 1978,
+      "title": "Error when searching for S1_SAR_SLC data using geodes_s3 provider",
+      "created_at": "2025-12-16T16:25:04Z",
+      "relationship": "Later data retrieval failure with BadZipFile; distinct download/search response mechanism."
+    },
+    {
+      "number": 2376,
+      "title": "EODAG ignore the zip extraction when using geodes_s3 provider",
+      "created_at": "2026-10-05T15:38:16Z",
+      "relationship": "Later archive extraction behavior; distinct download extraction setting/mechanism."
+    }
+  ],
+  "issue_family_disposition": {
+    "exact_duplicate_found": false,
+    "related_provider_issues_found": true,
+    "duplicate_candidates_excluded_from_independent_case_count": [
+      1517,
+      1939,
+      1941,
+      1978,
+      2376
+    ],
+    "broader_family": "Geodes/geodes_s3 provider configuration, discovery and retrieval.",
+    "disposition": "Retain #1530 as one issue-specific duplicate-key configuration regression. Treat #1517 and later geodes_s3 issues as related context but distinct mechanisms; they do not create additional EODAG cases."
+  },
+  "cross_project_independence": {
+    "distinct_from_first_accepted_project": true,
+    "first_accepted_repository": "reagento/dishka",
+    "distinct_from_dymos_project": true,
+    "other_repository": "OpenMDAO/dymos",
+    "one_case_per_upstream_project": true
+  },
+  "exposure_and_roles": {
+    "project_lead_source_exposure": "full (issue, PR, exact source files, reproduction artifact and candidate review inspected)",
+    "researcher_source_exposure": "full_disclosed",
+    "prior_candidate_specific_pipeline_debug_exposure": "not_yet_declared_by_project_lead",
+    "prior_pipeline_debug_exposure_status": "pending_project_lead_self_declaration",
+    "panel_b_blinded_eligible": false,
+    "independent_human_adjudicator": "not appointed; Dishka-equivalent v0.2 exploratory source-aware single project-lead adjudication route is proposed",
+    "prior_pipeline_debug_exposure_decision_record": null
+  },
+  "independence_status": {
+    "stage2_technical_reproduction": "passed",
+    "final_case_acceptance": "not_accepted",
+    "inference_authorized": false,
+    "source_aware_gold_tier_decision": "pending_project_lead"
+  }
+}
