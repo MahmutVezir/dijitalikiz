@@ -147,5 +147,24 @@
     "model_loading": false,
     "model_inference": false,
     "fine_tuning": false
+  },
+  "branch_head_repeat": {
+    "workflow_run_id": 44745436388,
+    "workflow_job_id": 136319403263,
+    "workflow_commit": "efe677f49088eb9493fef6e8c6615b5bcb061dcb",
+    "artifact_id": 14633131434,
+    "artifact_sha256": "2c9f3ddf1ea249650a18062fd6648536b0132e413fcea0c0007f8c4473a856d3",
+    "local_integrity": {
+      "outer_sha256_matches_github_digest": true,
+      "zip_crc": "PASS",
+      "internal_sha256sums": "10/10 PASS"
+    },
+    "buggy_base": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+    "fixed_revision": "5692d2da335945b756aeae02e3720b9b7f3efef2",
+    "base_result": "Executed warmup()->run() AIES 100 vectorized chains and raised the expected JAX PRNG key array shape (100, 2) error.",
+    "fixed_result": "The exact same test passed (1 passed in 3.97s).",
+    "model_loading": false,
+    "model_inference": false,
+    "fine_tuning": false
   }
 }
