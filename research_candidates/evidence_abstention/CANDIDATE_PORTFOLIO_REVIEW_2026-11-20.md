@@ -219,3 +219,39 @@ No candidate is declared accepted by this addendum. Each case must have one cohe
 ### Decision record boundary
 
 The project lead's conditional acceptance instruction is recorded as a portfolio-level authorization. It is not copied as a case-specific final YES for any of the five candidates. The accepted registry remains unchanged until each case's record is complete and the separate decision is written.
+
+---
+
+## 10. Superseding eligibility correction — 20 November 2026
+
+The project lead approved the proposed first-batch candidates for evaluation on the condition that each is genuinely eligible under the unchanged v0.2 rules. A retrospective source check found that **Robocop #1371 was already used for prior technical pipeline/debugging before the prospective validation path**. Its canonical candidate record is marked `excluded_due_predeclared_prior_debug_exposure`, and its technical reproduction record explicitly says it is not eligible for the study sample.
+
+This existing exclusion rule cannot be waived merely because the technical base-fail/fixed-pass reproduction succeeded. Therefore this section supersedes the earlier Section 9 first-group listing insofar as it included Robocop.
+
+### Corrected first batch — eligible candidates to evaluate
+
+1. NumPyro #1916
+2. Dymos #1166
+3. EODAG #1530
+4. Meltano SDK #3090
+5. PyFar #721
+
+Robocop #1371 remains an engineering/feasibility example only and is excluded from the v0.2 model-evaluation sample. It must not be added to the accepted-case registry or counted toward the exploratory sample.
+
+### Second evaluation batch — unchanged
+
+1. SkyPilot #5981
+2. PyThaiNLP #1004
+3. python-control #1144
+4. Amaranth #1518
+5. QuTiP #2646
+
+Modin #7553 and NAPALM #2151 remain not selected by the project lead. CTAPIpe #2732 remains excluded due to its recorded prior pipeline/debug exposure='some'. Moto #8269 and DataComPy #58 current frozen rows remain excluded. Earthkit-data #571, Nox #919 and Werkzeug #2955 remain bounded holds.
+
+### Corrected sample-count forecast
+
+After the CTAPIpe exposure exclusion, the project lead's non-selection of Modin and NAPALM, and the pre-existing Robocop prior-debug exclusion, **10 additional Stage 2-passed projects** remain in the current first and second evaluation batches. If all ten pass their unchanged Stage 3 and final case-acceptance gates, the exploratory registry would contain 11 projects including Dishka. Four further independent projects would then be needed to reach the preferred 15-project target. This is a forecast, not an acceptance count.
+
+### Status boundary
+
+The project lead's conditional instruction is to accept a candidate only when it is admissible under the same Dishka-equivalent v0.2 standard. The five corrected first-batch candidates have not yet been finally accepted. Their case-specific source-aware gold/E1/E2/E3 decisions, bounded documentary license-scope acknowledgements, truthful prior pipeline/debug exposure declarations, complete case records, fail-closed registry checks and separate final YES decisions remain candidate-specific. No prior-exposure value may be inferred from ordinary source review, and no 'some' value may be changed to 'none' for convenience.
