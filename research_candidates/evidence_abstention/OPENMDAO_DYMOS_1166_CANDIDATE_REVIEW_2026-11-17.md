@@ -121,3 +121,48 @@ This confirms artifact integrity, not the legal sufficiency of the license metad
 6. Make a separate final case-acceptance decision.
 
 **Current disposition:** Stage 2 technical pass; Stage 3 not started; `case_acceptance=not_accepted`; no model loaded, inference run, or training performed.
+
+
+## Independent public-API reproducer, Stage 3 proposal and CI — 20 November 2026
+
+A second reproduction route was added separately from the frozen SWE-rebench selector. The independent test builds a fresh one-phase Brachistochrone model, calls `add_control(val=[5.0, 15.0])`, runs setup/run_model, and reads the promoted `phase0.controls:theta` input directly. It does not import or reuse PR #1165's modified balanced-field regression test and does not call an optimization driver.
+
+- Test: `research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py`, SHA-256 `70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9`.
+- Workflow run: `44739419824`, job `136298973618`, successful.
+- Buggy base: `3efd1035c3bf62890034eb9e07de543f3d117867`; the public-API test executed and failed with actual `[[1.0], [1.0]]` rather than `[[5.0], [15.0]]`.
+- Fixed PR head: `0ffc82225d6125dcb5c5b5acfb9be9fd712ef949`; the same test and environment passed (`1 passed in 0.49s`).
+- Artifact: `14629598269`; SHA-256 `33bb899d7e4e56d177fe4c9d119eebea49519528e88d74af3efc4acf7def08d8`; local outer digest match, ZIP CRC PASS, 15/15 internal SHA256SUMS entries PASS.
+- Runtime: CPython 3.11.9; OpenMDAO 3.38.0; NumPy 1.26.4; SciPy 1.13.1; NetworkX 3.3; no optional optimizer installed or invoked.
+
+The candidate therefore has two complementary technical routes: the exact frozen dataset selector (18/18 artifact payload hashes verified) and a separate public-API reproducer (15/15 artifact payload hashes verified). Both execute on the exact buggy base, fail for the specified default-value mismatch, and pass on the exact fixed revision.
+
+### Related issue-family disposition
+
+Dymos #531 (2021) is retained as a historical predecessor in the same broad default-value family; it was explicitly resolved by PR #533. #1166 is a later regression after the control-interpolation component's containment/configuration changed and the old `set_input_defaults` route disappeared. #531 is not counted again as an independent case. #1131 concerns a separate control-rate/explicit-shooting mechanism. Dymos contributes at most one case.
+
+### Proposed Stage 3 evidence packet
+
+New files under `research_candidates/evidence_abstention/dymos_1166/`:
+- Proposed operational E1/E2/E3 packet set: `OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json`
+- Provenance: `EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_1_2026-11-20.json`
+- Issue-family/independence screen: `DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json`
+- Dependency/license scope inventory: `DYMOS_1166_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json`
+- Proposed technical gold and tier rationale: `DYMOS_1166_GOLD_AND_EVIDENCE_TIERS_DRAFT_V0_1_2026-11-20.md`
+
+The corrected packet-set SHA-256 is `07b9547ba6bc30dd525acff0b9916542b81e47f9ed8451f2b0fba5ca8a22b17d`, with E3=1, E2=3, E1=6. The evidence content hashes bind to the exact pinned row, the actual independent reproducer file, the base-failure log summary, and three single-line source excerpts from the pinned buggy base. The upstream fix and fixed-pass output are excluded from model-visible packet contents. This is a proposal, not semantic gold adjudication.
+
+### Branch-head no-inference CI
+
+- Workflow run: `44741554783`, commit `1afb274a2044d7f418d034c199605c23cecd01e4`.
+- No-inference preflight job: `136306184954`, successful.
+- Dymos packet/provenance/license/independence tests: **5 passed**.
+- NumPyro packet/provenance/license/independence/bundle tests in the same run: **8 passed**.
+- Other groups: packet audit 12; operational/nested packet contracts 25; selector runner 6; exploratory acceptance/readiness 24; study design/scoring 10. Total: **65 tests passed**.
+- Readiness remained blocked before inference: one accepted case/project (Dishka), 13 global blockers, `ready_for_inference=false`, no model loading, inference or fine-tuning.
+- Preflight log artifact: `14631870140`; digest `sha256:a26ff02fce4af5d2833975a77fcad2a7efb306ea5358b26a6b04be1181bcd78e`.
+
+The first run on the initial Dymos test draft failed at module import (missing implementation path); the second run exposed stale test expectations after the packet contents were rebound to exact source bytes. The test path and evidence-delta assertions were corrected. The successful result above is from the later exact-hash branch-head run.
+
+### Current Dymos disposition
+
+Stage 2 dataset reproduction: PASS. Independent public-API reproduction: PASS. Proposed packet structure/CI: PASS. Issue-family grouping: documented, with #531 clustered as historical related context and not double-counted. Source/dependency inventory: recorded. Project-lead bounded license-scope acknowledgement, exact pinned dataset-card license authentication, candidate-specific prior pipeline/debug exposure declaration, and source-aware gold/E1-E2/E3 decision remain open. Final case acceptance remains **not accepted**; no model operation is authorized.
