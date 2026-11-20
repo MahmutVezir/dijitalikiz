@@ -217,12 +217,12 @@ def test_dishka_real_proposed_case_is_structurally_complete_but_not_accepted():
 
     assert result["status"] == "structurally_complete_candidate", result["blockers"]
     assert result["case_id"] == "SRV2E-DISHKA_435"
-    assert result["acceptance_decision"] == "proposed"
-    assert result["eligible_for_registry"] is False
+    assert result["acceptance_decision"] == "accepted"
+    assert result["eligible_for_registry"] is True
     assert result["inference_authorized"] is False
-    assert record["final_acceptance"]["status"] == "pending"
-    assert record["final_acceptance"]["decision_timestamp_utc"] is None
-    assert record["final_acceptance"]["decision_record"] is None
+    assert record["final_acceptance"]["status"] == "approved"
+    assert record["final_acceptance"]["decision_timestamp_utc"] == "2026-11-20T10:59:00Z"
+    assert record["final_acceptance"]["decision_record"]["sha256"] == "7c532431844c44ef94399f377bc97d2fd98541482bd7f1f469369993372f1b5b"
     assert record["exposure"]["prior_pipeline_debug_exposure"] == "none"
     assert record["exposure"]["researcher_source_exposure"] == "full"
     assert record["license_review"]["scope_limitation"] == "documentary_screening_only_not_legal_advice"
