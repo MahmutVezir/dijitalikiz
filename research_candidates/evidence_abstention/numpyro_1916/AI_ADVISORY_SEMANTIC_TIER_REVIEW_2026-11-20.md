@@ -82,7 +82,7 @@ Add the following two immutable source excerpts from the exact buggy-base revisi
 
 These are source-contract excerpts from the pinned buggy base, not current online documentation. They do not disclose the sampler's internal state transition. With these two items, E2 would eliminate the caller-misuse/unsupported-lifecycle alternative while leaving at least two materially distinct explanations open: (a) the MCMC warmup-resume handoff violates the sampler state's scalar-key invariant, or (b) the ensemble sampler's per-step state contract is intended to be batched and its split operation is the faulty layer. E1's three existing implementation excerpts then distinguish those explanations.
 
-**Proposed counts after amendment:** E3=1, E2=4, E1=7. The current packet set remains unchanged at E3=1, E2=2, E1=5 and SHA-256 `e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d` until the project lead chooses whether to adopt the amendment and the packet/provenance hashes are regenerated and structurally revalidated.
+**Proposed counts after amendment:** E3=1, E2=4, E1=7. The project lead approved this prospective amendment on 20 November 2026. The packet set has now been amended to E3=1, E2=4, E1=7, with regenerated packet, packet-set and provenance hashes. Branch-head structural CI is the remaining validation step; semantic sufficiency and final acceptance remain separate decisions.
 
 ### Advisory recommendation — not an approval
 
