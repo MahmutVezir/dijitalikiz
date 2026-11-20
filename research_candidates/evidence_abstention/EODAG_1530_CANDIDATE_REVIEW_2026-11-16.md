@@ -115,3 +115,13 @@ A direct comparison of the exact upstream PR #1536 file list and the linked issu
 - The reproduction artifact records the base-side failures as missing/unsupported `geodes_s3` and missing expected sortable metadata. These are consistent with the duplicate-key configuration preventing the default `geodes_s3` user configuration entry from being loaded. The independent minimal YAML reproducer directly isolates the core #1530 defect by showing that the later duplicate `geodes` mapping overwrites the earlier public Geodes mapping.
 
 Therefore, retain #1517 as a **related but distinct provider-discovery issue**, not as a second EODAG case and not as part of #1530's gold mechanism. Exclude the separate `StacListAssets` code path from the #1530 gold statement. Keep the existing two frozen selectors only with the above bounded interpretation; the independent YAML reproducer is direct corroboration, not a replacement for them.
+
+## Project-lead selection decision
+
+## Project-lead first-batch selection — 20 November 2026
+
+The student project lead explicitly accepted EODAG #1530 as one of the strong first-batch candidates to continue through v0.2 Stage 3 case evaluation, applying the unchanged Dishka-equivalent criteria.
+
+This is candidate-selection approval only. It does **not** approve the proposed EODAG gold mechanism or E1/E2/E3 tier membership; those remain for a separate source-aware project-lead decision. The bounded 52-distribution dependency/native-notice scope acknowledgement, candidate-specific prior pipeline/debug exposure declaration, related issue/lineage review, complete case record, fail-closed registry validation and separate final case YES/NO remain pending.
+
+The #1517 result_type issue remains recorded as related but distinct; it is not folded into #1530's gold. This candidate remains not accepted as a final case. No model load, inference, fine-tuning or training is authorized.
