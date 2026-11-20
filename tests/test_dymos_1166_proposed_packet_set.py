@@ -26,8 +26,8 @@ EXPOSURE_PATH = DYMOS / "PROJECT_LEAD_EXPOSURE_DECISION_DYMOS_1166_2026-11-20.md
 EXPOSURE_SHA256 = "3d38e3b45f2d27cc6531ede3d73d8f2439deee0b6970c6d4618d4e02e55733ea"
 DECISION_PATH = DYMOS / "PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md"
 DECISION_SHA256 = "9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392"
-SCOPE_PROPOSAL_PATH = DYMOS / "PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_PROPOSAL_DYMOS_1166_2026-11-20.md"
-SCOPE_PROPOSAL_SHA256 = "e8185465d8466512d3de08e622115a9442450f5665fbde4857facddc76341405"
+SCOPE_PROPOSAL_PATH = DYMOS / "PROJECT_LEAD_CONDITIONAL_SCOPE_ACKNOWLEDGEMENT_DYMOS_1166_2026-11-20.md"
+SCOPE_PROPOSAL_SHA256 = "65243fe9abce793a171c12e1564c0a071f9dd146b8fb93176b61ad083522ca99"
 LEDGER_PATH = ROOT / "research_candidates" / "evidence_abstention" / "SWE_REBENCH_V2_STAGE2_STAGE3_PROGRESS_LEDGER_V0_1_2026-11-16.json"
 
 
@@ -128,7 +128,7 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
                          SCOPE_PROPOSAL_SHA256)
         scope_proposal = SCOPE_PROPOSAL_PATH.read_bytes()
         self.assertEqual(hashlib.sha256(scope_proposal).hexdigest(), SCOPE_PROPOSAL_SHA256)
-        self.assertEqual(record["human_review"]["project_lead_scope_acknowledgement"], "pending")
+        self.assertEqual(record["human_review"]["project_lead_scope_acknowledgement"], "acknowledged_with_scientific_independence_condition")
         self.assertTrue(record["dataset"]["exact_pinned_dataset_card_license_verified"])
         self.assertEqual(record["dataset"]["pinned_card_verification"]["revision"],
                          "fb9aa226b2ce37c708ea7732e7b980abacdadb67")
@@ -143,7 +143,7 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertIn({"name": "libquadmath", "license": "LGPL-2.1-or-later"}, numpy["binary_bundles"])
         self.assertIn({"name": "GCC runtime library", "license": "GPL-3.0-with-GCC-exception"}, scipy["binary_bundles"])
         self.assertEqual(record["project_lead_scope_acknowledgement_proposal"]["status"],
-                         "pending_project_lead_acknowledgement")
+                         "acknowledged_with_scientific_independence_condition")
         self.assertFalse(record["human_review"]["accepted_as_legal_clearance"])
         self.assertFalse(record["inference_authorized"])
 
