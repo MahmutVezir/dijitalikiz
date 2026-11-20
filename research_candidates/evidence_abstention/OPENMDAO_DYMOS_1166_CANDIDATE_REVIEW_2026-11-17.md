@@ -262,3 +262,18 @@ On the current research branch head `44882123757cad187dce27376eea051d92ad96a7`:
 - Implementation unit-test workflow [44771792053](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44771792053): **success**.
 
 These are no-inference technical/contract checks. They do not approve semantic gold/tier sufficiency, close the bounded license scope or exact pinned dataset-card license gate, create a final case record, or constitute final case acceptance. No model weights were loaded; no inference, fine-tuning, or training was performed or authorized.
+
+
+## Superseding project-lead source-aware technical gold and evidence-tier decision — 20 November 2026
+
+The project lead explicitly **APPROVED** the technical gold mechanism and tier decisions after reviewing the exact pinned source chain and reproduction evidence. The approval was stated as: “Onaylıyorum ama projenin ilerleyişini bozmazsa.” This qualification is recorded as a requirement to preserve the existing staged project gates; recording the technical adjudication does not bypass any gate or authorize model execution.
+
+- Decision record: `research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md`
+- Decision-record SHA-256: `9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392`
+- Approved gold: `Phase.add_control(val=...)` forwards the caller value to `set_control_options`; the value is stored and passed through `TranscriptionBase` to `ControlInterpComp`; the buggy polynomial-control input is nevertheless initialized with `np.ones(input_shape)`, discarding the supplied default.
+- E3: **ABSTAIN** — issue narrative only.
+- E2: **ABSTAIN** — issue narrative plus independent reproduction/output, but no implementation-path evidence.
+- E1: **ANSWER** — adds the active pinned API-to-component source chain and the decisive all-ones initialization.
+- Method: Dishka-equivalent v0.2 exploratory source-aware single project-lead human adjudicator. ChatGPT is advisory only; full researcher source/reproduction exposure remains disclosed; no blind or inter-rater reliability claim is made.
+
+This closes only the source-aware technical gold/tier adjudication gate. The bounded dependency/source/dataset documentary license-scope acknowledgement and exact pinned dataset-card license verification remain open. The schema-conformant case record, fail-closed registry validation, and separate final case YES/NO remain required. **Final case acceptance remains not_accepted; inference remains unauthorized.**
