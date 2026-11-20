@@ -3,7 +3,7 @@
   "generated_date": "2026-11-20",
   "candidate": "OpenMDAO/dymos issue 1166 / PR 1165",
   "packet_set_path": "research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
-  "packet_set_sha256": "b0cfd72838a7265468ce7c59f210d4a6660bd791cb784a3c342283b7e9f23ae6",
+  "packet_set_sha256": "c918227f6b19b67dcebc61a6a8b77b1b90393144f1638d7d5a002c3d5b695fd4",
   "source_row": {
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
     "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
@@ -142,6 +142,18 @@
         147
       ],
       "content_sha256": "c1ff713481f44148bdefe4a9c493e692d8d2a3b9457038358134c6469da7137a"
+    },
+    {
+      "id": "DYMOS_BASE_ADD_CONTROL_FORWARDS_VALUE",
+      "kind": "source_excerpt",
+      "source_path": "dymos/phase/phase.py",
+      "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "source_git_blob_sha1": "06df4268245c5c14252fdeb5d03d3ec8ff91479f",
+      "source_lines_1based": [
+        638,
+        640
+      ],
+      "content_sha256": "a2ff7cfe0b5cc90987599357d983735ffcfd2ad42973fd35e2bbcfd26c13cb1a"
     }
   ],
   "tier_membership": {
@@ -159,7 +171,8 @@
       "DYMOS_BASE_REPRODUCER_OUTPUT",
       "DYMOS_BASE_ONES_INPUT_DEFAULT",
       "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE",
-      "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS"
+      "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS",
+      "DYMOS_BASE_ADD_CONTROL_FORWARDS_VALUE"
     ]
   },
   "structural_validation": {
@@ -167,7 +180,7 @@
     "expected_inner_packet_counts": {
       "E3": 1,
       "E2": 3,
-      "E1": 6
+      "E1": 7
     },
     "strictly_nested_by_design": true,
     "semantic_sufficiency_assessed": false,
@@ -175,7 +188,7 @@
     "expected_packet_counts": {
       "E3": 1,
       "E2": 3,
-      "E1": 6
+      "E1": 7
     },
     "latest_preflight_run": {
       "workflow_run_id": 44745438389,
