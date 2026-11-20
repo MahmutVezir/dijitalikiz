@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-20T15:22:00Z",
+  "generated_at_utc": "2026-11-20T15:34:22Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -534,9 +534,9 @@
         "cohort_wide_timestamp_gate": "remains_open"
       },
       "latest_review_contract_ci": {
-        "workflow_run_id": 44761690559,
-        "job_id": 136375587794,
-        "commit": "43b06b48b843bbca78cde608a96edce2344cca90",
+        "workflow_run_id": 44764471046,
+        "job_id": 136385301308,
+        "commit": "10b910cdb595408bf5bb856bd2290f86cf5e24e1",
         "conclusion": "success",
         "test_groups": {
           "packet_audit": 12,
@@ -548,8 +548,8 @@
           "study_design_and_dual_human_scoring": 10,
           "total": 90
         },
-        "preflight_artifact_id": 14642395350,
-        "preflight_artifact_sha256": "3fe0d9de95b5379671a3fef849ad5c185d066cfc6678eccf55dcb0de372cb3b6",
+        "preflight_artifact_id": 14642538786,
+        "preflight_artifact_sha256": "0328d6c8f69c0780aa8663c5ad0bab6008257bd818f63289c78f120c6a4db960",
         "readiness": {
           "accepted_case_count": 1,
           "accepted_project_count": 1,
@@ -671,17 +671,17 @@
         "packet_set_sha256": "b53d655f38466f2aa5b164a3a96c13a630e4419986401e472f2ed4371ffd7edb"
       },
       "latest_branch_head_stage2_reproducer": {
-        "workflow_run_id": 44761690320,
-        "job_id": 136375585065,
-        "commit": "43b06b48b843bbca78cde608a96edce2344cca90",
+        "workflow_run_id": 44764470924,
+        "job_id": 136385300367,
+        "commit": "10b910cdb595408bf5bb856bd2290f86cf5e24e1",
         "conclusion": "success",
         "buggy_base": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
-        "buggy_base_result": "Exact public-API AIES/100-vectorized-chain warmup()->run() reproducer failed with the expected JAX key array shape (100, 2).",
+        "buggy_base_result": "Exact public-API AIES/100-vectorized-chain warmup()->run() reproducer failed with the expected JAX PRNG key shape (100, 2).",
         "fixed_revision": "5692d2da335945b756aeae02e3720b9b7f3efef2",
-        "fixed_revision_result": "Same reproducer passed (1 passed in 3.89s).",
+        "fixed_revision_result": "The identical reproducer passed (1 passed in 4.09s).",
         "runtime": "CPython 3.11.9; CPU-only JAX/JAXlib 0.4.35",
-        "artifact_id": 14640974491,
-        "artifact_github_digest": "sha256:7717fe6ed53ae6752325cf954ea20285279ffff679403f7a5c2c9bf20216ac49",
+        "artifact_id": 14642129537,
+        "artifact_github_digest": "sha256:10e92b174ba0c6345220fb82a041e9fbef6d144e1595563e2a1c7a02fc792c59",
         "artifact_locally_rehashed": false
       },
       "project_lead_tier_decision": {
