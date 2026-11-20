@@ -89,7 +89,7 @@ jobs:
             echo "::error::The independent reproducer failed during collection, not during the reported defect."
             exit 1
           fi
-          if ! grep -Fq "ACTUAL: array([[1.]," reproduction-evidence/base-reproducer.log; then
+          if ! grep -Fq "x: array([[1.]," reproduction-evidence/base-reproducer.log || ! grep -Fq "y: array([[ 5.]," reproduction-evidence/base-reproducer.log; then
             echo "::error::The buggy base did not reproduce the expected default-value mismatch."
             exit 1
           fi
