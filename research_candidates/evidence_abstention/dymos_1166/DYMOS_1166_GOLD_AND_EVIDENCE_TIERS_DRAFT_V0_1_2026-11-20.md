@@ -16,7 +16,7 @@
 
 ## Proposed primary mechanism
 
-On the pinned buggy base, `Phase.set_control_options` stores the caller-supplied `val` in `phase.control_options` (`phase.py:785–786`). `TranscriptionBase` passes that same `phase.control_options` mapping into `ControlInterpComp(control_options=...)` (`transcription_base.py:145–147`). In the polynomial-control branch of `ControlInterpComp._configure_controls`, the corresponding input is nevertheless initialized unconditionally as `val=np.ones(input_shape)` (`control_comp.py:120`); that active input-construction statement does not use the stored `options['val']`. The requested value is therefore recorded and propagated, but is lost at the component input's default initialization. This directly explains the observed all-ones values.
+On the pinned buggy base, `Phase.add_control` forwards its `val` argument to `set_control_options` (`phase.py:638–640`), which stores it in `phase.control_options` (`phase.py:785–786`). `TranscriptionBase` passes that same `phase.control_options` mapping into `ControlInterpComp(control_options=...)` (`transcription_base.py:145–147`). In the polynomial-control branch of `ControlInterpComp._configure_controls`, the corresponding input is nevertheless initialized unconditionally as `val=np.ones(input_shape)` (`control_comp.py:120`); that active input-construction statement does not use the stored `options['val']`. The requested value is therefore recorded and propagated, but is lost at the component input's default initialization. This directly explains the observed all-ones values.
 
 PR #1165 changes the polynomial-control input construction to normalize `options['val']` with `reshape_val` and pass that result directly into `add_input`. The exact frozen dataset selector and an independent fresh-model Brachistochrone reproducer both show the same base-fail/fixed-pass contrast.
 
@@ -31,7 +31,7 @@ PR #1165 changes the polynomial-control input construction to normalize `options
 
 - **E3 — issue-level only:** the frozen issue narrative.
 - **E2 — observable failure:** E3 plus the independent public-API reproducer and its exact buggy-base assertion output.
-- **E1 — implementation-path evidence:** E2 plus active pinned buggy-base source excerpts linking (i) API `val` storage in `Phase.control_options`, (ii) that mapping being passed to `ControlInterpComp`, and (iii) the polynomial-control input being initialized with `np.ones(input_shape)`. The commented lines from the separate `_configure_desvars` method are excluded because they are not part of this active input-construction path.
+- **E1 — implementation-path evidence:** E2 plus active pinned buggy-base source excerpts linking (i) `Phase.add_control` forwarding `val` to `set_control_options`, (ii) storage in `Phase.control_options`, (iii) that mapping being passed to `ControlInterpComp`, and (iv) the polynomial-control input being initialized with `np.ones(input_shape)`. The commented lines from the separate `_configure_desvars` method are excluded because they are not part of this active input-construction path.
 
 The exact inner-packet hashes and strict nesting are recorded in the proposed operational packet set. The fixed PR patch, fixed-revision output, hidden gold label, and tier names are not included in the inner packets.
 
