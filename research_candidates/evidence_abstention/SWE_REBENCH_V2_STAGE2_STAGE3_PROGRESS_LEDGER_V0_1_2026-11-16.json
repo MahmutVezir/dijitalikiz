@@ -542,7 +542,7 @@
         "final_case_acceptance": "not_accepted"
       },
       "stage2_independent_issue_reproducer": {
-        "status": "passed_buggy_base_fail_fixed_revision_pass",
+        "status": "passed_buggy_base_fail_fixed_revision_pass_latest_branch_head_repeat_verified",
         "workflow_run_id": 44737978562,
         "workflow_job_id": 136294098282,
         "workflow_commit": "2b0f4f95e951b6ab7079a20f057ada701660d1ce",
@@ -560,6 +560,21 @@
           "outer_sha256_matches_github_digest": true,
           "zip_crc": "PASS",
           "internal_hashes": "10/10 PASS"
+        },
+        "latest_branch_head_repeat": {
+          "workflow_run_id": 44745436388,
+          "workflow_job_id": 136319403263,
+          "workflow_commit": "efe677f49088eb9493fef6e8c6615b5bcb061dcb",
+          "artifact_id": 14633131434,
+          "artifact_sha256": "2c9f3ddf1ea249650a18062fd6648536b0132e413fcea0c0007f8c4473a856d3",
+          "local_integrity": {
+            "outer_sha256_matches": true,
+            "zip_crc": "PASS",
+            "internal_hashes": "10/10 PASS"
+          },
+          "buggy_base": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+          "fixed_revision": "5692d2da335945b756aeae02e3720b9b7f3efef2",
+          "result": "Same 100-chain AIES warmup()->run() reproducer failed on buggy base with key shape (100, 2) and passed on fixed revision (1 passed in 3.97s)."
         }
       },
       "stage3_adjudication_route_v0_2": {
@@ -624,7 +639,7 @@
       "stage3_status": "proposed_v0_1_packet_structure_ci_passed_semantic_gold_and_license_scope_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44741768163,
+      "stage2_latest_run_id": 44114656908,
       "stage2_artifact_id": 14341424466,
       "stage2_artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
       "stage2_dataset_row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
@@ -663,6 +678,21 @@
           },
           "buggy_base_result": "executed assertion failure; actual [[1.0],[1.0]], expected [[5.0],[15.0]]",
           "fixed_revision_result": "1 passed"
+        },
+        "latest_branch_head_repeat": {
+          "workflow_run_id": 44745436377,
+          "workflow_job_id": 136319403418,
+          "workflow_commit": "efe677f49088eb9493fef6e8c6615b5bcb061dcb",
+          "artifact_id": 14632153920,
+          "artifact_sha256": "b70d1572ed0a8dbc89f1331da09caaa8848a7581efb2b85c9aceefef09874be2",
+          "local_integrity": {
+            "outer_sha256_matches": true,
+            "zip_crc": "PASS",
+            "internal_hashes": "15/15 PASS"
+          },
+          "buggy_base": "3efd1035c3bf62890034eb9e07de543f3d117867",
+          "fixed_revision": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
+          "result": "Same fresh Brachistochrone public-API reproducer failed on buggy base with actual [[1.0],[1.0]] vs expected [[5.0],[15.0]], then passed on fixed revision (1 passed in 0.66s)."
         }
       },
       "stage3_proposed_packet_set_path": "research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
@@ -700,9 +730,12 @@
       },
       "next_required_gate": "Project lead records source-aware gold/E1-E2-E3 decision under the same single-adjudicator exploratory method accepted for Dishka; provide bounded documentary license-scope acknowledgement and candidate-specific prior_pipeline_debug_exposure declaration; then prepare schema-conformant case record, validate fail-closed registry and record separate final YES/NO. Two-human raw-response scoring remains a later output-scoring requirement, not a gold/tier gate. No model inference.",
       "stage2_latest_job_id": 136306920964,
-      "stage2_latest_artifact_id": 14631740733,
-      "stage2_latest_artifact_sha256": "3c3b2d96d0ad7b82d945aa7fcbc4014e64674496967eeb98288f070af8f39f00",
-      "stage2_latest_artifact_integrity": "Latest branch-head independent reproducer artifact downloaded and locally verified: outer SHA-256 matches GitHub digest; ZIP CRC PASS; 15/15 internal SHA256SUMS entries PASS."
+      "stage2_latest_artifact_id": 14341424466,
+      "stage2_latest_artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
+      "stage2_latest_artifact_integrity": "Latest branch-head independent reproducer artifact downloaded and locally verified: outer SHA-256 matches GitHub digest; ZIP CRC PASS; 15/15 internal SHA256SUMS entries PASS.",
+      "stage2_latest_independent_reproducer_workflow_run_id": 44745436377,
+      "stage2_latest_independent_reproducer_artifact_id": 14632153920,
+      "stage2_latest_independent_reproducer_artifact_sha256": "b70d1572ed0a8dbc89f1331da09caaa8848a7581efb2b85c9aceefef09874be2"
     },
     {
       "cohort_rank": 16,
@@ -2395,10 +2428,10 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44741767911,
-    "head_commit": "7d8dd3410f8f1778efb623b15678134095330ce2",
-    "job_id": 136306921046,
-    "status": "success",
+    "workflow_run_id": 44745438389,
+    "head_commit": "efe677f49088eb9493fef6e8c6615b5bcb061dcb",
+    "job_id": 136319411195,
+    "status": "preflight_job_success; additional no-inference verification jobs still running when recorded",
     "ready_for_inference": false,
     "blocker_count": 13,
     "accepted_case_count": 1,
@@ -2415,13 +2448,13 @@
       "study_design_and_dual_human_scoring": 10,
       "total": 90
     },
-    "artifact_id": 14630882585,
-    "artifact_sha256": "b13204d61467012465e9778620eaf7d630db2ad31e74a5472089e6ffadb05465",
+    "artifact_id": 14633071463,
+    "artifact_sha256": "cdcc1ad5bbc02794221561243c25462d8dda22cb45845cf0cae515c964edd95b",
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "Dishka #435 remains the only accepted v0.2 case. NumPyro #1916 and Dymos #1166 have independent issue reproducers and structural Stage 3 packet checks, but both remain not accepted pending source-aware gold/tier decisions, bounded license scope and exposure declarations. Ninety no-inference tests passed."
+    "note": "The no-inference preflight job completed successfully: 90 tests passed; NumPyro review contracts 8/8 and Dymos review contracts 5/5. The overall workflow was still running separate Dishka reproduction/provenance/Qwen-license-without-weights jobs at the time of this record. Readiness remains blocked before inference with 13 blockers and one accepted case."
   },
   "project_lead_decisions": [
     {
