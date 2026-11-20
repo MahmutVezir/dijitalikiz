@@ -106,8 +106,16 @@
     "model_inference_performed": false
   },
   "semantic_review": {
-    "status": "pending_independent_human_panel",
-    "note": "Proposed v0.2 E1 adds the sampler initialization key-normalization contract. This strengthens but does not establish semantic tier sufficiency. Two independent blinded Panel B ratings and a separate adjudicator remain mandatory."
+    "status": "pending_source_aware_project_lead_gold_and_tier_decision",
+    "adjudication_route": "v0.2 exploratory; single source-aware project-lead technical adjudicator, matching the Dishka #435 accepted precedent",
+    "project_lead_role": "sole human decision-maker for technical gold mechanism, alternatives and E1/E2/E3 tier membership/sufficiency; full source exposure disclosed",
+    "chatgpt_role": "AI advisory critique only; never counted as a human reviewer or adjudicator",
+    "hasan_role": "project-lead-reported supplementary source-aware technical input only; not a separate signed independent adjudication, blinded review or inter-rater statistic",
+    "blinded_panel_for_gold_tiers_required": false,
+    "rationale": "The active v0.2 protocol and accepted Dishka precedent do not require two blind reviewers or a third adjudicator for gold/E1/E2/E3. The two-human Rater A/Rater B requirement applies to later blinded scoring of raw model-output evidence support, not to source-aware gold/tier construction.",
+    "sufficiency_caution": "The project lead may judge E1 insufficient; if so, do not force a unique-cause tier or accept this as a three-tier case. Structural validation is not semantic sufficiency.",
+    "output_scoring_gate": "Two independent human scorers are still required for model-output evidence-support scoring before any such ratings; Rater B consent, case-specific exposure screening and calibration remain pending.",
+    "inference_performed": false
   },
   "blinding": {
     "model_visible_packet_contains_fix": false,
@@ -118,7 +126,26 @@
   },
   "limitations": [
     "Structural validity does not establish causal entailment or semantic tier sufficiency.",
-    "For source-code items, source_snapshot_sha256 is the SHA-256 of the exact verbatim excerpt snapshot; the parent file is separately identified by immutable upstream commit and Git blob SHA-1, while content_sha256 binds the included excerpt bytes.",
-    "The proposed E1 addition addresses whether the sampler's initialized state is expected to contain a singleton key. Independent semantic review remains required; the project lead is source-exposed and cannot be a blinded Panel B rater."
-  ]
+    "For source-code items, source_snapshot_sha256 binds the exact verbatim excerpt snapshot; parent files are separately anchored by immutable upstream commit and Git blob SHA-1.",
+    "The project lead and Hasan have seen candidate source/design material; neither is eligible for blinded raw-response scoring for this case. This does not prevent the project lead's source-aware gold/tier decision under the Dishka-equivalent exploratory method.",
+    "Two-human independent scoring remains required for raw model responses; that role is distinct from technical gold/E1/E2/E3 adjudication.",
+    "The proposed E1 initialization excerpt strengthens the causal chain but still requires explicit project-lead source-aware sufficiency decision."
+  ],
+  "branch_head_stage2_repeat": {
+    "workflow_run_id": 44741768086,
+    "workflow_job_id": 136306920441,
+    "artifact_id": 14630982034,
+    "artifact_sha256": "bdbe89447f1b1b5b4bbbd3c682d90d6f56e6abe0d2097eddce79acaf9e32fc0d",
+    "local_integrity": {
+      "outer_sha256_matches_github_digest": true,
+      "zip_crc": "PASS",
+      "internal_sha256sums": "10/10 PASS"
+    },
+    "buggy_base": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+    "fixed_revision": "5692d2da335945b756aeae02e3720b9b7f3efef2",
+    "reproducer_result": "AIES 100-chain warmup()->run() executed and failed on buggy base with expected JAX key shape (100, 2), same test passed on fixed revision (1 passed in 3.00s)",
+    "model_loading": false,
+    "model_inference": false,
+    "fine_tuning": false
+  }
 }
