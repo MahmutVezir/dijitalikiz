@@ -845,7 +845,7 @@
       "stage3_status": "project_lead_approved_source_aware_gold_and_evidence_tiers; bounded_license_scope_and_exact_pinned_dataset_card_license_pending; final_case_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44114656908,
+      "stage2_latest_run_id": 44777046281,
       "stage2_artifact_id": 14341424466,
       "stage2_artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
       "stage2_dataset_row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
@@ -943,9 +943,9 @@
         "dedicated_review_tests": 5,
         "semantic_sufficiency_assessed": false,
         "model_inference_performed": false,
-        "validation_latest_run_id": 44775487764,
-        "validation_latest_job_id": 136411069190,
-        "validation_latest_result": "470 passed, 6 skipped, 56 subtests passed; current active E1 API-to-component source-chain assertions included"
+        "validation_latest_run_id": 44777046085,
+        "validation_latest_job_id": 136429516755,
+        "validation_latest_result": "8 passed in current-head no-inference preflight; E1/E2/E3 packet/source-chain contract and recorded project-lead gold/tier decision verified structurally."
       },
       "stage3_issue_family_independence_path": "research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
       "stage3_dependency_license_scope_path": "research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json",
@@ -964,13 +964,13 @@
         "source_aware_decision_record_sha256": "9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392"
       },
       "next_required_gate": "The source-aware gold/E1/E2/E3 project-lead decision is approved and recorded. Next: project lead must provide bounded documentary license-scope acknowledgement (including NumPy/SciPy bundled notices) and exact pinned dataset-card license authentication; then complete the schema-conformant case record, run fail-closed registry validation, and make a separate final YES/NO case-acceptance decision. Researcher source/reproduction exposure remains full and disclosed. No model inference.",
-      "stage2_latest_job_id": 136411068945,
-      "stage2_latest_artifact_id": 14648082079,
-      "stage2_latest_artifact_sha256": "fe4a8754125ca750cc7080f631c6455f417cde9021cb82ebdd65190cdfd75218",
-      "stage2_latest_artifact_integrity": "GitHub Actions reports artifact 14648082079 with digest sha256:fe4a8754125ca750cc7080f631c6455f417cde9021cb82ebdd65190cdfd75218. This latest repeat was not locally downloaded/rehashed in this update; earlier Dymos independent-reproducer artifacts 14629598269, 14631740733, 14632153920 and 14632443444 were locally verified at the time of their respective reviews.",
-      "stage2_latest_independent_reproducer_workflow_run_id": 44771791810,
-      "stage2_latest_independent_reproducer_artifact_id": 14648082079,
-      "stage2_latest_independent_reproducer_artifact_sha256": "fe4a8754125ca750cc7080f631c6455f417cde9021cb82ebdd65190cdfd75218",
+      "stage2_latest_job_id": 136429516642,
+      "stage2_latest_artifact_id": 14649973489,
+      "stage2_latest_artifact_sha256": "82aba14dbd3ffcc975989a8f3984712a0b4b3a5b89458f7d142fe1dfea4ed16b",
+      "stage2_latest_artifact_integrity": "Locally downloaded and verified: outer SHA-256 matches GitHub artifact digest; ZIP CRC PASS; SHA256SUMS 15/15 PASS.",
+      "stage2_latest_independent_reproducer_workflow_run_id": 44777046281,
+      "stage2_latest_independent_reproducer_artifact_id": 14649973489,
+      "stage2_latest_independent_reproducer_artifact_sha256": "82aba14dbd3ffcc975989a8f3984712a0b4b3a5b89458f7d142fe1dfea4ed16b",
       "project_lead_candidate_selection": {
         "decision": "ACCEPTED_FOR_STAGE3_CASE_EVALUATION",
         "date": "2026-11-20",
@@ -986,11 +986,11 @@
         "independent_witnessed_audit": false
       },
       "stage3_preflight_current_head": {
-        "workflow_run_id": 44771791808,
-        "job_id": 136411069190,
-        "commit": "44882123757cad187dce27376eea051d92ad96a7",
+        "workflow_run_id": 44777046085,
+        "job_id": 136429516755,
+        "commit": "98df08d0ddc4c8972ee653016bf6ac9f2912e560",
         "conclusion": "success",
-        "dymos_review_contract_tests": "6 passed",
+        "dymos_review_contract_tests": "8 passed",
         "readiness": {
           "accepted_case_count": 1,
           "accepted_case": "reagento/dishka #435",
@@ -1003,11 +1003,11 @@
         "fine_tuning_performed": false
       },
       "repository_validation_current_head": {
-        "workflow_run_id": 44771791988,
-        "job_id": 136411075528,
-        "commit": "44882123757cad187dce27376eea051d92ad96a7",
+        "workflow_run_id": 44777046162,
+        "job_id": 136429519129,
+        "commit": "98df08d0ddc4c8972ee653016bf6ac9f2912e560",
         "conclusion": "success",
-        "tests": "469 passed, 6 skipped, 56 subtests passed",
+        "tests": "471 passed, 6 skipped, 56 subtests passed",
         "no_model_execution_command_invoked": true,
         "model_loading_performed": false,
         "model_inference_performed": false,
@@ -1028,7 +1028,8 @@
         "researcher_source_exposure": "full",
         "final_case_acceptance": "not_accepted",
         "inference_authorized": false
-      }
+      },
+      "stage3_current_head_commit": "98df08d0ddc4c8972ee653016bf6ac9f2912e560"
     },
     {
       "cohort_rank": 16,
