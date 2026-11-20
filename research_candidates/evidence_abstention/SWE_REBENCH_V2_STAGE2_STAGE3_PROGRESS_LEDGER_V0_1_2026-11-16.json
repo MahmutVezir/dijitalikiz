@@ -2579,6 +2579,41 @@
       "gate_policy": "No candidate receives final acceptance from this portfolio-level instruction alone. Each must satisfy the unchanged Dishka-equivalent case gates: exact case identity/reproduction, one coherent issue/PR/dataset contract, source-aware project-lead gold and E1/E2/E3 decision, truthful prior_pipeline_debug_exposure=none, bounded documentary license-scope acknowledgement, complete proposed v0.2 record, schema and fail-closed registry validation, and final case-specific project-lead decision.",
       "scientific_role_policy": "Single source-aware project-lead human adjudicator for gold and evidence tiers; ChatGPT advisory only; Hasan may be recorded as project-lead-reported supplementary source-aware input. No blind-panel requirement for gold/tier construction. Two independent human raters remain required for later blind scoring of raw model-output evidence support.",
       "inference_authorized": false
+    },
+    {
+      "date": "2026-11-20",
+      "decision_scope": "conditional_candidate_portfolio_selection_not_final_case_acceptance",
+      "decision_source": "explicit_project_lead_chat_instruction",
+      "instruction": "Project lead accepts the proposed first-batch candidates for evaluation and conditional case acceptance only if they satisfy the unchanged Dishka-equivalent v0.2 eligibility and acceptance standard; evaluate them in the proposed order.",
+      "original_proposed_first_batch": [
+        "pyro-ppl/numpyro #1916",
+        "OpenMDAO/dymos #1166",
+        "CS-SI/eodag #1530",
+        "MarketSquare/robotframework-robocop #1371",
+        "meltano/sdk #3090",
+        "pyfar/pyfar #721"
+      ],
+      "corrected_eligible_first_batch": [
+        "pyro-ppl/numpyro #1916",
+        "OpenMDAO/dymos #1166",
+        "CS-SI/eodag #1530",
+        "meltano/sdk #3090",
+        "pyfar/pyfar #721"
+      ],
+      "exception": "MarketSquare/robotframework-robocop #1371 is excluded from the v0.2 model-evaluation sample under the already-recorded prior technical pipeline/debug exposure rule. Its technical reproduction remains an engineering/feasibility pilot only. The project lead's conditional selection does not waive predeclared exclusions.",
+      "second_evaluation_group": [
+        "skypilot-org/skypilot #5981",
+        "PyThaiNLP/pythainlp #1004",
+        "python-control/python-control #1144",
+        "amaranth-lang/amaranth #1518",
+        "qutip/qutip #2646"
+      ],
+      "not_selected": [
+        "modin-project/modin #7553",
+        "napalm-automation/napalm #2151"
+      ],
+      "final_case_acceptances_created": [],
+      "inference_authorized": false
     }
   ],
   "latest_candidate_matrix_recheck": {
@@ -2742,7 +2777,7 @@
   },
   "candidate_portfolio_review": {
     "review_path": "research_candidates/evidence_abstention/CANDIDATE_PORTFOLIO_REVIEW_2026-11-20.md",
-    "review_commit": "d18b84486791fa561922df87a4b77dad07dbce02",
+    "review_commit": "c49687aee6afe0369c6d003608dc0eda5c901f6a",
     "scope": "All 15 current Stage 2-passed upstream projects (including Dishka) plus five active row/oracle/fixture holds",
     "stage2_passed_distinct_projects_including_dishka": 15,
     "accepted_v0_2_projects": 1,
@@ -2777,18 +2812,18 @@
     "evidence_audit_boundary": "Older Stage 2 rows are assessed from canonical review documents and the current ledger; their historical artifacts were not all freshly downloaded/rehashed during the 20 November portfolio review. NumPyro and Dymos independent issue-reproducer artifacts were freshly downloaded and reverified on branch head efe677f.",
     "project_lead_decision_date": "2026-11-20",
     "first_stage3_group": [
-      "pyro-ppl/numpyro #1916",
-      "OpenMDAO/dymos #1166",
-      "CS-SI/eodag #1530",
-      "meltano/sdk #3090",
-      "pyfar/pyfar #721"
+      "pyro-ppl/numpyro",
+      "OpenMDAO/dymos",
+      "CS-SI/eodag",
+      "meltano/sdk",
+      "pyfar/pyfar"
     ],
     "second_evaluation_group": [
-      "skypilot-org/skypilot #5981",
-      "PyThaiNLP/pythainlp #1004",
-      "python-control/python-control #1144",
-      "amaranth-lang/amaranth #1518",
-      "qutip/qutip #2646"
+      "skypilot-org/skypilot",
+      "PyThaiNLP/pythainlp",
+      "python-control/python-control",
+      "amaranth-lang/amaranth",
+      "qutip/qutip"
     ],
     "project_lead_not_selected": [
       "modin-project/modin #7553",
@@ -2804,11 +2839,17 @@
       "MarketSquare/robotframework-robocop #1371",
       "MarketSquare/robotframework-robocop #1371"
     ],
-    "robocop_exclusion_reason": "Historical project audit confirms prior technical pipeline/debug exposure; a successful Stage 2 reproduction does not override the predeclared exclusion.",
+    "robocop_exclusion_reason": "Pre-existing candidate record classification excluded_due_predeclared_prior_debug_exposure; preserve as engineering/feasibility pilot.",
     "conditional_case_acceptance_authorization": true,
     "conditional_case_acceptance_authorization_date": "2026-11-20",
     "first_batch_assessment_path": "research_candidates/evidence_abstention/FIRST_BATCH_CASE_ELIGIBILITY_REVIEW_2026-11-20.md",
-    "first_batch_assessment_commit": "a2878d6955fcfad73edc5c827e53d7a32c1e7ab7"
+    "first_batch_assessment_commit": "a2878d6955fcfad73edc5c827e53d7a32c1e7ab7",
+    "first_stage3_group_project_lead_instruction": "conditional advance for candidate-specific evaluation; not final case acceptance",
+    "robocop_excluded_from_model_evaluation_sample": true,
+    "additional_eligible_stage2_candidates_after_project_lead_selections_and_exclusions": 10,
+    "projected_total_with_dishka_if_all_ten_pass": 11,
+    "additional_projects_needed_to_reach_preferred_15_target": 4,
+    "portfolio_status": "first_batch_eligibility_corrected_after_historical_exposure_audit; case-specific gates open"
   },
   "first_batch_case_assessment": {
     "date": "2026-11-20",
