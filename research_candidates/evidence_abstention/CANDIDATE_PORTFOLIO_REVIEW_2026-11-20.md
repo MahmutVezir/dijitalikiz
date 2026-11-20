@@ -9,9 +9,9 @@
 
 Dishka #435 is the sole accepted v0.2 exploratory/feasibility case. Its standard is the comparison baseline; no later candidate is accepted merely because its CI passed.
 
-The active Stage 2 ledger contains **14 distinct upstream projects with technical base-fail/fixed-pass evidence**, including Dishka. CTAPIPE #2732 is technically reproducible but must be **excluded from the model-evaluation sample** because the project lead declared prior candidate-specific pipeline/debug exposure as 'some'; it may remain a technical-development pilot only.
+The active Stage 2 ledger contains **15 distinct upstream projects with technical base-fail/fixed-pass evidence**, including Dishka. CTAPIPE #2732 is technically reproducible but must be **excluded from the model-evaluation sample** because the project lead declared prior candidate-specific pipeline/debug exposure as 'some'; it may remain a technical-development pilot only.
 
-That leaves **13 additional technical candidates** worth Stage 3 review, subject to their case-specific gates below. If all 13 survived, the exploratory cohort would contain 14 projects including Dishka, still one short of the 15-project primary target. If Modin is not accepted under its unresolved issue-title/PR-scope discrepancy, the current candidate pool would be 12 additional projects plus Dishka (13), and at least two further independent projects would be required.
+That leaves **14 additional Stage 2-passed projects** beyond Dishka; after excluding CTAPIPE from the model-evaluation sample, **13 additional technical candidates** remain worth Stage 3 review, subject to their case-specific gates below. If all 13 survived, the exploratory cohort would contain 14 projects including Dishka, still one short of the 15-project primary target. If Modin is not accepted under its unresolved issue-title/PR-scope discrepancy, the current candidate pool would be 12 additional projects plus Dishka (13), and at least two further independent projects would be required.
 
 This is not a reason to relax thresholds. The target is 15; the minimum feasibility sample is one; below 15 we report the achieved sample and do not claim that the preferred analysis threshold has been met.
 
@@ -136,7 +136,7 @@ For each candidate, the project lead must separately declare prior pipeline/debu
 At this review point:
 
 - Accepted exploratory cases: **1 (Dishka only)**.
-- Technical Stage 2 passes in distinct upstream projects: **14 including Dishka**.
+- Technical Stage 2 passes in distinct upstream projects: **15 including Dishka**.
 - Additional Stage 2 projects still potentially eligible after excluding CTAPIPE: **13**, before Stage 3 review.
 - Model loading, inference, fine-tuning and training: **not authorized and not performed**.
 - Latest no-inference preflight: run 44741767911, successful; readiness ready_for_inference=false, 13 global blockers, accepted-case count 1.
