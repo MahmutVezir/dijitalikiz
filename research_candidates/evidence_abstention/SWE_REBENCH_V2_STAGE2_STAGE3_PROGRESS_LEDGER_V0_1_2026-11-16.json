@@ -389,7 +389,7 @@
       "stage2_status": "passed_independent_issue_reproducer_and_two_frozen_dataset_selectors_base_fail_fixed_pass_artifacts_verified",
       "stage2_workflow_job_id": 134923384282,
       "stage2_evidence_note": "The 19 November 2026 Stage 2 artifact was independently downloaded and locally verified: run 44537219541/job 135605947673/artifact 14536697284; local outer SHA-256 88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556 matches GitHub's digest; ZIP CRC PASS; all 15/15 internal SHA256SUMS entries PASS. In the exact pinned CPU environment, both frozen selectors (AIES and ESS) failed on buggy base 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d with the reported batched PRNG-key shape error and passed on fixed merge 5692d2da335945b756aeae02e3720b9b7f3efef2. The artifact includes a 17-package dependency license metadata inventory (inventory SHA256 20b6109dae0af95a6c4917cadca00c958e5aa9cc02f11c536854c78305d7eaba); this is metadata presence, not license clearance. NumPyro remains one provisional case; semantic Panel A/Panel B review, human license-scope sign-off, and final project-lead acceptance remain open. Case-specific timestamp reconciliation also verified: the pinned row's raw created_at 2024-11-28 00:54:29 matches upstream PR #1918 created_at 2024-11-28T00:54:29Z (the issue itself was created earlier, 2024-11-25T14:53:29Z). This closes the NumPyro-row timestamp cross-check only; the cohort-wide dataset provenance gate remains open. A separate public-API reproducer was added and run on 20 November 2026: run 44737978562/job 136294098282; exact warmup()->run() AIES/100-chain test failed on the pinned buggy base with the expected (100, 2) PRNG-key shape error and passed on the exact fixed merge in the same Python 3.11.9 / CPU JAX 0.4.35 environment. Artifact 14629441931 outer SHA-256 26142beee2bbb09c16933d59f54b3480a2445e52f7f2dbfa63fee0a5cb53f581 independently verified; ZIP CRC passed and 10/10 internal hashes passed. The separate reproducer now complements the two AIES/ESS dataset selectors.",
-      "stage3_status": "proposed_v0_2_packet_structure_ci_passed_semantic_review_pending",
+      "stage3_status": "proposed_v0_2_packet_structure_ci_passed; advisory_gold_tier_review_recorded; project_lead_gold_tier_exposure_license_scope_and_final_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44537219541,
@@ -650,7 +650,7 @@
       "stage2_status": "passed_independent_public_api_reproducer_and_exact_dataset_selector_base_fail_fixed_pass_artifacts_verified",
       "stage2_workflow_job_id": 134149456631,
       "stage2_evidence_note": "Exact SWE-rebench row and selector authenticated. Buggy base fails the issue-specific default-values selector with actual [[1.0],[1.0]] instead of expected [[0],[10]]; exact fixed revision passes. Test-only patch restricted to two test files. Artifact 14341424466 SHA-256 8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051; 18/18 inner SHA-256 entries verified. PR creation precedes linked issue creation by 2m25s; dataset timestamp is correctly authenticated against PR resource. Full license scope signoff, independent defect review and Stage 3 remain pending. A separate fresh-model public-API reproducer was added and verified on 20 November 2026: run 44739419824/job 136298973618; exact buggy base produced actual [[1.0],[1.0]] instead of [[5.0],[15.0]], and the same test passed on fixed PR head 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949. Artifact 14629598269 SHA-256 33bb899d7e4e56d177fe4c9d119eebea49519528e88d74af3efc4acf7def08d8; local CRC PASS and 15/15 inner hashes PASS. This complements the separately verified exact dataset selector, whose artifact 14341424466 had 18/18 internal hashes pass.",
-      "stage3_status": "proposed_v0_1_packet_structure_ci_passed_semantic_gold_and_license_scope_pending",
+      "stage3_status": "proposed_v0_1_packet_structure_ci_passed; advisory_gold_tier_review_recorded; project_lead_gold_tier_exposure_license_scope_and_final_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44114656908,
@@ -778,7 +778,7 @@
       "stage2_status": "passed_issue_specific_independent_reproducer_and_2_dataset_selectors_base_fail_fixed_pass",
       "stage2_workflow_job_id": 134161227052,
       "stage2_evidence_note": "Independent YAML reproducer: duplicate geodes key removes geodes_s3 on buggy base, passes on fixed. Exact Parquet row cs-si__eodag-1536 authenticated (created_at 2025-02-21 10:04:30; row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47). Both exact issue-specific selectors executed: 2/2 failed on buggy base and 2/2 passed on fixed. Test-only patch changed tests/units/test_core.py only. Focused Python 3.11.9 environment: 52 resolved distributions with license metadata, pip check passed; full license scope signoff remains pending. Artifact 14344421574 SHA-256 0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33; internal SHA256SUMS 22/22 verified.",
-      "stage3_status": "not_started_stage2_passed_license_scope_and_human_adjudication_pending",
+      "stage3_status": "stage2_pass_advisory_gold_tier_review_recorded; project_lead_gold_tier_related_issue_scope_exposure_license_scope_and_final_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44117944004,
@@ -956,7 +956,7 @@
       "stage2_status": "passed",
       "stage2_workflow_job_id": 134137814089,
       "stage2_evidence_note": "Independent schema reproducer fails on buggy base and passes on fixed. Exact row and timestamp authenticated; sole repeated-reference selector fails on buggy base and passes on fixed (1/1).",
-      "stage3_status": "not_started_stage2_passed",
+      "stage3_status": "stage2_pass_advisory_gold_tier_review_recorded; project_lead_gold_tier_related_issue_scope_exposure_license_scope_and_final_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44111403900
@@ -2340,7 +2340,7 @@
       "stage2_status": "passed_exact_dataset_selector_base_fail_fixed_pass_latest_branch_repeat",
       "stage2_workflow_job_id": 134137813769,
       "stage2_evidence_note": "Exact row and dependency-license inventory artifact saved. All 23 selectors fail on buggy base and pass on exact fixed revision (23/23 in both directions).",
-      "stage3_status": "not_started_stage2_passed",
+      "stage3_status": "stage2_pass_advisory_gold_tier_review_recorded; project_lead_gold_tier_issue_family_exposure_license_scope_and_final_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44331092872,
@@ -2614,6 +2614,50 @@
       ],
       "final_case_acceptances_created": [],
       "inference_authorized": false
+    },
+    {
+      "date": "2026-11-20",
+      "decision_scope": "first_batch_advisory_gold_and_evidence_tier_review",
+      "decision_source": "ChatGPT source-aware technical advisory; project-lead gold/tier decision not yet supplied",
+      "route": "Dishka-equivalent v0.2: single source-aware project-lead human technical adjudicator; ChatGPT advisory only",
+      "candidates": {
+        "pyro-ppl/numpyro #1916": {
+          "stage2": "pass",
+          "gold": "warmup-resume MCMC.run replaces scalar sampler key with vectorized per-chain key batch; EnsembleSampler.sample subsequently splits it as a scalar",
+          "tiers": "existing proposed v0.2 packet set E3=1/E2=2/E1=5; structural CI passed; semantic sufficiency pending",
+          "license": "17-package metadata inventory; exact pinned dataset-card license and bundled numerical-library notices scope acknowledgement pending",
+          "exposure": "full source/design exposure recorded; prior pipeline/debug declaration pending"
+        },
+        "OpenMDAO/dymos #1166": {
+          "stage2": "pass",
+          "gold": "ControlInterpComp initializes polynomial-control input to ones rather than options['val']; requested control defaults are therefore ignored",
+          "tiers": "existing proposed packet set E3=1/E2=3/E1=6; structural validation only; project-lead semantic decision pending",
+          "license": "runtime inventory recorded; NumPy/SciPy bundled library notices and exact pinned dataset-card license scope acknowledgement pending",
+          "exposure": "source/reproduction exposure disclose; prior pipeline/debug declaration pending"
+        },
+        "CS-SI/eodag #1530": {
+          "stage2": "pass, two exact selectors and independent YAML reproducer",
+          "gold": "duplicate top-level geodes YAML key causes later S3 map to overwrite public Geodes API-key map; geodes_s3 separate key restores both",
+          "tiers": "advisory proposal drafted in FIRST_BATCH_CASE_ELIGIBILITY_REVIEW_2026-11-20.md; formal nested packet set and project-lead decision pending",
+          "license": "52-distribution inventory and minimal PyYAML screen recorded; project-lead bounded scope acknowledgement pending",
+          "exposure": "partial screening exposure recorded; prior pipeline/debug declaration pending"
+        },
+        "meltano/sdk #3090": {
+          "stage2": "pass, one exact selector and independent direct-source reproducer",
+          "gold": "shared mutable visited_refs set across sibling JSON Schema branches misclassifies a repeated sibling $ref as recursion and leaves second property empty",
+          "tiers": "advisory proposal drafted in FIRST_BATCH_CASE_ELIGIBILITY_REVIEW_2026-11-20.md; formal nested packet set and project-lead decision pending",
+          "license": "Apache-2.0 source and minimal dependency inventory recorded; project-lead bounded scope acknowledgement pending",
+          "exposure": "partial screening exposure recorded; prior pipeline/debug declaration pending"
+        },
+        "pyfar/pyfar #721": {
+          "stage2": "pass, 23/23 exact frozen selectors fail base/pass fixed",
+          "gold": "energy/power are quadratic in amplitude; buggy normalize scales by target/reference linearly instead of square-root energetic ratio; RMS remains distinct",
+          "tiers": "advisory proposal drafted in FIRST_BATCH_CASE_ELIGIBILITY_REVIEW_2026-11-20.md; formal nested packet set and project-lead decision pending",
+          "license": "MIT source and corrected runtime inventory recorded; native/system notices scope acknowledgement pending",
+          "exposure": "partial screening exposure recorded; prior pipeline/debug declaration pending"
+        }
+      },
+      "note": "These are ChatGPT technical proposals only. They do not replace project-lead source-aware gold/tier decisions, exposure declarations, bounded documentary scope acknowledgements or final acceptance."
     }
   ],
   "latest_candidate_matrix_recheck": {
@@ -2843,13 +2887,17 @@
     "conditional_case_acceptance_authorization": true,
     "conditional_case_acceptance_authorization_date": "2026-11-20",
     "first_batch_assessment_path": "research_candidates/evidence_abstention/FIRST_BATCH_CASE_ELIGIBILITY_REVIEW_2026-11-20.md",
-    "first_batch_assessment_commit": "a2878d6955fcfad73edc5c827e53d7a32c1e7ab7",
+    "first_batch_assessment_commit": "a855c3a051c467615b2fdeb0184e4b7631fab5a6",
     "first_stage3_group_project_lead_instruction": "conditional advance for candidate-specific evaluation; not final case acceptance",
     "robocop_excluded_from_model_evaluation_sample": true,
     "additional_eligible_stage2_candidates_after_project_lead_selections_and_exclusions": 10,
     "projected_total_with_dishka_if_all_ten_pass": 11,
     "additional_projects_needed_to_reach_preferred_15_target": 4,
-    "portfolio_status": "first_batch_eligibility_corrected_after_historical_exposure_audit; case-specific gates open"
+    "portfolio_status": "five_first_batch_candidates_advisory_reviewed; final_case_acceptance_pending_each_candidate",
+    "first_batch_advisory_gold_tier_proposals": "prepared_for_five_eligible_candidates; project_lead_source_aware_decisions_pending",
+    "accepted_case_added_by_first_batch_review": 0,
+    "final_case_acceptances_added": 0,
+    "inference_authorized": false
   },
   "first_batch_case_assessment": {
     "date": "2026-11-20",
