@@ -35,11 +35,12 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertTrue(result["strictly_nested"])
         self.assertEqual(
             {level: len(packet_set["packets"][level]["evidence_items"]) for level in ("E1", "E2", "E3")},
-            {"E1": 6, "E2": 3, "E3": 1},
+            {"E1": 7, "E2": 3, "E3": 1},
         )
         self.assertEqual(
             result["additional_evidence_ids"]["E1_over_E2"],
             [
+                "DYMOS_BASE_ADD_CONTROL_FORWARDS_VALUE",
                 "DYMOS_BASE_ONES_INPUT_DEFAULT",
                 "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE",
                 "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS",
@@ -57,7 +58,12 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         phase_id = "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE"
         trans_id = "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS"
         ones_id = "DYMOS_BASE_ONES_INPUT_DEFAULT"
+        api_id = "DYMOS_BASE_ADD_CONTROL_FORWARDS_VALUE"
+        self.assertIn("self.set_control_options(name", items[api_id]["content"])
+        self.assertIn("val=val", items[api_id]["content"])
         self.assertIn("self.control_options[name]['val'] = val", items[phase_id]["content"])
+        self.assertEqual(source_records[api_id]["source_path"], "dymos/phase/phase.py")
+        self.assertEqual(source_records[api_id]["source_lines_1based"], [638, 640])
         self.assertIn("ControlInterpComp(control_options=phase.control_options", items[trans_id]["content"])
         self.assertIn("val=np.ones(input_shape)", items[ones_id]["content"])
         self.assertEqual(source_records[phase_id]["source_path"], "dymos/phase/phase.py")
