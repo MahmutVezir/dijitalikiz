@@ -66,6 +66,21 @@
         "buggy_base_result": "Executed fresh Brachistochrone add_control(val=[5.0,15.0]) reproducer; actual [[1.0],[1.0]] rather than requested [[5.0],[15.0]].",
         "fixed_result": "Same test on pinned fixed PR head passed (1 passed in 0.66s).",
         "inference_performed": false
+      },
+      "final_current_branch_repeat": {
+        "workflow_run_id": 44745926619,
+        "workflow_job_id": 136321086021,
+        "workflow_commit": "b73b3ef11b633603ae84b5d85af47eb55fa7d1c9",
+        "artifact_id": 14632443444,
+        "artifact_sha256": "a59eea38a7a0384ade55d150f053cc8243fe1d27256a1a41178824101cf27241",
+        "local_integrity": {
+          "outer_sha256_matches_github_digest": true,
+          "zip_crc": "PASS",
+          "internal_sha256sums": "15/15 PASS"
+        },
+        "buggy_base_result": "Actual [[1.0],[1.0]] instead of requested [[5.0],[15.0]]; assertion executed and failed.",
+        "fixed_revision_result": "Same test passed (1 passed in 0.63s).",
+        "inference_performed": false
       }
     }
   },
