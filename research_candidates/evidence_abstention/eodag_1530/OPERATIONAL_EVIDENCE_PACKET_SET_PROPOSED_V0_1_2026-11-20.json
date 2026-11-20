@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0",
+  "packet_set_id": "PACKETSET_EODAG_1530_20261120",
+  "packets": {
+    "E1": {
+      "schema_version": "1.0",
+      "packet_id": "PACKET_EODAG_1530_E1",
+      "evidence_items": [
+        {
+          "id": "EODAG_ISSUE_NARRATIVE",
+          "kind": "documentation",
+          "content": "Geodes & Geodes_s3 have the same key in pre release 3.1.0b2\n**Describe the bug**\n\n- The latest pre-release adds geodes_s3 for internal access the CNES data lake\n- The latest provider config uses the same key\n```\n- geodes:\n    priority: # Lower value means lower priority (Default: 0)\n    search: # Search parameters configuration\n    auth:\n        credentials:\n            apikey:\n    download:\n        extract:\n        output_dir:\ngeodes:\n    priority: # Lower value means lower priority (Default: 0)\n    search: # Search parameters configuration\n    auth:\n        credentials:\n            aws_access_key_id:\n            aws_secret_access_key:\n            aws_session_token:\n    download:\n        extract:\n        output_dir:\n```\n- This breaks the public Geodes access with error: `MisconfiguredError('The following credentials are missing for provider geodes: aws_access_key_id, aws_secret_access_key, aws_session_token')`",
+          "source_snapshot_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47",
+          "content_sha256": "73d6b57f813432c75e29767922e7a9f54b06ea05cb1de04cd510aa9e50c8b988"
+        },
+        {
+          "id": "EODAG_BASE_TEMPLATE_DUPLICATE_KEYS",
+          "kind": "configuration",
+          "content": "geodes:\n    priority: # Lower value means lower priority (Default: 0)\n    search: # Search parameters configuration\n    auth:\n        credentials:\n            apikey:\n    download:\n        extract:\n        output_dir:\ngeodes:\n    priority: # Lower value means lower priority (Default: 0)\n    search: # Search parameters configuration\n    auth:\n        credentials:\n            aws_access_key_id:\n            aws_secret_access_key:\n            aws_session_token:\n    download:\n        extract:\n        output_dir:\n",
+          "source_snapshot_sha256": "1bf1b945d09ae7805450dc9777175e35625ede2d6bf899c5d586bc6f08c297ff",
+          "content_sha256": "c2f48ed5612ec3f21e0a8f8cb14810323603b0994a60167752f31fd419225b3c"
+        },
+        {
+          "id": "EODAG_INDEPENDENT_YAML_REPRODUCER",
+          "kind": "other",
+          "content": "\"\"\"Minimal YAML-level regression reproducer for CS-SI/eodag#1530.\"\"\"\nfrom __future__ import annotations\n\nimport os\nfrom pathlib import Path\nimport unittest\n\nimport yaml\n\n\nclass EodagIssue1530Regression(unittest.TestCase):\n    def test_geodes_and_geodes_s3_have_distinct_configuration_keys(self) -> None:\n        source_root = Path(os.environ[\"EODAG_SOURCE_ROOT\"])\n        template = source_root / \"eodag\" / \"resources\" / \"user_conf_template.yml\"\n        with template.open(encoding=\"utf-8\") as stream:\n            providers = yaml.safe_load(stream)\n\n        self.assertIn(\"geodes\", providers)\n        self.assertIn(\"geodes_s3\", providers)\n        self.assertEqual(\n            set(providers[\"geodes\"][\"auth\"][\"credentials\"]),\n            {\"apikey\"},\n        )\n        self.assertEqual(\n            set(providers[\"geodes_s3\"][\"auth\"][\"credentials\"]),\n            {\"aws_access_key_id\", \"aws_secret_access_key\", \"aws_session_token\"},\n        )\n\n\nif __name__ == \"__main__\":\n    unittest.main(verbosity=2)\n",
+          "source_snapshot_sha256": "ff45e54e3fb1a202aa75543fd9db9f98745a5722feada6158f702431d05163ac",
+          "content_sha256": "ff45e54e3fb1a202aa75543fd9db9f98745a5722feada6158f702431d05163ac"
+        },
+        {
+          "id": "EODAG_BASE_YAML_PARSE_FAILURE",
+          "kind": "test_output",
+          "content": "Pinned EODAG source reproducer on buggy base b7cc06e19025e5bbf14e28a0975f1749e21e9be3 executed and failed at:\nself.assertIn(\"geodes_s3\", providers)\nAssertionError: 'geodes_s3' not found in the mapping parsed from eodag/resources/user_conf_template.yml.\nThe surviving 'geodes' credentials were aws_access_key_id, aws_secret_access_key, and aws_session_token; the public 'apikey' mapping was no longer available as a separate provider.\n",
+          "source_snapshot_sha256": "6a732364873d12d78d407f41aa671cc56851f67b58492c4762ff33e36a59a437",
+          "content_sha256": "291825b349815e03adcf1c24c9d58c31474360ec0cd50e3f148a39b9725819ba"
+        },
+        {
+          "id": "EODAG_TEST_FIXTURE_SAFE_LOAD_PATH",
+          "kind": "source_excerpt",
+          "content": "def write_eodag_conf_with_fake_credentials(config_file):\n    \"\"\"Writes fake EODAG config file with fake credentials.\n    Uses empty default conf with fake credentials. When loading\n    this conf, eodag will not prune any provider that may need\n    credentials for search.\n\n    :param config_file: path to the file where the conf must be written\n    \"\"\"\n    empty_conf_file_path = resource_filename(\n        \"eodag\", os.path.join(\"resources\", \"user_conf_template.yml\")\n    )\n    with open(os.path.abspath(os.path.realpath(empty_conf_file_path)), \"r\") as fh:\n        was_empty_conf = yaml.safe_load(fh)\n    for provider, conf in was_empty_conf.items():\n        for auth_plugin_key in (\"auth\", \"search_auth\", \"download_auth\", \"api\"):\n            if \"credentials\" in conf.get(auth_plugin_key, {}):\n                cred_key = next(iter(conf[auth_plugin_key][\"credentials\"]))\n                conf[auth_plugin_key][\"credentials\"][cred_key] = \"foo\"\n    with open(config_file, mode=\"w\") as fh:\n        yaml.dump(was_empty_conf, fh, default_flow_style=False)\n",
+          "source_snapshot_sha256": "2859d5efb695434511575735e9a85ef3d2701db08f1284eacf3d50cc5613718b",
+          "content_sha256": "e3040adac1dbb538e3981a074dfb6f0f4ab461927f78c1fe8ddf2034ebb0c473"
+        },
+        {
+          "id": "EODAG_TEST_SELECTOR_CALL_PATH",
+          "kind": "source_excerpt",
+          "content": "    def test_list_product_types_for_provider_ok(self):\n        \"\"\"Core api must correctly return the list of supported product types for a given provider\"\"\"\n        for provider in self.SUPPORTED_PROVIDERS:\n            product_types = self.dag.list_product_types(\n                provider=provider, fetch_providers=False\n            )\n            self.assertIsInstance(product_types, list)\n            for product_type in product_types:\n                self.assertListProductTypesRightStructure(product_type)\n                if product_type[\"ID\"] in self.SUPPORTED_PRODUCT_TYPES:\n                    self.assertIn(\n                        provider,\n                        self.SUPPORTED_PRODUCT_TYPES[product_type[\"ID\"]],\n                        f\"missing in supported providers for {product_type['ID']}\",\n                    )\n                else:\n                    self.assertIn(\n                        provider,\n                        self.SUPPORTED_PRODUCT_TYPES[product_type[\"_id\"]],\n                        f\"missing in supported providers for {product_type['_id']}\",\n                    )\n",
+          "source_snapshot_sha256": "3bcd1300603a131db22d2008a798803f124f685a6a2122e58beca21d704710ef",
+          "content_sha256": "a62c2599494f25845f12903c7a5ef353db8389a98facd8d1ae2d5b95ecc21742"
+        },
+        {
+          "id": "EODAG_BASE_SUPPORTED_PROVIDER_LIST",
+          "kind": "source_excerpt",
+          "content": "    SUPPORTED_PROVIDERS = [\n        \"peps\",\n        \"aws_eos\",\n        \"cop_ads\",\n        \"cop_cds\",\n        \"cop_dataspace\",\n        \"cop_ewds\",\n        \"cop_marine\",\n        \"creodias\",\n        \"creodias_s3\",\n        \"dedl\",\n        \"dedt_lumi\",\n        \"earth_search\",\n        \"earth_search_cog\",\n        \"earth_search_gcs\",\n        \"ecmwf\",\n        \"eumetsat_ds\",\n        \"geodes\",\n        \"hydroweb_next\",\n        \"meteoblue\",\n        \"onda\",\n        \"planetary_computer\",\n        \"sara\",\n        \"theia\",\n        \"usgs\",\n        \"usgs_satapi_aws\",\n        \"wekeo_cmems\",\n        \"wekeo_ecmwf\",\n        \"wekeo_main\",\n    ]",
+          "source_snapshot_sha256": "3bcd1300603a131db22d2008a798803f124f685a6a2122e58beca21d704710ef",
+          "content_sha256": "b1eca9436ca0a7947c0a0c0dc22e08a9291980846b8cfd86ef5b454337b86f7e"
+        }
+      ],
+      "packet_sha256": "9c818bcc3521274dcb67b0132656003bd27f0a97d723b63b1f281ff5e38abb6b"
+    },
+    "E2": {
+      "schema_version": "1.0",
+      "packet_id": "PACKET_EODAG_1530_E2",
+      "evidence_items": [
+        {
+          "id": "EODAG_ISSUE_NARRATIVE",
+          "kind": "documentation",
+          "content": "Geodes & Geodes_s3 have the same key in pre release 3.1.0b2\n**Describe the bug**\n\n- The latest pre-release adds geodes_s3 for internal access the CNES data lake\n- The latest provider config uses the same key\n```\n- geodes:\n    priority: # Lower value means lower priority (Default: 0)\n    search: # Search parameters configuration\n    auth:\n        credentials:\n            apikey:\n    download:\n        extract:\n        output_dir:\ngeodes:\n    priority: # Lower value means lower priority (Default: 0)\n    search: # Search parameters configuration\n    auth:\n        credentials:\n            aws_access_key_id:\n            aws_secret_access_key:\n            aws_session_token:\n    download:\n        extract:\n        output_dir:\n```\n- This breaks the public Geodes access with error: `MisconfiguredError('The following credentials are missing for provider geodes: aws_access_key_id, aws_secret_access_key, aws_session_token')`",
+          "source_snapshot_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47",
+          "content_sha256": "73d6b57f813432c75e29767922e7a9f54b06ea05cb1de04cd510aa9e50c8b988"
+        },
+        {
+          "id": "EODAG_BASE_TEMPLATE_DUPLICATE_KEYS",
+          "kind": "configuration",
+          "content": "geodes:\n    priority: # Lower value means lower priority (Default: 0)\n    search: # Search parameters configuration\n    auth:\n        credentials:\n            apikey:\n    download:\n        extract:\n        output_dir:\ngeodes:\n    priority: # Lower value means lower priority (Default: 0)\n    search: # Search parameters configuration\n    auth:\n        credentials:\n            aws_access_key_id:\n            aws_secret_access_key:\n            aws_session_token:\n    download:\n        extract:\n        output_dir:\n",
+          "source_snapshot_sha256": "1bf1b945d09ae7805450dc9777175e35625ede2d6bf899c5d586bc6f08c297ff",
+          "content_sha256": "c2f48ed5612ec3f21e0a8f8cb14810323603b0994a60167752f31fd419225b3c"
+        },
+        {
+          "id": "EODAG_INDEPENDENT_YAML_REPRODUCER",
+          "kind": "other",
+          "content": "\"\"\"Minimal YAML-level regression reproducer for CS-SI/eodag#1530.\"\"\"\nfrom __future__ import annotations\n\nimport os\nfrom pathlib import Path\nimport unittest\n\nimport yaml\n\n\nclass EodagIssue1530Regression(unittest.TestCase):\n    def test_geodes_and_geodes_s3_have_distinct_configuration_keys(self) -> None:\n        source_root = Path(os.environ[\"EODAG_SOURCE_ROOT\"])\n        template = source_root / \"eodag\" / \"resources\" / \"user_conf_template.yml\"\n        with template.open(encoding=\"utf-8\") as stream:\n            providers = yaml.safe_load(stream)\n\n        self.assertIn(\"geodes\", providers)\n        self.assertIn(\"geodes_s3\", providers)\n        self.assertEqual(\n            set(providers[\"geodes\"][\"auth\"][\"credentials\"]),\n            {\"apikey\"},\n        )\n        self.assertEqual(\n            set(providers[\"geodes_s3\"][\"auth\"][\"credentials\"]),\n            {\"aws_access_key_id\", \"aws_secret_access_key\", \"aws_session_token\"},\n        )\n\n\nif __name__ == \"__main__\":\n    unittest.main(verbosity=2)\n",
+          "source_snapshot_sha256": "ff45e54e3fb1a202aa75543fd9db9f98745a5722feada6158f702431d05163ac",
+          "content_sha256": "ff45e54e3fb1a202aa75543fd9db9f98745a5722feada6158f702431d05163ac"
+        },
+        {
+          "id": "EODAG_BASE_YAML_PARSE_FAILURE",
+          "kind": "test_output",
+          "content": "Pinned EODAG source reproducer on buggy base b7cc06e19025e5bbf14e28a0975f1749e21e9be3 executed and failed at:\nself.assertIn(\"geodes_s3\", providers)\nAssertionError: 'geodes_s3' not found in the mapping parsed from eodag/resources/user_conf_template.yml.\nThe surviving 'geodes' credentials were aws_access_key_id, aws_secret_access_key, and aws_session_token; the public 'apikey' mapping was no longer available as a separate provider.\n",
+          "source_snapshot_sha256": "6a732364873d12d78d407f41aa671cc56851f67b58492c4762ff33e36a59a437",
+          "content_sha256": "291825b349815e03adcf1c24c9d58c31474360ec0cd50e3f148a39b9725819ba"
+        }
+      ],
+      "packet_sha256": "e0fa9ae7b92d736d7f53ecf15b93d95d0bc9564f1549068f2e41eaf558bad421"
+    },
+    "E3": {
+      "schema_version": "1.0",
+      "packet_id": "PACKET_EODAG_1530_E3",
+      "evidence_items": [
+        {
+          "id": "EODAG_ISSUE_NARRATIVE",
+          "kind": "documentation",
+          "content": "Geodes & Geodes_s3 have the same key in pre release 3.1.0b2\n**Describe the bug**\n\n- The latest pre-release adds geodes_s3 for internal access the CNES data lake\n- The latest provider config uses the same key\n```\n- geodes:\n    priority: # Lower value means lower priority (Default: 0)\n    search: # Search parameters configuration\n    auth:\n        credentials:\n            apikey:\n    download:\n        extract:\n        output_dir:\ngeodes:\n    priority: # Lower value means lower priority (Default: 0)\n    search: # Search parameters configuration\n    auth:\n        credentials:\n            aws_access_key_id:\n            aws_secret_access_key:\n            aws_session_token:\n    download:\n        extract:\n        output_dir:\n```\n- This breaks the public Geodes access with error: `MisconfiguredError('The following credentials are missing for provider geodes: aws_access_key_id, aws_secret_access_key, aws_session_token')`",
+          "source_snapshot_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47",
+          "content_sha256": "73d6b57f813432c75e29767922e7a9f54b06ea05cb1de04cd510aa9e50c8b988"
+        }
+      ],
+      "packet_sha256": "ccb8447a384b9da92ccfe27cbc99a8c1649318a2b68d02bb7792183a43b43d41"
+    }
+  },
+  "packet_set_sha256": "e1c15239ba0599c13d19c35ffad922d77ae10bb570aced8199d6db97163d3189"
+}
