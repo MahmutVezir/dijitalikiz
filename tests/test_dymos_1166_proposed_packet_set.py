@@ -36,9 +36,9 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertEqual(
             result["additional_evidence_ids"]["E1_over_E2"],
             [
-                "DYMOS_BASE_CONTROL_COMP_INPUT",
-                "DYMOS_BASE_CONTROL_DEFAULT_PATH",
-                "DYMOS_BASE_PSEUDOSPECTRAL_PROMOTION",
+                "DYMOS_BASE_COMMENTED_INPUT_DEFAULT",
+                "DYMOS_BASE_COMMENTED_VAL_NORMALIZATION",
+                "DYMOS_BASE_ONES_INPUT_DEFAULT",
             ],
         )
         self.assertFalse(result["semantic_sufficiency_assessed"])
