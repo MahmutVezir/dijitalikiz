@@ -154,9 +154,9 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertEqual(semantic["status"], "approved_source_aware_project_lead_gold_and_tier_decision")
         self.assertEqual(semantic["project_lead_decision"]["decision"], "APPROVED")
         self.assertEqual(semantic["project_lead_decision"]["decision_record_sha256"], DECISION_SHA256)
-        self.assertEqual(semantic["project_lead_decision"]["tier_decisions"]["E3"].split(" ")[0], "ABSTAIN")
-        self.assertEqual(semantic["project_lead_decision"]["tier_decisions"]["E2"].split(" ")[0], "ABSTAIN")
-        self.assertEqual(semantic["project_lead_decision"]["tier_decisions"]["E1"].split(" ")[0], "ANSWER")
+        self.assertEqual(semantic["project_lead_decision"]["approved_evidence_tier_outcomes"]["E3"].split(" ")[0], "ABSTAIN")
+        self.assertEqual(semantic["project_lead_decision"]["approved_evidence_tier_outcomes"]["E2"].split(" ")[0], "ABSTAIN")
+        self.assertEqual(semantic["project_lead_decision"]["approved_evidence_tier_outcomes"]["E1"].split(" ")[0], "ANSWER")
 
         independence = json.loads(INDEPENDENCE_PATH.read_text(encoding="utf-8"))
         self.assertEqual(independence["independence_status"]["final_case_acceptance"], "not_accepted")
