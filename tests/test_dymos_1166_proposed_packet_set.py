@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 import json
 import sys
@@ -21,6 +22,9 @@ PACKET_PATH = DYMOS / "OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.
 PROVENANCE_PATH = DYMOS / "EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_1_2026-11-20.json"
 LICENSE_PATH = DYMOS / "DYMOS_1166_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json"
 INDEPENDENCE_PATH = DYMOS / "DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json"
+EXPOSURE_PATH = DYMOS / "PROJECT_LEAD_EXPOSURE_DECISION_DYMOS_1166_2026-11-20.md"
+EXPOSURE_SHA256 = "3d38e3b45f2d27cc6531ede3d73d8f2439deee0b6970c6d4618d4e02e55733ea"
+LEDGER_PATH = ROOT / "research_candidates" / "evidence_abstention" / "SWE_REBENCH_V2_STAGE2_STAGE3_PROGRESS_LEDGER_V0_1_2026-11-16.json"
 
 
 class Dymos1166ProposedPacketSetTests(unittest.TestCase):
@@ -98,7 +102,29 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertFalse(record["issue_family_disposition"]["exact_duplicate_found"])
         self.assertEqual(record["issue_family_disposition"]["duplicate_candidates_excluded_from_independent_case_count"], [531])
         self.assertEqual(record["independence_status"]["final_case_acceptance"], "not_accepted")
+        self.assertEqual(record["exposure_and_roles"]["prior_candidate_specific_pipeline_debug_exposure"].split(" ")[0], "none")
+        self.assertEqual(record["exposure_and_roles"]["researcher_source_exposure"].split(" ")[0], "full")
+        self.assertEqual(record["exposure_and_roles"]["prior_pipeline_debug_exposure_decision_record"]["sha256"], EXPOSURE_SHA256)
         self.assertFalse(record["independence_status"]["inference_authorized"])
+
+    def test_prior_pipeline_debug_exposure_decision_is_hashed_and_separate_from_source_exposure(self):
+        record = json.loads(INDEPENDENCE_PATH.read_text(encoding="utf-8"))
+        decision = record["exposure_and_roles"]["prior_pipeline_debug_exposure_decision_record"]
+        content = EXPOSURE_PATH.read_bytes()
+        self.assertEqual(hashlib.sha256(content).hexdigest(), EXPOSURE_SHA256)
+        self.assertEqual(decision["path"], str(EXPOSURE_PATH.relative_to(ROOT)))
+        self.assertEqual(decision["declared_value"], "none")
+        self.assertEqual(decision["evidence_class"], "direct_project_lead_self_report_in_conversation")
+        self.assertFalse(decision["independent_witnessed_audit"])
+        self.assertEqual(record["exposure_and_roles"]["researcher_source_exposure"].split(" ")[0], "full")
+
+        ledger = json.loads(LEDGER_PATH.read_text(encoding="utf-8"))
+        dymos = next(item for item in ledger["records"] if item["repository"] == "OpenMDAO/dymos")
+        self.assertEqual(dymos["stage3_exposure_decision"]["prior_pipeline_debug_exposure"], "none")
+        self.assertEqual(dymos["stage3_exposure_decision"]["researcher_source_exposure"], "full")
+        self.assertEqual(dymos["stage3_exposure_decision"]["decision_record_sha256"], EXPOSURE_SHA256)
+        self.assertNotEqual(dymos["final_case_acceptance"], "accepted")
+        self.assertFalse(dymos["model_inference_authorized"])
 
 
 if __name__ == "__main__":
