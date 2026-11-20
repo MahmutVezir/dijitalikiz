@@ -40,13 +40,34 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertEqual(
             result["additional_evidence_ids"]["E1_over_E2"],
             [
-                "DYMOS_BASE_COMMENTED_INPUT_DEFAULT",
-                "DYMOS_BASE_COMMENTED_VAL_NORMALIZATION",
                 "DYMOS_BASE_ONES_INPUT_DEFAULT",
+                "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE",
+                "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS",
             ],
         )
         self.assertFalse(result["semantic_sufficiency_assessed"])
         self.assertFalse(result["model_inference_performed"])
+
+    def test_e1_uses_active_api_to_component_source_chain(self):
+        packet_set = json.loads(PACKET_PATH.read_text(encoding="utf-8"))
+        provenance = json.loads(PROVENANCE_PATH.read_text(encoding="utf-8"))
+        items = {item["id"]: item for item in packet_set["packets"]["E1"]["evidence_items"]}
+        source_records = {item["id"]: item for item in provenance["evidence_items"]}
+
+        phase_id = "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE"
+        trans_id = "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS"
+        ones_id = "DYMOS_BASE_ONES_INPUT_DEFAULT"
+        self.assertIn("self.control_options[name]['val'] = val", items[phase_id]["content"])
+        self.assertIn("ControlInterpComp(control_options=phase.control_options", items[trans_id]["content"])
+        self.assertIn("val=np.ones(input_shape)", items[ones_id]["content"])
+        self.assertEqual(source_records[phase_id]["source_path"], "dymos/phase/phase.py")
+        self.assertEqual(source_records[phase_id]["source_lines_1based"], [785, 786])
+        self.assertEqual(source_records[trans_id]["source_path"], "dymos/transcriptions/transcription_base.py")
+        self.assertEqual(source_records[trans_id]["source_lines_1based"], [145, 147])
+        self.assertEqual(source_records[phase_id]["source_commit"], "3efd1035c3bf62890034eb9e07de543f3d117867")
+        self.assertEqual(source_records[trans_id]["source_commit"], "3efd1035c3bf62890034eb9e07de543f3d117867")
+        self.assertNotIn("DYMOS_BASE_COMMENTED_VAL_NORMALIZATION", items)
+        self.assertNotIn("DYMOS_BASE_COMMENTED_INPUT_DEFAULT", items)
 
     def test_packet_provenance_matches_external_packet_hash_and_review_is_pending(self):
         packet_set = json.loads(PACKET_PATH.read_text(encoding="utf-8"))
