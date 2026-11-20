@@ -428,3 +428,13 @@ A pull-request path-filtered workflow automatically ran after the refusal (run [
 Current post-decision checks: no-inference preflight subjob run [44768179097](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44768179097) completed successfully; 92 contract tests passed, 13 readiness blockers remain, and inference is not authorized. Full Research Validation run [44768193442](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44768193442) passed 467 tests, with 6 skipped and 56 subtests passed.
 
 The one accepted case remains Dishka #435. NumPyro remains not accepted.
+
+
+### Final post-refusal controls and CI — 20 November 2026
+
+The independent NumPyro reproducer workflow is now **manual-only**. Its required `scope_approval` input defaults to `not-approved`, and the job runs only when `inputs.scope_approval == 'approved'`. The regression test `test_numpyro_reproducer_workflow_is_manual_and_fails_closed_by_default` verifies removal of automatic `push` and `pull_request` triggers and the fail-closed default.
+
+- Evidence Abstention Preflight no-inference job: [run 44768704857](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44768704857), job `136400249722`, success. **93 tests passed** across all groups; NumPyro review-contract group: 11 passed. The readiness report remains at 13 blockers, `ready_for_inference=false`, and `inference_authorized=false`. Artifact `14646322328`, SHA-256 `bf972c6e9dd7bba29530316f8c8b04c58f9ece9880235ce33316a00a706a7c08`.
+- Full Research Validation: [run 44768719517](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44768719517), success: **468 passed, 6 skipped, 56 subtests passed**.
+
+The post-refusal automatic reproduction run `44768193233` remains documented as an operational event only. It does not alter the declined license-scope decision and is not used for case acceptance. NumPyro is still not accepted; Dishka #435 remains the sole accepted case.

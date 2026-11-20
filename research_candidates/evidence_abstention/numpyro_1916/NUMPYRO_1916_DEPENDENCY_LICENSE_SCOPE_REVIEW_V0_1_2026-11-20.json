@@ -269,5 +269,32 @@
       "decision_effect": "Automatic CI execution only; not treated as project-lead scope approval or accepted-case evidence."
     }
   },
-  "inference_authorized": false
+  "inference_authorized": false,
+  "workflow_execution_control": {
+    "workflow_path": ".github/workflows/numpyro-1916-independent-reproducer.yml",
+    "trigger_mode": "workflow_dispatch_only",
+    "scope_approval_input": "required choice; default not-approved",
+    "job_condition": "inputs.scope_approval == 'approved'",
+    "purpose": "Prevent automatic reproduction runs after the project-lead scope refusal.",
+    "verification_commit": "6eb2c22bc5ba990ac7043fc6deee8dae66f99b8e",
+    "verification_test": "test_numpyro_reproducer_workflow_is_manual_and_fails_closed_by_default"
+  },
+  "post_refusal_ci_validation": {
+    "preflight_run_id": 44768704857,
+    "preflight_job_id": 136400249722,
+    "conclusion": "success",
+    "total_tests": 93,
+    "numpyro_tests": 11,
+    "blocker_count": 13,
+    "ready_for_inference": false,
+    "inference_authorized": false,
+    "artifact_id": 14646322328,
+    "artifact_sha256": "bf972c6e9dd7bba29530316f8c8b04c58f9ece9880235ce33316a00a706a7c08",
+    "research_validation_run_id": 44768719517,
+    "research_validation_job_id": 136400300403,
+    "research_validation_conclusion": "success",
+    "repository_tests_passed": 468,
+    "repository_tests_skipped": 6,
+    "subtests_passed": 56
+  }
 }
