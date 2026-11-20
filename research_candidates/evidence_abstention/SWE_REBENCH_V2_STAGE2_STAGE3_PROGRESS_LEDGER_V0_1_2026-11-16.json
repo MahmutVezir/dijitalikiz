@@ -386,9 +386,9 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/NUMPYRO_1916_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "passed_base_fail_fixed_pass_and_artifact_integrity_locally_verified",
+      "stage2_status": "passed_independent_issue_reproducer_and_two_frozen_dataset_selectors_base_fail_fixed_pass_artifacts_verified",
       "stage2_workflow_job_id": 134923384282,
-      "stage2_evidence_note": "The 19 November 2026 Stage 2 artifact was independently downloaded and locally verified: run 44537219541/job 135605947673/artifact 14536697284; local outer SHA-256 88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556 matches GitHub's digest; ZIP CRC PASS; all 15/15 internal SHA256SUMS entries PASS. In the exact pinned CPU environment, both frozen selectors (AIES and ESS) failed on buggy base 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d with the reported batched PRNG-key shape error and passed on fixed merge 5692d2da335945b756aeae02e3720b9b7f3efef2. The artifact includes a 17-package dependency license metadata inventory (inventory SHA256 20b6109dae0af95a6c4917cadca00c958e5aa9cc02f11c536854c78305d7eaba); this is metadata presence, not license clearance. NumPyro remains one provisional case; semantic Panel A/Panel B review, human license-scope sign-off, and final project-lead acceptance remain open. Case-specific timestamp reconciliation also verified: the pinned row's raw created_at 2024-11-28 00:54:29 matches upstream PR #1918 created_at 2024-11-28T00:54:29Z (the issue itself was created earlier, 2024-11-25T14:53:29Z). This closes the NumPyro-row timestamp cross-check only; the cohort-wide dataset provenance gate remains open.",
+      "stage2_evidence_note": "The 19 November 2026 Stage 2 artifact was independently downloaded and locally verified: run 44537219541/job 135605947673/artifact 14536697284; local outer SHA-256 88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556 matches GitHub's digest; ZIP CRC PASS; all 15/15 internal SHA256SUMS entries PASS. In the exact pinned CPU environment, both frozen selectors (AIES and ESS) failed on buggy base 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d with the reported batched PRNG-key shape error and passed on fixed merge 5692d2da335945b756aeae02e3720b9b7f3efef2. The artifact includes a 17-package dependency license metadata inventory (inventory SHA256 20b6109dae0af95a6c4917cadca00c958e5aa9cc02f11c536854c78305d7eaba); this is metadata presence, not license clearance. NumPyro remains one provisional case; semantic Panel A/Panel B review, human license-scope sign-off, and final project-lead acceptance remain open. Case-specific timestamp reconciliation also verified: the pinned row's raw created_at 2024-11-28 00:54:29 matches upstream PR #1918 created_at 2024-11-28T00:54:29Z (the issue itself was created earlier, 2024-11-25T14:53:29Z). This closes the NumPyro-row timestamp cross-check only; the cohort-wide dataset provenance gate remains open. A separate public-API reproducer was added and run on 20 November 2026: run 44737978562/job 136294098282; exact warmup()->run() AIES/100-chain test failed on the pinned buggy base with the expected (100, 2) PRNG-key shape error and passed on the exact fixed merge in the same Python 3.11.9 / CPU JAX 0.4.35 environment. Artifact 14629441931 outer SHA-256 26142beee2bbb09c16933d59f54b3480a2445e52f7f2dbfa63fee0a5cb53f581 independently verified; ZIP CRC passed and 10/10 internal hashes passed. The separate reproducer now complements the two AIES/ESS dataset selectors.",
       "stage3_status": "proposed_v0_2_packet_structure_ci_passed_semantic_review_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
@@ -447,7 +447,7 @@
       "stage2_latest_artifact_sha256": "88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556",
       "stage2_latest_artifact_integrity": "Locally downloaded artifact; outer SHA-256 matches GitHub digest; ZIP CRC passed; all 15/15 payload SHA256SUMS entries passed.",
       "study_evaluation_eligibility": "provisional_pending_human_license_scope_panel_review_and_final_project_lead_decision",
-      "next_required_gate": "Complete source/dependency/dataset license scope and human acknowledgement; appoint and document two source-aware Panel A reviewers, two eligible source-unexposed Panel B reviewers and a separate adjudicator; conduct blind semantic packet ratings; then prepare canonical schema-conformant case record and seek the project lead's separate YES/NO. No model inference.",
+      "next_required_gate": "Record the project lead's source-aware technical gold/E1-E2-E3 approval under the same single-human-adjudicator exploratory limitation as Dishka; obtain the bounded documentary license-scope acknowledgement and explicit prior_pipeline_debug_exposure declaration; then complete the schema-conformant case record, validate the fail-closed registry, and obtain the separate final project-lead YES/NO. No model inference.",
       "stage3_proposed_packet_set_path": "research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_2_2026-11-20.json",
       "stage3_proposed_provenance_path": "research_candidates/evidence_abstention/numpyro_1916/EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_2_2026-11-20.json",
       "stage3_proposed_packet_set_sha256": "e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d",
@@ -540,6 +540,27 @@
         "inference_authorized": false,
         "semantic_sufficiency_assessed": false,
         "final_case_acceptance": "not_accepted"
+      },
+      "stage2_independent_issue_reproducer": {
+        "status": "passed_buggy_base_fail_fixed_revision_pass",
+        "workflow_run_id": 44737978562,
+        "workflow_job_id": 136294098282,
+        "workflow_commit": "2b0f4f95e951b6ab7079a20f057ada701660d1ce",
+        "buggy_base": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+        "fixed_revision": "5692d2da335945b756aeae02e3720b9b7f3efef2",
+        "reproducer_path": "research_candidates/evidence_abstention/reproduction/numpyro_issue_1916/test_issue_1916.py",
+        "reproducer_sha256": "90e6ed63eda943e6fd623e24b4b3cafcd0c7c5f43db80394135cfaac4bbbe71d",
+        "dependency_lock_sha256": "8a160de15a15792632268e9840879fe262b98413ac1c5fe7bcf4253631f6bbb5",
+        "runtime": "CPython 3.11.9; CPU JAX/JAXlib 0.4.35",
+        "exact_buggy_base_failure": "ValueError from jax.random.split: key array of shape (100, 2)",
+        "fixed_revision_result": "1 passed in 3.70s",
+        "artifact_id": 14629441931,
+        "artifact_sha256": "26142beee2bbb09c16933d59f54b3480a2445e52f7f2dbfa63fee0a5cb53f581",
+        "locally_verified": {
+          "outer_sha256_matches_github_digest": true,
+          "zip_crc": "PASS",
+          "internal_hashes": "10/10 PASS"
+        }
       }
     },
     {
