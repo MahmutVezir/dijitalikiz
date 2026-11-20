@@ -31,6 +31,8 @@ Every candidate must pass the same sequential gates. A pass on one gate never im
 
 ## 3. Stage 2-passed candidates — current advisory triage
 
+**Evidence audit boundary:** the Stage 2 pass statuses for the 13 older candidate rows are carried forward from their canonical review records and the current project ledger; I did not re-download and recalculate every historical artifact for all 13 in this review. NumPyro #1916 and Dymos #1166 were freshly repeated in this turn on the current branch head, and their latest archives were individually downloaded and re-verified. Before any candidate's final acceptance, its own canonical artifact and license/source manifests must be checked again as part of that candidate's acceptance packet.
+
 | Cohort rank | Upstream project / case | Stage 2 evidence | Advisory disposition | Main remaining gate |
 |---:|---|---|---|---|
 | 2 | reagento/dishka #435 / PR #436 | 8/8 frozen selectors and independent issue reproducer: exact base failure / fixed pass; locally verified artifact | **Accepted v0.2 exploratory baseline** | Global readiness blockers remain; no inference authorized |
