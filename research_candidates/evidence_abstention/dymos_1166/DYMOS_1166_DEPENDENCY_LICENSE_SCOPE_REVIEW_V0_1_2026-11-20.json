@@ -324,6 +324,22 @@
           "buggy-base LICENSE and pyproject metadata",
           "reproduction logs, runtime freeze and hashes"
         ]
+      },
+      {
+        "artifact_id": 14651026003,
+        "workflow_run_id": 44779508337,
+        "artifact_sha256": "84f884f0ff358c5811221099983bb2531ded7dfe501e1a042da7765ab298aa25",
+        "local_integrity": {
+          "outer_sha256_matches_github_digest": true,
+          "zip_crc": "PASS",
+          "internal_hashes": "15/15 PASS"
+        },
+        "contents": [
+          "full upstream PR patch",
+          "complete captured buggy/fixed control_comp.py and misc.py source files",
+          "buggy-base LICENSE and pyproject metadata",
+          "logs, runtime freeze and hash manifest"
+        ]
       }
     ]
   },
@@ -354,5 +370,40 @@
       "legal clearance"
     ],
     "note": "Includes disclosure that the repo and CI artifacts are accessible through the project's GitHub repository/PR; not private-only."
+  },
+  "latest_current_head_validation": {
+    "branch_head": "66ae020c498bd7a0e0159f76b523a68c9c9a31ad",
+    "no_inference_preflight": {
+      "workflow_run_id": 44779507956,
+      "job_id": 136438118615,
+      "conclusion": "success",
+      "dymos_review_contract_tests": "8 passed",
+      "blocker_count": 13,
+      "ready_for_inference": false,
+      "inference_authorized": false
+    },
+    "research_validation": {
+      "workflow_run_id": 44779508142,
+      "job_id": 136438155861,
+      "conclusion": "success",
+      "tests": "471 passed, 6 skipped, 56 subtests passed"
+    },
+    "independent_reproducer": {
+      "workflow_run_id": 44779508337,
+      "job_id": 136438121470,
+      "conclusion": "success",
+      "artifact_id": 14651026003,
+      "artifact_sha256": "84f884f0ff358c5811221099983bb2531ded7dfe501e1a042da7765ab298aa25",
+      "local_integrity": {
+        "outer_sha256_matches_github_digest": true,
+        "zip_crc": "PASS",
+        "internal_hashes": "15/15 PASS"
+      },
+      "base_result": "executed expected failure on exact buggy base",
+      "fixed_result": "same test passed on exact fixed PR head; 1 passed in 0.35s"
+    },
+    "model_loading_performed": false,
+    "model_inference_performed": false,
+    "fine_tuning_performed": false
   }
 }
