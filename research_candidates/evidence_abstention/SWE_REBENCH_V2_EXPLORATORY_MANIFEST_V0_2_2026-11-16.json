@@ -652,8 +652,8 @@
       ],
       "pr_head_commit": "d5367f16abee85a1d7788784c71eb908ecb12df7",
       "reproduction_fixed_revision": "upstream merge commit; PR head is retained as a separate provenance identifier",
-      "latest_reproduction_run_id": 44111403900,
-      "latest_reproduction_job_id": 134137813850,
+      "latest_reproduction_run_id": 44755560775,
+      "latest_reproduction_job_id": 136354249543,
       "reproduction_artifact_id": 14340342614,
       "reproduction_artifact_sha256": "c9968811eb3bc9da4fd6d6a7dbc5281cce6a903411cf532125d44e80b3365bd5",
       "dataset_created_at": "2024-11-28T00:54:29Z",
@@ -730,7 +730,10 @@
         "status": "approved",
         "decision_date": "2026-11-20",
         "wording_tr": "MCMC.run(), warmup sonrasında saklanan sampler durumundaki skaler PRNG anahtarını vektörleştirilmiş zincirler için oluşturulan anahtar dizisiyle değiştiriyor. EnsembleSampler.sample() ise bu alanı skaler kabul ederek random.split() çağırıyor. Hata, sampler durumundaki anahtar biçiminin bu iki aşama arasında tutarsız hale gelmesinden kaynaklanıyor."
-      }
+      },
+      "latest_reproduction_artifact_id": 14637651511,
+      "latest_reproduction_artifact_sha256": "bd05413602aaf5de6e8b213708dee68cfc863a97dd9f7620ed196afc2b071d3a",
+      "latest_reproduction_status": "success_exact_buggy_base_expected_batched_key_error_fixed_revision_pass"
     },
     {
       "instance_id": "pallets__werkzeug-2956",
@@ -1599,5 +1602,12 @@
       }
     }
   ],
-  "case_acceptance_note": "The five candidates above are project-lead accepted for continued Stage 3 evaluation only. Candidate-selection approval is not final case acceptance. Dishka #435 remains the only accepted v0.2 case. No inference is authorized."
+  "case_acceptance_note": "The five candidates above are project-lead accepted for continued Stage 3 evaluation only. Candidate-selection approval is not final case acceptance. Dishka #435 remains the only accepted v0.2 case. No inference is authorized.",
+  "latest_no_inference_preflight": {
+    "workflow_run_id": 44755547992,
+    "job_id": 136354205627,
+    "commit": "dabd65d149b9e0ee2bfcaa25261ccc3425d673f3",
+    "conclusion": "success",
+    "inference_performed": false
+  }
 }
