@@ -842,7 +842,7 @@
       "stage2_status": "passed_independent_public_api_reproducer_and_exact_dataset_selector_base_fail_fixed_pass_artifacts_verified",
       "stage2_workflow_job_id": 134149456631,
       "stage2_evidence_note": "Exact SWE-rebench row and selector authenticated. Buggy base fails the issue-specific default-values selector with actual [[1.0],[1.0]] instead of expected [[0],[10]]; exact fixed revision passes. Test-only patch restricted to two test files. Artifact 14341424466 SHA-256 8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051; 18/18 inner SHA-256 entries verified. PR creation precedes linked issue creation by 2m25s; dataset timestamp is correctly authenticated against PR resource. Full license scope signoff, independent defect review and Stage 3 remain pending. A separate fresh-model public-API reproducer was added and verified on 20 November 2026: run 44739419824/job 136298973618; exact buggy base produced actual [[1.0],[1.0]] instead of [[5.0],[15.0]], and the same test passed on fixed PR head 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949. Artifact 14629598269 SHA-256 33bb899d7e4e56d177fe4c9d119eebea49519528e88d74af3efc4acf7def08d8; local CRC PASS and 15/15 inner hashes PASS. This complements the separately verified exact dataset selector, whose artifact 14341424466 had 18/18 internal hashes pass.",
-      "stage3_status": "project_lead_accepted_candidate_for_stage3_evaluation; advisory_gold_tier_proposals_only; candidate_specific_exposure_bounded_license_scope_and_final_case_acceptance_pending",
+      "stage3_status": "project_lead_accepted_candidate_for_stage3_evaluation; prior_pipeline_debug_exposure_none_declared; advisory_gold_tier_proposals_only; bounded_license_scope_and_final_case_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44114656908,
@@ -942,13 +942,15 @@
       "stage3_panel_role_status": {
         "source_aware_project_lead_gold_tier_decision": "pending",
         "hasan_role": "project-lead-reported supplementary concurrence only; not a signed independent review",
-        "prior_pipeline_debug_exposure": "pending explicit candidate-specific declaration",
+        "prior_pipeline_debug_exposure": "none (explicit project-lead self-declaration on 2026-11-20; recorded)",
         "restricted_blind_panel_not_required_for_gold_tier_under_dishka_equivalent_exploratory_route": true,
         "adjudication_method": "Dishka-equivalent v0.2 source-aware single project-lead human adjudicator for technical gold and E1/E2/E3; ChatGPT advisory only; Hasan project-lead-reported supplementary technical input",
         "blind_review_for_gold_tiers_required": false,
-        "two_human_raters_apply_to": "later blinded raw model-output evidence-support scoring only"
+        "two_human_raters_apply_to": "later blinded raw model-output evidence-support scoring only",
+        "prior_pipeline_debug_exposure_decision_record_path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_EXPOSURE_DECISION_DYMOS_1166_2026-11-20.md",
+        "prior_pipeline_debug_exposure_decision_record_sha256": "3d38e3b45f2d27cc6531ede3d73d8f2439deee0b6970c6d4618d4e02e55733ea"
       },
-      "next_required_gate": "Project lead records source-aware gold/E1-E2-E3 decision under the same single-adjudicator exploratory method accepted for Dishka; provide bounded documentary license-scope acknowledgement and candidate-specific prior_pipeline_debug_exposure declaration; then prepare schema-conformant case record, validate fail-closed registry and record separate final YES/NO. Two-human raw-response scoring remains a later output-scoring requirement, not a gold/tier gate. No model inference.",
+      "next_required_gate": "Project lead records the source-aware gold/E1/E2/E3 decision under the Dishka-equivalent exploratory method; provides bounded documentary license-scope acknowledgement and authenticates the exact pinned dataset-card license; then complete the schema-conformant case record, fail-closed registry validation and separate final YES/NO. Prior pipeline/debug exposure is declared none; researcher source/reproduction exposure remains full and disclosed. No model inference.",
       "stage2_latest_job_id": 136306920964,
       "stage2_latest_artifact_id": 14341424466,
       "stage2_latest_artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
@@ -960,6 +962,15 @@
         "decision": "ACCEPTED_FOR_STAGE3_CASE_EVALUATION",
         "date": "2026-11-20",
         "final_case_acceptance": "NOT_ACCEPTED"
+      },
+      "stage3_exposure_decision": {
+        "prior_pipeline_debug_exposure": "none",
+        "researcher_source_exposure": "full",
+        "decision_record_path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_EXPOSURE_DECISION_DYMOS_1166_2026-11-20.md",
+        "decision_record_sha256": "3d38e3b45f2d27cc6531ede3d73d8f2439deee0b6970c6d4618d4e02e55733ea",
+        "decision_date": "2026-11-20",
+        "evidence_class": "direct_project_lead_self_report_in_conversation",
+        "independent_witnessed_audit": false
       }
     },
     {
