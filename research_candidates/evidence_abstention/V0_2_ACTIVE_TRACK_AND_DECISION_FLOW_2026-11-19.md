@@ -226,3 +226,11 @@ PR head `dcea5055b086644a3b1b3307a3be38e59740b67f` has a fully successful Dishka
 - The next sequential independent-project candidate is **NumPyro #1916 / PR #1918** (`pyro-ppl/numpyro`), as listed in the progress ledger. This supersedes earlier wording that NumPyro was only a fallback if Dishka failed; Dishka has now been accepted, so NumPyro is the next intake candidate.
 - NumPyro Stage 2 reproduction and E1/E2/E3 packet integrity have been demonstrated, but semantic sufficiency of the tiers, fork/lineage and exposure screens, human dependency/license-scope acknowledgement, and a schema-conformant case record remain open. E1 must not force a unique mechanism if the sampler-contract alternative remains plausible.
 - Model weights must not be downloaded; model loading, inference, fine-tuning and training remain prohibited. Dishka acceptance does not change this restriction.
+
+## 20. Post-Dishka validation and NumPyro next-candidate update — 20 November 2026
+
+Dishka #435 acceptance was validated by Research Validation run 44727985114 (452 passed, 6 skipped, 56 subtests passed) and no-inference preflight run 44727984941. The v0.2 registry is structurally valid with one accepted exploratory case from one upstream project. Global readiness remains blocked by 13 gates; inference remains unauthorized.
+
+NumPyro #1916 / PR #1918 is the next sequential intake candidate. A separate proposed v0.2 packet set adds the pinned buggy-base EnsembleSampler.init excerpt to E1 (the sampler takes a batch for chain count, then selects rng_key[0] and stores a scalar state key). Proposed set SHA-256: e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d. The prior 19 November set is preserved. Proposed structure has E3=1, E2=2, E1=5; CI validation and independent semantic adjudication remain pending.
+
+The project lead and Hasan are both source/design exposed for this case and are not eligible for blinded Panel B. Two independent, consented, source-unexposed Panel B reviewers and a separate adjudicator are required by the approved protocol. Source/dependency licensing and upstream issue-family independence are also open. Do not accept the candidate or authorize inference before these gates close.

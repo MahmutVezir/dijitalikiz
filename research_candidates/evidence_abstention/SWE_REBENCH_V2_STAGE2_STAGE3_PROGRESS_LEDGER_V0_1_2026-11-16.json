@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-20T12:00:00Z",
+  "generated_at_utc": "2026-11-20T13:00:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -396,7 +396,7 @@
       "stage2_artifact_id": 14441559416,
       "stage2_artifact_sha256": "b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360",
       "stage3_proposal_document": "research_candidates/evidence_abstention/NUMPYRO_1916_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-18.md",
-      "model_visible_packet_status": "constructed_hash_pinned_structurally_validated_pending_blind_semantic_adjudication",
+      "model_visible_packet_status": "proposed_v0_2_E1_expanded_by_one_pinned_buggy_base_source_excerpt_pending_ci_and_blinded_semantic_review",
       "stage3_project_lead_decision": {
         "date": "2026-11-19",
         "status": "approved_to_proceed_conditionally",
@@ -447,7 +447,26 @@
       "stage2_latest_artifact_sha256": "88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556",
       "stage2_latest_artifact_integrity": "Job success and GitHub-reported digest recorded; independent archive verification not yet recorded for this newest artifact. The 18 November artifact remains independently verified.",
       "study_evaluation_eligibility": "provisional_pending_exposure_independence_license_and_semantic_review",
-      "next_required_gate": "Confirm candidate prior pipeline/debug exposure=none; complete source/dependency license and independence review; satisfy Panel A/Panel B role separation; conduct blind semantic review and adjudication; then prepare proposed v0.2 case record."
+      "next_required_gate": "Review proposed NumPyro E1 v0.2 packet with two independent, consented, source-unexposed Panel B raters and a separate adjudicator; first complete upstream issue-family/fork-lineage and exact dependency/source license-scope decisions, with project-lead and Hasan exposure disclosed. Then record Panel A gold, blind Panel B ratings, adjudication, and prepare the canonical exploratory case record for a separate project-lead YES/NO decision. No inference.",
+      "stage3_proposed_packet_set_path": "research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_2_2026-11-20.json",
+      "stage3_proposed_provenance_path": "research_candidates/evidence_abstention/numpyro_1916/EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_2_2026-11-20.json",
+      "stage3_proposed_packet_set_sha256": "e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d",
+      "stage3_proposed_packet_structure": {
+        "E3_item_count": 1,
+        "E2_item_count": 2,
+        "E1_item_count": 5,
+        "strictly_nested_by_design": true,
+        "additional_E1_item_ids": [
+          "NP1916_BASE_ENSEMBLE_INIT_KEY_NORMALIZATION"
+        ],
+        "content_sha256": "3792bc9a542c5a8896cb5f399ca4147c97fadbbe4e80b0e20bb542611a82ae07",
+        "packet_set_sha256": "e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d",
+        "hashes_recomputed": true,
+        "ci_validation": "pending",
+        "semantic_sufficiency_assessed": false,
+        "model_inference_performed": false
+      },
+      "stage3_ai_advisory_review": "The 19 November E1 packet lacked the buggy-base EnsembleSampler.init contract: initialization receives a batch to infer chain count, selects rng_key[0], splits that singleton key, and stores a scalar sampler-state key. The new proposed 20 November E1 packet adds this source excerpt, addressing the alternative that the sampler itself is intended to hold a batch key. This is AI advisory only and not Panel B semantic adjudication. The documented warmup->run lifecycle is supported by MCMC.warmup docstring lines 574-618. Two independent blinded Panel B ratings and a separate adjudicator remain mandatory."
     },
     {
       "cohort_rank": 13,
@@ -2197,37 +2216,25 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44602442485,
-    "head_commit": "dcea5055b086644a3b1b3307a3be38e59740b67f",
-    "job_id": 135837142311,
-    "artifact_id": 14569820364,
-    "artifact_name": "evidence-abstention-preflight-logs-44602442485-1",
-    "artifact_zip_sha256": "943b8f5e1fb72f5447b1983a607a6dbb770beb41c229b5c279c3ac98ef480246",
-    "artifact_integrity": {
-      "local_outer_sha256_match": true,
-      "zip_crc_passed": true,
-      "archive_members": 6
-    },
-    "status": "requires_rerun_after_acceptance_record_change",
+    "workflow_run_id": 44727984941,
+    "head_commit": "931eb6dfb3728fec3c8f729d27d7038f4fd4684e",
+    "job_id": 136260187729,
+    "status": "success",
     "ready_for_inference": false,
-    "blocker_count": 14,
+    "blocker_count": 13,
     "accepted_case_count": 1,
     "accepted_project_count": 1,
-    "registry_status": "valid_empty_registry",
+    "registry_status": "structurally_valid_candidate_registry",
     "schema_valid": true,
-    "tests": {
-      "evidence_packet_and_citation_audit": "12 passed",
-      "packet_set_and_candidate_ledger": "25 passed",
-      "selector_runner_contract": "6 passed",
-      "v0_2_exploratory_acceptance_and_preflight": "23 passed",
-      "v0_2_design_and_dual_human_scoring": "10 passed",
-      "total": "76 passed"
-    },
+    "test_results": [
+      "24 passed in 1.59s",
+      "10 passed in 0.05s"
+    ],
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "Previous 14-blocker preflight predates this accepted-case registry change. Re-run no-inference structural validation on the new commit; acceptance does not grant inference."
+    "note": "Post-Dishka-acceptance no-inference preflight passed on commit 931eb6dfb3728fec3c8f729d27d7038f4fd4684e. Registry is structurally valid with 1 accepted exploratory case from 1 upstream project. Global readiness remains blocked by 13 cohort/protocol/rater/model-license gates. Dishka acceptance does not grant inference."
   },
   "project_lead_decisions": [
     {
@@ -2398,25 +2405,34 @@
     "fine_tuning_performed": false
   },
   "latest_general_validation": {
-    "commit": "dcea5055b086644a3b1b3307a3be38e59740b67f",
-    "repository_configuration_run": {
-      "id": 44602442573,
-      "job_id": 135837142148,
+    "commit": "931eb6dfb3728fec3c8f729d27d7038f4fd4684e",
+    "research_validation_run": {
+      "id": 44727985114,
+      "job_id": 136260187386,
+      "conclusion": "success",
+      "tests": "452 passed, 6 skipped, 56 subtests passed"
+    },
+    "no_inference_preflight_run": {
+      "id": 44727984941,
+      "job_id": 136260187729,
       "conclusion": "success"
     },
-    "unit_test_run": {
-      "id": 44602442013,
-      "job_id": 135837139800,
-      "conclusion": "success",
-      "tests": "171 passed"
+    "qwen_adapter_test_run": {
+      "id": 44727985226,
+      "conclusion": "success"
     },
-    "cpu_test_run": {
-      "id": 44602442445,
-      "job_id": 135837141798,
-      "conclusion": "success",
-      "tests": "171 passed plus 2 additional checks",
-      "artifact_id": 14567579781,
-      "artifact_sha256": "127063879ee459c3560585583c393a950e1b4ca8ac8b487cb701584ad184503d"
-    }
+    "uncertainty_unit_test_run": {
+      "id": 44727984938,
+      "conclusion": "success"
+    },
+    "runner_smoke_test_run": {
+      "id": 44727985235,
+      "conclusion": "success"
+    },
+    "model_loading_performed": false,
+    "model_inference_performed": false,
+    "fine_tuning_performed": false,
+    "inference_authorized": false,
+    "note": "Latest repository validation and no-inference preflight succeeded after Dishka acceptance/Hasan attribution and updated registry tests. 13 global blockers remain; no model was loaded or executed."
   }
 }

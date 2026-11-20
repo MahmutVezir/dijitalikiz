@@ -188,3 +188,28 @@ The existing protocol explicitly excludes Panel Reviewer H from Panel B because 
 ## Candidate order correction — 19 November 2026
 
 An earlier note described NumPyro as the next candidate after Dishka had been excluded. That ordering is superseded: the project lead later clarified Dishka's prior pipeline/debug exposure as `none`, so Dishka remains first for formal proposed-case and acceptance checks. NumPyro remains the fallback candidate, not the current first-priority case. Its own Stage 2 PASS and structural packet validation remain valid, but its semantic adjudication, exposure/independence and dependency-license gates remain open.
+
+
+## Superseding active-intake update — 20 November 2026
+
+Dishka #435 has been accepted by the project lead into the v0.2 exploratory/feasibility registry and its post-acceptance no-inference CI passed on commit 931eb6dfb3728fec3c8f729d27d7038f4fd4684e. NumPyro #1916 is therefore now the **next sequential independent-project candidate**, not merely a fallback if Dishka fails.
+
+### E1 semantic critique and proposed amendment
+
+The original 19 November E1 showed the MCMC.run warmup-state handoff and the failing EnsembleSampler.sample random.split call, but it did not show how EnsembleSampler initializes its own state. This left a live alternative: perhaps the sampler contract expects a batched key at sample time. The pinned buggy-base EnsembleSampler.init code (numpyro/infer/ensemble.py, lines 150–183) now appears as an additional item in a separate proposed v0.2 packet set. That code checks the batch shape to derive the number of chains, then selects rng_key[0], splits it, and stores the resulting scalar key in EnsembleSamplerState. It materially strengthens the causal chain but does not itself constitute human semantic approval.
+
+Proposed packet set: research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_2_2026-11-20.json; SHA-256 e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d. The 19 November v0.1 packet set remains unchanged. Proposed counts are E3=1, E2=2, E1=5; strict nesting and semantic sufficiency must be confirmed by CI and independent reviewers respectively.
+
+### Mandatory independent review and exposure boundary
+
+The protocol requires two independent source-unexposed Panel B reviewers, a separate adjudicator, and source-aware Panel A technical review. The project lead has inspected the source, patch, and reproductions and is not eligible for blinded Panel B. Hasan has seen the E1/E2/E3 design proposal, so Hasan is also ineligible for blinded Panel B for this case; no other role is assumed without a separate competence, consent, and independence declaration. No Panel B reviewers are currently appointed, no coded packet has been delivered, and no semantic rating or adjudication exists.
+
+### Remaining candidate gates
+
+- Confirm upstream issue-family independence and fork/lineage classification for dataset row pyro-ppl__numpyro-1918.
+- Complete exact dependency lock, upstream source, changed-file, and runtime-license scope review; project-lead acknowledgement remains pending and is not legal clearance.
+- Reconcile the latest Stage 2 artifact's GitHub digest with an independently downloaded archive before relying on it as locally integrity-verified; the earlier 18 November artifact has local ZIP CRC and 15/15 payload-hash verification.
+- Run no-inference CI against the proposed v0.2 packet set; do not call structural validity a semantic result.
+- Obtain Panel A/Panel B participation and separate adjudication under the already-approved protocol; otherwise the case remains not accepted.
+
+No model loading, inference, fine-tuning, or training is authorized.
