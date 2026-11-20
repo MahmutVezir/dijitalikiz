@@ -842,7 +842,7 @@
       "stage2_status": "passed_independent_public_api_reproducer_and_exact_dataset_selector_base_fail_fixed_pass_artifacts_verified",
       "stage2_workflow_job_id": 134149456631,
       "stage2_evidence_note": "Exact SWE-rebench row and selector authenticated. Buggy base fails the issue-specific default-values selector with actual [[1.0],[1.0]] instead of expected [[0],[10]]; exact fixed revision passes. Test-only patch restricted to two test files. Artifact 14341424466 SHA-256 8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051; 18/18 inner SHA-256 entries verified. PR creation precedes linked issue creation by 2m25s; dataset timestamp is correctly authenticated against PR resource. Full license scope signoff, independent defect review and Stage 3 remain pending. A separate fresh-model public-API reproducer was added and verified on 20 November 2026: run 44739419824/job 136298973618; exact buggy base produced actual [[1.0],[1.0]] instead of [[5.0],[15.0]], and the same test passed on fixed PR head 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949. Artifact 14629598269 SHA-256 33bb899d7e4e56d177fe4c9d119eebea49519528e88d74af3efc4acf7def08d8; local CRC PASS and 15/15 inner hashes PASS. This complements the separately verified exact dataset selector, whose artifact 14341424466 had 18/18 internal hashes pass.",
-      "stage3_status": "project_lead_approved_source_aware_gold_and_evidence_tiers; bounded_license_scope_and_exact_pinned_dataset_card_license_pending; final_case_acceptance_pending",
+      "stage3_status": "source_aware_gold_tiers_approved; exact_pinned_dataset_card_license_verified_CC_BY_4_0; bounded_license_scope_acknowledgement_pending; final_case_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44777046281,
@@ -850,7 +850,7 @@
       "stage2_artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
       "stage2_dataset_row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
       "stage2_review_document": "research_candidates/evidence_abstention/OPENMDAO_DYMOS_1166_CANDIDATE_REVIEW_2026-11-17.md",
-      "stage2_license_note": "Dependency license metadata captured, including bundled NumPy/SciPy binary library notices; project-lead scope signoff remains pending.",
+      "stage2_license_note": "Dymos root LICENSE and pyproject metadata identify Apache-2.0. The exact pinned dataset card at revision fb9aa226b2ce37c708ea7732e7b980abacdadb67 displays CC-BY-4.0; the selected row's license field is Apache-2.0 for the upstream repository. 14-package runtime inventory and NumPy/SciPy binary bundle notices are recorded; scope acknowledgement remains pending.",
       "stage2_independent_issue_reproducer": {
         "status": "passed_buggy_base_fail_fixed_pr_head_pass",
         "workflow_run_id": 44739419824,
@@ -963,7 +963,7 @@
         "source_aware_decision_record_path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
         "source_aware_decision_record_sha256": "9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392"
       },
-      "next_required_gate": "The source-aware gold/E1/E2/E3 project-lead decision is approved and recorded. Next: project lead must provide bounded documentary license-scope acknowledgement (including NumPy/SciPy bundled notices) and exact pinned dataset-card license authentication; then complete the schema-conformant case record, run fail-closed registry validation, and make a separate final YES/NO case-acceptance decision. Researcher source/reproduction exposure remains full and disclosed. No model inference.",
+      "next_required_gate": "Project lead acknowledges or revises the bounded documentary license-scope proposal at research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_PROPOSAL_DYMOS_1166_2026-11-20.md (includes public GitHub CI artifacts containing the full PR patch, two source snapshots, one dataset row, and dependency notices; excludes complete dataset/repository and redistribution of wheels/binaries). After that, complete schema-conformant case record, fail-closed accepted-registry validation, and separate final YES/NO case-acceptance decision. No model inference.",
       "stage2_latest_job_id": 136429516642,
       "stage2_latest_artifact_id": 14649973489,
       "stage2_latest_artifact_sha256": "82aba14dbd3ffcc975989a8f3984712a0b4b3a5b89458f7d142fe1dfea4ed16b",
@@ -1029,7 +1029,18 @@
         "final_case_acceptance": "not_accepted",
         "inference_authorized": false
       },
-      "stage3_current_head_commit": "98df08d0ddc4c8972ee653016bf6ac9f2912e560"
+      "stage3_current_head_commit": "98df08d0ddc4c8972ee653016bf6ac9f2912e560",
+      "stage3_license_scope": {
+        "exact_pinned_dataset_card_license_verified": true,
+        "dataset_card_license": "CC-BY-4.0",
+        "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+        "dataset_row_source_license": "Apache-2.0",
+        "project_lead_acknowledgement": "pending",
+        "proposal_path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_PROPOSAL_DYMOS_1166_2026-11-20.md",
+        "proposal_sha256": "844e36ea92bb947f990ecc2ec564e9ea5c718c380e1c6405aaf6ff46423530b2",
+        "final_case_acceptance": "not_accepted",
+        "inference_authorized": false
+      }
     },
     {
       "cohort_rank": 16,
