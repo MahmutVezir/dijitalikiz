@@ -338,3 +338,16 @@ The technical evidence now meets the Dishka Stage 2 parity threshold: two frozen
 4. Complete case-acceptance record, fail-closed schema/registry validation, and a separate final project-lead YES/NO.
 
 The current proposed packet-set structural pass does not establish semantic sufficiency. No model weights have been loaded; inference, fine-tuning and training remain unauthorized.
+
+
+### Latest branch-head rerun — 20 November 2026
+
+The independent issue reproducer was rerun after the portfolio/adjudication-record updates on branch head `efe677f49088eb9493fef6e8c6615b5bcb061dcb`.
+
+- Run: [44745436388](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44745436388), job `136319403263`, success.
+- Artifact: `14633131434`; GitHub SHA-256 `2c9f3ddf1ea249650a18062fd6648536b0132e413fcea0c0007f8c4473a856d3`.
+- Local re-download verification: outer SHA-256 exact match; ZIP CRC PASS; 10/10 internal SHA256SUMS entries PASS.
+- Buggy base: exact 100-chain AIES warmup→run test executed and failed with JAX's expected batched PRNG-key shape `(100, 2)`.
+- Fixed merge: same test passed (`1 passed in 3.97s`).
+
+This is another repeat of the same NumPyro case, not a new case or selector. Final acceptance remains pending the source-aware project-lead gold/tier decision, bounded license acknowledgement, exposure declaration, case record and registry check.
