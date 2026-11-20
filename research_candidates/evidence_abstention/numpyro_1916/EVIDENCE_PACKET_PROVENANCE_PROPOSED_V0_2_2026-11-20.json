@@ -137,9 +137,9 @@
     "semantic_sufficiency_assessed": false,
     "model_inference_performed": false,
     "supersedes_packet_set_sha256": "e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d",
-    "latest_validation_run_id": 44761690559,
-    "latest_validation_job_id": 136375587794,
-    "latest_validation_commit": "43b06b48b843bbca78cde608a96edce2344cca90",
+    "latest_validation_run_id": 44764471046,
+    "latest_validation_job_id": 136385301308,
+    "latest_validation_commit": "10b910cdb595408bf5bb856bd2290f86cf5e24e1",
     "test_groups": {
       "packet_audit": 12,
       "operational_and_nested_packet_contracts": 25,
@@ -150,9 +150,9 @@
       "study_design_and_dual_human_scoring": 10,
       "total": 90
     },
-    "preflight_artifact_id": 14642395350,
-    "preflight_artifact_sha256": "3fe0d9de95b5379671a3fef849ad5c185d066cfc6678eccf55dcb0de372cb3b6",
-    "validation_note": "The amended E3=1/E2=4/E1=7 packet set passed branch-head no-inference contract validation on this commit. The validator verifies packet structure, nesting and hashes only; semantic sufficiency and final case acceptance remain separate project-lead decisions."
+    "preflight_artifact_id": 14642538786,
+    "preflight_artifact_sha256": "0328d6c8f69c0780aa8663c5ad0bab6008257bd818f63289c78f120c6a4db960",
+    "validation_note": "The amended E3=1/E2=4/E1=7 packet set and project-lead tier-decision record passed branch-head no-inference contract validation on the commit containing the tier decision. The validator verifies packet structure, nesting, hashes and declared project-lead decision state only; it does not substitute for the source-aware human adjudication."
   },
   "semantic_review": {
     "status": "project_lead_gold_and_E1_E2_E3_semantic_decision_approved; prior_pipeline_debug_exposure_and_bounded_license_scope_pending",
@@ -299,13 +299,13 @@
     "fine_tuning": false
   },
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44761690559,
-    "job_id": 136375587794,
+    "workflow_run_id": 44764471046,
+    "job_id": 136385301308,
     "conclusion": "success",
-    "commit": "43b06b48b843bbca78cde608a96edce2344cca90",
+    "commit": "10b910cdb595408bf5bb856bd2290f86cf5e24e1",
     "tests": "90 passed across packet audit (12), operational/nested packet contracts (25), NumPyro review contracts (8), Dymos review contracts (5), selector runner (6), exploratory acceptance/readiness (24), and study-design/dual-human scoring (10).",
-    "artifact_id": 14642395350,
-    "artifact_sha256": "3fe0d9de95b5379671a3fef849ad5c185d066cfc6678eccf55dcb0de372cb3b6",
+    "artifact_id": 14642538786,
+    "artifact_sha256": "0328d6c8f69c0780aa8663c5ad0bab6008257bd818f63289c78f120c6a4db960",
     "readiness": "blocked_before_inference",
     "accepted_case_count": 1,
     "blocker_count": 13,
@@ -332,17 +332,17 @@
     "semantic_sufficiency_and_final_acceptance": "not_approved_by_this_packet-construction_decision"
   },
   "latest_independent_issue_reproducer": {
-    "workflow_run_id": 44761690320,
-    "job_id": 136375585065,
+    "workflow_run_id": 44764470924,
+    "job_id": 136385300367,
     "conclusion": "success",
-    "commit": "43b06b48b843bbca78cde608a96edce2344cca90",
-    "artifact_id": 14640974491,
-    "artifact_github_digest": "sha256:7717fe6ed53ae6752325cf954ea20285279ffff679403f7a5c2c9bf20216ac49",
+    "commit": "10b910cdb595408bf5bb856bd2290f86cf5e24e1",
+    "artifact_id": 14642129537,
+    "artifact_github_digest": "sha256:10e92b174ba0c6345220fb82a041e9fbef6d144e1595563e2a1c7a02fc792c59",
     "artifact_locally_rehashed": false,
     "buggy_base": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
-    "buggy_base_result": "Independent public-API AIES/100-vectorized-chain warmup()->run() reproducer executed and failed with the expected JAX PRNG key shape (100, 2).",
+    "buggy_base_result": "Independent public-API AIES/100-vectorized-chain warmup()->run() reproducer executed on exact buggy base and failed with the expected JAX PRNG key shape (100, 2).",
     "fixed_revision": "5692d2da335945b756aeae02e3720b9b7f3efef2",
-    "fixed_revision_result": "Same reproducer passed (1 passed in 3.89s) under the same environment.",
+    "fixed_revision_result": "Same reproducer passed on the exact fixed merge (1 passed in 4.09s) under the same Python 3.11.9 / CPU JAX/JAXlib 0.4.35 environment.",
     "runtime": "CPython 3.11.9; CPU-only JAX/JAXlib 0.4.35",
     "model_inference_performed": false
   },
