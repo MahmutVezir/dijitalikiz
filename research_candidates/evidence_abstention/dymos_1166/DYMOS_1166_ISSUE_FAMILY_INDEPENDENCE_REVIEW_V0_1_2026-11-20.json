@@ -71,13 +71,24 @@
   "exposure_and_roles": {
     "project_lead_source_and_reproduction_exposure": "full (current review exposure)",
     "hasan_source_and_reproduction_exposure": "full (current review exposure)",
-    "prior_candidate_specific_pipeline_debug_exposure": "pending explicit declaration",
+    "prior_candidate_specific_pipeline_debug_exposure": "none (explicit project-lead self-declaration on 2026-11-20; prospective case-validation pipeline, runner, selector and oracle debugging not used)",
     "panel_b_blinded_eligible": false,
-    "independent_human_adjudicator": "not appointed; not required for the Dishka-equivalent exploratory gold/tier route"
+    "independent_human_adjudicator": "not appointed; not required for the Dishka-equivalent exploratory gold/tier route",
+    "researcher_source_exposure": "full (issue, PR, pinned source, reproduction, evidence-packet and technical-review exposure)",
+    "prior_pipeline_debug_exposure_decision_record": {
+      "path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_EXPOSURE_DECISION_DYMOS_1166_2026-11-20.md",
+      "sha256": "3d38e3b45f2d27cc6531ede3d73d8f2439deee0b6970c6d4618d4e02e55733ea",
+      "decision_date": "2026-11-20",
+      "declared_value": "none",
+      "evidence_class": "direct_project_lead_self_report_in_conversation",
+      "independent_witnessed_audit": false
+    }
   },
   "independence_status": {
     "final_case_acceptance": "not_accepted",
     "inference_authorized": false,
-    "stage2_technical_reproduction": "passed"
+    "stage2_technical_reproduction": "passed",
+    "prior_pipeline_debug_exposure": "none_declared_by_project_lead",
+    "researcher_source_exposure": "full_disclosed"
   }
 }
