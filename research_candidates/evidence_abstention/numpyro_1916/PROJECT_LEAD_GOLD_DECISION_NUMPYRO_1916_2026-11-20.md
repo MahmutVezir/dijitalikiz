@@ -48,3 +48,14 @@ Researcher source exposure is disclosed separately from prior pipeline/debug-ora
 - Bounded license-scope acknowledgement: pending.
 - Final case acceptance: **not accepted yet**.
 - Model loading/inference/fine-tuning/training: not authorized.
+
+
+## Subsequent project-lead E1/E2/E3 decision — 20 November 2026
+
+The project lead subsequently approved the E3/E2/E1 semantic hierarchy and the alternative disposition. See the separate immutable source-aware tier decision record:
+
+- Path: `research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_TIER_DECISION_NUMPYRO_1916_2026-11-20.md`
+- Commit: `44f00ea34708032476103b230967ee27290deeed`
+- SHA-256: `6148aa21a6122c3552ef01394e4d314b792cacda7164aea74f22c36d6f217df9`
+
+The technical-gold approval above remains the exact root-cause statement; the later tier decision records which evidence level is sufficient to distinguish it. Prior pipeline/debug exposure, bounded documentary license scope, case-record validation and final case acceptance remain separate gates.
