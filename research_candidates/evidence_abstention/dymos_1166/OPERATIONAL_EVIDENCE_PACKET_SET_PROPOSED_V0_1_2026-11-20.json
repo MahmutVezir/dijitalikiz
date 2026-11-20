@@ -30,9 +30,9 @@
         {
           "id": "DYMOS_BASE_ONES_INPUT_DEFAULT",
           "kind": "source_excerpt",
-          "content": "                self.add_input(self._input_names[name], val=np.ones(input_shape), units=units)\n",
-          "content_sha256": "c94cc80d2ce6fd126b2c3045f736200e63916f9ca9ed0d21db4b2970e4304d6f",
-          "source_snapshot_sha256": "c94cc80d2ce6fd126b2c3045f736200e63916f9ca9ed0d21db4b2970e4304d6f"
+          "content": "            if 'control_type' not in options:\n                options['control_type'] = 'full'\n            if options['control_type'] == 'polynomial':\n                disc_nodes, _ = lgl(options['order'] + 1)\n                num_control_input_nodes = len(disc_nodes)\n                shape = options['shape']\n                size = np.prod(shape)\n                units = options['units']\n                rate_units = get_rate_units(units, self.options['time_units'], deriv=1)\n                rate2_units = get_rate_units(units, self.options['time_units'], deriv=2)\n\n                input_shape = (num_control_input_nodes,) + shape\n                output_shape = (num_output_nodes,) + shape\n\n                L_de, D_de = lagrange_matrices(disc_nodes, eval_nodes)\n                _, D_dd = lagrange_matrices(disc_nodes, disc_nodes)\n                D2_de = np.dot(D_de, D_dd)\n\n                self._matrices[name] = L_de, D_de, D2_de\n\n                self._input_names[name] = f'controls:{name}'\n                self._output_val_names[name] = f'control_values:{name}'\n                self._output_rate_names[name] = f'control_rates:{name}_rate'\n                self._output_rate2_names[name] = f'control_rates:{name}_rate2'\n\n                self.add_input(self._input_names[name], val=np.ones(input_shape), units=units)\n",
+          "content_sha256": "f52ea74336cca69ae73b03aad91683e0d0f88f7667457796a64ab3ec78aa1fd4",
+          "source_snapshot_sha256": "f52ea74336cca69ae73b03aad91683e0d0f88f7667457796a64ab3ec78aa1fd4"
         },
         {
           "id": "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE",
@@ -56,7 +56,7 @@
           "source_snapshot_sha256": "a2ff7cfe0b5cc90987599357d983735ffcfd2ad42973fd35e2bbcfd26c13cb1a"
         }
       ],
-      "packet_sha256": "a2ffd0a412c7ab3d83b7f38d7cd24d15b3e66ba350dbf6b1f7e7c79d32da8a29"
+      "packet_sha256": "8d78d4ac4828276485b73bb01f5411be42feec328418cd575aa828ddae0faaa5"
     },
     "E2": {
       "schema_version": "1.0",
@@ -101,5 +101,5 @@
       "packet_sha256": "3aa2320ac5fc464108e3a4e79a6a062c80708caec0bc9e332fe6cd742a6bfb53"
     }
   },
-  "packet_set_sha256": "c918227f6b19b67dcebc61a6a8b77b1b90393144f1638d7d5a002c3d5b695fd4"
+  "packet_set_sha256": "7ca1e50290bc037e9147dc30eff10152cecc506e0cb1ac70de5c420cbf939474"
 }
