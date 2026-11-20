@@ -47,9 +47,16 @@
           "content": "            control_comp = ControlInterpComp(control_options=phase.control_options,\n                                             time_units=phase.time_options['units'],\n                                             grid_data=self.grid_data)\n",
           "content_sha256": "c1ff713481f44148bdefe4a9c493e692d8d2a3b9457038358134c6469da7137a",
           "source_snapshot_sha256": "c1ff713481f44148bdefe4a9c493e692d8d2a3b9457038358134c6469da7137a"
+        },
+        {
+          "id": "DYMOS_BASE_ADD_CONTROL_FORWARDS_VALUE",
+          "kind": "source_excerpt",
+          "content": "        self.set_control_options(name, order=order, units=units, desc=desc, opt=opt,\n                                 fix_initial=fix_initial, fix_final=fix_final, targets=targets, rate_targets=rate_targets,\n                                 rate2_targets=rate2_targets, val=val, shape=shape, lower=lower,\n",
+          "content_sha256": "a2ff7cfe0b5cc90987599357d983735ffcfd2ad42973fd35e2bbcfd26c13cb1a",
+          "source_snapshot_sha256": "a2ff7cfe0b5cc90987599357d983735ffcfd2ad42973fd35e2bbcfd26c13cb1a"
         }
       ],
-      "packet_sha256": "2cc4e6d9770987beefe92203cbd950c68a3a2d1dc01572350665700cc3ff6183"
+      "packet_sha256": "a2ffd0a412c7ab3d83b7f38d7cd24d15b3e66ba350dbf6b1f7e7c79d32da8a29"
     },
     "E2": {
       "schema_version": "1.0",
@@ -94,5 +101,5 @@
       "packet_sha256": "3aa2320ac5fc464108e3a4e79a6a062c80708caec0bc9e332fe6cd742a6bfb53"
     }
   },
-  "packet_set_sha256": "b0cfd72838a7265468ce7c59f210d4a6660bd791cb784a3c342283b7e9f23ae6"
+  "packet_set_sha256": "c918227f6b19b67dcebc61a6a8b77b1b90393144f1638d7d5a002c3d5b695fd4"
 }
