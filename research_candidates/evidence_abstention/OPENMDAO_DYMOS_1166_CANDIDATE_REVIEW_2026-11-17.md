@@ -224,3 +224,13 @@ A second current-head repeat completed successfully on branch head `b73b3ef11b63
 - Buggy base produced the expected assertion mismatch `[[1.0], [1.0]]` vs `[[5.0], [15.0]]`; fixed PR head passed the same test (`1 passed in 0.63s`).
 
 This is a verification repeat, not another case. The issue-family, source-aware adjudication, license, exposure, acceptance and no-inference boundaries remain unchanged.
+
+## Project-lead selection decision
+
+## Project-lead first-batch selection — 20 November 2026
+
+The student project lead explicitly accepted Dymos #1166 as one of the strong first-batch candidates to continue through v0.2 Stage 3 case evaluation, applying the unchanged Dishka-equivalent criteria.
+
+This is candidate-selection approval only. It does **not** approve the proposed Dymos gold mechanism or E1/E2/E3 tier membership; those remain for a separate source-aware project-lead decision. The candidate-specific prior pipeline/debug exposure declaration, bounded dependency/source/dataset license-scope acknowledgement, complete case record, fail-closed registry validation and separate final case YES/NO also remain pending.
+
+The candidate remains not accepted as a final case at this point. It contributes at most one Dymos upstream-project case. No model load, inference, fine-tuning or training is authorized.
