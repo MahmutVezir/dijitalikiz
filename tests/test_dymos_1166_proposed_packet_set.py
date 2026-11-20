@@ -123,7 +123,7 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertFalse(record["human_review"]["accepted_as_legal_clearance"])
         self.assertEqual(record["human_review"]["project_lead_scope_acknowledgement"], "acknowledged_with_scientific_independence_condition")
         self.assertEqual(record["project_lead_scope_acknowledgement_proposal"]["path"],
-                         "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_PROPOSAL_DYMOS_1166_2026-11-20.md")
+                         "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_CONDITIONAL_SCOPE_ACKNOWLEDGEMENT_DYMOS_1166_2026-11-20.md")
         self.assertEqual(record["project_lead_scope_acknowledgement_proposal"]["sha256"],
                          SCOPE_PROPOSAL_SHA256)
         scope_proposal = SCOPE_PROPOSAL_PATH.read_bytes()
