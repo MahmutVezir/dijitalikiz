@@ -104,10 +104,10 @@
     ],
     "semantic_sufficiency_assessed": false,
     "model_inference_performed": false,
-    "latest_validation_run_id": 44751142329,
-    "latest_validation_job_id": 136339036104,
-    "latest_validation_commit": "8ab2c2cb36b8f8bee00d12a990d9cc76cc205aaa",
-    "validation_note": "The current-branch no-inference preflight completed successfully; its operational/nested evidence packet contract tests and NumPyro unit-test group passed. This validates structure/contracts only, not semantic sufficiency or final acceptance."
+    "latest_validation_run_id": 44755547992,
+    "latest_validation_job_id": 136354205627,
+    "latest_validation_commit": "dabd65d149b9e0ee2bfcaa25261ccc3425d673f3",
+    "validation_note": "The no-inference preflight on the latest recorded branch head completed successfully. Evidence packet audit, operational/nested packet contracts, the NumPyro review-contract tests and Dymos review-contract tests all passed. This is structural/contract validation only; semantic sufficiency and final acceptance remain distinct decisions."
   },
   "semantic_review": {
     "status": "project_lead_gold_mechanism_approved; E1_E2_E3_membership_and_semantic_sufficiency_pending",
@@ -131,7 +131,7 @@
     },
     "tier_membership_decision": "PENDING_separate_project_lead_decision",
     "alternative_hypotheses_decision": "PENDING_separate_project_lead_review",
-    "final_case_acceptance": "NOT_ACCEPTED_pending_bounded_license_scope_exposure_case_record_and_registry_validation",
+    "final_case_acceptance": "NOT_ACCEPTED_pending_E1_E2_E3_decision_bounded_license_scope_exposure_case_record_and_registry_validation",
     "candidate_selection_decision": {
       "decision": "ACCEPTED_FOR_STAGE3_CASE_EVALUATION",
       "date": "2026-11-20",
@@ -196,23 +196,24 @@
     "fine_tuning": false
   },
   "final_current_branch_repeat": {
-    "workflow_run_id": 44751142001,
-    "workflow_job_id": 136339034841,
-    "workflow_commit": "8ab2c2cb36b8f8bee00d12a990d9cc76cc205aaa",
-    "artifact_id": 14634359518,
-    "artifact_sha256": "148c1f7e3efd818bcc9644c3d90595e59826625bb7989bec631393ffb749d8ce",
+    "workflow_run_id": 44755560775,
+    "workflow_job_id": 136354249543,
+    "workflow_commit": "dabd65d149b9e0ee2bfcaa25261ccc3425d673f3",
+    "artifact_id": 14637651511,
+    "artifact_sha256": "bd05413602aaf5de6e8b213708dee68cfc863a97dd9f7620ed196afc2b071d3a",
     "github_job_conclusion": "success",
     "buggy_base_result": "The independent AIES 100-chain warmup()->run() reproducer executed and failed with the expected JAX PRNG key shape (100, 2) error.",
-    "fixed_revision_result": "The identical reproducer completed successfully on the pinned fixed revision.",
+    "fixed_revision_result": "The identical reproducer completed successfully on the exact pinned fixed revision.",
     "local_integrity_verification": "Not independently downloaded and rehashed in this update; GitHub-reported artifact digest is retained.",
     "model_loading": false,
     "model_inference": false,
     "fine_tuning": false
   },
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44751142329,
-    "job_id": 136339036104,
+    "workflow_run_id": 44755547992,
+    "job_id": 136354205627,
     "conclusion": "success",
-    "readiness": "still_blocked_before_inference; no model weights loaded or inference performed"
+    "tests": "evidence packet audit; operational/nested packet contracts; NumPyro contract tests; Dymos contract tests; selector runner contract; v0.2 acceptance/readiness contract; design and dual-human scoring amendment all passed",
+    "readiness": "still_blocked_before_inference; no model weights loaded and no model inference performed"
   }
 }
