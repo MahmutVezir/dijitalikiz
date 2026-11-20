@@ -3,7 +3,7 @@
   "generated_date": "2026-11-20",
   "candidate": "pyro-ppl/numpyro issue 1916 / PR 1918",
   "packet_set_path": "research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_2_2026-11-20.json",
-  "packet_set_sha256": "3f159f3f46f7fa6e10b7323870f66115c4c2012fd28ed4676b71013c0f94c9c7",
+  "packet_set_sha256": "b53d655f38466f2aa5b164a3a96c13a630e4419986401e472f2ed4371ffd7edb",
   "source_row": {
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
     "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
