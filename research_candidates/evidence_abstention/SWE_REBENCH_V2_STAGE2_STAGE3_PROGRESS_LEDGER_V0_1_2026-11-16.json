@@ -2801,10 +2801,45 @@
     ],
     "project_lead_decision_source": "explicit_project_lead_chat_confirmation",
     "excluded_from_model_evaluation_sample": [
+      "MarketSquare/robotframework-robocop #1371",
       "MarketSquare/robotframework-robocop #1371"
     ],
     "robocop_exclusion_reason": "Historical project audit confirms prior technical pipeline/debug exposure; a successful Stage 2 reproduction does not override the predeclared exclusion.",
     "conditional_case_acceptance_authorization": true,
-    "conditional_case_acceptance_authorization_date": "2026-11-20"
+    "conditional_case_acceptance_authorization_date": "2026-11-20",
+    "first_batch_assessment_path": "research_candidates/evidence_abstention/FIRST_BATCH_CASE_ELIGIBILITY_REVIEW_2026-11-20.md",
+    "first_batch_assessment_commit": "a2878d6955fcfad73edc5c827e53d7a32c1e7ab7"
+  },
+  "first_batch_case_assessment": {
+    "date": "2026-11-20",
+    "review_path": "research_candidates/evidence_abstention/FIRST_BATCH_CASE_ELIGIBILITY_REVIEW_2026-11-20.md",
+    "review_commit": "a2878d6955fcfad73edc5c827e53d7a32c1e7ab7",
+    "conditional_acceptance_authorized_by_project_lead": true,
+    "eligible_to_continue_stage3": [
+      "pyro-ppl/numpyro #1916",
+      "OpenMDAO/dymos #1166",
+      "CS-SI/eodag #1530",
+      "meltano/sdk #3090",
+      "pyfar/pyfar #721"
+    ],
+    "excluded_from_model_evaluation_sample": {
+      "MarketSquare/robotframework-robocop #1371": "Prior candidate-specific technical debugging exposure recorded in 2026-11-15 master audit and roadmap; successful technical reproduction is engineering/feasibility evidence only."
+    },
+    "candidate_case_acceptance_status": {
+      "pyro-ppl/numpyro #1916": "not_accepted; source-aware gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open",
+      "OpenMDAO/dymos #1166": "not_accepted; source-aware gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open",
+      "CS-SI/eodag #1530": "not_accepted; issue-family review, gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open",
+      "meltano/sdk #3090": "not_accepted; issue-family review, gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open",
+      "pyfar/pyfar #721": "not_accepted; supersede stale review notes, source-aware gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open"
+    },
+    "first_batch_work_order": [
+      "NumPyro #1916",
+      "Dymos #1166",
+      "EODAG #1530",
+      "Meltano SDK #3090",
+      "PyFar #721"
+    ],
+    "adjudication_route": "Dishka-equivalent v0.2: single source-aware project-lead human adjudicator for gold/E1/E2/E3; ChatGPT advisory only; Hasan may be recorded as project-lead-reported supplementary source-aware input. Two independent human scorers are required later for raw model-output evidence-support scoring only.",
+    "inference_authorized": false
   }
 }
