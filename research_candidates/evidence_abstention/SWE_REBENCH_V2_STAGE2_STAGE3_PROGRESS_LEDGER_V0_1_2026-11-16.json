@@ -606,11 +606,11 @@
       "static_scope_decision": "Retain provisionally",
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
-      "candidate_review_document": null,
-      "stage2_status": "passed_issue_specific_selector_base_fail_fixed_pass",
+      "candidate_review_document": "research_candidates/evidence_abstention/OPENMDAO_DYMOS_1166_CANDIDATE_REVIEW_2026-11-17.md",
+      "stage2_status": "passed_independent_public_api_reproducer_and_exact_dataset_selector_base_fail_fixed_pass_artifacts_verified",
       "stage2_workflow_job_id": 134149456631,
-      "stage2_evidence_note": "Exact SWE-rebench row and selector authenticated. Buggy base fails the issue-specific default-values selector with actual [[1.0],[1.0]] instead of expected [[0],[10]]; exact fixed revision passes. Test-only patch restricted to two test files. Artifact 14341424466 SHA-256 8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051; 18/18 inner SHA-256 entries verified. PR creation precedes linked issue creation by 2m25s; dataset timestamp is correctly authenticated against PR resource. Full license scope signoff, independent defect review and Stage 3 remain pending.",
-      "stage3_status": "not_started_stage2_passed_license_scope_and_human_adjudication_pending",
+      "stage2_evidence_note": "Exact SWE-rebench row and selector authenticated. Buggy base fails the issue-specific default-values selector with actual [[1.0],[1.0]] instead of expected [[0],[10]]; exact fixed revision passes. Test-only patch restricted to two test files. Artifact 14341424466 SHA-256 8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051; 18/18 inner SHA-256 entries verified. PR creation precedes linked issue creation by 2m25s; dataset timestamp is correctly authenticated against PR resource. Full license scope signoff, independent defect review and Stage 3 remain pending. A separate fresh-model public-API reproducer was added and verified on 20 November 2026: run 44739419824/job 136298973618; exact buggy base produced actual [[1.0],[1.0]] instead of [[5.0],[15.0]], and the same test passed on fixed PR head 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949. Artifact 14629598269 SHA-256 33bb899d7e4e56d177fe4c9d119eebea49519528e88d74af3efc4acf7def08d8; local CRC PASS and 15/15 inner hashes PASS. This complements the separately verified exact dataset selector, whose artifact 14341424466 had 18/18 internal hashes pass.",
+      "stage3_status": "proposed_v0_1_packet_structure_ci_passed_semantic_gold_and_license_scope_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44114656908,
@@ -618,7 +618,56 @@
       "stage2_artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
       "stage2_dataset_row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
       "stage2_review_document": "research_candidates/evidence_abstention/OPENMDAO_DYMOS_1166_CANDIDATE_REVIEW_2026-11-17.md",
-      "stage2_license_note": "Dependency license metadata captured, including bundled NumPy/SciPy binary library notices; project-lead scope signoff remains pending."
+      "stage2_license_note": "Dependency license metadata captured, including bundled NumPy/SciPy binary library notices; project-lead scope signoff remains pending.",
+      "stage2_independent_issue_reproducer": {
+        "status": "passed_buggy_base_fail_fixed_pr_head_pass",
+        "workflow_run_id": 44739419824,
+        "workflow_job_id": 136298973618,
+        "workflow_commit": "5308d4b25a31acee1e3753818a1d67b972a640f2",
+        "buggy_base": "3efd1035c3bf62890034eb9e07de543f3d117867",
+        "fixed_revision": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
+        "reproducer_path": "research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py",
+        "reproducer_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
+        "dependency_lock_sha256": "e229e611a88f50484343090cbb79e73f9d90a5a66ac0be990d0b1523cc029ef3",
+        "runtime": "CPython 3.11.9; OpenMDAO 3.38.0; NumPy 1.26.4; SciPy 1.13.1; NetworkX 3.3; no optional optimizer",
+        "base_result": "executed assertion failure; actual [[1.0],[1.0]], expected [[5.0],[15.0]]",
+        "fixed_result": "1 passed in 0.49s",
+        "artifact_id": 14629598269,
+        "artifact_sha256": "33bb899d7e4e56d177fe4c9d119eebea49519528e88d74af3efc4acf7def08d8",
+        "local_integrity": {
+          "outer_sha256_matches": true,
+          "zip_crc": "PASS",
+          "internal_hashes": "15/15 PASS"
+        }
+      },
+      "stage3_proposed_packet_set_path": "research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
+      "stage3_provenance_path": "research_candidates/evidence_abstention/dymos_1166/EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_1_2026-11-20.json",
+      "stage3_proposed_packet_set_sha256": "07b9547ba6bc30dd525acff0b9916542b81e47f9ed8451f2b0fba5ca8a22b17d",
+      "stage3_proposed_packet_structure": {
+        "E3_item_count": 1,
+        "E2_item_count": 3,
+        "E1_item_count": 6,
+        "strictly_nested_by_design": true,
+        "packet_set_sha256": "07b9547ba6bc30dd525acff0b9916542b81e47f9ed8451f2b0fba5ca8a22b17d",
+        "hashes_recomputed": true,
+        "ci_validation": "passed_structural_only",
+        "validation_run_id": 44741554783,
+        "validation_job_id": 136306184954,
+        "validation_commit": "1afb274a2044d7f418d034c199605c23cecd01e4",
+        "dedicated_review_tests": 5,
+        "semantic_sufficiency_assessed": false,
+        "model_inference_performed": false
+      },
+      "stage3_issue_family_independence_path": "research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
+      "stage3_dependency_license_scope_path": "research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json",
+      "stage3_gold_and_tiers_draft_path": "research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_GOLD_AND_EVIDENCE_TIERS_DRAFT_V0_1_2026-11-20.md",
+      "stage3_panel_role_status": {
+        "source_aware_project_lead_gold_tier_decision": "pending",
+        "hasan_role": "project-lead-reported supplementary concurrence only; not a signed independent review",
+        "prior_pipeline_debug_exposure": "pending explicit candidate-specific declaration",
+        "restricted_blind_panel_not_required_for_gold_tier_under_dishka_equivalent_exploratory_route": true
+      },
+      "next_required_gate": "Project lead records source-aware gold/E1-E2-E3 decision under the same single-adjudicator exploratory method accepted for Dishka; provide bounded documentary license-scope acknowledgement and candidate-specific prior_pipeline_debug_exposure declaration; then prepare schema-conformant case record, validate fail-closed registry and record separate final YES/NO. No model inference."
     },
     {
       "cohort_rank": 16,
@@ -2311,9 +2360,9 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44736373993,
-    "head_commit": "982ec18982591b1c21989f6fb3b68720f26241cc",
-    "job_id": 136288676575,
+    "workflow_run_id": 44741554783,
+    "head_commit": "1afb274a2044d7f418d034c199605c23cecd01e4",
+    "job_id": 136306184954,
     "status": "success",
     "ready_for_inference": false,
     "blocker_count": 13,
@@ -2325,18 +2374,19 @@
       "packet_audit": 12,
       "operational_and_nested_packet_contracts": 25,
       "numpyro_review_contracts": 8,
+      "dymos_review_contracts": 5,
       "selector_runner": 6,
       "exploratory_acceptance_and_readiness": 24,
       "study_design_and_dual_human_scoring": 10,
-      "total": 85
+      "total": 90
     },
-    "artifact_id": 14628258416,
-    "artifact_sha256": "33585baab1d76690ab23b01dc6888fd0f340dcccc2003a650a9b0c413f4dca52",
+    "artifact_id": 14631870140,
+    "artifact_sha256": "a26ff02fce4af5d2833975a77fcad2a7efb306ea5358b26a6b04be1181bcd78e",
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "Dishka #435 is the only accepted v0.2 exploratory case. NumPyro #1916 remains provisional and not accepted. The NumPyro-specific packet, provenance, license/independence and blinded-bundle contracts passed. Thirteen global readiness blockers remain."
+    "note": "Dishka #435 remains the only accepted v0.2 case. NumPyro #1916 and Dymos #1166 now have independent issue reproducers and structural Stage 3 packet checks, but both remain not accepted pending source-aware gold/tier decisions, bounded license scope and exposure declarations. Ninety no-inference tests passed."
   },
   "project_lead_decisions": [
     {
