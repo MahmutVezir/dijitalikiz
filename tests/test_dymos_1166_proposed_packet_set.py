@@ -24,6 +24,8 @@ LICENSE_PATH = DYMOS / "DYMOS_1166_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-
 INDEPENDENCE_PATH = DYMOS / "DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json"
 EXPOSURE_PATH = DYMOS / "PROJECT_LEAD_EXPOSURE_DECISION_DYMOS_1166_2026-11-20.md"
 EXPOSURE_SHA256 = "3d38e3b45f2d27cc6531ede3d73d8f2439deee0b6970c6d4618d4e02e55733ea"
+DECISION_PATH = DYMOS / "PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md"
+DECISION_SHA256 = "9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392"
 LEDGER_PATH = ROOT / "research_candidates" / "evidence_abstention" / "SWE_REBENCH_V2_STAGE2_STAGE3_PROGRESS_LEDGER_V0_1_2026-11-16.json"
 
 
@@ -77,7 +79,7 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertNotIn("DYMOS_BASE_COMMENTED_VAL_NORMALIZATION", items)
         self.assertNotIn("DYMOS_BASE_COMMENTED_INPUT_DEFAULT", items)
 
-    def test_packet_provenance_matches_external_packet_hash_and_review_is_pending(self):
+    def test_packet_provenance_matches_external_packet_hash_and_gold_tier_decision_is_approved(self):
         packet_set = json.loads(PACKET_PATH.read_text(encoding="utf-8"))
         provenance = json.loads(PROVENANCE_PATH.read_text(encoding="utf-8"))
         self.assertEqual(provenance["packet_set_sha256"], packet_set["packet_set_sha256"])
@@ -87,8 +89,10 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         )
         self.assertEqual(
             provenance["semantic_review"]["status"],
-            "pending_source_aware_project_lead_gold_and_tier_decision",
+            "approved_source_aware_project_lead_gold_and_tier_decision",
         )
+        self.assertTrue(provenance["semantic_review"]["adjudication_completed"])
+        self.assertEqual(provenance["semantic_review"]["project_lead_decision"]["decision"], "APPROVED")
         self.assertFalse(provenance["structural_validation"]["semantic_sufficiency_assessed"])
         self.assertFalse(provenance["structural_validation"]["model_inference_performed"])
 
@@ -135,6 +139,38 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertEqual(record["exposure_and_roles"]["researcher_source_exposure"].split(" ")[0], "full")
         self.assertEqual(record["exposure_and_roles"]["prior_pipeline_debug_exposure_decision_record"]["sha256"], EXPOSURE_SHA256)
         self.assertFalse(record["independence_status"]["inference_authorized"])
+
+    def test_project_lead_gold_tier_decision_is_hashed_and_does_not_accept_case(self):
+        content = DECISION_PATH.read_bytes()
+        self.assertEqual(hashlib.sha256(content).hexdigest(), DECISION_SHA256)
+        decision = content.decode("utf-8")
+        self.assertIn("APPROVED", decision)
+        self.assertIn("ABSTAIN", decision)
+        self.assertIn("ANSWER", decision)
+        self.assertIn("Final case acceptance remains", decision)
+
+        provenance = json.loads(PROVENANCE_PATH.read_text(encoding="utf-8"))
+        semantic = provenance["semantic_review"]
+        self.assertEqual(semantic["status"], "approved_source_aware_project_lead_gold_and_tier_decision")
+        self.assertEqual(semantic["project_lead_decision"]["decision"], "APPROVED")
+        self.assertEqual(semantic["project_lead_decision"]["decision_record_sha256"], DECISION_SHA256)
+        self.assertEqual(semantic["project_lead_decision"]["tier_decisions"]["E3"].split(" ")[0], "ABSTAIN")
+        self.assertEqual(semantic["project_lead_decision"]["tier_decisions"]["E2"].split(" ")[0], "ABSTAIN")
+        self.assertEqual(semantic["project_lead_decision"]["tier_decisions"]["E1"].split(" ")[0], "ANSWER")
+
+        independence = json.loads(INDEPENDENCE_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(independence["independence_status"]["final_case_acceptance"], "not_accepted")
+        self.assertEqual(independence["source_aware_gold_tier_decision"]["status"], "approved_by_project_lead")
+        self.assertFalse(independence["independence_status"]["inference_authorized"])
+
+        ledger = json.loads(LEDGER_PATH.read_text(encoding="utf-8"))
+        dymos = next(item for item in ledger["records"] if item["repository"] == "OpenMDAO/dymos")
+        self.assertEqual(dymos["stage3_gold_and_tiers_decision"]["decision"], "APPROVED")
+        self.assertEqual(dymos["stage3_gold_and_tiers_decision"]["decision_record_sha256"], DECISION_SHA256)
+        self.assertEqual(dymos["stage3_gold_and_tiers_decision"]["final_case_acceptance"], "not_accepted")
+        self.assertFalse(dymos["stage3_gold_and_tiers_decision"]["inference_authorized"])
+        self.assertNotEqual(dymos["final_case_acceptance"], "accepted")
+        self.assertFalse(dymos["model_inference_authorized"])
 
     def test_prior_pipeline_debug_exposure_decision_is_hashed_and_separate_from_source_exposure(self):
         record = json.loads(INDEPENDENCE_PATH.read_text(encoding="utf-8"))
