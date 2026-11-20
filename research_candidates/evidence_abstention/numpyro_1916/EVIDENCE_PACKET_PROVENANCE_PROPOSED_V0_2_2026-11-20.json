@@ -129,15 +129,30 @@
     ]
   },
   "structural_validation": {
-    "status": "PENDING_BRANCH_HEAD_VALIDATION_OF_AMENDED_PACKET",
+    "status": "CI_CONTRACT_TESTS_PASS_STRUCTURAL_ONLY",
     "validator_modules": [
       "operational_packet_validator.py",
       "evidence_level_packet_set.py"
     ],
     "semantic_sufficiency_assessed": false,
     "model_inference_performed": false,
-    "supersedes_packet_set_sha256": "e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d",
-    "validation_note": "The prior CI result validated the superseded packet bytes. This amended packet set must pass branch-head no-inference CI; structural validation will not establish semantic sufficiency."
+    "supersedes_packet_set_sha256": "e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594495e55?",
+    "latest_validation_run_id": 44761690559,
+    "latest_validation_job_id": 136375587794,
+    "latest_validation_commit": "43b06b48b843bbca78cde608a96edce2344cca90",
+    "test_groups": {
+      "packet_audit": 12,
+      "operational_and_nested_packet_contracts": 25,
+      "numpyro_review_contracts": 8,
+      "dymos_review_contracts": 5,
+      "selector_runner": 6,
+      "exploratory_acceptance_and_readiness": 24,
+      "study_design_and_dual_human_scoring": 10,
+      "total": 90
+    },
+    "preflight_artifact_id": 14642395350,
+    "preflight_artifact_sha256": "3fe0d9de95b5379671a3fef849ad5c185d066cfc6678eccf55dcb0de372cb3b6",
+    "validation_note": "The amended E3=1/E2=4/E1=7 packet set passed branch-head no-inference contract validation on this commit. The validator verifies packet structure, nesting and hashes only; semantic sufficiency and final case acceptance remain separate project-lead decisions."
   },
   "semantic_review": {
     "status": "project_lead_gold_mechanism_approved; packet_membership_construction_approved; semantic_sufficiency_pending",
@@ -251,11 +266,21 @@
     "fine_tuning": false
   },
   "latest_no_inference_preflight": {
-    "workflow_run_id": null,
-    "job_id": null,
-    "conclusion": "pending",
-    "tests": "Branch-head validation of the amended NumPyro packet/provenance and associated no-inference contracts is pending.",
-    "readiness": "Inference remains blocked; no model weights loaded and no model inference performed."
+    "workflow_run_id": 44761690559,
+    "job_id": 136375587794,
+    "conclusion": "success",
+    "commit": "43b06b48b843bbca78cde608a96edce2344cca90",
+    "tests": "90 passed across packet audit (12), operational/nested packet contracts (25), NumPyro review contracts (8), Dymos review contracts (5), selector runner (6), exploratory acceptance/readiness (24), and study-design/dual-human scoring (10).",
+    "artifact_id": 14642395350,
+    "artifact_sha256": "3fe0d9de95b5379671a3fef849ad5c185d066cfc6678eccf55dcb0de372cb3b6",
+    "readiness": "blocked_before_inference",
+    "accepted_case_count": 1,
+    "blocker_count": 13,
+    "ready_for_inference": false,
+    "model_loading_performed": false,
+    "model_inference_performed": false,
+    "fine_tuning_performed": false,
+    "inference_authorized": false
   },
   "packet_amendment_approval": {
     "date": "2026-11-20",
@@ -272,5 +297,20 @@
     "source_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
     "source_file": "numpyro/infer/mcmc.py",
     "semantic_sufficiency_and_final_acceptance": "not_approved_by_this_packet-construction_decision"
+  },
+  "latest_independent_issue_reproducer": {
+    "workflow_run_id": 44761690320,
+    "job_id": 136375585065,
+    "conclusion": "success",
+    "commit": "43b06b48b843bbca78cde608a96edce2344cca90",
+    "artifact_id": 14640974491,
+    "artifact_github_digest": "sha256:7717fe6ed53ae6752325cf954ea20285279ffff679403f7a5c2c9bf20216ac49",
+    "artifact_locally_rehashed": false,
+    "buggy_base": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+    "buggy_base_result": "Independent public-API AIES/100-vectorized-chain warmup()->run() reproducer executed and failed with the expected JAX PRNG key shape (100, 2).",
+    "fixed_revision": "5692d2da335945b756aeae02e3720b9b7f3efef2",
+    "fixed_revision_result": "Same reproducer passed (1 passed in 3.89s) under the same environment.",
+    "runtime": "CPython 3.11.9; CPU-only JAX/JAXlib 0.4.35",
+    "model_inference_performed": false
   }
 }
