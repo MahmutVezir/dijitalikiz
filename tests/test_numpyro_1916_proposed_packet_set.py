@@ -57,7 +57,7 @@ class Numpyro1916ProposedPacketSetTests(unittest.TestCase):
         )
         self.assertEqual(
             provenance["semantic_review"]["status"],
-            "pending_independent_human_panel",
+            "pending_source_aware_project_lead_gold_and_tier_decision",
         )
         self.assertFalse(provenance["structural_validation"]["semantic_sufficiency_assessed"])
         self.assertFalse(provenance["structural_validation"]["model_inference_performed"])
