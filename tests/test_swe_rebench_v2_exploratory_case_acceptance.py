@@ -394,6 +394,6 @@ def test_dymos_proposed_case_record_is_structurally_complete_without_acceptance_
         "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
         "A1_POLYNOMIAL_VALUE_SHAPE_NORMALIZATION",
     }
-    assert len(record["evidence_tiers"]["E1"]["evidence_items"]) == 6
+    assert len(record["evidence_tiers"]["E1"]["evidence_items"]) == 7
     assert len(record["evidence_tiers"]["E2"]["evidence_items"]) == 3
     assert len(record["evidence_tiers"]["E3"]["evidence_items"]) == 1
