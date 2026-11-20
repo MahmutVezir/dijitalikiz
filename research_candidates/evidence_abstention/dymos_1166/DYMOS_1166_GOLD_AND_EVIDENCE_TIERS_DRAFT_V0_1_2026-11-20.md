@@ -2,7 +2,7 @@
 
 **Version:** 0.1 proposed  
 **Date:** 20 November 2026  
-**Disposition:** Source-aware technical proposal only; not yet the project lead's final gold/tier decision, not case acceptance, and not inference authorization.
+**Disposition:** The technical gold mechanism and E3/E2/E1 tier decisions were approved by the project lead on 20 November 2026; see the separate decision record. This is not final case acceptance or inference authorization.
 
 ## Candidate identity
 
@@ -50,3 +50,8 @@ Dymos issue #531 (2021) concerned a broader earlier default-value problem and wa
 The project lead should record whether the proposed mechanism and tier thresholds are accepted, revised, or unresolved. Hasan's input may be recorded as project-lead-reported supplementary concurrence only; it is not represented as a signed independent review. Before final case acceptance, complete the bounded documentary license-scope acknowledgement, candidate-specific prior pipeline/debug exposure declaration, schema-conformant case record, registry validation, and separate final YES/NO.
 
 No model loading, inference, fine-tuning, or training is authorized.
+
+
+## Project-lead adjudication status
+
+The project-lead source-aware gold/tier decision is recorded and approved in `PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md` (SHA-256 `9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392`). E3 and E2 require abstention; E1 supports an answer. The remaining gates are documentary license scope, exact pinned dataset-card license verification, complete case record, fail-closed registry validation, and a separate final YES/NO acceptance decision.
