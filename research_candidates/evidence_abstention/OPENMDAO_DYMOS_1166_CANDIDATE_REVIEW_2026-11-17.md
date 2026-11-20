@@ -234,3 +234,17 @@ The student project lead explicitly accepted Dymos #1166 as one of the strong fi
 This is candidate-selection approval only. It does **not** approve the proposed Dymos gold mechanism or E1/E2/E3 tier membership; those remain for a separate source-aware project-lead decision. The candidate-specific prior pipeline/debug exposure declaration, bounded dependency/source/dataset license-scope acknowledgement, complete case record, fail-closed registry validation and separate final case YES/NO also remain pending.
 
 The candidate remains not accepted as a final case at this point. It contributes at most one Dymos upstream-project case. No model load, inference, fine-tuning or training is authorized.
+
+
+## Superseding project-lead prior pipeline/debug exposure declaration — 20 November 2026
+
+The project lead explicitly declared `prior_pipeline_debug_exposure = none` for Dymos #1166: the candidate was not used before prospective case validation to debug the shared pipeline, runner, dataset selectors, or test oracle.
+
+- Decision record: `research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_EXPOSURE_DECISION_DYMOS_1166_2026-11-20.md`
+- Decision-record SHA-256: `3d38e3b45f2d27cc6531ede3d73d8f2439deee0b6970c6d4618d4e02e55733ea`
+- Evidence class: direct project-lead self-report from the 20 November 2026 conversation; not an independently witnessed audit.
+- `researcher_source_exposure = full` remains separately disclosed because the project lead has reviewed the issue, PR, pinned source, reproductions, and evidence packets.
+
+This closes only the candidate-specific prior pipeline/debug exposure declaration gate. It does not close source exposure, license scope, exact pinned dataset-card verification, source-aware gold/E1/E2/E3 adjudication, case-record validation, final acceptance, or inference authorization. Earlier references in this review to the prior pipeline/debug declaration being pending are superseded by this dated addendum.
+
+**Current disposition remains:** selected for Stage 3 evaluation; not a final accepted case; no model loading, inference, fine-tuning, or training authorized.
