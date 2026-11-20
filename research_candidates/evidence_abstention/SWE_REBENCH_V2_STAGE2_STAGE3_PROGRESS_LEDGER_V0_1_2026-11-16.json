@@ -2612,9 +2612,9 @@
   },
   "candidate_portfolio_review": {
     "review_path": "research_candidates/evidence_abstention/CANDIDATE_PORTFOLIO_REVIEW_2026-11-20.md",
-    "review_commit": "af2feb7de8e37537bf433265a45b23f7c4b8ac2a",
+    "review_commit": "bdfc56a3fa808f0bbff3c5409b471b316438311a",
     "scope": "All 14 current Stage 2-passed upstream projects (including Dishka) plus five active row/oracle/fixture holds",
-    "stage2_passed_distinct_projects_including_dishka": 14,
+    "stage2_passed_distinct_projects_including_dishka": 15,
     "accepted_v0_2_projects": 1,
     "additional_stage2_candidates_before_stage3": 13,
     "ctapipe_excluded_for_prior_pipeline_debug_exposure_some": true,
@@ -2639,6 +2639,10 @@
       "meltano/sdk",
       "pyfar/pyfar"
     ],
-    "source_of_truth_note": "Advisory triage only; candidate-specific technical and human gates remain separate. A current Stage 2 pass is not case acceptance."
+    "source_of_truth_note": "Advisory triage only; candidate-specific technical and human gates remain separate. A current Stage 2 pass is not case acceptance.",
+    "additional_stage2_passed_projects_excluding_dishka": 14,
+    "additional_stage2_candidates_after_ctapipe_exclusion": 13,
+    "current_project_count_if_all_13_pass_stage3": 14,
+    "current_project_count_if_modin_also_excluded": 13
   }
 }
