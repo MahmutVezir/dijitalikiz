@@ -1,0 +1,56 @@
+{
+  "schema_version": "0.1-eodag-1530-changed-file-license-manifest",
+  "generated_date": "2026-11-20",
+  "candidate": "CS-SI/eodag #1530 / PR #1536",
+  "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+  "fixed_pr_head": "312966a46513a082333d46cd7212bdce36aaf769",
+  "root_license": {
+    "file": "LICENSE",
+    "expression": "Apache-2.0",
+    "git_blob_sha1": "1a9893b43e8e6d46ff5cda60ab6562850b7f78ff",
+    "content_sha256": "e0c01e71eb67453430e43947b628a40d2cca58ed7154bc33339fc3b0f3189671"
+  },
+  "changed_files": [
+    {
+      "path": "eodag/config.py",
+      "base_git_blob_sha1": "0ceb1f1f7216cd46e118fb0a45de537a067c88a5",
+      "fixed_git_blob_sha1": "db5ae7a06f18d39effe9e3838ffbb56b62e5f6ab",
+      "scope": "PR also adds StacListAssets to a plugin-type list. This separate feature is excluded from the #1530 duplicate-key gold mechanism."
+    },
+    {
+      "path": "eodag/resources/user_conf_template.yml",
+      "base_git_blob_sha1": "0d6c9e24a3294dd12c2b09e844ef3990b01a0a5b",
+      "base_content_sha256": "1bf1b945d09ae7805450dc9777175e35625ede2d6bf899c5d586bc6f08c297ff",
+      "fixed_git_blob_sha1": "5221bd2d052bdd60363367d3be51044e1cc95c76",
+      "fixed_content_sha256": "b833e96223fa19dfcd71a5b12c7586a3af2035959b105e8cf07bc5d457b0fe5b",
+      "scope": "The second top-level `geodes` key is renamed `geodes_s3`; this is the production change directly in scope for issue #1530."
+    },
+    {
+      "path": "tests/units/test_core.py",
+      "base_git_blob_sha1": "3b8faf95050a09a9d3647eacbac80553522edd3a",
+      "fixed_git_blob_sha1": "9f5fdfd84956535fa7d0fe1b87c44249a58a073b",
+      "scope": "Upstream regression assertions add geodes_s3 to provider and supported product-type expectations."
+    }
+  ],
+  "exact_base_notice": {
+    "file": "NOTICE",
+    "git_blob_sha1": "9f763bc3c2f90854b8209ce60e23c8fc03c6ec7e",
+    "content_sha256": "4f054acd147b5e20d96f1699fd975888392b24c33eef64801151379c7b3a4460",
+    "note": "The upstream NOTICE lists selected third-party components and licenses; it must be retained if the upstream work is redistributed."
+  },
+  "evidence_sources_not_changed_by_pr": [
+    {
+      "path": "tests/utils.py",
+      "base_git_blob_sha1": "32fb607445879bfbe6d29cd4bea95666d0a8ee58",
+      "content_sha256": "2859d5efb695434511575735e9a85ef3d2701db08f1284eacf3d50cc5613718b",
+      "relevance": "write_eodag_conf_with_fake_credentials loads the packaged user_conf_template.yml via yaml.safe_load, then iterates the parsed provider mapping to generate fake-credential test configuration."
+    },
+    {
+      "path": "eodag/utils/__init__.py",
+      "base_git_blob_sha1": "b4c47295687ab354a61fac2351f9a644e307023b",
+      "content_sha256": "564155634dab05e2956e70af1340a6bbdd0433b8532a73be412b95aaede47861",
+      "relevance": "The pinned source also defines cached_yaml_load using yaml.SafeLoader; this is supplementary context, not the primary test-fixture link."
+    }
+  ],
+  "pr_scope_warning": "PR #1536 is mixed-scope: config.py adds StacListAssets support, while user_conf_template.yml fixes the duplicate provider key. Keep the separate StacListAssets change out of the #1530 defect gold and its evidence packets."
+}
