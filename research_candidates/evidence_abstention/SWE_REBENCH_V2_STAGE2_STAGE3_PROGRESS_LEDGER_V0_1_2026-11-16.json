@@ -2613,7 +2613,7 @@
   "candidate_portfolio_review": {
     "review_path": "research_candidates/evidence_abstention/CANDIDATE_PORTFOLIO_REVIEW_2026-11-20.md",
     "review_commit": "bdfc56a3fa808f0bbff3c5409b471b316438311a",
-    "scope": "All 14 current Stage 2-passed upstream projects (including Dishka) plus five active row/oracle/fixture holds",
+    "scope": "All 15 current Stage 2-passed upstream projects (including Dishka) plus five active row/oracle/fixture holds",
     "stage2_passed_distinct_projects_including_dishka": 15,
     "accepted_v0_2_projects": 1,
     "additional_stage2_candidates_before_stage3": 13,
