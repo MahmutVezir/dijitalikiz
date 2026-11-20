@@ -441,13 +441,13 @@
         "semantic_sufficiency_assessed": false,
         "model_inference_performed": false
       },
-      "stage3_semantic_adjudication": "pending_two_independent_blinded_panel_b_raters_and_separate_adjudicator",
+      "stage3_semantic_adjudication": "pending_source_aware_project_lead_single_human_adjudication_under_v0_2",
       "stage2_latest_job_id": 135605947673,
       "stage2_latest_artifact_id": 14536697284,
       "stage2_latest_artifact_sha256": "88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556",
       "stage2_latest_artifact_integrity": "Locally downloaded artifact; outer SHA-256 matches GitHub digest; ZIP CRC passed; all 15/15 payload SHA256SUMS entries passed.",
       "study_evaluation_eligibility": "provisional_pending_human_license_scope_panel_review_and_final_project_lead_decision",
-      "next_required_gate": "Record the project lead's source-aware technical gold/E1-E2-E3 approval under the same single-human-adjudicator exploratory limitation as Dishka; obtain the bounded documentary license-scope acknowledgement and explicit prior_pipeline_debug_exposure declaration; then complete the schema-conformant case record, validate the fail-closed registry, and obtain the separate final project-lead YES/NO. No model inference.",
+      "next_required_gate": "Record the project lead's source-aware technical gold/E1-E2-E3 decision under the Dishka-equivalent single-human-adjudicator exploratory route; obtain the bounded documentary license-scope acknowledgement and explicit prior_pipeline_debug_exposure declaration; then complete the schema-conformant case record, validate the fail-closed registry, and obtain the separate final project-lead YES/NO. Two-human Rater A/Rater B scoring remains a later raw-response scoring gate; it is not a gold/tier adjudication gate. No model inference.",
       "stage3_proposed_packet_set_path": "research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_2_2026-11-20.json",
       "stage3_proposed_provenance_path": "research_candidates/evidence_abstention/numpyro_1916/EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_2_2026-11-20.json",
       "stage3_proposed_packet_set_sha256": "e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d",
@@ -469,7 +469,7 @@
         "semantic_sufficiency_assessed": false,
         "model_inference_performed": false
       },
-      "stage3_ai_advisory_review": "The 19 November E1 packet lacked the buggy-base EnsembleSampler.init contract: initialization receives a batch to infer chain count, selects rng_key[0], splits that singleton key, and stores a scalar sampler-state key. The new proposed 20 November E1 packet adds this source excerpt, addressing the alternative that the sampler itself is intended to hold a batch key. This is AI advisory only and not Panel B semantic adjudication. The documented warmup->run lifecycle is supported by MCMC.warmup docstring lines 574-618. Two independent blinded Panel B ratings and a separate adjudicator remain mandatory.",
+      "stage3_ai_advisory_review": "The 19 November E1 packet lacked the buggy-base EnsembleSampler.init contract: initialization receives a batch to infer chain count, selects rng_key[0], splits that singleton key, and stores a scalar sampler-state key. The new proposed 20 November E1 packet adds this source excerpt, addressing the alternative that the sampler itself is intended to hold a batch key. This is AI advisory only and not Panel B semantic adjudication. The documented warmup->run lifecycle is supported by MCMC.warmup docstring lines 574-618. Under the v0.2 exploratory route used for Dishka, the source-aware project lead is the single human adjudicator for technical gold and E1/E2/E3; Hasan may be recorded only as project-lead-reported supplementary source-aware input, and ChatGPT is advisory only. Two human scorers remain required for later blinded raw model-response scoring, not for gold/tier construction.",
       "stage3_proposed_packet_validation_run_id": 44730945050,
       "stage3_proposed_packet_validation_status": "passed_structural_only",
       "stage3_license_scope_review_path": "research_candidates/evidence_abstention/numpyro_1916/NUMPYRO_1916_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json",
@@ -561,6 +561,17 @@
           "zip_crc": "PASS",
           "internal_hashes": "10/10 PASS"
         }
+      },
+      "stage3_adjudication_route_v0_2": {
+        "standard": "Dishka #435 accepted exploratory precedent",
+        "gold_and_tiers": "single source-aware project-lead human adjudicator",
+        "chatgpt": "AI advisory only, not a human rater",
+        "hasan": "project-lead-reported supplementary source-aware input only; no separate signed independent adjudication",
+        "researcher_source_exposure": "full; disclosed",
+        "blind_review_for_gold_tiers_required": false,
+        "two_human_reviewers_required_for": "later blinded raw model-output evidence-support scoring only",
+        "response_scoring_rater_b_status": "consent/exposure screen/calibration pending",
+        "final_gold_tier_decision": "pending"
       }
     },
     {
@@ -613,7 +624,7 @@
       "stage3_status": "proposed_v0_1_packet_structure_ci_passed_semantic_gold_and_license_scope_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44114656908,
+      "stage2_latest_run_id": 44741768163,
       "stage2_artifact_id": 14341424466,
       "stage2_artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
       "stage2_dataset_row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
@@ -638,6 +649,20 @@
           "outer_sha256_matches": true,
           "zip_crc": "PASS",
           "internal_hashes": "15/15 PASS"
+        },
+        "latest_repeat": {
+          "workflow_run_id": 44741768163,
+          "workflow_job_id": 136306920964,
+          "workflow_commit": "7d8dd3410f8f1778efb623b15678134095330ce2",
+          "artifact_id": 14631740733,
+          "artifact_sha256": "3c3b2d96d0ad7b82d945aa7fcbc4014e64674496967eeb98288f070af8f39f00",
+          "local_integrity": {
+            "outer_sha256_matches": true,
+            "zip_crc": "PASS",
+            "internal_hashes": "15/15 PASS"
+          },
+          "buggy_base_result": "executed assertion failure; actual [[1.0],[1.0]], expected [[5.0],[15.0]]",
+          "fixed_revision_result": "1 passed"
         }
       },
       "stage3_proposed_packet_set_path": "research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
@@ -656,7 +681,10 @@
         "validation_commit": "1afb274a2044d7f418d034c199605c23cecd01e4",
         "dedicated_review_tests": 5,
         "semantic_sufficiency_assessed": false,
-        "model_inference_performed": false
+        "model_inference_performed": false,
+        "validation_latest_run_id": 44741767911,
+        "validation_latest_job_id": 136306921046,
+        "validation_latest_result": "5 passed"
       },
       "stage3_issue_family_independence_path": "research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
       "stage3_dependency_license_scope_path": "research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json",
@@ -665,9 +693,16 @@
         "source_aware_project_lead_gold_tier_decision": "pending",
         "hasan_role": "project-lead-reported supplementary concurrence only; not a signed independent review",
         "prior_pipeline_debug_exposure": "pending explicit candidate-specific declaration",
-        "restricted_blind_panel_not_required_for_gold_tier_under_dishka_equivalent_exploratory_route": true
+        "restricted_blind_panel_not_required_for_gold_tier_under_dishka_equivalent_exploratory_route": true,
+        "adjudication_method": "Dishka-equivalent v0.2 source-aware single project-lead human adjudicator for technical gold and E1/E2/E3; ChatGPT advisory only; Hasan project-lead-reported supplementary technical input",
+        "blind_review_for_gold_tiers_required": false,
+        "two_human_raters_apply_to": "later blinded raw model-output evidence-support scoring only"
       },
-      "next_required_gate": "Project lead records source-aware gold/E1-E2-E3 decision under the same single-adjudicator exploratory method accepted for Dishka; provide bounded documentary license-scope acknowledgement and candidate-specific prior_pipeline_debug_exposure declaration; then prepare schema-conformant case record, validate fail-closed registry and record separate final YES/NO. No model inference."
+      "next_required_gate": "Project lead records source-aware gold/E1-E2-E3 decision under the same single-adjudicator exploratory method accepted for Dishka; provide bounded documentary license-scope acknowledgement and candidate-specific prior_pipeline_debug_exposure declaration; then prepare schema-conformant case record, validate fail-closed registry and record separate final YES/NO. Two-human raw-response scoring remains a later output-scoring requirement, not a gold/tier gate. No model inference.",
+      "stage2_latest_job_id": 136306920964,
+      "stage2_latest_artifact_id": 14631740733,
+      "stage2_latest_artifact_sha256": "3c3b2d96d0ad7b82d945aa7fcbc4014e64674496967eeb98288f070af8f39f00",
+      "stage2_latest_artifact_integrity": "Latest branch-head independent reproducer artifact downloaded and locally verified: outer SHA-256 matches GitHub digest; ZIP CRC PASS; 15/15 internal SHA256SUMS entries PASS."
     },
     {
       "cohort_rank": 16,
@@ -2360,9 +2395,9 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44741554783,
-    "head_commit": "1afb274a2044d7f418d034c199605c23cecd01e4",
-    "job_id": 136306184954,
+    "workflow_run_id": 44741767911,
+    "head_commit": "7d8dd3410f8f1778efb623b15678134095330ce2",
+    "job_id": 136306921046,
     "status": "success",
     "ready_for_inference": false,
     "blocker_count": 13,
@@ -2380,13 +2415,13 @@
       "study_design_and_dual_human_scoring": 10,
       "total": 90
     },
-    "artifact_id": 14631870140,
-    "artifact_sha256": "a26ff02fce4af5d2833975a77fcad2a7efb306ea5358b26a6b04be1181bcd78e",
+    "artifact_id": 14630882585,
+    "artifact_sha256": "b13204d61467012465e9778620eaf7d630db2ad31e74a5472089e6ffadb05465",
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "Dishka #435 remains the only accepted v0.2 case. NumPyro #1916 and Dymos #1166 now have independent issue reproducers and structural Stage 3 packet checks, but both remain not accepted pending source-aware gold/tier decisions, bounded license scope and exposure declarations. Ninety no-inference tests passed."
+    "note": "Dishka #435 remains the only accepted v0.2 case. NumPyro #1916 and Dymos #1166 have independent issue reproducers and structural Stage 3 packet checks, but both remain not accepted pending source-aware gold/tier decisions, bounded license scope and exposure declarations. Ninety no-inference tests passed."
   },
   "project_lead_decisions": [
     {
@@ -2574,5 +2609,36 @@
     "fine_tuning_performed": false,
     "inference_authorized": false,
     "note": "The last full repository/configuration validation passed on the preceding code-and-research head. The later commit 982ec189 changed only the no-inference preflight workflow; that workflow's new branch-head run passed its 85-test preflight suite. No model was loaded or executed."
+  },
+  "candidate_portfolio_review": {
+    "review_path": "research_candidates/evidence_abstention/CANDIDATE_PORTFOLIO_REVIEW_2026-11-20.md",
+    "review_commit": "af2feb7de8e37537bf433265a45b23f7c4b8ac2a",
+    "scope": "All 14 current Stage 2-passed upstream projects (including Dishka) plus five active row/oracle/fixture holds",
+    "stage2_passed_distinct_projects_including_dishka": 14,
+    "accepted_v0_2_projects": 1,
+    "additional_stage2_candidates_before_stage3": 13,
+    "ctapipe_excluded_for_prior_pipeline_debug_exposure_some": true,
+    "conditional_or_hold_candidates": [
+      "napalm-automation/napalm",
+      "modin-project/modin",
+      "ecmwf/earthkit-data",
+      "wntrblm/nox",
+      "pallets/werkzeug"
+    ],
+    "current_frozen_rows_excluded_as_unsuitable": [
+      "getmoto/moto #8269",
+      "capitalone/datacompy #58"
+    ],
+    "recommended_first_batch": [
+      "pyro-ppl/numpyro",
+      "OpenMDAO/dymos"
+    ],
+    "next_easy_stage3_batch": [
+      "CS-SI/eodag",
+      "MarketSquare/robotframework-robocop",
+      "meltano/sdk",
+      "pyfar/pyfar"
+    ],
+    "source_of_truth_note": "Advisory triage only; candidate-specific technical and human gates remain separate. A current Stage 2 pass is not case acceptance."
   }
 }
