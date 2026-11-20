@@ -246,11 +246,14 @@ def test_dishka_proposed_case_does_not_change_empty_accepted_registry():
         (RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text(encoding="utf-8")
     )
 
-    assert proposed["acceptance_decision"] == "proposed"
-    assert registry["records"] == []
+    assert proposed["acceptance_decision"] == "accepted"
+    assert len(registry["records"]) == 1
     result = validate_registry(registry)
-    assert result["status"] == "valid_empty_registry", result["blockers"]
-    assert result["accepted_case_count"] == 0
+    assert result["status"] == "structurally_valid_candidate_registry", result["blockers"]
+    assert result["accepted_case_count"] == 1
+    assert result["accepted_project_count"] == 1
+    assert result["minimum_feasibility_count_met"] is True
+    assert result["primary_target_met"] is False
     assert result["inference_authorized"] is False
 
 
@@ -353,3 +356,16 @@ def test_dishka_patch_and_reproduction_artifact_references_are_pinned():
     }
     assert record["technical_reproduction"]["buggy_baseline"]["run_record"] == latest_artifact
     assert record["technical_reproduction"]["fixed_revision"]["run_record"] == latest_artifact
+
+def test_dishka_final_decision_artifacts_are_hashed_and_inference_remains_disabled():
+    case_path = RESEARCH / "reproduction" / "dishka_issue_435" / "SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json"
+    record = json.loads(case_path.read_text(encoding="utf-8"))
+    for ref in (record["human_decision"]["ai_critique_record"], record["final_acceptance"]["decision_record"]):
+        relative = ref["uri"].split("/blob/research/2026-11-16-followup-evidence-validation/", 1)[1]
+        content = (ROOT / relative).read_bytes()
+        assert hashlib.sha256(content).hexdigest() == ref["sha256"]
+    registry = json.loads((RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text())
+    result = validate_registry(registry)
+    assert result["status"] == "structurally_valid_candidate_registry", result["blockers"]
+    assert result["accepted_case_count"] == 1
+    assert result["inference_authorized"] is False

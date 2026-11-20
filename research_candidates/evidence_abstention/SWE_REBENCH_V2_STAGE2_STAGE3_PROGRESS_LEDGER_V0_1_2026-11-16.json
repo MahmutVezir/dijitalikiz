@@ -80,7 +80,7 @@
       "stage2_workflow_job_id": 135837278218,
       "stage2_evidence_note": "Latest run on PR head dcea5055b086644a3b1b3307a3be38e59740b67f: workflow 44602442485 / Dishka job 135837278218 / artifact 14569001619. Outer ZIP SHA-256 064e8aec01eaccb30849bfb7535e856c721db628c983d2207f7f0efec136419e; CRC PASS; 33 members; 32/32 inner hashes. Base reproducer fails AssertionError 1 != 42, fixed passes; all eight frozen selectors fail base and pass fixed. full-pr.diff SHA-256 c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde. Technical evidence only; final case decision pending.",
       "stage3_status": "passed_technical_adjudication",
-      "final_case_acceptance": "not_accepted",
+      "final_case_acceptance": "accepted_exploratory_v0_2",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44602442485,
       "stage2_latest_job_id": 135837278218,
@@ -113,10 +113,13 @@
         "path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
         "sha256": "04ee890fea8acf4d73c95122e7bee8c258534942829188f897216e043400fed8",
         "git_blob_sha1": "updated_in_current_branch_commit",
-        "acceptance_decision": "proposed",
-        "final_acceptance_status": "pending",
-        "final_decision_timestamp_utc": null,
-        "final_decision_record": null,
+        "acceptance_decision": "accepted",
+        "final_acceptance_status": "approved",
+        "final_decision_timestamp_utc": "2026-11-20T10:59:00Z",
+        "final_decision_record": {
+          "path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_DISHKA_435_2026-11-20.md",
+          "sha256": "7c532431844c44ef94399f377bc97d2fd98541482bd7f1f469369993372f1b5b"
+        },
         "source_patch_reference": {
           "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485/artifacts/14569001619#path=full-pr.diff",
           "sha256": "c5a6e5edc41d5a321fb95dc0bdb81ee449870eb53278a5d91582c2478395efde"
@@ -124,7 +127,8 @@
         "stage2_artifact_reference": {
           "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44602442485/artifacts/14569001619",
           "sha256": "064e8aec01eaccb30849bfb7535e856c721db628c983d2207f7f0efec136419e"
-        }
+        },
+        "case_json_sha256": "4fa1a4eed315893072723d116533f6f2d2fd8568b592e43718cb8c0cc4859936"
       },
       "case_record_structural_validation": {
         "status": "structurally_complete_candidate",
@@ -159,11 +163,11 @@
         "patch_reference_test_passed": true
       },
       "accepted_registry_validation": {
-        "status": "valid_empty_registry",
+        "status": "pending_ci_structural_validation",
         "registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json",
-        "accepted_case_count": 0,
-        "accepted_project_count": 0,
-        "proposed_case_inserted": false,
+        "accepted_case_count": 1,
+        "accepted_project_count": 1,
+        "proposed_case_inserted": true,
         "inference_authorized": false
       },
       "latest_no_inference_preflight": {
@@ -2212,11 +2216,11 @@
       "zip_crc_passed": true,
       "archive_members": 6
     },
-    "status": "blocked_before_inference",
+    "status": "requires_rerun_after_acceptance_record_change",
     "ready_for_inference": false,
     "blocker_count": 14,
-    "accepted_case_count": 0,
-    "accepted_project_count": 0,
+    "accepted_case_count": 1,
+    "accepted_project_count": 1,
     "registry_status": "valid_empty_registry",
     "schema_valid": true,
     "tests": {
@@ -2230,7 +2234,8 @@
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
-    "inference_authorized": false
+    "inference_authorized": false,
+    "note": "Previous 14-blocker preflight predates this accepted-case registry change. Re-run no-inference structural validation on the new commit; acceptance does not grant inference."
   },
   "project_lead_decisions": [
     {
@@ -2240,6 +2245,16 @@
       "decision_source": "project_lead_chat_confirmation",
       "reviewer_concurrence_reported_by_project_lead": true,
       "approval_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_DECISION_AND_REVIEWER_CONCURRENCE_2026-11-18.md",
+      "inference_authorized": false
+    },
+    {
+      "date": "2026-11-20",
+      "candidate": "reagento/dishka #435/#436",
+      "decision": "YES — accept SRV2E-DISHKA_435 into the v0.2 exploratory/feasibility registry only",
+      "decision_source": "explicit_project_lead_chat_confirmation",
+      "decision_timestamp_utc": "2026-11-20T10:59:00Z",
+      "decision_record_path": "research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_DISHKA_435_2026-11-20.md",
+      "decision_record_sha256": "7c532431844c44ef94399f377bc97d2fd98541482bd7f1f469369993372f1b5b",
       "inference_authorized": false
     }
   ],

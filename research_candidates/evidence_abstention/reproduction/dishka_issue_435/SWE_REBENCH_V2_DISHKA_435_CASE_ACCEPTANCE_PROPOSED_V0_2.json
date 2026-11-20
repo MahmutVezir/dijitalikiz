@@ -1,7 +1,7 @@
 {
   "schema_version": "0.1-v02-exploratory",
   "case_id": "SRV2E-DISHKA_435",
-  "acceptance_decision": "proposed",
+  "acceptance_decision": "accepted",
   "dataset": {
     "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
     "file_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
@@ -436,19 +436,22 @@
   },
   "human_decision": {
     "decision_maker_role": "student_project_lead",
-    "decision_timestamp_utc": "2026-11-19T15:55:16Z",
-    "rationale": "The project lead accepted the bounded documentary license/provenance screen only for the exact pinned Dishka source, five changed files, dependency-free issue reproducer, four pinned test-runner packages and separate PyArrow 19.0.1 dataset-extraction environment. This decision is not legal advice or blanket redistribution approval. Earlier project-lead approvals of the technical gold, alternatives, evidence tiers and disclosed limitations remain recorded in the cited human adjudication file. This is an interim case-preparation decision only, not final case acceptance.",
+    "decision_timestamp_utc": "2026-11-20T10:59:00Z",
+    "rationale": "The project lead explicitly selected YES after reviewing candidate-specific evidence and advisory limitations. ChatGPT acted only as adviser; the project lead made the decision.",
     "ai_critique_used": true,
     "ai_critique_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/1a87e6ce4b468cadff75b366b012b994803abae0/research_candidates/evidence_abstention/reproduction/dishka_issue_435/CHATGPT_ADVISORY_CRITIQUE_DISHKA_435_2026-11-17.md",
-      "sha256": "ea0215e41382409e109d0b3587bd95df400e94887d2f9c137a64fd90173c45ca"
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/reproduction/dishka_issue_435/AI_ADVISORY_NOTE_DISHKA_435_FINAL_ACCEPTANCE_2026-11-20.md",
+      "sha256": "d80adf7459d7f086eb37b6227f0a9bfa8cb9fbfa350858e15041336651910138"
     }
   },
   "final_acceptance": {
-    "status": "pending",
+    "status": "approved",
     "decision_maker_role": "student_project_lead",
-    "decision_timestamp_utc": null,
-    "rationale": "The candidate-specific proposed-record, evidence-hash/path, pinned-source, exposure, bounded documentary license-scope and structural validation checks are recorded as complete. The separate explicit YES/NO project-lead case-acceptance decision remains pending and must be recorded as a distinct timestamped, hashed decision before registry insertion. Proposed status is not acceptance and does not authorize model loading or inference.",
-    "decision_record": null
+    "decision_timestamp_utc": "2026-11-20T10:59:00Z",
+    "rationale": "YES — accept SRV2E-DISHKA_435 into the v0.2 exploratory/feasibility registry only. Full researcher source exposure and documentary-only license screening remain disclosed limitations. Not v0.1 confirmatory acceptance, external audit, legal clearance, or model-experiment authorization. Inference and fine-tuning remain prohibited.",
+    "decision_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/reproduction/dishka_issue_435/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_DISHKA_435_2026-11-20.md",
+      "sha256": "7c532431844c44ef94399f377bc97d2fd98541482bd7f1f469369993372f1b5b"
+    }
   }
 }
