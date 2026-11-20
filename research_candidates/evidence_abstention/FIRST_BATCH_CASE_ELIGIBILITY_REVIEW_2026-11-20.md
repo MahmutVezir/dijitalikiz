@@ -158,3 +158,21 @@ The project lead's conditional selection is honoured: these five are the first c
 ### EODAG scope note — superseding clarification
 
 The related #1517 report is a separate `KeyError: 'result_type'` in the remote `fetch_product_types_list` path. PR #1536's body says “Fixes #1530”; its diff only renames the duplicate key in `user_conf_template.yml`, adds `StacListAssets` to a config list, and updates expected `geodes_s3` provider/product-type/sortable lists. The frozen `test_list_product_types_for_provider_ok` selector uses `fetch_providers=False`, so it does not exercise #1517's remote-fetch path. Keep #1517 as a related distinct issue and keep `StacListAssets` out of the #1530 gold statement. The direct independent YAML reproducer remains the clearest isolated confirmation of the duplicate-key mechanism.
+
+## 5. Superseding project-lead decision — 20 November 2026
+
+The project lead has now explicitly accepted all five strong candidates for continued v0.2 Stage 3 case evaluation:
+
+1. NumPyro #1916
+2. Dymos #1166
+3. EODAG #1530
+4. Meltano SDK #3090
+5. PyFar #721
+
+For NumPyro #1916, the project lead separately approved the exact source-aware technical gold mechanism quoted in the NumPyro candidate review. This gold approval is recorded as a human decision, not an AI recommendation.
+
+For Dymos, EODAG, Meltano and PyFar, the project lead has approved candidate selection only. Their proposed gold mechanisms and E1/E2/E3 tier membership remain advisory proposals pending separate project-lead decisions.
+
+The five candidate selections are **not five final accepted cases**. The accepted-case registry remains unchanged until each candidate independently closes its prior pipeline/debug exposure declaration, bounded documentary license-scope acknowledgement, final gold/alternative/E1-E2-E3 decision, complete schema-conformant case record, fail-closed registry validation and separate case-specific final YES. Existing prior-debug exclusion of Robocop remains in force.
+
+The NumPyro and Dymos current-branch exact base/fix reproducer workflows both completed successfully on commit `8ab2c2cb36b8f8bee00d12a990d9cc76cc205aaa`: NumPyro run 44751142001/job 136339034841 and Dymos run 44751142114/job 136339035133. The no-inference preflight run 44751142329 completed successfully, and repository/configuration validation run 44751141885 completed successfully. These are structural/reproduction validations only; no model inference was performed.
