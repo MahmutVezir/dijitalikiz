@@ -38,11 +38,7 @@ class Numpyro1916ProposedPacketSetTests(unittest.TestCase):
         )
         self.assertEqual(
             result["additional_evidence_ids"]["E1_over_E2"],
-            [
-                "NP1916_BASE_ENSEMBLE_INIT_KEY_NORMALIZATION",
-                "NP1916_BASE_ENSEMBLE_SPLIT",
-                "NP1916_BASE_MCMC_RUN_HANDOFF",
-            ],
+            ["NP1916_BASE_ENSEMBLE_INIT_KEY_NORMALIZATION"],
         )
         self.assertFalse(result["semantic_sufficiency_assessed"])
         self.assertFalse(result["model_inference_performed"])

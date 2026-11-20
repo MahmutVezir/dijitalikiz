@@ -1,0 +1,253 @@
+{
+  "schema_version": "0.1-numpyro-1916-license-scope-review",
+  "generated_date": "2026-11-20",
+  "candidate": {
+    "issue": 1916,
+    "pull_request": 1918,
+    "dataset_instance": "pyro-ppl__numpyro-1918",
+    "upstream_repository": "pyro-ppl/numpyro"
+  },
+  "review_scope": "Exact upstream source revision and changed files; pinned CPU-only reproduction/test dependency set; dataset-row provenance and dataset license metadata; narrow use in a non-commercial research reproduction. This is a documentary inventory, not legal advice or blanket permission to redistribute packages, wheel binaries, source trees, or datasets.",
+  "upstream_source": {
+    "base_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+    "root_license_file": "LICENSE.md",
+    "root_license_spdx": "Apache-2.0",
+    "root_license_git_blob_sha1": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+    "setup_py_git_blob_sha1": "61057684bd3ec88c64431dbee4486d584a70fc1c",
+    "setup_py_license_field": "Apache License 2.0",
+    "changed_files": [
+      {
+        "path": "numpyro/infer/mcmc.py",
+        "base_git_blob_sha1": "dd3ec0c3a782c1e1530b138153d821392ee5bebd",
+        "spdx_header": "Apache-2.0"
+      },
+      {
+        "path": "test/infer/test_ensemble_mcmc.py",
+        "base_git_blob_sha1": "a49e6a63f3abcd267eee9ff6ef4c34540d410d25",
+        "fixed_git_blob_sha1": "bda377b993ef198960eddc0b27b9e217978d20a3",
+        "spdx_header": "Apache-2.0"
+      }
+    ],
+    "base_repository_is_fork": false
+  },
+  "dataset": {
+    "repository": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "row_id": "pyro-ppl__numpyro-1918",
+    "canonical_row_sha256": "d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646",
+    "row_license_field": "Apache-2.0",
+    "row_license_scope": "Per-row license identifier for the underlying source repository, not the dataset repository's own license.",
+    "dataset_hub_card_current_license": "CC-BY-4.0",
+    "dataset_card_metadata_source": "Hugging Face Hub repository metadata retrieved 2026-11-20 via the connected Hugging Face repository details action.",
+    "exact_pinned_dataset_card_license_verified": false,
+    "attribution_and_source_repository_licenses_must_both_be_respected": true
+  },
+  "reproduction_environment": {
+    "workflow_run_id": 44537219541,
+    "workflow_job_id": 135605947673,
+    "artifact_id": 14536697284,
+    "artifact_name": "numpyro-issue-1916-reproduction",
+    "artifact_reported_sha256": "88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556",
+    "locally_downloaded_archive_sha256": "88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556",
+    "outer_sha256_matches_reported_digest": true,
+    "zip_crc": "PASS",
+    "sha256sums_payload_count": 15,
+    "sha256sums_payload_verified_count": 15,
+    "all_payload_hashes_match": true,
+    "dependency_inventory_path": "dependency-license-inventory.json",
+    "dependency_inventory_sha256": "20b6109dae0af95a6c4917cadca00c958e5aa9cc02f11c536854c78305d7eaba",
+    "dependency_inventory_bytes": 110853,
+    "dependency_lock_path": "research_candidates/evidence_abstention/reproduction/numpyro_issue_1916/dataset_test_requirements.lock",
+    "dependency_lock_sha256": "8a160de15a15792632268e9840879fe262b98413ac1c5fe7bcf4253631f6bbb5",
+    "python_version": "3.11.9",
+    "runtime_scope": "CPU-only JAX; no GPU, external service, or model inference",
+    "source_test_runtime_package_count": 17,
+    "source_test_runtime_packages": [
+      {
+        "name": "jax",
+        "version": "0.4.35",
+        "license": "Apache-2.0",
+        "license_expression": null,
+        "license_classifiers": []
+      },
+      {
+        "name": "jaxlib",
+        "version": "0.4.35",
+        "license": "Apache-2.0",
+        "license_expression": null,
+        "license_classifiers": []
+      },
+      {
+        "name": "numpy",
+        "version": "1.26.4",
+        "license_field": "full_text",
+        "license_text_chars": 47720,
+        "license_text_sha256": "5f5f6241adb9712b1e1b7fcb4423983c1cdba6c87f879c79c0307db4fda2e243",
+        "license_expression": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: BSD License"
+        ]
+      },
+      {
+        "name": "scipy",
+        "version": "1.14.1",
+        "license_field": "full_text",
+        "license_text_chars": 46770,
+        "license_text_sha256": "dca31fe277a444f50fb149f09fb9dd28bf1f182555facf152e9ea8b28e75e550",
+        "license_expression": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: BSD License"
+        ]
+      },
+      {
+        "name": "ml-dtypes",
+        "version": "0.5.0",
+        "license_field": "full_text",
+        "license_text_chars": 10851,
+        "license_text_sha256": "b04c8850fdf64d17233f0acbe4eb632f03bd663094233c949bdbe788858bb841",
+        "license_expression": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: Apache Software License"
+        ]
+      },
+      {
+        "name": "opt-einsum",
+        "version": "3.4.0",
+        "license": "MIT",
+        "license_expression": "MIT",
+        "license_classifiers": [
+          "License :: OSI Approved :: MIT License"
+        ]
+      },
+      {
+        "name": "multipledispatch",
+        "version": "1.0.0",
+        "license": "BSD",
+        "license_expression": null,
+        "license_classifiers": []
+      },
+      {
+        "name": "tqdm",
+        "version": "4.67.1",
+        "license": "MPL-2.0 AND MIT",
+        "license_expression": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: MIT License",
+          "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)"
+        ]
+      },
+      {
+        "name": "absl-py",
+        "version": "2.1.0",
+        "license": "Apache 2.0",
+        "license_expression": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: Apache Software License"
+        ]
+      },
+      {
+        "name": "pytest",
+        "version": "8.3.3",
+        "license": "MIT",
+        "license_expression": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: MIT License"
+        ]
+      },
+      {
+        "name": "iniconfig",
+        "version": "2.0.0",
+        "license": "MIT",
+        "license_expression": "MIT",
+        "license_classifiers": [
+          "License :: OSI Approved :: MIT License"
+        ]
+      },
+      {
+        "name": "packaging",
+        "version": "24.2",
+        "license": null,
+        "license_expression": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: Apache Software License",
+          "License :: OSI Approved :: BSD License"
+        ]
+      },
+      {
+        "name": "pluggy",
+        "version": "1.5.0",
+        "license": "MIT",
+        "license_expression": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: MIT License"
+        ]
+      },
+      {
+        "name": "pygments",
+        "version": "2.18.0",
+        "license": "BSD-2-Clause",
+        "license_expression": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: BSD License"
+        ]
+      },
+      {
+        "name": "pyro-api",
+        "version": "0.1.2",
+        "license": "Apache License 2.0",
+        "license_expression": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: Apache Software License"
+        ]
+      },
+      {
+        "name": "importlib-metadata",
+        "version": "4.13.0",
+        "license": null,
+        "license_expression": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: Apache Software License"
+        ]
+      },
+      {
+        "name": "zipp",
+        "version": "3.21.0",
+        "license": null,
+        "license_expression": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: MIT License"
+        ]
+      }
+    ],
+    "separate_dataset_row_extraction_tool": {
+      "package": "pyarrow",
+      "version": "19.0.1",
+      "license": "Apache Software License",
+      "license_classifier": "License :: OSI Approved :: Apache Software License",
+      "scope": "Separate venv used only to read the pinned Parquet row; not part of the 17-package upstream source-test runtime."
+    }
+  },
+  "observed_metadata_gaps_and_review_points": [
+    "The workflow's metadata-presence gate passed for all 17 pinned source-test runtime packages; this means every package exposed either a License field or a license classifier, not that an exact SPDX expression or complete NOTICE analysis was performed.",
+    "packaging 24.2 has a null License field and both Apache/BSD license classifiers; the applicable license expression should be confirmed from the exact distribution documentation before any redistribution.",
+    "multipledispatch 1.0.0 reports License='BSD' but provides no license classifier; the precise BSD variant/notice should be checked before redistribution.",
+    "numpy 1.26.4 and scipy 1.14.1 expose full license text fields and BSD classifiers; their binary wheels may bundle third-party numerical libraries. Bundled OpenBLAS/LAPACK/libgfortran notices and exact wheel contents need separate review if the environment or binaries are redistributed.",
+    "tqdm 4.67.1 declares dual MPL-2.0 AND MIT metadata; preserve both applicable license notices if redistributing the package.",
+    "importlib-metadata 4.13.0 and zipp 3.21.0 have null License fields but carry Apache and MIT classifiers respectively; this is metadata presence, not a full source-notice audit."
+  ],
+  "project_use_scope_proposed": {
+    "proposed_use": "Reproduce the two frozen upstream selectors in an isolated CPU-only environment; quote minimal code snippets in an academic report with attribution and link to the immutable source revisions.",
+    "proposed_redistribution": "Do not redistribute the installed environment, package wheels, complete upstream source, or dataset parquet as part of the project unless a separate notices/permissions review is completed.",
+    "retain_source_attribution": true,
+    "retain_license_notice_if_modified_or_redistributed": true
+  },
+  "human_review": {
+    "project_lead_scope_acknowledgement": "pending",
+    "hasan_scope_review": "not_recorded",
+    "external_legal_review": "not_performed",
+    "accepted_as_legal_clearance": false,
+    "final_case_acceptance": "not_accepted"
+  },
+  "inference_authorized": false
+}

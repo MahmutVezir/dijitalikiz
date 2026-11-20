@@ -1,0 +1,96 @@
+{
+  "schema_version": "0.1-numpyro-1916-issue-family-independence-review",
+  "generated_date": "2026-11-20",
+  "candidate": {
+    "dataset_row": "pyro-ppl__numpyro-1918",
+    "issue_url": "https://github.com/pyro-ppl/numpyro/issues/1916",
+    "pull_request_url": "https://github.com/pyro-ppl/numpyro/pull/1918",
+    "cohort_rank": 12,
+    "upstream_repository": "pyro-ppl/numpyro",
+    "upstream_repository_is_fork": false,
+    "archived": false,
+    "base_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+    "fix_pr_head_repository": "amifalk/numpyro",
+    "fix_pr_head_is_fork": true,
+    "fix_pr_head_sha": "d5367f16abee85a1d7788784c71eb908ecb12df7",
+    "merge_commit": "5692d2da335945b756aeae02e3720b9b7f3efef2",
+    "issue_created_at": "2024-11-25T14:53:29Z",
+    "pr_created_at": "2024-11-28T00:54:29Z",
+    "pr_merged_at": "2024-11-29T01:52:20Z"
+  },
+  "counting_rule": {
+    "independent_unit": "One upstream repository/project and one underlying issue/defect, not each test selector.",
+    "issue_count": 1,
+    "pull_request_count": 1,
+    "dataset_row_count": 1,
+    "frozen_selector_count": 2,
+    "selector_ids": [
+      "test/infer/test_ensemble_mcmc.py::test_warmup[AIES]",
+      "test/infer/test_ensemble_mcmc.py::test_warmup[ESS]"
+    ],
+    "selectors_are_two_test_variants_of_one_defect": true,
+    "accepted_case_contribution_cap_for_repository": 1
+  },
+  "distinct_from_first_accepted_project": {
+    "first_accepted_repository": "reagento/dishka",
+    "current_candidate_repository": "pyro-ppl/numpyro",
+    "same_repository": false,
+    "same_issue": false,
+    "same_pull_request": false,
+    "independent_upstream_project": true
+  },
+  "related_issue_family": [
+    {
+      "number": 2132,
+      "created_at": "2026-02-02T11:39:04Z",
+      "title": "Sampling ~10× slower when using same MCMC object after warmup() vs creating new MCMC with num_warmup=0",
+      "relationship": "Adjacent warmup/resume lifecycle symptom, primarily a NUTS performance slowdown under a different environment; no same AIES/ESS batched-key ValueError mechanism established."
+    },
+    {
+      "number": 2338,
+      "created_at": "2026-10-09T16:48:48Z",
+      "title": "HMC with vectorized chains crashes when re-ran with changed parameters",
+      "relationship": "Adjacent repeated-run/vectorized-chain defect in HMC; reported vmap rank error and mutation of HMC._sample_fn, not ensemble PRNG-key replacement."
+    },
+    {
+      "number": 2359,
+      "created_at": "2026-10-17T16:37:03Z",
+      "title": "jit_model_args=True causes BarkerMH and ensemble kernels to ignore model arguments in subsequent runs",
+      "relationship": "Closest adjacent ensemble-kernel issue family member; changed model arguments are ignored under jit_model_args, a different cache/model-argument mechanism from the #1916 PRNG-key shape failure."
+    },
+    {
+      "number": 2392,
+      "created_at": "2026-10-26T15:26:18Z",
+      "title": "SA with vectorized chains crashes when re-ran with changed parameters (similar to #2338)",
+      "relationship": "Related to #2338's repeated-run/vmap rank failure for SA; different kernel and error path from #1916."
+    }
+  ],
+  "issue_family_disposition": {
+    "broader_family": "Repeated MCMC execution / warmup-resume lifecycle and vectorized chain state handling.",
+    "exact_duplicate_found": false,
+    "nearby_related_issues_found": true,
+    "duplicate_candidates_excluded_from_independent_case_count": [
+      2132,
+      2338,
+      2359,
+      2392
+    ],
+    "disposition": "Retain NumPyro #1916 as one provisional distinct defect case. Do not count any other NumPyro issue as another independent project/case. Preserve the related-issue cluster as context; Panel A must confirm whether any later issue reveals a competing or broader mechanism."
+  },
+  "exposure_and_roles": {
+    "project_lead_issue_pr_patch_source_and_reproduction_exposure": true,
+    "project_lead_panel_b_eligible": false,
+    "hasan_design_proposal_exposure": true,
+    "hasan_panel_b_eligible": false,
+    "panel_a_independent_human_reviewers_confirmed": 0,
+    "panel_b_independent_source_unexposed_reviewers_confirmed": 0,
+    "independent_adjudicator_confirmed": 0,
+    "restricted_delivery_store_and_access_log_ready": false
+  },
+  "independence_status": {
+    "pipeline_or_debug_oracle_exposure": "No prior pipeline/debug-oracle exposure is documented in the candidate record; candidate-screening source/issue/patch/reproduction exposure is explicitly recorded and is not treated as blind.",
+    "cross_project_independence": "Verified as distinct from Dishka at the upstream repository and defect identity level.",
+    "final_case_acceptance": "not_accepted",
+    "inference_authorized": false
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-20T13:00:00Z",
+  "generated_at_utc": "2026-11-20T13:45:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -386,17 +386,17 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/NUMPYRO_1916_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "passed",
+      "stage2_status": "passed_base_fail_fixed_pass_and_artifact_integrity_locally_verified",
       "stage2_workflow_job_id": 134923384282,
-      "stage2_evidence_note": "Latest repeat in run 44338919763 on workflow head f838660fdfcdd2ec92a3983a70e5f3f894732675 (job 134923384282, artifact 14441559416) independently verified. Downloaded ZIP SHA-256 b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360 matches GitHub artifact digest; ZIP CRC passed and all 15 payload-file hashes in SHA256SUMS.txt passed. The exact AIES and ESS selectors both executed and failed on pinned buggy base 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d with JAX key-array shape (10,2), then both passed on fixed upstream merge 5692d2da335945b756aeae02e3720b9b7f3efef2 (2/2 expected base failures, 2/2 fixed passes). Source-level handoff/sampler split was independently cross-checked against pinned source blobs. Stage 3 semantic adjudication, exposure/independence, human license-scope acknowledgement and final acceptance remain open. Latest rerun on 19 November 2026: run 44537219541/job 135605947673 passed the exact AIES and ESS selectors on the pinned buggy/fixed revisions. Artifact 14536697284 has GitHub-reported SHA-256 88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556; no independent local archive verification is claimed for this newest archive.",
-      "stage3_status": "packet_structure_validated_semantic_review_pending",
+      "stage2_evidence_note": "The 19 November 2026 Stage 2 artifact was independently downloaded and locally verified: run 44537219541/job 135605947673/artifact 14536697284; local outer SHA-256 88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556 matches GitHub's digest; ZIP CRC PASS; all 15/15 internal SHA256SUMS entries PASS. In the exact pinned CPU environment, both frozen selectors (AIES and ESS) failed on buggy base 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d with the reported batched PRNG-key shape error and passed on fixed merge 5692d2da335945b756aeae02e3720b9b7f3efef2. The artifact includes a 17-package dependency license metadata inventory (inventory SHA256 20b6109dae0af95a6c4917cadca00c958e5aa9cc02f11c536854c78305d7eaba); this is metadata presence, not license clearance. NumPyro remains one provisional case; semantic Panel A/Panel B review, human license-scope sign-off, and final project-lead acceptance remain open.",
+      "stage3_status": "proposed_v0_2_packet_structure_ci_passed_semantic_review_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44537219541,
       "stage2_artifact_id": 14441559416,
       "stage2_artifact_sha256": "b90d9c22614e277c3888cca9d7d62b97dfc51523bf9d145e20083e9a6c5ff360",
       "stage3_proposal_document": "research_candidates/evidence_abstention/NUMPYRO_1916_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-18.md",
-      "model_visible_packet_status": "proposed_v0_2_E1_expanded_by_one_pinned_buggy_base_source_excerpt_pending_ci_and_blinded_semantic_review",
+      "model_visible_packet_status": "proposed_v0_2_E1_expanded_packet_structure_ci_passed_semantic_sufficiency_not_assessed",
       "stage3_project_lead_decision": {
         "date": "2026-11-19",
         "status": "approved_to_proceed_conditionally",
@@ -445,9 +445,9 @@
       "stage2_latest_job_id": 135605947673,
       "stage2_latest_artifact_id": 14536697284,
       "stage2_latest_artifact_sha256": "88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556",
-      "stage2_latest_artifact_integrity": "Job success and GitHub-reported digest recorded; independent archive verification not yet recorded for this newest artifact. The 18 November artifact remains independently verified.",
-      "study_evaluation_eligibility": "provisional_pending_exposure_independence_license_and_semantic_review",
-      "next_required_gate": "Review proposed NumPyro E1 v0.2 packet with two independent, consented, source-unexposed Panel B raters and a separate adjudicator; first complete upstream issue-family/fork-lineage and exact dependency/source license-scope decisions, with project-lead and Hasan exposure disclosed. Then record Panel A gold, blind Panel B ratings, adjudication, and prepare the canonical exploratory case record for a separate project-lead YES/NO decision. No inference.",
+      "stage2_latest_artifact_integrity": "Locally downloaded artifact; outer SHA-256 matches GitHub digest; ZIP CRC passed; all 15/15 payload SHA256SUMS entries passed.",
+      "study_evaluation_eligibility": "provisional_pending_human_license_scope_panel_review_and_final_project_lead_decision",
+      "next_required_gate": "Complete source/dependency/dataset license scope and human acknowledgement; appoint and document two Panel A reviewers, two eligible source-unexposed Panel B reviewers and a separate adjudicator; conduct blind semantic packet ratings; then prepare canonical schema-conformant case record and seek the project lead's separate YES/NO. No model inference.",
       "stage3_proposed_packet_set_path": "research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_2_2026-11-20.json",
       "stage3_proposed_provenance_path": "research_candidates/evidence_abstention/numpyro_1916/EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_2_2026-11-20.json",
       "stage3_proposed_packet_set_sha256": "e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d",
@@ -462,11 +462,18 @@
         "content_sha256": "3792bc9a542c5a8896cb5f399ca4147c97fadbbe4e80b0e20bb542611a82ae07",
         "packet_set_sha256": "e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d",
         "hashes_recomputed": true,
-        "ci_validation": "pending",
+        "ci_validation": "passed",
+        "validation_run_id": 44730945050,
+        "validation_commit": "848410738109f24bf3f87403760d15b29071dd66",
+        "validation_tests": "454 passed, 6 skipped, 56 subtests passed",
         "semantic_sufficiency_assessed": false,
         "model_inference_performed": false
       },
-      "stage3_ai_advisory_review": "The 19 November E1 packet lacked the buggy-base EnsembleSampler.init contract: initialization receives a batch to infer chain count, selects rng_key[0], splits that singleton key, and stores a scalar sampler-state key. The new proposed 20 November E1 packet adds this source excerpt, addressing the alternative that the sampler itself is intended to hold a batch key. This is AI advisory only and not Panel B semantic adjudication. The documented warmup->run lifecycle is supported by MCMC.warmup docstring lines 574-618. Two independent blinded Panel B ratings and a separate adjudicator remain mandatory."
+      "stage3_ai_advisory_review": "The 19 November E1 packet lacked the buggy-base EnsembleSampler.init contract: initialization receives a batch to infer chain count, selects rng_key[0], splits that singleton key, and stores a scalar sampler-state key. The new proposed 20 November E1 packet adds this source excerpt, addressing the alternative that the sampler itself is intended to hold a batch key. This is AI advisory only and not Panel B semantic adjudication. The documented warmup->run lifecycle is supported by MCMC.warmup docstring lines 574-618. Two independent blinded Panel B ratings and a separate adjudicator remain mandatory.",
+      "stage3_proposed_packet_validation_run_id": 44730945050,
+      "stage3_proposed_packet_validation_status": "passed_structural_only",
+      "stage3_license_scope_review_path": "research_candidates/evidence_abstention/numpyro_1916/NUMPYRO_1916_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json",
+      "stage3_independence_review_path": "research_candidates/evidence_abstention/numpyro_1916/NUMPYRO_1916_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json"
     },
     {
       "cohort_rank": 13,
@@ -2216,9 +2223,9 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44727984941,
-    "head_commit": "931eb6dfb3728fec3c8f729d27d7038f4fd4684e",
-    "job_id": 136260187729,
+    "workflow_run_id": 44730944964,
+    "head_commit": "848410738109f24bf3f87403760d15b29071dd66",
+    "job_id": 136270228247,
     "status": "success",
     "ready_for_inference": false,
     "blocker_count": 13,
@@ -2226,15 +2233,11 @@
     "accepted_project_count": 1,
     "registry_status": "structurally_valid_candidate_registry",
     "schema_valid": true,
-    "test_results": [
-      "24 passed in 1.59s",
-      "10 passed in 0.05s"
-    ],
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "Post-Dishka-acceptance no-inference preflight passed on commit 931eb6dfb3728fec3c8f729d27d7038f4fd4684e. Registry is structurally valid with 1 accepted exploratory case from 1 upstream project. Global readiness remains blocked by 13 cohort/protocol/rater/model-license gates. Dishka acceptance does not grant inference."
+    "note": "Post-NumPyro-packet no-inference preflight passed. Existing registry contains only accepted Dishka #435 (1 case / 1 project). NumPyro is provisional and not accepted. Thirteen global protocol/cohort/model/rater gates remain open."
   },
   "project_lead_decisions": [
     {
@@ -2405,34 +2408,26 @@
     "fine_tuning_performed": false
   },
   "latest_general_validation": {
-    "commit": "931eb6dfb3728fec3c8f729d27d7038f4fd4684e",
+    "commit": "848410738109f24bf3f87403760d15b29071dd66",
     "research_validation_run": {
-      "id": 44727985114,
-      "job_id": 136260187386,
+      "id": 44730945050,
+      "job_id": 136270228230,
       "conclusion": "success",
-      "tests": "452 passed, 6 skipped, 56 subtests passed"
+      "tests": "454 passed, 6 skipped, 56 subtests passed"
     },
     "no_inference_preflight_run": {
-      "id": 44727984941,
-      "job_id": 136260187729,
-      "conclusion": "success"
-    },
-    "qwen_adapter_test_run": {
-      "id": 44727985226,
+      "id": 44730944964,
+      "job_id": 136270228247,
       "conclusion": "success"
     },
     "uncertainty_unit_test_run": {
-      "id": 44727984938,
-      "conclusion": "success"
-    },
-    "runner_smoke_test_run": {
-      "id": 44727985235,
+      "id": 44730944975,
       "conclusion": "success"
     },
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "Latest repository validation and no-inference preflight succeeded after Dishka acceptance/Hasan attribution and updated registry tests. 13 global blockers remain; no model was loaded or executed."
+    "note": "Latest Research Validation and no-inference preflight succeeded after the NumPyro proposed v0.2 packet and its tests were added. The structural test is not a semantic tier judgment; NumPyro remains unaccepted."
   }
 }

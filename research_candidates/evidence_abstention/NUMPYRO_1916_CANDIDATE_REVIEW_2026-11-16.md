@@ -213,3 +213,38 @@ The protocol requires two independent source-unexposed Panel B reviewers, a sepa
 - Obtain Panel A/Panel B participation and separate adjudication under the already-approved protocol; otherwise the case remains not accepted.
 
 No model loading, inference, fine-tuning, or training is authorized.
+
+
+
+## Superseding evidence and review update — 20 November 2026
+
+### Stage 2 archive independently verified
+
+The 19 November NumPyro reproduction artifact was downloaded and checked locally:
+- Workflow run: `44537219541`; job: `135605947673`; artifact: `14536697284`.
+- Local ZIP SHA-256: `88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556`, matching the GitHub-reported artifact digest.
+- ZIP CRC: PASS; all 15 entries in `SHA256SUMS.txt`: PASS.
+- The artifact contains the exact Parquet row snapshot, both selectors, base-fail and fixed-pass JSON result files, environment freeze, and a 17-package dependency-license metadata inventory.
+- The exact pinned base/fixed commits and both selectors match the candidate review above. The AIES and ESS selectors each fail on the buggy base with the batched PRNG-key shape error and pass on the fixed merge (2/2 expected base failures; 2/2 fixed passes).
+
+### Dataset/source license distinction
+
+The exact dataset row records the source repository's license as Apache-2.0. The dataset repository's current Hugging Face metadata identifies the dataset itself as CC-BY-4.0; this is a separate license layer. The current card metadata was retrieved on 20 November 2026, but the card's license field has not yet been independently authenticated from the exact pinned dataset revision. The upstream NumPyro root `LICENSE.md`, setup.py metadata, and both modified files' SPDX headers identify Apache-2.0. The pinned dependency inventory is recorded, but metadata presence is not legal clearance; several entries require exact notice/scope review.
+
+Detailed record: `numpyro_1916/NUMPYRO_1916_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json`.
+
+### Issue-family and project independence screen
+
+The canonical project is `pyro-ppl/numpyro` (upstream repository is not a fork); the merged fix PR originated from contributor fork `amifalk/numpyro`. The candidate consists of one issue, one PR, one dataset row and two AIES/ESS test variants. These two selectors are one defect case, not two independent samples. The upstream repository is distinct from the first accepted project, `reagento/dishka`.
+
+Related same-repository issues #2132, #2338, #2359 and #2392 concern adjacent warmup/resume, repeated-run, vectorized-chain or ensemble-kernel behavior, but their documented symptoms/mechanisms differ. They are retained as a related issue-family cluster and excluded from the independent-case count. NumPyro still contributes at most one accepted case. The reviewer/adjudicator role requirements remain open; neither the project lead nor Hasan is eligible for blinded Panel B because each has seen candidate source/design material.
+
+Detailed record: `numpyro_1916/NUMPYRO_1916_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json`.
+
+### Proposed E1 packet CI status
+
+The separate v0.2 proposed packet set (E3=1, E2=2, E1=5; SHA-256 `e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d`) passed the added structural regression test in Research Validation run `44730945050` on commit `848410738109f24bf3f87403760d15b29071dd66`. The repository-wide validation reported 454 passed, 6 skipped, 56 subtests passed. The no-inference preflight run `44730944964` also passed, with 1 accepted case/1 project and 13 global study-readiness blockers. This CI result validates structure/hashes only; it does not validate E1 semantic sufficiency or accept NumPyro.
+
+### Current disposition
+
+Stage 2 reproduction and artifact integrity: PASS. Proposed E1 v0.2 packet structure and CI: PASS. Upstream project independence from Dishka: PASS. Related issue-family review: documented, with neighboring issues retained as one NumPyro cluster. Dependency/source and dataset-license scope: documented, project-lead scope acknowledgement and exact pinned dataset-card license authentication still pending. Panel A, two blinded Panel B reviewers, separate adjudicator and restricted access-controlled delivery: NOT completed. Final case acceptance: NOT accepted. Model load, inference and fine-tuning: prohibited.

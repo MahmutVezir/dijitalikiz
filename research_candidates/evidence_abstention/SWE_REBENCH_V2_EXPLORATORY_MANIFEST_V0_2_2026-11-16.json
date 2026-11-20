@@ -610,7 +610,7 @@
     {
       "instance_id": "pyro-ppl__numpyro-1918",
       "cohort_rank": 12,
-      "status": "stage2_pass_all_2_exact_dataset_selectors_buggy_base_fail_fixed_revision_pass",
+      "status": "stage2_pass_proposed_packet_v0_2_structural_ci_passed_candidate_scope_review_pending",
       "issue_url": "https://github.com/pyro-ppl/numpyro/issues/1916",
       "pull_request_url": "https://github.com/pyro-ppl/numpyro/pull/1918",
       "base_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
@@ -627,17 +627,17 @@
       "review_path": "research_candidates/evidence_abstention/NUMPYRO_1916_CANDIDATE_REVIEW_2026-11-16.md",
       "workflow_path": ".github/workflows/evidence-abstention-preflight.yml#numpyro-issue-1916-reproduction",
       "runtime_scope": "CPU-only JAX; no GPU, external service, or model inference",
-      "dependency_license_inventory_status": "recorded_in_artifact_pending_human_scope_review",
-      "researcher_source_exposure": "partial_candidate_screening_exposure_recorded",
+      "dependency_license_inventory_status": "locally_integrity_verified_metadata_recorded_pending_human_scope_review",
+      "researcher_source_exposure": "project_lead_source_issue_patch_and_reproduction_exposed; Hasan_design_proposal_exposed",
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "review_dependency_license_inventory_and_exact_base_scope",
-        "independence_and_related_issue_family_review",
-        "human_gold_root_cause_and_alternative_hypotheses_adjudication",
-        "E1_E2_E3_nested_evidence_packet_preparation_and_human_approval",
-        "complete_schema_conformant_final_case_record_and_fail_closed_registry_validation",
-        "student_project_lead_separate_final_case_acceptance_decision"
+        "authenticate the license field from the exact pinned dataset-card revision; current CC-BY-4.0 card metadata is not yet pinned-snapshot verified",
+        "project-lead written acknowledgement of narrow dependency/source/dataset license scope; no blanket redistribution clearance",
+        "confirm two qualified independent Panel A reviewers and retain separate initial gold/alternative assessments",
+        "confirm two consented, source-unexposed Panel B reviewers plus a disjoint adjudicator and restricted delivery/access logs; project lead and Hasan are ineligible for blinded Panel B",
+        "obtain blind semantic ratings and adjudication; do not force E1 if any plausible competing mechanism remains",
+        "prepare and validate schema-conformant final case record, then obtain separate project-lead YES/NO"
       ],
       "pr_head_commit": "d5367f16abee85a1d7788784c71eb908ecb12df7",
       "reproduction_fixed_revision": "upstream merge commit; PR head is retained as a separate provenance identifier",
@@ -654,7 +654,50 @@
         "test/infer/test_ensemble_mcmc.py::test_warmup[ESS]"
       ],
       "dataset_selector_status": "PASS: 2/2 selectors executed with the JAX batched-key error on buggy base; 2/2 passed on exact fixed revision.",
-      "technical_reproduction": "stage2_pass_2_dataset_selectors_base_fail_fixed_pass"
+      "technical_reproduction": "stage2_pass_2_dataset_selectors_base_fail_fixed_pass",
+      "dependency_license_review_path": "research_candidates/evidence_abstention/numpyro_1916/NUMPYRO_1916_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json",
+      "independence_review_path": "research_candidates/evidence_abstention/numpyro_1916/NUMPYRO_1916_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
+      "stage2_latest_reproduction": {
+        "workflow_run_id": 44537219541,
+        "job_id": 135605947673,
+        "artifact_id": 14536697284,
+        "artifact_sha256": "88273ec9df2633d2d3a360e0f5c86188d92c5e87318e312a183bc77bf1071556",
+        "local_outer_sha256_verified": true,
+        "zip_crc": "PASS",
+        "sha256sums_payloads": "15/15 PASS",
+        "selectors": {
+          "buggy_base": "2/2 expected failures",
+          "fixed_revision": "2/2 passes"
+        },
+        "fixed_commit": "5692d2da335945b756aeae02e3720b9b7f3efef2"
+      },
+      "proposed_packet_v0_2": {
+        "path": "research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_2_2026-11-20.json",
+        "provenance_path": "research_candidates/evidence_abstention/numpyro_1916/EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_2_2026-11-20.json",
+        "sha256": "e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d",
+        "item_counts": {
+          "E3": 1,
+          "E2": 2,
+          "E1": 5
+        },
+        "structure_ci": {
+          "run_id": 44730945050,
+          "commit": "848410738109f24bf3f87403760d15b29071dd66",
+          "status": "passed"
+        },
+        "semantic_sufficiency": "not_assessed"
+      },
+      "independence_screen": {
+        "disposition": "distinct_upstream_project_from_Dishka; retain as one provisional NumPyro case",
+        "same_project_related_issues": [
+          2132,
+          2338,
+          2359,
+          2392
+        ],
+        "same_project_case_cap": 1,
+        "exact_duplicate_found": false
+      }
     },
     {
       "instance_id": "pallets__werkzeug-2956",
