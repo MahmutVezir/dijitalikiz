@@ -381,3 +381,13 @@ The project lead also explicitly accepted the five strong first-batch candidates
 **Adjudication method:** the v0.2 Dishka-equivalent route remains in force: the project lead is the sole source-aware human gold/tier decision-maker; ChatGPT is advisory only; Hasan can be described only as project-lead-reported supplementary source-aware input. The two-human requirement applies later to blinded raw model-output evidence-support scoring, not to gold or tier approval.
 
 **Current status:** NumPyro gold mechanism approved; candidate selected for Stage 3; E1/E2/E3 membership and sufficiency decision pending; prior pipeline/debug exposure declaration and bounded license-scope acknowledgement pending; final case acceptance remains NOT ACCEPTED. No model load, inference, fine-tuning or training is authorized.
+
+## Superseding current-head validation — 20 November 2026
+
+After the project-lead gold approval and the corresponding regression-contract update, the exact current branch-head NumPyro reproducer completed successfully:
+- Workflow: [44755560775](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44755560775), job `136354249543`, success.
+- Artifact: `14637651511`; GitHub-reported SHA-256 `bd05413602aaf5de6e8b213708dee68cfc863a97dd9f7620ed196afc2b071d3a`.
+- The independent 100-chain AIES warmup→run reproducer failed on the exact buggy base with the expected PRNG-key shape `(100, 2)` and passed on the exact pinned fixed revision.
+- The no-inference preflight: [44755547992](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44755547992), job `136354205627`, success. Its NumPyro packet-contract group and the other preflight contract groups passed.
+
+This remains the same single NumPyro case. The project lead's technical gold mechanism is approved in `PROJECT_LEAD_GOLD_DECISION_NUMPYRO_1916_2026-11-20.md`; the proposed E1/E2/E3 membership/sufficiency decision, prior pipeline/debug exposure declaration, bounded license-scope acknowledgement and final case acceptance remain pending. The artifact digest above is GitHub-reported; no local re-download/re-hash is claimed for this latest repeat.
