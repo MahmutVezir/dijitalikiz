@@ -59,3 +59,18 @@ Exact base-fail/fix-pass reproduction: not run; initial attempt stopped at colle
 Gold mechanism and E1/E2/E3 packet: pending human adjudication.  
 Final case acceptance: not accepted.  
 Model loading and inference authorization: false.
+
+## Superseding corrected-environment Stage 2 addendum — 20 November 2026
+
+The previous sections describing the missing netCDF4 import and pending corrected-lock execution are historical. The lock was corrected to include netCDF4, cftime and certifi, and the candidate-matrix rerun completed successfully:
+- Workflow run: 44331092872; job: 134895967816 — success.
+- Artifact: 14440390942; GitHub-reported SHA-256: 17e80ba9a81153ea833ce0cee05271f1815c6c6d597653c12f9bbe11f0f95bf8.
+- Exact Parquet row was authenticated.
+- All 23 frozen FAIL_TO_PASS selectors executed and failed on the exact buggy base with the expected energy/power normalization assertions; the same 23 selectors passed on the exact fixed revision (23/23 in both directions).
+- The corrected pinned environment completed dependency installation and dependency-license metadata capture successfully.
+
+The issue/PR scope is coherent: issue #721 explicitly concerns both energy and power normalization, and PR #722 applies the square-root relationship to energy and power. The core mathematical reason is that these measures are quadratic in signal amplitude, so scaling amplitude by target/reference does not produce the requested energy/power; the required amplitude factor is the square root of the energetic ratio. RMS controls must remain analytically distinct because RMS is already amplitude-linear.
+
+**Evidence limitation:** this latest Stage 2 result is based on the 23 exact frozen dataset selectors. The current record does not claim a separately authored independent public-API issue reproducer for PyFar. A minimal standalone reproducer is recommended as an additional parity check against the strongest cases; it is not represented as already run.
+
+**Current disposition:** Stage 2 technical reproduction PASS; strong numerical candidate, not accepted. The older assignment's proposed multi-panel gold/tier requirement is superseded by the Dishka-equivalent v0.2 route: the project lead is the single source-aware human adjudicator for gold and E1/E2/E3; ChatGPT is advisory; Hasan's input may be reported only as supplementary source-aware concurrence. Remaining gates: issue-family/lineage review, candidate-specific prior pipeline/debug exposure declaration, bounded license scope including the corrected runtime and native/system notices, source-aware gold/tier decision, complete proposed record and fail-closed registry validation.
