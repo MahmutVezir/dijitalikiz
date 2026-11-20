@@ -6,6 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 IMPLEMENTATION = ROOT / "research_candidates" / "evidence_abstention" / "implementation"
+sys.path.insert(0, str(IMPLEMENTATION))
 SPEC = importlib.util.spec_from_file_location(
     "evidence_level_packet_set",
     IMPLEMENTATION / "evidence_level_packet_set.py",
