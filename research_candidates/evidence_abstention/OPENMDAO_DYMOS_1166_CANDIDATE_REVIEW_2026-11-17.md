@@ -306,3 +306,18 @@ The dataset-card license for the exact pinned revision is now authenticated from
 The bounded project-lead acknowledgement proposal is stored at `research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_PROPOSAL_DYMOS_1166_2026-11-20.md` (SHA-256 `844e36ea92bb947f990ecc2ec564e9ea5c718c380e1c6405aaf6ff46423530b2`). It inventories the exact current CI artifacts, including the full upstream PR patch and captured source snapshots, one dataset row, and the NumPy/SciPy bundled notices. It expressly excludes the full dataset/repository, binary wheel redistribution and commercial use. The project's repository and CI artifacts are not private-only.
 
 The exact pinned dataset-card verification is closed. **Project-lead scope acknowledgement remains pending**, and no legal clearance is claimed. Final case acceptance remains `not_accepted`; inference remains unauthorized.
+
+
+## Latest license-scope verification and CI audit — 20 November 2026
+
+The exact pinned dataset-card license is authenticated at the immutable dataset revision `fb9aa226b2ce37c708ea7732e7b980abacdadb67`: the Hub commit page displays **CC-BY-4.0**. The selected row's `license` field is **Apache-2.0** for its upstream `OpenMDAO/dymos` source repository; these are separate scopes.
+
+The bounded project-lead scope proposal is stored at `research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_PROPOSAL_DYMOS_1166_2026-11-20.md`, SHA-256 `e8185465d8466512d3de08e622115a9442450f5665fbde4857facddc76341405`. It expressly inventories the current CI artifact contents (including the full upstream PR patch and source snapshots) and the 14-package runtime, with separate NumPy/SciPy bundled notices. The project-lead acknowledgement remains **pending**; this is not legal clearance.
+
+Current branch-head verification (`66ae020c498bd7a0e0159f76b523a68c9c9a31ad`):
+
+- No-inference preflight [44779507956](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44779507956), job `136438118615`: success; Dymos review-contract tests **8 passed**; 13 global blockers remain; inference is not authorized.
+- Research Validation [44779508142](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44779508142), job `136438155861`: success; **471 passed, 6 skipped, 56 subtests passed**.
+- Independent reproducer [44779508337](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44779508337), job `136438121470`: success; exact buggy-base failure / fixed-revision pass. Artifact `14651026003`, SHA-256 `84f884f0ff358c5811221099983bb2531ded7dfe501e1a042da7765ab298aa25`; downloaded locally with matching outer SHA-256, ZIP CRC PASS, 15/15 internal hashes PASS.
+
+Dymos remains a Stage 3 candidate, not an accepted case. No model weights were loaded and no inference, fine-tuning, or training was performed.
