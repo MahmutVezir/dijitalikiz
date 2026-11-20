@@ -344,7 +344,7 @@
     ]
   },
   "human_review": {
-    "project_lead_scope_acknowledgement": "pending",
+    "project_lead_scope_acknowledgement": "acknowledged_with_scientific_independence_condition",
     "hasan_scope_review": "not_recorded",
     "external_legal_review": "not_performed",
     "accepted_as_legal_clearance": false,
@@ -353,14 +353,14 @@
     "final_case_acceptance": "not_accepted"
   },
   "blockers": [
-    "Project-lead bounded documentary license-scope acknowledgement is pending.",
+    "Project-lead acknowledgement is limited to factual scope documentation and is conditional on preserving scientific integrity and legitimate research progress.",
     "No formal legal review was performed; no legal clearance or redistribution permission is claimed."
   ],
   "inference_authorized": false,
   "project_lead_scope_acknowledgement_proposal": {
-    "status": "pending_project_lead_acknowledgement",
-    "path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_PROPOSAL_DYMOS_1166_2026-11-20.md",
-    "sha256": "e8185465d8466512d3de08e622115a9442450f5665fbde4857facddc76341405",
+    "status": "acknowledged_with_scientific_independence_condition",
+    "path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_CONDITIONAL_SCOPE_ACKNOWLEDGEMENT_DYMOS_1166_2026-11-20.md",
+    "sha256": "65243fe9abce793a171c12e1564c0a071f9dd146b8fb93176b61ad083522ca99",
     "proposed_scope": "Educational/scientific study of one Dymos defect, one selected dataset row, pinned CPU reproductions, limited source excerpts plus already-retained full PR patch/source snapshots in CI artifacts, proper Dymos/dataset/row/dependency attribution and notices.",
     "explicit_exclusions": [
       "complete SWE-rebench dataset",
@@ -369,7 +369,7 @@
       "commercial product use",
       "legal clearance"
     ],
-    "note": "Includes disclosure that the repo and CI artifacts are accessible through the project's GitHub repository/PR; not private-only."
+    "note": "Project lead acknowledgement is conditional on scientific independence; repository and CI evidence are public, not private-only. This is not legal advice, legal clearance, or formal legal review."
   },
   "latest_current_head_validation": {
     "branch_head": "66ae020c498bd7a0e0159f76b523a68c9c9a31ad",
