@@ -2658,6 +2658,14 @@
         }
       },
       "note": "These are ChatGPT technical proposals only. They do not replace project-lead source-aware gold/tier decisions, exposure declarations, bounded documentary scope acknowledgements or final acceptance."
+    },
+    {
+      "date": "2026-11-20",
+      "decision_scope": "EODAG_1530_issue_family_and_selector_scope_correction",
+      "source": "direct upstream PR file diff, linked issue #1517 and exact selector/source inspection",
+      "correction": "PR #1536 says Fixes #1530 and only changes config.py StacListAssets registration, the duplicate geodes key in user_conf_template.yml, and test_core.py expected geodes_s3 provider/sortables/product types. Issue #1517 separately raises KeyError(result_type) in fetch_product_types_list. Frozen test_list_product_types_for_provider_ok uses fetch_providers=False, so it does not execute #1517's remote fetch path. Record #1517 as an adjacent distinct issue; keep it and StacListAssets outside #1530 gold. The frozen geodes_s3 provider/sortables selectors are retained under their bounded configuration-registration interpretation, with the independent duplicate-key YAML reproducer as direct confirmation.",
+      "stage2": "unchanged; 2/2 frozen selectors and independent YAML reproducer remain recorded base-fail/fixed-pass",
+      "acceptance": "not accepted; project lead source-aware gold/tier and remaining gates pending"
     }
   ],
   "latest_candidate_matrix_recheck": {
@@ -2887,7 +2895,7 @@
     "conditional_case_acceptance_authorization": true,
     "conditional_case_acceptance_authorization_date": "2026-11-20",
     "first_batch_assessment_path": "research_candidates/evidence_abstention/FIRST_BATCH_CASE_ELIGIBILITY_REVIEW_2026-11-20.md",
-    "first_batch_assessment_commit": "a855c3a051c467615b2fdeb0184e4b7631fab5a6",
+    "first_batch_assessment_commit": "ad439dad8486a4b59277246cdc171cd653ffd2f7",
     "first_stage3_group_project_lead_instruction": "conditional advance for candidate-specific evaluation; not final case acceptance",
     "robocop_excluded_from_model_evaluation_sample": true,
     "additional_eligible_stage2_candidates_after_project_lead_selections_and_exclusions": 10,
@@ -2897,7 +2905,9 @@
     "first_batch_advisory_gold_tier_proposals": "prepared_for_five_eligible_candidates; project_lead_source_aware_decisions_pending",
     "accepted_case_added_by_first_batch_review": 0,
     "final_case_acceptances_added": 0,
-    "inference_authorized": false
+    "inference_authorized": false,
+    "eodag_issue_scope_correction_commit": "2afe9fcccdeb9a4c9897b6747912a5ee85a94911",
+    "eodag_scope_note": "Issue #1517 is a separate fetch_product_types_list KeyError(result_type) path; PR #1536 body explicitly fixes #1530. Frozen selectors use fetch_providers=False/local provider and sortable configuration; #1517 is recorded as related distinct issue, not a second case or part of #1530 gold. StacListAssets remains outside #1530 gold."
   },
   "first_batch_case_assessment": {
     "date": "2026-11-20",
