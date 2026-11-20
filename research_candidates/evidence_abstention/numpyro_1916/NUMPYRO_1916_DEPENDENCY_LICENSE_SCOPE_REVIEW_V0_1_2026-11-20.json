@@ -243,11 +243,19 @@
     "retain_license_notice_if_modified_or_redistributed": true
   },
   "human_review": {
-    "project_lead_scope_acknowledgement": "pending",
+    "project_lead_scope_acknowledgement": "declined",
     "hasan_scope_review": "not_recorded",
     "external_legal_review": "not_performed",
     "accepted_as_legal_clearance": false,
-    "final_case_acceptance": "not_accepted"
+    "final_case_acceptance": "not_accepted",
+    "project_lead_scope_decision": "declined_proposed_bounded_documentary_scope",
+    "project_lead_scope_decision_record": {
+      "path": "research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_LICENSE_SCOPE_DECISION_NUMPYRO_1916_2026-11-20.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_LICENSE_SCOPE_DECISION_NUMPYRO_1916_2026-11-20.md",
+      "sha256": "463fc1aa3388f9236c78de7701aebbd46e6e71880386e78b9341912726d1b9db"
+    },
+    "project_lead_scope_decision_date": "2026-11-20",
+    "scope_decline_effect": "Do not advance NumPyro #1916 to case acceptance under the declined proposal; retain Stage 2 results as historical technical audit evidence only."
   },
   "inference_authorized": false
 }

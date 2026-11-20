@@ -101,7 +101,8 @@
     "inference_authorized": false,
     "prior_pipeline_debug_exposure": "none",
     "researcher_source_exposure": "full",
-    "exposure_decision_record_sha256": "18f46ab8186cdadce4ccf48eaf78c646fbbda0d4edfc7872166721f2368472c0"
+    "exposure_decision_record_sha256": "18f46ab8186cdadce4ccf48eaf78c646fbbda0d4edfc7872166721f2368472c0",
+    "study_use_eligibility": "not_eligible_under_declined_proposed_license_scope"
   },
   "timestamp_reconciliation": {
     "dataset_row_created_at_raw": "2024-11-28 00:54:29",
@@ -121,5 +122,11 @@
     "upstream_record_source": "GitHub REST API pull request #1918 created_at field retrieved 2026-11-20",
     "case_level_timestamp_reconciliation": "verified",
     "cohort_wide_timestamp_gate": "remains_open"
+  },
+  "license_scope_decision": "declined",
+  "license_scope_decision_record": {
+    "path": "research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_LICENSE_SCOPE_DECISION_NUMPYRO_1916_2026-11-20.md",
+    "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_LICENSE_SCOPE_DECISION_NUMPYRO_1916_2026-11-20.md",
+    "sha256": "463fc1aa3388f9236c78de7701aebbd46e6e71880386e78b9341912726d1b9db"
   }
 }

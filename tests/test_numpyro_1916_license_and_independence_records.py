@@ -23,7 +23,7 @@ class Numpyro1916LicenseAndIndependenceRecordTests(unittest.TestCase):
             for item in env["source_test_runtime_packages"]
         ))
         self.assertFalse(record["human_review"]["accepted_as_legal_clearance"])
-        self.assertEqual(record["human_review"]["project_lead_scope_acknowledgement"], "pending")
+        self.assertEqual(record["human_review"]["project_lead_scope_acknowledgement"], "declined")
         self.assertFalse(record["dataset"]["exact_pinned_dataset_card_license_verified"])
         self.assertFalse(record["inference_authorized"])
 
@@ -81,6 +81,26 @@ class Numpyro1916LicenseAndIndependenceRecordTests(unittest.TestCase):
         self.assertIn("researcher_source_exposure = full", note)
         self.assertEqual(record["independence_status"]["prior_pipeline_debug_exposure"], "none")
         self.assertEqual(record["independence_status"]["researcher_source_exposure"], "full")
+
+
+    def test_project_lead_declined_numpyro_scope_is_hash_recorded_and_blocks_case_acceptance(self):
+        record = json.loads(LICENSE_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(record["human_review"]["project_lead_scope_acknowledgement"], "declined")
+        self.assertEqual(
+            record["human_review"]["project_lead_scope_decision"],
+            "declined_proposed_bounded_documentary_scope",
+        )
+        decision = record["human_review"]["project_lead_scope_decision_record"]
+        note_path = ROOT / decision["path"]
+        import hashlib
+        note_bytes = note_path.read_bytes()
+        self.assertEqual(hashlib.sha256(note_bytes).hexdigest(), decision["sha256"])
+        note = note_bytes.decode("utf-8")
+        self.assertIn("DECLINED", note)
+        self.assertIn("Final case acceptance: NOT ACCEPTED", note)
+        self.assertFalse(record["human_review"]["accepted_as_legal_clearance"])
+        self.assertEqual(record["human_review"]["final_case_acceptance"], "not_accepted")
+        self.assertFalse(record["inference_authorized"])
 
 
 if __name__ == "__main__":

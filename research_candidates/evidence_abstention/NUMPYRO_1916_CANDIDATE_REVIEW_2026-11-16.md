@@ -408,3 +408,12 @@ The project lead explicitly declared `prior_pipeline_debug_exposure = none` for 
 - Readiness remains `blocked_before_inference`: 13 global blockers, one already accepted case/project (Dishka #435), `ready_for_inference=false`, and `inference_authorized=false`. No model loading, inference, fine-tuning or training occurred.
 
 This CI update validates the exposure record and structural contracts only. It does not accept NumPyro or close the independent license-scope gate.
+
+
+## Superseding project-lead license-scope refusal — 20 November 2026
+
+The project lead explicitly **DECLINED** the proposed bounded documentary research-use scope for NumPyro #1916 / PR #1918. The proposal was to reproduce the two frozen AIES/ESS selectors in an isolated CPU-only environment and quote minimal source snippets with attribution, without redistributing the full source, wheels, environment or dataset Parquet. This exact scope is not approved.
+
+Decision record: `research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_LICENSE_SCOPE_DECISION_NUMPYRO_1916_2026-11-20.md` (SHA-256 `463fc1aa3388f9236c78de7701aebbd46e6e71880386e78b9341912726d1b9db`). The existing dependency/license inventory now records `project_lead_scope_acknowledgement = declined`; it is not legal clearance. Do not proceed to a proposed case-acceptance record or accepted-registry entry under this scope. The existing Stage 2 reproduction outputs remain historical technical audit evidence only. Any materially different future scope needs its own pinned-revision dataset-card and dependency-notice review plus a new explicit project-lead decision.
+
+**NumPyro remains not accepted.** The one accepted case remains Dishka #435. No model loading, inference, fine-tuning or training is authorized.
