@@ -143,3 +143,49 @@ At this review point:
 - Model loading, inference, fine-tuning and training: **not authorized and not performed**.
 - Latest no-inference preflight: run 44741767911, successful; readiness ready_for_inference=false, 13 global blockers, accepted-case count 1.
 - This document is a dated advisory triage, not human gold/tier adjudication, legal clearance, case acceptance or inference authorization.
+
+---
+
+## 9. Project-lead portfolio decision — 20 November 2026
+
+The project lead reviewed the advisory triage above and explicitly approved the following portfolio dispositions. This section records portfolio selection only; it does not substitute for candidate-specific gold/tier adjudication, license-scope acknowledgement, exposure declaration, or final case acceptance.
+
+### Approved Stage 3 order
+
+**First group — advance to Stage 3 review, in this order:**
+1. NumPyro #1916
+2. Dymos #1166
+3. EODAG #1530
+4. Robocop #1371
+5. Meltano SDK #3090
+6. PyFar #721
+
+**Second group — retain for the next evaluation round, in this order:**
+1. SkyPilot #5981
+2. PyThaiNLP #1004
+3. python-control #1144
+4. Amaranth #1518
+5. QuTiP #2646
+
+The second group is retained as a later candidate queue, not promoted ahead of the first group. Existing candidate-specific scope caveats remain in force.
+
+### Not selected by the project lead
+
+- **Modin #7553:** not accepted as a candidate for this study portfolio. Preserve the technical review and the issue-title versus PR/frozen-selector discrepancy as audit history; do not spend further Stage 3 effort on this row.
+- **NAPALM #2151:** not accepted as a candidate for this study portfolio. Preserve the technical reproduction and Cisco fixture provenance/rights concern as audit history; do not spend further effort on this row.
+
+These are portfolio-selection decisions, not findings that the technical reproductions were false.
+
+### Exclusions and holds confirmed
+
+- **CTAPIpe #2732:** excluded from the v0.2 model-evaluation sample due to the already recorded prior candidate-specific pipeline/debug exposure='some'; retain only as an engineering/feasibility pilot.
+- **Moto #8269 and DataComPy #58:** exclude the current frozen rows; do not trim or replace their selectors to rescue them.
+- **Earthkit-data #571, Nox #919 and Werkzeug #2955:** hold. Make only a bounded attempt to resolve the exact fixture/provenance or immutable selector issue; if it cannot be resolved efficiently and with admissible evidence, leave the row out and move on.
+
+### Work order
+
+Proceed with NumPyro first, then Dymos. Next process EODAG, Robocop, Meltano SDK and PyFar. Only after that batch, process the second group in its approved order. Then continue through the frozen primary cohort in its predeclared rank order and use the reserve group only if required. Do not reorder based on favourable outcomes.
+
+### Approval boundary
+
+The project lead considers the technical evidence for NumPyro and Dymos sufficiently clear to proceed with their source-aware scientific review. This portfolio approval does **not** yet approve either candidate's proposed gold mechanism, alternatives, or E1/E2/E3 tier membership. Those decisions must be recorded candidate by candidate. The single source-aware project-lead adjudication route remains the v0.2 standard; ChatGPT's role is advisory. No model loading, inference, fine-tuning, or training is authorized by this portfolio decision.
