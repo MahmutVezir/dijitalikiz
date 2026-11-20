@@ -120,7 +120,24 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertEqual(len(record["reproduction_environment"]["runtime_packages"]), 14)
         self.assertFalse(record["human_review"]["accepted_as_legal_clearance"])
         self.assertEqual(record["human_review"]["project_lead_scope_acknowledgement"], "pending")
-        self.assertFalse(record["dataset"]["exact_pinned_dataset_card_license_verified"])
+        self.assertEqual(record["project_lead_scope_acknowledgement_proposal"]["path"],
+                         "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_PROPOSAL_DYMOS_1166_2026-11-20.md")
+        self.assertTrue(record["dataset"]["exact_pinned_dataset_card_license_verified"])
+        self.assertEqual(record["dataset"]["pinned_card_verification"]["revision"],
+                         "fb9aa226b2ce37c708ea7732e7b980abacdadb67")
+        self.assertEqual(record["dataset"]["pinned_card_verification"]["license_displayed_at_exact_revision"],
+                         "CC-BY-4.0")
+        self.assertEqual(record["reproduction_environment"]["package_inventory"]["runtime_package_count"], 14)
+        self.assertEqual(record["reproduction_environment"]["package_inventory"]["dependency_inventory_sha256"],
+                         "6e8f21e813fd0332fa3a5c370f76a0a52653d49868348d4316cb0eb40d0c3c89")
+        bundles = record["reproduction_environment"]["package_inventory"]["runtime_packages"]
+        numpy = next(item for item in bundles if item["name"] == "numpy")
+        scipy = next(item for item in bundles if item["name"] == "scipy")
+        self.assertIn({"name": "libquadmath", "license": "LGPL-2.1-or-later"}, numpy["binary_bundles"])
+        self.assertIn({"name": "GCC runtime library", "license": "GPL-3.0-with-GCC-exception"}, scipy["binary_bundles"])
+        self.assertEqual(record["project_lead_scope_acknowledgement_proposal"]["status"],
+                         "pending_project_lead_acknowledgement")
+        self.assertFalse(record["human_review"]["accepted_as_legal_clearance"])
         self.assertFalse(record["inference_authorized"])
 
     def test_related_default_value_issue_is_clustered_not_double_counted(self):
