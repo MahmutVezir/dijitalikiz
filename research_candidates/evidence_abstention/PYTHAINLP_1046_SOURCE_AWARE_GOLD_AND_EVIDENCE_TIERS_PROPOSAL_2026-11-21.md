@@ -91,8 +91,8 @@ If the matrix cannot show that E2 eliminates at least one predeclared alternativ
 - The two one-word reproducers are supporting tests for one issue; they are not two independent cases.
 - #1055 is related same-repository issue-family context; it is not an additional accepted project or case.
 - Researcher source exposure is full. No blind gold adjudication or inter-rater reliability is claimed.
-- The project lead must separately declare prior candidate-specific pipeline/debug/test-oracle/prompt-tuning exposure for #1004. No value is inferred here.
+- Project-lead prior candidate-specific pipeline/debug/test-oracle/prompt-tuning exposure for #1004 is declared **`none`** by direct self-report (decision record: `pythainlp_1046/PROJECT_LEAD_EXPOSURE_DECISION_PYTHAINLP_1046_2026-11-21.md`). This declaration is not independently witnessed or audited. Researcher source exposure remains full.
 
 ## 7. Status
 
-Gold and E3/E2/E1 outcomes remain advisory only. Issue-family review, candidate exposure, dependency/native notices, pinned data-card provenance, bounded scope acknowledgement, case-record validation, and separate final YES/NO acceptance are not closed. PyThaiNLP #1004 remains outside the accepted registry; model inference remains unauthorized.
+Gold and E3/E2/E1 outcomes remain advisory only. Issue-family review, dependency/native notices, pinned data-card provenance, bounded scope acknowledgement, case-record validation, and separate final YES/NO acceptance are not closed. The prior pipeline/debug exposure question is closed as `none` by project-lead self-report; researcher source exposure remains full. PyThaiNLP #1004 remains outside the accepted registry; model inference remains unauthorized.
