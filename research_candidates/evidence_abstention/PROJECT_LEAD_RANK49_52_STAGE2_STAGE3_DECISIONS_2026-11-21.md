@@ -95,3 +95,17 @@ Accordingly, the E3 evidence tier is **ABSTAIN**. This is an evidence-boundary j
 - No model loading, inference, fine-tuning or training is authorized.
 
 This decision resolves the pending project-lead semantic E3 suitability question only. It does not constitute final case acceptance, legal clearance, redistribution approval, or a change to the frozen cohort or accepted registry.
+
+## 8. GeoFileOps #649 — project-lead temporal-exposure acknowledgement — 21 November 2026
+
+**Project-lead acknowledgement: APPROVED.**
+
+The project lead explicitly accepts the following bounded assessment:
+
+> Issue #648 and PR #649 were created on 6 March 2025, approximately 162 days after the active frozen model revision dated 25 September 2024. Issue/PR-specific exposure is therefore chronologically unlikely for that released revision. However, the exact model training-data cutoff is not established, and exposure to pre-existing GeoFileOps source code cannot be ruled out. The candidate is not declared contamination-free; the residual exposure uncertainty must be reported.
+
+This acknowledgement is limited to the temporal-exposure assessment. It does **not** establish the model's training-data cutoff, certify absence of memorization or contamination, waive any other exposure review, or constitute legal clearance, redistribution approval or final case acceptance.
+
+The superseded GPTQ configuration is not treated as the active pilot model: the frozen pilot manifest records that it was replaced before any pilot inference record was written. The temporal assessment is based on the active pinned `Qwen/Qwen2.5-3B-Instruct` revision recorded in that manifest.
+
+Remaining GeoFileOps gates: full exact-build dependency/native copyright and license/NOTICE review for all 105 Conda packages; bounded source/dataset attribution and research-scope acknowledgement; complete schema-conformant case record and fail-closed validation; separate final project-lead YES/NO acceptance. No registry inclusion or inference is authorized by this acknowledgement.
