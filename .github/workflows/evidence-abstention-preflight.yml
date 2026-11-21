@@ -3444,7 +3444,7 @@ jobs:
           set -euo pipefail
           mkdir -p reproduction-evidence
           python -VV
-          micromamba list --explicit > reproduction-evidence/conda-explicit.txt
+          micromamba env export --explicit -n geofileops-stage2 > reproduction-evidence/conda-explicit.txt
           python - <<'PY'
           import importlib.metadata as md
           import json
@@ -3455,14 +3455,24 @@ jobs:
           ]
           inventory = {}
           for name in names:
-              dist = md.metadata(name)
-              classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
-              inventory[name] = {
-                  "version": md.version(name),
-                  "license": dist.get("License") or dist.get("License-Expression"),
-                  "license_expression": dist.get("License-Expression"),
-                  "license_classifiers": classifiers,
-              }
+              try:
+                  dist = md.metadata(name)
+                  classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+                  inventory[name] = {
+                      "metadata_status": "available",
+                      "version": md.version(name),
+                      "license": dist.get("License") or dist.get("License-Expression"),
+                      "license_expression": dist.get("License-Expression"),
+                      "license_classifiers": classifiers,
+                  }
+              except md.PackageNotFoundError:
+                  inventory[name] = {
+                      "metadata_status": "not-exposed-as-python-distribution",
+                      "version": None,
+                      "license": None,
+                      "license_expression": None,
+                      "license_classifiers": [],
+                  }
           with open("reproduction-evidence/python-license-inventory.json", "w", encoding="utf-8") as f:
               json.dump(inventory, f, indent=2, ensure_ascii=False)
               f.write("\\n")
