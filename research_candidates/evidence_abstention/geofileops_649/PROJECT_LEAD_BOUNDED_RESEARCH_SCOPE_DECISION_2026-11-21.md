@@ -85,3 +85,20 @@ Proposed decision language:
 **Decision record SHA-256 / URI:** pending
 
 After this scope decision is recorded, the remaining steps are to assemble the complete schema-conformant case record, run the fail-closed structural validator, and obtain a separate final YES/NO acceptance decision. No accepted-registry insertion or model-inference authorization follows automatically from this acknowledgement.
+
+## 6. Project-lead bounded research scope acknowledgement — 21 November 2026
+
+**Decision: YES — APPROVED for the exact bounded exploratory research scope in Sections 2–4.**
+
+The project lead explicitly approved use limited to the pinned buggy/fixed source revisions, the five listed changed files, the frozen dataset row and revision, the exact 105-package Conda lock, the ten frozen FAIL_TO_PASS selectors, the independent reproducer and the named evidence artifacts.
+
+**Explicit exclusions remain binding:** no redistribution of the 105 Conda binary package archives or a complete environment; no unpinned versions, other OS/Python/runtime combinations, optional integrations, additional upstream files/tests/cases or broader experiments; no dataset redistribution beyond its own license and attribution conditions; no model-weight download, model loading, inference, fine-tuning or training.
+
+This is a project-lead acknowledgement of a documentary, bounded research scope. It is not legal advice, legal clearance, a blanket compatibility opinion, proof that every legal obligation has been satisfied, or final case acceptance.
+
+**Decision maker:** student project lead  
+**Decision source:** explicit approval in ChatGPT conversation, 21 November 2026  
+**Decision timestamp (UTC):** 2026-11-21 (time not independently captured; no fabricated time is recorded)  
+**Scope-record content SHA-256:** to be recorded in the case acceptance artifact after file commit.
+
+The remaining steps are a schema-conformant proposed case record, fail-closed validation, and a separate final YES/NO acceptance decision. No accepted-registry insertion or model-inference authorization follows automatically.
