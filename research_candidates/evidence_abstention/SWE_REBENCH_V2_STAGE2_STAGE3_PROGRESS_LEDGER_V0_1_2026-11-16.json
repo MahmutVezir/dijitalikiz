@@ -3534,5 +3534,47 @@
     "inference_authorized": false,
     "fine_tuning_authorized": false,
     "training_authorized": false
+  },
+  "latest_meltano_project_lead_decision_validation": {
+    "validated_commit": "864896d4cfb12cbe68c76eab2abd3edf0929f21c",
+    "branch": "research/2026-11-16-followup-evidence-validation",
+    "stage3_decision_record": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIER_DECISION_MELTANO_3090_2026-11-21.md",
+    "evidence_abstention_preflight": {
+      "workflow_run_id": 44899668556,
+      "job_id": 136832715505,
+      "conclusion": "success",
+      "v02_acceptance_and_readiness_tests": "27 passed",
+      "design_and_scoring_tests": "10 passed",
+      "readiness_blockers": 13,
+      "accepted_cases": 2,
+      "accepted_projects": 2,
+      "ready_for_inference": false,
+      "inference_authorized": false,
+      "artifact_id": 14705311585,
+      "artifact_sha256": "26c1a77e620153cf8bdca9caf625d537445d1a2d8fca18c4f9caf14d4a40d19c"
+    },
+    "research_validation": {
+      "workflow_run_id": 44899668507,
+      "job_id": 136832818610,
+      "conclusion": "success",
+      "result": "479 passed, 6 skipped, 56 subtests passed"
+    },
+    "uncertainty_unit_tests": {
+      "workflow_run_id": 44899668509,
+      "job_id": 136832715159,
+      "conclusion": "success",
+      "result": "171 tests passed"
+    },
+    "qwen_adapter_cpu_tests": {
+      "workflow_run_id": 44899668410,
+      "job_id": 136832714642,
+      "conclusion": "success"
+    },
+    "dymos_repeat": {
+      "workflow_run_id": 44899668525,
+      "job_id": 136832715262,
+      "conclusion": "success"
+    },
+    "scope": "No model weights loaded; no inference, fine-tuning, or training. This is CI verification of records and existing no-inference gates only."
   }
 }
