@@ -9,6 +9,7 @@ import os
 import re
 import tarfile
 import tempfile
+import time
 import urllib.parse
 import urllib.request
 import zipfile
@@ -25,8 +26,18 @@ NOTICES.mkdir(parents=True, exist_ok=True)
 
 def request_bytes(url: str, *, headers: dict[str, str] | None = None, timeout: int = 180) -> bytes:
     request = urllib.request.Request(url, headers=headers or {"User-Agent": "MahmutVezir-research-audit/1.0"})
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        return response.read()
+    last_error: Exception | None = None
+    for attempt in range(5):
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                return response.read()
+        except Exception as exc:
+            last_error = exc
+            if attempt == 4:
+                break
+            time.sleep(min(2 ** attempt, 16))
+    assert last_error is not None
+    raise last_error
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
@@ -79,6 +90,7 @@ def audit_conda_package(package: dict) -> dict:
     actual_sha = sha256_bytes(raw)
     notice_files: dict[str, dict] = {}
     about: dict = {}
+    index: dict = {}
     info_members: list[str] = []
     payload_members: list[str] = []
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
@@ -96,6 +108,10 @@ def audit_conda_package(package: dict) -> dict:
                     item = tf.extractfile(member)
                     if item:
                         about = json.loads(item.read().decode("utf-8"))
+                if member.name == "info/index.json":
+                    item = tf.extractfile(member)
+                    if item:
+                        index = json.loads(item.read().decode("utf-8"))
                 if member.name.startswith("info/licenses/") or is_notice_path(member.name):
                     if member.size > 10 * 1024 * 1024:
                         notice_files[f"info:{member.name}"] = {"path": member.name, "status": "skipped_over_10MiB", "size": member.size}
@@ -145,8 +161,27 @@ def audit_conda_package(package: dict) -> dict:
                             }
             finally:
                 payload_stream.close()
+    index_identity = {
+        "name": index.get("name"),
+        "version": index.get("version"),
+        "build": index.get("build"),
+        "build_number": index.get("build_number"),
+        "subdir": index.get("subdir"),
+    }
+    expected_identity = {
+        "name": package["name"],
+        "version": package["version"],
+        "build": package["build"],
+    }
+    for key, expected in expected_identity.items():
+        if index_identity.get(key) != expected:
+            raise ValueError(
+                f"{filename}: info/index.json {key} mismatch; "
+                f"lock={expected!r}, package={index_identity.get(key)!r}"
+            )
     return {
         **package,
+        "info_index_identity": index_identity,
         "downloaded_bytes": len(raw),
         "archive_md5": actual_md5,
         "archive_sha256": actual_sha,
@@ -230,10 +265,14 @@ def main() -> int:
         "failed_package_count": len(errors),
         "license_metadata_present_count": sum(bool(r.get("license")) for r in records),
         "license_metadata_missing_count": sum(not bool(r.get("license")) for r in records),
+        "license_file_metadata_present_count": sum(bool(r.get("license_file")) for r in records),
+        "license_family_metadata_present_count": sum(bool(r.get("license_family")) for r in records),
         "packages_with_notice_files": sum(r["notice_file_count"] > 0 for r in records),
         "notice_files_extracted_count": sum(r["notice_file_count"] for r in records),
         "total_package_bytes_downloaded": sum(r["downloaded_bytes"] for r in records),
         "errors": errors,
+        "package_archive_identity_checked_against_info_index": True,
+        "all_exact_package_archives_verified_against_frozen_lock_md5": len(records) == len(packages) and not errors,
         "legal_clearance": False,
         "interpretation": "Package-level metadata and notice-file presence inventory only. Not legal advice, not a license compatibility opinion, and not a final acceptance decision.",
     }
