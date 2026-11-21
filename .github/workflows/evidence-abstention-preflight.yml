@@ -3191,3 +3191,224 @@ jobs:
           path: reproduction-evidence/
           if-no-files-found: warn
           retention-days: 90
+
+  asdf-issue-1821-reproduction:
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates) || (github.event_name == 'push' && (contains(github.event.head_commit.modified, 'research_candidates/evidence_abstention/reproduction/asdf_issue_1821/test_issue_1821.py') || contains(github.event.head_commit.modified, 'research_candidates/evidence_abstention/reproduction/asdf_issue_1821/requirements.lock') || contains(github.event.head_commit.modified, '.github/workflows/evidence-abstention-preflight.yml'))) }}
+    needs: no-inference-preflight
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install pinned ASDF tagged-recursion environment and audit licenses
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -VV
+          python -m venv .venv-tests
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/asdf_issue_1821/requirements.lock
+          .venv-tests/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          names = [
+              "attrs", "asdf-standard", "asdf-transform-schemas",
+              "importlib-metadata", "jmespath", "numpy", "packaging",
+              "PyYAML", "semantic-version", "setuptools", "setuptools-scm",
+              "wheel", "pytest", "iniconfig", "pluggy", "Pygments", "zipp",
+          ]
+          inventory = {}
+          for name in names:
+              dist = md.metadata(name)
+              classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+              license_text = dist.get("License") or dist.get("License-Expression")
+              if not license_text and not classifiers:
+                  raise SystemExit(f"License metadata missing for {name}; stop before source build")
+              inventory[name] = {
+                  "version": md.version(name),
+                  "license": license_text,
+                  "license_expression": dist.get("License-Expression"),
+                  "license_classifiers": classifiers,
+              }
+          with open("dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Clone exact ASDF source and authenticate source provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          git clone https://github.com/asdf-format/asdf.git upstream-asdf
+          git -C upstream-asdf fetch --no-tags origin 74fdcd96540049e4824b4da2bbe3ffdf42d23cfc fc001f65e46d149ea179322e02f39065f4ee861c
+          git -C upstream-asdf checkout --detach 74fdcd96540049e4824b4da2bbe3ffdf42d23cfc
+          test "$(git -C upstream-asdf rev-parse HEAD)" = "74fdcd96540049e4824b4da2bbe3ffdf42d23cfc"
+          test "$(git -C upstream-asdf rev-parse HEAD:LICENSE)" = "62a4e1a84cf19b924d36cfcf56cb8a5fa8eddb84"
+          test "$(git -C upstream-asdf rev-parse HEAD:pyproject.toml)" = "3b4684e5cea48f990eb107b4c6c68e68ade95795"
+          test "$(git -C upstream-asdf rev-parse HEAD:asdf/yamlutil.py)" = "5615f4b8ba1defdf05cd09cd3892cd07208291b6"
+          test "$(git -C upstream-asdf rev-parse HEAD:asdf/util.py)" = "c03b458b1ddc6618d6791844f6a6e7993f6da6ab"
+          test "$(git -C upstream-asdf rev-parse HEAD:asdf/_tests/test_util.py)" = "97923e7939ea1f18fba736a9bd5eb37f1bec27bc"
+          git -C upstream-asdf show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE
+          git -C upstream-asdf show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
+          git -C upstream-asdf diff 74fdcd96540049e4824b4da2bbe3ffdf42d23cfc fc001f65e46d149ea179322e02f39065f4ee861c > reproduction-evidence/pr-1907-full.patch
+          git -C upstream-asdf diff 74fdcd96540049e4824b4da2bbe3ffdf42d23cfc fc001f65e46d149ea179322e02f39065f4ee861c -- asdf/_tests/test_util.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1907-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
+          cp dependency-license-inventory.json reproduction-evidence/
+
+      - name: Build exact buggy-base ASDF package
+        shell: bash
+        run: |
+          set -euo pipefail
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e upstream-asdf
+          .venv-tests/bin/python -c "import asdf; print(asdf.__version__)"
+
+      - name: Run independent tagged-recursion reproducer on buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-asdf" .venv-tests/bin/python -m pytest --noconftest -c /dev/null -q "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/asdf_issue_1821/test_issue_1821.py" > reproduction-evidence/base-issue-test.log 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-issue-test.log
+          if [ "$status" -eq 0 ]; then
+            echo "Expected tagged recursive YAML mapping/sequence to fail on the buggy base." >&2
+            exit 1
+          fi
+          grep -E "ConstructorError|unconstructable recursive node" reproduction-evidence/base-issue-test.log
+          grep -E "1 passed|passed" reproduction-evidence/base-issue-test.log
+
+      - name: Extract exact SWE-rebench row and authenticate provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          .venv-dataset/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          dist = md.metadata("pyarrow")
+          classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+          license_text = dist.get("License") or dist.get("License-Expression")
+          if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
+              raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
+          with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump({"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}, f, indent=2)
+              f.write("\\n")
+          PY
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+          .venv-dataset/bin/python - <<'PY'
+          import hashlib
+          import json
+          import pyarrow.parquet as pq
+          parquet = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          rows = pq.read_table(parquet, columns=columns, filters=[("instance_id", "=", "asdf-format__asdf-1907")]).to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected exactly one ASDF row, found {len(rows)}")
+          row = rows[0]
+          assert row["repo"] == "asdf-format/asdf", row
+          assert row["base_commit"] == "74fdcd96540049e4824b4da2bbe3ffdf42d23cfc", row
+          assert row["language"] == "python", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2025-03-12 17:51:23", row
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\\n")
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\\n".join(row["FAIL_TO_PASS"]) + "\\n")
+          with open("reproduction-evidence/dataset-problem-statement.txt", "w", encoding="utf-8") as f:
+              f.write(row["problem_statement"])
+          print("dataset_row_sha256=" + digest)
+          print("dataset_created_at=" + str(row["created_at"]))
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          PY
+
+      - name: Apply exact PR test patch and run frozen selectors on buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-asdf checkout --detach 74fdcd96540049e4824b4da2bbe3ffdf42d23cfc
+          git -C upstream-asdf apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "asdf-format__asdf-1907")]).to_pylist()[0]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-asdf")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-asdf", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode == 0:
+                  raise SystemExit("Dataset selector unexpectedly passed on buggy base: " + selector)
+              if "unconstructable recursive node" not in result.stdout:
+                  raise SystemExit("Buggy-base selector did not fail for the recursive-node defect: " + selector + "\n" + result.stdout)
+          output = "\n".join(logs)
+          with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Run same reproducer and frozen selectors on exact fixed revision (pass required)
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-asdf checkout --detach --force fc001f65e46d149ea179322e02f39065f4ee861c
+          test "$(git -C upstream-asdf rev-parse HEAD:asdf/yamlutil.py)" = "c1143814cd89c3bedba7746f470bc1a0046ab7e5"
+          test "$(git -C upstream-asdf rev-parse HEAD:asdf/_tests/test_util.py)" = "814e90f65beba6ba52e4ededb33f5fdae23f5903"
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-asdf" .venv-tests/bin/python -m pytest --noconftest -c /dev/null -q "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/asdf_issue_1821/test_issue_1821.py" > reproduction-evidence/fixed-issue-test.log 2>&1
+          cat reproduction-evidence/fixed-issue-test.log
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "asdf-format__asdf-1907")]).to_pylist()[0]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-asdf")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-asdf", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode != 0:
+                  raise SystemExit("Dataset selector failed on fixed revision: " + selector + "\n" + result.stdout)
+          output = "\n".join(logs)
+          with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Prepare and upload raw ASDF reproduction evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          rm -f reproduction-evidence/train-00000-of-00001.parquet
+          if [ -f dependency-license-inventory.json ]; then cp dependency-license-inventory.json reproduction-evidence/; fi
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+
+      - name: Upload raw ASDF reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asdf-issue-1821-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
