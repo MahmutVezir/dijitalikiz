@@ -30,7 +30,10 @@ class TestV02ExploratoryPreflight(unittest.TestCase):
             report["blockers"],
         )
         self.assertIn("The exact immutable model revision's license/use review is not approved.", report["blockers"])
-        self.assertIn("Rater B participation and case-specific independence/exposure screening are not confirmed.", report["blockers"])
+        self.assertNotIn("Rater B participation and case-specific independence/exposure screening are not confirmed.", report["blockers"])
+        self.assertEqual(report["human_review_mode"], "single_human_condition_masked_not_blinded")
+        self.assertEqual(report["human_participant_count"], 1)
+        self.assertFalse(report["second_human_rater_required"])
 
     def test_meltano_bounded_scope_acknowledgement_keeps_open_gates_fail_closed(self):
         license_path = ROOT / "research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-21.json"
@@ -74,20 +77,24 @@ class TestV02ExploratoryPreflight(unittest.TestCase):
         self.assertIn("not legal advice", decision.lower())
         self.assertIn("does not", decision.lower())
 
-    def test_dual_human_output_scoring_requires_rater_b_confirmation(self):
+    def test_single_human_output_scoring_contract_is_enforced(self):
         report = evaluate(ROOT)
-        self.assertEqual(
-            report["human_review_mode"],
-            "two_human_raters_for_model_outputs_single_project_lead_for_gold_and_tiers",
-        )
-        self.assertTrue(report["second_human_rater_required"])
+        self.assertEqual(report["human_review_mode"], "single_human_condition_masked_not_blinded")
+        self.assertEqual(report["human_participant_count"], 1)
+        self.assertEqual(report["single_human_scorer"], "student_project_lead")
+        self.assertFalse(report["second_human_rater_required"])
         self.assertEqual(
             report["second_human_rater_status"],
-            "identified_pending_explicit_consent_and_case_specific_independence_screen",
+            "not_applicable_no_second_human_in_project",
+        )
+        self.assertEqual(
+            report["scoring_blinding_status"],
+            "condition_masked_not_blinded_to_case_source_gold_or_tier",
         )
         self.assertFalse(report["interrater_reliability_claimed"])
-        self.assertIn(
-            "Rater B participation and case-specific independence/exposure screening are not confirmed.",
+        self.assertEqual(report["agreement_statistics_planned"], [])
+        self.assertNotIn(
+            "The active v0.2 output-scoring design must be single-human, not dual-human.",
             report["blockers"],
         )
 
