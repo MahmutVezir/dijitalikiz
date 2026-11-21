@@ -1,0 +1,52 @@
+name: GeoFileOps #649 exact-build Conda license and notice audit (no inference)
+
+on:
+  push:
+    branches:
+      - "research/2026-11-16-followup-evidence-validation"
+    paths:
+      - ".github/workflows/geofileops-649-conda-license-notice-audit.yml"
+      - "scripts/geofileops_649_conda_license_notice_audit.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: geofileops-649-conda-license-notice-audit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  exact-conda-package-audit:
+    name: Download and inspect 105 exact Conda packages (metadata/notices only)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout audit script
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 1
+      - name: Set up Python 3.11
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11"
+      - name: Install archive reader
+        run: python -m pip install --disable-pip-version-check zstandard==0.23.0
+      - name: Audit exact locked package files
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_RUN_STARTED_AT: ${{ github.run_started_at }}
+        run: python scripts/geofileops_649_conda_license_notice_audit.py
+      - name: Upload package license metadata and bundled notice files
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: geofileops-649-conda-license-notice-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/geofileops-649-conda-license-audit/
+          if-no-files-found: error
+          retention-days: 90
