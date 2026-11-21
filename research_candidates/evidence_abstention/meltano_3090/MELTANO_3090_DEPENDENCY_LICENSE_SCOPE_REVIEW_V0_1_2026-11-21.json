@@ -51,8 +51,31 @@
     "current_card_url": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
     "card_history_url": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commits/main/README.md",
     "card_history_observation": "The data upload is shown at revision fb9aa22; the README/card upload is shown as a separate 6fe2932 commit on the same date. The currently displayed card states CC-BY-4.0. The full immutable README commit SHA and exact card bytes have not yet been captured in the case evidence bundle.",
-    "exact_pinned_card_review": "pending; do not treat the data-file revision as an authenticated license-card snapshot",
-    "note": "The per-row upstream repository license and the dataset distribution/card license are separate layers and must not be conflated."
+    "exact_pinned_card_review": "pending; current Hub metadata rechecked 2026-11-21 confirms CC-BY-4.0, and README history shows a separate README upload at abbreviated revision 6fe2932; exact full commit SHA and raw README bytes remain uncaptured.",
+    "note": "The per-row upstream repository license and the dataset distribution/card license are separate layers and must not be conflated.",
+    "card_history_recheck_2026_11_21": {
+      "observed_date": "2026-11-21",
+      "hub_repo_details_current_metadata": {
+        "license": "CC-BY-4.0",
+        "last_updated_displayed": "2026-10-02",
+        "source_url": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified"
+      },
+      "readme_history_page": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commits/main/README.md",
+      "observed_history_entries": [
+        {
+          "short_revision": "fb9aa22",
+          "entry": "Upload dataset"
+        },
+        {
+          "short_revision": "6fe2932",
+          "entry": "Upload README.md with huggingface_hub"
+        }
+      ],
+      "relationship": "The README history page displays a separate README upload entry from the data upload entry on the same displayed date/time.",
+      "exact_readme_commit_sha": "not_retrieved",
+      "exact_readme_bytes_sha256": "not_retrieved",
+      "review_disposition": "Open. Current Hub metadata and abbreviated history entries are not a substitute for pinning and hashing the exact immutable README card bytes at the dataset data revision."
+    }
   },
   "dependency_inventory": {
     "source_artifact_id": 14440520435,
