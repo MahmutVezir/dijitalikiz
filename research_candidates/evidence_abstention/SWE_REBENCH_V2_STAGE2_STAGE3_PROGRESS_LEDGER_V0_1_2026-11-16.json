@@ -2470,16 +2470,17 @@
       "pull_request_number": 3591,
       "pull_request_url": "https://github.com/geopandas/geopandas/pull/3591",
       "static_screening_classification": "provisional_candidate",
-      "static_scope_decision": "Geçici bug adayı",
+      "static_scope_decision": "Strong issue–PR alignment; all-null geometry dtype-recognition edge case; moderate-to-high E3 answerability risk pending frozen packet and project-lead decision",
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
-      "candidate_review_document": null,
-      "stage2_status": "not_started",
+      "candidate_review_document": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+      "stage2_status": "held_pending_frozen_row_and_project_lead_E3_suitability_review_no_stage2",
       "stage2_workflow_job_id": null,
-      "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage2_evidence_note": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+      "stage3_status": "static_issue_pr_source_audit_complete; E3_suitability_and_prior_pipeline_exposure_declaration_pending",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "next_required_gate": "Authenticate exact geopandas__geopandas-3591 row and selectors; confirm frozen problem_statement/comment scope; project lead adjudicates E3 sufficiency and prior pipeline/debug exposure. No Stage 2 until this gate is approved."
     },
     {
       "cohort_rank": 53,
@@ -5233,5 +5234,37 @@
     "final_case_acceptance": "not_accepted",
     "inference_authorized": false,
     "review_path": "research_candidates/evidence_abstention/music21_1736/MUSIC21_1736_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
+  },
+  "latest_geopandas_3591_static_review": {
+    "date": "2026-11-21",
+    "status": "strong_issue_pr_alignment; all_null_geometry_edge_case; moderate_high_E3_answerability_risk; no_stage2",
+    "issue": "geopandas/geopandas #3590",
+    "pr": "geopandas/geopandas #3591",
+    "issue_created_at_utc": "2025-06-05T00:05:04Z",
+    "pr_created_at_utc": "2025-06-05T07:55:40Z",
+    "base": "c36eba059f6170715b63a9aa065817c64025d263",
+    "head": "b3259ce23a37abd32650d7df098f3cdc8c4bb261",
+    "merge": "b3259ce23a37abd32650d7df098f3cdc8c4bb261",
+    "issue_symptom": "GeoDataFrame constructor fails CRS assignment when a non-empty geometry column contains only np.nan",
+    "base_mechanism": "non-empty all-NaN geometry column has float dtype and misses geometry/ object/empty-float dtype recognition conditions",
+    "patch_mechanism": "include non-empty self['geometry'].isna().all() columns in geometry coercion path",
+    "tests": [
+      "test_geometry_nan_scalar",
+      "test_geometry_nan_array"
+    ],
+    "patch_scope": [
+      "CHANGELOG.md",
+      "geopandas/geodataframe.py",
+      "geopandas/tests/test_geodataframe.py"
+    ],
+    "issue_comments_exposure": "maintainer notes np.nan is float not geometry/None; reporter clarifies long all-NaN and mixed-null cases. These comments must not be inserted into frozen E3 unless present in problem_statement.",
+    "e3_assessment": "moderate-to-high answerability risk; issue contains exact input, error, workaround and a contrast case; internal dtype gate not named in issue body",
+    "stage2_execution": false,
+    "dataset_row_authenticated": false,
+    "selectors_run": false,
+    "artifact_id": null,
+    "final_case_acceptance": "not_accepted",
+    "inference_authorized": false,
+    "review_path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
   }
 }
