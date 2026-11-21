@@ -1,0 +1,79 @@
+{
+  "schema_version": "0.1-v02-candidate-independence-review",
+  "review_date": "2026-11-21",
+  "candidate": {
+    "case_id": "SRV2E-PYTHAINLP_1004",
+    "repository_full_name": "PyThaiNLP/pythainlp",
+    "issue_url": "https://github.com/PyThaiNLP/pythainlp/issues/1004",
+    "fix_pr_url": "https://github.com/PyThaiNLP/pythainlp/pull/1046",
+    "dataset_instance_id": "pythainlp__pythainlp-1046",
+    "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "dataset_row_sha256": "80b244dd8b406d095f7ec727f968dacbb6b2f620dc8b10c21d44e726ba3e5803"
+  },
+  "repository_identity": {
+    "canonical_upstream_repository": "PyThaiNLP/pythainlp",
+    "exact_base": "188904f22c4c80fd7406706850c798f611690a4a",
+    "fixed_revision": "6f1dc929f853ecd9910d1d25a56716b864b2ee98",
+    "root_license": "Apache-2.0",
+    "root_license_blob_sha1": "8dada3edaf50dbc082c9a125058f25def75e625a"
+  },
+  "sampling_unit": {
+    "unit": "canonical_upstream_repository",
+    "maximum_accepted_cases_per_upstream_project": 1,
+    "registry_contains_candidate": false
+  },
+  "related_issue_family": [
+    {
+      "issue": 1004,
+      "url": "https://github.com/PyThaiNLP/pythainlp/issues/1004",
+      "created_at_utc": "2024-11-22T04:15:51Z",
+      "kind": "target_defect",
+      "disposition": "Two concrete tone_detector misclassifications: ครับ (f instead of h) and ค่ะ (h instead of f)."
+    },
+    {
+      "issue": 1055,
+      "url": "https://github.com/PyThaiNLP/pythainlp/issues/1055",
+      "created_at_utc": "2025-01-05T00:09:23Z",
+      "kind": "related_syllable_and_tone_detector_defects",
+      "disposition": "Different reported inputs/symptoms: ประ sound_syllable classification and เอ tone_detector IndexError. Its issue diff reproduces the two #1004 test additions before adding separate new cases; related same-function family context, not an additional independent case."
+    },
+    {
+      "issue": 918,
+      "url": "https://github.com/PyThaiNLP/pythainlp/issues/918",
+      "kind": "documentation_context",
+      "disposition": "Requests clarification of tone_detector output labels; not a duplicate runtime defect."
+    },
+    {
+      "issue": 1120,
+      "url": "https://github.com/PyThaiNLP/pythainlp/issues/1120",
+      "kind": "later_tone_detector_runtime_defect",
+      "disposition": "Reports an IndexError in tone_detector for another input and call path; related API family, not the same two #1004 outputs."
+    },
+    {
+      "issue": 1046,
+      "url": "https://github.com/PyThaiNLP/pythainlp/pull/1046",
+      "created_at_utc": "2024-12-25T06:25:09Z",
+      "kind": "fix",
+      "disposition": "Fixes #1004; one candidate and one project."
+    }
+  ],
+  "independence_disposition": {
+    "exact_duplicate_found": false,
+    "related_same_function_family_found": true,
+    "same_two_issue_examples_reused_in_later_related_issue": true,
+    "status": "prepared_subject_to_project_lead_review",
+    "note": "#1055 is a distinct later report with other failing inputs but shares the syllable/tone detector code family and quotes the #1004 expected examples in its diff. Keep one PyThaiNLP sampling unit and do not count #1055 as an independent case."
+  },
+  "exposure": {
+    "prior_pipeline_debug_exposure": "pending_project_lead_declaration",
+    "researcher_source_exposure": "full_for_issue_PR_exact_base_source_selector_and_stage2_artifact",
+    "blinded_adjudication_claimed": false,
+    "inter_rater_claimed": false
+  },
+  "boundaries": {
+    "final_case_acceptance": "not_accepted",
+    "registry_inclusion": false,
+    "inference_authorized": false,
+    "legal_clearance": false
+  }
+}
