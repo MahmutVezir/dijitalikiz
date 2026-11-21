@@ -3736,7 +3736,18 @@
       "proposed_case_record_fail_closed_validation",
       "separate_final_project_lead_yes_no_case_acceptance"
     ],
-    "license_scope_decision_record": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md"
+    "license_scope_decision_record": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md",
+    "evidence_elimination_matrix": {
+      "historical_E2_evidence": "exact-base public API reproducer and frozen selector fail on base/pass on fixed; alone eliminates none of A1-A3",
+      "E2_diagnostic_test": "test_repeated_direct_resolver_lookup_returns_target_each_time",
+      "test_path": "research_candidates/evidence_abstention/reproduction/meltano_issue_3090/test_issue_3090.py",
+      "test_commit": "1a25e01ea1b10aae1430475c107d363815b27234",
+      "purpose": "call exact-environment Resolver.lookup twice for the same reference outside sibling traversal, verifying both returned contents are the complete target",
+      "if_pass": "eliminates A1 (resolver returns incomplete contents on second direct lookup); leaves A2 and A3 plus G1 live at E2, satisfying the strengthened minimum alternative-elimination criterion",
+      "if_fail_or_not_run": "do not claim E2 satisfies the strengthened criterion; revise the tier or leave the case unclassified pending a new project-lead decision",
+      "ci_execution": "pending"
+    },
+    "evidence_elimination_matrix_path": "research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_E3_E2_E1_EVIDENCE_ELIMINATION_MATRIX_V0_1_2026-11-21.md"
   },
   "latest_meltano_project_lead_decision_validation": {
     "validated_commit": "864896d4cfb12cbe68c76eab2abd3edf0929f21c",
@@ -4298,6 +4309,51 @@
       "e3_disclosure_risk_project_lead_suitability_review_recommended": true,
       "final_acceptance": "not_accepted",
       "registry_inclusion": false,
+      "inference_authorized": false,
+      "model_loading_performed": false,
+      "inference_performed": false,
+      "fine_tuning_performed": false,
+      "training_performed": false
+    }
+  },
+  "meltano_3090_evidence_elimination_matrix_audit": {
+    "date": "2026-11-21",
+    "matrix_path": "research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_E3_E2_E1_EVIDENCE_ELIMINATION_MATRIX_V0_1_2026-11-21.md",
+    "matrix_commit": "d8dd0c5c07a43726a6e0a31b637875f0f522b574",
+    "status": "post_approval_stricter_methodological_audit; new E2 direct resolver lookup diagnostic committed; exact-environment CI execution pending",
+    "old_project_lead_decision": {
+      "decision": "G1; E3 ABSTAIN; E2 ABSTAIN; E1 ANSWER",
+      "decision_record": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIER_DECISION_MELTANO_3090_2026-11-21.md",
+      "retained_without_silent_amendment": true
+    },
+    "current_standard_audit": {
+      "historical_E2_evidence": "exact-base public API reproducer and frozen selector fail on base/pass on fixed; alone eliminates none of A1-A3",
+      "E2_diagnostic_test": "test_repeated_direct_resolver_lookup_returns_target_each_time",
+      "test_path": "research_candidates/evidence_abstention/reproduction/meltano_issue_3090/test_issue_3090.py",
+      "test_commit": "1a25e01ea1b10aae1430475c107d363815b27234",
+      "purpose": "call exact-environment Resolver.lookup twice for the same reference outside sibling traversal, verifying both returned contents are the complete target",
+      "if_pass": "eliminates A1 (resolver returns incomplete contents on second direct lookup); leaves A2 and A3 plus G1 live at E2, satisfying the strengthened minimum alternative-elimination criterion",
+      "if_fail_or_not_run": "do not claim E2 satisfies the strengthened criterion; revise the tier or leave the case unclassified pending a new project-lead decision",
+      "ci_execution": "pending"
+    },
+    "stage2": {
+      "artifact_id": 14440520435,
+      "run_id": 44331092872,
+      "job_id": 134895968235,
+      "archive_sha256": "b1336169d7b6d8e4e47edbcd920d842ad525c7a4e2df841b998182099bed1bd3",
+      "independently_downloaded_and_sha256_recomputed": true,
+      "zip_crc": "passed",
+      "internal_manifest": "14/14 passed",
+      "base_independent_reproducer": "fails with second sibling empty",
+      "fixed_independent_reproducer": "passes",
+      "base_frozen_selector": "fails",
+      "fixed_frozen_selector": "passes"
+    },
+    "boundaries": {
+      "final_case_acceptance": "not_accepted",
+      "registry_inclusion": false,
+      "accepted_cases_unchanged": 2,
+      "accepted_projects_unchanged": 2,
       "inference_authorized": false,
       "model_loading_performed": false,
       "inference_performed": false,
