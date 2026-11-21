@@ -1706,7 +1706,7 @@
     },
     {
       "date": "2026-11-21",
-      "scope": "v0.2_exploratory_feasibility_registry_only",
+      "scope": "EODAG_1530_final_case_acceptance",
       "candidate": "CS-SI/eodag issue #1530 / PR #1536; dataset row cs-si__eodag-1536",
       "case_id": "SRV2E-EODAG_1530",
       "decision": "accepted",
@@ -1727,7 +1727,8 @@
         "model_inference_authorized": false,
         "fine_tuning_or_training_authorized": false,
         "study_wide_readiness": "blocked_by_13_global_prerequisites"
-      }
+      },
+      "acceptance_scope": "v0.2_exploratory_feasibility_registry_only"
     }
   ],
   "case_acceptance_note": "Two v0.2 exploratory/feasibility cases are accepted (Dishka and EODAG), each from a distinct upstream project. This does not represent confirmatory acceptance or model-experiment authorization. Global readiness remains blocked by 13 prerequisites.",
