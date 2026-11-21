@@ -7,7 +7,7 @@ packaging==25.0
 pandas==2.2.3
 pip==25.1.1
 pluggy==1.6.0
-pygments==2.19.2
+Pygments==2.19.2
 pyogrio==0.11.0
 pyproj==3.7.1
 pytest==8.3.5
