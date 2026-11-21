@@ -73,3 +73,25 @@ Accordingly, the previously approved conditional disposition is now **resolved a
 GeoPandas #3591's exact row is also authenticated as geopandas__geopandas-3591 (canonical SHA-256 e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2). The row's E3 packet confirms the known input, error and workaround, without exposing the internal geometry/dtype recognition branch. The approved hold therefore remains; a separate semantic E3 decision is still required before Stage 2.
 
 Both row records and the raw audit manifest are in GitHub Actions artifact 14715535728, SHA-256 1abca7d09dfcbf4c4ba773ab87fb21225ec8f4208f44f2f7fbb19b613352459b; independently downloaded ZIP digest, CRC and all six internal file hashes were verified.
+
+## 7. GeoPandas #3591 — project-lead E3 decision — 21 November 2026
+
+**Project-lead decision: E3 = ABSTAIN; candidate remains on HOLD.**
+
+- Candidate: geopandas/geopandas issue #3590 / PR #3591, frozen cohort rank 52.
+- Authenticated instance: `geopandas__geopandas-3591`.
+- Canonical frozen-row SHA-256: `e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2`.
+- Frozen problem-statement SHA-256: `c4aeb4909495887c065f1f7ae5ec0e321fb350e98ea789cde3f931cad597f12d`.
+- Frozen FAIL_TO_PASS selector count: 1; selector: `geopandas/tests/test_geodataframe.py::TestConstructor::test_geometry_nan_scalar`.
+- Prior pipeline/debug exposure declaration: **none**.
+
+**E3 rationale:** The frozen problem statement supplies the all-`np.nan` geometry input, observed error, explicit-geometry workaround and valid-geometry contrast. It does not disclose the constructor's internal geometry/dtype-recognition branch. The study's frozen diagnostic target is the implementation mechanism, not merely the externally observable API failure. A plausible inference about a float-dtype recognition gate is not evidence that the frozen E3 packet supplied that mechanism.
+
+Accordingly, the E3 evidence tier is **ABSTAIN**. This is an evidence-boundary judgment, not a claim that the implementation mechanism is unknowable from source code, and not an automatic E2/E1 decision.
+
+- E2 and E1 remain separate evidence tiers and must be adjudicated independently under their pre-specified evidence rules; this E3 decision does not predetermine either tier.
+- Candidate disposition remains **HOLD**. This is not a final candidate exclusion and does not add the row to the accepted registry.
+- No Stage 2 execution is authorized by this E3 decision; preserve the existing no-run boundary until the remaining candidate gates are explicitly resolved.
+- No model loading, inference, fine-tuning or training is authorized.
+
+This decision resolves the pending project-lead semantic E3 suitability question only. It does not constitute final case acceptance, legal clearance, redistribution approval, or a change to the frozen cohort or accepted registry.
