@@ -102,7 +102,7 @@ def test_single_human_scoring_rubric_preserves_evidence_support_and_limits():
         assert category in rubric
     assert "excluded from the strict primary binary endpoint" in rubric
     assert "A correct guess is not automatically evidence-supported." in rubric
-    assert "one human scorer" in rubric
+    assert "One human scorer" in rubric
     assert "condition-masked single-human scoring, not blinded scoring" in rubric
     assert "Do not calculate or claim" in rubric
     assert "not authorization for model inference" in rubric
