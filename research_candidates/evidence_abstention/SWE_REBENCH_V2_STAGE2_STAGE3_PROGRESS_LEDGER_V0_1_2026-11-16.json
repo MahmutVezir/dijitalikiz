@@ -2506,16 +2506,17 @@
       "pull_request_number": 5525,
       "pull_request_url": "https://github.com/gammapy/gammapy/pull/5525",
       "static_screening_classification": "provisional_candidate",
-      "static_scope_decision": "Geçici bug adayı",
+      "static_scope_decision": "Issue and PR align on template normalization; PR also modifies short-interval integral behavior not described in issue; high E3 answerability risk",
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
-      "candidate_review_document": null,
-      "stage2_status": "not_started",
+      "candidate_review_document": "research_candidates/evidence_abstention/gammapy_5525/GAMMAPY_5525_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+      "stage2_status": "held_pending_frozen_row_and_project_lead_E3_scope_review_no_stage2",
       "stage2_workflow_job_id": null,
-      "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage2_evidence_note": "research_candidates/evidence_abstention/gammapy_5525/GAMMAPY_5525_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+      "stage3_status": "static_issue_pr_source_audit_complete; explicit_normalization_defect; secondary_integral_scope_and_E3_decision_pending",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "next_required_gate": "Authenticate exact gammapy__gammapy-5525 row and selectors; confirm whether frozen prompt includes only normalization or also partial-phase integration; project lead decides E3/sample suitability and prior pipeline exposure. No Stage 2 until approved."
     },
     {
       "cohort_rank": 55,
@@ -5289,5 +5290,27 @@
     "final_case_acceptance": "not_accepted",
     "inference_authorized": false,
     "review_path": "research_candidates/evidence_abstention/python_babel_1141/PYTHON_BABEL_1141_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
+  },
+  "latest_gammapy_5525_static_review": {
+    "date": "2026-11-21",
+    "status": "issue_names_missing_normalization; PR_changes_second_integral_behavior; E3_answerability_high; no_stage2",
+    "issue": "gammapy/gammapy #5524",
+    "pr": "gammapy/gammapy #5525",
+    "issue_created_at_utc": "2024-10-22T17:26:14Z",
+    "pr_created_at_utc": "2024-10-24T14:11:19Z",
+    "base": "cff9ae2c54c38cc664967ff1cd2ef41457c2c6b8",
+    "head": "4b0318881c2b4a0d026033840792c6a76404c183",
+    "issue_symptom": "TemplatePhaseCurveTemporalModel does not normalize phasecurve template at init; NORM per phase bin can differ from one and flux estimates are wrong",
+    "base_mechanism": "constructor stores input table unchanged with no normalization",
+    "patch_mechanism": "build linear spline, integrate NORM over phase [0,1], scale NORM by reciprocal",
+    "secondary_patch_behavior": "integral changed for sub-phase observation intervals; PR description says old value could exceed full-period integral for phi range 0..0.4, not stated in issue #5524",
+    "e3_assessment": "high answerability risk because missing normalization is named in issue title and body; exact integral formula remains unspecified",
+    "protocol_control_group": "not defined in current v0.2 study design",
+    "stage2_execution": false,
+    "dataset_row_authenticated": false,
+    "selectors_run": false,
+    "final_case_acceptance": "not_accepted",
+    "inference_authorized": false,
+    "review_path": "research_candidates/evidence_abstention/gammapy_5525/GAMMAPY_5525_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
   }
 }
