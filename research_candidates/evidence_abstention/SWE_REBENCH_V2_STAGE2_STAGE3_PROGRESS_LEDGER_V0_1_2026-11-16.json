@@ -2832,7 +2832,7 @@
       "stage2_status": "passed_exact_dataset_selector_base_fail_fixed_pass_latest_branch_repeat",
       "stage2_workflow_job_id": 134137813769,
       "stage2_evidence_note": "Exact row and dependency-license inventory artifact saved. All 23 selectors fail on buggy base and pass on exact fixed revision (23/23 in both directions).",
-      "stage3_status": "stage2_passed; source_aware_gold_and_E1_E2_E3_advisory_proposal_prepared_not_approved; issue_family_review_prepared_not_project_lead_approved; prior_pipeline_debug_exposure_declared_none_and_gate_closed_on_self_report; dependency_native_notice_and_dataset_card_provenance_review_open; bounded_scope_acknowledgement_pending; case_record_and_final_acceptance_pending",
+      "stage3_status": "stage2_passed; source_aware_gold_and_E1_E2_E3_advisory_proposal_prepared_not_approved; issue_family_review_prepared_not_project_lead_approved; prior_pipeline_debug_exposure_declared_none_gate_closed_on_self_report; researcher_source_exposure_full; dependency_native_notice_and_dataset_card_provenance_review_open; bounded_scope_acknowledgement_pending; case_record_and_final_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44331092872,
@@ -2869,7 +2869,8 @@
         "independence_review": "research_candidates/evidence_abstention/pyfar_721/PYFAR_721_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json",
         "license_scope_review": "research_candidates/evidence_abstention/pyfar_721/PYFAR_721_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-21.json",
         "stage2_integrity_review": "research_candidates/evidence_abstention/pyfar_721/PYFAR_721_STAGE2_ARTIFACT_INTEGRITY_REVIEW_2026-11-21.md",
-        "project_lead_exposure_decision": "research_candidates/evidence_abstention/pyfar_721/PROJECT_LEAD_EXPOSURE_DECISION_PYFAR_721_2026-11-21.md"
+        "project_lead_exposure_decision": "research_candidates/evidence_abstention/pyfar_721/PROJECT_LEAD_EXPOSURE_DECISION_PYFAR_721_2026-11-21.md",
+        "exposure_regression_test": "tests/test_pyfar_721_exposure_decision.py"
       },
       "stage3_proposed_gold": "ENERGY_POWER_TARGET_AND_REFERENCE_NOT_SQUARE_ROOTED",
       "stage3_proposed_tiers": {
@@ -2932,7 +2933,9 @@
         "independent_witnessed_or_audited": false,
         "blinded_adjudication_claimed": false,
         "inter_rater_claimed": false,
-        "verification_limit": "Self-report only; researcher source exposure remains full."
+        "verification_limit": "Self-report only; researcher source exposure remains full.",
+        "regression_test_path": "tests/test_pyfar_721_exposure_decision.py",
+        "regression_test_commit": "249b7c6d8c3542e13b2da6e8ed7efa61a4290416"
       },
       "next_required_gate": "Project-lead source-aware G1 and E3/E2/E1 decision; project-lead review of the prepared issue-family independence disposition; bounded research-scope acknowledgement after exact pinned dataset-card, dependency/native component and notice/provenance review; then prepare a complete proposed case record, run fail-closed validation, and obtain a separate final YES/NO case decision. No inference, fine-tuning or training."
     },
@@ -3970,6 +3973,65 @@
     "registry_inclusion": false,
     "accepted_case_count_unchanged": 2,
     "accepted_project_count_unchanged": 2,
-    "inference_authorized": false
+    "inference_authorized": false,
+    "regression_test_path": "tests/test_pyfar_721_exposure_decision.py",
+    "regression_test_commit": "249b7c6d8c3542e13b2da6e8ed7efa61a4290416",
+    "proposal_path": "research_candidates/evidence_abstention/pyfar_721/PYFAR_721_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_2026-11-21.md",
+    "proposal_update_commits": [
+      "fbbe11f30e54709bfe7f6a731c0808e2d597b7d3",
+      "335063474f20960475f4e196dd3459ced38d2b94"
+    ]
+  },
+  "latest_pyfar_721_exposure_declaration_validation": {
+    "validated_code_and_test_head": "249b7c6d8c3542e13b2da6e8ed7efa61a4290416",
+    "exposure_decision": {
+      "commit": "c4f2633ca2270c2682f12290cb3e07f5c800c285",
+      "path": "research_candidates/evidence_abstention/pyfar_721/PROJECT_LEAD_EXPOSURE_DECISION_PYFAR_721_2026-11-21.md",
+      "git_blob_sha1": "184e2b32c61e0cebfa1a69cd1721a90f1aba92c4",
+      "declared_prior_pipeline_debug_exposure": "none",
+      "researcher_source_exposure": "full",
+      "self_report_not_independently_audited": true
+    },
+    "independence_review_commit": "87b153718d48a82a743c440a24dfcd07e3938445",
+    "proposal_correction_commit": "335063474f20960475f4e196dd3459ced38d2b94",
+    "regression_test_commit": "249b7c6d8c3542e13b2da6e8ed7efa61a4290416",
+    "evidence_abstention_preflight": {
+      "workflow_run_id": 44905542231,
+      "job_id": 136850199340,
+      "conclusion": "success",
+      "v02_acceptance_readiness_tests": "29 passed",
+      "design_scoring_tests": "10 passed",
+      "readiness_blockers": 13,
+      "accepted_cases": 2,
+      "accepted_projects": 2,
+      "ready_for_inference": false,
+      "inference_authorized": false
+    },
+    "research_validation": {
+      "workflow_run_id": 44905542304,
+      "job_id": 136850199912,
+      "conclusion": "success",
+      "result": "483 passed, 6 skipped, 56 subtests passed"
+    },
+    "uncertainty_unit_tests": {
+      "workflow_run_id": 44905542410,
+      "job_id": 136850199743,
+      "conclusion": "success",
+      "result": "171 tests passed"
+    },
+    "qwen_adapter_cpu_tests": {
+      "workflow_run_id": 44905542292,
+      "job_id": 136850199544,
+      "conclusion": "success"
+    },
+    "no_inference_verification": {
+      "workflow": "Research Validation (No Inference)",
+      "message": "Frozen configuration passed; no inference records exist yet.",
+      "model_loading_performed": false,
+      "inference_performed": false,
+      "fine_tuning_performed": false,
+      "training_performed": false
+    },
+    "scope": "Candidate-specific prior pipeline/debug exposure gate only. PyFar's proposed gold/tier, issue-family review, license/data-use scope, dependency/native notice and card provenance checks, proposed case record, and separate final acceptance remain open. Accepted registry unchanged."
   }
 }
