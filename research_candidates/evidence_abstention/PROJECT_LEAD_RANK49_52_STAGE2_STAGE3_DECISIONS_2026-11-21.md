@@ -62,3 +62,14 @@ The Stage 2 technical PASS remains unchanged: exact base/fixed reproduction, 10/
 - The four candidate dispositions do not change the target sample size, lower any eligibility rule, or authorize proceeding past unresolved earlier-ranked gates.
 - No model weights were loaded; no inference, fine-tuning or training was performed or authorized.
 - Temporal exposure, dataset-card provenance, legal/licensing scope and remaining case-acceptance gates are recorded only to the extent individually evidenced; no blanket clearance is asserted.
+
+
+## 6. Resolution of conditional music21 exclusion and exact-row evidence — 21 November 2026
+
+The approved music21 condition was verified against the exact frozen row. The row cuthbertlab__music21-1736 (canonical SHA-256 7bdd5e62281c92e750afb6e34066a28ff429b2bc45e9cc31a0ada13307522db3) contains the same _SplitTuple to ordinary tuple explanation and spannerList AttributeError disclosed in issue #1735.
+
+Accordingly, the previously approved conditional disposition is now **resolved as a final exclusion from the current primary abstention sample**. Stage 2 must not be run for music21 #1736. It is not assigned to a control group.
+
+GeoPandas #3591's exact row is also authenticated as geopandas__geopandas-3591 (canonical SHA-256 e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2). The row's E3 packet confirms the known input, error and workaround, without exposing the internal geometry/dtype recognition branch. The approved hold therefore remains; a separate semantic E3 decision is still required before Stage 2.
+
+Both row records and the raw audit manifest are in GitHub Actions artifact 14715535728, SHA-256 1abca7d09dfcbf4c4ba773ab87fb21225ec8f4208f44f2f7fbb19b613352459b; independently downloaded ZIP digest, CRC and all six internal file hashes were verified.
