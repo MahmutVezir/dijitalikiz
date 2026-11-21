@@ -83,3 +83,14 @@ These observations do not invalidate the main fix. They do mean that the PR patc
 2. Compare the complete frozen test patch/selector scope with the issue-specific Stream regression. In particular, account for `figuredBass/resolution.py` changes rather than silently treating them as part of the Stream defect.
 3. The project lead decides whether this should be excluded from the primary abstention sample due to high E3 answerability, or whether an independently justified and separately preregistered control use is appropriate.
 4. Do not start primary-sample Stage 2 until the sample-suitability and scope gate has been decided. A technical reproduction pass alone would not settle E3 eligibility or final case acceptance.
+
+
+## 8. Project-lead conditional exclusion amendment — 21 November 2026
+
+**CONDITIONAL EXCLUSION APPROVED, pending exact frozen-row authentication.** The project lead approved excluding music21 #1736 from the current primary abstention sample if the exact frozen SWE-rebench row confirms that E3 includes the same explanation already visible in upstream issue #1735: `_SplitTuple` becomes an ordinary tuple on return to `splitByQuarterLengths`, leading to the `spannerList` AttributeError.
+
+The exact frozen row, problem statement, base commit and selectors have not yet been independently authenticated and hashed. Therefore this record is a conditional project-lead decision, not a completed primary-sample exclusion. If the frozen packet confirms the same disclosure, formalize exclusion and do not run Stage 2. If it materially differs, return to project-lead E3 adjudication before any Stage 2 run. Do not assign this candidate to a control group. No case acceptance or inference is authorized.
+
+The project lead has not supplied a prior pipeline/debug exposure declaration for this candidate.
+
+Decision record: `PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md`.
