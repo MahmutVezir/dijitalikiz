@@ -2251,12 +2251,14 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": null,
-      "stage2_status": "not_started",
+      "stage2_status": "held_pending_project_lead_E3_answerability_and_easy_answer_control_decision_no_stage2",
       "stage2_workflow_job_id": null,
-      "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage2_evidence_note": "Static issue/PR/source review only. Issue #2032 explicitly says MutableSequence lacks clear and pop coverage even though MutableMapping and MutableSet already guard them, and shows [].pop() returning 1 instead of raising SecurityError. PR #2033 adds clear/pop to the MutableSequence unsafe method set and tests both SecurityError cases. E3 therefore already strongly discloses the diagnosis/repair. No dataset-row authentication, independent reproducer, frozen selector execution, build, or Stage 2 artifact has been performed.",
+      "stage3_status": "static_source_audit_complete; primary_E3_answerability_risk; easy_answer_security_control_decision_pending_project_lead",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage3_static_review_path": "research_candidates/evidence_abstention/jinja_2033/JINJA_2033_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+      "next_required_gate": "Project lead decides whether Jinja #2032 is excluded from primary abstention sample or retained only as a separately-labelled easy-answer/security-regression control. No primary-sample Stage 2 unless E3-suitability gate approves; control use requires separate design authorization."
     },
     {
       "cohort_rank": 46,
@@ -4900,5 +4902,33 @@
     "registry_inclusion": false,
     "inference_authorized": false,
     "review_path": "research_candidates/evidence_abstention/asdf_1907/ASDF_1907_STAGE2_TECHNICAL_PASS_AND_PROMPT_SCOPE_MISMATCH_REVIEW_2026-11-21.md"
+  },
+  "latest_jinja_2033_static_review": {
+    "date": "2026-11-21",
+    "status": "strong_technical_issue_pr_alignment; E3_answerability_high; primary_abstention_sample_hold; no_stage2",
+    "issue": "pallets/jinja #2032",
+    "pr": "pallets/jinja #2033",
+    "issue_created_at_utc": "2024-10-04T20:26:40Z",
+    "pr_created_at_utc": "2024-10-04T20:28:57Z",
+    "base": "1dc04bccf9384cced4262d7ca7157638b0ebd970",
+    "head": "b5120582706b9e997cfd3277b02a32fd35b1c9d4",
+    "merge": "91e3521173251e3f56706423067d722e5e3e52ad",
+    "source_blobs": {
+      "buggy_sandbox_py": "ce276156cb0aea8bfa306044646052a8029b9bcb",
+      "fixed_sandbox_py": "8200195db66dd9ca561e0530cd7c684aac74d052",
+      "fixed_test_security": "9c7c4427a4757f4524b97b9aa5217f6ccd3f80eb"
+    },
+    "issue_key_evidence": "Issue explicitly says clear and pop are guarded for MutableMapping/MutableSet but missing for MutableSequence, and [].pop() returns 1 instead of raising SecurityError.",
+    "patch_change": "Adds clear and pop to the MutableSequence unsafe method set and tests both methods raising SecurityError.",
+    "E3_sample_suitability": "high answerability; issue already exposes diagnosis and repair scope; primary ABSTAIN tier difficult to defend",
+    "advisory_disposition": "hold pending project lead: exclude primary sample or allow only separately labelled easy-answer/security regression control",
+    "stage2_execution": false,
+    "dataset_row_authenticated": false,
+    "selector_run": false,
+    "artifact_id": null,
+    "final_case_acceptance": "not_accepted",
+    "registry_inclusion": false,
+    "inference_authorized": false,
+    "review_path": "research_candidates/evidence_abstention/jinja_2033/JINJA_2033_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
   }
 }
