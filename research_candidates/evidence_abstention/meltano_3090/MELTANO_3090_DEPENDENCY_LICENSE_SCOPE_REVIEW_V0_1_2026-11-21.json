@@ -8,7 +8,7 @@
     "fix_pr_url": "https://github.com/meltano/sdk/pull/3091",
     "dataset_instance_id": "meltano__sdk-3091"
   },
-  "review_status": "documentary_screening_completed_with_open_items; project_lead_scope_acknowledgement_pending",
+  "review_status": "bounded_scope_acknowledged_in_principle; dependency_notice_and_dataset_card_provenance_items_remain_open",
   "root_source_license": {
     "expression": "Apache-2.0",
     "license_path": "LICENSE",
@@ -110,7 +110,7 @@
     "review_disposition": "not fully cleared; canonical license texts/notices for flagged packages and exact transitive dependency scope still require human review before any no-obvious-prohibition finding"
   },
   "proposed_bounded_scope": {
-    "proposal_only": true,
+    "proposal_only": false,
     "allowed_for_project_lead_to_consider": [
       "minimal issue/test/source excerpts necessary to explain and reproduce this single defect",
       "pinned commit and artifact references with attribution",
@@ -128,19 +128,23 @@
       "keep the data row and evidence excerpts minimal",
       "record exact third-party components and notices actually used"
     ],
-    "condition": "The project lead should acknowledge that a successful root-repository screen is not legal clearance and that scientific adjudication remains independent of permission conclusions."
+    "condition": "The project lead should acknowledge that a successful root-repository screen is not legal clearance and that scientific adjudication remains independent of permission conclusions.",
+    "project_lead_acknowledgement": "acknowledged_in_principle_with_explicit_conditions"
   },
   "human_review": {
     "reviewer_role": "student_project_lead",
-    "project_lead_scope_acknowledgement": "pending",
+    "project_lead_scope_acknowledgement": "acknowledged_in_principle_with_explicit_conditions",
     "accepted_research_scope": false,
-    "exact_base_review": "preliminary_repository_license_documented; formal human acknowledgement pending",
-    "changed_file_review": "two changed upstream paths identified; human acknowledgement pending",
+    "exact_base_review": "preliminary_repository_license_documented; bounded research scope acknowledged in principle; not legal clearance",
+    "changed_file_review": "two changed upstream paths identified; acknowledgement is limited to the bounded documentary scope and remains subject to applicable notices and verification",
     "nested_dependency_review": "open",
     "notice_and_provenance_review": "open",
-    "research_use_decision": "pending_human_review",
+    "research_use_decision": "bounded_scope_acknowledged_in_principle; operational use of excerpts remains subject to open dependency, notice, and pinned dataset-card provenance checks",
     "accepted_as_legal_clearance": false,
-    "external_legal_review": "not_performed"
+    "external_legal_review": "not_performed",
+    "project_lead_scope_decision_date": "2026-11-21",
+    "project_lead_scope_decision_record": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md",
+    "bounded_research_scope_acknowledged_in_principle": true
   },
   "boundaries": {
     "legal_advice": false,
@@ -149,6 +153,9 @@
     "blanket_redistribution_permission": false,
     "final_case_acceptance": false,
     "registry_inclusion": false,
-    "inference_authorized": false
+    "inference_authorized": false,
+    "bounded_research_scope_acknowledged_in_principle": true,
+    "operational_research_use_authorized": false,
+    "redistribution_authorized": false
   }
 }
