@@ -132,3 +132,12 @@ The research protocol does not authorize silently trimming `FAIL_TO_PASS`, rewri
 - Model loading, inference, fine-tuning and training: not performed.
 
 No further attempt should rerun or alter this frozen row to obtain a pass. Reconsideration would require a separately versioned and justified dataset correction or a new, predeclared study protocol; neither is authorized by this result.
+
+
+## 9. Project-lead disposition amendment — 21 November 2026
+
+**APPROVED EXCLUSION FROM THE CURRENT PRIMARY ABSTENTION SAMPLE.** The project lead approved exclusion of Lektor #1214 because the immutable 149-selector row fails the Stage 2 selector-integrity contract: 23 unexpected base passes, 125 base import/collection failures, and four malformed/unresolved fixed-side selectors. The issue-specific reproducer and direct permission regression remain valid engineering evidence, but they do not repair the frozen row-level contract.
+
+No selector is trimmed, rewritten or replaced. No easy-answer/control group is assigned. Stage 3 remains not started; no registry inclusion, final case acceptance or model inference is authorized.
+
+Decision record: `PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md`.
