@@ -135,3 +135,14 @@ The decision-record assertion was aligned with the exact wording in the project-
 - Dymos repeat run 44899668525: success.
 
 The Meltano approval and fail-closed status regression test is included in the 27-test v0.2 acceptance/readiness suite. This is validation of repository records and no-inference gates only; no model weights were loaded and no inference, fine-tuning or training was performed. The candidate remains outside the registry and its prior exposure and bounded license-scope acknowledgements remain open.
+
+
+## Dataset-card history recheck — 21 November 2026
+
+The connected Hugging Face repository metadata was rechecked and still displays dataset-card license `CC-BY-4.0` (Hub metadata updated 2 October 2026). The public README history page shows two separate entries at the displayed 20 July timestamp: dataset upload `fb9aa22` and README upload `6fe2932`. This confirms that the data file and license card were uploaded as distinct revisions; it does not yet authenticate the card bytes corresponding to the data revision. The full immutable README commit SHA and raw README bytes/SHA-256 remain uncaptured, so the exact pinned-card license gate remains open.
+
+Sources:
+- https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified
+- https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commits/main/README.md
+
+No license permission or legal-clearance conclusion is drawn from this recheck.
