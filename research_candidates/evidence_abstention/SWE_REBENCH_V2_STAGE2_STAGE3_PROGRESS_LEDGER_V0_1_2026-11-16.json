@@ -2488,16 +2488,17 @@
       "pull_request_number": 1141,
       "pull_request_url": "https://github.com/python-babel/babel/pull/1141",
       "static_screening_classification": "provisional_candidate",
-      "static_scope_decision": "Geçici bug adayı",
+      "static_scope_decision": "Strong issue–PR alignment; issue body explicitly suggests the intended fix; not suitable for primary E3 abstention sample",
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
-      "candidate_review_document": null,
-      "stage2_status": "not_started",
+      "candidate_review_document": "research_candidates/evidence_abstention/python_babel_1141/PYTHON_BABEL_1141_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+      "stage2_status": "held_pending_project_lead_E3_sample_suitability_decision_no_stage2",
       "stage2_workflow_job_id": null,
-      "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage2_evidence_note": "research_candidates/evidence_abstention/python_babel_1141/PYTHON_BABEL_1141_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+      "stage3_status": "static_issue_pr_source_audit_complete; explicit_E3_fix_clue; primary_sample_exclusion_advisory",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "next_required_gate": "Project lead decides whether to exclude from primary abstention sample or authorize as a separately labelled evidence-sufficient control under a formally amended protocol. No Stage 2 for primary eligibility under current v0.2 design."
     },
     {
       "cohort_rank": 54,
@@ -5266,5 +5267,27 @@
     "final_case_acceptance": "not_accepted",
     "inference_authorized": false,
     "review_path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
+  },
+  "latest_python_babel_1141_static_review": {
+    "date": "2026-11-21",
+    "status": "strong_issue_pr_alignment; issue_explicitly_proposes_fix; exclude_primary_E3_advisory; no_stage2",
+    "issue": "python-babel/babel #1129",
+    "pr": "python-babel/babel #1141",
+    "issue_created_at_utc": "2024-09-22T13:20:11Z",
+    "pr_created_at_utc": "2024-10-19T22:03:19Z",
+    "base": "f1c8633a7d765f07b94e0a6097b3f0c7912b955f",
+    "head": "315fdccfc8671924156a4256a3bedd305def6dd7",
+    "merged_at_utc": "2024-10-20T06:50:36Z",
+    "issue_symptom": "parse_time raises ValueError when locale time format has H:mm and no seconds token",
+    "base_mechanism": "format_str.index('s') raises ValueError for a format with no seconds",
+    "patch_mechanism": "format_str.find('s'); use math.inf when absent so seconds default to zero",
+    "e3_assessment": "issue explicitly names missing seconds token and proposes optional seconds defaulting to zero; very high answerability",
+    "protocol_control_group": "not defined in current v0.2 study design",
+    "stage2_execution": false,
+    "dataset_row_authenticated": false,
+    "selectors_run": false,
+    "final_case_acceptance": "not_accepted",
+    "inference_authorized": false,
+    "review_path": "research_candidates/evidence_abstention/python_babel_1141/PYTHON_BABEL_1141_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
   }
 }
