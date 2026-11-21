@@ -2395,23 +2395,56 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": null,
-      "stage2_status": "blocked_dataset_selector_integrity",
-      "stage2_workflow_job_id": 136887636693,
+      "stage2_status": "blocked_dataset_selector_integrity_complete_base_fixed_matrices",
+      "stage2_workflow_job_id": 136892468466,
       "stage2_evidence_note": "research_candidates/evidence_abstention/lektor_1213/LEKTOR_1213_STAGE2_SELECTOR_INTEGRITY_HOLD_2026-11-21.md",
       "stage3_status": "not_started_stage2_not_passed",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44917970732,
-      "stage2_latest_job_id": 136887636693,
-      "stage2_latest_artifact_id": 14712348769,
-      "stage2_latest_artifact_sha256": "dc0345c2d3284f795721b10d226db6523db75c004e2823c525a0d943143bdb2c",
-      "stage2_latest_artifact_integrity": "GitHub and independently downloaded outer SHA-256 match; ZIP CRC PASS; 13 members; SHA256SUMS.txt 12/12 internal hashes PASS. Archive lacks a complete selector-results matrix because the base selector step stopped at the first unexpected pass.",
+      "stage2_latest_run_id": 44919553942,
+      "stage2_latest_job_id": 136892468466,
+      "stage2_latest_artifact_id": 14712694556,
+      "stage2_latest_artifact_sha256": "25d0e9565cc267cc73a3e46c89978880ace5ad4716e2e0023513bc48811c0d91",
+      "stage2_latest_artifact_integrity": "GitHub and independently downloaded outer SHA-256 match; ZIP CRC PASS; 20 archive members; SHA256SUMS.txt 19/19 internal hashes PASS; python-license-inventory.json parses as valid JSON.",
       "stage2_dataset_instance_id": "lektor__lektor-1214",
       "stage2_dataset_row_sha256": "4e0b0674a9307164e9486009aa21690973135f599761a489d9a595c2ccea282d",
       "stage2_frozen_fail_to_pass_selector_count": 149,
       "stage2_buggy_base_commit": "c22e224ec56620c2a1d90016d74518970b1dd578",
       "stage2_fixed_pr_commit": "7d8bfed7ae0a2eb970acd5be824eeb380239e675",
-      "next_required_gate": "Audit all 149 frozen FAIL_TO_PASS selectors without early exit, run the independent reproducer on exact fixed PR revision, and reconcile the selector-row mismatch before any Stage 2 pass or Stage 3 review."
+      "next_required_gate": "Frozen row fails unchanged 149-selector FAIL_TO_PASS contract (23 unexpected base passes, 125 test-module import/collection failures, four malformed fixed-side selector IDs). Do not trim or rewrite selectors. Issue-specific reproducer and one direct regression test prove the narrow upstream fix, but the frozen dataset row is not an eligible primary case. Reconsider only through a separately versioned, justified dataset correction or a new predeclared protocol; neither is currently authorized.",
+      "stage2_complete_matrix_collected": true,
+      "stage2_contract_passed": false,
+      "stage2_base_matrix": {
+        "results": 149,
+        "unexpected_passes": 23,
+        "failures": 126,
+        "issue_specific_permission_regression_failures": 1,
+        "test_module_import_or_collection_failures": 125,
+        "order_matches_frozen_dataset": true
+      },
+      "stage2_fixed_matrix": {
+        "results": 149,
+        "passes": 145,
+        "invalid_or_unresolved_node_ids": 4,
+        "order_matches_frozen_dataset": true,
+        "invalid_selectors": [
+          "tests/test_utils.py::test_deprecated_function[kwargs0-^'f'",
+          "tests/test_utils.py::test_deprecated_function[kwargs1-^'f'",
+          "tests/test_utils.py::test_deprecated_function[kwargs2-^'f'",
+          "tests/test_utils.py::test_deprecated_function[kwargs3-^'oldfunc'"
+        ]
+      },
+      "stage2_independent_issue_reproducer": {
+        "base": "expected_failure_verified",
+        "fixed": "pass_verified",
+        "base_artifact_mode": "0o600",
+        "base_normal_file_mode": "0o644"
+      },
+      "stage2_issue_specific_selector": "tests/test_builder.py::test_Artifact_file_mode",
+      "stage2_issue_specific_selector_result": {
+        "base": "fails_on_0o600_vs_0o644_permission_assertion",
+        "fixed": "passes"
+      }
     },
     {
       "cohort_rank": 51,
@@ -5128,32 +5161,46 @@
     "upstream_pr": "https://github.com/lektor/lektor/pull/1214",
     "buggy_base_commit": "c22e224ec56620c2a1d90016d74518970b1dd578",
     "fixed_pr_commit": "7d8bfed7ae0a2eb970acd5be824eeb380239e675",
-    "research_head_commit": "52e29ee78765722abeed7195ea9fe933ae22825c",
-    "workflow_run_id": 44917970732,
-    "workflow_job_id": 136887636693,
-    "artifact_id": 14712348769,
-    "artifact_sha256": "dc0345c2d3284f795721b10d226db6523db75c004e2823c525a0d943143bdb2c",
-    "artifact_integrity": "outer digest matched GitHub; ZIP CRC PASS; 13 members; 12/12 internal SHA256SUMS entries PASS",
+    "research_head_commit": "cc06457bef0b219106087e2421dd5607f21f4d87",
+    "workflow_run_id": 44919553942,
+    "workflow_job_id": 136892468466,
+    "artifact_id": 14712694556,
+    "artifact_sha256": "25d0e9565cc267cc73a3e46c89978880ace5ad4716e2e0023513bc48811c0d91",
+    "artifact_integrity": "independently downloaded outer SHA-256 matched GitHub; ZIP CRC PASS; 20 members; SHA256SUMS.txt 19/19 internal hashes PASS; python-license-inventory.json valid JSON",
     "dataset_instance_id": "lektor__lektor-1214",
+    "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
     "dataset_row_sha256": "4e0b0674a9307164e9486009aa21690973135f599761a489d9a595c2ccea282d",
     "fail_to_pass_selector_count": 149,
     "selectors_by_file": {
       "tests/test_builder.py": 24,
       "tests/test_utils.py": 125
     },
+    "base_matrix": {
+      "results": 149,
+      "unexpected_passes": 23,
+      "issue_specific_target_failures": 1,
+      "test_utils_import_collection_failures": 125,
+      "order_matches_frozen_dataset": true
+    },
+    "fixed_matrix": {
+      "results": 149,
+      "passes": 145,
+      "malformed_unresolved_selectors": 4,
+      "order_matches_frozen_dataset": true
+    },
     "independent_issue_reproducer": {
-      "status": "buggy_base_expected_failure_verified",
-      "observed_mode": "0o600",
-      "normal_file_mode": "0o644",
-      "fixed_revision_run": "skipped_not_verified"
+      "base": "expected_failure_verified",
+      "fixed": "pass_verified",
+      "observed_base_artifact_mode": "0o600",
+      "observed_base_normal_file_mode": "0o644"
     },
-    "selector_audit": {
-      "status": "blocked_unexpected_base_pass",
-      "first_selector": "tests/test_builder.py::test_basic_build",
-      "first_selector_result": "unexpected_pass_on_buggy_base",
-      "remaining_selectors": "not_run_in_this_attempt",
-      "fixed_revision_selectors": "skipped"
+    "issue_specific_frozen_selector": {
+      "selector": "tests/test_builder.py::test_Artifact_file_mode",
+      "base": "fails_on_expected_file_mode_assertion",
+      "fixed": "passes"
     },
+    "stage2_contract_passed": false,
     "disposition": "blocked_dataset_selector_integrity",
     "stage3_status": "not_started_stage2_not_passed",
     "final_case_acceptance": "not_accepted",
