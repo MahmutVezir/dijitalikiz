@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T15:50:45.950Z",
+  "generated_at_utc": "2026-11-21T18:05:24Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -2685,28 +2685,57 @@
       "pull_request_number": 3591,
       "pull_request_url": "https://github.com/geopandas/geopandas/pull/3591",
       "static_screening_classification": "provisional_candidate",
-      "static_scope_decision": "Exact frozen E3 packet authenticated; implementation-mechanism target is not disclosed in E3; project-lead E3=ABSTAIN; candidate remains on HOLD.",
+      "static_scope_decision": "Exact frozen E3 packet authenticated; project-lead-approved semantic tiers E3=ABSTAIN, E2=ABSTAIN, E1=ANSWER; candidate remains HOLD pending separate Stage 2 decision.",
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
       "stage2_status": "held_no_stage2_after_project_lead_E3_abstain",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "stage3_status": "E3_adjudicated_abstain; E2_and_E1_require_separate_adjudication; candidate_HOLD",
+      "stage3_status": "gold_and_E3_E2_E1_semantic_tiers_project_lead_approved;source_packets_frozen;candidate_HOLD_pending_Stage2_gate",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "next_required_gate": "Maintain HOLD and no-Stage-2 boundary. The E3 decision is resolved as ABSTAIN; E2/E1 are not inferred from E3. Any future Stage-2 advancement requires a separate explicit project-lead decision.",
+      "next_required_gate": "Separate explicit project-lead approval is required before Stage 2 exact base/fix reproduction. No Stage 2, final case acceptance, registry inclusion or model inference is authorized by this tier decision.",
       "stage3_project_lead_prior_pipeline_debug_exposure": "none",
       "stage3_project_lead_disposition": {
         "decision_maker_role": "student_project_lead",
         "decision_source": "explicit_chat_approval_2026-11-21",
-        "disposition": "retain_on_hold_after_E3_abstain",
+        "disposition": "retain_on_hold_pending_separate_stage2_gate",
         "e3_tier": "ABSTAIN",
         "e3_reason": "Frozen problem statement supplies all-NaN input, error, workaround and valid-geometry contrast, but not the constructor's internal geometry/dtype-recognition branch; strict target is implementation mechanism.",
         "e2_e1": "not_determined_by_E3_decision; adjudicate independently if protocol proceeds",
         "prior_pipeline_debug_exposure": "none",
-        "decision_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md",
-        "decision_record_git_blob_sha": "2010c4d70c72d5f7c54ef546469d73162d2ea07d"
+        "decision_record_path": "research_candidates/evidence_abstention/geopandas_3591/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_GEOPANDAS_3591_2026-11-21.md",
+        "decision_record_git_blob_sha": "2010c4d70c72d5f7c54ef546469d73162d2ea07d",
+        "gold_mechanism_id": "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION",
+        "approved_alternatives": [
+          "A1_SINGLE_ROW_DATA_SHAPE_OR_ALIGNMENT",
+          "A2_CRS_ACTIVE_GEOMETRY_STATE_TRANSITION"
+        ],
+        "e2_tier": "ABSTAIN",
+        "e1_tier": "ANSWER",
+        "surviving_mechanisms": {
+          "E3": [
+            "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION",
+            "A1_SINGLE_ROW_DATA_SHAPE_OR_ALIGNMENT",
+            "A2_CRS_ACTIVE_GEOMETRY_STATE_TRANSITION"
+          ],
+          "E2": [
+            "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION",
+            "A2_CRS_ACTIVE_GEOMETRY_STATE_TRANSITION"
+          ],
+          "E1": [
+            "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION"
+          ]
+        },
+        "approval_timestamp_local": "2026-11-21T20:58:43+03:00",
+        "decision_record_sha256": "1de86ffa8c09983c53ecf43cfce536df6be1dcb8b93a57a76ae2bdb1f7d0f3cf",
+        "no_stage2_authorized": true,
+        "final_case_acceptance": "not_accepted",
+        "registry_inclusion": false,
+        "researcher_source_exposure": "full_disclosed",
+        "blinded_researcher_adjudication": false,
+        "inter_rater_reliability_claimed": false
       },
       "stage2_dataset_row_id": "geopandas__geopandas-3591",
       "stage2_dataset_row_sha256": "e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2",
@@ -2724,6 +2753,23 @@
         "e3_boundary": "Frozen E3 states all-NaN input, observed error, explicit geometry workaround and valid-geometry contrast; it does not state the internal constructor geometry/dtype-recognition branch.",
         "project_lead_e3_decision": "ABSTAIN",
         "prior_pipeline_debug_exposure": "none"
+      },
+      "stage3_evidence_packets": {
+        "status": "frozen_semantic_source_packets_stage2_reproduction_pending",
+        "packet_paths": {
+          "E3": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E3_PACKET_MANIFEST_V0_1.json",
+          "E2": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E2_PACKET_MANIFEST_V0_1.json",
+          "E1": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E1_PACKET_MANIFEST_V0_1.json"
+        },
+        "packet_sha256": {
+          "E3": "8a59516e9a4282cab88b7a0372c4402f8f069cff037ddfc39269ce4c212727a8",
+          "E2": "a7af85fae4233326ad22370131880f30739034137287ed01b1ac6cf0ec03e9ed",
+          "E1": "f616ee1036b77fde6fa77fff9efe27fd26c6dd78cf6657046c4071b0e47e5dbb"
+        },
+        "stage2_execution": "not_run",
+        "fixed_revision_test_source_is_execution_log": false,
+        "model_output_included": false,
+        "inference_authorized": false
       }
     },
     {
@@ -3976,6 +4022,63 @@
       "frozen_cohort_changed": false,
       "accepted_registry_changed": false,
       "control_group_created": false
+    },
+    {
+      "date": "2026-11-21",
+      "decision_scope": "geopandas_3591_gold_mechanism_and_evidence_tiers",
+      "decision_source": "explicit_project_lead_approval_in_ChatGPT_conversation_2026-11-21",
+      "approval_timestamp_local": "2026-11-21T20:58:43+03:00",
+      "candidate": "geopandas/geopandas issue #3590 / PR #3591; frozen rank 52; row geopandas__geopandas-3591",
+      "gold_mechanism_id": "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION",
+      "evidence_tiers": {
+        "E3": "ABSTAIN",
+        "E2": "ABSTAIN",
+        "E1": "ANSWER"
+      },
+      "surviving_mechanisms": {
+        "E3": [
+          "G1",
+          "A1",
+          "A2"
+        ],
+        "E2": [
+          "G1",
+          "A2"
+        ],
+        "E1": [
+          "G1"
+        ]
+      },
+      "decision_record": {
+        "path": "research_candidates/evidence_abstention/geopandas_3591/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_GEOPANDAS_3591_2026-11-21.md",
+        "sha256": "1de86ffa8c09983c53ecf43cfce536df6be1dcb8b93a57a76ae2bdb1f7d0f3cf"
+      },
+      "packet_manifests": {
+        "E3": {
+          "path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E3_PACKET_MANIFEST_V0_1.json",
+          "sha256": "8a59516e9a4282cab88b7a0372c4402f8f069cff037ddfc39269ce4c212727a8"
+        },
+        "E2": {
+          "path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E2_PACKET_MANIFEST_V0_1.json",
+          "sha256": "a7af85fae4233326ad22370131880f30739034137287ed01b1ac6cf0ec03e9ed"
+        },
+        "E1": {
+          "path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E1_PACKET_MANIFEST_V0_1.json",
+          "sha256": "f616ee1036b77fde6fa77fff9efe27fd26c6dd78cf6657046c4071b0e47e5dbb"
+        }
+      },
+      "boundaries": {
+        "candidate_disposition": "HOLD",
+        "stage2_authorized": false,
+        "final_case_acceptance": false,
+        "registry_inclusion": false,
+        "model_loading": false,
+        "model_inference": false,
+        "fine_tuning": false,
+        "training": false,
+        "legal_clearance": false
+      },
+      "researcher_source_exposure": "full_disclosed"
     }
   ],
   "latest_candidate_matrix_recheck": {
@@ -5776,7 +5879,7 @@
   },
   "latest_geopandas_3591_static_review": {
     "date": "2026-11-21",
-    "status": "exact_frozen_row_authenticated; E3_ABSTAIN_project_lead_approved; AI_advisory_E2_ABSTAIN_E1_ANSWER_prepared; project_lead_E2_E1_decisions_pending; candidate_HOLD; no_stage2",
+    "status": "exact_frozen_row_authenticated; project_lead_gold_and_E3_E2_E1_approved; semantic_source_packets_frozen; candidate_HOLD_pending_separate_stage2_gate; no_stage2",
     "issue": "geopandas/geopandas #3590",
     "pr": "geopandas/geopandas #3591",
     "issue_created_at_utc": "2025-06-05T00:05:04Z",
@@ -5812,7 +5915,7 @@
     "candidate_disposition": "HOLD; no final exclusion or acceptance; no Stage 2",
     "gold_mechanism_proposal": "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION",
     "e2_e1_advisory": {
-      "status": "prepared_AI_advisory_only_project_lead_decision_pending",
+      "status": "project_lead_approved;semantic_packets_frozen",
       "review_path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E2_E1_ADVISORY_REVIEW_2026-11-21.md",
       "review_git_blob_sha1": "17eba5a38f41cbe104d115a7d8b5e3e29290e029",
       "proposed_gold": "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION",
@@ -5823,8 +5926,8 @@
       },
       "project_lead_approved_tiers": {
         "E3": "ABSTAIN",
-        "E2": null,
-        "E1": null
+        "E2": "ABSTAIN",
+        "E1": "ANSWER"
       },
       "prior_pipeline_debug_exposure": "none",
       "researcher_source_exposure": "full",
@@ -5839,9 +5942,23 @@
       "base_null_conversion_source_blob_sha1": "131a248229fcffeeab1a8217f9a9b398bae5c5df",
       "fixed_source_blob_sha1": "243d98759878754975e1b8b1732cfb503dd1bf0a",
       "no_stage2_authorized": true,
-      "inference_authorized": false
+      "inference_authorized": false,
+      "decision_record_path": "research_candidates/evidence_abstention/geopandas_3591/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_GEOPANDAS_3591_2026-11-21.md",
+      "decision_record_sha256": "1de86ffa8c09983c53ecf43cfce536df6be1dcb8b93a57a76ae2bdb1f7d0f3cf",
+      "packet_manifest_paths": {
+        "E3": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E3_PACKET_MANIFEST_V0_1.json",
+        "E2": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E2_PACKET_MANIFEST_V0_1.json",
+        "E1": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E1_PACKET_MANIFEST_V0_1.json"
+      },
+      "packet_manifest_sha256": {
+        "E3": "8a59516e9a4282cab88b7a0372c4402f8f069cff037ddfc39269ce4c212727a8",
+        "E2": "a7af85fae4233326ad22370131880f30739034137287ed01b1ac6cf0ec03e9ed",
+        "E1": "f616ee1036b77fde6fa77fff9efe27fd26c6dd78cf6657046c4071b0e47e5dbb"
+      }
     },
-    "next_gate": "Project lead to review the proposed gold/alternative mechanisms and separately approve or revise E2 and E1; only then freeze nested packets. Stage 2 remains a distinct, unauthorized later gate."
+    "next_gate": "Project lead to review the proposed gold/alternative mechanisms and separately approve or revise E2 and E1; only then freeze nested packets. Stage 2 remains a distinct, unauthorized later gate.",
+    "gold_mechanism_approved": "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION",
+    "no_stage2_authorized": true
   },
   "latest_python_babel_1141_static_review": {
     "date": "2026-11-21",
@@ -5963,7 +6080,7 @@
         "rank": 52,
         "repository": "geopandas/geopandas",
         "pull_request": "#3591",
-        "next_gate": "Review GeoPandas #3591 advisory gold/alternative mechanism set and make separate explicit E2/E1 decisions. Candidate remains HOLD; do not freeze tier labels or run Stage 2 before approval."
+        "next_gate": "Stage 2 exact base/fix reproduction is the next gate, but requires a separate explicit project-lead approval; current gold/tier approval does not authorize execution. Candidate stays HOLD until Stage 2 and all later acceptance gates close."
       },
       {
         "rank": 55,
@@ -5974,11 +6091,11 @@
     ],
     "accepted_cases_remain": "Dishka, EODAG and GeoFileOps",
     "inference_authorized": false,
-    "phase2_status": "partially_complete_not_closed_pending_rank52_E2_E1_and_disposition_hold",
+    "phase2_status": "partially_complete_not_closed_pending_rank52_stage2_and_disposition_hold",
     "phase2_review_document": "research_candidates/evidence_abstention/STAGE2_RANK49_52_CLOSURE_REVIEW_2026-11-21.md",
     "rank50_status": "excluded_from_current_primary_abstention_sample_by_project_lead_immutable_selector_integrity_failure",
     "rank51_status": "excluded_from_current_primary_abstention_sample_after_exact_frozen_E3_authentication; no Stage 2",
-    "rank52_status": "exact row authenticated; E3=ABSTAIN approved; AI advisory E2=ABSTAIN/E1=ANSWER prepared; project-lead E2/E1 decisions pending; candidate HOLD; no Stage 2",
+    "rank52_status": "gold approved; E3=ABSTAIN, E2=ABSTAIN, E1=ANSWER approved; semantic packets frozen; candidate HOLD; Stage 2 not run and requires separate approval",
     "rank49_temporal_acknowledgement": "project_lead_approved_with_residual_uncertainty_2026-11-21",
     "rank49_package_license_notice_audit": "complete_exact_105_package_metadata_and_notice_inventory; manual_obligation_review_and_scope_acknowledgement_pending",
     "rank49_bounded_scope_status": "approved_exact_bounded_research_use_2026-11-21",
@@ -6030,7 +6147,8 @@
       },
       "manifest_validation": "accepted_case_count=3; accepted_project_count=3; exactly one accepted GeoFileOps review record",
       "inference_authorized": false
-    }
+    },
+    "rank55_status": "not_started; wait until rank 52 is resolved or formally excluded; maintain frozen rank order"
   },
   "stage2_rank49_52_closure_review_2026_11_21": {
     "date": "2026-11-21",
@@ -6041,7 +6159,7 @@
       "49_geofileops_649": "stage2_pass; evidence tiers approved; bounded scope and residual temporal risk acknowledged; final acceptance approved; included as third v0.2 exploratory case",
       "50_lektor_1214": "stage2_frozen_selector_integrity_contract_failed; preserve_all_149_selectors; no_stage3_or_primary_sample_acceptance",
       "51_music21_1736": "exact frozen row authenticated; E3 disclosure condition satisfied; formally excluded from primary sample; no Stage 2",
-      "52_geopandas_3591": "exact frozen row authenticated; project_lead_E3_ABSTAIN; E2/E1 separate; candidate remains HOLD; no Stage 2"
+      "52_geopandas_3591": "exact row authenticated; gold and E3/E2/E1 tiers project-lead approved; semantic source packets frozen; candidate HOLD; Stage 2 not run pending separate approval"
     },
     "exact_row_extraction": {
       "rank_51": "authenticated",
@@ -6253,5 +6371,38 @@
     "blocker_count": 13,
     "inference_authorized": false,
     "note": "The no-inference readiness report job succeeded and reported 13 global blockers. Other non-inference reproduction/audit fan-out jobs were still running when this ledger entry was recorded."
+  },
+  "latest_geopandas_3591_evidence_tier_decision_2026_11_21": {
+    "decision_record_path": "research_candidates/evidence_abstention/geopandas_3591/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_GEOPANDAS_3591_2026-11-21.md",
+    "decision_record_sha256": "1de86ffa8c09983c53ecf43cfce536df6be1dcb8b93a57a76ae2bdb1f7d0f3cf",
+    "approval_timestamp_local": "2026-11-21T20:58:43+03:00",
+    "packet_manifests": {
+      "E3": {
+        "path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E3_PACKET_MANIFEST_V0_1.json",
+        "sha256": "8a59516e9a4282cab88b7a0372c4402f8f069cff037ddfc39269ce4c212727a8"
+      },
+      "E2": {
+        "path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E2_PACKET_MANIFEST_V0_1.json",
+        "sha256": "a7af85fae4233326ad22370131880f30739034137287ed01b1ac6cf0ec03e9ed"
+      },
+      "E1": {
+        "path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E1_PACKET_MANIFEST_V0_1.json",
+        "sha256": "f616ee1036b77fde6fa77fff9efe27fd26c6dd78cf6657046c4071b0e47e5dbb"
+      }
+    },
+    "structural_preflight": {
+      "unique_packet_ids": true,
+      "case_instances": true,
+      "correct_tier_order": true,
+      "nested_inheritance": true,
+      "cumulative_evidence_counts": true,
+      "E2_excludes_E1_exact_disclosure": true,
+      "E1_contains_exact_disclosure": true,
+      "all_sha256_fields_valid": true,
+      "stage2_explicitly_not_run": true
+    },
+    "recorded_at_local": "2026-11-21T21:05:24+03:00",
+    "no_stage2": true,
+    "inference_authorized": false
   }
 }
