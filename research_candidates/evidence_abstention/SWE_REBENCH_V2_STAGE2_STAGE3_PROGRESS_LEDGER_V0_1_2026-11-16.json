@@ -2364,11 +2364,11 @@
       "stage2_status": "passed_exact_source_build_independent_reproducer_and_10_frozen_selectors_base_fail_fixed_pass_artifact_integrity_verified",
       "stage2_workflow_job_id": 136883732286,
       "stage2_evidence_note": "Python 3.11.9; linux-64 Conda GIS environment resolved using committed environment.yml and captured with explicit export. Exact buggy base f7f8a4cf49b1278f3e9e5f4157718de441a21b57 built; exact base source and license/setup/pyproject blob checks passed. Independent synthetic GeoPackage reproducer fails on base with output layer source_layer rather than destination_result; explicit dst_layer control passes. Exact Parquet file SHA-256 7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9; row geofileops__geofileops-649 created_at 2025-03-06 15:39:28, row SHA-256 2a85246a15d97ca6e73eb9a02f36022a05f80b8322c24a6522fbfee31fc7d1eb; 10 FAIL_TO_PASS selectors authenticated. All 10 fail on exact base and all 10 pass on exact fixed PR head ec1438fbf8527269cd1193647d05c8d7fdb83802. Artifact downloaded and independently verified: SHA-256 b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f; ZIP CRC pass; SHA256SUMS 18/18 pass.",
-      "stage3_status": "stage2_and_exact_105_package_metadata_notice_inventory_pass; temporal_acknowledged_with_residual_uncertainty; bounded_research_scope_approved; proposed_case_record_and_fail_closed_validation_and_final_acceptance_open",
-      "final_case_acceptance": "not_accepted",
+      "stage3_status": "stage2_pass; strict gold and E3_ABSTAIN_E2_ABSTAIN_E1_ANSWER approved; temporal acknowledged with residual uncertainty; bounded scope approved; exact 105 package license_notice inventory complete; proposed case record structurally complete with zero blockers; final project-lead YES/NO acceptance pending",
+      "final_case_acceptance": "pending_project_lead_yes_no",
       "model_inference_authorized": false,
       "stage3_static_review_path": "research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "next_required_gate": "Build the complete schema-conformant proposed case record with authenticated evidence references and current artifact hashes; run fail-closed structural and integrity validation; then obtain separate final project-lead YES/NO acceptance. Scope approval is bounded and not legal clearance. No registry inclusion or inference.",
+      "next_required_gate": "Project lead makes separate final YES/NO acceptance decision for SRV2E-GEOFILEOPS_649. Until YES is explicitly recorded in a timestamped decision artifact, keep acceptance_decision=proposed, final_acceptance=pending, and do not add the case to the registry. No model inference or training is authorized.",
       "stage2_workflow_run_id": 44916663456,
       "stage2_artifact_id": 14711502949,
       "stage2_artifact_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
@@ -2434,7 +2434,7 @@
         "decision_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md",
         "decision_record_git_blob_sha": "bc1ca29156db279799ae7ebcdf491cae10322983"
       },
-      "primary_sample_eligibility_status": "provisionally_eligible_under_approved_strict_mechanism_tiers_subject_to_remaining_case_acceptance_gates",
+      "primary_sample_eligibility_status": "proposed_structurally_valid; pending separate project_lead_final_yes_no; not yet registry-eligible",
       "stage3_dependency_license_status": {
         "exact_build_package_inventory": "complete",
         "exact_locked_packages": 105,
@@ -2536,7 +2536,30 @@
       },
       "stage3_bounded_scope_decision": "approved_exact_bounded_research_use_2026-11-21",
       "stage3_bounded_scope_decision_record_path": "research_candidates/evidence_abstention/geofileops_649/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_DECISION_2026-11-21.md",
-      "stage3_bounded_scope_decision_record_git_blob_sha": "e7df38bdcb5fdeb74c1c9c921deba580c49442f8"
+      "stage3_bounded_scope_decision_record_git_blob_sha": "e7df38bdcb5fdeb74c1c9c921deba580c49442f8",
+      "case_acceptance_decision": "proposed",
+      "case_acceptance_record_path": "research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_PROPOSED_V0_2_2026-11-21.json",
+      "case_acceptance_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_PROPOSED_V0_2_2026-11-21.json",
+      "case_acceptance_record_git_blob_sha1": "8973fbbe3fd6834a18669735eae0a482dda795bf",
+      "case_acceptance_record_sha256": "3677b3651ac79742f30f76c982bd829734cc1e541402a37f65642dec4f771e56",
+      "case_acceptance_validation_status": "passed_structurally_complete_candidate",
+      "case_acceptance_validation": {
+        "run_id": 44930310066,
+        "job_id": 136925280030,
+        "conclusion": "success",
+        "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44930310066",
+        "validation_record_path": "research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_CASE_RECORD_VALIDATION_2026-11-21.md",
+        "validation_record_sha256": "959881034ccee7e98b1d119ba537821de4b4601f3d8ea90ce7bd4e10264c56c7",
+        "case_record_path": "research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_PROPOSED_V0_2_2026-11-21.json",
+        "case_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_PROPOSED_V0_2_2026-11-21.json",
+        "case_record_git_blob_sha1": "8973fbbe3fd6834a18669735eae0a482dda795bf",
+        "case_record_sha256": "3677b3651ac79742f30f76c982bd829734cc1e541402a37f65642dec4f771e56",
+        "validator": "swe_rebench_v2_exploratory_case_acceptance.validate_case_record",
+        "result": "structurally_complete_candidate",
+        "blockers": 0,
+        "eligible_for_registry": false,
+        "inference_authorized": false
+      }
     },
     {
       "cohort_rank": 50,
@@ -5825,7 +5848,7 @@
         "rank": 49,
         "repository": "geofileops/geofileops",
         "pull_request": "#649",
-        "next_gate": "Build schema-conformant proposed case record with authenticated refs/hashes; run fail-closed structural/integrity validation; then separate final project-lead YES/NO acceptance. Exact 105-package inventory, temporal acknowledgement and bounded-scope acknowledgement are complete; legal clearance is not asserted."
+        "next_gate": "Obtain separate project-lead final YES/NO acceptance for the structurally complete proposed case. Do not insert into accepted registry before explicit YES and hashed decision record. No inference/training."
       },
       {
         "rank": 52,
@@ -5842,7 +5865,7 @@
     ],
     "accepted_cases_remain": "Dishka and EODAG only",
     "inference_authorized": false,
-    "phase2_status": "partially_complete_not_closed_pending_rank49_case_record_validation_final_acceptance_and_rank52_hold",
+    "phase2_status": "partially_complete_not_closed_pending_rank49_final_acceptance_and_rank52_hold",
     "phase2_review_document": "research_candidates/evidence_abstention/STAGE2_RANK49_52_CLOSURE_REVIEW_2026-11-21.md",
     "rank50_status": "excluded_from_current_primary_abstention_sample_by_project_lead_immutable_selector_integrity_failure",
     "rank51_status": "excluded_from_current_primary_abstention_sample_after_exact_frozen_E3_authentication; no Stage 2",
@@ -5851,7 +5874,27 @@
     "rank49_package_license_notice_audit": "complete_exact_105_package_metadata_and_notice_inventory; manual_obligation_review_and_scope_acknowledgement_pending",
     "rank49_bounded_scope_status": "approved_exact_bounded_research_use_2026-11-21",
     "rank49_bounded_scope_record": "research_candidates/evidence_abstention/geofileops_649/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_DECISION_2026-11-21.md",
-    "rank49_case_record_status": "proposed_record_not_yet_built"
+    "rank49_case_record_status": "proposed_record_structurally_complete_zero_blockers",
+    "rank49_case_record_path": "research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_PROPOSED_V0_2_2026-11-21.json",
+    "rank49_case_record_sha256": "3677b3651ac79742f30f76c982bd829734cc1e541402a37f65642dec4f771e56",
+    "rank49_case_validation_run": {
+      "run_id": 44930310066,
+      "job_id": 136925280030,
+      "conclusion": "success",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44930310066",
+      "validation_record_path": "research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_CASE_RECORD_VALIDATION_2026-11-21.md",
+      "validation_record_sha256": "959881034ccee7e98b1d119ba537821de4b4601f3d8ea90ce7bd4e10264c56c7",
+      "case_record_path": "research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_PROPOSED_V0_2_2026-11-21.json",
+      "case_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_PROPOSED_V0_2_2026-11-21.json",
+      "case_record_git_blob_sha1": "8973fbbe3fd6834a18669735eae0a482dda795bf",
+      "case_record_sha256": "3677b3651ac79742f30f76c982bd829734cc1e541402a37f65642dec4f771e56",
+      "validator": "swe_rebench_v2_exploratory_case_acceptance.validate_case_record",
+      "result": "structurally_complete_candidate",
+      "blockers": 0,
+      "eligible_for_registry": false,
+      "inference_authorized": false
+    },
+    "rank49_final_acceptance": "pending_project_lead_yes_no"
   },
   "stage2_rank49_52_closure_review_2026_11_21": {
     "date": "2026-11-21",
