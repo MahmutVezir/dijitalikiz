@@ -108,3 +108,10 @@ The project lead subsequently approved the four-item disposition set and supplie
 The underlying project-lead decision record is `PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md`.
 
 **Phase 2 remains partially complete, not closed.** music21 and GeoPandas frozen rows remain unauthenticated. GeoFileOps' remaining temporal, license/provenance, scope and final acceptance gates are still open. No new case is accepted; the immutable cohort and accepted registry remain unchanged; inference remains unauthorized.
+
+
+## Row-audit execution correction — 21 November 2026
+
+A first GitHub Actions execution of the no-inference row audit (`44924342085`, job `136907155888`) successfully downloaded the pinned Parquet file and passed its expected byte-length and whole-file SHA-256 checks. It then failed at the first music21 lookup because the initially assumed instance ID `cuthbertLab__music21-1736` was not present (`expected exactly one row, found 0`). This was an incorrect identifier assumption in the audit script; it is not evidence that the candidate row is absent or invalid. No row hash or audit artifact was produced by that failed attempt.
+
+The script was corrected to discover the actual instance ID using the frozen base commit, PR-number suffix and repository slug in metadata columns, and then extract the full row only after exactly one match is found. The corrected execution is GitHub Actions run `44924570231`, job `136907718949`; it was still in progress at the time of this amendment. Exact row authentication remains **pending**, and no Stage 2 work for ranks 51–52 is authorized until the audit artifact and manifest are verified.
