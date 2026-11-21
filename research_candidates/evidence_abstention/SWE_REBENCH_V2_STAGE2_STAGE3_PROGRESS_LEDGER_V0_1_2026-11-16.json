@@ -6735,6 +6735,42 @@
     "prior_pipeline_debug_exposure": "pending_explicit_declaration",
     "stage2": "not_started_wait_rank52_resolution",
     "accepted_registry_inclusion": false,
-    "inference_authorized": false
+    "inference_authorized": false,
+    "candidate_project_lead_exposure_declaration": "pending",
+    "project_lead_gate": "candidate-specific prior pipeline/debug exposure declaration and gold/tier decision pending",
+    "stage2_authorization": "not_requested_or_authorized_rank52_sequence_gate_open"
+  },
+  "active_human_governance_v0_2": {
+    "recorded_date": "2026-11-21",
+    "status": "single_human_project_lead_active",
+    "human_participant_count": 1,
+    "sole_human": "student_project_lead",
+    "roles": "sole human researcher, candidate reviewer, gold/tier adjudicator, raw model output scorer, final decision maker",
+    "chatgpt_role": "AI research assistant; advisory critique only; not a human rater, independent reviewer, external auditor, legal reviewer or second investigator",
+    "second_human_rater": false,
+    "technical_review_panel": false,
+    "independent_external_human_review": false,
+    "scoring_mode": "condition_masked_not_blinded_to_case_source_gold_or_tier",
+    "mask_controls": [
+      "randomized response IDs",
+      "randomized scoring order",
+      "hide P0/P1 labels and paired outputs during initial evidence-support scoring where feasible"
+    ],
+    "full_source_exposure_disclosed": true,
+    "inter_rater_reliability_claimed": false,
+    "cohen_kappa_claimed": false,
+    "active_amendment": "research_candidates/evidence_abstention/SINGLE_HUMAN_REVIEW_AMENDMENT_V0_2_2026-11-21.md",
+    "active_rubric": "research_candidates/evidence_abstention/SWE_REBENCH_V2_SINGLE_HUMAN_OUTPUT_SCORING_RUBRIC_V0_2_2026-11-21.md",
+    "historical_dual_human_documents": "superseded_historical_not_active",
+    "ci": {
+      "research_validation_run": 44941719540,
+      "research_validation_conclusion": "success",
+      "no_inference_preflight_run": 44941719647,
+      "no_inference_preflight_report_job": 136960161996,
+      "no_inference_preflight_report_job_conclusion": "success",
+      "global_blocker_count": 12,
+      "inference_authorized": false,
+      "full_matrix_workflow_status_at_capture": "in_progress"
+    }
   }
 }
