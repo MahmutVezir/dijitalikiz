@@ -5776,7 +5776,7 @@
   },
   "latest_geopandas_3591_static_review": {
     "date": "2026-11-21",
-    "status": "exact_frozen_row_authenticated; implementation_mechanism_not_disclosed_in_E3; project_lead_E3_ABSTAIN; candidate_on_hold; no_stage2",
+    "status": "exact_frozen_row_authenticated; E3_ABSTAIN_project_lead_approved; AI_advisory_E2_ABSTAIN_E1_ANSWER_prepared; project_lead_E2_E1_decisions_pending; candidate_HOLD; no_stage2",
     "issue": "geopandas/geopandas #3590",
     "pr": "geopandas/geopandas #3591",
     "issue_created_at_utc": "2025-06-05T00:05:04Z",
@@ -5809,7 +5809,39 @@
     "problem_statement_sha256": "c4aeb4909495887c065f1f7ae5ec0e321fb350e98ea789cde3f931cad597f12d",
     "prior_pipeline_debug_exposure": "none",
     "project_lead_e3_decision": "ABSTAIN",
-    "candidate_disposition": "HOLD; no final exclusion or acceptance; no Stage 2"
+    "candidate_disposition": "HOLD; no final exclusion or acceptance; no Stage 2",
+    "gold_mechanism_proposal": "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION",
+    "e2_e1_advisory": {
+      "status": "prepared_AI_advisory_only_project_lead_decision_pending",
+      "review_path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E2_E1_ADVISORY_REVIEW_2026-11-21.md",
+      "review_git_blob_sha1": "17eba5a38f41cbe104d115a7d8b5e3e29290e029",
+      "proposed_gold": "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION",
+      "proposed_tiers": {
+        "E3": "ABSTAIN",
+        "E2": "ABSTAIN",
+        "E1": "ANSWER"
+      },
+      "project_lead_approved_tiers": {
+        "E3": "ABSTAIN",
+        "E2": null,
+        "E1": null
+      },
+      "prior_pipeline_debug_exposure": "none",
+      "researcher_source_exposure": "full",
+      "issue_comment_sources": [
+        "https://github.com/geopandas/geopandas/issues/3590#issuecomment-2943137874",
+        "https://github.com/geopandas/geopandas/issues/3590#issuecomment-2944863844",
+        "https://github.com/geopandas/geopandas/issues/3590#issuecomment-2945606056"
+      ],
+      "e2_review_comment_excluded_from_E2": "https://github.com/geopandas/geopandas/pull/3591#discussion_r2130293780",
+      "fixed_test_source_blob_sha1": "61eac57b37d9b0550a8b7d97f603a03d82725d28",
+      "base_source_blob_sha1": "1a607cbb5baea0c3ddc50b03042734c44b7945da",
+      "base_null_conversion_source_blob_sha1": "131a248229fcffeeab1a8217f9a9b398bae5c5df",
+      "fixed_source_blob_sha1": "243d98759878754975e1b8b1732cfb503dd1bf0a",
+      "no_stage2_authorized": true,
+      "inference_authorized": false
+    },
+    "next_gate": "Project lead to review the proposed gold/alternative mechanisms and separately approve or revise E2 and E1; only then freeze nested packets. Stage 2 remains a distinct, unauthorized later gate."
   },
   "latest_python_babel_1141_static_review": {
     "date": "2026-11-21",
@@ -5931,7 +5963,7 @@
         "rank": 52,
         "repository": "geopandas/geopandas",
         "pull_request": "#3591",
-        "next_gate": "Resolve rank 52's remaining E2/E1 evidence-tier and disposition gate; rank 52 is still HOLD after E3=ABSTAIN. Do not run Stage 2 unless separately approved."
+        "next_gate": "Review GeoPandas #3591 advisory gold/alternative mechanism set and make separate explicit E2/E1 decisions. Candidate remains HOLD; do not freeze tier labels or run Stage 2 before approval."
       },
       {
         "rank": 55,
@@ -5942,11 +5974,11 @@
     ],
     "accepted_cases_remain": "Dishka, EODAG and GeoFileOps",
     "inference_authorized": false,
-    "phase2_status": "partially_complete_not_closed_pending_rank52_hold",
+    "phase2_status": "partially_complete_not_closed_pending_rank52_E2_E1_and_disposition_hold",
     "phase2_review_document": "research_candidates/evidence_abstention/STAGE2_RANK49_52_CLOSURE_REVIEW_2026-11-21.md",
     "rank50_status": "excluded_from_current_primary_abstention_sample_by_project_lead_immutable_selector_integrity_failure",
     "rank51_status": "excluded_from_current_primary_abstention_sample_after_exact_frozen_E3_authentication; no Stage 2",
-    "rank52_status": "exact frozen row authenticated; E3=ABSTAIN by project-lead decision; prior pipeline debug exposure none; candidate remains HOLD; no Stage 2",
+    "rank52_status": "exact row authenticated; E3=ABSTAIN approved; AI advisory E2=ABSTAIN/E1=ANSWER prepared; project-lead E2/E1 decisions pending; candidate HOLD; no Stage 2",
     "rank49_temporal_acknowledgement": "project_lead_approved_with_residual_uncertainty_2026-11-21",
     "rank49_package_license_notice_audit": "complete_exact_105_package_metadata_and_notice_inventory; manual_obligation_review_and_scope_acknowledgement_pending",
     "rank49_bounded_scope_status": "approved_exact_bounded_research_use_2026-11-21",
