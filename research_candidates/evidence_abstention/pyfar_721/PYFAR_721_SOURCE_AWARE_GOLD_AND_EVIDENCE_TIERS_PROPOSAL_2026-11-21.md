@@ -100,7 +100,7 @@ Remaining supplementary test questions: the original 2,000-/4,000-sample noise e
 
 - One upstream project can contribute at most one accepted case. The 23 test selectors remain one PyFar case.
 - The researcher has reviewed the issue, PR, exact-base source, and Stage 2 outputs. No blinding claim is permissible.
-- Candidate-specific prior pipeline/debug exposure is **pending a direct project-lead declaration**. Do not infer `none`.
+- Candidate-specific prior pipeline/debug exposure was declared **`none`** by the project lead on 2026-11-21 (direct self-report; not independently witnessed or externally audited). Researcher source exposure remains **`full`**; no blind adjudication or inter-rater reliability claim is made. See Section 7.
 - This is a single source-aware adjudication proposal for the project lead. No independent second-rater or inter-rater reliability claim is made.
 - Dataset-card and dependency/notice review remain open; the license-scope acknowledgement is pending. No legal clearance is asserted.
 - No final case record has been accepted; PyFar remains outside the v0.2 registry.
