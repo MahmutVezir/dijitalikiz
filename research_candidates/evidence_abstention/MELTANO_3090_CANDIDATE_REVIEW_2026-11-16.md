@@ -169,3 +169,16 @@ The project-lead exposure declaration (`none`; researcher source exposure remain
 - Dymos repeat run 44900328623: success.
 
 This validates the declaration record and unchanged no-inference safeguards. No model weights or inference were used. The bounded license-scope acknowledgement, complete proposed case record, and separate final YES/NO case-acceptance decision remain open.
+
+
+## Project-lead bounded research-scope acknowledgement — 21 November 2026
+
+The project lead explicitly acknowledged the proposed bounded research-use scope **in principle**, subject to the stated restrictions and open verification items. The decision record is:
+
+`research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md`
+
+The accepted-in-principle boundary is limited to minimal issue/test/source excerpts needed to explain or reproduce this single defect, immutable upstream commit and artifact references with attribution, and small factual test outputs/hashes needed to audit the reproduction. Complete repository or dataset redistribution, dependency wheels/native libraries/binaries/environment images, unnecessary third-party source/notice republication, and blanket commercial permission remain excluded.
+
+This is a project-lead scope acknowledgement only. It is not a license grant from any rights holder, legal advice or legal clearance. The exact immutable README/card commit SHA and raw card bytes/SHA-256 remain uncaptured. Dependency canonical license texts/notices and exact relevant transitive dependency scope remain open. Notice and provenance reconciliation remains open. No full-source, dataset, dependency, binary, or environment redistribution is authorized by this acknowledgement.
+
+The scope decision does not alter gold/tier decisions or scientific results. Meltano remains outside the accepted registry; final case acceptance remains pending; inference, fine-tuning, and training remain unauthorized. The ledger records the unchanged accepted count of 2 cases from 2 distinct upstream projects.
