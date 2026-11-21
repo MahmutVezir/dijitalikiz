@@ -35,3 +35,10 @@ Prior pipeline/debug exposure declaration: pending.
 Bounded license-scope acknowledgement: pending.  
 Final case acceptance: not accepted.  
 Model loading, inference, fine-tuning and training: not authorized.
+
+
+## Project-lead decision update — 21 November 2026
+
+The project lead has approved the source-aware technical gold and the tier decisions **E3=ABSTAIN, E2=ABSTAIN, E1=ANSWER**. E2 remains ABSTAIN because the exact pinned parse output is present but the in-repository fixture-loading path is not; E1 adds that source path. See the hashed decision record at `PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_EODAG_1530_2026-11-21.md` (SHA-256 `b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e`).
+
+This advisory remains a technical critique only. The project-lead adjudication is source-aware and single-rater; it is not independent blinded validation. Prior pipeline/debug exposure and bounded license-scope acknowledgement remain pending. EODAG is not yet in the accepted registry, and model inference remains unauthorized.
