@@ -122,6 +122,15 @@
     "final_case_acceptance": "accepted_v0_2_exploratory_feasibility_only",
     "inference_authorized": false,
     "source_aware_gold_tier_decision": "approved_by_project_lead_2026-11-21",
-    "final_case_acceptance_note": "Project lead approved source-aware gold/tiers, self-declared no prior pipeline/debug use, acknowledged the bounded documentary license scope, and separately issued a final YES to accept EODAG #1530 into the v0.2 exploratory/feasibility registry on 2026-11-21 at 13:36:50+03:00. The complete schema-conformant case record previously passed pre-acceptance validation and has been marked accepted; the latest-head post-acceptance structural/registry CI is pending. Full researcher source exposure remains disclosed. This is not confirmatory acceptance or inference authorization."
+    "final_case_acceptance_note": "Project lead approved source-aware gold/tiers, self-declared no prior pipeline/debug use, acknowledged the bounded documentary license scope, and separately issued a final YES to accept EODAG #1530 into the v0.2 exploratory/feasibility registry on 2026-11-21 at 13:36:50+03:00. The complete schema-conformant case record previously passed pre-acceptance validation and has been marked accepted; the latest-head post-acceptance structural/registry CI is pending. Full researcher source exposure remains disclosed. This is not confirmatory acceptance or inference authorization.",
+    "post_acceptance_validation": {
+      "status": "structurally_valid_candidate",
+      "workflow_run_id": 44895500211,
+      "job_id": 136820151510,
+      "branch_head": "0e7c53e7cda000b6682b93fc2036035662fdbc80",
+      "accepted_case_count": 2,
+      "accepted_project_count": 2,
+      "inference_authorized": false
+    }
   }
 }
