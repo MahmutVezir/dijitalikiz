@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T11:43:00Z",
+  "generated_at_utc": "2026-11-21T11:45:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -3599,11 +3599,11 @@
     "gate_status": "closed"
   },
   "latest_meltano_exposure_declaration_validation": {
-    "validated_code_and_test_commit": "367788cdcfe2b433699bae214ab33b562659d08b",
+    "validated_code_and_test_commit": "ea932e413feeaaef6e3542aa5c5d8ead6684b970",
     "exposure_decision_commit": "16abca395f902c7b91139b7ae411991ac63a0099",
     "evidence_abstention_preflight": {
-      "workflow_run_id": 44900328629,
-      "job_id": 136834680645,
+      "workflow_run_id": 44900539414,
+      "job_id": 136835304513,
       "conclusion": "success",
       "v02_acceptance_readiness_tests": "27 passed",
       "design_scoring_tests": "10 passed",
@@ -3614,27 +3614,27 @@
       "inference_authorized": false
     },
     "research_validation": {
-      "workflow_run_id": 44900328572,
-      "job_id": 136834692006,
+      "workflow_run_id": 44900539353,
+      "job_id": 136835304250,
       "conclusion": "success",
       "result": "479 passed, 6 skipped, 56 subtests passed"
     },
     "uncertainty_unit_tests": {
-      "workflow_run_id": 44900328647,
-      "job_id": 136834680250,
+      "workflow_run_id": 44900539244,
+      "job_id": 136835303449,
       "conclusion": "success",
       "result": "171 tests passed"
     },
     "qwen_adapter_cpu_tests": {
-      "workflow_run_id": 44900328459,
-      "job_id": 136834679401,
+      "workflow_run_id": 44900539399,
+      "job_id": 136835304060,
       "conclusion": "success"
     },
     "dymos_repeat": {
-      "workflow_run_id": 44900328623,
-      "job_id": 136834679650,
-      "conclusion": "success"
+      "workflow_run_id": 44900539352,
+      "job_id": 136835303975,
+      "conclusion": "in_progress_at_capture"
     },
-    "scope": "No model weights loaded; no inference, fine-tuning or training. CI verified the exposure decision record, the preserved full researcher source-exposure disclosure and the unchanged fail-closed registry/license gates."
+    "scope": "No model weights loaded; no inference, fine-tuning or training. The tested regression now checks that the exposure decision, independence record and progress ledger agree on prior_pipeline_debug_exposure=none and researcher_source_exposure=full."
   }
 }
