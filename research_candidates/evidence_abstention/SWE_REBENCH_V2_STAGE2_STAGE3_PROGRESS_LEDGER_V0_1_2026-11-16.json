@@ -2419,16 +2419,17 @@
       "pull_request_number": 1736,
       "pull_request_url": "https://github.com/cuthbertLab/music21/pull/1736",
       "static_screening_classification": "provisional_candidate",
-      "static_scope_decision": "Geçici bug adayı",
+      "static_scope_decision": "Güçlü issue–PR teknik uyumu; issue metninde kök neden açık; PR içinde olası karma kapsam",
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
-      "candidate_review_document": null,
-      "stage2_status": "not_started",
+      "candidate_review_document": "research_candidates/evidence_abstention/music21_1736/MUSIC21_1736_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+      "stage2_status": "held_pending_frozen_row_and_E3_sample_suitability_review_no_stage2",
       "stage2_workflow_job_id": null,
-      "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage2_evidence_note": "research_candidates/evidence_abstention/music21_1736/MUSIC21_1736_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+      "stage3_status": "static_issue_pr_source_audit_complete; E3_answerability_and_patch_scope_review_pending_project_lead",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "next_required_gate": "Authenticate the exact frozen music21__music21-1736 dataset row and all selectors; reconcile the Stream regression with the broader PR diff including figuredBass changes; project lead decides primary-sample exclusion versus a separately preregistered control. No Stage 2 until this gate is approved."
     },
     {
       "cohort_rank": 52,
@@ -5158,5 +5159,32 @@
     "final_case_acceptance": "not_accepted",
     "inference_authorized": false,
     "evidence_note": "research_candidates/evidence_abstention/lektor_1213/LEKTOR_1213_STAGE2_SELECTOR_INTEGRITY_HOLD_2026-11-21.md"
+  },
+  "latest_music21_1736_static_review": {
+    "date": "2026-11-21",
+    "status": "strong_issue_pr_alignment; E3_root_cause_already_exposed_in_issue_body; possible_mixed_patch_scope; no_stage2",
+    "issue": "cuthbertLab/music21 #1735",
+    "pr": "cuthbertLab/music21 #1736",
+    "issue_created_at_utc": "2024-10-27T13:43:42Z",
+    "pr_created_at_utc": "2024-10-28T03:20:50Z",
+    "base": "e05fc53dfef7b2c9ac974c0cacb8b85e9c4d4605",
+    "head": "80eda7cd2b043c5ee3f48fd0630b2811af313da7",
+    "merge": "91e3521173251e3f56706423067d722e5e3e52ad",
+    "issue_symptom": "AttributeError: 'tuple' object has no attribute 'spannerList' in Stream.splitByQuarterLengths",
+    "issue_e3_clue": "issue body explicitly says st is _SplitTuple in splitAtQuarterLength but returns as ordinary tuple to splitByQuarterLengths",
+    "core_patch": "Stream.splitAtQuarterLength returns base._SplitTuple([sLeft,sRight]) on both early and ordinary paths",
+    "additional_patch_scope": [
+      "music21/figuredBass/resolution.py lambda truthiness guards",
+      "_SplitTuple.__eq__ and __hash__ changes",
+      "lint/config/documentation updates"
+    ],
+    "e3_assessment": "high answerability risk; final exact frozen problem_statement not yet authenticated",
+    "stage2_execution": false,
+    "dataset_row_authenticated": false,
+    "selectors_run": false,
+    "artifact_id": null,
+    "final_case_acceptance": "not_accepted",
+    "inference_authorized": false,
+    "review_path": "research_candidates/evidence_abstention/music21_1736/MUSIC21_1736_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
   }
 }
