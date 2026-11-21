@@ -238,8 +238,8 @@
     }
   ],
   "case_registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json",
-  "accepted_case_count": 2,
-  "accepted_project_count": 2,
+  "accepted_case_count": 3,
+  "accepted_project_count": 3,
   "model_loading_performed": false,
   "model_inference_performed": false,
   "fine_tuning_performed": false,
@@ -1590,6 +1590,54 @@
         "same_dataset_base_fail_fixed_pass",
         "gold_standard_and_E1_E2_E3_human_adjudication"
       ]
+    },
+    {
+      "instance_id": "geofileops__geofileops-649",
+      "cohort_rank": 49,
+      "status": "accepted_exploratory_v0_2_project_lead_yes_recorded_2026_11_21",
+      "issue_url": "https://github.com/geofileops/geofileops/issues/648",
+      "pull_request_url": "https://github.com/geofileops/geofileops/pull/649",
+      "dataset_created_at": "2025-03-06T15:39:28Z",
+      "dataset_row_sha256": "2a85246a15d97ca6e73eb9a02f36022a05f80b8322c24a6522fbfee31fc7d1eb",
+      "base_commit": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+      "fixed_commit": "ec1438fbf8527269cd1193647d05c8d7fdb83802",
+      "exact_base_root_license": "BSD-3-Clause",
+      "changed_files": [
+        "CHANGELOG.md",
+        "geofileops/fileops.py",
+        "geofileops/util/_geoops_gpd.py",
+        "geofileops/util/_geoops_sql.py",
+        "tests/test_geofile.py"
+      ],
+      "technical_reproduction": "passed_exact_issue_reproducer_and_all_10_frozen_dataset_selectors_base_fail_fixed_pass",
+      "latest_reproduction_run_id": 44916663456,
+      "latest_reproduction_artifact_id": 14711502949,
+      "latest_reproduction_artifact_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+      "latest_reproduction_inner_hashes": "18/18 passed",
+      "fail_to_pass_count": 10,
+      "dataset_selector_status": "10/10 exact frozen selectors failed on buggy base and passed on fixed revision",
+      "timestamp_reconciliation_status": "exact_match_dataset_row_to_upstream_PR_timestamp",
+      "temporal_exposure": "project-lead acknowledged residual uncertainty; issue/PR are later than pinned model revision but model training cutoff and prior source exposure remain unresolved",
+      "prior_pipeline_debug_exposure": "none",
+      "researcher_source_exposure": "full disclosed; no blinded researcher adjudication or inter-rater reliability claim",
+      "gold_mechanism": "G1_MISSING_NONE_TO_DESTINATION_STEM_FALLBACK",
+      "evidence_tiers": {
+        "E3": "ABSTAIN",
+        "E2": "ABSTAIN",
+        "E1": "ANSWER"
+      },
+      "dependency_license_inventory_status": "complete_exact_105_package_metadata_and_253_notice_file_inventory; documentary screening only; not legal clearance",
+      "bounded_research_scope": "approved_exact_bounded_research_use_2026-11-21",
+      "case_acceptance": "accepted",
+      "case_acceptance_record_path": "research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_V0_2_2026-11-21.json",
+      "accepted_case_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_V0_2_2026-11-21.json",
+      "accepted_case_record_blob_sha1": "6feab60ba5fe3bdd4bb85462f62bfaeb351753da",
+      "final_acceptance_record_path": "research_candidates/evidence_abstention/geofileops_649/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_GEOFILEOPS_649_2026-11-21.md",
+      "final_acceptance_record_sha256": "e103d7997d4d7d147a6f15f4a16397ec31bde6a02c6462b7e24cac881e472fe5",
+      "final_acceptance_timestamp_utc": "2026-11-21T17:37:00Z",
+      "accepted_registry_inclusion": true,
+      "remaining_gates": [],
+      "inference_authorized": false
     }
   ],
   "candidate_triage_ledger": {
@@ -1732,9 +1780,36 @@
         "study_wide_readiness": "blocked_by_13_global_prerequisites"
       },
       "acceptance_scope": "v0.2_exploratory_feasibility_registry_only"
+    },
+    {
+      "date": "2026-11-21",
+      "scope": "GEOFILEOPS_649_final_case_acceptance",
+      "candidate": "geofileops/geofileops issue #648 / PR #649; dataset row geofileops__geofileops-649",
+      "case_id": "SRV2E-GEOFILEOPS_649",
+      "decision": "accepted",
+      "decision_timestamp_utc": "2026-11-21T17:37:00Z",
+      "decision_record": {
+        "path": "research_candidates/evidence_abstention/geofileops_649/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_GEOFILEOPS_649_2026-11-21.md",
+        "sha256": "e103d7997d4d7d147a6f15f4a16397ec31bde6a02c6462b7e24cac881e472fe5"
+      },
+      "accepted_case_record": {
+        "path": "research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_V0_2_2026-11-21.json",
+        "blob_sha1": "6feab60ba5fe3bdd4bb85462f62bfaeb351753da"
+      },
+      "acceptance_scope": "v0.2_exploratory_feasibility_registry_only",
+      "boundaries": {
+        "confirmatory_sample_acceptance": false,
+        "independent_blinded_review_claimed": false,
+        "legal_clearance": false,
+        "model_loading_authorized": false,
+        "model_inference_authorized": false,
+        "fine_tuning_or_training_authorized": false,
+        "temporal_exposure_uncertainty_acknowledged": true,
+        "study_wide_readiness": "blocked_by_13_global_prerequisites"
+      }
     }
   ],
-  "case_acceptance_note": "Two v0.2 exploratory/feasibility cases are accepted (Dishka and EODAG), each from a distinct upstream project. This does not represent confirmatory acceptance or model-experiment authorization. Global readiness remains blocked by 13 prerequisites.",
+  "case_acceptance_note": "Three v0.2 exploratory/feasibility cases are accepted from three distinct upstream projects: Dishka, EODAG and GeoFileOps. This does not represent confirmatory acceptance or model-experiment authorization. The preferred 15-project analysis threshold remains unmet; global readiness remains blocked by 13 prerequisites.",
   "latest_no_inference_preflight": {
     "workflow_run_id": 44895500211,
     "job_id": 136820151510,
