@@ -22,8 +22,8 @@ class TestV02ExploratoryPreflight(unittest.TestCase):
     def test_accepted_registry_is_valid_but_global_gates_still_block_inference(self):
         report = evaluate(ROOT)
         self.assertEqual(report["registry_status"], "structurally_valid_candidate_registry")
-        self.assertEqual(report["accepted_case_count"], 2)
-        self.assertEqual(report["accepted_project_count"], 2)
+        self.assertEqual(report["accepted_case_count"], 3)
+        self.assertEqual(report["accepted_project_count"], 3)
         self.assertFalse(report["ready_for_inference"])
         self.assertNotIn(
             "No accepted case is registered; at least one fully accepted independent-project case is required before any model inference.",
@@ -65,8 +65,8 @@ class TestV02ExploratoryPreflight(unittest.TestCase):
         meltano = next(record for record in ledger["records"] if record["repository"] == "meltano/sdk")
         self.assertEqual(meltano["final_case_acceptance"], "not_accepted")
         self.assertFalse(meltano["model_inference_authorized"])
-        self.assertEqual(ledger["summary"]["accepted_exploratory_cases"], 2)
-        self.assertEqual(ledger["summary"]["accepted_exploratory_projects"], 2)
+        self.assertEqual(ledger["summary"]["accepted_exploratory_cases"], 3)
+        self.assertEqual(ledger["summary"]["accepted_exploratory_projects"], 3)
         self.assertFalse(any(
             case.get("case_id") == "SRV2E-MELTANO_3090"
             for case in registry.get("cases", [])
