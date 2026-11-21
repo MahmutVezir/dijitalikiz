@@ -1110,12 +1110,15 @@
       "bounded_license_scope_decision_date": "2026-11-21",
       "proposed_case_acceptance_record_path": "research_candidates/evidence_abstention/eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
       "case_record_structural_validation": {
-        "status": "accepted_record_post_decision_validation_pending_latest_head_ci",
+        "status": "accepted_record_structurally_validated_post_decision",
         "validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
-        "workflow_run_id": 44894847180,
-        "job_id": 136818188559,
-        "pre_acceptance_proposed_record": "structurally_complete_candidate",
-        "post_acceptance_validation": "pending_latest_head_ci",
+        "workflow_run_id": 44895500211,
+        "job_id": 136820151510,
+        "eodag_review_contract_tests": "5 passed",
+        "acceptance_and_readiness_tests": "25 passed",
+        "accepted_registry_validation": "structurally_valid_candidate_registry",
+        "accepted_case_count": 2,
+        "accepted_project_count": 2,
         "eligible_for_registry": true,
         "inference_authorized": false
       },
@@ -1733,37 +1736,44 @@
   ],
   "case_acceptance_note": "Two v0.2 exploratory/feasibility cases are accepted (Dishka and EODAG), each from a distinct upstream project. This does not represent confirmatory acceptance or model-experiment authorization. Global readiness remains blocked by 13 prerequisites.",
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44894847180,
-    "job_id": 136818188559,
-    "commit": "f143be00ee6634a9c0838379ac88c93cc0674ded",
+    "workflow_run_id": 44895500211,
+    "job_id": 136820151510,
+    "commit": "0e7c53e7cda000b6682b93fc2036035662fdbc80",
     "conclusion": "success",
-    "blocker_count": 13,
     "ready_for_inference": false,
-    "accepted_case_count": 1,
-    "accepted_project_count": 1,
+    "blocker_count": 13,
+    "accepted_case_count": 2,
+    "accepted_project_count": 2,
     "registry_status": "structurally_valid_candidate_registry",
-    "eodag_case_record_tests": "5 passed",
-    "artifact_id": 14703537258,
-    "artifact_sha256": "fb89b0dbdd4835ee44ddb8f7f8c3a712094fb71caa3bdff150709936f1655bfa",
-    "inference_performed": false
+    "schema_valid": true,
+    "eodag_review_contract_tests": "5 passed",
+    "acceptance_and_readiness_tests": "25 passed",
+    "design_and_scoring_tests": "10 passed",
+    "artifact_id": 14703279724,
+    "artifact_sha256": "573505a566e515fb204997abe713b6b91587e930db0de595c3c74be9d9facc3c",
+    "model_loading_performed": false,
+    "model_inference_performed": false,
+    "fine_tuning_performed": false,
+    "inference_authorized": false,
+    "note": "Post-acceptance branch-head no-inference preflight passed. The registry contains two accepted cases from two distinct upstream projects (Dishka and EODAG). EODAG review-contract suite passed 5/5; v0.2 acceptance/readiness suite 25/25; design/scoring suite 10/10. Readiness remains blocked by 13 global prerequisites; no model execution occurred."
   },
   "latest_general_validation": {
-    "commit": "f143be00ee6634a9c0838379ac88c93cc0674ded",
+    "commit": "0e7c53e7cda000b6682b93fc2036035662fdbc80",
     "research_validation_run": {
-      "id": 44894847259,
-      "job_id": 136818190862,
+      "id": 44895500199,
+      "job_id": 136820191554,
       "conclusion": "success",
       "tests": "477 passed, 6 skipped, 56 subtests passed"
     },
     "no_inference_preflight_run": {
-      "id": 44894847180,
-      "job_id": 136818188559,
+      "id": 44895500211,
+      "job_id": 136820151510,
       "conclusion": "success"
     },
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "Branch-head Research Validation and no-inference preflight both passed their target jobs. The EODAG proposed case record is structurally complete but remains proposed; accepted registry count remains one (Dishka). Global readiness remains blocked by 13 items."
+    "note": "Post-acceptance branch-head Research Validation and no-inference preflight both passed. The accepted registry has two cases/two distinct upstream projects, with all model-execution gates still closed and 13 global readiness blockers remaining."
   }
 }
