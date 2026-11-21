@@ -83,3 +83,12 @@ These comments strengthen the causal interpretation and expose the all-null-type
 2. Confirm whether the frozen E3 packet is exactly the issue body or includes additional comments/metadata; keep later comments out unless the frozen source actually includes them.
 3. The project lead decides whether E3 still leaves the root cause unresolved enough for the primary abstention sample.
 4. Only after that scope/suitability decision may Stage 2 reproduction begin. A technical base-fail/fixed-pass result alone would not grant final case acceptance.
+
+
+## 7. Project-lead hold and exposure amendment — 21 November 2026
+
+The project lead confirmed candidate-specific `prior_pipeline_debug_exposure=none`. The candidate remains **held**: this declaration is not an E3 tier decision, Stage 2 authorization, final acceptance or model-inference authorization.
+
+The next gates remain exact frozen-row and selector authentication, confirmation of the frozen E3 packet boundary, and project-lead semantic E3 suitability adjudication. Until those pass, do not run Stage 2 or include the candidate in the primary sample.
+
+Decision record: `PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md`.
