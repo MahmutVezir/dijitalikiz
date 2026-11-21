@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T10:57:30Z",
+  "generated_at_utc": "2026-11-21T11:14:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -1361,15 +1361,82 @@
       "candidate_review_document": "research_candidates/evidence_abstention/MELTANO_3090_CANDIDATE_REVIEW_2026-11-16.md",
       "stage2_status": "passed",
       "stage2_workflow_job_id": 134137814089,
-      "stage2_evidence_note": "Independent schema reproducer fails on buggy base and passes on fixed. Exact row and timestamp authenticated; sole repeated-reference selector fails on buggy base and passes on fixed (1/1).",
-      "stage3_status": "project_lead_accepted_candidate_for_stage3_evaluation; advisory_gold_tier_proposals_only; candidate_specific_exposure_bounded_license_scope_and_final_case_acceptance_pending",
+      "stage2_evidence_note": "Independent public-API reproducer and exact frozen dataset selector both fail on buggy base and pass on exact fixed PR head; same selector, one Meltano defect. Artifact was downloaded and independently integrity-checked: ZIP SHA256 matches GitHub, CRC passed, internal manifest 14/14, canonical row SHA256 recorded.",
+      "stage3_status": "project_lead_selected_for_stage3; source_aware_gold_and_E1_E2_E3_advisory_proposed_not_approved; issue_family_independence_review_prepared; bounded_license_scope_review_open; prior_pipeline_debug_exposure_declaration_pending; exact_pinned_dataset_card_revision_pending; no_case_record_or_registry_acceptance",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44111403900,
+      "stage2_latest_run_id": 44331092872,
       "project_lead_candidate_selection": {
         "decision": "ACCEPTED_FOR_STAGE3_CASE_EVALUATION",
         "date": "2026-11-20",
         "final_case_acceptance": "NOT_ACCEPTED"
+      },
+      "next_required_gate": "Project lead must separately approve or revise the proposed G1 gold and E3 ABSTAIN/E2 ABSTAIN/E1 ANSWER decisions; provide a candidate-specific prior pipeline/debug exposure declaration (do not infer none); acknowledge or reject the bounded documentary scope after reviewing dependency and exact dataset-card open items. Only then prepare a schema-conformant proposed case record and run fail-closed validation. A separate final case YES/NO remains required after all candidate gates. No model loading, inference, fine-tuning or training is authorized.",
+      "stage2_latest_job_id": 134895968235,
+      "stage2_latest_artifact_id": 14440520435,
+      "stage2_latest_artifact_sha256": "b1336169d7b6d8e4e47edbcd920d842ad525c7a4e2df841b998182099bed1bd3",
+      "stage2_artifact_local_integrity": {
+        "downloaded_locally": true,
+        "zip_sha256_recomputed": true,
+        "zip_sha256_matches_github": true,
+        "zip_crc_test": "passed",
+        "internal_sha256_manifest_entries": 14,
+        "internal_sha256_manifest_matches": 14,
+        "canonical_row_sha256": "318893b8546a4a6b2d8bc75d986a079c818951658fc1293ac59ba05d84682266",
+        "note": "The SHA256SUMS.txt paths contained a leading ./ prefix; verification normalized that prefix before checking all 14 files."
+      },
+      "stage3_documents": {
+        "gold_tier_proposal": "research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_2026-11-21.md",
+        "independence_review": "research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json",
+        "license_scope_review": "research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-21.json",
+        "artifact_integrity_review": "research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_STAGE2_ARTIFACT_INTEGRITY_REVIEW_2026-11-21.md"
+      },
+      "stage3_proposed_gold": "G1_SHARED_MUTABLE_VISITED_REFERENCE_SET_LEAKS_ACROSS_SIBLING_SCHEMA_BRANCHES",
+      "stage3_proposed_tiers": {
+        "E3": "ABSTAIN",
+        "E2": "ABSTAIN",
+        "E1": "ANSWER",
+        "tier_decision_status": "advisory_only_not_project_lead_approved",
+        "E3_survivors": [
+          "G1",
+          "A1",
+          "A2",
+          "A3"
+        ],
+        "E2_survivors": [
+          "G1",
+          "A1",
+          "A2",
+          "A3"
+        ],
+        "E1_survivors": [
+          "G1"
+        ]
+      },
+      "stage3_independence_review": {
+        "status": "prepared_pass_for_exploratory_candidate_uniqueness",
+        "related_issue": "meltano/sdk#3009",
+        "related_issue_role": "prior introduction of visited-reference tracking in the same source path; lineage only, not another sample",
+        "one_case_per_repository_rule_preserved": true
+      },
+      "stage3_license_review": {
+        "status": "open_not_accepted",
+        "root_repository_license": "Apache-2.0",
+        "dataset_card_currently_displayed_license": "CC-BY-4.0",
+        "exact_pinned_readme_commit_sha": "pending",
+        "installed_distribution_entries": 32,
+        "entries_with_null_license_field": 8,
+        "entries_without_license_classifiers": 2,
+        "transitive_dependency_human_review": "pending",
+        "project_lead_scope_acknowledgement": "pending",
+        "legal_clearance": false
+      },
+      "stage3_exposure": {
+        "prior_pipeline_debug_exposure_declaration": "pending_project_lead_self_report",
+        "researcher_issue_and_pr_exposure": "reviewed_during_candidate_screening",
+        "researcher_source_exposure": "do_not_claim_blinding; source-aware mechanism has now been presented in this advisory",
+        "independent_blind_review_claimed": false,
+        "inter_rater_claimed": false
       }
     },
     {
