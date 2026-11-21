@@ -2508,7 +2508,7 @@ jobs:
 
 
   qutip-issue-2646-reproduction:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates) || (github.event_name == 'push' && (contains(github.event.head_commit.modified, 'research_candidates/evidence_abstention/reproduction/qutip_issue_2646/test_issue_2646.py') || contains(github.event.head_commit.modified, '.github/workflows/evidence-abstention-preflight.yml'))) }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 40
