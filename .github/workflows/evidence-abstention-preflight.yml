@@ -3237,7 +3237,7 @@ jobs:
               }
           with open("dependency-license-inventory.json", "w", encoding="utf-8") as f:
               json.dump(inventory, f, indent=2, ensure_ascii=False)
-              f.write("\\n")
+              f.write("\n")
           print(json.dumps(inventory, indent=2, ensure_ascii=False))
           PY
 
@@ -3283,7 +3283,7 @@ jobs:
             exit 1
           fi
           grep -E "ConstructorError|unconstructable recursive node" reproduction-evidence/base-issue-test.log
-          grep -E "1 passed|passed" reproduction-evidence/base-issue-test.log
+          grep -E "[0-9]+ passed" reproduction-evidence/base-issue-test.log
 
       - name: Extract exact SWE-rebench row and authenticate provenance
         shell: bash
@@ -3301,7 +3301,7 @@ jobs:
               raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
           with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
               json.dump({"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}, f, indent=2)
-              f.write("\\n")
+              f.write("\n")
           PY
           curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
           echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
@@ -3324,9 +3324,9 @@ jobs:
               f.write(canonical)
           digest = hashlib.sha256(canonical).hexdigest()
           with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
-              f.write(digest + "  dataset-row-canonical.json\\n")
+              f.write(digest + "  dataset-row-canonical.json\n")
           with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
-              f.write("\\n".join(row["FAIL_TO_PASS"]) + "\\n")
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
           with open("reproduction-evidence/dataset-problem-statement.txt", "w", encoding="utf-8") as f:
               f.write(row["problem_statement"])
           print("dataset_row_sha256=" + digest)
