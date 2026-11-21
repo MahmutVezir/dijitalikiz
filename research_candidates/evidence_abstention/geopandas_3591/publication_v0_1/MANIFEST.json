@@ -1,0 +1,80 @@
+{
+  "schema_version": "0.1-geopandas-publication-derivative",
+  "package_id": "GEOPANDAS-3591-PUBLICATION-V0_1",
+  "created_date": "2026-11-21",
+  "status": "publication_evidence_summary_not_final_case_acceptance",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "5b620311bcbed8ad2601ef6b52f1a2de1a272322173df1e9f4e1375560a4ee8e",
+      "bytes": 11271,
+      "content_policy": "attributed_paraphrase_and_source_links_only"
+    }
+  ],
+  "omitted_content": [
+    "complete_frozen_dataset_row",
+    "complete_problem_statement_payload",
+    "patch_and_test_patch_diffs",
+    "upstream_source_code",
+    "verbatim_github_issue_or_pr_comment_bodies",
+    "dependency_wheels_or_source_distributions",
+    "model_outputs"
+  ],
+  "frozen_dataset": {
+    "id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "publisher_declared_license": "CC-BY-4.0",
+    "instance_id": "geopandas__geopandas-3591",
+    "canonical_row_sha256": "e543af0bbc5e779661c1b79c28849f67dee7c61157c000c6698b15ba1218e2",
+    "problem_statement_sha256": "c4aeb4909495887c065f1f7ae5ec0e321fb350e98ea789cde3f931cad597f12d"
+  },
+  "upstream_source": {
+    "repository": "geopandas/geopandas",
+    "base_commit": "c36eba059f6170715b63a9aa065817c64025d263",
+    "fixed_commit": "b3259ce23a37abd32650d7df098f3cdc8c4bb261",
+    "declared_license": "BSD-3-Clause",
+    "license_file_path": "LICENSE.txt",
+    "license_file_git_blob_sha1": "028603be2080134aa4817ed691fec3f449ffa609",
+    "issue_url": "https://github.com/geopandas/geopandas/issues/3590",
+    "pull_request_url": "https://github.com/geopandas/geopandas/pull/3591"
+  },
+  "approved_evidence_tiers": {
+    "E3": "ABSTAIN",
+    "E2": "ABSTAIN",
+    "E1": "ANSWER",
+    "gold_mechanism_id": "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION"
+  },
+  "stage2": {
+    "status": "passed_twice",
+    "first_run_id": 44935740419,
+    "first_artifact_sha256": "bc807d9c1bdec02e72c61783d9f3e8a5640574fd620fd0da5de2ec4468a1894e",
+    "repeat_run_id": 44936142633,
+    "repeat_artifact_sha256": "eda44a04658c9250e4fa559c824a512ec4a91e7ff3f8595db0379db9c9ecd41e",
+    "internal_hashes_verified_per_run": 17,
+    "model_inference_performed": false
+  },
+  "research_integrity": {
+    "researcher_source_exposure": "full_disclosed",
+    "blinded_researcher_adjudication": false,
+    "inter_rater_reliability_claimed": false,
+    "final_case_acceptance": "not_accepted_hold",
+    "registry_inclusion": false,
+    "inference_authorized": false
+  },
+  "dependency_provenance": {
+    "pinned_python_distribution_count": 18,
+    "source_level_license_screen_exists": true,
+    "wheel_hash_lock_exists": false,
+    "complete_platform_wheel_notice_inventory": false,
+    "dependency_binaries_included_in_stage2_artifact": false
+  },
+  "supporting_records": [
+    "../PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_GEOPANDAS_3591_2026-11-21.md",
+    "../GEOPANDAS_3591_STAGE2_TECHNICAL_REPRODUCTION_RESULT_2026-11-21.md",
+    "../GEOPANDAS_3591_SOURCE_AND_DEPENDENCY_LICENSE_PROVENANCE_SCREEN_2026-11-21.md",
+    "../GEOPANDAS_3591_LICENSE_AND_PROVENANCE_AUDIT_2026-11-21.md",
+    "../GEOPANDAS_3591_E3_PACKET_MANIFEST_V0_1.json",
+    "../GEOPANDAS_3591_E2_PACKET_MANIFEST_V0_1.json",
+    "../GEOPANDAS_3591_E1_PACKET_MANIFEST_V0_1.json"
+  ]
+}
