@@ -13,12 +13,14 @@ class PyFar721ExposureDecisionTests(unittest.TestCase):
         decision_path = PYFAR / "PROJECT_LEAD_EXPOSURE_DECISION_PYFAR_721_2026-11-21.md"
         independence_path = PYFAR / "PYFAR_721_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json"
         proposal_path = PYFAR / "PYFAR_721_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_2026-11-21.md"
+        gold_decision_path = PYFAR / "PROJECT_LEAD_GOLD_TIER_DECISION_PYFAR_721_2026-11-21.md"
         ledger_path = (
             RESEARCH / "SWE_REBENCH_V2_STAGE2_STAGE3_PROGRESS_LEDGER_V0_1_2026-11-16.json"
         )
         registry_path = RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json"
 
         decision = decision_path.read_text(encoding="utf-8")
+        gold_decision = gold_decision_path.read_text(encoding="utf-8")
         proposal = proposal_path.read_text(encoding="utf-8")
         independence = json.loads(independence_path.read_text(encoding="utf-8"))
         ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
@@ -45,7 +47,19 @@ class PyFar721ExposureDecisionTests(unittest.TestCase):
         self.assertEqual(pyfar["stage3_exposure"]["prior_pipeline_debug_exposure_gate"], "closed_on_project_lead_self_report")
         self.assertNotIn("prior_pipeline_debug_exposure_declaration_pending", pyfar["stage3_status"])
         self.assertNotIn("prior pipeline/debug exposure declaration", pyfar["next_required_gate"].lower())
-        self.assertEqual(pyfar["stage3_proposed_tiers"]["tier_decision_status"], "advisory_proposal_only_not_project_lead_approved")
+        self.assertEqual(pyfar["stage3_proposed_tiers"]["tier_decision_status"], "project_lead_approved_2026_11_21")
+        gold = pyfar["stage3_project_lead_gold_tier_decision"]
+        self.assertEqual(gold["decision"], "approved")
+        self.assertEqual(gold["approved_gold"], "ENERGY_POWER_TARGET_AND_REFERENCE_NOT_SQUARE_ROOTED")
+        self.assertEqual(gold["approved_tiers"], {"E3": "ABSTAIN", "E2": "ABSTAIN", "E1": "ANSWER"})
+        self.assertFalse(gold["registry_inclusion"])
+        self.assertFalse(gold["inference_authorized"])
+        self.assertIn("23 upstream PR-derived selectors remain a single selector set", gold_decision)
+        self.assertIn("This approval does not approve the prepared issue-family independence review", gold_decision)
+        self.assertIn("E3", gold_decision)
+        self.assertIn("E2", gold_decision)
+        self.assertIn("E1", gold_decision)
+        self.assertIn("APPROVED ON 2026-11-21", proposal)
         self.assertEqual(pyfar["final_case_acceptance"], "not_accepted")
         self.assertFalse(pyfar["model_inference_authorized"])
         self.assertIn("prior_pipeline_debug_exposure = none", proposal)
