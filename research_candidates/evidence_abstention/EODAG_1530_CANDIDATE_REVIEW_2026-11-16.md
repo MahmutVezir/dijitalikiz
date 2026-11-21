@@ -184,3 +184,15 @@ The proposed EODAG record passed the v0.2 case-acceptance schema and determinist
 Research Validation also succeeded on the same branch head: run [44894847259](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44894847259), job `136818190862`: **477 passed, 6 skipped, 56 subtests passed**.
 
 The proposed EODAG case record remains `acceptance_decision=proposed`, `final_acceptance.status=pending`, and is not in the registry. **The only remaining EODAG-specific gate is the separate project-lead final YES/NO.** The overall study still has 13 readiness blockers; model loading, inference, fine-tuning and training remain unauthorized.
+
+
+## Final project-lead acceptance — 21 November 2026
+
+The student project lead gave a separate final **YES** to accept `SRV2E-EODAG_1530` into the **v0.2 exploratory/feasibility accepted-case registry only**, at `2026-11-21T13:36:50+03:00` (Europe/Istanbul).
+
+Decision record: [PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_EODAG_1530_2026-11-21.md](eodag_1530/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_EODAG_1530_2026-11-21.md)  
+SHA-256: `5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d`
+
+The canonical case record is now marked `acceptance_decision=accepted` with `final_acceptance.status=approved`, and its full record has been inserted into `SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json`. The registry now contains **2 accepted cases from 2 distinct upstream projects**: Dishka and EODAG.
+
+This is not confirmatory-sample acceptance, independent blinded review, or legal clearance. It does not authorize model loading, inference, fine-tuning or training. Post-acceptance latest-head structural/registry validation is pending CI; the last successful pre-acceptance validation checked the proposed record and one-case registry. Study-wide readiness remains blocked by 13 prerequisites.
