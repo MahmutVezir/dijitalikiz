@@ -85,6 +85,19 @@
     "inference_authorized": false,
     "blinded_adjudication_claimed": false,
     "inter_rater_claimed": false,
-    "legal_clearance": false
+    "legal_clearance": false,
+    "prior_pipeline_debug_exposure_gate": "closed_on_project_lead_self_report"
+  },
+  "exposure": {
+    "prior_pipeline_debug_exposure": "none",
+    "researcher_source_exposure": "full",
+    "decision_date": "2026-11-21",
+    "decision_maker_role": "student_project_lead",
+    "decision_source": "direct candidate-specific self-declaration in the project conversation",
+    "decision_record": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_EXPOSURE_DECISION_MELTANO_3090_2026-11-21.md",
+    "exposure_scope": "The project lead reports no prior use of Meltano #3090 / PR #3091, its source, dataset selector, or reproducer to develop/debug the shared research pipeline or tune prompts/tests before prospective case validation.",
+    "verification_limit": "Self-report, not an independently witnessed audit or external verification.",
+    "blind_adjudication_claimed": false,
+    "inter_rater_claimed": false
   }
 }
