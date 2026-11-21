@@ -333,3 +333,19 @@ The independent issue-level public-API reproducer was rerun on the current resea
 - Independently downloaded archive SHA-256 exactly matched GitHub. ZIP CRC passed and internal SHA256SUMS verified **15/15** files.
 
 This repeats the independent reproducer result and strengthens the artifact trail. It does not alter the approved G1/E1/E2/E3 decisions or the bounded documentary scope acknowledgement. The case record remains structurally complete and proposed, but the separate final project-lead YES/NO acceptance decision remains pending. Dymos remains outside the accepted registry; model loading/inference/fine-tuning/training remain unauthorized.
+
+
+## Additional reproduction repeat and current no-inference CI — 21 November 2026
+
+A further independent public-API reproduction on the corrected branch passed on the exact fixed revision and produced the required expected failure on the exact buggy base:
+- Workflow run `44904476319`, job `136847003822`: success.
+- Artifact `14707880070`; SHA-256 `3ab3855505e9fee81a0d04eb59c3b10c65fe9a4397806ea8c8d18f2d10942979`.
+- Independently downloaded ZIP SHA-256 matched GitHub; ZIP CRC PASS; internal SHA256SUMS 15/15 PASS.
+
+The corrected branch-head no-inference validation is also green:
+- Evidence Abstention Preflight run `44904476280`, core job `136847003419`: success; v0.2 acceptance/readiness tests **29 passed**; design/scoring tests **10 passed**. It reports **13 blockers**, **2 accepted cases / 2 projects**, `ready_for_inference=false`, `inference_authorized=false`.
+- Research Validation run `44904476390`, job `136847004118`: **482 passed, 6 skipped, 56 subtests passed**.
+- Uncertainty unit tests run `44904476172`, job `136847003205`: success.
+- Qwen adapter CPU tests run `44904476190`, job `136847002865`: success.
+
+The Dymos case record remains strictly schema-conformant, structurally complete, and proposed only. A separate final project-lead YES/NO is still required. No inference, fine-tuning, or training was performed or authorized.
