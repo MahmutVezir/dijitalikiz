@@ -1619,13 +1619,24 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/AMARANTH_1518_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "passed_temporal_exposure_review_open",
+      "stage2_status": "passed_exact_base_independent_RTLIL_reproducer_and_frozen_selector_fail_fixed_pass_artifact_integrity_verified",
       "stage2_workflow_job_id": 134137814116,
-      "stage2_evidence_note": "Independent RTLIL reproducer and exact PrintTestCase.test_escape_curly selector fail on buggy base and pass on fixed. Dataset timestamp is 2024-09-20 14:00:49 UTC, the Qwen public-release date; exact training-data cutoff and release-time precedence remain unresolved, so Stage 3 temporal exposure gate is open.",
-      "stage3_status": "not_started_temporal_exposure_review_open",
+      "stage2_evidence_note": "Exact buggy-base independent RTLIL reproducer using Print('{') and Print('}') fails because $print FORMAT contains single braces; exact fixed revision passes (1 test). Exact dataset selector tests/test_back_rtlil.py::PrintTestCase::test_escape_curly fails buggy base / passes fixed. Canonical row SHA-256 73be38d692dd5426e755184998fabfa2f0a612cef244bfb75ba5d58ec352c4c7. Artifact 14340976999 was independently downloaded; outer SHA-256 matches GitHub; ZIP CRC PASS; internal SHA256SUMS 14/14 PASS.",
+      "stage3_status": "source_and_artifact_audited_advisory_gold_and_tier_matrix_prepared; E3_clue_leakage_and_primary_sample_suitability_review_pending; temporal_exposure_acknowledgement_pending; project_lead_decisions_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44111403900
+      "stage2_latest_run_id": 44111403900,
+      "stage2_latest_job_id": 134137814116,
+      "stage2_latest_artifact_id": 14340976999,
+      "stage2_latest_artifact_sha256": "f3a1a146bd055eb064f3b043c340c74d584351f22569805de63eaf44492ba5ff",
+      "stage3_gold_and_tiers_proposal_path": "research_candidates/evidence_abstention/amaranth_1518/AMARANTH_1518_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_V0_1_2026-11-21.md",
+      "stage3_evidence_elimination_matrix_path": "research_candidates/evidence_abstention/amaranth_1518/AMARANTH_1518_E3_E2_E1_EVIDENCE_ELIMINATION_MATRIX_V0_1_2026-11-21.md",
+      "stage3_temporal_exposure_review_path": "research_candidates/evidence_abstention/amaranth_1518/AMARANTH_1518_TEMPORAL_EXPOSURE_REVIEW_2026-11-21.md",
+      "stage3_review_addendum_path": "research_candidates/evidence_abstention/amaranth_1518/AMARANTH_1518_STAGE3_REVIEW_ADDENDUM_2026-11-21.md",
+      "stage3_issue_family_independence_path": "research_candidates/evidence_abstention/amaranth_1518/AMARANTH_1518_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json",
+      "stage3_exposure_declaration": "pending_project_lead",
+      "stage3_researcher_source_exposure": "full",
+      "next_required_gate": "Project lead reviews G1 and E3/E2/E1, explicitly decides whether E3 reporter clue makes this case answerable under the primary-sample rubric, provides prior pipeline/debug exposure declaration, acknowledges bounded temporal-exposure assessment if accepted as adequate, then complete exact dependency/data-card provenance, bounded research-scope acknowledgement, case-record schema validation, and separate final YES/NO acceptance."
     },
     {
       "cohort_rank": 31,
@@ -4525,6 +4536,97 @@
       "prior_pipeline_debug_exposure": "pending_project_lead_declaration",
       "researcher_source_exposure": "full"
     },
+    "final_case_acceptance": "not_accepted",
+    "registry_inclusion": false,
+    "inference_authorized": false
+  },
+  "amaranth_1518_stage3_advisory_review": {
+    "date": "2026-11-21",
+    "status": "source_and_artifact_audited_advisory_gold_and_tier_matrix_prepared; project_lead_decisions_pending; candidate_not_accepted",
+    "candidate": "amaranth-lang/amaranth issue #1518 / PR #1519",
+    "gold_proposal": "RTLIL_LITERAL_STRING_CHUNKS_NOT_BRACE_ESCAPED_IN_EMIT_PRINT",
+    "proposed_tiers": {
+      "E3": "ABSTAIN_ONLY_IF_REPORTER_SUGGESTION_IS_TREATED_AS_UNVERIFIED_HYPOTHESIS; SAMPLE_SUITABILITY_REVIEW_REQUIRED",
+      "E2": "ABSTAIN",
+      "E1": "ANSWER"
+    },
+    "matrix_path": "research_candidates/evidence_abstention/amaranth_1518/AMARANTH_1518_E3_E2_E1_EVIDENCE_ELIMINATION_MATRIX_V0_1_2026-11-21.md",
+    "proposal_path": "research_candidates/evidence_abstention/amaranth_1518/AMARANTH_1518_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_V0_1_2026-11-21.md",
+    "temporal_review_path": "research_candidates/evidence_abstention/amaranth_1518/AMARANTH_1518_TEMPORAL_EXPOSURE_REVIEW_2026-11-21.md",
+    "review_addendum_path": "research_candidates/evidence_abstention/amaranth_1518/AMARANTH_1518_STAGE3_REVIEW_ADDENDUM_2026-11-21.md",
+    "issue_family_review_path": "research_candidates/evidence_abstention/amaranth_1518/AMARANTH_1518_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json",
+    "exact_buggy_base": "8c5ed4051dd74a6347af8d52f8e397eb53218ac4",
+    "exact_fixed_pr_head": "6a10abe6c873e7fb51a34f70801d3dd37cda9061",
+    "dataset_row_sha256": "73be38d692dd5426e755184998fabfa2f0a612cef244bfb75ba5d58ec352c4c7",
+    "stage2": {
+      "run_id": 44111403900,
+      "job_id": 134137814116,
+      "artifact_id": 14340976999,
+      "artifact_sha256": "f3a1a146bd055eb064f3b043c340c74d584351f22569805de63eaf44492ba5ff",
+      "artifact_integrity": {
+        "downloaded_and_sha256_recomputed": true,
+        "outer_sha256_matches_github": true,
+        "zip_crc": "passed",
+        "internal_sha256_manifest": "14/14 passed"
+      },
+      "independent_reproducer": "exact buggy base emits single braces in $print FORMAT and fails; exact fixed revision passes",
+      "frozen_selector": "tests/test_back_rtlil.py::PrintTestCase::test_escape_curly",
+      "frozen_selector_result": "exact buggy base fails; exact fixed revision passes"
+    },
+    "e2_alternative_elimination": {
+      "eliminated": [
+        "Struct_only_or_placeholder_expansion_only",
+        "Yosys_or_Verilog_conversion_only",
+        "placeholder_argument_or_width_handling_only"
+      ],
+      "surviving_until_E1": [
+        "literal_string_chunk_appended_unescaped_in_emit_print",
+        "later_RTLIL_parameter_normalization_or_serialization_defect"
+      ],
+      "criterion_satisfied": true
+    },
+    "e3_sample_suitability": {
+      "reporter_hint": "The issue explicitly suggests the struct braces are the problem and need escaping.",
+      "assessment": "Material answer leakage. E3 ABSTAIN only defensible where source-backed mechanism is required and the reporter's likely fix remains an unverified hypothesis.",
+      "project_lead_review": "pending"
+    },
+    "temporal_exposure": {
+      "pinned_model": "Qwen/Qwen2.5-3B-Instruct",
+      "pinned_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+      "initial_public_checkpoint_upload": "2024-09-17T14:27:00Z; HF commit 3ca5f5b",
+      "official_model_announcement": "2024-09-19",
+      "issue_created_at_utc": "2024-09-20T13:41:02Z",
+      "pr_created_at_utc": "2024-09-20T14:00:49Z",
+      "secondary_reported_cutoff": "2023-10",
+      "interpretation": "Issue/PR-specific contamination less likely by chronology; pre-existing Amaranth source-code exposure remains unresolved; no absence proof.",
+      "review_path": "research_candidates/evidence_abstention/amaranth_1518/AMARANTH_1518_TEMPORAL_EXPOSURE_REVIEW_2026-11-21.md",
+      "project_lead_acknowledgement": "pending"
+    },
+    "license_scope": {
+      "source_license": "BSD-2-Clause",
+      "dataset_row_license": "BSD-2-Clause",
+      "runtime_inventory": {
+        "license_values_present": [
+          "jschon 0.11.1 MIT",
+          "pyvcd 0.4.0 MIT",
+          "MarkupSafe 3.0.2 BSD-3-Clause",
+          "rfc3986 2.0.0 Apache 2.0",
+          "pytest 8.3.3 MIT",
+          "iniconfig 2.0.0 MIT",
+          "pluggy 1.5.0 MIT",
+          "Pygments 2.18.0 BSD-2-Clause"
+        ],
+        "missing_license_field_despite_classifier": [
+          "Jinja2 3.1.4 BSD classifier",
+          "packaging 24.2 Apache/BSD classifiers"
+        ],
+        "dataset_extraction": "PyArrow 19.0.1 Apache Software License"
+      },
+      "exact_canonical_dependency_license_texts_and_applicable_notices": "pending"
+    },
+    "researcher_source_exposure": "full",
+    "project_lead_prior_pipeline_debug_exposure": "pending",
+    "project_lead_gold_tier_approval": "pending",
     "final_case_acceptance": "not_accepted",
     "registry_inclusion": false,
     "inference_authorized": false
