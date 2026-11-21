@@ -1,0 +1,89 @@
+name: GeoFileOps #649 proposed case record — fail-closed validation (no inference)
+
+on:
+  push:
+    branches:
+      - "research/2026-11-16-followup-evidence-validation"
+    paths:
+      - ".github/workflows/geofileops-649-case-acceptance-validation.yml"
+      - "research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_PROPOSED_V0_2_2026-11-21.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json"
+      - "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py"
+      - "research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_*"
+      - "research_candidates/evidence_abstention/geofileops_649/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_DECISION_2026-11-21.md"
+      - "research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_PROJECT_LEAD_DECISION_ATTESTATION_2026-11-21.md"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/geofileops-649-case-acceptance-validation.yml"
+      - "research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_PROPOSED_V0_2_2026-11-21.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json"
+      - "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py"
+      - "research_candidates/evidence_abstention/geofileops_649/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: geofileops-649-case-acceptance-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-proposed-record:
+    name: Validate v0.2 case schema and fail-closed invariants
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact PR or branch commit
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+      - name: Set up Python 3.11
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11"
+      - name: Install pinned schema validator
+        run: python -m pip install --disable-pip-version-check jsonschema==4.23.0
+      - name: Validate proposed case record
+        env:
+          CASE_RECORD: "research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_PROPOSED_V0_2_2026-11-21.json"
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="research_candidates/evidence_abstention/implementation${PYTHONPATH:+:$PYTHONPATH}"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from swe_rebench_v2_exploratory_case_acceptance import validate_case_record
+          from jsonschema import Draft202012Validator
+          track = Path('research_candidates/evidence_abstention')
+          schema = json.loads((track / 'SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json').read_text(encoding='utf-8'))
+          Draft202012Validator.check_schema(schema)
+          record_path = Path(os.environ['CASE_RECORD'])
+          record = json.loads(record_path.read_text(encoding='utf-8'))
+          result = validate_case_record(record)
+          print(json.dumps(result, ensure_ascii=False, indent=2))
+          assert result['status'] == 'structurally_complete_candidate', result
+          assert result['blockers'] == [], result
+          assert result['eligible_for_registry'] is False, result
+          assert result['acceptance_decision'] == 'proposed', result
+          assert result['inference_authorized'] is False, result
+          assert record['final_acceptance']['status'] == 'pending', record['final_acceptance']
+          assert record['final_acceptance']['decision_timestamp_utc'] is None
+          assert record['final_acceptance']['decision_record'] is None
+          registry_path = track / 'SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json'
+          registry = json.loads(registry_path.read_text(encoding='utf-8'))
+          assert all(item.get('case_id') != record['case_id'] for item in registry.get('records', [])), 'Proposed case must not enter accepted registry'
+          tiers = record['evidence_tiers']
+          assert len(tiers['E3']['evidence_items']) < len(tiers['E2']['evidence_items']) < len(tiers['E1']['evidence_items'])
+          e3 = set(tiers['E3']['surviving_mechanism_ids'])
+          e2 = set(tiers['E2']['surviving_mechanism_ids'])
+          e1 = set(tiers['E1']['surviving_mechanism_ids'])
+          assert e1 < e2 < e3, {'E1': e1, 'E2': e2, 'E3': e3}
+          assert record['exposure']['prior_pipeline_debug_exposure'] == 'none'
+          print('PASS: proposed case structurally complete; registry inclusion and inference remain false.')
+          PY
