@@ -144,7 +144,8 @@
     "external_legal_review": "not_performed",
     "project_lead_scope_decision_date": "2026-11-21",
     "project_lead_scope_decision_record": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md",
-    "bounded_research_scope_acknowledged_in_principle": true
+    "bounded_research_scope_acknowledged_in_principle": true,
+    "project_lead_scope_decision_commit": "e5d4f434121eb95b3a50117ed63196641a19c73a"
   },
   "boundaries": {
     "legal_advice": false,
