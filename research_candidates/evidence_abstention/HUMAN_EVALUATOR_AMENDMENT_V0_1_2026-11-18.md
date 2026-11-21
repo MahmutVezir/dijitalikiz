@@ -1,3 +1,7 @@
+> **SUPERSEDED — historical only (21 November 2026).** The active v0.2 project has one human participant: the student project lead. There is no second human rater, technical-review panel or independent external human reviewer. This file is retained to preserve the history of the earlier dual-human proposal and is not an active scoring or governance procedure. Use `SINGLE_HUMAN_REVIEW_AMENDMENT_V0_2_2026-11-21.md` and `SWE_REBENCH_V2_SINGLE_HUMAN_OUTPUT_SCORING_RUBRIC_V0_2_2026-11-21.md` instead. No model inference is authorized.
+
+---
+
 # Human-evaluator amendment — v0.1
 
 **Date:** 18 November 2026  
