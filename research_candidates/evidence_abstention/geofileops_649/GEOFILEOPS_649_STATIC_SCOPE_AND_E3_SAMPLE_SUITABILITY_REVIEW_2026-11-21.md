@@ -71,3 +71,24 @@ The PR is therefore broader than a single isolated default-parameter correction.
 - Project-lead decision on exclusion versus a separately labelled easy-answer/specification-conformance control: pending.
 - Final case acceptance: **not accepted**; registry inclusion: **false**; inference authorization: **false**.
 - Model loading, inference, fine-tuning and training: **not performed and not authorized**.
+
+## 7. Amendment — subsequent Stage 2 execution and diagnostic-granularity correction
+
+This amendment supersedes the pre-execution statements in Sections 6 and the original top-level disposition where they say that no row was extracted, no Stage 2 run occurred, or no reproduction evidence exists. A later Stage 2 run completed after the initial static review.
+
+The authoritative subsequent record is:
+`GEOFILEOPS_649_STAGE2_REPRODUCTION_AND_ARTIFACT_AUDIT_2026-11-21.md`
+(Git blob SHA: `27b73b674644f2bde6cd9a1592070f18640920f5`).
+
+Verified Stage 2 results:
+- Exact frozen instance `geofileops__geofileops-649` was authenticated from the pinned Parquet revision; canonical row SHA-256 `2a85246a15d97ca6e73eb9a02f36022a05f80b8322c24a6522fbfee31fc7d1eb`.
+- All 10 unchanged frozen FAIL_TO_PASS selectors failed on exact buggy base and passed on exact fixed PR head.
+- Independent default-layer reproducer failed on base; explicit-layer positive control passed on base; both reproducer tests passed on fixed.
+- The workflow artifact was independently re-downloaded and verified: outer SHA-256 matched GitHub, ZIP CRC passed, and 18/18 internal hashes passed.
+- Therefore Stage 2 technical reproduction is **PASS**. This does not imply Stage 3 sample eligibility or final acceptance.
+
+The sample-suitability issue is narrower than the original summary suggests. The frozen E3 packet states the API contract mismatch (omitted `dst_layer` is not the destination filename stem), but it does not expose the source-level mechanism that the exact buggy call chain leaves `None` unresolved instead of invoking the existing `get_default_layer(dst)` helper. Consequently:
+- If the gold target is API-contract diagnosis, E3 is answerable and this is not a primary abstention case.
+- If the predeclared gold target is the implementation-level root-cause mechanism, E3 should abstain; the audited E2 evidence removes the copy-only and append-only alternatives while the exact source chain at E1 resolves the missing fallback. The proposed strict-mechanism tiers remain E3 ABSTAIN / E2 ABSTAIN / E1 ANSWER.
+
+**Project-lead decision is still required** to freeze the diagnostic granularity before any primary-sample inclusion. Prior pipeline/debug exposure, temporal-exposure acknowledgement, bounded license/notice scope review, final case record and separate final acceptance remain open. No registry inclusion or inference is authorized.
