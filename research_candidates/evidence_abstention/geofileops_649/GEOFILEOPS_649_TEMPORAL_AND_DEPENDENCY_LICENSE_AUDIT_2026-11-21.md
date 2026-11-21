@@ -102,3 +102,85 @@ This acknowledgement closes the project-lead response gate for the bounded tempo
 The superseded GPTQ configuration is not treated as the active pilot checkpoint; the frozen manifest records that it was replaced before any pilot inference record was written.
 
 **Updated status:** temporal-exposure acknowledgement received; full 105-package exact-build license/copyright/NOTICE review remains incomplete; pygeoops metadata requires source-level confirmation; bounded scope and dataset/source attribution acknowledgement remain open; complete case record and fail-closed validation remain open; final project-lead YES/NO acceptance remains open. No legal clearance, registry inclusion or inference authorization is asserted.
+
+## 7. Exact-build Conda package inventory — completed 21 November 2026
+
+The earlier partial Python-distribution-only inventory is superseded by an exact audit of every package archive in the frozen explicit lock.
+
+### Reproduction and integrity
+
+- GitHub Actions run: `44927884852`.
+- Job: `136917880433`, conclusion: `success`.
+- Workflow source commit: `75f653194a08939587157a863d59aab7aa30e9c2`.
+- Source Stage 2 artifact: `14711502949`; SHA-256 `b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f`.
+- Frozen explicit lock SHA-256: `348678b8947ea677e184ed90fc20a92bc3b3fc353ec3f18b8220c8a5d6bccc79`.
+- Exact locked package archives: **105/105 downloaded; 105/105 matched their frozen-lock MD5; 105/105 matched the package identity in `info/index.json`**.
+- Conda `info/about.json` license metadata: **105/105 present; 0 missing**.
+- `license_file` metadata present for 63 packages; `license_family` metadata present for 22 packages. Absence of these optional fields is not counted as a missing license expression.
+- License/NOTICE files extracted: **253 files from 103 packages**. Two packages, `libsqlite 3.53.4 h0737f62_102` and `sqlite 3.53.4 h6e79ffa_102`, carry the `blessing` license expression and an upstream SQLite copyright URL in `about.json`, but no separate license/NOTICE file was present in either exact archive.
+- Total package bytes downloaded: 140,794,604.
+- Uploaded audit artifact: `14716462835`; SHA-256 `ff397b7a2afbed6ac524f570019f7e5211dfb49304d1f111a817233536a8ca49`.
+- Independently downloaded artifact verification: outer SHA-256 matched GitHub; ZIP CRC passed; 257 members.
+- `package-license-inventory.json`: 894,593 bytes; SHA-256 `333f433ed6c02647b19f21cf6cbeb12c15dd6ab82dde9da6ccb50aab523ffb0d`.
+- `audit-summary.json`: 1,136 bytes; SHA-256 `34b5753bed2e52ee7c548c7ab2d33aa52dc45530b06021e05416668ccc66e276`.
+- `source-conda-explicit.txt`: 12,152 bytes; SHA-256 matches the frozen lock above.
+- Bundled `package-notices-and-inventory.zip`: 673,550 bytes; SHA-256 `bae502bc39363586cff1aa36d895d148a00ab60748787747e00c8c3bc72a6252`.
+
+Artifact URL: https://github.com/MahmutVezir/dijitalikiz/actions/runs/44927884852/artifacts/14716462835
+
+### Exact package license expressions
+
+The Conda `info/about.json` fields in the exact binary package archives yielded the following license-expression counts (105 packages total):
+
+| Package license expression | Package count |
+|---|---:|
+| MIT | 27 |
+| BSD-3-Clause | 24 |
+| Apache-2.0 | 7 |
+| GPL-3.0-only WITH GCC-exception-3.1 | 7 |
+| BSD-2-Clause | 4 |
+| LGPL-2.1-only | 3 |
+| Zlib | 3 |
+| ISC | 2 |
+| MPL-1.1 | 2 |
+| LGPL-2.1-or-later | 2 |
+| GPL-3.0-only | 2 |
+| 0BSD | 2 |
+| GPL-2.0-or-later | 2 |
+| blessing | 2 |
+| 0BSD AND LGPL-2.1-or-later AND GPL-2.0-or-later | 2 |
+| Other single-package expressions | 14 |
+
+The 14 single-package expressions are: `bzip2-1.0.6`, `MIT and PSF-2.0`, `curl`, `BSD-2-Clause OR GPL-2.0-or-later`, `IJG AND BSD-3-Clause AND Zlib`, `zlib-acknowledgement`, `HPND`, `X11 AND BSD-3-Clause`, `Python-2.0`, `BlueOak-1.0.0`, `TCL`, `PSF-2.0`, `LicenseRef-Public-Domain`, and `0BSD AND LGPL-2.1-or-later`.
+
+### Material license/NOTICE review targets
+
+The exact package records identify these notable license families and packages:
+
+- **GCC runtime exception expressions:** `libgcc`, `libgcc-ng`, `libgfortran`, `libgfortran5`, `libgomp`, `libstdcxx`, and `libstdcxx-ng` carry `GPL-3.0-only WITH GCC-exception-3.1`.
+- **GPL expressions without the GCC exception:** `ld_impl_linux-64` and `readline` carry `GPL-3.0-only`; `librttopo` and `lzo` carry `GPL-2.0-or-later`.
+- **LGPL expressions:** `geos` and `libiconv` and `libnsl` carry `LGPL-2.1-only`; `keyutils` and `libxcrypt` carry `LGPL-2.1-or-later`.
+- **Multi-license XZ expressions:** `xz` and `xz-gpl-tools` carry `0BSD AND LGPL-2.1-or-later AND GPL-2.0-or-later`; `xz-tools` carries `0BSD AND LGPL-2.1-or-later`.
+- **MPL expressions:** `freexl` and the exact locked build `libspatialite 5.1.0 he17ca71_14` carry `MPL-1.1`.
+- **Alternative licensing:** `libev` carries `BSD-2-Clause OR GPL-2.0-or-later`.
+
+The exact Conda record for `pygeoops 0.4.0 pyhd8ed1ab_2` reports `BSD-3-Clause`, `license_family=BSD` and `license_file=LICENSE.txt`; its license file was extracted (SHA-256 `684f266645f9b1c7c9302202ac3f9d4eb9009627369e0151feb7793fd7bf2a3d`). This **supersedes** the preliminary Python-distribution metadata note above that its license field was null: the package-level Conda archive metadata and embedded license file are now present and authenticated.
+
+The exact locked `libspatialite` build is also resolved at the **package metadata** level as `MPL-1.1`, with `COPYING` present in the package archive (SHA-256 `b81965482914858383484d7e63b5de1d0c4647fa7f527e78d4499e4a7b76aab5`). This supersedes the earlier statement that the exact build's license expression was not yet resolved.
+
+### Interpretation and remaining limits
+
+This is now a complete **exact locked package metadata and notice-file presence inventory**: all 105 package files were downloaded and checked against the frozen lock; all 105 contain a license expression; 253 local notice/license files were extracted from 103 packages.
+
+It is **not** a compatibility analysis, legal opinion, proof that every dependency's obligations are satisfied, or legal clearance to redistribute binaries. The metadata expressions include GPL, LGPL and MPL families and must be assessed in the context of the actual use and distribution scope. The two SQLite packages do not carry separate notice files in their package archives; their `about.json` records point to the upstream SQLite copyright page: https://www.sqlite.org/copyright.html.
+
+The original Stage 2 artifact contains logs, source/patch provenance and the explicit lock, not the downloaded 105 binary Conda packages. The new audit artifact contains the inventory and extracted license/notice materials, not those 105 package binaries.
+
+### Updated status
+
+- Exact-build license/NOTICE **inventory: complete**.
+- Manual obligation-by-obligation compatibility and legal review: **not established by this audit**.
+- Project-lead bounded dataset/source attribution and research-scope acknowledgement: **still required**.
+- Complete schema-conformant case record and fail-closed validation: **still required**.
+- Separate final project-lead YES/NO acceptance: **still required**.
+- No accepted-registry insertion, legal clearance or model-inference authorization is asserted.
