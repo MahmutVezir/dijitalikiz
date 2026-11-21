@@ -3193,7 +3193,7 @@ jobs:
           retention-days: 90
 
   asdf-issue-1821-reproduction:
-    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates) || (github.event_name == 'push' && (contains(github.event.head_commit.modified, 'research_candidates/evidence_abstention/reproduction/asdf_issue_1821/test_issue_1821.py') || contains(github.event.head_commit.modified, 'research_candidates/evidence_abstention/reproduction/asdf_issue_1821/requirements.lock') || contains(github.event.head_commit.modified, '.github/workflows/evidence-abstention-preflight.yml'))) }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates) || (github.event_name == 'push' && (contains(github.event.head_commit.modified, 'research_candidates/evidence_abstention/reproduction/asdf_issue_1821/test_issue_1821.py') || contains(github.event.head_commit.modified, 'research_candidates/evidence_abstention/reproduction/asdf_issue_1821/requirements.lock') || contains(github.event.head_commit.modified, '.github/workflows/evidence-abstention-preflight.yml'))) || (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'research/2026-11-16-followup-evidence-validation') }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 30
