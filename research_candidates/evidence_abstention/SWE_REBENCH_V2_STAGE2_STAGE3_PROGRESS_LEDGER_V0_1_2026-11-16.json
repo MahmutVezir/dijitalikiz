@@ -1055,7 +1055,7 @@
       "stage2_status": "passed_issue_specific_independent_reproducer_and_2_dataset_selectors_base_fail_fixed_pass",
       "stage2_workflow_job_id": 134161227052,
       "stage2_evidence_note": "Independent YAML reproducer: duplicate geodes key removes geodes_s3 on buggy base, passes on fixed. Exact Parquet row cs-si__eodag-1536 authenticated (created_at 2025-02-21 10:04:30; row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47). Both exact issue-specific selectors executed: 2/2 failed on buggy base and 2/2 passed on fixed. Test-only patch changed tests/units/test_core.py only. Focused Python 3.11.9 environment: 52 resolved distributions with license metadata, pip check passed; full license scope signoff remains pending. Artifact 14344421574 SHA-256 0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33; internal SHA256SUMS 22/22 verified.",
-      "stage3_status": "project_lead_accepted_candidate_for_stage3_evaluation; advisory_gold_tier_proposals_only; candidate_specific_exposure_bounded_license_scope_and_final_case_acceptance_pending",
+      "stage3_status": "project_lead_accepted_candidate_for_stage3_evaluation; packet_hash_and_nesting_validation_passed; advisory_gold_tier_proposal_only; candidate_specific_exposure_bounded_license_scope_and_final_case_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44117944004,
@@ -1065,6 +1065,26 @@
         "decision": "ACCEPTED_FOR_STAGE3_CASE_EVALUATION",
         "date": "2026-11-20",
         "final_case_acceptance": "NOT_ACCEPTED"
+      },
+      "stage3_packet_set_path": "research_candidates/evidence_abstention/eodag_1530/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
+      "stage3_packet_set_sha256": "e1c15239ba0599c13d19c35ffad922d77ae10bb570aced8199d6db97163d3189",
+      "stage3_packet_structure": {
+        "E3_item_count": 1,
+        "E2_item_count": 4,
+        "E1_item_count": 7,
+        "strictly_nested": true,
+        "validation_status": "passed_hash_and_nesting_only",
+        "validation_workflow_run_id": 44891779892,
+        "validation_job_id": 136808957711,
+        "validation_commit": "ad97169c2578c921502222906598a4c5e1255025",
+        "validation_test": "tests/test_eodag_1530_stage3_packet_set.py",
+        "validation_result": "3 passed in 0.02s",
+        "validation_artifact_id": 14701594453,
+        "validation_artifact_sha256": "2ade3c85c1b6cc5a8d29136cba1cb0366d802f9732efb8d63b6fa000818ba85b",
+        "semantic_sufficiency_assessed": false,
+        "human_gold_tier_decision": "pending",
+        "final_case_acceptance": "not_accepted",
+        "inference_authorized": false
       }
     },
     {
