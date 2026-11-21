@@ -2,7 +2,7 @@
 
 **Date:** 21 November 2026  
 **Status:** Active draft under the single-human amendment; not calibrated/frozen and not authorization for model inference.  
-**Human scorer:** One person only — the student project lead.  
+**One human scorer:** the student project lead.  
 **AI role:** ChatGPT advisory critique only; never a human score.
 
 ## 1. Unit and constructs
