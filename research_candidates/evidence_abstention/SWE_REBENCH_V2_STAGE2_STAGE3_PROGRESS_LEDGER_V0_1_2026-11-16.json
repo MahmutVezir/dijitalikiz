@@ -3922,7 +3922,52 @@
     "inference_authorized": false,
     "exposure_gate": "closed_on_project_lead_self_report",
     "exposure_decision_record": "research_candidates/evidence_abstention/pyfar_721/PROJECT_LEAD_EXPOSURE_DECISION_PYFAR_721_2026-11-21.md",
-    "researcher_source_exposure": "full"
+    "researcher_source_exposure": "full",
+    "evidence_elimination_matrix": {
+      "path": "research_candidates/evidence_abstention/pyfar_721/PYFAR_721_E3_E2_E1_EVIDENCE_ELIMINATION_MATRIX_V0_1_2026-11-21.md",
+      "commit": "027300e762397ef80b94ee8ceeb8a814a0d92f3f",
+      "status": "source_and_artifact_audited_matrix; prior gold_tier approval retained; final acceptance pending",
+      "E3": {
+        "status": "approved_abstain_but_disclosure_risk_flagged",
+        "issue_clue": "Reporter explicitly suggests dividing by sqrt(calculated_reference) for the target=1 example.",
+        "methodological_condition": "ABSTAIN is defensible only if reporter hypothesis is treated as unverified and the task requires source-backed causal confirmation; if likely-repair identification is enough, E3 may be answerable.",
+        "project_lead_review_of_suitability": "recommended"
+      },
+      "E2": {
+        "base_fail_selectors": 23,
+        "fixed_pass_selectors": 23,
+        "total_energy_power_parameter_combinations": 24,
+        "non_discriminating_omitted_combination": "energy/min/target=1 because buggy result coincidentally equals target",
+        "channel_modes_covered": [
+          "individual",
+          "max",
+          "min",
+          "mean"
+        ],
+        "targets_covered": [
+          0.5,
+          1,
+          2
+        ],
+        "alternatives_eliminated": [
+          "mean_only_channel_aggregation_explanation",
+          "target_1_only_scope_explanation"
+        ],
+        "alternatives_remaining": [
+          "measurement_or_reference_computation_mismatch",
+          "target_semantics_or_target_to_amplitude_mapping_without_source_level_code_evidence"
+        ],
+        "selector_independence": "one PR-derived selector set, not independent cases or independently authored reproductions"
+      },
+      "E1": {
+        "exact_source_blob": "b44dbac7817be97126bd3bbac88add4b6a1ebd54",
+        "mechanism": "energy/power are quadratic in amplitude; buggy normalize applies unrooted target/reference_norm amplitude multiplier",
+        "rms_excluded": "RMS returns sqrt(power) and is not claimed defective"
+      },
+      "final_case_acceptance": "not_accepted",
+      "registry_inclusion": false,
+      "inference_authorized": false
+    }
   },
   "latest_dymos_1166_independent_reproduction_repeat": {
     "validated_branch_head": "15ae2efc7b465e3510cc474e53b34008d2ea09b5",
@@ -4218,6 +4263,46 @@
       "fine_tuning_performed": false,
       "training_performed": false,
       "inference_authorized": false
+    }
+  },
+  "latest_pyfar_721_evidence_matrix_audit": {
+    "date": "2026-11-21",
+    "matrix_commit": "027300e762397ef80b94ee8ceeb8a814a0d92f3f",
+    "proposal_link_update_commit": "2b62bbdc75227e5fc0a4df3463e419fac10da87b",
+    "stage2_artifact_id": 14440390942,
+    "stage2_artifact_sha256": "17e80ba9a81153ea833ce0cee05271f1815c6c6d597653c12f9bbe11f0f95bf8",
+    "artifact_verification": {
+      "downloaded_and_sha256_recomputed": true,
+      "outer_sha256_matches_record": true,
+      "zip_crc": "passed",
+      "internal_manifest": "14/14 passed"
+    },
+    "stage2_selector_results": {
+      "exact_buggy_base": "23/23 expected failures",
+      "exact_fixed_revision": "23/23 passes",
+      "selectors_independent": false,
+      "standalone_issue_reproducer": "not run"
+    },
+    "source_review": {
+      "pinned_base": "648dda4c60c5a6f74acf335f7808c590c9d23929",
+      "source_blob": "b44dbac7817be97126bd3bbac88add4b6a1ebd54",
+      "energy_line": 2156,
+      "power_line": 2200,
+      "rms_line": 2242,
+      "normalize_reference_lines": "2628-2634",
+      "channel_handling_lines": "2652-2663",
+      "buggy_scale_line": 2665
+    },
+    "decision_boundary": {
+      "prior_gold_tier_decision": "approved_and_not_silently_changed",
+      "e3_disclosure_risk_project_lead_suitability_review_recommended": true,
+      "final_acceptance": "not_accepted",
+      "registry_inclusion": false,
+      "inference_authorized": false,
+      "model_loading_performed": false,
+      "inference_performed": false,
+      "fine_tuning_performed": false,
+      "training_performed": false
     }
   }
 }
