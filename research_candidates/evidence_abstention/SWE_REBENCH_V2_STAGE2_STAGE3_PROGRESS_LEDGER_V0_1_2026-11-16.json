@@ -845,7 +845,7 @@
       "stage3_status": "source_aware_gold_tiers_approved; exact_pinned_dataset_card_license_verified_CC_BY_4_0; bounded_license_scope_acknowledgement_approved_with_scientific_independence_condition; proposed_case_record_structurally_validated; final_case_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44896872870,
+      "stage2_latest_run_id": 44897071374,
       "stage2_artifact_id": 14341424466,
       "stage2_artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
       "stage2_dataset_row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
@@ -915,11 +915,11 @@
           "fixed_result": "Same test passed (1 passed in 0.63s)."
         },
         "latest_current_head_repeat": {
-          "workflow_run_id": 44896872870,
-          "workflow_job_id": 136824321827,
-          "workflow_commit": "80cb71879e79faef4ef204988b544942b08edf90",
-          "artifact_id": 14704840512,
-          "artifact_sha256": "47bb7e550972f470027e31679c9afd7fb1ddf0b3628fad9bf226b2b4b5438c23",
+          "workflow_run_id": 44897071374,
+          "workflow_job_id": 136824905466,
+          "workflow_commit": "6205bcf2a5ffaae8ab1e94180ea9a110bc856a66",
+          "artifact_id": 14704382829,
+          "artifact_sha256": "781a1d30d646a61ef3082e494b1e351b8fe9418cf470d3e1874d95547caf6728",
           "artifact_integrity": "GitHub-reported digest; not independently downloaded/rehashed in this update",
           "buggy_base_result": "Expected assertion failure: actual all-ones control input instead of supplied default",
           "fixed_revision_result": "Same public-API test passed (1 passed in 0.41s)"
@@ -963,9 +963,9 @@
         "source_aware_decision_record_sha256": "9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392"
       },
       "next_required_gate": "Separate project-lead final YES/NO decision for SRV2E-DYMOS_1166 after structural validation. Until an explicit YES is recorded, retain acceptance_decision=proposed and keep Dymos outside the accepted registry. No model loading, inference, fine-tuning or training is authorized.",
-      "stage2_latest_job_id": 136824321827,
-      "stage2_latest_artifact_id": 14704840512,
-      "stage2_latest_artifact_sha256": "47bb7e550972f470027e31679c9afd7fb1ddf0b3628fad9bf226b2b4b5438c23",
+      "stage2_latest_job_id": 136824905466,
+      "stage2_latest_artifact_id": 14704382829,
+      "stage2_latest_artifact_sha256": "781a1d30d646a61ef3082e494b1e351b8fe9418cf470d3e1874d95547caf6728",
       "stage2_latest_artifact_integrity": "GitHub-reported artifact SHA-256 recorded; ZIP was not independently downloaded/rehashed in this update.",
       "stage2_latest_independent_reproducer_workflow_run_id": 44779508337,
       "stage2_latest_independent_reproducer_artifact_id": 14651026003,
@@ -985,10 +985,10 @@
         "independent_witnessed_audit": false
       },
       "stage3_preflight_current_head": {
-        "workflow_run_id": 44896872806,
-        "job_id": 136824321862,
-        "commit": "80cb71879e79faef4ef204988b544942b08edf90",
-        "workflow_run_status": "completed_failure_due_to_ancillary_Dishka_raw_provenance_audit_HTTP_403",
+        "workflow_run_id": 44897071346,
+        "job_id": 136824905807,
+        "commit": "6205bcf2a5ffaae8ab1e94180ea9a110bc856a66",
+        "workflow_run_status": "completed_success",
         "preflight_job_conclusion": "success",
         "dymos_review_contract_tests": "11 passed",
         "v02_acceptance_readiness_tests": "26 passed",
@@ -1009,12 +1009,18 @@
           "failure": "curl HTTP 403 while capturing raw upstream GitHub / pinned dataset-card payloads",
           "unrelated_to_dymos_case_record_validation": true,
           "rerun_requested": true
+        },
+        "ancillary_matrix": {
+          "dishka_issue_435_reproduction": "success",
+          "dishka_raw_provenance_audit_first_attempt": "HTTP 403",
+          "dishka_raw_provenance_audit_rerun": "success",
+          "qwen_pinned_license_evidence_no_load": "success"
         }
       },
       "repository_validation_current_head": {
-        "workflow_run_id": 44896728093,
-        "job_id": 136823873808,
-        "commit": "45a31da10d4cf87721bcd8dd503a5ce604ae9dd3",
+        "workflow_run_id": 44897071284,
+        "job_id": 136824905208,
+        "commit": "6205bcf2a5ffaae8ab1e94180ea9a110bc856a66",
         "conclusion": "success",
         "tests": "478 passed, 6 skipped, 56 subtests passed",
         "no_model_execution_command_invoked": true,
@@ -1071,7 +1077,8 @@
         "v02_acceptance_readiness_tests": "26 passed",
         "design_scoring_tests": "10 passed",
         "inference_authorized": false
-      }
+      },
+      "generated_at_utc": "2026-11-21T11:02:00Z"
     },
     {
       "cohort_rank": 16,
