@@ -5555,12 +5555,34 @@
     "final_acceptance_record_sha256": "e103d7997d4d7d147a6f15f4a16397ec31bde6a02c6462b7e24cac881e472fe5",
     "accepted_case_record_path": "research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_V0_2_2026-11-21.json",
     "accepted_case_record_blob_sha1": "6feab60ba5fe3bdd4bb85462f62bfaeb351753da",
-    "acceptance_scope": "v0.2_exploratory_feasibility_registry_only"
+    "acceptance_scope": "v0.2_exploratory_feasibility_registry_only",
+    "final_case_validation": {
+      "run_id": 44931419750,
+      "job_id": 136928658938,
+      "conclusion": "success",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931419750",
+      "job_name": "Validate accepted case, three-project registry and no-inference boundary",
+      "case_validation": {
+        "status": "structurally_complete_candidate",
+        "blockers": 0,
+        "eligible_for_registry": true,
+        "acceptance_decision": "accepted"
+      },
+      "registry_validation": {
+        "status": "structurally_valid_candidate_registry",
+        "blockers": 0,
+        "accepted_case_count": 3,
+        "accepted_project_count": 3,
+        "primary_target_met": false
+      },
+      "manifest_validation": "accepted_case_count=3; accepted_project_count=3; exactly one accepted GeoFileOps review record",
+      "inference_authorized": false
+    }
   },
   "latest_geofileops_649_stage2_stage3_review": {
     "date": "2026-11-21",
     "case": "geofileops/geofileops issue #648 / PR #649",
-    "status": "stage2_pass; strict mechanism gold and E3_ABSTAIN_E2_ABSTAIN_E1_ANSWER approved; temporal residual uncertainty acknowledged; exact package inventory and bounded scope approved; final case acceptance recorded and registry inclusion complete",
+    "status": "stage2_pass; strict gold and E3_ABSTAIN_E2_ABSTAIN_E1_ANSWER approved; temporal residual uncertainty acknowledged; exact package inventory and bounded scope approved; final case accepted into v0.2 exploratory registry; accepted record and registry CI PASS",
     "run_id": 44916663456,
     "job_id": 136883732286,
     "artifact_id": 14711502949,
@@ -5623,7 +5645,29 @@
     "final_acceptance_record_path": "research_candidates/evidence_abstention/geofileops_649/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_GEOFILEOPS_649_2026-11-21.md",
     "final_acceptance_record_sha256": "e103d7997d4d7d147a6f15f4a16397ec31bde6a02c6462b7e24cac881e472fe5",
     "final_acceptance_timestamp_utc": "2026-11-21T17:37:00Z",
-    "case_record_structural_validation": "pending_final_accepted_record_and_registry_CI_validation"
+    "case_record_structural_validation": "PASS_final_accepted_case_and_registry; zero blockers",
+    "final_case_validation": {
+      "run_id": 44931419750,
+      "job_id": 136928658938,
+      "conclusion": "success",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931419750",
+      "job_name": "Validate accepted case, three-project registry and no-inference boundary",
+      "case_validation": {
+        "status": "structurally_complete_candidate",
+        "blockers": 0,
+        "eligible_for_registry": true,
+        "acceptance_decision": "accepted"
+      },
+      "registry_validation": {
+        "status": "structurally_valid_candidate_registry",
+        "blockers": 0,
+        "accepted_case_count": 3,
+        "accepted_project_count": 3,
+        "primary_target_met": false
+      },
+      "manifest_validation": "accepted_case_count=3; accepted_project_count=3; exactly one accepted GeoFileOps review record",
+      "inference_authorized": false
+    }
   },
   "latest_lektor_1213_stage2_selector_integrity_hold": {
     "date": "2026-11-21",
@@ -5881,7 +5925,7 @@
     "rank49_package_license_notice_audit": "complete_exact_105_package_metadata_and_notice_inventory; manual_obligation_review_and_scope_acknowledgement_pending",
     "rank49_bounded_scope_status": "approved_exact_bounded_research_use_2026-11-21",
     "rank49_bounded_scope_record": "research_candidates/evidence_abstention/geofileops_649/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_DECISION_2026-11-21.md",
-    "rank49_case_record_status": "accepted_exploratory_v0_2; final case record and registry CI validation pending",
+    "rank49_case_record_status": "accepted_record_and_registry_CI_pass_zero_blockers",
     "rank49_case_record_path": "research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_V0_2_2026-11-21.json",
     "rank49_case_record_sha256": "3677b3651ac79742f30f76c982bd829734cc1e541402a37f65642dec4f771e56",
     "rank49_case_validation_run": {
@@ -5906,7 +5950,29 @@
     "rank49_final_acceptance_record_path": "research_candidates/evidence_abstention/geofileops_649/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_GEOFILEOPS_649_2026-11-21.md",
     "rank49_final_acceptance_record_sha256": "e103d7997d4d7d147a6f15f4a16397ec31bde6a02c6462b7e24cac881e472fe5",
     "rank49_final_acceptance_timestamp_utc": "2026-11-21T17:37:00Z",
-    "rank49_registry_inclusion": true
+    "rank49_registry_inclusion": true,
+    "rank49_final_case_validation": {
+      "run_id": 44931419750,
+      "job_id": 136928658938,
+      "conclusion": "success",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931419750",
+      "job_name": "Validate accepted case, three-project registry and no-inference boundary",
+      "case_validation": {
+        "status": "structurally_complete_candidate",
+        "blockers": 0,
+        "eligible_for_registry": true,
+        "acceptance_decision": "accepted"
+      },
+      "registry_validation": {
+        "status": "structurally_valid_candidate_registry",
+        "blockers": 0,
+        "accepted_case_count": 3,
+        "accepted_project_count": 3,
+        "primary_target_met": false
+      },
+      "manifest_validation": "accepted_case_count=3; accepted_project_count=3; exactly one accepted GeoFileOps review record",
+      "inference_authorized": false
+    }
   },
   "stage2_rank49_52_closure_review_2026_11_21": {
     "date": "2026-11-21",
@@ -5956,7 +6022,7 @@
     "project_lead_decision_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md",
     "project_lead_decision_record_git_blob_sha": "2010c4d70c72d5f7c54ef546469d73162d2ea07d",
     "project_lead_decisions_applied": true,
-    "rank49": "final_case_acceptance_approved; accepted_case_record_and_registry_CI_validation_pending",
+    "rank49": "final_case_acceptance_approved; accepted_record_and_registry_validation_PASS_zero_blockers; v0.2 exploratory registry contains three cases",
     "rank50": "primary sample excluded by project lead due immutable stage2 selector contract failure",
     "rank51": "exact row authenticated; E3 condition satisfied; excluded from primary sample by approved conditional decision; no Stage 2",
     "rank52": "exact row authenticated; project_lead_E3_ABSTAIN; E2/E1 separate; candidate remains HOLD; no Stage 2"
@@ -6050,6 +6116,36 @@
     "registry_accepted_case_count": 3,
     "registry_accepted_project_count": 3,
     "inference_authorized": false,
-    "final_accepted_record_ci_validation": "pending"
+    "final_accepted_record_ci_validation": "success",
+    "final_acceptance_validation_workflow": {
+      "run_id": 44931419750,
+      "job_id": 136928658938,
+      "conclusion": "success",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931419750",
+      "job_name": "Validate accepted case, three-project registry and no-inference boundary",
+      "case_validation": {
+        "status": "structurally_complete_candidate",
+        "blockers": 0,
+        "eligible_for_registry": true,
+        "acceptance_decision": "accepted"
+      },
+      "registry_validation": {
+        "status": "structurally_valid_candidate_registry",
+        "blockers": 0,
+        "accepted_case_count": 3,
+        "accepted_project_count": 3,
+        "primary_target_met": false
+      },
+      "manifest_validation": "accepted_case_count=3; accepted_project_count=3; exactly one accepted GeoFileOps review record",
+      "inference_authorized": false
+    },
+    "proposal_archive_validation": {
+      "run_id": 44931414386,
+      "job_id": 136928642817,
+      "conclusion": "success",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931414386",
+      "result": "historical proposed/pending record preserved; accepted copy differs only in final decision fields"
+    },
+    "registry_validation_addendum": "research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_FINAL_ACCEPTANCE_AND_REGISTRY_VALIDATION_2026-11-21.md"
   }
 }
