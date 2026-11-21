@@ -113,8 +113,9 @@
   },
   "independence_status": {
     "stage2_technical_reproduction": "passed",
-    "final_case_acceptance": "pending_exposure_license_scope_case_record_and_registry_validation",
+    "final_case_acceptance": "not_accepted",
     "inference_authorized": false,
-    "source_aware_gold_tier_decision": "approved_by_project_lead_2026-11-21"
+    "source_aware_gold_tier_decision": "approved_by_project_lead_2026-11-21",
+    "final_case_acceptance_note": "Project lead approved the source-aware gold and tiers and approved continuation through remaining gates; formal accepted-registry inclusion awaits prior pipeline/debug exposure declaration, bounded license-scope acknowledgement, schema-complete case record and fail-closed validation."
   }
 }
