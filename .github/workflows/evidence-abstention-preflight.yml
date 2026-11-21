@@ -29,6 +29,8 @@ on:
       - "research_candidates/evidence_abstention/SWE_REBENCH_V2_ANALYSIS_PLAN_V0_2_EXPLORATORY_DRAFT_2026-11-16.md"
       - "research_candidates/evidence_abstention/HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md"
       - "research_candidates/evidence_abstention/SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md"
+      - "research_candidates/evidence_abstention/SINGLE_HUMAN_REVIEW_AMENDMENT_V0_2_2026-11-21.md"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_SINGLE_HUMAN_OUTPUT_SCORING_RUBRIC_V0_2_2026-11-21.md"
       - "tests/test_swe_rebench_v2_exploratory_design.py"
       - "scripts/evidence_abstention_preflight.py"
       - "scripts/swe_rebench_v2_exploratory_preflight.py"
@@ -168,7 +170,7 @@ jobs:
           echo "v0.2 exploratory contract test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
           exit "$test_status"
 
-      - name: Unit-test v0.2 study design and dual-human scoring amendment
+      - name: Unit-test v0.2 study design and single-human scoring amendment
         if: always()
         shell: bash
         run: |
