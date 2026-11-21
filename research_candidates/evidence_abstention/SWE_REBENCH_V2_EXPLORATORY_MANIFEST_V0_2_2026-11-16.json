@@ -977,7 +977,7 @@
     {
       "instance_id": "cs-si__eodag-1536",
       "cohort_rank": 16,
-      "status": "stage3_gates_acknowledged_proposed_case_record_created_latest_head_validation_pending",
+      "status": "stage3_candidate_gates_complete_structurally_valid_proposed_case_record_final_acceptance_pending",
       "issue_url": "https://github.com/CS-SI/eodag/issues/1530",
       "pull_request_url": "https://github.com/CS-SI/eodag/pull/1536",
       "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
@@ -996,17 +996,7 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "independence_and_related_issue_family_review_including_StacListAssets_issue_family",
-        "human_gold_root_cause_and_alternative_hypotheses_adjudication",
-        "prepare_nested_E1_E2_E3_evidence_packets_and_manifests",
-        "project_lead_approval_of_gold_and_E1_E2_E3_tiers",
-        "construct_complete_schema_conformant_final_case_record_and_pass_fail_closed_registry_validation",
-        "project_lead_separate_final_case_acceptance_decision",
-        "project_lead_source_aware_gold_and_E1_E2_E3_membership_and_semantic_sufficiency_decision",
-        "schema_conformant_final_case_record",
-        "fail_closed_registry_validation",
-        "separate_project_lead_final_case_acceptance_YES",
-        "complete_schema_conformant_proposed_case_record_and_fail_closed_registry_validation"
+        "separate_project_lead_final_case_acceptance_yes_or_no"
       ],
       "issue_created_at": "2025-02-20T11:38:36Z",
       "pull_request_created_at": "2025-02-21T10:04:30Z",
@@ -1121,10 +1111,14 @@
       "bounded_license_scope_decision_date": "2026-11-21",
       "proposed_case_acceptance_record_path": "research_candidates/evidence_abstention/eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
       "case_record_structural_validation": {
-        "status": "pending_latest_head_ci",
+        "status": "structurally_complete_candidate",
         "validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
-        "decision": "proposed",
-        "eligible_for_registry": false
+        "workflow_run_id": 44894847180,
+        "job_id": 136818188559,
+        "eodag_tests": "5 passed",
+        "accepted_registry_validation": "structurally_valid_candidate_registry",
+        "eligible_for_registry": false,
+        "inference_authorized": false
       }
     },
     {
@@ -1702,10 +1696,37 @@
   ],
   "case_acceptance_note": "The five candidates above are project-lead accepted for continued Stage 3 evaluation only. Candidate-selection approval is not final case acceptance. Dishka #435 remains the only accepted v0.2 case. No inference is authorized. EODAG #1530 received project-lead source-aware gold/tier approval on 2026-11-21 (E3 ABSTAIN, E2 ABSTAIN, E1 ANSWER) but remains outside CASE_REGISTRY pending prior pipeline/debug exposure declaration, bounded license-scope acknowledgement, schema-conformant case record and fail-closed registry validation.",
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44755547992,
-    "job_id": 136354205627,
-    "commit": "dabd65d149b9e0ee2bfcaa25261ccc3425d673f3",
+    "workflow_run_id": 44894847180,
+    "job_id": 136818188559,
+    "commit": "f143be00ee6634a9c0838379ac88c93cc0674ded",
     "conclusion": "success",
+    "blocker_count": 13,
+    "ready_for_inference": false,
+    "accepted_case_count": 1,
+    "accepted_project_count": 1,
+    "registry_status": "structurally_valid_candidate_registry",
+    "eodag_case_record_tests": "5 passed",
+    "artifact_id": 14703537258,
+    "artifact_sha256": "fb89b0dbdd4835ee44ddb8f7f8c3a712094fb71caa3bdff150709936f1655bfa",
     "inference_performed": false
+  },
+  "latest_general_validation": {
+    "commit": "f143be00ee6634a9c0838379ac88c93cc0674ded",
+    "research_validation_run": {
+      "id": 44894847259,
+      "job_id": 136818190862,
+      "conclusion": "success",
+      "tests": "477 passed, 6 skipped, 56 subtests passed"
+    },
+    "no_inference_preflight_run": {
+      "id": 44894847180,
+      "job_id": 136818188559,
+      "conclusion": "success"
+    },
+    "model_loading_performed": false,
+    "model_inference_performed": false,
+    "fine_tuning_performed": false,
+    "inference_authorized": false,
+    "note": "Branch-head Research Validation and no-inference preflight both passed their target jobs. The EODAG proposed case record is structurally complete but remains proposed; accepted registry count remains one (Dishka). Global readiness remains blocked by 13 items."
   }
 }
