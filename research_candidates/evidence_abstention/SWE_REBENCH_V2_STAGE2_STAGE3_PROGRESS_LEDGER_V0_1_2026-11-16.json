@@ -3832,5 +3832,16 @@
     "local_integrity": "outer SHA-256 match; ZIP CRC PASS; internal SHA256SUMS 15/15 PASS",
     "same_reproducer": "buggy exact base expected failure; fixed exact PR head pass",
     "scope": "Technical reproduction and artifact integrity only. Dymos remains not accepted pending a separate explicit project-lead YES/NO. No inference authorized."
+  },
+  "latest_dymos_1166_case_schema_regression_correction": {
+    "source_test_head": "17f93174b94a08f1c63712f6ae73913046fc3b8c",
+    "date": "2026-11-21",
+    "correction": "The newly captured independent-reproducer repeat was moved out of the strict schema-controlled case JSON into a separate Markdown audit note. The schema-conformant proposed case record is restored without additional technical_reproduction properties.",
+    "separate_repeat_audit": "research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_LATEST_INDEPENDENT_REPRODUCER_REPEAT_2026-11-21.md",
+    "regression_test": "tests/test_dymos_1166_proposed_packet_set.py::test_latest_independent_reproducer_repeat_is_hashed_but_case_remains_proposed",
+    "revalidation_status": "pending_new_pull_request_CI",
+    "final_acceptance": "not_accepted",
+    "registry_inclusion": false,
+    "inference_authorized": false
   }
 }
