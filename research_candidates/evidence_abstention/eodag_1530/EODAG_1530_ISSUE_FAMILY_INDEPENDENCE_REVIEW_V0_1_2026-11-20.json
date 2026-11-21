@@ -98,11 +98,17 @@
   "exposure_and_roles": {
     "project_lead_source_exposure": "full_disclosed",
     "researcher_source_exposure": "full_disclosed",
-    "prior_candidate_specific_pipeline_debug_exposure": "pending_project_lead_self_declaration",
-    "prior_pipeline_debug_exposure_status": "pending_project_lead_self_declaration",
+    "prior_candidate_specific_pipeline_debug_exposure": "none",
+    "prior_pipeline_debug_exposure_status": "none",
     "panel_b_blinded_eligible": false,
     "independent_human_adjudicator": "not appointed; Dishka-equivalent v0.2 exploratory source-aware single project-lead adjudication route is proposed",
-    "prior_pipeline_debug_exposure_decision_record": null,
+    "prior_pipeline_debug_exposure_decision_record": {
+      "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
+      "sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38",
+      "decision_date": "2026-11-21",
+      "decision": "none",
+      "provenance": "direct project-lead self-declaration in conversation; not independently verified telemetry"
+    },
     "source_aware_gold_tier_decision": {
       "status": "approved_2026-11-21",
       "decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_EODAG_1530_2026-11-21.md",
@@ -116,6 +122,6 @@
     "final_case_acceptance": "not_accepted",
     "inference_authorized": false,
     "source_aware_gold_tier_decision": "approved_by_project_lead_2026-11-21",
-    "final_case_acceptance_note": "Project lead approved the source-aware gold and tiers and approved continuation through remaining gates; formal accepted-registry inclusion awaits prior pipeline/debug exposure declaration, bounded license-scope acknowledgement, schema-complete case record and fail-closed validation."
+    "final_case_acceptance_note": "Project lead approved source-aware gold/tiers and declared no prior pipeline/debug use of this candidate. Full researcher source exposure remains disclosed. Formal accepted-registry inclusion still awaits bounded license-scope acknowledgement, schema-complete case record and fail-closed validation."
   }
 }
