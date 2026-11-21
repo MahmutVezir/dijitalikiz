@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T11:40:00Z",
+  "generated_at_utc": "2026-11-21T11:43:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -3597,5 +3597,44 @@
     "researcher_source_exposure": "full",
     "blinding_claimed": false,
     "gate_status": "closed"
+  },
+  "latest_meltano_exposure_declaration_validation": {
+    "validated_code_and_test_commit": "367788cdcfe2b433699bae214ab33b562659d08b",
+    "exposure_decision_commit": "16abca395f902c7b91139b7ae411991ac63a0099",
+    "evidence_abstention_preflight": {
+      "workflow_run_id": 44900328629,
+      "job_id": 136834680645,
+      "conclusion": "success",
+      "v02_acceptance_readiness_tests": "27 passed",
+      "design_scoring_tests": "10 passed",
+      "readiness_blockers": 13,
+      "accepted_cases": 2,
+      "accepted_projects": 2,
+      "ready_for_inference": false,
+      "inference_authorized": false
+    },
+    "research_validation": {
+      "workflow_run_id": 44900328572,
+      "job_id": 136834692006,
+      "conclusion": "success",
+      "result": "479 passed, 6 skipped, 56 subtests passed"
+    },
+    "uncertainty_unit_tests": {
+      "workflow_run_id": 44900328647,
+      "job_id": 136834680250,
+      "conclusion": "success",
+      "result": "171 tests passed"
+    },
+    "qwen_adapter_cpu_tests": {
+      "workflow_run_id": 44900328459,
+      "job_id": 136834679401,
+      "conclusion": "success"
+    },
+    "dymos_repeat": {
+      "workflow_run_id": 44900328623,
+      "job_id": 136834679650,
+      "conclusion": "success"
+    },
+    "scope": "No model weights loaded; no inference, fine-tuning or training. CI verified the exposure decision record, the preserved full researcher source-exposure disclosure and the unchanged fail-closed registry/license gates."
   }
 }
