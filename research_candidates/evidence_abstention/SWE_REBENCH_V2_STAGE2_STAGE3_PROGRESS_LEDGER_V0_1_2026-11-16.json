@@ -2170,12 +2170,14 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": null,
-      "stage2_status": "not_started",
+      "stage2_status": "held_pending_project_lead_E3_sample_suitability_review_no_stage2_execution",
       "stage2_workflow_job_id": null,
-      "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage2_evidence_note": "Static issue/PR/source review only. Issue #814 body explicitly says ImageFileCollection.filter should forward ext, and explains that otherwise non-first-extension keywords become '--'. PR #901 does precisely this (ext=self._ext) and adds a regression test. E3 therefore likely exposes the diagnosis/repair; candidate is not suitable for primary abstention sample unless a stricter rubric demands additional source-state proof. No independent reproducer, dataset row authentication, selector execution, build, or Stage 2 artifact has been performed.",
+      "stage3_status": "static_source_audit_complete; E3_answerability_and_easy_answer_control_disposition_pending_project_lead",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage3_static_review_path": "research_candidates/evidence_abstention/ccdproc_901/CCDPROC_901_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+      "next_required_gate": "Project lead decides whether ccdproc #814 is excluded from the primary abstention sample or retained only as a separately labelled easy-answer/engineering control. Do not run Stage 2 for the primary sample unless this sample-suitability gate is approved; any control use requires separate study-design authorization."
     },
     {
       "cohort_rank": 42,
@@ -4796,5 +4798,33 @@
     "inference_authorized": false,
     "hold_confirmation_path": "research_candidates/evidence_abstention/mpmath_902/MPMATH_902_TEMPORAL_EXPOSURE_HOLD_CONFIRMATION_2026-11-21.md",
     "primary_reentry_requirement": "explicit project-lead amendment to frozen temporal-exposure policy and documented justification"
+  },
+  "latest_ccdproc_901_static_review": {
+    "date": "2026-11-21",
+    "status": "strong_technical_issue_pr_alignment; primary_E3_answerability_risk; no_stage2",
+    "issue": "astropy/ccdproc #814",
+    "pr": "astropy/ccdproc #901",
+    "issue_created_at_utc": "2023-12-13T04:47:16Z",
+    "pr_created_at_utc": "2025-07-13T21:05:06Z",
+    "base": "e793d77023ddfb62c4a1e7ca822e5a03a10b1776",
+    "head": "6599299aa19f21b14be44eda011adaacaf0e765e",
+    "merge": "bd0057f6437a5d27c149c7556dac55852dd18cfc",
+    "issue_key_statement": "The constructor call should include ext; otherwise keywords outside the first extension become '--'.",
+    "patch_change": "ImageFileCollection(filenames=files, keywords=self.keywords, ext=self._ext)",
+    "added_test": "test_filter_on_check_ext; asserts ext=1 is retained after filter()",
+    "source_blobs": {
+      "buggy_image_collection": "35a8acda3a83906c3583fa0a555ada88fe886ed7",
+      "fixed_image_collection": "7163dfa72d528538c6e2f0926454fbdae290c62a",
+      "regression_test": "bb480f66ba26e716de139785ac7e7e81f9991ad9"
+    },
+    "E3_sample_suitability": "likely answerable from issue body; primary ABSTAIN tier would be hard to defend under a likely-root-cause rubric",
+    "advisory_disposition": "hold pending project-lead decision: exclude primary sample or allow only a separately labelled easy-answer/engineering control",
+    "stage2_execution": false,
+    "dataset_row_authenticated": false,
+    "selector_run": false,
+    "artifact_id": null,
+    "final_case_acceptance": "not_accepted",
+    "inference_authorized": false,
+    "note_path": "research_candidates/evidence_abstention/ccdproc_901/CCDPROC_901_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
   }
 }
