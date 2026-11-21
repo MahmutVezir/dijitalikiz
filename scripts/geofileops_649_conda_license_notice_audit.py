@@ -237,8 +237,13 @@ def main() -> int:
             raise ValueError(f"Missing/invalid MD5 lock fragment: {line}")
         stem = filename.removesuffix(".conda").removesuffix(".tar.bz2")
         components = stem.split("-")
-        # Package version starts at the first component beginning with a digit.
-        version_idx = next((i for i, c in enumerate(components) if c and c[0].isdigit()), None)
+        # The package name ld_impl_linux-64 contains a numeric name component;
+        # do not mistake that component for the version.
+        if components[:2] == ["ld_impl_linux", "64"]:
+            version_idx = 2
+        else:
+            # Package version starts at the first component beginning with a digit.
+            version_idx = next((i for i, c in enumerate(components) if c and c[0].isdigit()), None)
         if version_idx is None or version_idx == 0 or version_idx >= len(components) - 1:
             raise ValueError(f"Cannot parse name/version/build from {filename}")
         packages.append({
