@@ -96,6 +96,16 @@ The first PyFar environment attempt failed at test collection because `netCDF4` 
 
 Remaining supplementary test questions: the original 2,000-/4,000-sample noise example has not been separately recreated in an independent public-API script; array-valued energetic targets and `return_reference=True` behavior are not explicitly covered by the 23 frozen selectors. These are additional coverage questions, not claims of a failed reproduction.
 
+## 5. Evidence-elimination audit
+
+The source- and artifact-audited E3/E2/E1 matrix is recorded at `PYFAR_721_E3_E2_E1_EVIDENCE_ELIMINATION_MATRIX_V0_1_2026-11-21.md`.
+
+The audit confirms that the 23 archived selectors fail on the exact buggy base and pass on the exact fixed revision, but are one PR-derived selector set rather than independent cases. Coverage spans energy/power, targets 0.5/1/2, and all four channel-handling modes. One of the 24 possible energy/power combinations (`energy`, `min`, target 1) is not FAIL_TO_PASS because the buggy result coincidentally equals the target.
+
+The matrix records a material E3 disclosure risk: the issue reporter explicitly proposes dividing by the square root of the calculated reference for the target=1 example. This clue must remain in the E3 packet. E3 ABSTAIN is defensible only if the study rubric requires source-backed causal confirmation and does not treat the reporter's proposed repair as proof. If likely-repair identification is enough, E3 may be answerable; this is a sample-suitability question for project-lead review. The existing project-lead approval is not silently changed.
+
+The matrix also narrows E2: failures in individual, max, min, and mean modes eliminate a mean-only aggregation explanation; failures at targets 0.5 and 2 eliminate a target=1-only scope explanation. Metric/reference computation and exact target-to-amplitude mapping still require source-level evidence to distinguish.
+
 ## 5. Methodological and decision boundaries
 
 - One upstream project can contribute at most one accepted case. The 23 test selectors remain one PyFar case.
