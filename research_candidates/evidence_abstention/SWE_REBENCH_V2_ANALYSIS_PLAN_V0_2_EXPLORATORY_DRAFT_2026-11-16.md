@@ -42,18 +42,18 @@ For each case, preserve:
 - evidence-to-mechanism elimination matrix;
 - evidence IDs and source hashes;
 - E1/E2/E3 packet membership and nested-set validation;
-- project-lead tier decision and rationale;
-- two independent human model-output ratings per response, with both originals preserved;
-- separately stored ChatGPT AI critique and any disagreement.
+- single-project-lead tier decision and rationale;
+- one human evidence-support rating per raw response, with timestamp, rationale and immutable output/packet hashes;
+- separately stored ChatGPT AI critique, if used, without counting it as a second human rating.
 
-For output ratings, report exact agreement, the six-category confusion matrix, six-category Cohen's kappa and E3 binary agreement/kappa where estimable. Confidence intervals, if reported, must resample independent cases (not individual responses) to preserve within-case clustering. These statistics are descriptive/exploratory and not an acceptance threshold. No second human rating is claimed for gold or E1/E2/E3 tier construction; ChatGPT is not a human rater.
+The scorer randomizes response IDs and order and hides P0/P1 policy labels and paired responses during initial evidence-support scoring where feasible. This is condition masking, not blinding: the single human scorer has full disclosed case/source/gold/tier exposure. No human-human agreement statistic, Cohen's kappa, second-rater confusion matrix or independent human replication is claimed. Do not substitute human-plus-AI agreement for inter-rater reliability.
 
 ## 6. Missingness, invalidity, and deviations
 No retry, JSON repair, selective rerun, or silent deletion. Preserve raw outputs. Deviations are logged with timestamp, reason, affected case/cell, and whether the analysis plan is affected. If a model/runtime failure occurs, stop the run; do not selectively rerun only failed conditions without a predeclared whole-batch recovery rule.
 
 ## 7. Interpretation
-This is an exploratory single-model study with a small case sample, dual-human scoring of model responses, and single-project-lead semantic review of technical gold and E1/E2/E3 tiers. Results apply only to the tested model revision, dataset slice, packet construction, prompt contrast, reviewer procedure and execution settings. Avoid universal claims and causal generalization beyond the design.
+This is an exploratory single-model study with a small case sample, single-human condition-masked scoring of model responses, and single-project-lead semantic review of technical gold and E1/E2/E3 tiers. The same human performs both tasks and has full disclosed source/gold exposure; no inter-rater reliability is claimed. Results apply only to the tested model revision, dataset slice, packet construction, prompt contrast, reviewer procedure and execution settings. Avoid universal claims and causal generalization beyond the design.
 
 ## 8. Human evaluator amendment
 
-Rater B is identified but written agreement, case-specific exposure screening and calibration are pending. No output has been scored. Before scoring, both raters independently rate every included raw response under randomized response IDs; preserve original scores and adjudicate only after lock. Rater B is restricted to output scoring and will not inspect source, gold or hidden tier labels before evidence-support scoring is locked. See `HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md` and `SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md`.
+The active design has one human participant and one human output scorer: the student project lead. The scorer randomizes response IDs/order and masks P0/P1 labels and paired responses during initial evidence-support scoring where feasible. The procedure is not blinded to case identity, source, gold or tier because the project lead has full source exposure. No inter-rater reliability or Cohen's kappa is claimed. ChatGPT critique is advisory only and separately logged after the original human rating is locked. See `SINGLE_HUMAN_REVIEW_AMENDMENT_V0_2_2026-11-21.md` and `SWE_REBENCH_V2_SINGLE_HUMAN_OUTPUT_SCORING_RUBRIC_V0_2_2026-11-21.md`.
