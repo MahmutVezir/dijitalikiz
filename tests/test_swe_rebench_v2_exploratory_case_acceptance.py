@@ -568,6 +568,15 @@ def test_meltano_3090_stage3_project_lead_gold_tier_approved_but_case_gates_rema
     assert independence["exposure"]["researcher_source_exposure"] == "full"
     assert independence["exposure"]["blind_adjudication_claimed"] is False
     assert independence["boundaries"]["prior_pipeline_debug_exposure_gate"] == "closed_on_project_lead_self_report"
+    progress_ledger = json.loads(
+        (
+            RESEARCH
+            / "SWE_REBENCH_V2_STAGE2_STAGE3_PROGRESS_LEDGER_V0_1_2026-11-16.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert progress_ledger["meltano_3090_exposure_declaration"]["decision"] == "none"
+    assert progress_ledger["meltano_3090_exposure_declaration"]["researcher_source_exposure"] == "full"
+    assert progress_ledger["meltano_3090_exposure_declaration"]["gate_status"] == "closed"
     assert independence["boundaries"]["final_case_acceptance"] == "not_accepted"
     assert independence["boundaries"]["registry_inclusion"] is False
     assert independence["boundaries"]["inference_authorized"] is False
