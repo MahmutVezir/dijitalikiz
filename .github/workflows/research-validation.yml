@@ -245,6 +245,174 @@ jobs:
           echo "FIX_CLI_LOG_SHA256=$(sha256sum /tmp/pdoc-fix-cli.log 2>/dev/null | awk '{print $1}' || echo unavailable)"
 
 
+
+  audit-rank51-52-frozen-rows:
+    if: github.event_name == 'pull_request' && github.event.pull_request.number == 222
+    name: Authenticate exact SWE-rebench rows 51-52 (no upstream tests, no inference)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout exact PR merge commit
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11.9"
+
+      - name: Download exact pinned Parquet and verify whole-file provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p rank51-52-row-evidence
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output rank51-52-row-evidence/train-00000-of-00001.parquet
+          test "$(stat -c '%s' rank51-52-row-evidence/train-00000-of-00001.parquet)" = "226272977"
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  rank51-52-row-evidence/train-00000-of-00001.parquet" | sha256sum --check
+
+      - name: Extract and hash the exact music21 and GeoPandas rows
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps "pyarrow==19.0.1"
+          .venv-dataset/bin/python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          import pyarrow.parquet as pq
+
+          parquet_path = "rank51-52-row-evidence/train-00000-of-00001.parquet"
+          expected = {
+              "cuthbertLab__music21-1736": {
+                  "repo": "cuthbertLab/music21",
+                  "base_commit": "e05fc53dfef7b2c9ac974c0cacb8b85e9c4d4605",
+                  "issue": "https://github.com/cuthbertLab/music21/issues/1735",
+                  "pull_request": "https://github.com/cuthbertLab/music21/pull/1736",
+                  "rank": 51,
+              },
+              "geopandas__geopandas-3591": {
+                  "repo": "geopandas/geopandas",
+                  "base_commit": "c36eba059f6170715b63a9aa065817c64025d263",
+                  "issue": "https://github.com/geopandas/geopandas/issues/3590",
+                  "pull_request": "https://github.com/geopandas/geopandas/pull/3591",
+                  "rank": 52,
+              },
+          }
+          target_ids = list(expected)
+          table = pq.read_table(parquet_path, filters=[("instance_id", "in", target_ids)])
+          rows = table.to_pylist()
+          by_id = {row.get("instance_id"): row for row in rows}
+          if len(rows) != len(expected) or set(by_id) != set(expected):
+              raise SystemExit(f"Expected exactly {target_ids}; found {list(by_id)}")
+
+          root = Path("rank51-52-row-evidence")
+          row_dir = root / "canonical_rows"
+          row_dir.mkdir(parents=True, exist_ok=True)
+          manifest = {
+              "record_type": "swe_rebench_v2_exact_frozen_row_audit_no_inference",
+              "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+              "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+              "parquet_path": "data/train-00000-of-00001.parquet",
+              "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+              "pyarrow_version": "19.0.1",
+              "rows": [],
+              "execution_boundary": {
+                  "upstream_repository_checkout": False,
+                  "upstream_package_install": False,
+                  "upstream_test_or_build": False,
+                  "model_loading": False,
+                  "model_inference": False,
+                  "fine_tuning": False,
+              },
+          }
+          for instance_id, identity in expected.items():
+              row = by_id[instance_id]
+              required = (
+                  "instance_id", "repo", "base_commit", "created_at", "language",
+                  "license", "FAIL_TO_PASS", "problem_statement", "patch", "test_patch",
+              )
+              missing = [field for field in required if field not in row]
+              if missing:
+                  raise SystemExit(f"{instance_id}: missing fields {missing}")
+              if row["repo"] != identity["repo"] or row["base_commit"] != identity["base_commit"]:
+                  raise SystemExit(f"{instance_id}: repository/base identity mismatch")
+              if row["language"] != "python":
+                  raise SystemExit(f"{instance_id}: expected Python task, got {row['language']}")
+              if not isinstance(row["FAIL_TO_PASS"], list) or not row["FAIL_TO_PASS"]:
+                  raise SystemExit(f"{instance_id}: FAIL_TO_PASS missing or malformed")
+              if not isinstance(row["problem_statement"], str) or not row["problem_statement"].strip():
+                  raise SystemExit(f"{instance_id}: problem_statement missing")
+
+              canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+              row_sha = hashlib.sha256(canonical).hexdigest()
+              pretty_path = row_dir / f"{instance_id}.json"
+              pretty_path.write_text(json.dumps(row, sort_keys=True, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+              compact_path = row_dir / f"{instance_id}.canonical.json"
+              compact_path.write_bytes(canonical)
+              statement_sha = hashlib.sha256(row["problem_statement"].encode("utf-8")).hexdigest()
+              manifest["rows"].append({
+                  "cohort_rank": identity["rank"],
+                  "instance_id": instance_id,
+                  "repo": row["repo"],
+                  "base_commit": row["base_commit"],
+                  "created_at": str(row["created_at"]),
+                  "language": row["language"],
+                  "license": row["license"],
+                  "fail_to_pass_count": len(row["FAIL_TO_PASS"]),
+                  "fail_to_pass_selectors": row["FAIL_TO_PASS"],
+                  "pass_to_pass_count": len(row.get("PASS_TO_PASS") or []),
+                  "problem_statement": row["problem_statement"],
+                  "problem_statement_sha256": statement_sha,
+                  "patch_sha256": hashlib.sha256(str(row["patch"]).encode("utf-8")).hexdigest(),
+                  "test_patch_sha256": hashlib.sha256(str(row["test_patch"]).encode("utf-8")).hexdigest(),
+                  "canonical_row_sha256": row_sha,
+                  "canonical_row_path": f"canonical_rows/{compact_path.name}",
+                  "pretty_row_path": f"canonical_rows/{pretty_path.name}",
+                  "issue_url": identity["issue"],
+                  "pull_request_url": identity["pull_request"],
+              })
+              print(
+                  f"PASS_ROW rank={identity['rank']} instance_id={instance_id} "
+                  f"repo={row['repo']} created_at={row['created_at']} license={row['license']} "
+                  f"fail_to_pass={len(row['FAIL_TO_PASS'])} canonical_row_sha256={row_sha}"
+              )
+              print(f"PROBLEM_STATEMENT_SHA256 {instance_id} {statement_sha}")
+              for selector in row["FAIL_TO_PASS"]:
+                  print(f"FAIL_TO_PASS_SELECTOR {instance_id} {selector}")
+
+          manifest["rows"].sort(key=lambda item: item["cohort_rank"])
+          (root / "dataset-row-audit-manifest.json").write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+          )
+          (root / "dataset-row-problem-statements.txt").write_text(
+              "\\n\\n".join(
+                  f"## rank {item['cohort_rank']} — {item['instance_id']}\\n{item['problem_statement']}"
+                  for item in manifest["rows"]
+              ) + "\\n",
+              encoding="utf-8",
+          )
+          print("PASS_EXACT_TARGET_ROW_COUNT=2")
+          print("PASS_NO_UPSTREAM_TESTS_NO_INFERENCE")
+          PY
+          rm rank51-52-row-evidence/train-00000-of-00001.parquet
+          (cd rank51-52-row-evidence && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt)
+          cat rank51-52-row-evidence/dataset-row-audit-manifest.json
+
+      - name: Upload exact row and problem-statement evidence
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: swe-rebench-v2-rank51-52-row-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: rank51-52-row-evidence/
+          if-no-files-found: error
+          retention-days: 90
+
   reproduce-pdoc-813-cli:
     if: github.event_name == 'pull_request' && contains(github.event.pull_request.head.ref, 'pdoc-813-cli-repro')
     name: Upstream pdoc #812 exact CLI base-fail / fix-pass reproduction
