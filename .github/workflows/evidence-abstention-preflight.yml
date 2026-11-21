@@ -3733,7 +3733,7 @@ jobs:
                   inventory[name] = {"status": "not-installed-or-no-python-metadata"}
           with open("reproduction-evidence/python-license-inventory.json", "w", encoding="utf-8") as f:
               json.dump(inventory, f, indent=2, ensure_ascii=False)
-              f.write("\\n")
+              f.write("\n")
           print(json.dumps(inventory, indent=2, ensure_ascii=False))
           PY
 
@@ -3778,16 +3778,17 @@ jobs:
               f.write(canonical)
           digest = hashlib.sha256(canonical).hexdigest()
           with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
-              f.write(digest + "  dataset-row-canonical.json\\n")
+              f.write(digest + "  dataset-row-canonical.json\n")
           with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
-              f.write("\\n".join(row["FAIL_TO_PASS"]) + "\\n")
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
           with open("reproduction-evidence/dataset-problem-statement.txt", "w", encoding="utf-8") as f:
               f.write(row["problem_statement"])
           print("dataset_row_sha256=" + digest)
+          print("fail_to_pass_count=" + str(len(row["FAIL_TO_PASS"])))
           print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
           PY
 
-      - name: Apply exact PR test patch and audit selector specificity on buggy base
+      - name: Apply exact PR test patch and collect every selector on buggy base
         shell: bash
         run: |
           set -euo pipefail
@@ -3805,30 +3806,38 @@ jobs:
           env["PYTHONPATH"] = os.path.join(os.getcwd(), "upstream-lektor")
           python = sys.executable
           results = []
-          for selector in row["FAIL_TO_PASS"]:
+          for index, selector in enumerate(row["FAIL_TO_PASS"], start=1):
               command = [python, "-m", "pytest", "-q", "-c", "pyproject.toml", selector]
               run = subprocess.run(command, cwd="upstream-lektor", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
               out = run.stdout
-              causal = (
-                  "0o600" in out and ("0o644" in out or "stat" in out or "mode" in out)
-              ) or ("create_temp" in out and ("cannot import" in out.lower() or "ImportError" in out))
-              status = "base_fail_target_specific" if run.returncode != 0 and "0o600" in out and "0o644" in out else (
-                  "base_fail_non_causal_or_missing_postfix_symbol" if run.returncode != 0 else "unexpected_base_pass"
+              target_specific = "0o600" in out and "0o644" in out
+              status = "base_fail_target_specific" if run.returncode != 0 and target_specific else (
+                  "base_fail_non_target_or_collection_error" if run.returncode != 0 else "unexpected_base_pass"
               )
-              results.append({"selector": selector, "returncode": run.returncode, "status": status, "output": out})
-              if run.returncode == 0:
-                  raise SystemExit("Frozen selector unexpectedly passed on buggy base: " + selector)
+              results.append({
+                  "index": index,
+                  "selector": selector,
+                  "returncode": run.returncode,
+                  "status": status,
+                  "output": out,
+              })
+              print(f"[base {index}/{len(row['FAIL_TO_PASS'])}] {status}: {selector}")
           with open("reproduction-evidence/base-selector-results.json", "w", encoding="utf-8") as f:
               json.dump(results, f, indent=2, ensure_ascii=False)
-              f.write("\\n")
+              f.write("\n")
           with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
               for item in results:
-                  f.write("SELECTOR: " + item["selector"] + "\\n")
-                  f.write(item["output"] + "\\n")
-          print(json.dumps([{k:v for k,v in x.items() if k != "output"} for x in results], indent=2))
+                  f.write("SELECTOR: " + item["selector"] + "\n")
+                  f.write(item["output"])
+                  if not item["output"].endswith("\n"):
+                      f.write("\n")
+          counts = {}
+          for item in results:
+              counts[item["status"]] = counts.get(item["status"], 0) + 1
+          print(json.dumps({"selector_count": len(results), "status_counts": counts}, indent=2))
           PY
 
-      - name: Run identical independent reproducer and frozen selectors on exact fixed revision
+      - name: Run independent reproducer and collect every selector on exact fixed revision
         shell: bash
         run: |
           set -euo pipefail
@@ -3837,7 +3846,11 @@ jobs:
           test "$(git -C upstream-lektor rev-parse HEAD:lektor/utils.py)" = "9cbcd9aba9281d6f9dc9e0f2df6a00ef5f90fcad"
           cp "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/lektor_issue_1213/test_issue_1213.py" upstream-lektor/tests/test_issue_1213_independent.py
           HATCH_BUILD_NO_HOOKS=true python -m pip install --disable-pip-version-check --no-build-isolation --no-deps -e ./upstream-lektor
+          set +e
           (cd upstream-lektor && HATCH_BUILD_NO_HOOKS=true python -m pytest -q -c pyproject.toml tests/test_issue_1213_independent.py) > reproduction-evidence/fixed-issue-test.log 2>&1
+          fixed_issue_status=$?
+          set -e
+          printf '%s\n' "$fixed_issue_status" > reproduction-evidence/fixed-issue-test-status.txt
           cat reproduction-evidence/fixed-issue-test.log
           python - <<'PY'
           import json
@@ -3851,19 +3864,101 @@ jobs:
           env["PYTHONPATH"] = os.path.join(os.getcwd(), "upstream-lektor")
           python = sys.executable
           results = []
-          for selector in row["FAIL_TO_PASS"]:
+          for index, selector in enumerate(row["FAIL_TO_PASS"], start=1):
               command = [python, "-m", "pytest", "-q", "-c", "pyproject.toml", selector]
               run = subprocess.run(command, cwd="upstream-lektor", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-              results.append({"selector": selector, "returncode": run.returncode, "output": run.stdout})
-              if run.returncode != 0:
-                  raise SystemExit("Frozen selector failed on fixed revision: " + selector + "\\n" + run.stdout)
+              results.append({
+                  "index": index,
+                  "selector": selector,
+                  "returncode": run.returncode,
+                  "status": "fixed_pass" if run.returncode == 0 else "fixed_fail",
+                  "output": run.stdout,
+              })
+              print(f"[fixed {index}/{len(row['FAIL_TO_PASS'])}] {results[-1]['status']}: {selector}")
           with open("reproduction-evidence/fixed-selector-results.json", "w", encoding="utf-8") as f:
               json.dump(results, f, indent=2, ensure_ascii=False)
-              f.write("\\n")
+              f.write("\n")
           with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
               for item in results:
-                  f.write("SELECTOR: " + item["selector"] + "\\n" + item["output"] + "\\n")
-          print(json.dumps([{"selector": x["selector"], "returncode": x["returncode"]} for x in results], indent=2))
+                  f.write("SELECTOR: " + item["selector"] + "\n")
+                  f.write(item["output"])
+                  if not item["output"].endswith("\n"):
+                      f.write("\n")
+          counts = {}
+          for item in results:
+              counts[item["status"]] = counts.get(item["status"], 0) + 1
+          print(json.dumps({
+              "fixed_issue_reproducer_returncode": open("reproduction-evidence/fixed-issue-test-status.txt", encoding="utf-8").read().strip(),
+              "selector_count": len(results),
+              "status_counts": counts,
+          }, indent=2))
+          PY
+
+      - name: Enforce complete Lektor Stage 2 contract after collecting both selector matrices
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("reproduction-evidence")
+          def load_json(name):
+              path = root / name
+              if not path.exists():
+                  return None
+              with path.open(encoding="utf-8") as stream:
+                  return json.load(stream)
+
+          row = load_json("dataset-row-canonical.json")
+          base = load_json("base-selector-results.json")
+          fixed = load_json("fixed-selector-results.json")
+          expected = row.get("FAIL_TO_PASS", []) if isinstance(row, dict) else []
+          base_issue_log = (root / "base-issue-test.log").read_text(encoding="utf-8") if (root / "base-issue-test.log").exists() else ""
+          fixed_issue_log = (root / "fixed-issue-test.log").read_text(encoding="utf-8") if (root / "fixed-issue-test.log").exists() else ""
+          fixed_status_path = root / "fixed-issue-test-status.txt"
+          fixed_issue_status = fixed_status_path.read_text(encoding="utf-8").strip() if fixed_status_path.exists() else None
+
+          base = base if isinstance(base, list) else []
+          fixed = fixed if isinstance(fixed, list) else []
+          expected_base_failure = "artifact mode=0o600; normal file mode=0o644" in base_issue_log
+          fixed_issue_passed = fixed_issue_status == "0" and ("1 passed" in fixed_issue_log or "1 passed" in fixed_issue_log.lower())
+          base_order_matches = [item.get("selector") for item in base] == expected
+          fixed_order_matches = [item.get("selector") for item in fixed] == expected
+          base_unexpected_passes = [item.get("selector") for item in base if item.get("returncode") == 0]
+          fixed_failures = [item.get("selector") for item in fixed if item.get("returncode") != 0]
+          checks = {
+              "dataset_selector_count": len(expected),
+              "base_selector_results_count": len(base),
+              "fixed_selector_results_count": len(fixed),
+              "base_matrix_complete_and_in_order": bool(expected) and base_order_matches,
+              "fixed_matrix_complete_and_in_order": bool(expected) and fixed_order_matches,
+              "independent_issue_reproducer_fails_on_buggy_base_as_expected": expected_base_failure,
+              "independent_issue_reproducer_passes_on_fixed_revision": fixed_issue_passed,
+              "unexpected_buggy_base_pass_count": len(base_unexpected_passes),
+              "fixed_selector_failure_count": len(fixed_failures),
+              "buggy_base_unexpected_pass_examples": base_unexpected_passes[:20],
+              "fixed_selector_failure_examples": fixed_failures[:20],
+          }
+          passed = (
+              bool(expected)
+              and base_order_matches
+              and fixed_order_matches
+              and len(base) == len(expected)
+              and len(fixed) == len(expected)
+              and expected_base_failure
+              and fixed_issue_passed
+              and not base_unexpected_passes
+              and not fixed_failures
+          )
+          checks["stage2_contract_passed"] = passed
+          with (root / "stage2-contract-audit.json").open("w", encoding="utf-8") as stream:
+              json.dump(checks, stream, indent=2, ensure_ascii=False)
+              stream.write("\n")
+          print(json.dumps(checks, indent=2, ensure_ascii=False))
+          if not passed:
+              raise SystemExit("Lektor Stage 2 contract not satisfied; complete evidence matrices have been retained.")
           PY
 
       - name: Prepare and upload raw Lektor reproduction evidence
