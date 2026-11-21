@@ -171,5 +171,13 @@
     },
     "final_case_acceptance": "pending_remaining_mandatory_gates",
     "inference_authorized": false
+  },
+  "case_acceptance_record": {
+    "path": "research_candidates/evidence_abstention/eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
+    "status": "proposed",
+    "final_acceptance": "pending",
+    "structural_validation": "pending_latest_head_ci",
+    "registry_included": false,
+    "inference_authorized": false
   }
 }
