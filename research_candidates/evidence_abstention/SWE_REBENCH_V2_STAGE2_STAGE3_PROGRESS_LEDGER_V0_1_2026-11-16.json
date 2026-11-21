@@ -3855,17 +3855,17 @@
     "correction": "The newly captured independent-reproducer repeat was moved out of the strict schema-controlled case JSON into a separate Markdown audit note. The schema-conformant proposed case record is restored without additional technical_reproduction properties.",
     "separate_repeat_audit": "research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_LATEST_INDEPENDENT_REPRODUCER_REPEAT_2026-11-21.md",
     "regression_test": "tests/test_dymos_1166_proposed_packet_set.py::test_latest_independent_reproducer_repeat_is_hashed_but_case_remains_proposed",
-    "revalidation_status": "passed_new_pull_request_CI",
+    "revalidation_status": "passed",
     "final_acceptance": "not_accepted",
     "registry_inclusion": false,
     "inference_authorized": false,
-    "validated_head": "15ae2efc7b465e3510cc474e53b34008d2ea09b5"
+    "validated_head": "2013162c0105973fe5ce95c421e4af7f2e46f471"
   },
   "latest_parallel_candidate_ci_validation": {
-    "validated_head": "15ae2efc7b465e3510cc474e53b34008d2ea09b5",
+    "validated_head": "2013162c0105973fe5ce95c421e4af7f2e46f471",
     "evidence_abstention_preflight": {
-      "workflow_run_id": 44904476280,
-      "job_id": 136847003419,
+      "workflow_run_id": 44904689875,
+      "job_id": 136847632300,
       "conclusion": "success",
       "v02_acceptance_readiness_tests": "29 passed",
       "design_scoring_tests": "10 passed",
@@ -3873,32 +3873,67 @@
       "accepted_cases": 2,
       "accepted_projects": 2,
       "ready_for_inference": false,
-      "inference_authorized": false
+      "inference_authorized": false,
+      "ancillary": {
+        "dishka_reproduction_job_id": 136847720081,
+        "dishka_reproduction": "success",
+        "dishka_raw_provenance_job_id": 136847720116,
+        "dishka_raw_provenance": "success",
+        "pinned_model_license_no_load_job_id": 136847720049,
+        "pinned_model_license_no_load": "success"
+      }
     },
     "research_validation": {
-      "workflow_run_id": 44904476390,
-      "job_id": 136847004118,
+      "workflow_run_id": 44904689870,
+      "job_id": 136847649617,
       "conclusion": "success",
       "result": "482 passed, 6 skipped, 56 subtests passed"
     },
     "uncertainty_unit_tests": {
-      "workflow_run_id": 44904476172,
-      "job_id": 136847003205,
+      "workflow_run_id": 44904689914,
+      "job_id": 136847632014,
       "conclusion": "success"
     },
     "qwen_adapter_cpu_tests": {
-      "workflow_run_id": 44904476190,
-      "job_id": 136847002865,
+      "workflow_run_id": 44904689859,
+      "job_id": 136847632076,
       "conclusion": "success"
     },
     "dymos_independent_reproducer_repeat": {
-      "workflow_run_id": 44904476319,
-      "job_id": 136847003822,
+      "workflow_run_id": 44904689950,
+      "job_id": 136847632352,
       "conclusion": "success",
-      "artifact_id": 14707880070,
-      "artifact_sha256": "3ab3855505e9fee81a0d04eb59c3b10c65fe9a4397806ea8c8d18f2d10942979",
-      "local_integrity": "outer SHA256 matches GitHub; ZIP CRC PASS; internal SHA256SUMS 15/15 PASS"
+      "artifact_id": 14706839946,
+      "artifact_sha256": "2a7a0c3c98043567a37193a9509c64160273f5985f0cfaf6ad7d040f667dd055",
+      "local_integrity": "outer SHA-256 matches GitHub; ZIP CRC PASS; internal SHA256SUMS 15/15 PASS"
     },
-    "scope": "Repository-record and no-inference validation only. No model loading, inference, fine-tuning, or training."
+    "scope": "Code/test validation and no-inference checks only; no model weights loaded, no inference, fine-tuning, or training."
+  },
+  "latest_dymos_1166_final_ci_repeat": {
+    "validated_code_test_head": "2013162c0105973fe5ce95c421e4af7f2e46f471",
+    "workflow_run_id": 44904689950,
+    "job_id": 136847632352,
+    "conclusion": "success",
+    "artifact_id": 14706839946,
+    "artifact_sha256": "2a7a0c3c98043567a37193a9509c64160273f5985f0cfaf6ad7d040f667dd055",
+    "local_integrity": {
+      "independently_downloaded": true,
+      "outer_zip_sha256_recomputed": true,
+      "outer_zip_sha256_matches_github": true,
+      "zip_crc": "passed",
+      "internal_sha256_manifest_entries": 15,
+      "internal_sha256_manifest_matches": 15,
+      "archive_members_including_manifest": 16
+    },
+    "reproduction": {
+      "exact_buggy_base": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "expected_failure": true,
+      "observed_values": "[[1.0], [1.0]]",
+      "expected_values": "[[5.0], [15.0]]",
+      "exact_fixed_revision": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
+      "identical_reproducer_passed": true,
+      "fixed_test_result": "1 passed"
+    },
+    "scope": "Same Dymos case technical repeat only; not a second sample; final case acceptance pending; no inference authorized."
   }
 }
