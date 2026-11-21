@@ -113,3 +113,64 @@ def test_eodag_1530_independence_and_license_reviews_are_not_final_acceptance():
     assert license_review["human_review"]["accepted_as_legal_clearance"] is False
     assert license_review["human_review"]["final_case_acceptance"] == "not_accepted"
     assert license_review["inference_authorized"] is False
+
+
+
+def test_eodag_1530_project_decision_is_in_manifest_and_ledger_but_not_registry():
+    manifest = json.loads(
+        (RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json")
+        .read_text(encoding="utf-8")
+    )
+    ledger = json.loads(
+        (RESEARCH / "SWE_REBENCH_V2_STAGE2_STAGE3_PROGRESS_LEDGER_V0_1_2026-11-16.json")
+        .read_text(encoding="utf-8")
+    )
+    registry = json.loads(
+        (RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json")
+        .read_text(encoding="utf-8")
+    )
+
+    decisions = [
+        item for item in manifest["project_lead_decisions"]
+        if item.get("scope") == "EODAG_1530_source_aware_gold_and_tier_adjudication_and_case_continuation"
+    ]
+    assert len(decisions) == 1
+    decision = decisions[0]
+    assert decision["eodag_gold"]["status"] == "approved"
+    assert decision["eodag_tiers"] == {
+        "status": "approved",
+        "E3": "ABSTAIN",
+        "E2": "ABSTAIN",
+        "E1": "ANSWER",
+        "surviving_mechanisms": {
+            "E3": ["G1", "A1", "A2", "A3"],
+            "E2": ["G1", "A2", "A3"],
+            "E1": ["G1"],
+        },
+    }
+    assert decision["decision_record"]["sha256"] == (
+        "b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e"
+    )
+    assert decision["boundaries"]["final_case_acceptance"] == (
+        "not_accepted until mandatory gates, schema record and registry validation pass"
+    )
+    assert decision["boundaries"]["inference_authorized"] is False
+
+    rows = [
+        row for row in ledger["records"]
+        if row.get("repository") == "CS-SI/eodag" and row.get("pull_request_number") == 1536
+    ]
+    assert len(rows) == 1
+    row = rows[0]
+    assert row["project_lead_gold_tier_decision"]["status"] == "approved"
+    assert row["project_lead_gold_tier_decision"]["tier_decisions"] == {
+        "E3": "ABSTAIN", "E2": "ABSTAIN", "E1": "ANSWER"
+    }
+    assert row["prior_pipeline_debug_exposure"] == "pending_project_lead_self_declaration"
+    assert row["bounded_license_scope_acknowledgement"] == "pending"
+    assert row["final_case_acceptance"] == "not_accepted"
+    assert row["model_inference_authorized"] is False
+
+    assert registry["accepted_case_count"] == 1
+    assert registry["accepted_project_count"] == 1
+    assert [record["case_id"] for record in registry["records"]] == ["SRV2E-DISHKA_435"]
