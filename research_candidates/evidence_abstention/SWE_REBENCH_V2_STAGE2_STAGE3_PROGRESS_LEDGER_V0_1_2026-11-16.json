@@ -1823,13 +1823,32 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/PYTHON_CONTROL_1144_CANDIDATE_REVIEW_2026-11-16.md",
-      "stage2_status": "passed",
+      "stage2_status": "passed_exact_dataset_selectors_and_original_independent_reproducer_base_fail_fixed_pass_artifacts_verified",
       "stage2_workflow_job_id": 134137813952,
       "stage2_evidence_note": "Independent explicit-axes reproducer fails on buggy base. After enabling the pinned upstream conftest (restoring mplcleanup), all 3 exact dataset selectors fail on buggy base and pass on fixed revision. Previous setup-only failure was caused by our --noconftest flag and is superseded.",
-      "stage3_status": "not_started_stage2_passed",
+      "stage3_status": "source_audited_advisory_gold_and_tier_proposal_prepared; strengthened_E2_reproducer_committed_exact_pinned_environment_CI_pending; project_lead_review_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "stage2_latest_run_id": 44111403900
+      "stage2_latest_run_id": 44111403900,
+      "stage3_gold_and_tiers_draft_path": "research_candidates/evidence_abstention/python_control_1144/PYTHON_CONTROL_1144_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_V0_1_2026-11-21.md",
+      "stage3_evidence_elimination_matrix_path": "research_candidates/evidence_abstention/python_control_1144/PYTHON_CONTROL_1144_E3_E2_E1_EVIDENCE_ELIMINATION_MATRIX_V0_1_2026-11-21.md",
+      "stage3_review_addendum_path": "research_candidates/evidence_abstention/python_control_1144/PYTHON_CONTROL_1144_STAGE3_REVIEW_ADDENDUM_2026-11-21.md",
+      "stage3_issue_family_independence_path": "research_candidates/evidence_abstention/python_control_1144/PYTHON_CONTROL_1144_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json",
+      "stage3_e2_diagnostic": {
+        "test_path": "research_candidates/evidence_abstention/reproduction/python_control_issue_1144/test_issue_1144.py",
+        "test_commit": "15d39af8b4b662911c83da4bf796b2d4695ed9ee",
+        "purpose": "record actual line counts separately for explicitly supplied Axes and current/global Axes after deliberately setting them to different subplots",
+        "expected_buggy_signature": "explicit_axes=0 lines; current_global_axes>0 lines; unrelated_axes=0 lines",
+        "status": "committed_but_exact_pinned_environment_CI_pending",
+        "if_signature_confirmed": "E2 eliminates no-line-generation and ControlPlot-metadata-only explanations, while Axes normalization and global pyplot drawing remain alternatives until E1 source evidence",
+        "no_overclaim": "Historical Stage 2 reproducer only proved that the target Axes was empty; it did not separately capture the current/global Axes line count."
+      },
+      "stage2_latest_job_id": 134137813952,
+      "stage2_latest_artifact_id": 14340013958,
+      "stage2_latest_artifact_sha256": "5957e0de926f5242559fa955caa5a1e1a227309f919f3f1849fc35b072cd1824",
+      "stage2_selector_count": 3,
+      "stage2_selector_results": "3/3 frozen selectors fail on exact buggy base and pass on exact fixed revision; all belong to one parameterized upstream selector family, not independent cases.",
+      "next_required_gate": "Run the strengthened independent reproducer on the exact pinned Python 3.11.9 environment and record actual line counts on buggy base and fixed revision; then project lead reviews gold/E3-E2-E1 and issue-family status. Prior pipeline/debug exposure declaration, exact pinned dataset-card/license and dependency notice provenance, bounded scope acknowledgement, case record, fail-closed validation, and separate final YES/NO acceptance remain pending."
     },
     {
       "cohort_rank": 36,
@@ -4460,5 +4479,54 @@
       "fixed_revision": "same reproducer passed (1 test)",
       "archive_integrity": "outer SHA matched; ZIP CRC PASS; internal SHA256SUMS 15/15 PASS"
     }
+  },
+  "python_control_1144_stage3_advisory_review": {
+    "date": "2026-11-21",
+    "status": "source_audited_advisory_gold_and_tier_proposal_prepared; strengthened_E2_reproducer_CI_pending; not_project_lead_approved",
+    "candidate": "python-control/python-control issue #1144 / PR #1145",
+    "gold_proposal": "EXPLICIT_AXES_PASSED_BUT_GLOBAL_PYPLOT_STATE_USED_FOR_DRAWING",
+    "proposed_tiers": {
+      "E3": "ABSTAIN",
+      "E2": "ABSTAIN_ONLY_IF_STRENGTHENED_EXACT_BASE_DIAGNOSTIC_CONFIRMS_REDIRECTION; otherwise unclassified or redesign",
+      "E1": "ANSWER"
+    },
+    "matrix_path": "research_candidates/evidence_abstention/python_control_1144/PYTHON_CONTROL_1144_E3_E2_E1_EVIDENCE_ELIMINATION_MATRIX_V0_1_2026-11-21.md",
+    "proposal_path": "research_candidates/evidence_abstention/python_control_1144/PYTHON_CONTROL_1144_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_V0_1_2026-11-21.md",
+    "review_addendum_path": "research_candidates/evidence_abstention/python_control_1144/PYTHON_CONTROL_1144_STAGE3_REVIEW_ADDENDUM_2026-11-21.md",
+    "issue_family_review_path": "research_candidates/evidence_abstention/python_control_1144/PYTHON_CONTROL_1144_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json",
+    "exact_buggy_base": "dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113",
+    "fixed_pr_head": "21f4912c8b12216534b8d5b07c243c66675a8b83",
+    "dataset_row_sha256": "0dbc94f964604302bea3afc9322596577bab3bb990f2292a640c51d80e8099eb",
+    "stage2": {
+      "run_id": 44111403900,
+      "job_id": 134137813952,
+      "artifact_id": 14340013958,
+      "artifact_sha256": "5957e0de926f5242559fa955caa5a1e1a227309f919f3f1849fc35b072cd1824",
+      "local_integrity": {
+        "downloaded": true,
+        "outer_sha256_recomputed": true,
+        "outer_sha256_matches_github": true,
+        "zip_crc": "passed",
+        "inner_sha256_manifest": "14/14 passed"
+      },
+      "frozen_selectors": "3/3 base fail / fixed pass"
+    },
+    "e2_diagnostic": {
+      "commit": "15d39af8b4b662911c83da4bf796b2d4695ed9ee",
+      "status": "exact_pinned_environment_CI_pending",
+      "prior_reproducer_limitation": "asserted only that requested Axes had no lines; did not separately record current/global Axes line count",
+      "workflow_lookup": "no GitHub Actions workflow run returned for the updated commit; combined status showed only Vercel build-rate-limit failure"
+    },
+    "issue_family": {
+      "related_issue_1143": "separate Nyquist rescaling discussion with later explicit-Axes API comment referenced by PR #1145; related API context, not duplicate or second case",
+      "selector_count": "3 parameterized selectors in one repository; not 3 independent cases"
+    },
+    "exposure": {
+      "prior_pipeline_debug_exposure": "pending_project_lead_declaration",
+      "researcher_source_exposure": "full"
+    },
+    "final_case_acceptance": "not_accepted",
+    "registry_inclusion": false,
+    "inference_authorized": false
   }
 }
