@@ -251,7 +251,7 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
             repeat["artifact_sha256"],
             "698e2f6b9d37522fd276f58ce57d85934bb0e8df16cd978284c3e79ef3a346dc",
         )
-        self.assertIn("outer SHA-256 exactly matches GitHub", note)
+        self.assertIn("Independently downloaded ZIP SHA-256: exact match", note)
         self.assertIn("15/15 files matched", note)
         self.assertIn("1 passed", note)
         self.assertEqual(dymos["final_case_acceptance"], "not_accepted")
