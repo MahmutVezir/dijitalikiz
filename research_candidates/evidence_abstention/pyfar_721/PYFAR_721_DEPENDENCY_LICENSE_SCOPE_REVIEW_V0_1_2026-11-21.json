@@ -1,0 +1,135 @@
+{
+  "schema_version": "0.1-v02-bounded-license-scope-review",
+  "review_date": "2026-11-21",
+  "candidate": {
+    "case_id": "SRV2E-PYFAR_721",
+    "repository_full_name": "pyfar/pyfar",
+    "issue_url": "https://github.com/pyfar/pyfar/issues/721",
+    "fix_pr_url": "https://github.com/pyfar/pyfar/pull/722",
+    "dataset_instance_id": "pyfar__pyfar-722"
+  },
+  "review_status": "documentary_screening_prepared_with_open_items; project_lead_scope_acknowledgement_pending",
+  "root_source_license": {
+    "expression": "MIT",
+    "license_path": "LICENSE",
+    "base_commit": "648dda4c60c5a6f74acf335f7808c590c9d23929",
+    "git_blob_sha1": "430184952c6fcb292ee01cb114bb9c39f32f78ff",
+    "project_metadata_file": "setup.py",
+    "project_metadata_license": "MIT license",
+    "setup_py_blob_sha1": "3c0751c2366f14115d5f6ace603845f85f77bed2",
+    "notice_path": "not_found_at_exact_base",
+    "review_note": "Exact-base LICENSE text and setup.py metadata both identify MIT. This is a documentary screen, not legal advice or clearance."
+  },
+  "changed_files": [
+    {
+      "path": "pyfar/dsp/dsp.py",
+      "base_blob_sha1": "b44dbac7817be97126bd3bbac88add4b6a1ebd54",
+      "fixed_blob_sha1": "c032e89e156921d990b4d6b5977fe39229fb66ff",
+      "scope": "upstream PyFar implementation"
+    },
+    {
+      "path": "tests/test_dsp_normalize.py",
+      "base_blob_sha1": "224e8c501db5b763374ae74f9d9d40fc0205e0a4",
+      "fixed_blob_sha1": "69fde6699c70a8ce42cf18e2b4c04a81a1a8f643",
+      "scope": "upstream PyFar regression tests"
+    }
+  ],
+  "dataset_scope": {
+    "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "data_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "dataset_file_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "instance_id": "pyfar__pyfar-722",
+    "row_sha256": "82444bd1dcaa0c52bcac4a5c0b76efc20ed0ad26606de1edc338265843aca6bd",
+    "row_license_field": "MIT",
+    "current_hub_card_license": "CC-BY-4.0",
+    "current_hub_metadata_source": "Hugging Face hub_repo_details current repository metadata, queried 2026-11-21",
+    "card_url": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "card_history_url": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commits/main/README.md",
+    "card_history_observation": "The data upload and README/card upload appear as separate shortened history entries fb9aa22 and 6fe2932 on the same displayed date; exact full README commit SHA and raw README bytes/SHA-256 for the dataset data revision have not been captured in this candidate evidence set.",
+    "exact_pinned_card_review": "pending_exact_full_readme_sha_and_raw_bytes",
+    "note": "The row-level upstream repository license MIT and the dataset distribution/card license CC-BY-4.0 are separate layers and must not be conflated."
+  },
+  "reproduction_environment": {
+    "workflow_run_id": 44331092872,
+    "job_id": 134895967816,
+    "artifact_id": 14440390942,
+    "artifact_sha256": "17e80ba9a81153ea833ce0cee05271f1815c6c6d597653c12f9bbe11f0f95bf8",
+    "locally_recomputed_outer_zip_sha256_matches_github": true,
+    "zip_crc": "PASS",
+    "internal_sha256_manifest": "14/14 PASS",
+    "python_version": "3.12.4",
+    "runtime_distribution_count": 32,
+    "distributions_with_null_license_field": 4,
+    "null_license_field_packages": [
+      "urllib3==2.2.3",
+      "idna==3.10",
+      "packaging==24.2",
+      "pyparsing==3.2.0"
+    ],
+    "distributions_with_multiple_license_classifiers": [
+      "packaging==24.2 (Apache Software License and BSD License classifiers; no single license expression in captured metadata)",
+      "python-dateutil==2.9.0.post0 (BSD and Apache Software License classifiers; metadata says Dual License)"
+    ],
+    "metadata_screen": "All 32 installed runtime distributions supplied either a raw License field or at least one License classifier; four lack the raw License field and rely on classifiers only. Distribution metadata is not a substitute for canonical upstream license files and notices.",
+    "notable_bundled_component_review_flags": [
+      "NumPy metadata lists bundled OpenBLAS and LAPACK and also bundled GCC runtime/libquadmath components with their notices.",
+      "SciPy metadata lists bundled OpenBLAS/LAPACK and GCC runtime/libquadmath components with their notices.",
+      "soundfile/h5py/netCDF4 and transitive/native runtime or host-library scope must be confirmed against the actual wheel/runtime distribution rather than inferred only from package metadata."
+    ],
+    "separate_dataset_extraction_tool": {
+      "package": "pyarrow==19.0.1",
+      "scope": "Separate extraction environment used only to read the pinned Parquet row; not one of the 32 PyFar test-runtime distributions.",
+      "license_metadata": "Apache Software License"
+    },
+    "dependency_inventory_artifact_member": "dependency-license-inventory.json",
+    "dependency_inventory_sha256": "c298eeaf1cdddf34ddbc527758fb16758f91a0e932afcb581b11db690d6a3a99",
+    "runtime_freeze_sha256": "24e20dc7c21aa9e09117e43d3d21bc1ef053f0c974036b60077a9b9b23f66704",
+    "stage2_scope_note": "The inventory was emitted before upstream tests/import and was part of the retained Stage 2 artifact. Canonical license text, native component and applicable-notice reconciliation remain human-review items."
+  },
+  "proposed_bounded_scope": {
+    "proposal_only": true,
+    "allowed_for_project_lead_to_consider": [
+      "minimal issue/test/source excerpts necessary to explain and reproduce this single energy/power normalization defect",
+      "immutable upstream commit, dataset revision, and artifact references with attribution",
+      "the single canonical dataset row or only the necessary factual row fields, plus small test outputs and hashes needed to audit reproduction"
+    ],
+    "excluded": [
+      "redistribution of the complete pyfar repository or complete SWE-rebench dataset",
+      "redistribution of dependency wheels, native libraries, binaries, or a complete environment image",
+      "republication of third-party dependency source trees or notices beyond what is necessary and lawfully included",
+      "blanket commercial permission or assuming the PyFar root MIT license settles every dependency license"
+    ],
+    "preservation_conditions": [
+      "retain attribution and upstream license notices for copied excerpts",
+      "prefer immutable upstream links over copied source files",
+      "keep the selected data row and excerpts minimal",
+      "record the exact third-party components and notices actually used, including native/bundled libraries"
+    ],
+    "condition": "A root MIT license screen and package metadata inventory are not legal clearance. Scientific adjudication remains independent of license permission conclusions; material license uncertainty requires pausing or narrowing affected material, not changing scientific labels."
+  },
+  "human_review": {
+    "reviewer_role": "student_project_lead",
+    "project_lead_scope_acknowledgement": "pending",
+    "accepted_research_scope": false,
+    "exact_base_review": "root MIT license documented; preliminary screen only",
+    "changed_file_review": "two changed paths identified; no per-file licensing opinion asserted",
+    "nested_dependency_review": "open",
+    "native_component_and_notice_review": "open",
+    "exact_pinned_dataset_card_review": "open",
+    "source_and_data_provenance_review": "open",
+    "research_use_decision": "pending_project_lead_review_and_open_dependency_notice_card_provenance_checks",
+    "accepted_as_legal_clearance": false,
+    "external_legal_review": "not_performed"
+  },
+  "boundaries": {
+    "legal_advice": false,
+    "legal_clearance": false,
+    "SPDX_certification": false,
+    "blanket_redistribution_permission": false,
+    "final_case_acceptance": false,
+    "registry_inclusion": false,
+    "operational_research_use_authorized": false,
+    "redistribution_authorized": false,
+    "inference_authorized": false
+  }
+}
