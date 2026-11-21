@@ -2,6 +2,10 @@
 from __future__ import annotations
 
 import io
+import os
+import tempfile
+
+import asdf
 
 from asdf import util
 
@@ -44,3 +48,23 @@ def test_tagged_loader_is_positive_control_for_mapping_and_sequence():
     sequence = _load(SEQUENCE_RECURSION, tagged=True)
     assert mapping["o"] is mapping["o"]["inverse"]["inverse"]
     assert sequence["l"] is sequence["l"][0]
+
+
+def test_original_issue_recursive_object_is_preserved_by_untagged_loader():
+    original = {}
+    original["a"] = original
+    with tempfile.TemporaryDirectory() as directory:
+        filename = os.path.join(directory, "recursive.asdf")
+        asdf.AsdfFile(original).write_to(filename)
+        tree = util.load_yaml(filename)
+    assert tree["a"] is tree
+
+
+def test_original_issue_recursive_object_tagged_loader_is_positive_control():
+    original = {}
+    original["a"] = original
+    with tempfile.TemporaryDirectory() as directory:
+        filename = os.path.join(directory, "recursive.asdf")
+        asdf.AsdfFile(original).write_to(filename)
+        tree = util.load_yaml(filename, tagged=True)
+    assert tree["a"] is tree
