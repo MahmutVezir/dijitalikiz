@@ -66,12 +66,12 @@ class PyFar721ExposureDecisionTests(unittest.TestCase):
         self.assertNotIn("pending a direct project-lead declaration", proposal)
         self.assertIn("source exposure remains `full`", proposal.lower())
 
-        self.assertEqual(registry["accepted_case_count"], 2)
-        self.assertEqual(registry["accepted_project_count"], 2)
+        self.assertEqual(registry["accepted_case_count"], 3)
+        self.assertEqual(registry["accepted_project_count"], 3)
         self.assertFalse(registry["inference_authorized"])
         self.assertNotIn("SRV2E-PYFAR_721", {item["case_id"] for item in registry["records"]})
-        self.assertEqual(ledger["summary"]["accepted_exploratory_cases"], 2)
-        self.assertEqual(ledger["summary"]["accepted_exploratory_projects"], 2)
+        self.assertEqual(ledger["summary"]["accepted_exploratory_cases"], 3)
+        self.assertEqual(ledger["summary"]["accepted_exploratory_projects"], 3)
 
 
 if __name__ == "__main__":
