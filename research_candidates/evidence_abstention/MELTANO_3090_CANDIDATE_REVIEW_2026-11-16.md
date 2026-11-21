@@ -123,3 +123,15 @@ The decision is source-aware and single-adjudicator; the researcher had already 
 This closes only Stage 3 technical gold/tier adjudication. Candidate-specific prior pipeline/debug exposure remains pending; the bounded source/dependency/dataset license scope remains open; no final case record or separate final YES/NO acceptance has been made. Meltano remains outside the v0.2 registry, accepted counts remain 2 cases from 2 projects, and model loading/inference/fine-tuning/training remain unauthorized. PR #3009 remains repository lineage, not a second case.
 
 Decision record: `research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIER_DECISION_MELTANO_3090_2026-11-21.md`.
+
+
+## Post-approval validation addendum — 21 November 2026
+
+The decision-record assertion was aligned with the exact wording in the project-lead decision file. The corrected branch head `864896d4cfb12cbe68c76eab2abd3edf0929f21c` passed:
+- Evidence Abstention Preflight run 44899668556: success; v0.2 acceptance/readiness tests 27 passed; design/scoring tests 10 passed. The readiness report retains 13 blockers, 2 accepted cases from 2 projects, `ready_for_inference=false`, and `inference_authorized=false`.
+- Research Validation run 44899668507: 479 passed, 6 skipped, 56 subtests passed.
+- Uncertainty unit tests run 44899668509: 171 tests passed.
+- Qwen adapter CPU tests run 44899668410: success.
+- Dymos repeat run 44899668525: success.
+
+The Meltano approval and fail-closed status regression test is included in the 27-test v0.2 acceptance/readiness suite. This is validation of repository records and no-inference gates only; no model weights were loaded and no inference, fine-tuning or training was performed. The candidate remains outside the registry and its prior exposure and bounded license-scope acknowledgements remain open.
