@@ -116,7 +116,22 @@ def test_eodag_1530_independence_and_license_reviews_are_not_final_acceptance():
     assert license_review["dataset"]["exact_pinned_dataset_card_license_verified"] is True
     assert license_review["reproduction_environment"]["resolved_distribution_count"] == 52
     assert license_review["reproduction_environment"]["internal_sha256_entries_verified"] == 22
-    assert license_review["human_review"]["project_lead_bounded_scope_acknowledgement"] == "pending"
+    assert license_review["human_review"]["project_lead_bounded_scope_acknowledgement"] == "approved_bounded_scope_only"
+    assert license_review["human_review"]["bounded_scope_acknowledgement_record"] == {
+        "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md",
+        "sha256": "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6",
+        "decision_date": "2026-11-21",
+        "decision": "acknowledged_bounded_documentary_scope_only",
+    }
+    assert license_review["human_review"]["external_legal_review"] == "not_performed"
+    assert license_review["human_review"]["accepted_as_legal_clearance"] is False
+    assert license_review["project_lead_acknowledged_scope"]["exclusions"] == [
+        "complete SWE-rebench dataset redistribution",
+        "complete EODAG repository redistribution",
+        "installed wheels, binaries, native libraries, or complete 52-distribution environment redistribution",
+        "blanket permission for optional extras, third-party provider data, or commercial product use",
+    ]
+    assert license_review["project_lead_acknowledged_scope"]["limits"]["legal_clearance"] is False
     assert license_review["human_review"]["accepted_as_legal_clearance"] is False
     assert license_review["human_review"]["final_case_acceptance"] == "not_accepted"
     assert license_review["inference_authorized"] is False
@@ -169,6 +184,17 @@ def test_eodag_1530_project_decision_is_in_manifest_and_ledger_but_not_registry(
     )
     assert decision["boundaries"]["inference_authorized"] is False
 
+    license_decisions = [
+        item for item in manifest["project_lead_decisions"]
+        if item.get("scope") == "EODAG_1530_bounded_documentary_license_scope_acknowledgement"
+    ]
+    assert len(license_decisions) == 1
+    assert license_decisions[0]["decision"] == "acknowledged_bounded_documentary_scope_only"
+    assert license_decisions[0]["decision_record"]["sha256"] == (
+        "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6"
+    )
+    assert license_decisions[0]["boundaries"]["legal_clearance"] is False
+
     rows = [
         row for row in ledger["records"]
         if row.get("repository") == "CS-SI/eodag" and row.get("pull_request_number") == 1536
@@ -183,11 +209,17 @@ def test_eodag_1530_project_decision_is_in_manifest_and_ledger_but_not_registry(
     assert row["exposure_decision_record_sha256"] == (
         "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38"
     )
-    assert row["bounded_license_scope_acknowledgement"] == "pending"
+    assert row["bounded_license_scope_acknowledgement"] == "approved_bounded_documentary_scope_only_2026-11-21"
+    assert row["bounded_license_scope_decision_record_sha256"] == (
+        "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6"
+    )
     assert row["final_case_acceptance"] == "not_accepted"
     assert row["model_inference_authorized"] is False
 
     assert registry["accepted_case_count"] == 1
+    assert "license_scope_acknowledgement" in provenance
+    assert provenance["license_scope_acknowledgement"]["status"] == "approved_bounded_documentary_scope_only"
+    assert provenance["license_scope_acknowledgement"]["inference_authorized"] is False
     assert not any(record.get("case_id") == "SRV2E-EODAG_1530" for record in registry["records"])
     assert registry["accepted_project_count"] == 1
     assert [record["case_id"] for record in registry["records"]] == ["SRV2E-DISHKA_435"]
