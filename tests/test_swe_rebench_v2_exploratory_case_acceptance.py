@@ -516,3 +516,62 @@ def test_dymos_real_proposed_case_is_structurally_complete_but_not_accepted():
     assert registry_result["accepted_project_count"] == 2
     assert "SRV2E-DYMOS_1166" not in {item["case_id"] for item in registry["records"]}
     assert registry_result["inference_authorized"] is False
+
+def test_meltano_3090_stage3_advisories_remain_fail_closed():
+    candidate_dir = RESEARCH / "meltano_3090"
+    gold_proposal = (
+        candidate_dir
+        / "MELTANO_3090_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_2026-11-21.md"
+    ).read_text(encoding="utf-8")
+    integrity_review = (
+        candidate_dir
+        / "MELTANO_3090_STAGE2_ARTIFACT_INTEGRITY_REVIEW_2026-11-21.md"
+    ).read_text(encoding="utf-8")
+    independence = json.loads(
+        (
+            candidate_dir
+            / "MELTANO_3090_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json"
+        ).read_text(encoding="utf-8")
+    )
+    license_review = json.loads(
+        (
+            candidate_dir
+            / "MELTANO_3090_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-21.json"
+        ).read_text(encoding="utf-8")
+    )
+
+    assert "ADVISORY PROPOSAL ONLY" in gold_proposal
+    assert "E3" in gold_proposal and "ABSTAIN" in gold_proposal
+    assert "E2" in gold_proposal and "ABSTAIN" in gold_proposal
+    assert "E1" in gold_proposal and "ANSWER" in gold_proposal
+    assert "prior pipeline/debug exposure is still required" in gold_proposal
+    assert "14/14 files matched" in integrity_review
+    assert "14/14" in integrity_review
+
+    assert independence["candidate"]["case_id"] == "SRV2E-MELTANO_3090"
+    assert independence["project_lead_selection"]["decision"] == (
+        "ACCEPTED_FOR_STAGE3_CASE_EVALUATION"
+    )
+    assert independence["independence_disposition"]["one_case_per_repository_rule_preserved"] is True
+    assert independence["boundaries"]["final_case_acceptance"] == "not_accepted"
+    assert independence["boundaries"]["registry_inclusion"] is False
+    assert independence["boundaries"]["inference_authorized"] is False
+
+    assert license_review["human_review"]["project_lead_scope_acknowledgement"] == "pending"
+    assert license_review["human_review"]["nested_dependency_review"] == "open"
+    assert license_review["human_review"]["research_use_decision"] == "pending_human_review"
+    assert license_review["boundaries"]["legal_clearance"] is False
+    assert license_review["boundaries"]["final_case_acceptance"] is False
+    assert license_review["boundaries"]["inference_authorized"] is False
+
+    registry = json.loads(
+        (RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    registry_result = validate_registry(registry)
+    assert registry_result["status"] == "structurally_valid_candidate_registry"
+    assert registry_result["accepted_case_count"] == 2
+    assert registry_result["accepted_project_count"] == 2
+    assert "SRV2E-MELTANO_3090" not in {item["case_id"] for item in registry["records"]}
+    assert registry_result["inference_authorized"] is False
