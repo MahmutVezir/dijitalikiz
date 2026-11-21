@@ -1,0 +1,20 @@
+# Python 3.11.9; versions selected to match GeoPandas' Python 3.11 / pandas 2.2 / NumPy 1.26 CI family.
+# All direct and transitive runtime/test dependencies are explicitly pinned.
+certifi==2025.6.15
+iniconfig==2.1.0
+numpy==1.26.4
+packaging==25.0
+pandas==2.2.3
+pip==25.1.1
+pluggy==1.6.0
+pygments==2.19.2
+pyogrio==0.11.0
+pyproj==3.7.1
+pytest==8.3.5
+python-dateutil==2.9.0.post0
+pytz==2025.2
+setuptools==80.9.0
+shapely==2.1.1
+six==1.17.0
+tzdata==2025.2
+wheel==0.45.1
