@@ -157,3 +157,15 @@ The project lead explicitly declared `prior_pipeline_debug_exposure = none` in r
 Decision record: `research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_EXPOSURE_DECISION_MELTANO_3090_2026-11-21.md`.
 
 The remaining Meltano gates are the bounded documentary-use scope acknowledgement after immutable dataset-card and dependency-license review, proposed case-record validation, and a separate final YES/NO acceptance decision. Meltano remains outside the accepted registry (2 accepted cases from 2 projects); model loading, inference, fine-tuning, and training remain unauthorized.
+
+
+## Post-exposure-declaration validation — 21 November 2026
+
+The project-lead exposure declaration (`none`; researcher source exposure remains `full`) is pinned in the independence review and its own decision record. On tested code/test head `367788cdcfe2b433699bae214ab33b562659d08b`:
+- Evidence Abstention Preflight run 44900328629: success; v0.2 acceptance/readiness tests 27 passed; design/scoring tests 10 passed. Readiness remains at 13 blockers, 2 accepted cases from 2 projects, `ready_for_inference=false`, and `inference_authorized=false`.
+- Research Validation run 44900328572: 479 passed, 6 skipped, 56 subtests passed.
+- Uncertainty tests run 44900328647: 171 passed.
+- Qwen adapter CPU tests run 44900328459: success.
+- Dymos repeat run 44900328623: success.
+
+This validates the declaration record and unchanged no-inference safeguards. No model weights or inference were used. The bounded license-scope acknowledgement, complete proposed case record, and separate final YES/NO case-acceptance decision remain open.
