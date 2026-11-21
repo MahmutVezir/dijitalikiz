@@ -1,3 +1,4 @@
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -30,6 +31,48 @@ class TestV02ExploratoryPreflight(unittest.TestCase):
         )
         self.assertIn("The exact immutable model revision's license/use review is not approved.", report["blockers"])
         self.assertIn("Rater B participation and case-specific independence/exposure screening are not confirmed.", report["blockers"])
+
+    def test_meltano_bounded_scope_acknowledgement_keeps_open_gates_fail_closed(self):
+        license_path = ROOT / "research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-21.json"
+        ledger_path = ROOT / "research_candidates/evidence_abstention/SWE_REBENCH_V2_STAGE2_STAGE3_PROGRESS_LEDGER_V0_1_2026-11-16.json"
+        registry_path = ROOT / "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json"
+        decision_path = ROOT / "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md"
+
+        license_review = json.loads(license_path.read_text(encoding="utf-8"))
+        ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        decision = decision_path.read_text(encoding="utf-8")
+
+        human = license_review["human_review"]
+        self.assertTrue(human["bounded_research_scope_acknowledged_in_principle"])
+        self.assertEqual(
+            human["project_lead_scope_acknowledgement"],
+            "acknowledged_in_principle_with_explicit_conditions",
+        )
+        self.assertEqual(human["nested_dependency_review"], "open")
+        self.assertEqual(human["notice_and_provenance_review"], "open")
+        self.assertFalse(human["accepted_research_scope"])
+        self.assertFalse(human["accepted_as_legal_clearance"])
+        self.assertFalse(license_review["boundaries"]["legal_clearance"])
+        self.assertFalse(license_review["boundaries"]["redistribution_authorized"])
+        self.assertFalse(license_review["boundaries"]["final_case_acceptance"])
+        self.assertFalse(license_review["boundaries"]["inference_authorized"])
+        self.assertEqual(
+            license_review["dataset_scope"]["exact_pinned_card_review"].split(";")[0],
+            "pending",
+        )
+
+        meltano = next(record for record in ledger["records"] if record["repository"] == "meltano/sdk")
+        self.assertEqual(meltano["final_case_acceptance"], "not_accepted")
+        self.assertFalse(meltano["model_inference_authorized"])
+        self.assertEqual(ledger["summary"]["accepted_exploratory_cases"], 2)
+        self.assertEqual(ledger["summary"]["accepted_exploratory_projects"], 2)
+        self.assertFalse(any(
+            case.get("case_id") == "SRV2E-MELTANO_3090"
+            for case in registry.get("cases", [])
+        ))
+        self.assertIn("not legal advice", decision.lower())
+        self.assertIn("does not", decision.lower())
 
     def test_dual_human_output_scoring_requires_rater_b_confirmation(self):
         report = evaluate(ROOT)
