@@ -245,11 +245,11 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertFalse(result["inference_authorized"])
         self.assertEqual(record["acceptance_decision"], "proposed")
         self.assertEqual(record["final_acceptance"]["status"], "pending")
-        self.assertEqual(repeat["workflow_run_id"], 44903822528)
-        self.assertEqual(repeat["artifact_id"], 14707022685)
+        self.assertEqual(repeat["workflow_run_id"], 44904476319)
+        self.assertEqual(repeat["artifact_id"], 14707880070)
         self.assertEqual(
             repeat["artifact_sha256"],
-            "698e2f6b9d37522fd276f58ce57d85934bb0e8df16cd978284c3e79ef3a346dc",
+            "3ab3855505e9fee81a0d04eb59c3b10c65fe9a4397806ea8c8d18f2d10942979",
         )
         self.assertIn("Independently downloaded ZIP SHA-256: exact match", note)
         self.assertIn("15/15 files matched", note)
