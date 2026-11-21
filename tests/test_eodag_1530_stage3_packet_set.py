@@ -80,13 +80,13 @@ def test_eodag_1530_provenance_matches_packet_set_and_records_project_lead_decis
         "decision_date": "2026-11-21",
         "decision": "none",
     }
-    assert semantic["final_case_acceptance"] == "pending_remaining_mandatory_gates"
+    assert semantic["final_case_acceptance"] == "accepted_v0_2_exploratory_feasibility_only"
     assert semantic["decision_record"]["sha256"] == "b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e"
     assert provenance["structural_validation"]["semantic_sufficiency_assessed"] is False
     assert provenance["structural_validation"]["model_inference_performed"] is False
 
 
-def test_eodag_1530_independence_and_license_reviews_are_not_final_acceptance():
+def test_eodag_1530_independence_and_license_reviews_preserve_limits_after_acceptance():
     independence = json.loads(
         (EODAG / "EODAG_1530_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json")
         .read_text(encoding="utf-8")
@@ -109,7 +109,7 @@ def test_eodag_1530_independence_and_license_reviews_are_not_final_acceptance():
     assert independence["exposure_and_roles"]["prior_pipeline_debug_exposure_decision_record"]["sha256"] == (
         "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38"
     )
-    assert independence["independence_status"]["final_case_acceptance"] == "not_accepted"
+    assert independence["independence_status"]["final_case_acceptance"] == "accepted_v0_2_exploratory_feasibility_only"
     assert independence["independence_status"]["inference_authorized"] is False
 
     assert license_review["upstream_source"]["root_license_expression"] == "Apache-2.0"
@@ -134,12 +134,15 @@ def test_eodag_1530_independence_and_license_reviews_are_not_final_acceptance():
     ]
     assert license_review["project_lead_acknowledged_scope"]["limits"]["legal_clearance"] is False
     assert license_review["human_review"]["accepted_as_legal_clearance"] is False
-    assert license_review["human_review"]["final_case_acceptance"] == "not_accepted"
+    assert license_review["human_review"]["final_case_acceptance"] == "accepted_v0_2_exploratory_feasibility_only"
+    assert license_review["human_review"]["final_case_acceptance_decision_record"]["sha256"] == (
+        "5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d"
+    )
     assert license_review["inference_authorized"] is False
 
 
 
-def test_eodag_1530_project_decision_is_in_manifest_and_ledger_but_not_registry():
+def test_eodag_1530_final_decision_is_in_manifest_and_ledger_and_registry():
     manifest = json.loads(
         (RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json")
         .read_text(encoding="utf-8")
@@ -218,20 +221,36 @@ def test_eodag_1530_project_decision_is_in_manifest_and_ledger_but_not_registry(
     assert row["bounded_license_scope_decision_record_sha256"] == (
         "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6"
     )
-    assert row["final_case_acceptance"] == "not_accepted"
+    assert row["final_case_acceptance"] == "accepted_v0_2_exploratory_feasibility_only"
+    assert row["final_acceptance_decision_record_sha256"] == (
+        "5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d"
+    )
     assert row["model_inference_authorized"] is False
 
-    assert registry["accepted_case_count"] == 1
+    assert registry["accepted_case_count"] == 2
     assert "license_scope_acknowledgement" in provenance
     assert provenance["license_scope_acknowledgement"]["status"] == "approved_bounded_documentary_scope_only"
     assert provenance["license_scope_acknowledgement"]["inference_authorized"] is False
-    assert not any(record.get("case_id") == "SRV2E-EODAG_1530" for record in registry["records"])
-    assert registry["accepted_project_count"] == 1
-    assert [record["case_id"] for record in registry["records"]] == ["SRV2E-DISHKA_435"]
+    assert any(record.get("case_id") == "SRV2E-EODAG_1530" for record in registry["records"])
+    assert registry["accepted_project_count"] == 2
+    assert [record["case_id"] for record in registry["records"]] == [
+        "SRV2E-DISHKA_435", "SRV2E-EODAG_1530"
+    ]
+    final_decisions = [
+        item for item in manifest["project_lead_decisions"]
+        if item.get("scope") == "EODAG_1530_final_case_acceptance"
+    ]
+    assert len(final_decisions) == 1
+    assert final_decisions[0]["decision"] == "accepted"
+    assert final_decisions[0]["decision_record"]["sha256"] == (
+        "5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d"
+    )
+    assert manifest["accepted_case_count"] == 2
+    assert manifest["accepted_project_count"] == 2
 
 
 
-def test_eodag_1530_case_record_is_structurally_complete_but_not_accepted():
+def test_eodag_1530_case_record_is_accepted_and_registry_is_structurally_valid():
     case_record = json.loads(
         (EODAG / "SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json")
         .read_text(encoding="utf-8")
@@ -241,14 +260,16 @@ def test_eodag_1530_case_record_is_structurally_complete_but_not_accepted():
 
     assert result["status"] == "structurally_complete_candidate", result["blockers"]
     assert result["case_id"] == "SRV2E-EODAG_1530"
-    assert result["acceptance_decision"] == "proposed"
-    assert result["eligible_for_registry"] is False
+    assert result["acceptance_decision"] == "accepted"
+    assert result["eligible_for_registry"] is True
     assert result["inference_authorized"] is False
     assert case_record["human_decision"]["decision_timestamp_utc"] == "2026-11-21T10:07:34Z"
     assert "exact interaction time is not captured" in case_record["human_decision"]["rationale"]
-    assert case_record["final_acceptance"]["status"] == "pending"
-    assert case_record["final_acceptance"]["decision_timestamp_utc"] is None
-    assert case_record["final_acceptance"]["decision_record"] is None
+    assert case_record["final_acceptance"]["status"] == "approved"
+    assert case_record["final_acceptance"]["decision_timestamp_utc"] == "2026-11-21T13:36:50+03:00"
+    assert case_record["final_acceptance"]["decision_record"]["sha256"] == (
+        "5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d"
+    )
 
     registry = json.loads(
         (RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json")
@@ -257,7 +278,9 @@ def test_eodag_1530_case_record_is_structurally_complete_but_not_accepted():
     registry_result = validate_registry(registry)
 
     assert registry_result["status"] == "structurally_valid_candidate_registry", registry_result["blockers"]
-    assert registry_result["accepted_case_count"] == 1
-    assert registry_result["accepted_project_count"] == 1
-    assert [item["case_id"] for item in registry["records"]] == ["SRV2E-DISHKA_435"]
-    assert all(item["case_id"] != "SRV2E-EODAG_1530" for item in registry["records"])
+    assert registry_result["accepted_case_count"] == 2
+    assert registry_result["accepted_project_count"] == 2
+    assert [item["case_id"] for item in registry["records"]] == [
+        "SRV2E-DISHKA_435", "SRV2E-EODAG_1530"
+    ]
+    assert any(item["case_id"] == "SRV2E-EODAG_1530" for item in registry["records"])
