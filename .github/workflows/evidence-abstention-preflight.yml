@@ -3419,7 +3419,7 @@ jobs:
           retention-days: 90
 
   geofileops-issue-648-reproduction:
-    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates) || (github.event_name == 'push' && (contains(github.event.head_commit.modified, 'research_candidates/evidence_abstention/reproduction/geofileops_issue_648/') || contains(github.event.head_commit.modified, '.github/workflows/evidence-abstention-preflight.yml'))) || (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'research/2026-11-16-followup-evidence-validation') }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates) || (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/research/')) || (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'research/2026-11-16-followup-evidence-validation') }}
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 60
