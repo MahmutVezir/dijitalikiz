@@ -175,3 +175,12 @@ This is not legal advice, formal legal review, legal clearance, SPDX certificati
 A complete candidate record has been prepared at [SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json](eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json). It records the pinned dataset row and source revisions, technical reproduction, project-lead-approved gold and E1/E2/E3 survivor sets, full researcher source exposure, the self-declared absence of prior pipeline/debug use, and the bounded documentary license-scope acknowledgement.
 
 The record's `acceptance_decision` is **proposed** and `final_acceptance.status` is **pending**. EODAG is not inserted into the accepted registry. Latest-head CI must run the structural case validator and fail-closed registry validation. No model execution is authorized.
+
+
+## Superseding case-record validation result — 21 November 2026
+
+The proposed EODAG record passed the v0.2 case-acceptance schema and deterministic cross-field validator. The no-inference preflight job on commit `f143be00ee6634a9c0838379ac88c93cc0674ded` succeeded: run [44894847180](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44894847180), job `136818188559`; the EODAG review-contract suite passed **5/5**. The same job confirmed the existing accepted registry is structurally valid and unchanged at **1 case / 1 upstream project (Dishka only)**.
+
+Research Validation also succeeded on the same branch head: run [44894847259](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44894847259), job `136818190862`: **477 passed, 6 skipped, 56 subtests passed**.
+
+The proposed EODAG case record remains `acceptance_decision=proposed`, `final_acceptance.status=pending`, and is not in the registry. **The only remaining EODAG-specific gate is the separate project-lead final YES/NO.** The overall study still has 13 readiness blockers; model loading, inference, fine-tuning and training remain unauthorized.
