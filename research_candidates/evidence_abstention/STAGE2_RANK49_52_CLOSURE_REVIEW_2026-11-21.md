@@ -94,3 +94,17 @@ A no-inference extraction workflow was drafted in the branch but could not be ex
 5. Recalculate the eligible distinct-project count only after these gates close. Do not lower any eligibility rule to reach the target count.
 
 **Phase 2 status: NOT CLOSED.** The verified work above is preserved; the remaining gates require either exact row evidence or explicit project-lead decisions.
+
+
+## Project-lead decisions recorded after the initial closure review — 21 November 2026
+
+The project lead subsequently approved the four-item disposition set and supplied candidate-specific prior pipeline/debug exposure declarations of `none` for GeoFileOps #649 and GeoPandas #3591.
+
+- **Rank 49 GeoFileOps #649:** strict implementation-mechanism gold and E3 ABSTAIN / E2 ABSTAIN / E1 ANSWER approved; prior pipeline/debug exposure none. Temporal and license/provenance/scope and final acceptance gates remain open.
+- **Rank 50 Lektor #1214:** exclusion from the current primary abstention sample approved due to immutable Stage 2 selector-integrity failure; no selector edits and no control-group assignment.
+- **Rank 51 music21 #1736:** conditional primary-sample exclusion approved only if the exact frozen row confirms the same type-transition disclosure in E3. Row authentication is still required; do not run Stage 2 before that check.
+- **Rank 52 GeoPandas #3591:** prior pipeline/debug exposure none; retain on hold pending exact row authentication and E3 suitability decision.
+
+The underlying project-lead decision record is `PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md`.
+
+**Phase 2 remains partially complete, not closed.** music21 and GeoPandas frozen rows remain unauthenticated. GeoFileOps' remaining temporal, license/provenance, scope and final acceptance gates are still open. No new case is accepted; the immutable cohort and accepted registry remain unchanged; inference remains unauthorized.
