@@ -107,12 +107,18 @@
     "distinct_from_proposed_dymos_project": true
   },
   "exposure": {
-    "prior_pipeline_debug_exposure": "pending_project_lead_self_declaration",
+    "prior_pipeline_debug_exposure": "none",
     "researcher_source_exposure": "full_for_issue_PR_exact_base_source_and_stage2_outputs",
-    "prior_pipeline_debug_exposure_gate": "open",
+    "prior_pipeline_debug_exposure_gate": "closed_on_project_lead_self_report",
+    "decision_date": "2026-11-21",
+    "decision_record_path": "research_candidates/evidence_abstention/pyfar_721/PROJECT_LEAD_EXPOSURE_DECISION_PYFAR_721_2026-11-21.md",
+    "decision_record_git_blob_sha1": "184e2b32c61e0cebfa1a69cd1721a90f1aba92c4",
+    "decision_record_commit": "c4f2633ca2270c2682f12290cb3e07f5c800c285",
+    "evidence_class": "direct_project_lead_self_report_in_conversation",
+    "independent_witnessed_or_audited": false,
     "blind_adjudication_claimed": false,
     "inter_rater_claimed": false,
-    "verification_limit": "No project-lead declaration has yet been supplied for whether this candidate's issue, source, selectors, or reproducer were used to debug/tune the shared pipeline before prospective validation."
+    "verification_limit": "The prior pipeline/debug exposure declaration is a direct self-report; it was not independently witnessed or externally audited. Full researcher source exposure remains disclosed."
   },
   "boundaries": {
     "final_case_acceptance": "not_accepted",
