@@ -94,3 +94,34 @@ The exact frozen row, problem statement, base commit and selectors have not yet 
 The project lead has not supplied a prior pipeline/debug exposure declaration for this candidate.
 
 Decision record: `PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md`.
+
+
+## 9. Exact frozen-row authentication and conditional-exclusion resolution — 21 November 2026
+
+The exact pinned dataset row is now authenticated by the no-inference workflow run 44924570231, job 136907864713, artifact 14715535728.
+
+- Dataset: PrimeIntellect/SWE-rebench-V2-Filtered-Verified, revision fb9aa226b2ce37c708ea7732e7b980abacdadb67.
+- Whole Parquet SHA-256: 7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9; 226,272,977 bytes; 6,272 rows.
+- Exact discovered row ID: cuthbertlab__music21-1736; repository cuthbertLab/music21; base e05fc53dfef7b2c9ac974c0cacb8b85e9c4d4605.
+- Dataset created_at: 2024-10-28 03:20:50; dataset license metadata: BSD-3-Clause.
+- Canonical row SHA-256: 7bdd5e62281c92e750afb6e34066a28ff429b2bc45e9cc31a0ada13307522db3.
+- Frozen problem_statement SHA-256: 06eac6d4bb2e84cb1ecbdb67507954a2e8eb5b531bb19d4a82005ba70f471432.
+- Frozen FAIL_TO_PASS count: 1; selector: music21/stream/tests.py::Test::testSplitByQuarterLengths.
+
+The authenticated E3 packet contains the same explicit causal disclosure as upstream issue #1735: the st value is a _SplitTuple inside splitAtQuarterLength, but is an ordinary tuple when returned to splitByQuarterLengths, causing spannerList access to raise AttributeError. The project-lead-approved condition is therefore **satisfied**.
+
+**Final primary-sample disposition: EXCLUDED.** Do not run Stage 2 for this row. Do not assign it to a control group. This does not imply that the upstream patch is technically ineffective.
+
+Patch-scope confirmation from the authenticated frozen row:
+- The target stream correction is in music21/stream/base.py, with supporting music21/base.py tuple semantics and a single frozen regression selector.
+- The full PR patch also includes separate truthiness changes in music21/figuredBass/resolution.py, in addition to lint/config/documentation changes. Preserve this mixed-scope caveat; do not fold the figured-bass behavior into the issue-specific gold.
+- Frozen test patch SHA-256: 847ea373fba70f0e07cebb7b8a9ae8b9d9b163a961d07a7441a579d0f1d65b99.
+- Full PR patch SHA-256: 180edff926152a2a62781ad458de19d7f04b389760e2c0563808f3bf2a97976f.
+
+Artifact integrity:
+- Artifact URL: https://github.com/MahmutVezir/dijitalikiz/actions/runs/44924570231/artifacts/14715535728
+- GitHub artifact SHA-256: 1abca7d09dfcbf4c4ba773ab87fb21225ec8f4208f44f2f7fbb19b613352459b.
+- Independently downloaded ZIP SHA-256: identical; ZIP CRC passed; all 6 internal SHA256SUMS entries passed.
+- The workflow used only the pinned Parquet metadata/row extraction; no upstream source checkout, package installation, upstream test/build, model loading, inference, fine-tuning or training.
+
+The project-lead prior pipeline/debug exposure declaration for music21 remains undeclared; this does not change the E3-based primary-sample exclusion.
