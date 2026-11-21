@@ -177,3 +177,25 @@ Full report and artifact hashes are recorded in:
 **Updated rank 49 disposition:** exact package metadata/notice inventory complete; temporal-exposure acknowledgement complete with residual uncertainty. Manual legal/compatibility determination is not provided by the automated inventory. Project-lead bounded research-use/dataset attribution acknowledgement, schema-conformant case record, fail-closed validation and separate final YES/NO acceptance remain open. Rank 49 is still not accepted; no registry inclusion or inference is authorized.
 
 **Phase 2 remains partially complete, not closed.** Rank 52 GeoPandas #3591 remains on HOLD after project-lead E3=ABSTAIN; no Stage 2 is authorized. No later-ranked candidate is advanced until rank 49's remaining gates and rank 52's hold are resolved under the frozen sequential rule.
+
+## GeoFileOps #649 proposed case record — fail-closed validation result — 21 November 2026
+
+The project lead's approved bounded scope, temporal-exposure acknowledgement, strict gold/tier decisions and prior-exposure declaration are assembled in the proposed v0.2 case record:
+
+- Case ID: `SRV2E-GEOFILEOPS_649`
+- Record: `research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_PROPOSED_V0_2_2026-11-21.json`
+- Record content SHA-256: `3677b3651ac79742f30f76c982bd829734cc1e541402a37f65642dec4f771e56`
+- Git blob SHA-1: `8973fbbe3fd6834a18669735eae0a482dda795bf`
+- Acceptance decision: **proposed**.
+
+GitHub Actions validation:
+- Run 44930310066, job 136925280030 — **SUCCESS**.
+- Result: `structurally_complete_candidate`; zero blockers.
+- Evidence sets are nested: E3 2 items, E2 8 items, E1 12 items.
+- Surviving mechanism sets are nested E1 ⊂ E2 ⊂ E3.
+- The candidate is not in the accepted registry; `eligible_for_registry=false` and `inference_authorized=false`.
+- Validation record: `GEOFILEOPS_649_CASE_RECORD_VALIDATION_2026-11-21.md`.
+
+**Remaining decision:** the separate final project-lead YES/NO acceptance is still pending. Until an explicit YES is recorded with a timestamped and hashed final decision artifact, the case remains `proposed` and must not be added to the accepted registry. Structural validation is not final case acceptance, legal clearance, or inference authorization.
+
+Rank 52 GeoPandas #3591 remains on HOLD after E3=ABSTAIN; Stage 2 remains unauthorized. Phase 2 is still partially complete and not closed.
