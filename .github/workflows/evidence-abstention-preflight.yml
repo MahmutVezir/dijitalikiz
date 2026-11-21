@@ -10,7 +10,9 @@ on:
       - "research_candidates/evidence_abstention/implementation/**"
       - "research_candidates/evidence_abstention/numpyro_1916/**"
       - "research_candidates/evidence_abstention/dymos_1166/**"
+      - "research_candidates/evidence_abstention/eodag_1530/**"
       - "tests/test_dymos_1166_proposed_packet_set.py"
+      - "tests/test_eodag_1530_stage3_packet_set.py"
       - "tests/test_numpyro_1916_proposed_packet_set.py"
       - "tests/test_numpyro_1916_license_and_independence_records.py"
       - "tests/test_build_numpyro_1916_blinded_review_packets.py"
@@ -40,7 +42,9 @@ on:
       - "research_candidates/evidence_abstention/implementation/**"
       - "research_candidates/evidence_abstention/numpyro_1916/**"
       - "research_candidates/evidence_abstention/dymos_1166/**"
+      - "research_candidates/evidence_abstention/eodag_1530/**"
       - "tests/test_dymos_1166_proposed_packet_set.py"
+      - "tests/test_eodag_1530_stage3_packet_set.py"
       - "tests/test_numpyro_1916_proposed_packet_set.py"
       - "tests/test_numpyro_1916_license_and_independence_records.py"
       - "tests/test_build_numpyro_1916_blinded_review_packets.py"
@@ -131,6 +135,17 @@ jobs:
           echo "Dymos #1166 review-contract test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
           exit "$test_status"
 
+      - name: Unit-test EODAG #1530 nested packet, provenance, independence and license-scope contracts
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/test_eodag_1530_stage3_packet_set.py > eodag-1530-review-tests.log 2>&1
+          test_status=$?
+          cat eodag-1530-review-tests.log
+          echo "EODAG #1530 review-contract test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
+
       - name: Unit-test fail-to-pass selector runner contract
         if: always()
         shell: bash
@@ -186,6 +201,7 @@ jobs:
             operational-packet-tests.log
             numpyro-1916-review-tests.log
             dymos-1166-review-tests.log
+            eodag-1530-review-tests.log
             v0.2-exploratory-tests.log
             v0.2-design-tests.log
             swe-rebench-v2-readiness-report.json
