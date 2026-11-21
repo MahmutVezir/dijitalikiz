@@ -1,0 +1,19 @@
+{
+  "packet_id": "GEOFILEOPS_649_E3_V0_1",
+  "case_id": "SRV2E-GEOFILEOPS_649",
+  "diagnostic_granularity": "implementation_mechanism_root_cause",
+  "evidence_boundary": "Frozen problem statement and canonical row only; no source, reproduction logs or PR patch.",
+  "evidence_ids": [
+    "ISSUE_REPORT",
+    "DATASET_ROW"
+  ],
+  "surviving_mechanism_ids": [
+    "G1_MISSING_NONE_TO_DESTINATION_STEM_FALLBACK",
+    "A1_COPY_LAYER_ONLY",
+    "A2_APPEND_TO_ONLY",
+    "A3_GET_DEFAULT_LAYER_HELPER_WRONG",
+    "A4_DRIVER_OR_FORMAT_SPECIFIC_BEHAVIOR"
+  ],
+  "tier_decision": "ABSTAIN",
+  "rationale": "The frozen statement names both APIs, dst_layer and the filename-stem contract, but does not disclose the missing call to get_default_layer(dst) or the implementation call chain. The strict gold target is the implementation mechanism."
+}
