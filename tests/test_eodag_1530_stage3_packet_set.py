@@ -43,7 +43,7 @@ def test_eodag_1530_packet_set_is_hash_valid_and_strictly_nested():
     assert result["model_inference_performed"] is False
 
 
-def test_eodag_1530_provenance_matches_packet_set_and_human_decision_is_pending():
+def test_eodag_1530_provenance_matches_packet_set_and_records_project_lead_decision():
     packet_set = json.loads(
         (EODAG / "OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json")
         .read_text(encoding="utf-8")
@@ -58,8 +58,23 @@ def test_eodag_1530_provenance_matches_packet_set_and_human_decision_is_pending(
         .relative_to(ROOT)
     )
     assert provenance["packet_set_sha256"] == packet_set["packet_set_sha256"]
-    assert provenance["semantic_review"]["adjudication_completed"] is False
-    assert provenance["semantic_review"]["project_lead_decision"] == "pending"
+    semantic = provenance["semantic_review"]
+    assert semantic["adjudication_completed"] is True
+    assert semantic["project_lead_decision"] == "approved"
+    assert semantic["approved_tier_outcomes"] == {
+        "E3": "ABSTAIN — issue narrative alone does not establish exact pinned parser output or fixture path.",
+        "E2": "ABSTAIN — exact pinned YAML parse output is visible, but the packaged-template fixture/loading path is not; A2 and A3 remain plausible.",
+        "E1": "ANSWER — active test-fixture source connects packaged template loading via yaml.safe_load to provider-configuration generation; only G1 survives under the project lead's source-aware adjudication.",
+    }
+    assert semantic["approved_surviving_mechanisms"] == {
+        "E3": ["G1", "A1", "A2", "A3"],
+        "E2": ["G1", "A2", "A3"],
+        "E1": ["G1"],
+    }
+    assert semantic["independent_blinded_validation"] == "not_claimed"
+    assert semantic["prior_pipeline_debug_exposure"] == "pending_project_lead_self_declaration"
+    assert semantic["final_case_acceptance"] == "pending_remaining_mandatory_gates"
+    assert semantic["decision_record"]["sha256"] == "b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e"
     assert provenance["structural_validation"]["semantic_sufficiency_assessed"] is False
     assert provenance["structural_validation"]["model_inference_performed"] is False
 
