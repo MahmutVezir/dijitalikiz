@@ -55,10 +55,13 @@
     "note": "Issue #7662 is not an independent upstream project or additional case. Preserve it as related issue-family context; at most one SkyPilot case may be included."
   },
   "exposure": {
-    "prior_pipeline_debug_exposure": "pending_project_lead_declaration",
+    "prior_pipeline_debug_exposure": "none",
     "researcher_source_exposure": "full_for_issue_PR_exact_source_selector_and_stage2_artifact",
     "blinded_adjudication_claimed": false,
-    "inter_rater_claimed": false
+    "inter_rater_claimed": false,
+    "project_lead_exposure_decision_record": "research_candidates/evidence_abstention/SKYPILOT_5981_PROJECT_LEAD_EXPOSURE_AND_SAMPLE_DISPOSITION_2026-11-21.md",
+    "evidence_class": "direct_project_lead_self_report_not_independently_witnessed_or_audited",
+    "sample_disposition": "excluded_from_primary_three_tier_sample_by_project_lead_decision_2026-11-21"
   },
   "boundaries": {
     "final_case_acceptance": "not_accepted",
