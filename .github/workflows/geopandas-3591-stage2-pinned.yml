@@ -36,6 +36,8 @@ jobs:
       BASE_GDF_BLOB_SHA1: "1a607cbb5baea0c3ddc50b03042734c44b7945da"
       FIX_GDF_BLOB_SHA1: "243d98759878754975e1b8b1732cfb503dd1bf0a"
       FIX_TEST_BLOB_SHA1: "61eac57b37d9b0550a8b7d97f603a03d82725d28"
+      BASE_CHANGELOG_BLOB_SHA1: "f3cc885587583b6badcf8cb67e9303d3ac2aae04"
+      FIX_CHANGELOG_BLOB_SHA1: "56554d4f7a07cddd51abaf9170dfa08462e9f1ac"
       LOCK_FILE: "research_candidates/evidence_abstention/reproduction/geopandas_3591/requirements.lock"
       REPRODUCER: "research_candidates/evidence_abstention/reproduction/geopandas_3591/reproduce_geometry_nan_case.py"
 
@@ -74,9 +76,12 @@ jobs:
           test "$(git -C upstream-geopandas rev-parse "$BASE_SHA":geopandas/geodataframe.py)" = "$BASE_GDF_BLOB_SHA1"
           test "$(git -C upstream-geopandas rev-parse "$FIX_SHA":geopandas/geodataframe.py)" = "$FIX_GDF_BLOB_SHA1"
           test "$(git -C upstream-geopandas rev-parse "$FIX_SHA":geopandas/tests/test_geodataframe.py)" = "$FIX_TEST_BLOB_SHA1"
+          test "$(git -C upstream-geopandas rev-parse "$BASE_SHA":CHANGELOG.md)" = "$BASE_CHANGELOG_BLOB_SHA1"
+          test "$(git -C upstream-geopandas rev-parse "$FIX_SHA":CHANGELOG.md)" = "$FIX_CHANGELOG_BLOB_SHA1"
 
           git -C upstream-geopandas diff --name-only "$BASE_SHA" "$FIX_SHA" | LC_ALL=C sort > reproduction-evidence/upstream-changed-paths.txt
           cat > reproduction-evidence/expected-upstream-changed-paths.txt <<'EOF'
+          CHANGELOG.md
           geopandas/geodataframe.py
           geopandas/tests/test_geodataframe.py
           EOF
@@ -98,6 +103,9 @@ jobs:
               "base_geodataframe_blob_sha1": os.environ["BASE_GDF_BLOB_SHA1"],
               "fixed_geodataframe_blob_sha1": os.environ["FIX_GDF_BLOB_SHA1"],
               "fixed_regression_test_blob_sha1": os.environ["FIX_TEST_BLOB_SHA1"],
+              "base_changelog_blob_sha1": os.environ["BASE_CHANGELOG_BLOB_SHA1"],
+              "fixed_changelog_blob_sha1": os.environ["FIX_CHANGELOG_BLOB_SHA1"],
+              "changelog_change_classification": "release_note_only; records GeoPandas 1.1.1 fix #3591; not runtime/test code",
               "base_to_fix_patch_sha256": os.environ["patch_sha256"],
               "changed_paths": Path("reproduction-evidence/upstream-changed-paths.txt").read_text().splitlines(),
               "upstream_source_or_patch_saved_to_artifact": False,
