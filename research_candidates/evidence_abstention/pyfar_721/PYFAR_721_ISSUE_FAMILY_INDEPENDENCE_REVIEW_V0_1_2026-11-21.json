@@ -1,0 +1,123 @@
+{
+  "schema_version": "0.1-v02-candidate-independence-review",
+  "review_date": "2026-11-21",
+  "candidate": {
+    "case_id": "SRV2E-PYFAR_721",
+    "repository_full_name": "pyfar/pyfar",
+    "issue_url": "https://github.com/pyfar/pyfar/issues/721",
+    "fix_pr_url": "https://github.com/pyfar/pyfar/pull/722",
+    "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "dataset_instance_id": "pyfar__pyfar-722",
+    "cohort_rank": 90,
+    "cohort_size": 96
+  },
+  "repository_identity": {
+    "canonical_upstream_repository": "pyfar/pyfar",
+    "exact_base": "648dda4c60c5a6f74acf335f7808c590c9d23929",
+    "fixed_revision": "a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e",
+    "root_license": "MIT",
+    "root_license_blob_sha1": "430184952c6fcb292ee01cb114bb9c39f32f78ff",
+    "changed_paths": [
+      "pyfar/dsp/dsp.py",
+      "tests/test_dsp_normalize.py"
+    ]
+  },
+  "sampling_unit": {
+    "unit": "canonical_upstream_repository",
+    "maximum_accepted_cases_per_upstream_project": 1,
+    "registry_contains_candidate": false
+  },
+  "related_issue_family": [
+    {
+      "reference": "https://github.com/pyfar/pyfar/issues/323",
+      "kind": "prior_feature_implementation",
+      "title": "Feature/normalize function",
+      "created_at_utc": "2022-06-28T15:31:47Z",
+      "disposition": "Historical normalization-function implementation and tests; not the later energy/power target-scaling defect."
+    },
+    {
+      "reference": "https://github.com/pyfar/pyfar/issues/338",
+      "kind": "prior_feature_implementation",
+      "title": "feature/energy, power and rms function",
+      "created_at_utc": "2022-08-10T15:17:12Z",
+      "disposition": "Historical addition of energy/power/RMS measurement functions; not the later normalize scaling defect."
+    },
+    {
+      "reference": "https://github.com/pyfar/pyfar/issues/384",
+      "kind": "broad_complex_signal_roadmap",
+      "title": "Roadmap to complex signals",
+      "created_at_utc": "2022-11-10T14:45:06Z",
+      "disposition": "Broad roadmap mentioning normalize and energy/power/RMS support for complex data; no same energy/power target-scaling defect identified."
+    },
+    {
+      "reference": "https://github.com/pyfar/pyfar/issues/267",
+      "kind": "broad_feature_roadmap",
+      "title": "Feature Roadmap",
+      "created_at_utc": "2022-01-28T12:21:22Z",
+      "disposition": "Roadmap links earlier normalize and energy/power/RMS feature work; background lineage, not a duplicate issue."
+    },
+    {
+      "reference": "https://github.com/pyfar/pyfar/issues/721",
+      "kind": "target_defect",
+      "title": "dsp.normalize's reference_methods power and energy behave unexpectedly",
+      "created_at_utc": "2024-11-11T11:09:59Z",
+      "disposition": "Single target defect."
+    },
+    {
+      "reference": "https://github.com/pyfar/pyfar/pull/722",
+      "kind": "fix",
+      "title": "Normalization: force energetic properties to match the target after normalization",
+      "created_at_utc": "2024-11-15T08:33:08Z",
+      "merged_at_utc": "2024-12-11T09:11:32Z",
+      "disposition": "Fix for #721; same repository sampling unit."
+    }
+  ],
+  "independence_disposition": {
+    "status": "prepared_no_duplicate_issue_identified_subject_to_project_lead_review",
+    "exact_duplicate_found": false,
+    "related_predecessors_found": [
+      323,
+      338
+    ],
+    "broader_roadmap_references": [
+      267,
+      384
+    ],
+    "one_case_per_repository_rule_preserved": true,
+    "note": "The older issues implement or discuss the underlying normalize/energy/power APIs. They do not describe the issue-721 defect where the requested energetic target is not achieved because the normalization uses an unrooted energetic ratio."
+  },
+  "dataset_identity": {
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "instance_id": "pyfar__pyfar-722",
+    "row_sha256": "82444bd1dcaa0c52bcac4a5c0b76efc20ed0ad26606de1edc338265843aca6bd",
+    "dataset_created_at": "2024-11-15 08:33:08",
+    "upstream_pr_created_at_utc": "2024-11-15T08:33:08Z",
+    "timestamp_match": "reported exact match to PR creation time; issue itself predates PR",
+    "fail_to_pass_selector_count": 23,
+    "selectors_are_independent_cases": false
+  },
+  "cross_project_independence": {
+    "accepted_registry_repositories": [
+      "reagento/dishka",
+      "CS-SI/eodag"
+    ],
+    "distinct_from_accepted_projects": true,
+    "distinct_from_proposed_dymos_project": true
+  },
+  "exposure": {
+    "prior_pipeline_debug_exposure": "pending_project_lead_self_declaration",
+    "researcher_source_exposure": "full_for_issue_PR_exact_base_source_and_stage2_outputs",
+    "prior_pipeline_debug_exposure_gate": "open",
+    "blind_adjudication_claimed": false,
+    "inter_rater_claimed": false,
+    "verification_limit": "No project-lead declaration has yet been supplied for whether this candidate's issue, source, selectors, or reproducer were used to debug/tune the shared pipeline before prospective validation."
+  },
+  "boundaries": {
+    "final_case_acceptance": "not_accepted",
+    "registry_inclusion": false,
+    "inference_authorized": false,
+    "legal_clearance": false
+  }
+}
