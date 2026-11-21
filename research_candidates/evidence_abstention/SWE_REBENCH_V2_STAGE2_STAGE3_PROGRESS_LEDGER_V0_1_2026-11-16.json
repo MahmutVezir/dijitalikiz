@@ -2832,7 +2832,7 @@
       "stage2_status": "passed_exact_dataset_selector_base_fail_fixed_pass_latest_branch_repeat",
       "stage2_workflow_job_id": 134137813769,
       "stage2_evidence_note": "Exact row and dependency-license inventory artifact saved. All 23 selectors fail on buggy base and pass on exact fixed revision (23/23 in both directions).",
-      "stage3_status": "stage2_passed; source_aware_gold_and_E1_E2_E3_advisory_proposal_prepared_not_approved; issue_family_review_prepared_not_project_lead_approved; prior_pipeline_debug_exposure_declared_none_gate_closed_on_self_report; researcher_source_exposure_full; dependency_native_notice_and_dataset_card_provenance_review_open; bounded_scope_acknowledgement_pending; case_record_and_final_acceptance_pending",
+      "stage3_status": "stage2_passed; source_aware_gold_G1_and_E3_E2_E1_decisions_project_lead_approved_2026_11_21; issue_family_review_prepared_not_project_lead_approved; prior_pipeline_debug_exposure_declared_none_gate_closed_on_self_report; researcher_source_exposure_full; dependency_native_notice_and_dataset_card_provenance_review_open; bounded_scope_acknowledgement_pending; case_record_and_final_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44331092872,
@@ -2877,7 +2877,7 @@
         "E3": "ABSTAIN",
         "E2": "ABSTAIN",
         "E1": "ANSWER",
-        "tier_decision_status": "advisory_proposal_only_not_project_lead_approved",
+        "tier_decision_status": "project_lead_approved_2026_11_21",
         "E3_survivors": [
           "G1",
           "A1",
@@ -2937,7 +2937,35 @@
         "regression_test_path": "tests/test_pyfar_721_exposure_decision.py",
         "regression_test_commit": "249b7c6d8c3542e13b2da6e8ed7efa61a4290416"
       },
-      "next_required_gate": "Project-lead source-aware G1 and E3/E2/E1 decision; project-lead review of the prepared issue-family independence disposition; bounded research-scope acknowledgement after exact pinned dataset-card, dependency/native component and notice/provenance review; then prepare a complete proposed case record, run fail-closed validation, and obtain a separate final YES/NO case decision. No inference, fine-tuning or training."
+      "next_required_gate": "Project-lead review of the prepared issue-family independence disposition; complete exact pinned dataset-card README/bytes provenance, canonical dependency-license and bundled/native notice reviews; obtain bounded research-scope acknowledgement only after those reviews; complete the proposed case record and fail-closed validation; then obtain a separate final YES/NO case decision. No inference, fine-tuning or training.",
+      "stage3_project_lead_gold_tier_decision": {
+        "decision": "approved",
+        "decision_date": "2026-11-21",
+        "decision_maker_role": "student_project_lead",
+        "approved_gold": "ENERGY_POWER_TARGET_AND_REFERENCE_NOT_SQUARE_ROOTED",
+        "approved_tiers": {
+          "E3": "ABSTAIN",
+          "E2": "ABSTAIN",
+          "E1": "ANSWER"
+        },
+        "decision_record_path": "research_candidates/evidence_abstention/pyfar_721/PROJECT_LEAD_GOLD_TIER_DECISION_PYFAR_721_2026-11-21.md",
+        "decision_record_commit": "acc3b8ef0c124bef091ac28239f28690ac0d08ff",
+        "decision_record_git_blob_sha1": "f679bd55823f6331d5336095595478a8daa09295",
+        "scope": "Gold mechanism applies to the energy/power normalization branches only; RMS is not asserted defective. Approval does not constitute final case acceptance or authorize inference.",
+        "outstanding_gates": [
+          "project_lead_issue_family_independence_review",
+          "pinned_dataset_card_readme_and_bytes_provenance",
+          "canonical_dependency_license_review",
+          "bundled_native_component_and_notice_review",
+          "bounded_research_scope_acknowledgement_after_reviews",
+          "complete_proposed_case_record_and_fail_closed_validation",
+          "separate_final_project_lead_yes_no_case_acceptance"
+        ],
+        "registry_inclusion": false,
+        "accepted_case_count_unchanged": 2,
+        "accepted_project_count_unchanged": 2,
+        "inference_authorized": false
+      }
     },
     {
       "cohort_rank": 91,
@@ -4033,5 +4061,23 @@
       "training_performed": false
     },
     "scope": "Candidate-specific prior pipeline/debug exposure gate only. PyFar's proposed gold/tier, issue-family review, license/data-use scope, dependency/native notice and card provenance checks, proposed case record, and separate final acceptance remain open. Accepted registry unchanged."
+  },
+  "pyfar_721_gold_tier_decision": {
+    "decision": "approved",
+    "decision_date": "2026-11-21",
+    "candidate": "pyfar/pyfar issue #721 / fix PR #722",
+    "gold": "ENERGY_POWER_TARGET_AND_REFERENCE_NOT_SQUARE_ROOTED",
+    "tiers": {
+      "E3": "ABSTAIN",
+      "E2": "ABSTAIN",
+      "E1": "ANSWER"
+    },
+    "decision_record_path": "research_candidates/evidence_abstention/pyfar_721/PROJECT_LEAD_GOLD_TIER_DECISION_PYFAR_721_2026-11-21.md",
+    "decision_record_commit": "acc3b8ef0c124bef091ac28239f28690ac0d08ff",
+    "decision_record_git_blob_sha1": "f679bd55823f6331d5336095595478a8daa09295",
+    "scope_boundary": "Energy/power branches only; no defect claim for RMS; selector count is not a count of independent cases.",
+    "final_case_acceptance": "not_accepted",
+    "registry_inclusion": false,
+    "inference_authorized": false
   }
 }
