@@ -1,0 +1,121 @@
+{
+  "schema_version": "0.1-v02-candidate-independence-review",
+  "review_date": "2026-11-21",
+  "candidate": {
+    "case_id": "SRV2E-QUTIP_2646",
+    "repository_full_name": "qutip/qutip",
+    "issue_url": "https://github.com/qutip/qutip/issues/2646",
+    "fix_pr_url": "https://github.com/qutip/qutip/pull/2694",
+    "dataset_instance_id": "qutip__qutip-2694",
+    "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "dataset_row_sha256": "16ed66f7a865915697f5fbed540a56e3017ccfe460f3d5bc94d5918a63e9c1ee",
+    "exact_buggy_base": "b821b1aa8c98a00f58014e7ec02cc9cbef701ce4",
+    "exact_fixed_pr_head": "61df3c7bccf474aba393940581ffbbeccf5da366"
+  },
+  "sampling_unit": {
+    "unit": "canonical_upstream_repository",
+    "maximum_accepted_cases_per_upstream_project": 1,
+    "registry_contains_candidate": false
+  },
+  "issue_and_fix": {
+    "issue_number": 2646,
+    "issue_created_at_utc": "2025-03-05T18:35:23Z",
+    "title": "Instantiating a qt.QobjEvo with a qt.coefficient",
+    "pr_number": 2694,
+    "pr_created_at_utc": "2025-05-15T15:48:33Z",
+    "pr_merged": true,
+    "merge_commit": "08f5fdee245271d2cf26a729c6555348b5350fde",
+    "dataset_row_created_at_utc": "2025-05-15T15:48:33Z",
+    "issue_comments_retrieved": 3,
+    "issue_comment_findings": [
+      {
+        "date_or_id": "issuecomment-2702523263",
+        "author": "QuTiP maintainer",
+        "summary": "States that Coefficient can be used to build QobjEvo and that ignoring args is a bug; provides a workaround using QobjEvo.arguments().",
+        "model_visible_in_dataset_problem_statement": false
+      },
+      {
+        "date_or_id": "issuecomment-2731662996",
+        "author": "QuTiP maintainer",
+        "summary": "Explicitly identifies that coefficient() does not update args and provides a direct coefficient(existing, args=...) minimal example.",
+        "model_visible_in_dataset_problem_statement": false
+      }
+    ],
+    "pr_review_comments_retrieved": 2,
+    "pr_review_findings": [
+      {
+        "date_or_id": "pullrequestreview-2845232240",
+        "author": "pmenczel",
+        "summary": "Suggests asserting coeff2(0) == 2; the final regression test uses this expectation."
+      },
+      {
+        "date_or_id": "pullrequestreview-2846832659",
+        "author": "pmenczel",
+        "summary": "Approves the PR."
+      }
+    ],
+    "scope_caveat": "Original issue body demonstrates QobjEvo construction but contains args={\"g:2\"}, a set literal rather than a mapping. The frozen selector and verified Stage 2 independent reproducer test direct coefficient(existing_coefficient, args={...}) behavior. Public issue comments connect that narrower path to the reported QobjEvo behavior. Preserve this prompt/selector scope discrepancy."
+  },
+  "issue_family": {
+    "targeted_searches": [
+      "coefficient args replace_arguments",
+      "QobjEvo args coefficient stale",
+      "coefficient(existing_coefficient, args="
+    ],
+    "exact_duplicate_surfaced": false,
+    "related_api_family_found": true,
+    "finding": "Existing Coefficient.replace_arguments support and QobjEvo coefficient construction form the related API family. No second independent issue/PR candidate was identified in the targeted search. This is not an exhaustive repository-wide historical issue audit.",
+    "disposition": "one candidate and one upstream sampling unit; no duplicate case added",
+    "status": "prepared_subject_to_project_lead_review"
+  },
+  "stage2": {
+    "latest_run_id": 44500943717,
+    "latest_job_id": 135481445830,
+    "artifact_id": 14518471928,
+    "artifact_sha256": "ecbc4ff3f3640f15603020331bffb177d4a1c51282b66358c11a3a6078c673cc",
+    "integrity": {
+      "independently_downloaded": true,
+      "outer_sha256_recomputed": true,
+      "outer_sha256_matches_github": true,
+      "zip_crc": "passed",
+      "internal_sha256_manifest": "14/14 passed"
+    },
+    "dataset_selector": "qutip/tests/core/test_coefficient.py::test_coefficient_update_args",
+    "selector_base": "expected failure: value 1 instead of 2",
+    "selector_fixed": "pass",
+    "verified_reproducer_snapshot_blob": "e395c9ef6fc14e28c522ce25a77cd460ddb4b0a4",
+    "verified_reproducer_snapshot_tests": 1,
+    "reproducer_base": "expected failure: value 1 instead of 2",
+    "reproducer_fixed": "pass",
+    "expanded_followup_file_blob": "63b63ee0bb40eb40410764ef1d647e6fbf3637cd",
+    "expanded_followup_test_count": 3,
+    "expanded_followup_ci": "not yet verified",
+    "latest_workflow_condition_update_commit": "18c5d82f1b7e7e5acd36514623b011bb381a14f1"
+  },
+  "exposure": {
+    "prior_pipeline_debug_exposure": "pending_project_lead_declaration",
+    "researcher_source_exposure": "full_for_issue_comments_PR_diff_exact_buggy_fixed_source_and_stage2_artifacts",
+    "blinded_adjudication_claimed": false,
+    "inter_rater_claimed": false,
+    "note": "Issue comments explicitly reveal the coefficient factory diagnosis; they are excluded from the frozen dataset problem_statement but counted in researcher exposure."
+  },
+  "temporal_exposure": {
+    "status": "chronology_screen_prepared_project_lead_acknowledgement_pending",
+    "pinned_model": "Qwen/Qwen2.5-3B-Instruct",
+    "pinned_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "official_release": "2024-09-19",
+    "issue_created_at_utc": "2025-03-05T18:35:23Z",
+    "pr_created_at_utc": "2025-05-15T15:48:33Z",
+    "interpretation": "Issue/PR-specific exposure is less likely by chronology; pre-existing QuTiP source exposure and exact training-data cutoff remain unresolved."
+  },
+  "boundaries": {
+    "gold_tier_project_lead_approval": "pending",
+    "prompt_selector_scope_reconciliation": "pending_project_lead_review",
+    "prior_pipeline_debug_exposure": "pending_project_lead_declaration",
+    "temporal_exposure_acknowledgement": "pending",
+    "final_case_acceptance": "not_accepted",
+    "registry_inclusion": false,
+    "legal_clearance": false,
+    "inference_authorized": false
+  }
+}
