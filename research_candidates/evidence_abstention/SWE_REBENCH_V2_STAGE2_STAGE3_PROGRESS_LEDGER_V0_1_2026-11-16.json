@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T18:33:48Z",
+  "generated_at_utc": "2026-11-21T18:55:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -2695,7 +2695,7 @@
       "stage3_status": "gold_and_E3_E2_E1_semantic_tiers_project_lead_approved;source_packets_frozen;Stage2_technical_reproduction_passed;candidate_HOLD_pending_final_case_acceptance",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "next_required_gate": "Separate final project-lead YES/NO decision on case acceptance after review of Stage 2 artifact and remaining documentary/license-scope conditions. Stage 2 success does not grant registry inclusion or model-inference authorization.",
+      "next_required_gate": "Resolve publication/redistribution scope using the license/provenance audit, then make a separate project-lead final case-acceptance decision. No inference authorization follows from Stage 2.",
       "stage3_project_lead_prior_pipeline_debug_exposure": "none",
       "stage3_project_lead_disposition": {
         "decision_maker_role": "student_project_lead",
@@ -2888,6 +2888,32 @@
         "model_loading_performed": false,
         "model_inference_performed": false,
         "fine_tuning_or_training_performed": false
+      },
+      "license_provenance_audit": {
+        "status": "completed_limited_audit_publication_redistribution_clearance_not_established",
+        "audit_report_path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_LICENSE_AND_PROVENANCE_AUDIT_2026-11-21.md",
+        "audit_report_commit": "17520167f0bdb240ac4e54b2914e70115be39507",
+        "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+        "dataset_declared_license": "CC-BY-4.0",
+        "source_row_license_field": "BSD-3-Clause",
+        "upstream_geopandas_license": "BSD-3-Clause",
+        "upstream_license_file_blob_sha1": "028603be2080134aa4817ed691fec3f449ffa609",
+        "row_audit_artifact_id": 14715535728,
+        "row_audit_artifact_sha256": "1abca7d09dfcbf4c4ba773ab87fb21225ec8f4208f44f2f7fbb19b613352459b",
+        "row_audit_artifact_contains_full_canonical_row_patch_and_test_patch": true,
+        "e1_e2_comment_snapshots_include_verbatim_user_generated_bodies": true,
+        "explicit_license_grant_for_issue_pr_comments_recorded": false,
+        "stage2_execution_artifact_id": 14719339097,
+        "stage2_execution_artifact_sha256": "eda44a04658c9250e4fa559c824a512ec4a91e7ff3f8595db0379db9c9ecd41e",
+        "stage2_artifact_contains_software_source_or_dependency_binaries": false,
+        "pinned_dependency_count": 18,
+        "dependency_lock_has_distribution_hashes": false,
+        "dependency_lock_has_spdx_license_ids": false,
+        "dependency_spdx_sbom_present": false,
+        "bundled_native_dependency_licenses_audited": false,
+        "public_redistribution_clearance": "not_established",
+        "final_case_acceptance": "not_accepted",
+        "model_inference_performed": false
       }
     },
     {
@@ -6562,5 +6588,19 @@
       "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44936142633",
       "artifact_integrity": "outer_digest_matches;zip_crc_pass;17_of_17_internal_sha256_pass"
     }
+  },
+  "latest_geopandas_3591_license_provenance_audit": {
+    "date": "2026-11-21",
+    "status": "limited_audit_completed_publication_redistribution_clearance_not_established",
+    "report_path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_LICENSE_AND_PROVENANCE_AUDIT_2026-11-21.md",
+    "report_commit": "17520167f0bdb240ac4e54b2914e70115be39507",
+    "critical_findings": [
+      "Dataset Hub card declares CC BY 4.0; frozen source row license field and upstream GeoPandas repository declare BSD-3-Clause; these scopes must not be conflated.",
+      "Frozen row-audit artifact contains full canonical row including patch and test_patch diffs and issue text.",
+      "E1/E2 GitHub comment snapshots contain verbatim user-generated comment bodies; explicit license grant not established in inspected evidence.",
+      "Stage 2 execution artifact contains logs/metadata/requirements lock only; no source or dependency binaries.",
+      "18 dependency versions pinned, but lock has no package hashes or SPDX license metadata; no SBOM or native bundled component audit."
+    ],
+    "disposition": "candidate_remains_HOLD; no registry inclusion; no inference"
   }
 }
