@@ -21,8 +21,8 @@ def test_v02_accepted_registry_is_valid_but_does_not_authorize_inference():
     registry = json.loads((RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text())
     result = validate_registry(registry)
     assert result["status"] == "structurally_valid_candidate_registry"
-    assert result["accepted_case_count"] == 1
-    assert result["accepted_project_count"] == 1
+    assert result["accepted_case_count"] == 2
+    assert result["accepted_project_count"] == 2
     assert result["minimum_feasibility_count_met"] is True
     assert result["inference_authorized"] is False
     assert result["comparative_efficacy_claim_permitted"] is False
@@ -249,11 +249,11 @@ def test_dishka_accepted_case_is_in_the_v02_registry():
     )
 
     assert proposed["acceptance_decision"] == "accepted"
-    assert len(registry["records"]) == 1
+    assert len(registry["records"]) == 2
     result = validate_registry(registry)
     assert result["status"] == "structurally_valid_candidate_registry", result["blockers"]
-    assert result["accepted_case_count"] == 1
-    assert result["accepted_project_count"] == 1
+    assert result["accepted_case_count"] == 2
+    assert result["accepted_project_count"] == 2
     assert result["minimum_feasibility_count_met"] is True
     assert result["primary_target_met"] is False
     assert result["inference_authorized"] is False
@@ -365,7 +365,8 @@ def test_dishka_final_decision_artifacts_are_hashed_and_inference_remains_disabl
     registry = json.loads((RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text())
     result = validate_registry(registry)
     assert result["status"] == "structurally_valid_candidate_registry", result["blockers"]
-    assert result["accepted_case_count"] == 1
+    assert result["accepted_case_count"] == 2
+    assert result["accepted_project_count"] == 2
     assert result["inference_authorized"] is False
 
 
