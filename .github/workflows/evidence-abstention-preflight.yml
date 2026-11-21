@@ -213,8 +213,10 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
-      - name: Checkout research repository
+      - name: Checkout exact research PR head
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up exact Python version
         uses: actions/setup-python@v5
@@ -3246,6 +3248,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p reproduction-evidence
+          test "$(git rev-parse HEAD:research_candidates/evidence_abstention/reproduction/asdf_issue_1821/test_issue_1821.py)" = "fe52a6468c667674093a3b94254125fdbf066aa9"
+          git show HEAD:research_candidates/evidence_abstention/reproduction/asdf_issue_1821/test_issue_1821.py > reproduction-evidence/test_issue_1821.py
+          sha256sum reproduction-evidence/test_issue_1821.py > reproduction-evidence/reproducer-source-sha256.txt
           git clone https://github.com/asdf-format/asdf.git upstream-asdf
           git -C upstream-asdf fetch --no-tags origin 74fdcd96540049e4824b4da2bbe3ffdf42d23cfc fc001f65e46d149ea179322e02f39065f4ee861c
           git -C upstream-asdf checkout --detach 74fdcd96540049e4824b4da2bbe3ffdf42d23cfc
