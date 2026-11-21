@@ -1362,7 +1362,7 @@
       "stage2_status": "passed",
       "stage2_workflow_job_id": 134137814089,
       "stage2_evidence_note": "Independent public-API reproducer and exact frozen dataset selector both fail on buggy base and pass on exact fixed PR head; same selector, one Meltano defect. Artifact was downloaded and independently integrity-checked: ZIP SHA256 matches GitHub, CRC passed, internal manifest 14/14, canonical row SHA256 recorded.",
-      "stage3_status": "project_lead_selected_for_stage3; source_aware_gold_and_E1_E2_E3_advisory_proposed_not_approved; issue_family_independence_review_prepared; bounded_license_scope_review_open; prior_pipeline_debug_exposure_declaration_pending; exact_pinned_dataset_card_revision_pending; no_case_record_or_registry_acceptance",
+      "stage3_status": "technical_gold_and_E1_E2_E3_tiers_approved; prior_pipeline_debug_exposure_none_self_reported; bounded_research_scope_acknowledged_in_principle_with_open_license_dependency_notice_and_card_provenance_checks; proposed_case_record_and_final_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44331092872,
@@ -1371,7 +1371,7 @@
         "date": "2026-11-20",
         "final_case_acceptance": "NOT_ACCEPTED"
       },
-      "next_required_gate": "Project lead must separately approve or revise the proposed G1 gold and E3 ABSTAIN/E2 ABSTAIN/E1 ANSWER decisions; provide a candidate-specific prior pipeline/debug exposure declaration (do not infer none); acknowledge or reject the bounded documentary scope after reviewing dependency and exact dataset-card open items. Only then prepare a schema-conformant proposed case record and run fail-closed validation. A separate final case YES/NO remains required after all candidate gates. No model loading, inference, fine-tuning or training is authorized.",
+      "next_required_gate": "Complete exact immutable dataset-card revision/bytes provenance, dependency canonical license and applicable notice review; then prepare the schema-conformant proposed Meltano case record, run fail-closed validation, and obtain a separate final project-lead YES/NO case-acceptance decision. No inference, training, or fine-tuning is authorized.",
       "stage2_latest_job_id": 134895968235,
       "stage2_latest_artifact_id": 14440520435,
       "stage2_latest_artifact_sha256": "b1336169d7b6d8e4e47edbcd920d842ad525c7a4e2df841b998182099bed1bd3",
@@ -1396,7 +1396,7 @@
         "E3": "ABSTAIN",
         "E2": "ABSTAIN",
         "E1": "ANSWER",
-        "tier_decision_status": "advisory_only_not_project_lead_approved",
+        "tier_decision_status": "project_lead_approved_source_aware_single_adjudicator",
         "E3_survivors": [
           "G1",
           "A1",
@@ -1420,7 +1420,7 @@
         "one_case_per_repository_rule_preserved": true
       },
       "stage3_license_review": {
-        "status": "open_not_accepted",
+        "status": "bounded_research_scope_acknowledged_in_principle; verification_items_open",
         "root_repository_license": "Apache-2.0",
         "dataset_card_currently_displayed_license": "CC-BY-4.0",
         "exact_pinned_readme_commit_sha": "pending",
@@ -1428,15 +1428,19 @@
         "entries_with_null_license_field": 8,
         "entries_without_license_classifiers": 2,
         "transitive_dependency_human_review": "pending",
-        "project_lead_scope_acknowledgement": "pending",
-        "legal_clearance": false
+        "project_lead_scope_acknowledgement": "acknowledged_in_principle_with_explicit_conditions",
+        "legal_clearance": false,
+        "project_lead_scope_decision_record": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md",
+        "exact_pinned_readme_bytes_sha256": "pending",
+        "notice_and_provenance_review": "open"
       },
       "stage3_exposure": {
-        "prior_pipeline_debug_exposure_declaration": "pending_project_lead_self_report",
+        "prior_pipeline_debug_exposure_declaration": "none_self_reported",
         "researcher_issue_and_pr_exposure": "reviewed_during_candidate_screening",
-        "researcher_source_exposure": "do_not_claim_blinding; source-aware mechanism has now been presented in this advisory",
+        "researcher_source_exposure": "full; no blinding claim",
         "independent_blind_review_claimed": false,
-        "inter_rater_claimed": false
+        "inter_rater_claimed": false,
+        "prior_pipeline_debug_exposure_gate": "closed_on_project_lead_self_report"
       }
     },
     {
@@ -3524,7 +3528,7 @@
     "adjudication": "single_source_aware_project_lead_adjudicator; researcher prior issue/PR review disclosed; no blinded or inter-rater claim",
     "stage3_technical_gold_tier_gate": "closed",
     "candidate_specific_prior_pipeline_debug_exposure": "none",
-    "bounded_license_scope_acknowledgement": "pending_human_review",
+    "bounded_license_scope_acknowledgement": "acknowledged_in_principle_with_explicit_conditions",
     "final_case_acceptance": "not_accepted; separate final YES/NO decision required",
     "registry_inclusion": false,
     "accepted_case_count_unchanged": 2,
@@ -3540,10 +3544,12 @@
     "prior_pipeline_debug_exposure_gate": "closed_on_project_lead_self_report",
     "blinded_adjudication_claimed": false,
     "remaining_gates": [
-      "bounded_documentary_license_scope_acknowledgement_after_exact_dataset_card_and_dependency_notice_reconciliation",
+      "exact_immutable_dataset_card_revision_and_bytes_provenance",
+      "dependency_canonical_license_and_applicable_notice_review",
       "proposed_case_record_fail_closed_validation",
       "separate_final_project_lead_yes_no_case_acceptance"
-    ]
+    ],
+    "license_scope_decision_record": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md"
   },
   "latest_meltano_project_lead_decision_validation": {
     "validated_commit": "864896d4cfb12cbe68c76eab2abd3edf0929f21c",
@@ -3636,5 +3642,39 @@
       "conclusion": "in_progress_at_capture"
     },
     "scope": "No model weights loaded; no inference, fine-tuning or training. The tested regression now checks that the exposure decision, independence record and progress ledger agree on prior_pipeline_debug_exposure=none and researcher_source_exposure=full."
+  },
+  "meltano_3090_license_scope_acknowledgement": {
+    "decision": "acknowledged_bounded_research_scope_in_principle_with_open_verification_gates",
+    "decision_date": "2026-11-21",
+    "decision_maker_role": "student_project_lead",
+    "decision_record_path": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md",
+    "scope_acknowledged": [
+      "minimal issue/test/source excerpts necessary to explain or reproduce this single defect",
+      "immutable upstream commit and artifact references with attribution",
+      "small factual test outputs and hashes needed to audit the reproduction"
+    ],
+    "exclusions": [
+      "complete Meltano repository or complete dataset redistribution",
+      "dependency wheels, native libraries, binaries, or complete environment images",
+      "unnecessary third-party dependency source/notice republication",
+      "blanket commercial permission"
+    ],
+    "open_verification_items": [
+      "full immutable dataset-card README commit SHA and exact README bytes/SHA-256",
+      "canonical dependency license texts and exact relevant transitive dependency scope",
+      "applicable notices and source/data provenance reconciliation"
+    ],
+    "legal_clearance": false,
+    "external_legal_review": "not_performed",
+    "operational_research_use_authorized": false,
+    "redistribution_authorized": false,
+    "final_case_acceptance": "not_accepted",
+    "registry_inclusion": false,
+    "accepted_case_count_unchanged": 2,
+    "accepted_project_count_unchanged": 2,
+    "inference_authorized": false,
+    "model_loading_authorized": false,
+    "fine_tuning_authorized": false,
+    "training_authorized": false
   }
 }
