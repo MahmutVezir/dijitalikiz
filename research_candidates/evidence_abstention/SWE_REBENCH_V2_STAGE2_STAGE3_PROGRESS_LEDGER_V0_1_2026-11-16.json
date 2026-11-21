@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T11:14:00Z",
+  "generated_at_utc": "2026-11-21T11:27:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -3408,7 +3408,7 @@
     "projected_total_with_dishka_if_all_ten_pass": 11,
     "additional_projects_needed_to_reach_preferred_15_target": 4,
     "portfolio_status": "five_strong_candidates_accepted_for_stage3_evaluation;_numpyro_gold_approved;_no_new_final_case_acceptances",
-    "first_batch_advisory_gold_tier_proposals": "prepared_for_five_eligible_candidates; project_lead_source_aware_decisions_pending",
+    "first_batch_advisory_gold_tier_proposals": "Meltano SDK #3090 gold/tier approved by project lead on 2026-11-21; other candidate decisions remain governed by their own records.",
     "accepted_case_added_by_first_batch_review": 0,
     "final_case_acceptances_added": 0,
     "inference_authorized": false,
@@ -3479,7 +3479,7 @@
       "pyro-ppl/numpyro #1916": "not_accepted; source-aware gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open",
       "OpenMDAO/dymos #1166": "not_accepted; source-aware gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open",
       "CS-SI/eodag #1530": "not_accepted; issue-family review, gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open",
-      "meltano/sdk #3090": "not_accepted; issue-family review, gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open",
+      "meltano/sdk #3090": "not_accepted; technical gold/tier approved; candidate-specific prior pipeline/debug exposure, bounded license scope, proposed case record validation and separate final YES/NO remain open",
       "pyfar/pyfar #721": "not_accepted; supersede stale review notes, source-aware gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open"
     },
     "first_batch_work_order": [
@@ -3507,5 +3507,32 @@
     "prior_pipeline_debug_exposure": "none; explicitly declared by project lead on 2026-11-20",
     "researcher_source_exposure": "full; disclosed separately",
     "exposure_decision_record": "research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_EXPOSURE_DECISION_NUMPYRO_1916_2026-11-20.md"
+  },
+  "meltano_3090_stage3_project_lead_decision": {
+    "decision": "approved_technical_gold_and_evidence_tiers_only",
+    "decision_timestamp_utc": "2026-11-21T11:27:00Z",
+    "decision_maker_role": "student_project_lead",
+    "case_id": "SRV2E-MELTANO_3090",
+    "decision_record_path": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIER_DECISION_MELTANO_3090_2026-11-21.md",
+    "gold_mechanism_id": "G1_SHARED_MUTABLE_VISITED_REFS_LEAKS_ACROSS_SIBLING_SCHEMA_BRANCHES",
+    "evidence_tiers": {
+      "E3": "ABSTAIN",
+      "E2": "ABSTAIN",
+      "E1": "ANSWER"
+    },
+    "e3_clue_handling": "The issue's tentative 'presumably already visited' wording is retained as a hypothesis, not treated as proof of shared mutable traversal state.",
+    "adjudication": "single_source_aware_project_lead_adjudicator; researcher prior issue/PR review disclosed; no blinded or inter-rater claim",
+    "stage3_technical_gold_tier_gate": "closed",
+    "candidate_specific_prior_pipeline_debug_exposure": "pending_explicit_project_lead_declaration",
+    "bounded_license_scope_acknowledgement": "pending_human_review",
+    "final_case_acceptance": "not_accepted; separate final YES/NO decision required",
+    "registry_inclusion": false,
+    "accepted_case_count_unchanged": 2,
+    "accepted_project_count_unchanged": 2,
+    "related_pr_3009": "repository lineage only; not a separate case",
+    "model_loading_authorized": false,
+    "inference_authorized": false,
+    "fine_tuning_authorized": false,
+    "training_authorized": false
   }
 }
