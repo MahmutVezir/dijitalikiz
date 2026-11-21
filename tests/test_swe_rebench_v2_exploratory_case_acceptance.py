@@ -544,7 +544,7 @@ def test_meltano_3090_stage3_advisories_remain_fail_closed():
     assert "E3" in gold_proposal and "ABSTAIN" in gold_proposal
     assert "E2" in gold_proposal and "ABSTAIN" in gold_proposal
     assert "E1" in gold_proposal and "ANSWER" in gold_proposal
-    assert "prior pipeline/debug exposure is still required" in gold_proposal
+    assert "candidate-specific declaration of prior pipeline/debug exposure is still required" in gold_proposal
     assert "14/14 files matched" in integrity_review
     assert "14/14" in integrity_review
 
