@@ -4168,12 +4168,41 @@
         "E2": "ABSTAIN",
         "E1": "ANSWER"
       },
-      "status": "advisory_gold_tier_only_not_project_lead_approved; E2 alternative-elimination matrix requires explicit review; prior pipeline/debug exposure declared none; researcher source exposure full",
+      "status": "advisory_gold_tier_only_not_project_lead_approved; source-audited E2 elimination matrix prepared; E2 excludes the wrong-initial-consonant-class hypothesis for ค while tone-mark extraction, syllable-state and generic-rule precedence alternatives remain live; corrected E1 path for ค่ะ is low/short/open; no separate instrumented intermediate-state runtime log in the rechecked evidence bundle; prior pipeline/debug exposure declared none; researcher source exposure full",
       "exposure": "none_by_project_lead_self_report",
       "final_acceptance": "not_accepted",
       "registry_inclusion": false,
       "inference_authorized": false,
-      "exposure_decision_record": "research_candidates/evidence_abstention/pythainlp_1046/PROJECT_LEAD_EXPOSURE_DECISION_PYTHAINLP_1046_2026-11-21.md"
+      "exposure_decision_record": "research_candidates/evidence_abstention/pythainlp_1046/PROJECT_LEAD_EXPOSURE_DECISION_PYTHAINLP_1046_2026-11-21.md",
+      "evidence_elimination_matrix": {
+        "path": "research_candidates/evidence_abstention/pythainlp_1046/PYTHAINLP_1004_E3_E2_E1_EVIDENCE_ELIMINATION_MATRIX_V0_1_2026-11-21.md",
+        "commit": "52438eea3a4fe8d0169350c89a74b68b62f1fd8a",
+        "status": "source_audited_advisory_not_project_lead_gold_tier_approved",
+        "E2": {
+          "eliminated_alternative": "wrong_initial_consonant_class_for_ค_in_both_issue_inputs",
+          "basis": "Exact buggy-base consonant inventory and first-consonant lookup/class mapping, independently corroborated by the NECTEC Thai consonant chart (Table 1, PDF page 1).",
+          "remaining_alternatives": [
+            "tone_mark_recognition_or_extraction_for_ค่ะ",
+            "sound_or_open_close_syllable_state_classification_for_ค่ะ",
+            "generic_tone_rule_condition_or_precedence_for_ค่ะ"
+          ]
+        },
+        "E1": {
+          "corrected_generic_branch_for_ค่ะ": "low_short_open",
+          "not": "low_short_closed_dead",
+          "source_derived_paths": {
+            "ครับ": "low / long / close / dead -> f",
+            "ค่ะ": "low / short / open -> h before the later low-class-plus-mai-ek rule"
+          },
+          "intermediate_state_runtime_log": "not separately captured in the rechecked Stage 2 bundle; matrix labels the path as source-derived, not directly observed instrumentation"
+        },
+        "project_lead_gold_tier_decision": "pending",
+        "final_case_acceptance": "not_accepted",
+        "registry_inclusion": false,
+        "inference_authorized": false
+      },
+      "proposal_path": "research_candidates/evidence_abstention/PYTHAINLP_1046_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_2026-11-21.md",
+      "addendum_path": "research_candidates/evidence_abstention/PYTHAINLP_1046_STAGE3_CANDIDATE_REVIEW_ADDENDUM_2026-11-21.md"
     },
     "accepted_registry_unchanged": {
       "accepted_cases": 2,
