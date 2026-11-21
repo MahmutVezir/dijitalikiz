@@ -1,0 +1,57 @@
+{
+  "schema_version": "0.1-v02-bounded-license-scope-screen",
+  "review_date": "2026-11-21",
+  "candidate": "skypilot-org/skypilot issue #5981 / PR #5985",
+  "source_identity": {
+    "exact_base": "60a6c930feeb8c48511f74c25bc2d7e12b290dd6",
+    "root_license": "Apache-2.0",
+    "root_license_blob_sha1": "aad27dddb0055248d9ceb93ac287898fc1d25b29",
+    "dataset_row_license_metadata": "Apache-2.0",
+    "dataset_card_license": "CC-BY-4.0",
+    "dataset_card_exact_pinned_readme_commit_and_bytes": "pending"
+  },
+  "stage2_runtime_inventory": {
+    "installed_distribution_count": 86,
+    "distributions_with_null_license_field_but_permissive_classifier": [
+      "click==8.1.8",
+      "colorama==0.4.6",
+      "jinja2==3.1.6",
+      "markdown-it-py==4.3.0",
+      "mdurl==0.1.2",
+      "setuptools==65.5.0",
+      "wcwidth==0.9.4",
+      "wheel==0.45.1"
+    ],
+    "multiple_or_alternative_license_entries": [
+      "aiohttp==3.14.5 (Apache-2.0 AND MIT)",
+      "cryptography==50.0.2 (Apache-2.0 OR BSD-3-Clause)",
+      "numpy==2.4.6 (multiple component licenses in package metadata)",
+      "packaging==26.3 (Apache-2.0 OR BSD-2-Clause)",
+      "psycopg2-binary==2.9.13 (metadata: LGPL with exceptions)"
+    ],
+    "native_or_bundled_component_followup": [
+      "NumPy binary notice inventory includes OpenBLAS and LAPACK components",
+      "NumPy binary notice inventory includes GCC runtime library under GPL-3.0 with GCC Runtime Library Exception",
+      "NumPy binary notice inventory includes libquadmath under LGPL-2.1-or-later"
+    ],
+    "evidence_artifact_id": 14344534041,
+    "artifact_sha256": "10f5505f390426e003a833ffa60cd026a9513c33da9b5a0d288844374057f34c",
+    "zip_crc": "passed",
+    "internal_sha256_manifest_entries": 19,
+    "internal_sha256_matches": 19
+  },
+  "review_status": {
+    "canonical_license_text_review": "open",
+    "dependency_applicability_and_notice_review": "open",
+    "native_bundled_component_notice_review": "open",
+    "exact_dataset_card_readme_provenance": "open",
+    "bounded_research_scope_acknowledgement": "not_requested_pending_completion",
+    "legal_clearance": false,
+    "redistribution_authorized": false
+  },
+  "boundaries": {
+    "package_metadata_is_not_legal_approval": true,
+    "source_license_and_dataset_card_license_must_not_be_conflated": true,
+    "inference_authorized": false
+  }
+}
