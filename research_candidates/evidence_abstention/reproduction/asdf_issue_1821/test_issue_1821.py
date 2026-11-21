@@ -29,12 +29,12 @@ def _load(contents: bytes, *, tagged: bool):
     return util.load_yaml(io.BytesIO(contents), tagged=tagged)
 
 
-def test_untagged_loader_preserves_recursive_tagged_mapping(self):
+def test_untagged_loader_preserves_recursive_tagged_mapping():
     tree = _load(MAPPING_RECURSION, tagged=False)
     assert tree["o"] is tree["o"]["inverse"]["inverse"]
 
 
-def test_untagged_loader_preserves_recursive_tagged_sequence(self):
+def test_untagged_loader_preserves_recursive_tagged_sequence():
     tree = _load(SEQUENCE_RECURSION, tagged=False)
     assert tree["l"] is tree["l"][0]
 
