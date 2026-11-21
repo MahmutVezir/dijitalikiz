@@ -1,0 +1,25 @@
+{
+  "packet_id": "GEOFILEOPS_649_E1_V0_1",
+  "case_id": "SRV2E-GEOFILEOPS_649",
+  "diagnostic_granularity": "implementation_mechanism_root_cause",
+  "evidence_boundary": "E2 packet plus immutable exact-base/fixed source snapshot manifests, exact PR patch and root license file.",
+  "evidence_ids": [
+    "ISSUE_REPORT",
+    "DATASET_ROW",
+    "ISSUE_REPRODUCER",
+    "BASE_ISSUE_FAILURE_LOG",
+    "BASE_POSITIVE_CONTROL_LOG",
+    "FIXED_ISSUE_PASS_LOG",
+    "DATASET_BASE_FAIL_LOG",
+    "DATASET_FIXED_PASS_LOG",
+    "BASE_SOURCE_SNAPSHOT",
+    "FIXED_SOURCE_SNAPSHOT",
+    "PR_PATCH",
+    "ROOT_LICENSE"
+  ],
+  "surviving_mechanism_ids": [
+    "G1_MISSING_NONE_TO_DESTINATION_STEM_FALLBACK"
+  ],
+  "tier_decision": "ANSWER",
+  "rationale": "The exact buggy base has a correct get_default_layer(path) helper returning Path(path).stem, but copy_layer, append_to and _append_to_nolock do not apply it when dst_layer is None. The fixed PR adds guards at all three relevant boundaries. Only the missing None-to-destination-stem fallback survives."
+}
