@@ -349,3 +349,16 @@ The corrected branch-head no-inference validation is also green:
 - Qwen adapter CPU tests run `44904476190`, job `136847002865`: success.
 
 The Dymos case record remains strictly schema-conformant, structurally complete, and proposed only. A separate final project-lead YES/NO is still required. No inference, fine-tuning, or training was performed or authorized.
+
+
+## Final code/test-head verification — 21 November 2026
+
+On validated code/test head `2013162c0105973fe5ce95c421e4af7f2e46f471`:
+- Evidence Abstention Preflight run `44904689875`, core job `136847632300`: success; v0.2 acceptance/readiness **29 passed**; design/scoring **10 passed**. It reports **13 blockers**, **2 accepted cases / 2 projects**, and `ready_for_inference=false` / `inference_authorized=false`.
+- Research Validation run `44904689870`, job `136847649617`: **482 passed, 6 skipped, 56 subtests passed**.
+- Uncertainty unit tests run `44904689914`, job `136847632014`: success.
+- Qwen adapter CPU tests run `44904689859`, job `136847632076`: success.
+- Dymos independent reproducer run `44904689950`, job `136847632352`: success. Artifact `14706839946`, SHA-256 `2a7a0c3c98043567a37193a9509c64160273f5985f0cfaf6ad7d040f667dd055`; independently downloaded outer SHA matched, ZIP CRC passed, 15/15 internal files matched.
+- The strict case record validates as structurally complete; it remains proposed only and outside the accepted registry pending separate final project-lead YES/NO.
+
+No model weights were loaded; no inference, fine-tuning, or training was performed or authorized.
