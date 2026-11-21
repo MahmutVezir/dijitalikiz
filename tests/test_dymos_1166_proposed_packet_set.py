@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 IMPLEMENTATION = ROOT / "research_candidates" / "evidence_abstention" / "implementation"
 sys.path.insert(0, str(IMPLEMENTATION))
+from swe_rebench_v2_exploratory_case_acceptance import validate_case_record
 SPEC = importlib.util.spec_from_file_location(
     "evidence_level_packet_set",
     IMPLEMENTATION / "evidence_level_packet_set.py",
@@ -241,6 +242,7 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
 
         result = validate_case_record(record)
         self.assertEqual(result["status"], "structurally_complete_candidate", result["blockers"])
+        self.assertFalse(result["inference_authorized"])
         self.assertEqual(record["acceptance_decision"], "proposed")
         self.assertEqual(record["final_acceptance"]["status"], "pending")
         self.assertEqual(repeat["workflow_run_id"], 44903822528)
