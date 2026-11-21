@@ -25,11 +25,11 @@ def test_v02_manifest_is_exploratory_and_not_confirmatory():
 def test_v02_registry_contains_dishka_and_inference_is_disabled():
     registry = load_json("SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json")
     assert registry["status"] == "contains_structurally_complete_candidates"
-    assert registry["accepted_case_count"] == 2
-    assert registry["accepted_project_count"] == 2
-    assert len(registry["records"]) == 2
+    assert registry["accepted_case_count"] == 3
+    assert registry["accepted_project_count"] == 3
+    assert len(registry["records"]) == 3
     assert [record["case_id"] for record in registry["records"]] == [
-        "SRV2E-DISHKA_435", "SRV2E-EODAG_1530"
+        "SRV2E-DISHKA_435", "SRV2E-EODAG_1530", "SRV2E-GEOFILEOPS_649"
     ]
     assert all(record["acceptance_decision"] == "accepted" for record in registry["records"])
     assert registry["inference_authorized"] is False
