@@ -321,3 +321,15 @@ Current branch-head verification (`66ae020c498bd7a0e0159f76b523a68c9c9a31ad`):
 - Independent reproducer [44779508337](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44779508337), job `136438121470`: success; exact buggy-base failure / fixed-revision pass. Artifact `14651026003`, SHA-256 `84f884f0ff358c5811221099983bb2531ded7dfe501e1a042da7765ab298aa25`; downloaded locally with matching outer SHA-256, ZIP CRC PASS, 15/15 internal hashes PASS.
 
 Dymos remains a Stage 3 candidate, not an accepted case. No model weights were loaded and no inference, fine-tuning, or training was performed.
+
+
+## Latest independent-reproducer and artifact-integrity repeat — 21 November 2026
+
+The independent issue-level public-API reproducer was rerun on the current research branch:
+- Workflow run: `44903822528`; job `136845091011` — **success**.
+- Exact buggy base: `3efd1035c3bf62890034eb9e07de543f3d117867` produced the expected all-ones polynomial-control input `[[1.0], [1.0]]` instead of the requested `[[5.0], [15.0]]`; the defect-specific test executed and failed as required.
+- Exact fixed PR head: `0ffc82225d6125dcb5c5b5acfb9be9fd712ef949`; the identical reproducer passed (`1 passed`).
+- Artifact: `14707022685`; GitHub SHA-256 `698e2f6b9d37522fd276f58ce57d85934bb0e8df16cd978284c3e79ef3a346dc`.
+- Independently downloaded archive SHA-256 exactly matched GitHub. ZIP CRC passed and internal SHA256SUMS verified **15/15** files.
+
+This repeats the independent reproducer result and strengthens the artifact trail. It does not alter the approved G1/E1/E2/E3 decisions or the bounded documentary scope acknowledgement. The case record remains structurally complete and proposed, but the separate final project-lead YES/NO acceptance decision remains pending. Dymos remains outside the accepted registry; model loading/inference/fine-tuning/training remain unauthorized.
