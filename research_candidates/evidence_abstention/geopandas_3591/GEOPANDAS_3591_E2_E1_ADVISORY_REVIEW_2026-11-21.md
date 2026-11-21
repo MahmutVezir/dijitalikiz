@@ -1,3 +1,5 @@
+> **Project-lead decision recorded (21 November 2026): APPROVED.** The gold mechanism G1 and alternatives are approved; E3 = ABSTAIN, E2 = ABSTAIN, E1 = ANSWER. The AI advisory analysis below is superseded as a proposal by the binding project-lead decision at [the decision record](./PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_GEOPANDAS_3591_2026-11-21.md). The packet manifests are frozen, but Stage 2 remains unrun and requires a separate explicit approval. Candidate disposition remains HOLD.
+
 # GeoPandas #3591 — E2/E1 advisory review
 
 **Date:** 21 November 2026  
