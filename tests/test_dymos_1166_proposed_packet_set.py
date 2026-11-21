@@ -216,5 +216,24 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertFalse(dymos["model_inference_authorized"])
 
 
+    def test_latest_independent_reproducer_repeat_is_hashed_but_case_remains_proposed(self):
+        case_path = (
+            ROOT
+            / "research_candidates/evidence_abstention/dymos_1166/"
+            / "SWE_REBENCH_V2_DYMOS_1166_CASE_RECORD_PROPOSED_V0_1_2026-11-20.json"
+        )
+        record = json.loads(case_path.read_text(encoding="utf-8"))
+        repeat = record["technical_reproduction"]["latest_independent_reproducer_repeat"]
+        self.assertEqual(repeat["workflow_run_id"], 44903822528)
+        self.assertEqual(repeat["artifact_id"], 14707022685)
+        self.assertTrue(repeat["local_integrity"]["outer_zip_sha256_matches_github"])
+        self.assertEqual(repeat["local_integrity"]["internal_sha256_manifest_matches"], 15)
+        self.assertEqual(repeat["buggy_base"]["observed_values"], "[[1.0], [1.0]]")
+        self.assertTrue(repeat["fixed_revision"]["same_reproducer_passed"])
+        self.assertEqual(record["final_acceptance"]["status"], "pending")
+        self.assertEqual(record["acceptance_decision"], "proposed")
+        self.assertFalse(record["inference_authorized"])
+
+
 if __name__ == "__main__":
     unittest.main()
