@@ -107,10 +107,16 @@
     }
   ],
   "human_review": {
-    "project_lead_bounded_scope_acknowledgement": "pending",
+    "project_lead_bounded_scope_acknowledgement": "approved_bounded_scope_only",
     "external_legal_review": "not_performed",
     "accepted_as_legal_clearance": false,
-    "final_case_acceptance": "not_accepted"
+    "final_case_acceptance": "not_accepted",
+    "bounded_scope_acknowledgement_record": {
+      "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md",
+      "sha256": "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6",
+      "decision_date": "2026-11-21",
+      "decision": "acknowledged_bounded_documentary_scope_only"
+    }
   },
   "proposed_research_use_scope": "Educational/scientific reproduction of one defect and one selected dataset row, using a pinned CPU-only test environment, minimal source excerpts and immutable upstream links, with proper attribution and NOTICE preservation where applicable. Do not redistribute the complete EODAG repository, the full SWE-rebench dataset, installed wheels/binaries, native libraries or package bundles. No commercial product use is included in this proposal.",
   "legal_status": {
@@ -119,5 +125,36 @@
     "legal_clearance_claimed": false,
     "blanket_redistribution_permission_claimed": false
   },
-  "inference_authorized": false
+  "inference_authorized": false,
+  "project_lead_acknowledged_scope": {
+    "decision": "acknowledged_bounded_documentary_scope_only",
+    "decision_record": {
+      "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md",
+      "sha256": "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6"
+    },
+    "permitted_scope": [
+      "one EODAG duplicate-key defect and one immutable SWE-rebench dataset row",
+      "exact pinned CPU-only reproduction and recorded test evidence",
+      "canonical selected row, minimal source excerpts, immutable upstream links and appropriate attribution",
+      "preserve applicable upstream NOTICE attribution",
+      "keep dataset CC-BY-4.0 separate from EODAG source Apache-2.0"
+    ],
+    "exclusions": [
+      "complete SWE-rebench dataset redistribution",
+      "complete EODAG repository redistribution",
+      "installed wheels, binaries, native libraries, or complete 52-distribution environment redistribution",
+      "blanket permission for optional extras, third-party provider data, or commercial product use"
+    ],
+    "limits": {
+      "legal_advice": false,
+      "formal_legal_review": false,
+      "legal_clearance": false,
+      "spdx_certification": false,
+      "complete_native_or_bundled_dependency_audit": false,
+      "blanket_redistribution_permission": false,
+      "metadata_inventory_is_legal_clearance": false
+    },
+    "final_case_acceptance": "not_accepted",
+    "inference_authorized": false
+  }
 }
