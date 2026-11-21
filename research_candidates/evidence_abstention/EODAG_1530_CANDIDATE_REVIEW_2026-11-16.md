@@ -4,7 +4,7 @@
 **Dataset instance:** `cs-si__eodag-1536` (exact pinned Parquet row authenticated)  
 **Issue:** https://github.com/CS-SI/eodag/issues/1530  
 **Fix PR:** https://github.com/CS-SI/eodag/pull/1536  
-**Review status:** Stage 2 technical reproduction passed on the exact upstream base/fixed commits, including both exact dataset selectors. Full dependency-license scope and Stage 3 human adjudication remain pending. Not an accepted case.
+**Review status:** Stage 2 technical reproduction and project-lead source-aware gold/tier adjudication passed. The project lead self-declared no prior pipeline/debug use of this candidate. Bounded dependency-license scope acknowledgement and final acceptance remain pending. Not an accepted case.
 
 ## 1. Defect contract
 
@@ -142,3 +142,15 @@ SHA-256: `b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e`
 This is a source-aware, single-project-lead exploratory adjudication. Full researcher source exposure is disclosed; no blinded or inter-rater reliability claim is made.
 
 **Still open:** candidate-specific prior pipeline/debug exposure declaration; bounded documentary license-scope acknowledgement; complete schema-conformant case record; fail-closed registry validation; formal accepted-registry update. EODAG is approved to continue through these gates but is not yet inserted into the accepted registry. No model loading, inference, fine-tuning or training is authorized.
+
+
+## Project-lead prior pipeline/debug exposure declaration — 21 November 2026
+
+The project lead answered **none** to the candidate-specific question: before prospective candidate validation, EODAG #1530 had not been used to solve, debug, calibrate, or repair the shared research pipeline, test runner, dataset selector, test oracle, or prompt.
+
+This is a project-lead self-declaration, not independently verified telemetry. It does not imply source blinding. Full researcher source exposure remains disclosed, and the case was reviewed source-aware during candidate screening and gold/tier adjudication.
+
+Decision record: [PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md](eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md)  
+SHA-256: `5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38`
+
+**Remaining:** bounded documentary license-scope acknowledgement; complete schema-conformant case record; fail-closed registry validation; separate project-lead final case YES/NO. EODAG remains outside the accepted registry. No model loading, inference, fine-tuning or training is authorized.
