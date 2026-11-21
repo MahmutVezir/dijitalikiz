@@ -256,8 +256,8 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertIn("1 passed", note)
         self.assertEqual(dymos["final_case_acceptance"], "not_accepted")
         self.assertFalse(dymos["model_inference_authorized"])
-        self.assertEqual(ledger["summary"]["accepted_exploratory_cases"], 2)
-        self.assertEqual(ledger["summary"]["accepted_exploratory_projects"], 2)
+        self.assertEqual(ledger["summary"]["accepted_exploratory_cases"], 3)
+        self.assertEqual(ledger["summary"]["accepted_exploratory_projects"], 3)
 
 
 
