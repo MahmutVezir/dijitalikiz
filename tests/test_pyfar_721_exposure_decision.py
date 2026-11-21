@@ -49,6 +49,7 @@ class PyFar721ExposureDecisionTests(unittest.TestCase):
         self.assertEqual(pyfar["final_case_acceptance"], "not_accepted")
         self.assertFalse(pyfar["model_inference_authorized"])
         self.assertIn("prior_pipeline_debug_exposure = none", proposal)
+        self.assertNotIn("pending a direct project-lead declaration", proposal)
         self.assertIn("source exposure remains `full`", proposal.lower())
 
         self.assertEqual(registry["accepted_case_count"], 2)
