@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T11:45:00Z",
+  "generated_at_utc": "2026-11-21T13:15:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -1214,7 +1214,7 @@
       "stage2_status": "passed_exact_dataset_selector_buggy_base_fail_fixed_revision_pass_pinned_environment",
       "stage2_workflow_job_id": 134172933160,
       "stage2_evidence_note": "Latest pinned repeat run 44121262451 (job 134172933160) reran the exact Parquet selector against the pinned buggy base and fixed PR revision using the 85-package requirements.lock. Base: 1/1 exact selector executed and failed on the real SSH context assertion; fixed: 1/1 same selector passed. Lock versions all matched; pip check passed; all 86 installed distribution records had license metadata; dataset row and all artifact JSON files parsed; selector-file newline serialization was asserted; test-only patch touched only tests/unit_tests/test_sky/clouds/test_ssh.py; all 19 inner SHA256SUMS entries and ZIP CRC independently verified. Artifact 14344534041 SHA-256 10f5505f390426e003a833ffa60cd026a9513c33da9b5a0d288844374057f34c. Stage 3 and final acceptance remain pending.",
-      "stage3_status": "stage2_passed_and_archive_integrity_rechecked; same_root_cause_family_related_issue_7662_identified; frozen_E3_problem_statement_discloses_lstrip_character_set_cause; not_recommended_for_primary_three_tier_sample_pending_project_lead_review; issue_family_review_prepared_not_approved; dependency_native_notice_and_dataset_card_provenance_review_open; prior_pipeline_debug_exposure_pending_project_lead_declaration; final_acceptance_not_granted",
+      "stage3_status": "stage2_passed_and_archive_integrity_rechecked; project_lead_excluded_from_primary_three_tier_sample_due_frozen_E3_causal_disclosure; related_issue_7662_same_family; prior_pipeline_debug_exposure_none_by_project_lead_self_report; researcher_source_exposure_full; license_dependency_native_notice_and_dataset_card_provenance_review_open; final_acceptance_not_granted",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44121262451,
@@ -1235,12 +1235,20 @@
         "internal_sha256_matches": 19
       },
       "stage3_e3_suitability": {
-        "status": "not_recommended_for_primary_three_tier_sample_pending_project_lead_review",
+        "status": "excluded_from_primary_three_tier_sample_by_project_lead_decision",
         "reason": "The frozen dataset problem statement itself identifies lstrip('ssh-') as the cause and describes the character-set stripping semantics, so the E3 packet already reveals the central defect mechanism. Do not rewrite or hide the frozen row to manufacture uncertainty.",
         "possible_non_sample_use": "technical_feasibility_or_easy-answer_control_only",
-        "inference_authorized": false
+        "inference_authorized": false,
+        "project_lead_decision_date": "2026-11-21",
+        "project_lead_decision_record": "research_candidates/evidence_abstention/SKYPILOT_5981_PROJECT_LEAD_SAMPLE_DISPOSITION_2026-11-21.md"
       },
-      "next_required_gate": "Project-lead review of the E3 causal-disclosure finding and whether to exclude SkyPilot #5981 from the primary three-tier sample. Separately obtain a direct candidate-specific prior pipeline/debug exposure declaration. Keep issue #7662 as same-repository related-family context; complete exact dataset-card and dependency/native notice review before any bounded-scope acknowledgement. Do not accept or count SkyPilot absent all gates."
+      "next_required_gate": "Complete exact dataset-card and dependency/native notice review; no primary-sample gold/tier approval or final acceptance. Preserve Stage 2 evidence as technical feasibility; any easy-answer control use requires explicit protocol permission.",
+      "prior_pipeline_debug_exposure": "none",
+      "researcher_source_exposure": "full",
+      "exposure_decision_record": "research_candidates/evidence_abstention/SKYPILOT_5981_PROJECT_LEAD_EXPOSURE_AND_SAMPLE_DISPOSITION_2026-11-21.md",
+      "sample_disposition_decision_record": "research_candidates/evidence_abstention/SKYPILOT_5981_PROJECT_LEAD_SAMPLE_DISPOSITION_2026-11-21.md",
+      "exposure_decision_date": "2026-11-21",
+      "exposure_evidence_class": "direct_project_lead_self_report_not_independently_witnessed_or_audited"
     },
     {
       "cohort_rank": 18,
@@ -1306,7 +1314,7 @@
       "stage2_status": "passed_exact_dataset_selector_buggy_base_fail_fixed_revision_pass_pinned_environment",
       "stage2_workflow_job_id": 134216923258,
       "stage2_evidence_note": "Canonical pinned exact-selector run 44133576730 (job 134216923258) authenticated frozen row pythainlp__pythainlp-1046 (row SHA-256 80b244dd8b406d095f7ec727f968dacbb6b2f620dc8b10c21d44e726ba3e5803), exact base/fix commits and exact FAIL_TO_PASS selector tests/core/test_util.py::UtilTestCase::test_tone_detector. Exact selector: real pytest assertion failure on buggy base ('f' vs expected 'h' for ครับ), same selector passed on fixed commit. Two independent one-word reproducers also separately failed on base and passed on fixed for ครับ and ค่ะ; these are support tests, not additional cases. Test-only patch altered only tests/core/test_util.py (2 insertions, 0 deletions); base production syllable.py blob unchanged. Pinned CPython 3.10.15 / pip 24.3.1 / pytest 8.3.5 / PyThaiNLP 5.0.6.dev0 / PyICU 2.17 / ICU 70.1 toolchain; Ubuntu 22.04.5, libicu-dev/libicu70 70.1-2, compiler 11.4.0. 19 runtime pins matched pip freeze exactly; pip check passed; all 20 installed distribution metadata records had license metadata. Artifact 14351751109 SHA-256 ce2ab3bbefd3148510992a7503d8c07b17fb87fe2c2a76173c1971d21e12dcb8; 17/17 internal hashes independently verified; no Parquet, raw outputs, issue test fixture, patch contents or temporary reproducers. Stage 3 remains pending full dependency/license scope, project independence/related-defect, exposure assessment and human adjudication; final acceptance not granted.",
-      "stage3_status": "stage2_passed_and_archive_integrity_rechecked; combined_source_aware_gold_and_E1_E2_E3_advisory_proposal_prepared_not_approved; related_issue_family_review_prepared_not_approved; dependency_native_notice_and_dataset_card_provenance_review_open; model_training_data_cutoff_assessment_open; prior_pipeline_debug_exposure_pending_project_lead_declaration; final_acceptance_not_granted",
+      "stage3_status": "stage2_passed_and_archive_integrity_rechecked; combined_source_aware_gold_and_E1_E2_E3_advisory_proposal_prepared_not_approved; related_issue_family_review_prepared_not_approved; prior_pipeline_debug_exposure_none_by_project_lead_self_report; researcher_source_exposure_full; dependency_native_notice_and_dataset_card_provenance_review_open; model_training_data_cutoff_assessment_open; final_acceptance_not_granted",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage3_documents": {
@@ -1333,7 +1341,12 @@
         "rationale": "E3 contains issue symptoms and the reporter's partial possible-solution hint; E2 adds the exact-base three-consonant syllable_length boundary but leaves the second tone-mark precedence mechanism unresolved; E1 adds exact-base tone_detector branch order. The project lead must verify the E2 elimination matrix and at least two surviving mechanisms before approval.",
         "selector_independence_limit": "The one frozen selector plus two single-word supporting reproducers all concern the same issue/case; they are not independent cases."
       },
-      "next_required_gate": "Project lead must directly declare candidate-specific prior pipeline/debug exposure; review/approve or revise the combined gold and E3/E2/E1 proposal, including the E2 alternative-elimination matrix; review the prepared related issue-family disposition; complete exact dataset-card, NumPy bundled-component and PyICU/ICU native license/notice provenance; assess model training-data exposure without claiming an unknown cutoff; obtain bounded research-scope acknowledgement only after those checks; complete a schema-conformant case record and fail-closed validation; then obtain a separate final YES/NO acceptance. No inference, fine-tuning or training."
+      "next_required_gate": "Project lead must review/approve or revise the combined gold and E3/E2/E1 proposal, including the E2 alternative-elimination matrix; review the prepared related issue-family disposition; complete exact dataset-card, NumPy bundled-component and PyICU/ICU native license/notice provenance; assess model training-data exposure without claiming an unknown cutoff; obtain bounded research-scope acknowledgement only after those checks; complete a schema-conformant case record and fail-closed validation; then obtain a separate final YES/NO acceptance. No inference, fine-tuning or training.",
+      "prior_pipeline_debug_exposure": "none",
+      "researcher_source_exposure": "full",
+      "exposure_decision_record": "research_candidates/evidence_abstention/pythainlp_1046/PROJECT_LEAD_EXPOSURE_DECISION_PYTHAINLP_1046_2026-11-21.md",
+      "exposure_decision_date": "2026-11-21",
+      "exposure_evidence_class": "direct_project_lead_self_report_not_independently_witnessed_or_audited"
     },
     {
       "cohort_rank": 22,
@@ -4138,10 +4151,12 @@
       "issue_family": "later related same-repository report #7662; one SkyPilot sampling unit maximum",
       "key_finding": "Frozen E3 task prompt itself names lstrip('ssh-') and character-set stripping; primary three-tier sample suitability is doubtful because central mechanism is disclosed at E3.",
       "proposed_disposition": "Do not advance to gold/tier approval for primary sample unless project lead accepts a defensible E3 ambiguity without modifying the frozen prompt. Technical/easy-answer control use only otherwise.",
-      "exposure": "pending_direct_project_lead_declaration",
+      "exposure": "none_by_project_lead_self_report",
       "final_acceptance": "not_accepted",
       "registry_inclusion": false,
-      "inference_authorized": false
+      "inference_authorized": false,
+      "exposure_decision_record": "research_candidates/evidence_abstention/SKYPILOT_5981_PROJECT_LEAD_EXPOSURE_AND_SAMPLE_DISPOSITION_2026-11-21.md",
+      "primary_sample_disposition": "excluded_by_project_lead_decision_2026-11-21"
     },
     "pythainlp_1046": {
       "stage2": "passed",
@@ -4153,11 +4168,12 @@
         "E2": "ABSTAIN",
         "E1": "ANSWER"
       },
-      "status": "advisory_only_not_project_lead_approved; E2 alternative-elimination matrix requires explicit review",
-      "exposure": "pending_direct_project_lead_declaration",
+      "status": "advisory_gold_tier_only_not_project_lead_approved; E2 alternative-elimination matrix requires explicit review; prior pipeline/debug exposure declared none; researcher source exposure full",
+      "exposure": "none_by_project_lead_self_report",
       "final_acceptance": "not_accepted",
       "registry_inclusion": false,
-      "inference_authorized": false
+      "inference_authorized": false,
+      "exposure_decision_record": "research_candidates/evidence_abstention/pythainlp_1046/PROJECT_LEAD_EXPOSURE_DECISION_PYTHAINLP_1046_2026-11-21.md"
     },
     "accepted_registry_unchanged": {
       "accepted_cases": 2,
