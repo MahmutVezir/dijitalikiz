@@ -110,12 +110,17 @@
     "project_lead_bounded_scope_acknowledgement": "approved_bounded_scope_only",
     "external_legal_review": "not_performed",
     "accepted_as_legal_clearance": false,
-    "final_case_acceptance": "not_accepted",
+    "final_case_acceptance": "accepted_v0_2_exploratory_feasibility_only",
     "bounded_scope_acknowledgement_record": {
       "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md",
       "sha256": "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6",
       "decision_date": "2026-11-21",
       "decision": "acknowledged_bounded_documentary_scope_only"
+    },
+    "final_case_acceptance_decision_record": {
+      "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_EODAG_1530_2026-11-21.md",
+      "sha256": "5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d",
+      "decision_timestamp_utc": "2026-11-21T13:36:50+03:00"
     }
   },
   "proposed_research_use_scope": "Educational/scientific reproduction of one defect and one selected dataset row, using a pinned CPU-only test environment, minimal source excerpts and immutable upstream links, with proper attribution and NOTICE preservation where applicable. Do not redistribute the complete EODAG repository, the full SWE-rebench dataset, installed wheels/binaries, native libraries or package bundles. No commercial product use is included in this proposal.",
