@@ -8,7 +8,7 @@ import qutip as qt
 
 
 class QuTiPIssue2646Regression(unittest.TestCase):
-    def test_direct_replace_arguments_control(self) -> None:
+    def test_replace_arguments_method_is_working_control(self) -> None:
         def coefficient_function(t, args):
             return args["a"]
 
@@ -24,6 +24,8 @@ class QuTiPIssue2646Regression(unittest.TestCase):
 
         original = qt.coefficient(coefficient_function, args={"a": 1})
         updated = qt.coefficient(original, args={"a": 2})
+
+        self.assertEqual(original(0), 1)
         self.assertEqual(updated(0), 2)
 
     def test_qobjevo_constructor_updates_embedded_coefficient_arguments(self) -> None:
