@@ -128,7 +128,7 @@
     "independent_blinded_validation": "not_claimed",
     "researcher_source_exposure": "full_disclosed",
     "prior_pipeline_debug_exposure": "none",
-    "final_case_acceptance": "pending_remaining_mandatory_gates",
+    "final_case_acceptance": "accepted_v0_2_exploratory_feasibility_only",
     "inference_authorized": false,
     "prior_pipeline_debug_exposure_decision_record": {
       "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
@@ -174,26 +174,16 @@
   },
   "case_acceptance_record": {
     "path": "research_candidates/evidence_abstention/eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
-    "status": "proposed",
-    "final_acceptance": "pending",
-    "structural_validation": {
-      "status": "structurally_complete_candidate",
-      "validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
-      "workflow_run_id": 44894847180,
-      "job_id": 136818188559,
-      "eodag_review_contract_tests": "5 passed",
-      "accepted_registry_validation": "structurally_valid_candidate_registry",
-      "eligible_for_registry": false,
-      "final_acceptance": "pending",
-      "inference_authorized": false
+    "status": "accepted",
+    "final_acceptance": "approved",
+    "decision_timestamp_utc": "2026-11-21T13:36:50+03:00",
+    "decision_record": {
+      "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_EODAG_1530_2026-11-21.md",
+      "sha256": "5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d"
     },
-    "registry_included": false,
-    "inference_authorized": false,
-    "latest_research_validation": {
-      "workflow_run_id": 44894847259,
-      "job_id": 136818190862,
-      "tests": "477 passed, 6 skipped, 56 subtests passed",
-      "conclusion": "success"
-    }
+    "registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json",
+    "registry_included": true,
+    "post_acceptance_validation": "pending_latest_head_ci",
+    "inference_authorized": false
   }
 }
