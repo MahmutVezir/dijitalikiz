@@ -1,7 +1,7 @@
 # CS-SI/eodag #1530 — proposed technical gold and E1/E2/E3 adjudication
 
 Date: 20 November 2026  
-Status: advisory proposal only; project-lead approval is pending.
+Status: superseded by the source-aware project-lead decision recorded on 2026-11-21; retain this file as the proposal/provenance baseline.
 
 ## Candidate identity
 
@@ -33,7 +33,7 @@ The pinned issue reproducer uses the exact `EODAG_SOURCE_ROOT`; the base fails b
 | Tier | Contents | AI advisory recommendation | Reason |
 |---|---|---|---|
 | E3 | Frozen issue narrative, including the duplicate-key YAML excerpt and the reported public-Geodes credential failure | **ABSTAIN (provisional)** | The issue exposes two same-named mappings, but does not show the exact parser output or the in-repository fixture path. The specific last-mapping-wins effect is strongly suggested, not yet observed in the pinned project runtime. |
-| E2 | E3 plus independent pinned YAML reproducer and base output showing `geodes_s3` missing after parsing; the same reproducer passes on fixed source | **ANSWER (provisional)** | The exact pinned source template is parsed and the observable mapping matches the predicted loss of `geodes_s3`; the duplicate-key mechanism is directly supported by a reproducible base/fixed contrast. |
+| E2 | E3 plus independent pinned YAML reproducer and base output showing `geodes_s3` missing after parsing; the same reproducer passes on fixed source | **ABSTAIN (approved)** | The exact pinned parse result removes the wrong-source/template alternative, but the packet does not yet show the in-repository fixture/loading path; provider-registration and configuration-override alternatives remain. |
 | E1 | E2 plus active pinned source excerpts from `tests/utils.py` showing `yaml.safe_load` of the packaged template and the subsequent provider iteration/config generation, with the base test fixture and selectors | **ANSWER (provisional)** | The implementation/test-fixture path links the exact duplicate-key template to the generated test configuration and observed missing provider. |
 
 The key design distinction is whether E3 should already support an evidence-based answer because the issue includes the duplicate YAML snippet. The project lead should decide this explicitly; do not promote an answer merely because the defect is easy to guess.
@@ -51,12 +51,15 @@ The key design distinction is whether E3 should already support an evidence-base
 
 This is one issue-specific case, not three cases (two selectors plus one reproducer are corroborating routes only).
 
-## Open decisions
+## Project-lead decision — 2026-11-21
 
-- Project-lead source-aware gold mechanism approval.
-- Project-lead E1/E2/E3 outcome approval, including the E3 boundary.
-- Truthful prior pipeline/debug exposure declaration.
-- Bounded license-scope acknowledgement.
-- Complete schema-conformant case record, fail-closed registry validation, and separate final YES/NO decision.
+The project lead approved the source-aware gold mechanism and tier outcomes E3=ABSTAIN, E2=ABSTAIN, E1=ANSWER. The approved surviving-mechanism sets are E3={G1,A1,A2,A3}, E2={G1,A2,A3}, and E1={G1}. The decision is recorded at `PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_EODAG_1530_2026-11-21.md` (SHA-256 `b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e`). This is a source-aware, single-project-lead exploratory adjudication; no independent blinded Panel A/Panel B or inter-rater validation is claimed.
 
-No model loading, inference, fine-tuning or training is authorized by this proposal.
+## Remaining gates
+
+- Candidate-specific prior pipeline/debug exposure self-declaration.
+- Bounded documentary license-scope acknowledgement.
+- Complete schema-conformant case record and fail-closed registry validation.
+- Formal accepted-registry update only after all mandatory gates pass.
+
+No model loading, inference, fine-tuning or training is authorized by this decision.
