@@ -2560,25 +2560,28 @@
       "pull_request_number": 3591,
       "pull_request_url": "https://github.com/geopandas/geopandas/pull/3591",
       "static_screening_classification": "provisional_candidate",
-      "static_scope_decision": "Strong issue–PR alignment; all-null geometry dtype-recognition edge case; moderate-to-high E3 answerability risk pending frozen packet and project-lead decision",
+      "static_scope_decision": "Exact frozen E3 packet authenticated; implementation-mechanism target is not disclosed in E3; project-lead E3=ABSTAIN; candidate remains on HOLD.",
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "stage2_status": "held_pending_frozen_row_and_project_lead_E3_suitability_review_no_stage2",
+      "stage2_status": "held_no_stage2_after_project_lead_E3_abstain",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "stage3_status": "exact_frozen_row_authenticated; project_lead_E3_semantic_suitability_decision_pending; prior_pipeline_debug_exposure_none",
+      "stage3_status": "E3_adjudicated_abstain; E2_and_E1_require_separate_adjudication; candidate_HOLD",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "next_required_gate": "Project lead makes the semantic E3 decision on the exact authenticated problem_statement: whether the all-NaN geometry case already supports implementation-mechanism diagnosis or should abstain. Prior pipeline/debug exposure is none. Do not run Stage 2 until E3 decision is recorded.",
+      "next_required_gate": "Maintain HOLD and no-Stage-2 boundary. The E3 decision is resolved as ABSTAIN; E2/E1 are not inferred from E3. Any future Stage-2 advancement requires a separate explicit project-lead decision.",
       "stage3_project_lead_prior_pipeline_debug_exposure": "none",
       "stage3_project_lead_disposition": {
         "decision_maker_role": "student_project_lead",
         "decision_source": "explicit_chat_approval_2026-11-21",
-        "disposition": "retain_on_hold_pending_exact_row_and_E3_suitability",
+        "disposition": "retain_on_hold_after_E3_abstain",
+        "e3_tier": "ABSTAIN",
+        "e3_reason": "Frozen problem statement supplies all-NaN input, error, workaround and valid-geometry contrast, but not the constructor's internal geometry/dtype-recognition branch; strict target is implementation mechanism.",
+        "e2_e1": "not_determined_by_E3_decision; adjudicate independently if protocol proceeds",
         "prior_pipeline_debug_exposure": "none",
         "decision_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md",
-        "decision_record_git_blob_sha": "bc1ca29156db279799ae7ebcdf491cae10322983"
+        "decision_record_git_blob_sha": "2010c4d70c72d5f7c54ef546469d73162d2ea07d"
       },
       "stage2_dataset_row_id": "geopandas__geopandas-3591",
       "stage2_dataset_row_sha256": "e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2",
@@ -2593,7 +2596,9 @@
         "artifact_id": 14715535728,
         "canonical_row_sha256": "e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2",
         "problem_statement_sha256": "c4aeb4909495887c065f1f7ae5ec0e321fb350e98ea789cde3f931cad597f12d",
-        "e3_boundary": "All-NaN input, version regression, error and explicit geometry workaround are visible; internal dtype recognition branch is not stated."
+        "e3_boundary": "Frozen E3 states all-NaN input, observed error, explicit geometry workaround and valid-geometry contrast; it does not state the internal constructor geometry/dtype-recognition branch.",
+        "project_lead_e3_decision": "ABSTAIN",
+        "prior_pipeline_debug_exposure": "none"
       }
     },
     {
@@ -5511,7 +5516,7 @@
   },
   "latest_geopandas_3591_static_review": {
     "date": "2026-11-21",
-    "status": "strong_issue_pr_alignment; all_null_geometry_edge_case; moderate_high_E3_answerability_risk; no_stage2",
+    "status": "exact_frozen_row_authenticated; implementation_mechanism_not_disclosed_in_E3; project_lead_E3_ABSTAIN; candidate_on_hold; no_stage2",
     "issue": "geopandas/geopandas #3590",
     "pr": "geopandas/geopandas #3591",
     "issue_created_at_utc": "2025-06-05T00:05:04Z",
@@ -5532,14 +5537,19 @@
       "geopandas/tests/test_geodataframe.py"
     ],
     "issue_comments_exposure": "maintainer notes np.nan is float not geometry/None; reporter clarifies long all-NaN and mixed-null cases. These comments must not be inserted into frozen E3 unless present in problem_statement.",
-    "e3_assessment": "moderate-to-high answerability risk; issue contains exact input, error, workaround and a contrast case; internal dtype gate not named in issue body",
+    "e3_assessment": "project-lead decision: ABSTAIN. Frozen problem statement gives input/error/workaround/contrast but not internal constructor geometry/dtype recognition branch.",
     "stage2_execution": false,
-    "dataset_row_authenticated": false,
+    "dataset_row_authenticated": true,
     "selectors_run": false,
-    "artifact_id": null,
+    "artifact_id": 14715535728,
     "final_case_acceptance": "not_accepted",
     "inference_authorized": false,
-    "review_path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
+    "review_path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+    "canonical_row_sha256": "e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2",
+    "problem_statement_sha256": "c4aeb4909495887c065f1f7ae5ec0e321fb350e98ea789cde3f931cad597f12d",
+    "prior_pipeline_debug_exposure": "none",
+    "project_lead_e3_decision": "ABSTAIN",
+    "candidate_disposition": "HOLD; no final exclusion or acceptance; no Stage 2"
   },
   "latest_python_babel_1141_static_review": {
     "date": "2026-11-21",
@@ -5667,7 +5677,7 @@
         "rank": 52,
         "repository": "geopandas/geopandas",
         "pull_request": "#3591",
-        "next_gate": "Project lead decides E3 semantic sufficiency using authenticated problem statement and implementation-mechanism target. Do not run Stage 2 until the decision is recorded."
+        "next_gate": "E3 decision resolved as ABSTAIN. Keep the candidate on HOLD and do not run Stage 2; E2/E1 remain separate and any future advancement requires a new explicit project-lead decision."
       },
       {
         "rank": 55,
@@ -5678,29 +5688,29 @@
     ],
     "accepted_cases_remain": "Dishka and EODAG only",
     "inference_authorized": false,
-    "phase2_status": "partially_complete_not_closed_pending_rank49_remaining_acceptance_gates_and_rank52_E3_decision",
+    "phase2_status": "partially_complete_not_closed_pending_rank49_remaining_acceptance_gates_and_rank52_hold",
     "phase2_review_document": "research_candidates/evidence_abstention/STAGE2_RANK49_52_CLOSURE_REVIEW_2026-11-21.md",
     "rank50_status": "excluded_from_current_primary_abstention_sample_by_project_lead_immutable_selector_integrity_failure",
     "rank51_status": "excluded_from_current_primary_abstention_sample_after_exact_frozen_E3_authentication; no Stage 2",
-    "rank52_status": "exact_frozen_row_authenticated; prior pipeline debug exposure none; project_lead_E3_decision_pending; no Stage 2"
+    "rank52_status": "exact frozen row authenticated; E3=ABSTAIN by project-lead decision; prior pipeline debug exposure none; candidate remains HOLD; no Stage 2"
   },
   "stage2_rank49_52_closure_review_2026_11_21": {
     "date": "2026-11-21",
-    "status": "partially_complete_not_closed_pending_rank49_remaining_acceptance_gates_and_rank52_E3_decision",
+    "status": "partially_complete_not_closed_pending_rank49_remaining_acceptance_gates_and_rank52_hold",
     "review_document_path": "research_candidates/evidence_abstention/STAGE2_RANK49_52_CLOSURE_REVIEW_2026-11-21.md",
-    "review_document_git_blob_sha": "7bce07080f650a0e33747e204774a028ffcb9a5f",
+    "review_document_git_blob_sha": "d89471e2f2880cf97ecb5a2a2ebc0da9345940cf",
     "rank_dispositions": {
-      "49_geofileops_649": "stage2_exact_reproduction_pass; stage3_diagnostic_granularity_and_project_lead_gates_pending; recommended_strict_mechanism_E3_ABSTAIN_E2_ABSTAIN_E1_ANSWER",
+      "49_geofileops_649": "stage2_exact_reproduction_pass; strict mechanism gold and E3_ABSTAIN_E2_ABSTAIN_E1_ANSWER approved; temporal/license/provenance/scope/record validation/final acceptance gates remain open",
       "50_lektor_1214": "stage2_frozen_selector_integrity_contract_failed; preserve_all_149_selectors; no_stage3_or_primary_sample_acceptance",
-      "51_music21_1736": "held_before_stage2_pending_exact_frozen_row_authentication; high_E3_answerability_risk_due_issue_describing_split_tuple_to_plain_tuple_transition_and_attribute_error",
-      "52_geopandas_3591": "held_before_stage2_pending_exact_frozen_row_authentication_and_project_lead_exposure_declaration; retain_as_potential_strict_mechanism_case"
+      "51_music21_1736": "exact frozen row authenticated; E3 disclosure condition satisfied; formally excluded from primary sample; no Stage 2",
+      "52_geopandas_3591": "exact frozen row authenticated; project_lead_E3_ABSTAIN; E2/E1 separate; candidate remains HOLD; no Stage 2"
     },
     "exact_row_extraction": {
       "rank_51": "authenticated",
       "rank_52": "authenticated",
       "pinned_dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
       "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
-      "reason": "Available GitHub Actions controls did not execute the newly drafted no-inference row audit; no row hash or E3 packet was fabricated.",
+      "reason": "Corrected no-inference extraction completed against the pinned Parquet snapshot; exact rows for ranks 51 and 52 were authenticated and the artifact independently verified.",
       "first_attempt": {
         "workflow_run_id": 44924342085,
         "job_id": 136907155888,
@@ -5713,7 +5723,7 @@
         "job_id": 136907864713,
         "status": "success",
         "method": "Discover actual instance_id from exact base_commit + PR-number suffix + repository slug in safe metadata columns, then extract and hash full rows.",
-        "exact_row_authenticated": false
+        "exact_row_authenticated": true
       },
       "artifact_id": 14715535728,
       "artifact_sha256": "1abca7d09dfcbf4c4ba773ab87fb21225ec8f4208f44f2f7fbb19b613352459b",
@@ -5729,12 +5739,12 @@
     "inference_authorized": false,
     "next_open_work_order_unchanged": true,
     "project_lead_decision_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md",
-    "project_lead_decision_record_git_blob_sha": "d25dd229d5e9103ff200f77bf08a654f6332be1f",
+    "project_lead_decision_record_git_blob_sha": "2010c4d70c72d5f7c54ef546469d73162d2ea07d",
     "project_lead_decisions_applied": true,
     "rank49": "stage2_pass; strict mechanism gold and tiers approved; prior pipeline debug exposure none; remaining temporal/license/scope/final acceptance gates open",
     "rank50": "primary sample excluded by project lead due immutable stage2 selector contract failure",
     "rank51": "exact row authenticated; E3 condition satisfied; excluded from primary sample by approved conditional decision; no Stage 2",
-    "rank52": "exact row authenticated; E3 semantic suitability decision pending; prior pipeline debug exposure none; remains on hold"
+    "rank52": "exact row authenticated; E3=ABSTAIN; prior pipeline debug exposure none; E2/E1 separate; candidate remains HOLD; no Stage 2"
   },
   "latest_rank_51_52_exact_row_audit_2026_11_21": {
     "date": "2026-11-21",
@@ -5805,7 +5815,9 @@
         ],
         "patch_sha256": "8ba3f754862490794e4e1fe6270260237f4bf189d60096b58149698503398fc2",
         "test_patch_sha256": "616dddc564cd4169ceb49c7c712a41bb268421952136cfec0b7fa3b7ad2cdbe6",
-        "disposition": "exact_row_authenticated; retained_on_hold_pending_project_lead_E3_decision"
+        "disposition": "exact_row_authenticated; project_lead_E3_ABSTAIN; candidate_HOLD; no_stage2",
+        "e3_decision": "ABSTAIN",
+        "prior_pipeline_debug_exposure": "none"
       }
     ]
   }
