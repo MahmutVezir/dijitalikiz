@@ -183,7 +183,24 @@
     },
     "registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json",
     "registry_included": true,
-    "post_acceptance_validation": "pending_latest_head_ci",
+    "post_acceptance_validation": {
+      "status": "structurally_valid_candidate",
+      "workflow_run_id": 44895500211,
+      "job_id": 136820151510,
+      "branch_head": "0e7c53e7cda000b6682b93fc2036035662fdbc80",
+      "eodag_review_contract_tests": "5 passed",
+      "acceptance_and_readiness_tests": "25 passed",
+      "registry_case_count": 2,
+      "registry_project_count": 2,
+      "inference_authorized": false
+    },
     "inference_authorized": false
+  },
+  "latest_research_validation": {
+    "workflow_run_id": 44895500199,
+    "job_id": 136820191554,
+    "conclusion": "success",
+    "tests": "477 passed, 6 skipped, 56 subtests passed",
+    "inference_performed": false
   }
 }
