@@ -227,14 +227,14 @@ def test_eodag_1530_final_decision_is_in_manifest_and_ledger_and_registry():
     )
     assert row["model_inference_authorized"] is False
 
-    assert registry["accepted_case_count"] == 2
+    assert registry["accepted_case_count"] == 3
     assert "license_scope_acknowledgement" in provenance
     assert provenance["license_scope_acknowledgement"]["status"] == "approved_bounded_documentary_scope_only"
     assert provenance["license_scope_acknowledgement"]["inference_authorized"] is False
     assert any(record.get("case_id") == "SRV2E-EODAG_1530" for record in registry["records"])
-    assert registry["accepted_project_count"] == 2
+    assert registry["accepted_project_count"] == 3
     assert [record["case_id"] for record in registry["records"]] == [
-        "SRV2E-DISHKA_435", "SRV2E-EODAG_1530"
+        "SRV2E-DISHKA_435", "SRV2E-EODAG_1530", "SRV2E-GEOFILEOPS_649"
     ]
     final_decisions = [
         item for item in manifest["project_lead_decisions"]
@@ -245,8 +245,8 @@ def test_eodag_1530_final_decision_is_in_manifest_and_ledger_and_registry():
     assert final_decisions[0]["decision_record"]["sha256"] == (
         "5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d"
     )
-    assert manifest["accepted_case_count"] == 2
-    assert manifest["accepted_project_count"] == 2
+    assert manifest["accepted_case_count"] == 3
+    assert manifest["accepted_project_count"] == 3
 
 
 
@@ -281,6 +281,6 @@ def test_eodag_1530_case_record_is_accepted_and_registry_is_structurally_valid()
     assert registry_result["accepted_case_count"] == 2
     assert registry_result["accepted_project_count"] == 2
     assert [item["case_id"] for item in registry["records"]] == [
-        "SRV2E-DISHKA_435", "SRV2E-EODAG_1530"
+        "SRV2E-DISHKA_435", "SRV2E-EODAG_1530", "SRV2E-GEOFILEOPS_649"
     ]
     assert any(item["case_id"] == "SRV2E-EODAG_1530" for item in registry["records"])
