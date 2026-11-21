@@ -33,7 +33,7 @@ Downloaded archive recheck:
 PR #1046 makes two production changes that jointly explain the two reported outputs:
 
 1. **Three-consonant short-syllable boundary:** in `syllable_length`, the condition changes from `len(consonants) < 3` to `len(consonants) <= 3`. The word `ครับ` contains three Thai consonants; the old boundary prevents the short-vowel condition from applying at three consonants. The downstream tone branch can consequently take the wrong long/closed/dead path.
-2. **Tone-mark rule precedence:** in `tone_detector`, tone-mark-specific cases are moved ahead of broader consonant-class and syllable-state rules. For `ค่ะ`, a generic low-class/short/closed/dead branch can otherwise return before the specific low-class plus mai-ek (`่`) mapping is reached.
+2. **Tone-mark rule precedence:** in `tone_detector`, tone-mark-specific cases are moved ahead of broader consonant-class and syllable-state rules. For `ค่ะ`, one consonant makes the syllable `open`; the generic low-class/short/open branch returns `h` before the specific low-class plus mai-ek (`่`) mapping is reached. The earlier closed/dead branch description was incorrect for this input.
 
 The issue reporter's “possible solution” excerpt suggests one potentially relevant generic low/long/closed/dead branch for `ครับ`. That is a useful E3 clue but is not a complete explanation of both outputs: it does not establish the three-consonant boundary change and does not explain the `ค่ะ` tone-mark precedence correction.
 
@@ -47,10 +47,10 @@ The gold record must preserve both submechanisms rather than selecting only one 
 A source-aware advisory proposal is in `PYTHAINLP_1046_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_2026-11-21.md`.
 
 - **E3 — proposed ABSTAIN:** issue narrative, two actual/expected outputs, and the reporter's partial possible-solution hint. The hint addresses at most part of the `ครับ` symptom; at least the mechanism of `ค่ะ` remains unresolved.
-- **E2 — proposed ABSTAIN:** add exact-base `syllable_length` source evidence and the executed single-word results. This identifies a causal contributor for the three-consonant word, but does not resolve the second symptom's tone-mark rule order; the issue-level explanation remains incomplete.
-- **E1 — proposed ANSWER:** add the exact-base `tone_detector` branch-order excerpt. Together with E2, the evidence distinguishes both source mechanisms. The fixed patch itself must not be included in the model-visible diagnosis packet.
+- **E2 — proposed ABSTAIN:** add exact-base `syllable_length` evidence plus the exact-base initial-consonant class lookup for `ค`, independently corroborated by the NECTEC chart. This eliminates the predeclared wrong-initial-class alternative for both inputs and supports the `ครับ` length-boundary contributor, while leaving tone-mark extraction, syllable-state classification and rule precedence unresolved for `ค่ะ`.
+- **E1 — proposed ANSWER:** add exact-base tone-mark extraction, syllable-state helper and branch-order excerpts. The actual generic branch for `ค่ะ` is low / short / open, not low / short / closed / dead. The fixed patch itself must not be included in the model-visible diagnosis packet.
 
-These are proposals, not project-lead decisions. Before approval, the project lead must review the evidence-to-mechanism elimination matrix and confirm that E2 genuinely eliminates at least one predeclared alternative while leaving at least two mechanisms possible. If that cannot be defended from exact, provenance-backed evidence, the tier must be revised or the case left unclassified; do not force it.
+The row-level matrix is now recorded at `pythainlp_1046/PYTHAINLP_1004_E3_E2_E1_EVIDENCE_ELIMINATION_MATRIX_V0_1_2026-11-21.md`. It shows that E2 eliminates at least one predeclared alternative while leaving at least two plausible mechanisms live. The input-specific E1 path is a deterministic source-derived trace; a separately captured intermediate-state runtime log is not yet in the rechecked evidence bundle. These remain proposals, not project-lead decisions. Project-lead review and any additional instrumentation required by the adjudication standard remain open.
 
 ## 4. Related-issue family and exposure
 
