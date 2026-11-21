@@ -27,9 +27,8 @@ ARTIFACT_PATHS = {
     "design_decision": TRACK / "STUDY_DESIGN_DECISION_V0_2_EXPLORATORY_2026-11-16.md",
     "protocol": TRACK / "SWE_REBENCH_V2_PROTOCOL_V0_2_EXPLORATORY_DRAFT_2026-11-16.md",
     "analysis_plan": TRACK / "SWE_REBENCH_V2_ANALYSIS_PLAN_V0_2_EXPLORATORY_DRAFT_2026-11-16.md",
-    "human_evaluator_amendment": TRACK / "HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md",
-    "dual_human_scoring_rubric": TRACK / "SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md",
-    "rater_b_consent_and_exposure_template": TRACK / "RATER_B_CONSENT_AND_EXPOSURE_SCREEN_TEMPLATE_V0_1_2026-11-18.md",
+    "single_human_review_amendment": TRACK / "SINGLE_HUMAN_REVIEW_AMENDMENT_V0_2_2026-11-21.md",
+    "single_human_scoring_rubric": TRACK / "SWE_REBENCH_V2_SINGLE_HUMAN_OUTPUT_SCORING_RUBRIC_V0_2_2026-11-21.md",
     "ctapipe_exposure_decision_proposal": TRACK / "CTAPIPE_2732_EXPOSURE_DECISION_PROPOSAL_2026-11-18.md",
     "candidate_ledger": TRACK / "SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
 }
@@ -170,21 +169,34 @@ def evaluate(root: Path = ROOT) -> dict[str, Any]:
         if item.get("status") != "frozen" or not item.get("sha256"):
             blockers.append(f"Artifact is not frozen and hash-recorded: {item.get('path', '<unknown>')}.")
 
-    if human.get("human_human_second_rater") is not True:
-        blockers.append("The v0.2 dual-human output-scoring plan must identify a second human rater.")
-    rater_b = human.get("second_human_rater", {})
-    if rater_b.get("status") != "consent_confirmed_and_case_specific_independence_screen_passed":
-        blockers.append("Rater B participation and case-specific independence/exposure screening are not confirmed.")
+    if human.get("human_participant_count") != 1:
+        blockers.append("The active v0.2 governance record must declare exactly one human participant.")
+    if human.get("human_human_second_rater") is not False or human.get("single_human_output_scoring") is not True:
+        blockers.append("The active v0.2 output-scoring design must be single-human, not dual-human.")
+    if human.get("single_human_scorer") != "student_project_lead" or human.get("single_human_scorer_count") != 1:
+        blockers.append("The student project lead must be the only human output scorer.")
+    if human.get("output_scoring_raters") != ["student_project_lead"]:
+        blockers.append("The output-scoring rater list must contain only the student project lead.")
+    if human.get("scoring_blinding_status") != "condition_masked_not_blinded_to_case_source_gold_or_tier":
+        blockers.append("The single-human scoring procedure must accurately distinguish condition masking from full blinding.")
+    if human.get("full_researcher_source_exposure_disclosed") is not True:
+        blockers.append("Full researcher source/gold exposure must be disclosed for the single scorer.")
     if human.get("human_human_interrater_reliability_claimed") is not False:
-        blockers.append("Human-human agreement must not be claimed before both original ratings exist.")
-    if human.get("cohen_kappa_calculated") is not False:
-        blockers.append("Cohen's kappa must remain uncalculated until blinded human ratings exist.")
+        blockers.append("Inter-rater reliability must not be claimed in a single-human study.")
+    if human.get("cohen_kappa_calculated") is not False or human.get("agreement_statistics_planned") != []:
+        blockers.append("Human-human agreement statistics and Cohen's kappa must not be planned or claimed for a single human.")
     if human.get("ai_critique_is_human_rating") is not False:
         blockers.append("AI critique must remain advisory and must not be counted as a human rating.")
-    if not human.get("scoring_rubric_path"):
-        blockers.append("The dual-human output-scoring rubric path must be present.")
-    if human.get("second_human_tier_review") is not False:
-        blockers.append("Rater B must remain blind to and must not adjudicate hidden gold or E1/E2/E3 tier sufficiency.")
+    if human.get("technical_review_panel") != "not_applicable_no_additional_human_researchers_or_reviewers":
+        blockers.append("The active governance must not imply a separate human technical-review panel.")
+    if human.get("prior_dual_human_documents", {}).get("status") != "superseded_historical_not_active":
+        blockers.append("The former dual-human documents must be marked superseded historical records.")
+    expected_rubric = "research_candidates/evidence_abstention/SWE_REBENCH_V2_SINGLE_HUMAN_OUTPUT_SCORING_RUBRIC_V0_2_2026-11-21.md"
+    expected_amendment = "research_candidates/evidence_abstention/SINGLE_HUMAN_REVIEW_AMENDMENT_V0_2_2026-11-21.md"
+    if human.get("scoring_rubric_path") != expected_rubric or not (root / expected_rubric).is_file():
+        blockers.append("The active single-human scoring rubric path is missing or inconsistent.")
+    if human.get("amendment_path") != expected_amendment or not (root / expected_amendment).is_file():
+        blockers.append("The active single-human governance amendment path is missing or inconsistent.")
 
     accepted_count = registry.get("accepted_case_count", 0)
     accepted_projects = registry.get("accepted_project_count", 0)
@@ -238,9 +250,12 @@ def evaluate(root: Path = ROOT) -> dict[str, Any]:
         "generation_status": generation.get("status"),
         "protocol_hash_freeze_complete": preregistration.get("hash_freeze_complete"),
         "external_preregistration_required": external_registration_required,
-        "human_review_mode": "two_human_raters_for_model_outputs_single_project_lead_for_gold_and_tiers",
-        "second_human_rater_required": human.get("human_human_second_rater"),
-        "second_human_rater_status": rater_b.get("status"),
+        "human_review_mode": "single_human_condition_masked_not_blinded",
+        "human_participant_count": human.get("human_participant_count"),
+        "single_human_scorer": human.get("single_human_scorer"),
+        "second_human_rater_required": False,
+        "second_human_rater_status": "not_applicable_no_second_human_in_project",
+        "scoring_blinding_status": human.get("scoring_blinding_status"),
         "interrater_reliability_claimed": human.get("human_human_interrater_reliability_claimed"),
         "agreement_statistics_planned": human.get("agreement_statistics_planned", []),
         "model_loading_performed": manifest.get("model_loading_performed"),
