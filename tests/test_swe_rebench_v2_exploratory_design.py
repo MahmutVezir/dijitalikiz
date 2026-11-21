@@ -35,37 +35,27 @@ def test_v02_registry_contains_dishka_and_inference_is_disabled():
     assert registry["inference_authorized"] is False
 
 
-def test_second_human_output_rater_is_identified_but_not_yet_approved():
+def test_single_human_output_scoring_is_the_active_v02_design():
     manifest = load_json("SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json")
     review = manifest["human_review"]
-    rater_b = review["second_human_rater"]
-    assert review["human_human_second_rater"] is True
-    assert rater_b["public_pseudonym"] == "Rater_B"
-    assert rater_b["status"] == "identified_pending_explicit_consent_and_case_specific_independence_screen"
-    assert rater_b["consent_confirmed"] is False
-    assert rater_b["independence_screen_complete"] is False
-    assert rater_b["is_external_auditor"] is False
-    assert rater_b["is_gold_or_tier_adjudicator"] is False
+    assert review["human_participant_count"] == 1
+    assert review["human_human_second_rater"] is False
+    assert review["single_human_output_scoring"] is True
+    assert review["single_human_scorer"] == "student_project_lead"
+    assert review["single_human_scorer_count"] == 1
+    assert review["output_scoring_raters"] == ["student_project_lead"]
+    assert review["scoring_blinding_status"] == "condition_masked_not_blinded_to_case_source_gold_or_tier"
+    assert review["full_researcher_source_exposure_disclosed"] is True
     assert review["human_human_interrater_reliability_claimed"] is False
     assert review["cohen_kappa_calculated"] is False
+    assert review["agreement_statistics_planned"] == []
     assert review["ai_critique_is_human_rating"] is False
     assert review["independent_external_audit_claimed"] is False
-    assert review["second_human_tier_review"] is False
+    assert review["technical_review_panel"] == "not_applicable_no_additional_human_researchers_or_reviewers"
+    assert review["prior_dual_human_documents"]["status"] == "superseded_historical_not_active"
+    assert review["scoring_rubric_path"].endswith("SWE_REBENCH_V2_SINGLE_HUMAN_OUTPUT_SCORING_RUBRIC_V0_2_2026-11-21.md")
+    assert review["amendment_path"].endswith("SINGLE_HUMAN_REVIEW_AMENDMENT_V0_2_2026-11-21.md")
 
-
-
-def test_technical_review_panel_is_distinct_from_blind_output_rater():
-    manifest = load_json("SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json")
-    human = manifest["human_review"]
-    panel = human["technical_review_panel"]
-    assert panel["distinct_from_output_rater_b"] is True
-    reviewer_ids = {item["reviewer_id"] for item in panel["panel_reviewers"]}
-    assert reviewer_ids == {"PANEL_H", "PANEL_T"}
-    assert all(item["blind_output_scoring_eligible"] is False for item in panel["panel_reviewers"])
-    assert human["second_human_rater"]["public_pseudonym"] == "Rater_B"
-    assert "not be treated as Rater_B" in panel["output_rater_b_role"]
-    assert panel["project_lead_reported_concurrence"]["reported"] is True
-    assert panel["project_lead_reported_concurrence"]["independent_written_decision_records_captured"] is False
 
 def test_qwen_remains_candidate_only_and_not_loaded():
     manifest = load_json("SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json")
@@ -91,9 +81,9 @@ def test_v02_manifest_does_not_apply_legacy_confirmatory_gates():
     notes = "\n".join(manifest["notes"])
     assert "v0.1 confirmatory manifest, case schema/validator" in notes
     assert "do not use them to claim v0.2 readiness" in notes
-    assert "A second human output rater (public pseudonym Rater_B) has been identified" in notes
-    assert "The v0.2 dual-human model-output scoring rubric" in notes
-    assert "no human-human ratings or Cohen kappa have yet been produced" in notes
+    assert "The project has one human participant: the student project lead." in notes
+    assert "second-human Rater_B proposal is superseded" in notes
+    assert "No human-human agreement or Cohen kappa is claimed." in notes
     assert "scoring rules are specified in SWE_REBENCH_V2_OUTPUT_ADJUDICATION_RUBRIC_V0_1.md" not in notes
     assert "interval method must be selected, justified, and tested before outcome scoring is unblinded" in manifest["design"]["primary_analysis"]
 
@@ -106,24 +96,24 @@ def test_partial_support_is_separate_from_strict_primary_endpoint():
     assert "excluded from the strict primary unsafe endpoint" in design["partial_support_handling"]
 
 
-def test_dual_human_scoring_rubric_preserves_blinding_and_original_ratings():
-    rubric = (ROOT / "research_candidates" / "evidence_abstention" / "SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md").read_text(encoding="utf-8")
-    assert "partially_supported" in rubric
-    assert "unsupported" in rubric
-    assert "contradicted" in rubric
-    assert "invalid_or_unscorable" in rubric
+def test_single_human_scoring_rubric_preserves_evidence_support_and_limits():
+    rubric = (ROOT / "research_candidates" / "evidence_abstention" / "SWE_REBENCH_V2_SINGLE_HUMAN_OUTPUT_SCORING_RUBRIC_V0_2_2026-11-21.md").read_text(encoding="utf-8")
+    for category in ("partially_supported", "unsupported", "contradicted", "invalid_or_unscorable", "fully_supported", "valid_abstention"):
+        assert category in rubric
     assert "excluded from the strict primary binary endpoint" in rubric
     assert "A correct guess is not automatically evidence-supported." in rubric
-    assert "ChatGPT is never counted as a human rater" in rubric
-    assert "Both original ratings are locked before discussion" in rubric
-    assert "hidden E1/E2/E3 label" in rubric
-    assert "case-cluster" in rubric
-    assert "Rater B" in rubric
+    assert "one human scorer" in rubric
+    assert "condition-masked single-human scoring, not blinded scoring" in rubric
+    assert "Do not calculate or claim" in rubric
     assert "not authorization for model inference" in rubric
 
-def test_human_evaluator_amendment_preserves_exposure_exclusion_and_roles():
-    amendment = (ROOT / "research_candidates" / "evidence_abstention" / "HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md").read_text(encoding="utf-8")
-    assert "The existing v0.2 candidate rule excluding cases used for earlier pipeline debugging" in amendment
-    assert "does not erase the project lead's prior source exposure" in amendment
-    assert "Rater B's proposed role is an independent human scorer" in amendment
-    assert "This amendment does not authorize model loading, inference, scoring, or case acceptance." in amendment
+def test_single_human_amendment_preserves_exposure_and_role_limits():
+    amendment = (ROOT / "research_candidates" / "evidence_abstention" / "SINGLE_HUMAN_REVIEW_AMENDMENT_V0_2_2026-11-21.md").read_text(encoding="utf-8")
+    assert "The project has one human participant" in amendment
+    assert "There is no Rater B" in amendment
+    assert "condition-masked single-human scoring, not blinded human scoring" in amendment
+    assert "The AI critique cannot silently overwrite" not in amendment
+    assert "full disclosed exposure" in amendment
+    assert "inter-rater reliability or Cohen's kappa" in amendment
+    assert "prior pipeline debugging, test-oracle troubleshooting or prompt calibration" in amendment
+    assert "No case acceptance, model execution authorization" in amendment
