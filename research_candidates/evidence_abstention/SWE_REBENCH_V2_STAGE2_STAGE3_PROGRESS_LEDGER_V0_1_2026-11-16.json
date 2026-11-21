@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T18:29:30Z",
+  "generated_at_utc": "2026-11-21T18:31:48Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -2735,7 +2735,15 @@
         "registry_inclusion": false,
         "researcher_source_exposure": "full_disclosed",
         "blinded_researcher_adjudication": false,
-        "inter_rater_reliability_claimed": false
+        "inter_rater_reliability_claimed": false,
+        "no_stage2_authorized_as_of_stage3_decision": true,
+        "subsequent_stage2_authorization": {
+          "authorization_record_path": "research_candidates/evidence_abstention/geopandas_3591/PROJECT_LEAD_STAGE2_EXECUTION_AUTHORIZATION_2026-11-21.md",
+          "authorization_decision": "AUTHORIZE",
+          "approval_source": "explicit_chat_approval_2026-11-21_after_separate_prompt",
+          "execution_result": "passed_technical_reproduction",
+          "execution_result_path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STAGE2_TECHNICAL_REPRODUCTION_RESULT_2026-11-21.md"
+        }
       },
       "stage2_dataset_row_id": "geopandas__geopandas-3591",
       "stage2_dataset_row_sha256": "e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2",
@@ -2859,7 +2867,8 @@
         "fine_tuning_or_training_performed": false,
         "final_case_acceptance": "not_accepted",
         "candidate_disposition": "HOLD_pending_separate_final_acceptance_and_documentary_license_scope_review"
-      }
+      },
+      "stage2_authorization_record_path": "research_candidates/evidence_abstention/geopandas_3591/PROJECT_LEAD_STAGE2_EXECUTION_AUTHORIZATION_2026-11-21.md"
     },
     {
       "cohort_rank": 53,
