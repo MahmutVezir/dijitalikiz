@@ -216,23 +216,47 @@ class Dymos1166ProposedPacketSetTests(unittest.TestCase):
         self.assertFalse(dymos["model_inference_authorized"])
 
 
+
     def test_latest_independent_reproducer_repeat_is_hashed_but_case_remains_proposed(self):
         case_path = (
             ROOT
             / "research_candidates/evidence_abstention/dymos_1166/"
             / "SWE_REBENCH_V2_DYMOS_1166_CASE_RECORD_PROPOSED_V0_1_2026-11-20.json"
         )
+        note_path = (
+            ROOT
+            / "research_candidates/evidence_abstention/dymos_1166/"
+            / "DYMOS_1166_LATEST_INDEPENDENT_REPRODUCER_REPEAT_2026-11-21.md"
+        )
+        ledger_path = (
+            ROOT
+            / "research_candidates/evidence_abstention/"
+            / "SWE_REBENCH_V2_STAGE2_STAGE3_PROGRESS_LEDGER_V0_1_2026-11-16.json"
+        )
         record = json.loads(case_path.read_text(encoding="utf-8"))
-        repeat = record["technical_reproduction"]["latest_independent_reproducer_repeat"]
+        note = note_path.read_text(encoding="utf-8")
+        ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+        dymos = next(item for item in ledger["records"] if item["repository"] == "OpenMDAO/dymos")
+        repeat = ledger["latest_dymos_1166_independent_reproduction_repeat"]
+
+        result = validate_case_record(record)
+        self.assertEqual(result["status"], "structurally_complete_candidate", result["blockers"])
+        self.assertEqual(record["acceptance_decision"], "proposed")
+        self.assertEqual(record["final_acceptance"]["status"], "pending")
         self.assertEqual(repeat["workflow_run_id"], 44903822528)
         self.assertEqual(repeat["artifact_id"], 14707022685)
-        self.assertTrue(repeat["local_integrity"]["outer_zip_sha256_matches_github"])
-        self.assertEqual(repeat["local_integrity"]["internal_sha256_manifest_matches"], 15)
-        self.assertEqual(repeat["buggy_base"]["observed_values"], "[[1.0], [1.0]]")
-        self.assertTrue(repeat["fixed_revision"]["same_reproducer_passed"])
-        self.assertEqual(record["final_acceptance"]["status"], "pending")
-        self.assertEqual(record["acceptance_decision"], "proposed")
-        self.assertFalse(record["inference_authorized"])
+        self.assertEqual(
+            repeat["artifact_sha256"],
+            "698e2f6b9d37522fd276f58ce57d85934bb0e8df16cd978284c3e79ef3a346dc",
+        )
+        self.assertIn("outer SHA-256 exactly matches GitHub", note)
+        self.assertIn("15/15 files matched", note)
+        self.assertIn("1 passed", note)
+        self.assertEqual(dymos["final_case_acceptance"], "not_accepted")
+        self.assertFalse(dymos["model_inference_authorized"])
+        self.assertEqual(ledger["summary"]["accepted_exploratory_cases"], 2)
+        self.assertEqual(ledger["summary"]["accepted_exploratory_projects"], 2)
+
 
 
 if __name__ == "__main__":
