@@ -108,3 +108,18 @@ The license-scope review is deliberately not closed:
 The candidate review already records that the researcher reviewed the issue and PR during screening. The source-aware analysis has now also been discussed in this workflow; do not claim blinding. Candidate-specific prior pipeline/debug exposure is still awaiting the project lead's explicit declaration. No “none” value is inferred.
 
 **Current disposition remains:** Stage 2 technical pass; Stage 3 technical gold/tier proposal prepared but not approved; license scope not acknowledged; exposure declaration pending; no final proposed case record; not in the registry; no model execution authorization.
+
+
+## Project-lead technical gold and evidence-tier decision — 21 November 2026
+
+The project lead explicitly approved the source-aware technical gold and evidence tiers for Meltano SDK #3090:
+- **G1:** shared mutable `visited_refs` state leaks across sibling JSON Schema property branches; after the first sibling resolves a reference, the second sibling is incorrectly stopped by the visited-reference guard and returns without resolving the target.
+- **E3 — ABSTAIN:** the issue narrative contains the tentative “presumably already visited” clue, but this is a hypothesis rather than proof of sibling-shared traversal state.
+- **E2 — ABSTAIN:** the frozen dataset selector and independent public-API reproducer confirm exact buggy-base failure and fixed-revision success, but do not expose the internal causal mechanism.
+- **E1 — ANSWER:** the pinned buggy/fixed source snapshots show the mutable set, sibling propagation, early guard, and immutable recursion-path tuple fix.
+
+The decision is source-aware and single-adjudicator; the researcher had already reviewed the issue and PR, so no blinding or independent second-rater claim is made. The reporter's tentative clue remains visible in E3 rather than being erased or overstated.
+
+This closes only Stage 3 technical gold/tier adjudication. Candidate-specific prior pipeline/debug exposure remains pending; the bounded source/dependency/dataset license scope remains open; no final case record or separate final YES/NO acceptance has been made. Meltano remains outside the v0.2 registry, accepted counts remain 2 cases from 2 projects, and model loading/inference/fine-tuning/training remain unauthorized. PR #3009 remains repository lineage, not a second case.
+
+Decision record: `research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIER_DECISION_MELTANO_3090_2026-11-21.md`.
