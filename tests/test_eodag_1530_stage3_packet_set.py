@@ -72,7 +72,13 @@ def test_eodag_1530_provenance_matches_packet_set_and_records_project_lead_decis
         "E1": ["G1"],
     }
     assert semantic["independent_blinded_validation"] == "not_claimed"
-    assert semantic["prior_pipeline_debug_exposure"] == "pending_project_lead_self_declaration"
+    assert semantic["prior_pipeline_debug_exposure"] == "none"
+    assert semantic["prior_pipeline_debug_exposure_decision_record"] == {
+        "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
+        "sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38",
+        "decision_date": "2026-11-21",
+        "decision": "none",
+    }
     assert semantic["final_case_acceptance"] == "pending_remaining_mandatory_gates"
     assert semantic["decision_record"]["sha256"] == "b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e"
     assert provenance["structural_validation"]["semantic_sufficiency_assessed"] is False
@@ -98,8 +104,9 @@ def test_eodag_1530_independence_and_license_reviews_are_not_final_acceptance():
     assert 1517 in independence["issue_family_disposition"][
         "duplicate_candidates_excluded_from_independent_case_count"
     ]
-    assert independence["exposure_and_roles"]["prior_pipeline_debug_exposure_status"] == (
-        "pending_project_lead_self_declaration"
+    assert independence["exposure_and_roles"]["prior_pipeline_debug_exposure_status"] == "none"
+    assert independence["exposure_and_roles"]["prior_pipeline_debug_exposure_decision_record"]["sha256"] == (
+        "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38"
     )
     assert independence["independence_status"]["final_case_acceptance"] == "not_accepted"
     assert independence["independence_status"]["inference_authorized"] is False
@@ -151,6 +158,12 @@ def test_eodag_1530_project_decision_is_in_manifest_and_ledger_but_not_registry(
     assert decision["decision_record"]["sha256"] == (
         "b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e"
     )
+    assert decision["boundaries"]["prior_pipeline_debug_exposure"] == (
+        "none; project-lead self-declaration recorded separately"
+    )
+    assert decision["boundaries"]["prior_pipeline_debug_exposure_decision_record_sha256"] == (
+        "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38"
+    )
     assert decision["boundaries"]["final_case_acceptance"] == (
         "not_accepted until mandatory gates, schema record and registry validation pass"
     )
@@ -166,11 +179,15 @@ def test_eodag_1530_project_decision_is_in_manifest_and_ledger_but_not_registry(
     assert row["project_lead_gold_tier_decision"]["tier_decisions"] == {
         "E3": "ABSTAIN", "E2": "ABSTAIN", "E1": "ANSWER"
     }
-    assert row["prior_pipeline_debug_exposure"] == "pending_project_lead_self_declaration"
+    assert row["prior_pipeline_debug_exposure"] == "none"
+    assert row["exposure_decision_record_sha256"] == (
+        "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38"
+    )
     assert row["bounded_license_scope_acknowledgement"] == "pending"
     assert row["final_case_acceptance"] == "not_accepted"
     assert row["model_inference_authorized"] is False
 
     assert registry["accepted_case_count"] == 1
+    assert not any(record.get("case_id") == "SRV2E-EODAG_1530" for record in registry["records"])
     assert registry["accepted_project_count"] == 1
     assert [record["case_id"] for record in registry["records"]] == ["SRV2E-DISHKA_435"]
