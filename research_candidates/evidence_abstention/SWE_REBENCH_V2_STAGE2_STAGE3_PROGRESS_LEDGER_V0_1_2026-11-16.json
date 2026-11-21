@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T18:05:24Z",
+  "generated_at_utc": "2026-11-21T18:29:30Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -36,13 +36,13 @@
     "strong": 6,
     "post_second_pass_excluded": 2,
     "remaining_broad_shortlist": 65,
-    "stage2_passed": 16,
+    "stage2_passed": 17,
     "stage3_technical_passed": 2,
     "final_accepted_cases": 3,
     "runner_blocked_candidates": 0,
     "separately_blocked_external_fixture": 1,
-    "stage2_not_started": 41,
-    "stage2_blocked_or_held": 8,
+    "stage2_not_started": 40,
+    "stage2_blocked_or_held": 7,
     "stage2_status_scope": "96-row frozen cohort record count; not the same denominator as the later 13-candidate focused reproduction matrix",
     "study_evaluation_excluded_prior_pipeline_debug_exposure": 1,
     "dishka_proposed_case_count": 0,
@@ -2689,13 +2689,13 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "stage2_status": "held_no_stage2_after_project_lead_E3_abstain",
-      "stage2_workflow_job_id": null,
-      "stage2_evidence_note": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "stage3_status": "gold_and_E3_E2_E1_semantic_tiers_project_lead_approved;source_packets_frozen;candidate_HOLD_pending_Stage2_gate",
+      "stage2_status": "passed_exact_input_reproducer_base_fail_fixed_pass_frozen_selector_pass_artifact_integrity_verified",
+      "stage2_workflow_job_id": 136941838630,
+      "stage2_evidence_note": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STAGE2_TECHNICAL_REPRODUCTION_RESULT_2026-11-21.md",
+      "stage3_status": "gold_and_E3_E2_E1_semantic_tiers_project_lead_approved;source_packets_frozen;Stage2_technical_reproduction_passed;candidate_HOLD_pending_final_case_acceptance",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "next_required_gate": "Separate explicit project-lead approval is required before Stage 2 exact base/fix reproduction. No Stage 2, final case acceptance, registry inclusion or model inference is authorized by this tier decision.",
+      "next_required_gate": "Separate final project-lead YES/NO decision on case acceptance after review of Stage 2 artifact and remaining documentary/license-scope conditions. Stage 2 success does not grant registry inclusion or model-inference authorization.",
       "stage3_project_lead_prior_pipeline_debug_exposure": "none",
       "stage3_project_lead_disposition": {
         "decision_maker_role": "student_project_lead",
@@ -2755,7 +2755,7 @@
         "prior_pipeline_debug_exposure": "none"
       },
       "stage3_evidence_packets": {
-        "status": "frozen_semantic_source_packets_stage2_reproduction_pending",
+        "status": "frozen_semantic_source_packets_stage2_reproduction_passed_final_case_acceptance_pending",
         "packet_paths": {
           "E3": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E3_PACKET_MANIFEST_V0_1.json",
           "E2": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E2_PACKET_MANIFEST_V0_1.json",
@@ -2766,10 +2766,99 @@
           "E2": "a7af85fae4233326ad22370131880f30739034137287ed01b1ac6cf0ec03e9ed",
           "E1": "f616ee1036b77fde6fa77fff9efe27fd26c6dd78cf6657046c4071b0e47e5dbb"
         },
-        "stage2_execution": "not_run",
+        "stage2_execution": "passed_technical_reproduction",
         "fixed_revision_test_source_is_execution_log": false,
         "model_output_included": false,
         "inference_authorized": false
+      },
+      "stage2_latest_run_id": 44935740419,
+      "stage2_latest_job_id": 136941838630,
+      "stage2_artifact_id": 14719727030,
+      "stage2_artifact_sha256": "bc807d9c1bdec02e72c61783d9f3e8a5640574fd620fd0da5de2ec4468a1894e",
+      "stage2_execution": {
+        "status": "passed_technical_reproduction",
+        "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44935740419",
+        "workflow_run_id": 44935740419,
+        "job_id": 136941838630,
+        "research_branch_head_sha": "73d35f7f6e94337ba24c99568a582a1fdcfa8ea6",
+        "completed_at_utc": "2026-11-21T18:29:30Z",
+        "base_commit": "c36eba059f6170715b63a9aa065817c64025d263",
+        "fixed_commit": "b3259ce23a37abd32650d7df098f3cdc8c4bb261",
+        "frozen_selector": "geopandas/tests/test_geodataframe.py::TestConstructor::test_geometry_nan_scalar",
+        "source_authentication": "success",
+        "changed_paths": [
+          "CHANGELOG.md",
+          "geopandas/geodataframe.py",
+          "geopandas/tests/test_geodataframe.py"
+        ],
+        "changelog_change_classification": "release_note_only",
+        "environment": {
+          "runner": "ubuntu-22.04",
+          "python": "3.11.9",
+          "numpy": "1.26.4",
+          "pandas": "2.2.3",
+          "shapely": "2.1.1",
+          "pyproj": "3.7.1",
+          "pyogrio": "0.11.0",
+          "pytest": "8.3.5",
+          "pip_check": "No broken requirements found",
+          "exact_lock_vs_pip_freeze": "matched"
+        },
+        "base_reproducer": {
+          "status": "passed_expected_failure",
+          "exception_type": "ValueError",
+          "message": "Assigning CRS to a GeoDataFrame without a geometry column is not supported."
+        },
+        "fixed_reproducer": {
+          "status": "passed_expected_success",
+          "shape": [
+            1,
+            2
+          ],
+          "active_geometry_name": "geometry",
+          "geometry_value_is_none": true,
+          "crs": "EPSG:4326"
+        },
+        "fixed_frozen_selector": {
+          "status": "passed",
+          "passed": 1,
+          "failed": 0,
+          "duration_seconds": 0.16
+        },
+        "artifact": {
+          "id": 14719727030,
+          "name": "geopandas-3591-stage2-44935740419",
+          "size_bytes": 6816,
+          "sha256": "bc807d9c1bdec02e72c61783d9f3e8a5640574fd620fd0da5de2ec4468a1894e",
+          "independent_download_verified": true,
+          "outer_sha256_matches_github_digest": true,
+          "zip_crc": "pass",
+          "internal_sha256_files_verified": 17,
+          "internal_sha256_files_total": 17,
+          "member_count": 18
+        },
+        "failed_attempts_before_success": [
+          {
+            "run_id": 44935393890,
+            "job_id": 136940770294,
+            "reason": "source-change-set expected path list initially omitted CHANGELOG.md; stopped before runtime tests"
+          },
+          {
+            "run_id": 44935451603,
+            "job_id": 136940942737,
+            "reason": "source-change-set check initially omitted release-note-only CHANGELOG.md; stopped before runtime tests"
+          },
+          {
+            "run_id": 44935659230,
+            "job_id": 136941582947,
+            "reason": "editable install initially used upstream default branch; after exact-base checkout the full pip-freeze comparison caught Pygments name casing; stopped before runtime tests"
+          }
+        ],
+        "model_loading_performed": false,
+        "model_inference_performed": false,
+        "fine_tuning_or_training_performed": false,
+        "final_case_acceptance": "not_accepted",
+        "candidate_disposition": "HOLD_pending_separate_final_acceptance_and_documentary_license_scope_review"
       }
     },
     {
@@ -6424,5 +6513,16 @@
       }
     },
     "decision_record_blob_sha1": "9f35439fc77d732c337cd5723fac1fa2ac391ea2"
+  },
+  "latest_geopandas_3591_stage2": {
+    "date": "2026-11-21",
+    "status": "passed_technical_reproduction;candidate_HOLD_pending_final_case_acceptance",
+    "workflow_run_id": 44935740419,
+    "job_id": 136941838630,
+    "artifact_id": 14719727030,
+    "artifact_sha256": "bc807d9c1bdec02e72c61783d9f3e8a5640574fd620fd0da5de2ec4468a1894e",
+    "evidence_report_path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STAGE2_TECHNICAL_REPRODUCTION_RESULT_2026-11-21.md",
+    "model_inference_performed": false,
+    "final_case_acceptance": "not_accepted"
   }
 }
