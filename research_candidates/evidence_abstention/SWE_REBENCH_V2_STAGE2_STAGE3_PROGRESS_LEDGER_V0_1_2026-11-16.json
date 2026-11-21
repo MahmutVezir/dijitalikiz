@@ -1055,7 +1055,7 @@
       "stage2_status": "passed_issue_specific_independent_reproducer_and_2_dataset_selectors_base_fail_fixed_pass",
       "stage2_workflow_job_id": 134161227052,
       "stage2_evidence_note": "Independent YAML reproducer: duplicate geodes key removes geodes_s3 on buggy base, passes on fixed. Exact Parquet row cs-si__eodag-1536 authenticated (created_at 2025-02-21 10:04:30; row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47). Both exact issue-specific selectors executed: 2/2 failed on buggy base and 2/2 passed on fixed. Test-only patch changed tests/units/test_core.py only. Focused Python 3.11.9 environment: 52 resolved distributions with license metadata, pip check passed; full license scope signoff remains pending. Artifact 14344421574 SHA-256 0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33; internal SHA256SUMS 22/22 verified.",
-      "stage3_status": "gold_and_tiers_approved; prior_pipeline_debug_exposure_none_declared; bounded_license_scope_acknowledged; schema_record_and_registry_validation_pending",
+      "stage3_status": "gold_tiers_exposure_and_bounded_license_scope_approved; proposed_case_record_structurally_complete; final_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44117944004,
@@ -1129,16 +1129,22 @@
       "exposure_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
       "exposure_decision_record_sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38",
       "exposure_decision_date": "2026-11-21",
-      "study_evaluation_status_note": "The project lead approved source-aware gold/tier decisions, self-declared no prior pipeline/debug use, and acknowledged the bounded documentary license scope. A schema-conformant proposed case record has been added. Its structural and fail-closed registry validation are pending latest-head CI; the record remains proposed, outside the accepted registry, and does not authorize inference. Full researcher source exposure remains disclosed; bounded license acknowledgement is not legal clearance.",
+      "study_evaluation_status_note": "The project lead approved source-aware gold/tier decisions, self-declared no prior pipeline/debug use, and acknowledged the bounded documentary license scope. The proposed case record passed schema/cross-field validation in the branch-head no-inference preflight (EODAG tests 5/5); the existing accepted registry also passed fail-closed validation and remains unchanged with Dishka as the sole case. EODAG remains proposed pending a separate final project-lead YES/NO. Thirteen global readiness blockers remain; no inference is authorized.",
       "bounded_license_scope_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md",
       "bounded_license_scope_decision_record_sha256": "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6",
       "bounded_license_scope_decision_date": "2026-11-21",
       "proposed_case_acceptance_record_path": "research_candidates/evidence_abstention/eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
       "case_record_structural_validation": {
-        "status": "pending_latest_head_ci",
+        "status": "structurally_complete_candidate",
         "validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
-        "decision": "proposed",
-        "eligible_for_registry": false
+        "workflow_run_id": 44894847180,
+        "job_id": 136818188559,
+        "eodag_review_contract_tests": "5 passed",
+        "preflight_artifact_id": 14703537258,
+        "preflight_artifact_sha256": "fb89b0dbdd4835ee44ddb8f7f8c3a712094fb71caa3bdff150709936f1655bfa",
+        "accepted_registry_validation": "structurally_valid_candidate_registry",
+        "eligible_for_registry": false,
+        "model_inference_authorized": false
       }
     },
     {
@@ -2822,33 +2828,24 @@
     }
   ],
   "latest_no_inference_preflight": {
-    "workflow_run_id": 44745926469,
-    "head_commit": "b73b3ef11b633603ae84b5d85af47eb55fa7d1c9",
-    "job_id": 136321085978,
-    "status": "workflow_success",
+    "workflow_run_id": 44894847180,
+    "head_commit": "f143be00ee6634a9c0838379ac88c93cc0674ded",
+    "job_id": 136818188559,
+    "status": "no_inference_preflight_job_success",
     "ready_for_inference": false,
     "blocker_count": 13,
     "accepted_case_count": 1,
     "accepted_project_count": 1,
     "registry_status": "structurally_valid_candidate_registry",
     "schema_valid": true,
-    "test_groups": {
-      "packet_audit": 12,
-      "operational_and_nested_packet_contracts": 25,
-      "numpyro_review_contracts": 8,
-      "dymos_review_contracts": 5,
-      "selector_runner": 6,
-      "exploratory_acceptance_and_readiness": 24,
-      "study_design_and_dual_human_scoring": 10,
-      "total": 90
-    },
-    "artifact_id": 14633466042,
-    "artifact_sha256": "b4c7bd3eb157c02fd0fecfbe3b34a1810ddc11d0f26b93bb8be4783373e73071",
+    "eodag_case_record_test_count": 5,
+    "artifact_id": 14703537258,
+    "artifact_sha256": "fb89b0dbdd4835ee44ddb8f7f8c3a712094fb71caa3bdff150709936f1655bfa",
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "Workflow completed successfully. No-inference preflight: 90 tests passed; NumPyro review contracts 8/8 and Dymos review contracts 5/5. Dishka provenance/reproduction checks passed and Qwen license evidence was captured without model weights. NumPyro and Dymos independent reproducers also completed base-fail/fixed-pass on this branch head in separate successful workflows. Readiness remains blocked before inference with 13 global blockers and one accepted case."
+    "note": "Branch-head no-inference-preflight job succeeded. EODAG review-contract suite, including schema-conformant proposed case record validation and fail-closed registry invariants, passed 5/5. The EODAG record remains proposed and outside the registry; Dishka remains the sole accepted case. Readiness remains blocked by 13 global blockers; no model execution occurred."
   },
   "project_lead_decisions": [
     {
@@ -3207,23 +3204,23 @@
     "fine_tuning_performed": false
   },
   "latest_general_validation": {
-    "commit": "62b5915ed1eec6d7460d6060de76122c66a6d1b3",
+    "commit": "f143be00ee6634a9c0838379ac88c93cc0674ded",
     "research_validation_run": {
-      "id": 44734204156,
-      "job_id": 136281363442,
+      "id": 44894847259,
+      "job_id": 136818190862,
       "conclusion": "success",
-      "tests": "460 passed, 6 skipped, 56 subtests passed"
+      "tests": "477 passed, 6 skipped, 56 subtests passed"
     },
     "no_inference_preflight_run": {
-      "id": 44734204470,
-      "job_id": 136281363825,
-      "conclusion": "success"
+      "id": 44894847180,
+      "job_id": 136818188559,
+      "conclusion": "success_for_no_inference_preflight_job"
     },
     "model_loading_performed": false,
     "model_inference_performed": false,
     "fine_tuning_performed": false,
     "inference_authorized": false,
-    "note": "The last full repository/configuration validation passed on the preceding code-and-research head. The later commit 982ec189 changed only the no-inference preflight workflow; that workflow's new branch-head run passed its 85-test preflight suite. No model was loaded or executed."
+    "note": "Branch-head research validation passed. The no-inference preflight job passed with the EODAG proposed case record structurally complete and registry invariants preserved. Overall readiness remains false with 13 global blockers."
   },
   "candidate_portfolio_review": {
     "review_path": "research_candidates/evidence_abstention/CANDIDATE_PORTFOLIO_REVIEW_2026-11-20.md",
