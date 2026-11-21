@@ -1,0 +1,69 @@
+{
+  "schema_version": "0.1-v02-candidate-independence-review",
+  "review_date": "2026-11-21",
+  "candidate": {
+    "case_id": "SRV2E-SKYPILOT_5981",
+    "repository_full_name": "skypilot-org/skypilot",
+    "issue_url": "https://github.com/skypilot-org/skypilot/issues/5981",
+    "fix_pr_url": "https://github.com/skypilot-org/skypilot/pull/5985",
+    "dataset_instance_id": "skypilot-org__skypilot-5985",
+    "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "dataset_row_sha256": "a846e85ec5452d8100659e5c6c8cbecc3401dae16b8830eed77543172ef9bbbe"
+  },
+  "repository_identity": {
+    "canonical_upstream_repository": "skypilot-org/skypilot",
+    "exact_base": "60a6c930feeb8c48511f74c25bc2d7e12b290dd6",
+    "fixed_revision": "c8154ff3a4875cbb1bac8f29bb45254f264d72ba",
+    "merge_commit": "7617956543a0129cca037ff33e484dee8974469a",
+    "root_license": "Apache-2.0",
+    "root_license_blob_sha1": "aad27dddb0055248d9ceb93ac287898fc1d25b29"
+  },
+  "sampling_unit": {
+    "unit": "canonical_upstream_repository",
+    "maximum_accepted_cases_per_upstream_project": 1,
+    "registry_contains_candidate": false
+  },
+  "related_issue_family": [
+    {
+      "issue": 5981,
+      "url": "https://github.com/skypilot-org/skypilot/issues/5981",
+      "created_at_utc": "2025-06-12T17:18:04Z",
+      "kind": "target_defect",
+      "disposition": "Target case: incorrect use of str.lstrip('ssh-') on SSH Kubernetes context names."
+    },
+    {
+      "issue": 7662,
+      "url": "https://github.com/skypilot-org/skypilot/issues/7662",
+      "created_at_utc": "2025-10-18T03:13:19Z",
+      "kind": "same_root_cause_family_later_related_report",
+      "disposition": "Later report in the same repository explicitly describes lstrip as character-set based while intending literal ssh- prefix removal. A maintainer comment recommends common_utils.removeprefix. Exact affected call-site overlap with #5981 was not mapped in this review."
+    },
+    {
+      "issue": 5985,
+      "url": "https://github.com/skypilot-org/skypilot/pull/5985",
+      "merged_at_utc": "2025-06-12T23:31:46Z",
+      "kind": "fix",
+      "disposition": "Fix for #5981; same repository and same sampling unit."
+    }
+  ],
+  "independence_disposition": {
+    "exact_duplicate_found": false,
+    "same_root_cause_family_report_found": true,
+    "related_followup_or_residual_site_found": true,
+    "exact_callsite_overlap_with_7662": "not_yet_mapped",
+    "status": "prepared_subject_to_project_lead_review",
+    "note": "Issue #7662 is not an independent upstream project or additional case. Preserve it as related issue-family context; at most one SkyPilot case may be included."
+  },
+  "exposure": {
+    "prior_pipeline_debug_exposure": "pending_project_lead_declaration",
+    "researcher_source_exposure": "full_for_issue_PR_exact_source_selector_and_stage2_artifact",
+    "blinded_adjudication_claimed": false,
+    "inter_rater_claimed": false
+  },
+  "boundaries": {
+    "final_case_acceptance": "not_accepted",
+    "registry_inclusion": false,
+    "inference_authorized": false,
+    "legal_clearance": false
+  }
+}
