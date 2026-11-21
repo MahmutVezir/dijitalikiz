@@ -74,7 +74,7 @@ This establishes Stage 2 technical reproducibility, not independent human adjudi
 
 The 21 November project-lead decision explicitly approved G1 and the E3/E2/E1 outcomes recorded in the decision record linked below. The 20 November selection remains candidate-selection approval only.
 
-The candidate review states that the researcher had already reviewed the issue and PR during screening. Accordingly, perfect blinding must not be claimed. The exact degree of prior source-code exposure should be recorded conservatively. A candidate-specific declaration of prior pipeline/debug exposure is still required; no “none” value is inferred from the existing review.
+The candidate review states that the researcher had already reviewed the issue and PR during screening. Accordingly, perfect blinding must not be claimed. On 21 November 2026, the project lead explicitly declared `prior_pipeline_debug_exposure = none` for use of Meltano #3090 / PR #3091 to develop/debug the shared pipeline or tune prompts/tests before prospective validation. This self-report closes only the candidate-specific pipeline/debug exposure gate; it is not an independently witnessed audit. `researcher_source_exposure = full` remains separately disclosed. Decision record: `research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_EXPOSURE_DECISION_MELTANO_3090_2026-11-21.md`.
 
 This decision uses a source-aware single-project-lead adjudication route. It is not independent blinded adjudication, an inter-rater reliability result, or a second-rater review.
 
@@ -86,6 +86,6 @@ This approval does not:
 - add a second Meltano case from related PR #3009;
 - authorize model loading, inference, fine-tuning, or training.
 
-The remaining gates are the candidate-specific exposure declaration, bounded license-scope acknowledgement, final proposed-record validation, and a separate final YES/NO case-acceptance decision.
+The remaining gates are the bounded license-scope acknowledgement, final proposed-record validation, and a separate final YES/NO case-acceptance decision. The pipeline/debug exposure declaration is recorded as `none` and its gate is closed; source exposure remains `full`, so blinding is not claimed.
 
 **Decision record:** `research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIER_DECISION_MELTANO_3090_2026-11-21.md`.
