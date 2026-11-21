@@ -115,3 +115,20 @@ The underlying project-lead decision record is `PROJECT_LEAD_RANK49_52_STAGE2_ST
 A first GitHub Actions execution of the no-inference row audit (`44924342085`, job `136907155888`) successfully downloaded the pinned Parquet file and passed its expected byte-length and whole-file SHA-256 checks. It then failed at the first music21 lookup because the initially assumed instance ID `cuthbertLab__music21-1736` was not present (`expected exactly one row, found 0`). This was an incorrect identifier assumption in the audit script; it is not evidence that the candidate row is absent or invalid. No row hash or audit artifact was produced by that failed attempt.
 
 The script was corrected to discover the actual instance ID using the frozen base commit, PR-number suffix and repository slug in metadata columns, and then extract the full row only after exactly one match is found. The corrected execution is GitHub Actions run `44924570231`, job `136907718949`; it was still in progress at the time of this amendment. Exact row authentication remains **pending**, and no Stage 2 work for ranks 51–52 is authorized until the audit artifact and manifest are verified.
+
+
+## Final exact-row audit result and disposition update — 21 November 2026
+
+The corrected no-inference frozen-row audit completed successfully:
+
+- Workflow run 44924570231; row-audit job 136907864713; artifact 14715535728.
+- Exact pinned Parquet: 226,272,977 bytes; 6,272 rows; SHA-256 7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9.
+- Artifact ZIP SHA-256: 1abca7d09dfcbf4c4ba773ab87fb21225ec8f4208f44f2f7fbb19b613352459b; independently downloaded digest matched; ZIP CRC passed; internal SHA256SUMS checks passed 6/6.
+
+**Rank 51 — music21 #1736:** exact row cuthbertlab__music21-1736; canonical SHA-256 7bdd5e62281c92e750afb6e34066a28ff429b2bc45e9cc31a0ada13307522db3; E3 SHA-256 06eac6d4bb2e84cb1ecbdb67507954a2e8eb5b531bb19d4a82005ba70f471432; one frozen selector. The frozen E3 repeats the _SplitTuple-to-plain-tuple cause and spannerList AttributeError. The approved condition is satisfied: **formal primary-sample exclusion recorded; no Stage 2**.
+
+**Rank 52 — GeoPandas #3591:** exact row geopandas__geopandas-3591; canonical SHA-256 e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2; E3 SHA-256 c4aeb4909495887c065f1f7ae5ec0e321fb350e98ea789cde3f931cad597f12d; one frozen selector. The E3 includes the all-NaN input, error, workaround and valid-geometry contrast, but not the internal constructor dtype/recognition branch. **Hold remains** pending the project lead's semantic E3 tier decision; prior pipeline/debug exposure remains none.
+
+The earlier statement that the row-audit workflow had not executed is superseded by this successful execution. The first attempt's incorrect guessed music21 instance ID and the correction are preserved in the ledger/history; no data was fabricated or inferred from the guessed ID.
+
+**Phase 2 remains partially complete, not closed:** GeoFileOps #649 still has temporal, licensing/provenance/scope and final acceptance gates; GeoPandas #3591 still has its E3 suitability decision. Rank 55 does not start until earlier-ranked open gates are resolved or formally excluded.
