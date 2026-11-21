@@ -154,3 +154,17 @@ Decision record: [PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1
 SHA-256: `5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38`
 
 **Remaining:** bounded documentary license-scope acknowledgement; complete schema-conformant case record; fail-closed registry validation; separate project-lead final case YES/NO. EODAG remains outside the accepted registry. No model loading, inference, fine-tuning or training is authorized.
+
+
+## Project-lead bounded documentary license-scope acknowledgement — 21 November 2026
+
+The project lead acknowledged the bounded documentary scope proposal for one EODAG defect, one immutable dataset row, the pinned CPU-only reproduction, minimal source excerpts, immutable upstream links, attribution and applicable NOTICE preservation.
+
+The acknowledgement excludes redistribution of the complete dataset, complete EODAG repository, installed wheels/binaries/native libraries or the complete dependency environment; it grants no blanket permission for optional extras, third-party provider data or commercial use. The dataset's CC-BY-4.0 license remains distinct from EODAG's Apache-2.0 source license.
+
+Decision record: [PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md](eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md)  
+SHA-256: `6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6`
+
+This is not legal advice, formal legal review, legal clearance, SPDX certification or a complete native/bundled dependency audit. The 52-package metadata inventory is not legal clearance.
+
+**Remaining:** complete schema-conformant proposed case record and fail-closed registry validation, followed by a separate final project-lead YES/NO. EODAG remains outside the accepted registry. No model loading, inference, fine-tuning or training is authorized.
