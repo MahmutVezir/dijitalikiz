@@ -1600,9 +1600,51 @@
         "license_scope": "Bounded project-lead documentary acknowledgement remains pending per candidate; not legal clearance or redistribution permission.",
         "inference_authorized": false
       }
+    },
+    {
+      "date": "2026-11-21",
+      "scope": "EODAG_1530_source_aware_gold_and_tier_adjudication_and_case_continuation",
+      "candidate_selection": "The project lead approves EODAG #1530 to proceed through the remaining v0.2 acceptance gates.",
+      "eodag_gold": {
+        "status": "approved",
+        "wording_en": "The exact buggy packaged user_conf_template.yml contains two top-level geodes mappings. yaml.safe_load retains the later AWS-credential mapping, overwriting the earlier public Geodes apikey mapping and leaving no separate geodes_s3 mapping. The test fixture loads this packaged template with yaml.safe_load and iterates the resulting provider mapping."
+      },
+      "eodag_tiers": {
+        "status": "approved",
+        "E3": "ABSTAIN",
+        "E2": "ABSTAIN",
+        "E1": "ANSWER",
+        "surviving_mechanisms": {
+          "E3": [
+            "G1",
+            "A1",
+            "A2",
+            "A3"
+          ],
+          "E2": [
+            "G1",
+            "A2",
+            "A3"
+          ],
+          "E1": [
+            "G1"
+          ]
+        }
+      },
+      "decision_record": {
+        "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_EODAG_1530_2026-11-21.md",
+        "sha256": "b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e"
+      },
+      "adjudication_route": "single source-aware project-lead exploratory adjudication; full researcher source exposure disclosed; no independent blinded Panel A/Panel B or inter-rater reliability claim",
+      "boundaries": {
+        "prior_pipeline_debug_exposure": "pending candidate-specific project-lead self-declaration; do not infer none",
+        "license_scope": "bounded documentary scope acknowledgement pending; not legal clearance",
+        "final_case_acceptance": "not_accepted until mandatory gates, schema record and registry validation pass",
+        "inference_authorized": false
+      }
     }
   ],
-  "case_acceptance_note": "The five candidates above are project-lead accepted for continued Stage 3 evaluation only. Candidate-selection approval is not final case acceptance. Dishka #435 remains the only accepted v0.2 case. No inference is authorized.",
+  "case_acceptance_note": "The five candidates above are project-lead accepted for continued Stage 3 evaluation only. Candidate-selection approval is not final case acceptance. Dishka #435 remains the only accepted v0.2 case. No inference is authorized. EODAG #1530 received project-lead source-aware gold/tier approval on 2026-11-21 (E3 ABSTAIN, E2 ABSTAIN, E1 ANSWER) but remains outside CASE_REGISTRY pending prior pipeline/debug exposure declaration, bounded license-scope acknowledgement, schema-conformant case record and fail-closed registry validation.",
   "latest_no_inference_preflight": {
     "workflow_run_id": 44755547992,
     "job_id": 136354205627,
