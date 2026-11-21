@@ -159,3 +159,21 @@ This closes the project-lead acknowledgement gate for the bounded temporal asses
 Updated audit: `geofileops_649/GEOFILEOPS_649_TEMPORAL_AND_DEPENDENCY_LICENSE_AUDIT_2026-11-21.md`.
 
 **Phase 2 remains partially complete, not closed.** Rank 49 remains unaccepted and excluded from the registry pending the remaining gates. Rank 52 GeoPandas #3591 remains on HOLD after the approved E3=ABSTAIN decision; no Stage 2 is authorized. No model inference, fine-tuning or training is authorized.
+
+## Exact 105-package Conda metadata and notice inventory — rank 49 — 21 November 2026
+
+The previous rank-49 open item for a full Conda package inventory has been completed at the exact locked-package level.
+
+- Workflow run 44927884852; job 136917880433; conclusion SUCCESS.
+- Artifact 14716462835; outer SHA-256 `ff397b7a2afbed6ac524f570019f7e5211dfb49304d1f111a817233536a8ca49`; independent local verification confirmed the GitHub digest and ZIP CRC.
+- All 105 exact `.conda` archives were downloaded and matched their frozen explicit-lock MD5; all 105 package identities matched their internal `info/index.json`; all 105 had `info/about.json` license metadata.
+- 253 license/NOTICE files were extracted from 103 packages. The two SQLite packages carry the `blessing` expression and an official copyright URL in package metadata, with no separate local license/notice file.
+- Exact locked `pygeoops 0.4.0` metadata is BSD-3-Clause and its LICENSE.txt was extracted. Exact locked `libspatialite 5.1.0 he17ca71_14` metadata is MPL-1.1 and COPYING was extracted.
+- The inventory reports GPL/GCC-exception, GPL, LGPL and MPL expressions. This is not itself proof of a violation; the legal and distribution implications depend on the actual use and redistribution scope.
+
+Full report and artifact hashes are recorded in:
+`geofileops_649/GEOFILEOPS_649_TEMPORAL_AND_DEPENDENCY_LICENSE_AUDIT_2026-11-21.md`.
+
+**Updated rank 49 disposition:** exact package metadata/notice inventory complete; temporal-exposure acknowledgement complete with residual uncertainty. Manual legal/compatibility determination is not provided by the automated inventory. Project-lead bounded research-use/dataset attribution acknowledgement, schema-conformant case record, fail-closed validation and separate final YES/NO acceptance remain open. Rank 49 is still not accepted; no registry inclusion or inference is authorized.
+
+**Phase 2 remains partially complete, not closed.** Rank 52 GeoPandas #3591 remains on HOLD after project-lead E3=ABSTAIN; no Stage 2 is authorized. No later-ranked candidate is advanced until rank 49's remaining gates and rank 52's hold are resolved under the frozen sequential rule.
