@@ -238,8 +238,8 @@
     }
   ],
   "case_registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json",
-  "accepted_case_count": 1,
-  "accepted_project_count": 1,
+  "accepted_case_count": 2,
+  "accepted_project_count": 2,
   "model_loading_performed": false,
   "model_inference_performed": false,
   "fine_tuning_performed": false,
@@ -286,7 +286,8 @@
     "Superseding update 2026-11-20: Dishka #435 / SRV2E-DISHKA_435 was explicitly accepted by the project lead for v0.2 exploratory/feasibility only. Hasan's recommendation is recorded as project-lead-reported supplementary input, not as a separate signed decision or independent technical adjudication. The accepted registry contains one case from one upstream project. This does not close global readiness or authorize model loading, inference, fine-tuning or training.",
     "EODAG #1530 project-lead prior pipeline/debug exposure declaration recorded 2026-11-21: none. This is distinct from full researcher source exposure, which remains disclosed; the declaration is a self-report, not independently verified telemetry. Bounded license-scope acknowledgement and final acceptance gates remain open; no inference is authorized.",
     "EODAG #1530 project-lead bounded documentary license-scope acknowledgement recorded 2026-11-21. It covers one defect/one dataset row, minimal source excerpts, immutable upstream links and attribution/NOTICE preservation where applicable. It excludes full dataset/repository/dependency-binary redistribution and blanket commercial rights. This is not legal advice, legal review, SPDX certification or legal clearance. EODAG remains outside the accepted registry pending a schema-conformant case record and fail-closed validation.",
-    "EODAG #1530 has a schema-shaped proposed v0.2 case record at eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json. The final_acceptance object is pending, the record is not in CASE_REGISTRY, and latest-head CI must validate the case record and prove the accepted registry remains unchanged. This proposed-record validation does not authorize inference."
+    "EODAG #1530 has a schema-shaped proposed v0.2 case record at eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json. The final_acceptance object is pending, the record is not in CASE_REGISTRY, and latest-head CI must validate the case record and prove the accepted registry remains unchanged. This proposed-record validation does not authorize inference.",
+    "EODAG #1530 / SRV2E-EODAG_1530 received a separate project-lead final YES on 2026-11-21 at 13:36:50+03:00 and was added to the v0.2 exploratory/feasibility registry. The registry now contains two accepted cases from two distinct upstream projects (Dishka and EODAG). This is not confirmatory-sample acceptance and does not satisfy the preferred 15-project analysis threshold. Study-wide readiness remains blocked by 13 global prerequisites; no model loading, inference, fine-tuning or training is authorized."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -977,7 +978,7 @@
     {
       "instance_id": "cs-si__eodag-1536",
       "cohort_rank": 16,
-      "status": "stage3_candidate_gates_complete_structurally_valid_proposed_case_record_final_acceptance_pending",
+      "status": "accepted_v0_2_exploratory_feasibility_only",
       "issue_url": "https://github.com/CS-SI/eodag/issues/1530",
       "pull_request_url": "https://github.com/CS-SI/eodag/pull/1536",
       "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
@@ -993,11 +994,9 @@
       "issue_patch_alignment": "Issue #1530 reports duplicate geodes keys in the user configuration template, causing the geodes_s3 credentials block to overwrite geodes and break public Geodes access. PR #1536 renames the duplicate key to geodes_s3 and updates provider tests.",
       "mixed_scope_warning": "The same PR also resolves issue #1517 and adds StacListAssets support in provider configuration. Dataset FAIL_TO_PASS selectors must be checked to ensure the candidate's primary test oracle isolates issue #1530 rather than combining distinct defects/features.",
       "dependency_scope": "EODAG has a broad geospatial dependency stack; a minimal YAML-only reproducer is possible, but the full dataset test path and dependency licenses remain open.",
-      "case_acceptance": "not_accepted",
+      "case_acceptance": "accepted",
       "inference_authorized": false,
-      "remaining_gates": [
-        "separate_project_lead_final_case_acceptance_yes_or_no"
-      ],
+      "remaining_gates": [],
       "issue_created_at": "2025-02-20T11:38:36Z",
       "pull_request_created_at": "2025-02-21T10:04:30Z",
       "exact_base_notice_blob_sha": "9f763bc3c2f90854b8209ce60e23c8fc03c6ec7e",
@@ -1111,15 +1110,27 @@
       "bounded_license_scope_decision_date": "2026-11-21",
       "proposed_case_acceptance_record_path": "research_candidates/evidence_abstention/eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
       "case_record_structural_validation": {
-        "status": "structurally_complete_candidate",
+        "status": "accepted_record_post_decision_validation_pending_latest_head_ci",
         "validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
         "workflow_run_id": 44894847180,
         "job_id": 136818188559,
-        "eodag_tests": "5 passed",
-        "accepted_registry_validation": "structurally_valid_candidate_registry",
-        "eligible_for_registry": false,
+        "pre_acceptance_proposed_record": "structurally_complete_candidate",
+        "post_acceptance_validation": "pending_latest_head_ci",
+        "eligible_for_registry": true,
         "inference_authorized": false
-      }
+      },
+      "final_acceptance": {
+        "status": "approved",
+        "decision_timestamp_utc": "2026-11-21T13:36:50+03:00",
+        "decision_record": {
+          "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_EODAG_1530_2026-11-21.md",
+          "sha256": "5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d"
+        }
+      },
+      "accepted_case_record_path": "research_candidates/evidence_abstention/eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
+      "accepted_case_record_blob_sha1": "23abaea3e7a1bac5c26bd48d91a59da9d12ea738",
+      "case_acceptance_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_EODAG_1530_2026-11-21.md",
+      "case_acceptance_decision_record_sha256": "5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d"
     },
     {
       "instance_id": "pallets__click-2788",
@@ -1692,9 +1703,34 @@
         "final_case_acceptance": "not_accepted_pending_schema_record_and_fail_closed_registry_validation",
         "inference_authorized": false
       }
+    },
+    {
+      "date": "2026-11-21",
+      "scope": "v0.2_exploratory_feasibility_registry_only",
+      "candidate": "CS-SI/eodag issue #1530 / PR #1536; dataset row cs-si__eodag-1536",
+      "case_id": "SRV2E-EODAG_1530",
+      "decision": "accepted",
+      "decision_timestamp_utc": "2026-11-21T13:36:50+03:00",
+      "decision_record": {
+        "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_EODAG_1530_2026-11-21.md",
+        "sha256": "5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d"
+      },
+      "accepted_case_record": {
+        "path": "research_candidates/evidence_abstention/eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
+        "blob_sha1": "23abaea3e7a1bac5c26bd48d91a59da9d12ea738"
+      },
+      "boundaries": {
+        "confirmatory_sample_acceptance": false,
+        "independent_blinded_review_claimed": false,
+        "legal_clearance": false,
+        "model_loading_authorized": false,
+        "model_inference_authorized": false,
+        "fine_tuning_or_training_authorized": false,
+        "study_wide_readiness": "blocked_by_13_global_prerequisites"
+      }
     }
   ],
-  "case_acceptance_note": "The five candidates above are project-lead accepted for continued Stage 3 evaluation only. Candidate-selection approval is not final case acceptance. Dishka #435 remains the only accepted v0.2 case. No inference is authorized. EODAG #1530 received project-lead source-aware gold/tier approval on 2026-11-21 (E3 ABSTAIN, E2 ABSTAIN, E1 ANSWER) but remains outside CASE_REGISTRY pending prior pipeline/debug exposure declaration, bounded license-scope acknowledgement, schema-conformant case record and fail-closed registry validation.",
+  "case_acceptance_note": "Two v0.2 exploratory/feasibility cases are accepted (Dishka and EODAG), each from a distinct upstream project. This does not represent confirmatory acceptance or model-experiment authorization. Global readiness remains blocked by 13 prerequisites.",
   "latest_no_inference_preflight": {
     "workflow_run_id": 44894847180,
     "job_id": 136818188559,
