@@ -338,7 +338,7 @@ jobs:
               pretty_name = instance_id + ".json"
               (row_dir / canonical_name).write_bytes(canonical)
               (row_dir / pretty_name).write_text(
-                  json.dumps(row, sort_keys=True, indent=2, ensure_ascii=False) + "\\n",
+                  json.dumps(row, sort_keys=True, indent=2, ensure_ascii=False) + "\n",
                   encoding="utf-8",
               )
               item = {
@@ -376,12 +376,12 @@ jobs:
 
           manifest["rows"].sort(key=lambda item: item["cohort_rank"])
           out = Path("rank51-52-row-evidence/dataset-row-audit-manifest.json")
-          out.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+          out.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           (Path("rank51-52-row-evidence/dataset-row-problem-statements.txt")).write_text(
-              "\\n\\n".join(
-                  f"## rank {x['cohort_rank']} — {x['instance_id']}\\n{x['problem_statement']}"
+              "\n\n".join(
+                  f"## rank {x['cohort_rank']} — {x['instance_id']}\n{x['problem_statement']}"
                   for x in manifest["rows"]
-              ) + "\\n",
+              ) + "\n",
               encoding="utf-8",
           )
           if len(manifest["rows"]) != 2:
