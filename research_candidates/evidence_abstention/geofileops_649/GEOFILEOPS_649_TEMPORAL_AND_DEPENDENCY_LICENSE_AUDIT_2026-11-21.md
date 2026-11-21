@@ -90,3 +90,15 @@ Still-open project gates:
 5. **Separate final project-lead YES/NO acceptance:** do not infer acceptance from Stage 2 PASS or E3/E2/E1 approval.
 
 Current disposition remains: Stage 2 technical PASS; strict mechanism gold and E3/E2/E1 tiers approved; prior pipeline/debug exposure none; temporal acknowledgement, full dependency/native notice review, bounded-scope acknowledgement, fail-closed case-record validation and final acceptance still open. No registry inclusion or inference authorization is asserted.
+
+## 6. Project-lead acknowledgement — 21 November 2026
+
+The project lead explicitly approved the bounded temporal-exposure assessment.
+
+**Acknowledged conclusion:** issue #648 and PR #649 were created on 6 March 2025, approximately 162 days after the active frozen model revision dated 25 September 2024. Issue/PR-specific exposure is chronologically unlikely for that released revision. The model's exact training-data cutoff is not established, and exposure to pre-existing GeofileOps source code cannot be ruled out. The candidate is **not declared contamination-free**; the residual uncertainty must remain in the study record.
+
+This acknowledgement closes the project-lead response gate for the bounded temporal assessment only. It does not prove a training cutoff, establish absence of contamination or memorization, or close the dependency/native notice review, bounded scope acknowledgement, case-record validation, or separate final acceptance.
+
+The superseded GPTQ configuration is not treated as the active pilot checkpoint; the frozen manifest records that it was replaced before any pilot inference record was written.
+
+**Updated status:** temporal-exposure acknowledgement received; full 105-package exact-build license/copyright/NOTICE review remains incomplete; pygeoops metadata requires source-level confirmation; bounded scope and dataset/source attribution acknowledgement remain open; complete case record and fail-closed validation remain open; final project-lead YES/NO acceptance remains open. No legal clearance, registry inclusion or inference authorization is asserted.
