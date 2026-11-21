@@ -196,3 +196,12 @@ SHA-256: `5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d`
 The canonical case record is now marked `acceptance_decision=accepted` with `final_acceptance.status=approved`, and its full record has been inserted into `SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json`. The registry now contains **2 accepted cases from 2 distinct upstream projects**: Dishka and EODAG.
 
 This is not confirmatory-sample acceptance, independent blinded review, or legal clearance. It does not authorize model loading, inference, fine-tuning or training. Post-acceptance latest-head structural/registry validation is pending CI; the last successful pre-acceptance validation checked the proposed record and one-case registry. Study-wide readiness remains blocked by 13 prerequisites.
+
+
+## Post-acceptance CI verification — 21 November 2026
+
+After EODAG was inserted into the accepted registry, the branch-head no-inference preflight passed on commit `0e7c53e7cda000b6682b93fc2036035662fdbc80`: run [44895500211](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44895500211), job `136820151510`. EODAG review-contract tests passed **5/5**; v0.2 acceptance/readiness tests passed **25/25**; design/scoring tests passed **10/10**. The fail-closed validator confirmed **2 accepted cases / 2 distinct upstream projects** and `inference_authorized=false`.
+
+Research Validation also passed on the same branch head: run [44895500199](https://github.com/MahmutVezir/dijitalikiz/actions/runs/44895500199), job `136820191554`: **477 passed, 6 skipped, 56 subtests passed**.
+
+The updated readiness report still records **13 global blockers**, `ready_for_inference=false`, and no model loading, inference or fine-tuning. EODAG acceptance is final for the v0.2 exploratory/feasibility registry only; it does not authorize model execution or satisfy the preferred 15-project analysis threshold.
