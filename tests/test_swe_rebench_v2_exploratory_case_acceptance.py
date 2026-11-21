@@ -646,7 +646,7 @@ def test_pyfar_721_gold_tier_approved_but_case_acceptance_remains_pending_and_fa
 
     assert "G1 GOLD MECHANISM AND E3/E2/E1 OUTCOMES PROJECT-LEAD APPROVED" in proposal
     assert "E3 ABSTAIN, E2 ABSTAIN, E1 ANSWER" in proposal
-    assert "PROJECT-LEAD APPROVED" in gold_decision
+    assert "GOLD MECHANISM AND EVIDENCE-TIER DECISIONS APPROVED; CASE NOT ACCEPTED" in gold_decision
     assert "ENERGY_POWER_TARGET_AND_REFERENCE_NOT_SQUARE_ROOTED" in gold_decision
     assert "not a separately authored issue-level reproducer" in proposal
     assert "14/14" in integrity
