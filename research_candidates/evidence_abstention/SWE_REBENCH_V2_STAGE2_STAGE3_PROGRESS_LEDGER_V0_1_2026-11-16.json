@@ -3012,17 +3012,61 @@
       "repository": "joshuadavidthomas/django-bird",
       "pull_request_number": 219,
       "pull_request_url": "https://github.com/joshuadavidthomas/django-bird/pull/219",
-      "static_screening_classification": "provisional_candidate",
-      "static_scope_decision": "Geçici bug adayı",
+      "static_screening_classification": "strong_provisional_candidate_exact_frozen_row_authenticated",
+      "static_scope_decision": "Issue #218 and PR #219 show strong static symptom-to-fix alignment; exact frozen rank55 row authenticated with 9 FAIL_TO_PASS and 42 PASS_TO_PASS selectors; source project license MIT confirmed at exact base and fixed PR head. Candidate remains on HOLD because Stage 2 sequencing waits for rank52 GeoPandas final disposition and project-lead prior pipeline/debug exposure declaration.",
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
-      "candidate_review_document": null,
-      "stage2_status": "not_started",
+      "candidate_review_document": "research_candidates/evidence_abstention/django_bird_219/DJANGO_BIRD_219_CANDIDATE_REVIEW_2026-11-21.md",
+      "stage2_status": "not_started_rank52_sequential_gate_and_project_lead_exposure_declaration_pending",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage3_status": "static_scope_and_exact_frozen_row_authenticated;gold_and_tiers_advisory_only;project_lead_decisions_pending",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "candidate_review_commit": "fadd837bc7799740af7f54e04692ab539faf8e9b",
+      "project_lead_prior_pipeline_debug_exposure": "pending_explicit_candidate_specific_declaration",
+      "researcher_source_exposure": "full_disclosed_after_static_review",
+      "dataset_row_authentication": {
+        "workflow_run_id": 44941417507,
+        "job_id": 136959235620,
+        "artifact_id": 14721782351,
+        "artifact_sha256": "c5f69851b84d7e54d02b7aeb3b2e37888331d716c06d229e628acff966ecf529",
+        "metadata_file_sha256": "55f6ff23c7f430b730cd3be4b7c3956d1b9c458928a7eec4a705bfab8d14a7ae",
+        "instance_id": "joshuadavidthomas__django-bird-219",
+        "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+        "canonical_row_sha256": "c1517308f6845a31dc32ba4302a63e1558f3d4782134663d1d3b9dff654197d7",
+        "problem_statement_sha256": "930ce28cd067c4e99ec11f1a4471d406bf592a7f85c04dc3fc1d4914a9ebf829",
+        "patch_sha256": "c7ec362ec55a0081d9125f9a455fc8a204fb039aa3edcab950922361093d1d83",
+        "test_patch_sha256": "e688f7613958cf9714c4e81cc6ebf05c9af6ca7c688d4ed22910c25ae552343d",
+        "fail_to_pass_count": 9,
+        "pass_to_pass_count": 42,
+        "raw_problem_patch_test_patch_in_artifact": false,
+        "model_loading": false,
+        "inference": false,
+        "training": false
+      },
+      "source_license_screen": {
+        "status": "root_project_license_verified_dependency_stage2_scope_pending",
+        "root_license": "MIT",
+        "license_file_blob_sha1": "c159dcad5e8808651d43e7faf1c0e79dac7b322e",
+        "pyproject_blob_sha1": "b3d9888d87871ca3d6622eb757c84e85d5e7c063",
+        "pyproject_license_declaration": "license = {file = \"LICENSE\"}",
+        "license_file_same_at_base_and_fixed": true,
+        "external_license_clearance": false
+      },
+      "recommended_gold_and_tiers": {
+        "status": "AI_advisory_only_project_lead_decision_pending",
+        "gold_mechanism_id": "G1_BIRD_ASSET_STORAGE_URL_OMITS_CONFIGURED_STORAGE_PREFIX",
+        "alternatives": [
+          "A1_ASSET_RELATIVE_PATH_OR_FINDER_DROPS_PREFIX",
+          "A2_STATIC_STORAGE_BASE_URL_OR_LOCATION_CONFIGURATION"
+        ],
+        "E3": "ABSTAIN_recommended_moderate_to_high_easy_answerability_risk",
+        "E2": "ABSTAIN_recommended_fixed_regression_test_source_addition_does_not_disclose_internal_code_path",
+        "E1": "ANSWER_recommended_pinned_base_fixed_source_and_PR_description_disclose_storage_url_method",
+        "risk": "Frozen issue body itself says storage-prefix versus generated-URL mismatch; if project lead considers this sufficient for implementation-mechanism diagnosis, exclude candidate from strict three-tier sample rather than force E3 ABSTAIN."
+      },
+      "next_required_gate": "Project lead declares candidate-specific prior pipeline/debug exposure; project lead reviews/approves or revises proposed gold and tier boundaries; Stage 2 remains blocked until rank52 GeoPandas is formally resolved or excluded under the sequential frozen queue."
     },
     {
       "cohort_rank": 56,
@@ -6649,6 +6693,48 @@
     "package_zip_sha256": "b75f646468aadd0cfe871e48f8d0dcc68fab9a448bcee63913c7c428f6b8c710",
     "license_audit_clarification_commit": "73001bb56227f13097bff30a1088f02d901a05b9",
     "candidate_disposition": "HOLD_not_accepted_not_in_registry",
+    "inference_authorized": false
+  },
+  "latest_django_bird_219_candidate_review_2026_11_21": {
+    "date": "2026-11-21",
+    "status": "exact_row_authenticated_static_review_complete_candidate_hold",
+    "cohort_rank": 55,
+    "repository": "joshuadavidthomas/django-bird",
+    "issue_url": "https://github.com/joshuadavidthomas/django-bird/issues/218",
+    "pull_request_url": "https://github.com/joshuadavidthomas/django-bird/pull/219",
+    "report_path": "research_candidates/evidence_abstention/django_bird_219/DJANGO_BIRD_219_CANDIDATE_REVIEW_2026-11-21.md",
+    "report_commit": "fadd837bc7799740af7f54e04692ab539faf8e9b",
+    "row_audit": {
+      "workflow_run_id": 44941417507,
+      "job_id": 136959235620,
+      "artifact_id": 14721782351,
+      "artifact_sha256": "c5f69851b84d7e54d02b7aeb3b2e37888331d716c06d229e628acff966ecf529",
+      "row_id": "joshuadavidthomas__django-bird-219",
+      "row_sha256": "c1517308f6845a31dc32ba4302a63e1558f3d4782134663d1d3b9dff654197d7",
+      "problem_statement_sha256": "930ce28cd067c4e99ec11f1a4471d406bf592a7f85c04dc3fc1d4914a9ebf829",
+      "patch_sha256": "c7ec362ec55a0081d9125f9a455fc8a204fb039aa3edcab950922361093d1d83",
+      "test_patch_sha256": "e688f7613958cf9714c4e81cc6ebf05c9af6ca7c688d4ed22910c25ae552343d",
+      "fail_to_pass": 9,
+      "pass_to_pass": 42,
+      "artifact_contains_raw_row_or_patch": false,
+      "zip_crc_pass": true,
+      "metadata_checksum_pass": true
+    },
+    "source_license": {
+      "license": "MIT",
+      "root_license_blob_sha1": "c159dcad5e8808651d43e7faf1c0e79dac7b322e",
+      "pyproject_blob_sha1": "b3d9888d87871ca3d6622eb757c84e85d5e7c063",
+      "same_at_base_and_fixed": true
+    },
+    "proposed_tiers": {
+      "E3": "ABSTAIN",
+      "E2": "ABSTAIN",
+      "E1": "ANSWER"
+    },
+    "project_lead_decision": "pending",
+    "prior_pipeline_debug_exposure": "pending_explicit_declaration",
+    "stage2": "not_started_wait_rank52_resolution",
+    "accepted_registry_inclusion": false,
     "inference_authorized": false
   }
 }
