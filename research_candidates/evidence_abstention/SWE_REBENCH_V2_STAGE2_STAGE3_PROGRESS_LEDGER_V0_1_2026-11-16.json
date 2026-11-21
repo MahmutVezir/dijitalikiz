@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T18:55:00Z",
+  "generated_at_utc": "2026-11-21T19:05:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -2695,7 +2695,7 @@
       "stage3_status": "gold_and_E3_E2_E1_semantic_tiers_project_lead_approved;source_packets_frozen;Stage2_technical_reproduction_passed;candidate_HOLD_pending_final_case_acceptance",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "next_required_gate": "Resolve publication/redistribution scope using the license/provenance audit, then make a separate project-lead final case-acceptance decision. No inference authorization follows from Stage 2.",
+      "next_required_gate": "Separate final project-lead decision on case acceptance after review of this v0.1 publication derivative; dependency wheel/binary redistribution remains out of scope. No inference authorization follows.",
       "stage3_project_lead_prior_pipeline_debug_exposure": "none",
       "stage3_project_lead_disposition": {
         "decision_maker_role": "student_project_lead",
@@ -2892,7 +2892,7 @@
       "license_provenance_audit": {
         "status": "completed_limited_audit_publication_redistribution_clearance_not_established",
         "audit_report_path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_LICENSE_AND_PROVENANCE_AUDIT_2026-11-21.md",
-        "audit_report_commit": "17520167f0bdb240ac4e54b2914e70115be39507",
+        "audit_report_commit": "73001bb56227f13097bff30a1088f02d901a05b9",
         "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
         "dataset_declared_license": "CC-BY-4.0",
         "source_row_license_field": "BSD-3-Clause",
@@ -2913,7 +2913,44 @@
         "bundled_native_dependency_licenses_audited": false,
         "public_redistribution_clearance": "not_established",
         "final_case_acceptance": "not_accepted",
-        "model_inference_performed": false
+        "model_inference_performed": false,
+        "audit_report_git_blob_sha1": "10dff15e8c5fb760b8070a1fbcaaf46a5ae6dfc5"
+      },
+      "publication_package": {
+        "status": "created_v0_1_attribution_first_derivative",
+        "directory": "research_candidates/evidence_abstention/geopandas_3591/publication_v0_1/",
+        "readme_path": "research_candidates/evidence_abstention/geopandas_3591/publication_v0_1/README.md",
+        "readme_commit": "885f697640a42b5c611dd9e2de5cb6cac5cf405c",
+        "readme_git_blob_sha1": "a4636632ded5664f3967ac30921688a1e5fcb418",
+        "readme_sha256": "5b620311bcbed8ad2601ef6b52f1a2de1a272322173df1e9f4e1375560a4ee8e",
+        "manifest_path": "research_candidates/evidence_abstention/geopandas_3591/publication_v0_1/MANIFEST.json",
+        "manifest_commit": "38164267ee1437a36340d3bf6b3b872a90e2592e",
+        "manifest_git_blob_sha1": "a653323f79193c293dc4114ccca206cd836bfeae",
+        "manifest_sha256": "d3cbbc8fc69d1297560ebec2b9f93685e7f35a310baf40a0f21a71b93e73a54f",
+        "derivative_scope": "paraphrase_attribution_links_hashes_only_no_full_row_or_patch_or_full_comment_bodies_or_binaries",
+        "quality_checks": {
+          "manifest_json_valid": true,
+          "readme_sha256_and_byte_count_match_manifest": true,
+          "no_patch_or_source_code_blocks": true,
+          "no_full_github_comment_body_reproduced": true,
+          "E3_E2_E1_boundaries_preserved": true,
+          "two_stage2_runs_and_hashes_recorded": true,
+          "full_researcher_exposure_disclosed": true,
+          "hold_and_no_inference_boundaries_preserved": true,
+          "zip_crc_pass": true
+        },
+        "zip": {
+          "path": "/mnt/data/geopandas3591_publication_v0_1.zip",
+          "sha256": "b75f646468aadd0cfe871e48f8d0dcc68fab9a448bcee63913c7c428f6b8c710",
+          "bytes": 6936,
+          "contents": [
+            "README.md",
+            "MANIFEST.json"
+          ]
+        },
+        "final_case_acceptance": "not_accepted",
+        "registry_inclusion": false,
+        "inference_authorized": false
       }
     },
     {
@@ -6602,5 +6639,16 @@
       "18 dependency versions pinned, but lock has no package hashes or SPDX license metadata; no SBOM or native bundled component audit."
     ],
     "disposition": "candidate_remains_HOLD; no registry inclusion; no inference"
+  },
+  "latest_geopandas_3591_publication_package": {
+    "date": "2026-11-21",
+    "status": "created_and_integrity_checked_v0_1",
+    "directory": "research_candidates/evidence_abstention/geopandas_3591/publication_v0_1/",
+    "readme_sha256": "5b620311bcbed8ad2601ef6b52f1a2de1a272322173df1e9f4e1375560a4ee8e",
+    "manifest_sha256": "d3cbbc8fc69d1297560ebec2b9f93685e7f35a310baf40a0f21a71b93e73a54f",
+    "package_zip_sha256": "b75f646468aadd0cfe871e48f8d0dcc68fab9a448bcee63913c7c428f6b8c710",
+    "license_audit_clarification_commit": "73001bb56227f13097bff30a1088f02d901a05b9",
+    "candidate_disposition": "HOLD_not_accepted_not_in_registry",
+    "inference_authorized": false
   }
 }
