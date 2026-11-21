@@ -109,3 +109,14 @@ Remaining supplementary test questions: the original 2,000-/4,000-sample noise e
 ## 6. Proposed project-lead decision
 
 The project lead should separately approve or revise G1 and the proposed E3/E2/E1 outcomes after reviewing this proposal. This document is advisory only; it does not record a human decision or accept PyFar into the registry.
+
+
+## 7. Project-lead prior pipeline/debug exposure declaration — 21 November 2026
+
+The project lead directly declared **`prior_pipeline_debug_exposure = none`** for PyFar #721. The declaration covers prior use of its issue, PR, source code, dataset selector, or reproducer to debug/develop the shared pipeline or tune prompts/tests before prospective candidate validation.
+
+Decision record: `research_candidates/evidence_abstention/pyfar_721/PROJECT_LEAD_EXPOSURE_DECISION_PYFAR_721_2026-11-21.md`.
+
+This closes only the candidate-specific prior pipeline/debug exposure gate, on a direct self-report that was not independently witnessed or externally audited. **Researcher source exposure remains `full`** because the issue, PR, exact-base source, and Stage 2 outputs were reviewed. No blindness or inter-rater claim is made.
+
+This does not approve the proposed gold or E3/E2/E1 tiers, the issue-family independence assessment, license/data-use scope, dependency/native notices, proposed case record, or final case acceptance. PyFar remains outside the accepted registry and inference remains unauthorized.
