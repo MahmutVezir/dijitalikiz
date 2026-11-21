@@ -517,7 +517,7 @@ def test_dymos_real_proposed_case_is_structurally_complete_but_not_accepted():
     assert "SRV2E-DYMOS_1166" not in {item["case_id"] for item in registry["records"]}
     assert registry_result["inference_authorized"] is False
 
-def test_meltano_3090_stage3_advisories_remain_fail_closed():
+def test_meltano_3090_stage3_project_lead_gold_tier_approved_but_case_gates_remain_fail_closed():
     candidate_dir = RESEARCH / "meltano_3090"
     gold_proposal = (
         candidate_dir
@@ -540,11 +540,16 @@ def test_meltano_3090_stage3_advisories_remain_fail_closed():
         ).read_text(encoding="utf-8")
     )
 
-    assert "ADVISORY PROPOSAL ONLY" in gold_proposal
+    assert "PROJECT-LEAD APPROVED" in gold_proposal
     assert "E3" in gold_proposal and "ABSTAIN" in gold_proposal
     assert "E2" in gold_proposal and "ABSTAIN" in gold_proposal
     assert "E1" in gold_proposal and "ANSWER" in gold_proposal
     assert "candidate-specific declaration of prior pipeline/debug exposure is still required" in gold_proposal
+    decision_record = (candidate_dir / "PROJECT_LEAD_GOLD_AND_EVIDENCE_TIER_DECISION_MELTANO_3090_2026-11-21.md").read_text(encoding="utf-8")
+    assert "E3 — ABSTAIN" in decision_record
+    assert "E2 — ABSTAIN" in decision_record
+    assert "E1 — ANSWER" in decision_record
+    assert "not accept Meltano into the v0.2 exploratory registry" in decision_record
     assert "14/14 files matched" in integrity_review
     assert "14/14" in integrity_review
 
