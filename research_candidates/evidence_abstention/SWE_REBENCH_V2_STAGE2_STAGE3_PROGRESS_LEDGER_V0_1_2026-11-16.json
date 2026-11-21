@@ -2517,23 +2517,41 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": "research_candidates/evidence_abstention/music21_1736/MUSIC21_1736_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "stage2_status": "held_pending_frozen_row_and_E3_sample_suitability_review_no_stage2",
+      "stage2_status": "not_run_primary_sample_excluded_by_project_lead_after_exact_E3_row_authentication",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": "research_candidates/evidence_abstention/music21_1736/MUSIC21_1736_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "stage3_status": "project_lead_conditional_primary_sample_exclusion_approved_pending_exact_frozen_row_authentication",
+      "stage3_status": "exact_frozen_row_authenticated_E3_reveals_type_transition_root_cause; excluded_from_current_primary_sample",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "next_required_gate": "Authenticate exact frozen row, problem_statement, base commit and selectors. If E3 confirms same type-transition disclosure, formalize primary-sample exclusion and do not run Stage 2; if materially different, return to project-lead E3 adjudication before any Stage 2. No control group.",
-      "primary_sample_disposition": "conditional_exclusion_pending_exact_frozen_row_authentication",
+      "next_required_gate": "No Stage 2. Preserve exact frozen-row evidence and mixed PR scope note. No control-group assignment, registry inclusion or inference.",
+      "primary_sample_disposition": "excluded_by_project_lead_conditional_decision_2026_11_21_condition_verified_in_exact_frozen_row",
       "primary_sample_eligibility_status": "pending_frozen_problem_statement_authentication",
       "stage3_project_lead_conditional_disposition": {
         "decision_maker_role": "student_project_lead",
         "decision_source": "explicit_chat_approval_2026-11-21",
         "decision": "conditional_exclusion_from_primary_abstention_sample",
         "condition": "Exact frozen row confirms the same _SplitTuple-to-plain-tuple explanation before spannerList access that is already disclosed in upstream issue #1735.",
-        "exact_row_authenticated": false,
+        "exact_row_authenticated": true,
         "decision_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md",
-        "decision_record_git_blob_sha": "bc1ca29156db279799ae7ebcdf491cae10322983"
+        "decision_record_git_blob_sha": "bc1ca29156db279799ae7ebcdf491cae10322983",
+        "condition_satisfied": true,
+        "final_disposition": "excluded_from_current_primary_abstention_sample"
+      },
+      "primary_sample_eligible": false,
+      "stage2_dataset_row_id": "cuthbertlab__music21-1736",
+      "stage2_dataset_row_sha256": "7bdd5e62281c92e750afb6e34066a28ff429b2bc45e9cc31a0ada13307522db3",
+      "stage2_dataset_problem_statement_sha256": "06eac6d4bb2e84cb1ecbdb67507954a2e8eb5b531bb19d4a82005ba70f471432",
+      "stage2_frozen_selector_count": 1,
+      "stage2_frozen_selectors": [
+        "music21/stream/tests.py::Test::testSplitByQuarterLengths"
+      ],
+      "stage3_exact_row_audit": {
+        "workflow_run_id": 44924570231,
+        "job_id": 136907864713,
+        "artifact_id": 14715535728,
+        "canonical_row_sha256": "7bdd5e62281c92e750afb6e34066a28ff429b2bc45e9cc31a0ada13307522db3",
+        "problem_statement_sha256": "06eac6d4bb2e84cb1ecbdb67507954a2e8eb5b531bb19d4a82005ba70f471432",
+        "e3_condition_matches_issue": true
       }
     },
     {
@@ -2549,10 +2567,10 @@
       "stage2_status": "held_pending_frozen_row_and_project_lead_E3_suitability_review_no_stage2",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "stage3_status": "project_lead_prior_pipeline_debug_exposure_none; held_pending_exact_frozen_row_authentication_and_E3_suitability",
+      "stage3_status": "exact_frozen_row_authenticated; project_lead_E3_semantic_suitability_decision_pending; prior_pipeline_debug_exposure_none",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "next_required_gate": "Authenticate exact geopandas__geopandas-3591 frozen row, problem_statement and selectors; confirm the frozen E3 packet boundary; then project lead decides E3 sufficiency. Do not run Stage 2 until these gates are resolved.",
+      "next_required_gate": "Project lead makes the semantic E3 decision on the exact authenticated problem_statement: whether the all-NaN geometry case already supports implementation-mechanism diagnosis or should abstain. Prior pipeline/debug exposure is none. Do not run Stage 2 until E3 decision is recorded.",
       "stage3_project_lead_prior_pipeline_debug_exposure": "none",
       "stage3_project_lead_disposition": {
         "decision_maker_role": "student_project_lead",
@@ -2561,6 +2579,21 @@
         "prior_pipeline_debug_exposure": "none",
         "decision_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md",
         "decision_record_git_blob_sha": "bc1ca29156db279799ae7ebcdf491cae10322983"
+      },
+      "stage2_dataset_row_id": "geopandas__geopandas-3591",
+      "stage2_dataset_row_sha256": "e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2",
+      "stage2_dataset_problem_statement_sha256": "c4aeb4909495887c065f1f7ae5ec0e321fb350e98ea789cde3f931cad597f12d",
+      "stage2_frozen_selector_count": 1,
+      "stage2_frozen_selectors": [
+        "geopandas/tests/test_geodataframe.py::TestConstructor::test_geometry_nan_scalar"
+      ],
+      "stage3_exact_row_audit": {
+        "workflow_run_id": 44924570231,
+        "job_id": 136907864713,
+        "artifact_id": 14715535728,
+        "canonical_row_sha256": "e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2",
+        "problem_statement_sha256": "c4aeb4909495887c065f1f7ae5ec0e321fb350e98ea789cde3f931cad597f12d",
+        "e3_boundary": "All-NaN input, version regression, error and explicit geometry workaround are visible; internal dtype recognition branch is not stated."
       }
     },
     {
@@ -5631,35 +5664,29 @@
         "next_gate": "Complete temporal-exposure acknowledgement, dependency/native notice and dataset-card provenance scope review, complete case record, fail-closed validation, and separate final project-lead acceptance."
       },
       {
-        "rank": 51,
-        "repository": "cuthbertLab/music21",
-        "pull_request": "#1736",
-        "next_gate": "Authenticate exact frozen row. If E3 contains the disclosed _SplitTuple-to-plain-tuple root cause, formalize the already-approved conditional exclusion; otherwise return to project lead E3 adjudication. Do not run Stage 2 before this gate."
-      },
-      {
         "rank": 52,
         "repository": "geopandas/geopandas",
         "pull_request": "#3591",
-        "next_gate": "Authenticate exact frozen row and selectors; confirm E3 packet scope; project lead decides E3 suitability. Prior pipeline/debug exposure is none."
+        "next_gate": "Project lead decides E3 semantic sufficiency using authenticated problem statement and implementation-mechanism target. Do not run Stage 2 until the decision is recorded."
       },
       {
         "rank": 55,
         "repository": "joshuadavidthomas/django-bird",
         "pull_request": "#219",
-        "next_gate": "Do not start until earlier-rank open gates have been resolved or formally excluded; rank 49 and rank 52 remain open."
+        "next_gate": "Do not start until earlier-rank open gates are resolved or formally excluded; rank 49 and rank 52 remain open."
       }
     ],
     "accepted_cases_remain": "Dishka and EODAG only",
     "inference_authorized": false,
-    "phase2_status": "partially_complete_not_closed_pending_rank51_52_exact_row_authentication_and_rank49_remaining_acceptance_gates",
+    "phase2_status": "partially_complete_not_closed_pending_rank49_remaining_acceptance_gates_and_rank52_E3_decision",
     "phase2_review_document": "research_candidates/evidence_abstention/STAGE2_RANK49_52_CLOSURE_REVIEW_2026-11-21.md",
     "rank50_status": "excluded_from_current_primary_abstention_sample_by_project_lead_immutable_selector_integrity_failure",
-    "rank51_status": "conditional_exclusion_approved_pending_exact_frozen_row_authentication",
-    "rank52_status": "held_pending_exact_frozen_row_and_E3_suitability; prior_pipeline_debug_exposure_none"
+    "rank51_status": "excluded_from_current_primary_abstention_sample_after_exact_frozen_E3_authentication; no Stage 2",
+    "rank52_status": "exact_frozen_row_authenticated; prior pipeline debug exposure none; project_lead_E3_decision_pending; no Stage 2"
   },
   "stage2_rank49_52_closure_review_2026_11_21": {
     "date": "2026-11-21",
-    "status": "partially_complete_not_closed_pending_rank51_52_exact_row_authentication_and_remaining_rank49_acceptance_gates",
+    "status": "partially_complete_not_closed_pending_rank49_remaining_acceptance_gates_and_rank52_E3_decision",
     "review_document_path": "research_candidates/evidence_abstention/STAGE2_RANK49_52_CLOSURE_REVIEW_2026-11-21.md",
     "review_document_git_blob_sha": "7bce07080f650a0e33747e204774a028ffcb9a5f",
     "rank_dispositions": {
@@ -5669,8 +5696,8 @@
       "52_geopandas_3591": "held_before_stage2_pending_exact_frozen_row_authentication_and_project_lead_exposure_declaration; retain_as_potential_strict_mechanism_case"
     },
     "exact_row_extraction": {
-      "rank_51": "not_completed",
-      "rank_52": "not_completed",
+      "rank_51": "authenticated",
+      "rank_52": "authenticated",
       "pinned_dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
       "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
       "reason": "Available GitHub Actions controls did not execute the newly drafted no-inference row audit; no row hash or E3 packet was fabricated.",
@@ -5683,11 +5710,14 @@
       },
       "corrected_attempt": {
         "workflow_run_id": 44924570231,
-        "job_id": 136907718949,
-        "status": "queued_or_in_progress_at_last_check",
+        "job_id": 136907864713,
+        "status": "success",
         "method": "Discover actual instance_id from exact base_commit + PR-number suffix + repository slug in safe metadata columns, then extract and hash full rows.",
         "exact_row_authenticated": false
-      }
+      },
+      "artifact_id": 14715535728,
+      "artifact_sha256": "1abca7d09dfcbf4c4ba773ab87fb21225ec8f4208f44f2f7fbb19b613352459b",
+      "independent_integrity": "outer SHA256 match; ZIP CRC pass; 6/6 internal hashes pass"
     },
     "frozen_cohort_changed": false,
     "accepted_registry_changed": false,
@@ -5699,11 +5729,84 @@
     "inference_authorized": false,
     "next_open_work_order_unchanged": true,
     "project_lead_decision_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md",
-    "project_lead_decision_record_git_blob_sha": "bc1ca29156db279799ae7ebcdf491cae10322983",
+    "project_lead_decision_record_git_blob_sha": "d25dd229d5e9103ff200f77bf08a654f6332be1f",
     "project_lead_decisions_applied": true,
     "rank49": "stage2_pass; strict mechanism gold and tiers approved; prior pipeline debug exposure none; remaining temporal/license/scope/final acceptance gates open",
     "rank50": "primary sample excluded by project lead due immutable stage2 selector contract failure",
-    "rank51": "conditional primary sample exclusion approved; exact frozen row authentication required",
-    "rank52": "retained on hold; prior pipeline debug exposure none; exact row and E3 suitability pending"
+    "rank51": "exact row authenticated; E3 condition satisfied; excluded from primary sample by approved conditional decision; no Stage 2",
+    "rank52": "exact row authenticated; E3 semantic suitability decision pending; prior pipeline debug exposure none; remains on hold"
+  },
+  "latest_rank_51_52_exact_row_audit_2026_11_21": {
+    "date": "2026-11-21",
+    "status": "success_exact_rows_authenticated_artifact_independently_verified",
+    "workflow_run_id": 44924570231,
+    "workflow_job_id": 136907864713,
+    "workflow_job_name": "Authenticate exact rank 51-52 frozen rows (metadata only; no inference)",
+    "source_commit": "870d51926a1222f057cfb78323c12f7655e84c0e",
+    "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "parquet_bytes": 226272977,
+    "parquet_rows": 6272,
+    "pyarrow_version": "19.0.1",
+    "artifact_id": 14715535728,
+    "artifact_name": "swe-rebench-v2-rank51-52-row-audit-44924570231-1",
+    "artifact_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44924570231/artifacts/14715535728",
+    "artifact_sha256": "1abca7d09dfcbf4c4ba773ab87fb21225ec8f4208f44f2f7fbb19b613352459b",
+    "independent_verification": {
+      "downloaded_zip": true,
+      "outer_sha256_matches_github": true,
+      "zip_crc": "passed",
+      "internal_sha256_entries": 6,
+      "internal_sha256_passed": 6
+    },
+    "execution_boundary": {
+      "upstream_repository_checkout": false,
+      "upstream_package_install": false,
+      "upstream_tests_or_build": false,
+      "model_loading": false,
+      "model_inference": false,
+      "fine_tuning": false,
+      "training": false
+    },
+    "rows": [
+      {
+        "cohort_rank": 51,
+        "instance_id": "cuthbertlab__music21-1736",
+        "repository": "cuthbertLab/music21",
+        "pr": 1736,
+        "base_commit": "e05fc53dfef7b2c9ac974c0cacb8b85e9c4d4605",
+        "created_at": "2024-10-28 03:20:50",
+        "license": "BSD-3-Clause",
+        "canonical_row_sha256": "7bdd5e62281c92e750afb6e34066a28ff429b2bc45e9cc31a0ada13307522db3",
+        "problem_statement_sha256": "06eac6d4bb2e84cb1ecbdb67507954a2e8eb5b531bb19d4a82005ba70f471432",
+        "fail_to_pass_count": 1,
+        "fail_to_pass_selectors": [
+          "music21/stream/tests.py::Test::testSplitByQuarterLengths"
+        ],
+        "patch_sha256": "180edff926152a2a62781ad458de19d7f04b389760e2c0563808f3bf2a97976f",
+        "test_patch_sha256": "847ea373fba70f0e07cebb7b8a9ae8b9d9b163a961d07a7441a579d0f1d65b99",
+        "e3_condition_matches_issue": true,
+        "disposition": "primary_sample_excluded; no_stage2"
+      },
+      {
+        "cohort_rank": 52,
+        "instance_id": "geopandas__geopandas-3591",
+        "repository": "geopandas/geopandas",
+        "pr": 3591,
+        "base_commit": "c36eba059f6170715b63a9aa065817c64025d263",
+        "created_at": "2025-06-05 07:55:40",
+        "license": "BSD-3-Clause",
+        "canonical_row_sha256": "e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2",
+        "problem_statement_sha256": "c4aeb4909495887c065f1f7ae5ec0e321fb350e98ea789cde3f931cad597f12d",
+        "fail_to_pass_count": 1,
+        "fail_to_pass_selectors": [
+          "geopandas/tests/test_geodataframe.py::TestConstructor::test_geometry_nan_scalar"
+        ],
+        "patch_sha256": "8ba3f754862490794e4e1fe6270260237f4bf189d60096b58149698503398fc2",
+        "test_patch_sha256": "616dddc564cd4169ceb49c7c712a41bb268421952136cfec0b7fa3b7ad2cdbe6",
+        "disposition": "exact_row_authenticated; retained_on_hold_pending_project_lead_E3_decision"
+      }
+    ]
   }
 }
