@@ -122,6 +122,6 @@
     "final_case_acceptance": "not_accepted",
     "inference_authorized": false,
     "source_aware_gold_tier_decision": "approved_by_project_lead_2026-11-21",
-    "final_case_acceptance_note": "Project lead approved source-aware gold/tiers, self-declared no prior pipeline/debug use, and acknowledged the bounded documentary license scope. A schema-conformant proposed case record has been prepared; latest-head CI structural validation and fail-closed registry validation are pending. Full researcher source exposure remains disclosed. EODAG remains outside the accepted registry."
+    "final_case_acceptance_note": "Project lead approved source-aware gold/tiers, self-declared no prior pipeline/debug use, and acknowledged the bounded documentary license scope. A complete schema-conformant proposed case record passed the fail-closed structural validator; the existing registry also validated and remains unchanged. EODAG remains proposed outside the accepted registry pending a separate project-lead final YES/NO. Global study readiness is still blocked; no inference is authorized."
   }
 }
