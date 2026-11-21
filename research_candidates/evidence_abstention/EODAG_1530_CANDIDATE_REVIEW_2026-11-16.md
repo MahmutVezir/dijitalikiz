@@ -125,3 +125,20 @@ The student project lead explicitly accepted EODAG #1530 as one of the strong fi
 This is candidate-selection approval only. It does **not** approve the proposed EODAG gold mechanism or E1/E2/E3 tier membership; those remain for a separate source-aware project-lead decision. The bounded 52-distribution dependency/native-notice scope acknowledgement, candidate-specific prior pipeline/debug exposure declaration, related issue/lineage review, complete case record, fail-closed registry validation and separate final case YES/NO remain pending.
 
 The #1517 result_type issue remains recorded as related but distinct; it is not folded into #1530's gold. This candidate remains not accepted as a final case. No model load, inference, fine-tuning or training is authorized.
+
+
+## Project-lead source-aware gold/tier decision — 21 November 2026
+
+The project lead approved the duplicate-key technical gold and the proposed E1/E2/E3 dispositions:
+- **E3 — ABSTAIN**
+- **E2 — ABSTAIN**
+- **E1 — ANSWER**
+
+The E2 packet demonstrates the duplicate-key parse result in the exact pinned template but does not include the in-repository fixture/loading path; provider-registration and configuration-override alternatives therefore remain. E1 adds the test-fixture source excerpt showing the packaged template is loaded by `yaml.safe_load` and iterated to generate provider configuration. The approved surviving-mechanism sets are E3={G1,A1,A2,A3}, E2={G1,A2,A3}, E1={G1}.
+
+Decision record: [PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_EODAG_1530_2026-11-21.md](eodag_1530/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_EODAG_1530_2026-11-21.md)  
+SHA-256: `b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e`
+
+This is a source-aware, single-project-lead exploratory adjudication. Full researcher source exposure is disclosed; no blinded or inter-rater reliability claim is made.
+
+**Still open:** candidate-specific prior pipeline/debug exposure declaration; bounded documentary license-scope acknowledgement; complete schema-conformant case record; fail-closed registry validation; formal accepted-registry update. EODAG is approved to continue through these gates but is not yet inserted into the accepted registry. No model loading, inference, fine-tuning or training is authorized.
