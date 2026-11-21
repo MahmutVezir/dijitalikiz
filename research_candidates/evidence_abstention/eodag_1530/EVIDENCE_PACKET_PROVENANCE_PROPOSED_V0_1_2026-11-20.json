@@ -99,8 +99,20 @@
     "project_lead_decision": "pending"
   },
   "structural_validation": {
-    "status": "not_yet_run_in_repository_CI",
+    "status": "passed_hash_and_nesting_only",
+    "workflow_run_id": 44891779892,
+    "workflow_job_id": 136808957711,
+    "workflow_commit": "ad97169c2578c921502222906598a4c5e1255025",
+    "test_path": "tests/test_eodag_1530_stage3_packet_set.py",
+    "test_result": "3 passed in 0.02s",
+    "preflight_artifact_id": 14701594453,
+    "preflight_artifact_sha256": "2ade3c85c1b6cc5a8d29136cba1cb0366d802f9732efb8d63b6fa000818ba85b",
+    "preflight_artifact_locally_verified": true,
+    "packet_set_sha256": "e1c15239ba0599c13d19c35ffad922d77ae10bb570aced8199d6db97163d3189",
+    "strictly_nested": true,
+    "source_and_packet_hashes_validated": true,
     "semantic_sufficiency_assessed": false,
+    "project_lead_decision": "pending",
     "model_inference_performed": false
   }
 }
