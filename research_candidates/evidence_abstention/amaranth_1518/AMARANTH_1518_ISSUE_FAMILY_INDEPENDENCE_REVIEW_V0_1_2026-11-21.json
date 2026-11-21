@@ -1,0 +1,79 @@
+{
+  "schema_version": "0.1-v02-candidate-independence-review",
+  "review_date": "2026-11-21",
+  "candidate": {
+    "case_id": "SRV2E-AMARANTH_1518",
+    "repository_full_name": "amaranth-lang/amaranth",
+    "issue_url": "https://github.com/amaranth-lang/amaranth/issues/1518",
+    "fix_pr_url": "https://github.com/amaranth-lang/amaranth/pull/1519",
+    "dataset_instance_id": "amaranth-lang__amaranth-1519",
+    "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "dataset_row_sha256": "73be38d692dd5426e755184998fabfa2f0a612cef244bfb75ba5d58ec352c4c7",
+    "exact_buggy_base": "8c5ed4051dd74a6347af8d52f8e397eb53218ac4",
+    "exact_fixed_pr_head": "6a10abe6c873e7fb51a34f70801d3dd37cda9061"
+  },
+  "sampling_unit": {
+    "unit": "canonical_upstream_repository",
+    "maximum_accepted_cases_per_upstream_project": 1,
+    "registry_contains_candidate": false
+  },
+  "issue_and_fix": {
+    "issue_created_at_utc": "2024-09-20T13:41:02Z",
+    "fix_pr_created_at_utc": "2024-09-20T14:00:49Z",
+    "dataset_row_created_at": "2024-09-20 14:00:49",
+    "issue_comments_retrieved": 0,
+    "pr_review_comments_retrieved": 1,
+    "pr_review_summary": "One approval review; reviewer says LGTM and asks for a backport PR.",
+    "disposition": "One issue and one linked fix PR. The review did not identify a second defect/case."
+  },
+  "stage2": {
+    "workflow_run_id": 44111403900,
+    "job_id": 134137814116,
+    "artifact_id": 14340976999,
+    "artifact_sha256": "f3a1a146bd055eb064f3b043c340c74d584351f22569805de63eaf44492ba5ff",
+    "integrity": {
+      "independently_downloaded": true,
+      "outer_sha256_recomputed": true,
+      "outer_sha256_matches_github": true,
+      "zip_crc": "passed",
+      "internal_sha256_manifest": "14/14 passed"
+    },
+    "reproducer_base": "expected failure: single braces in RTLIL FORMAT",
+    "reproducer_fixed": "passed (1 test)",
+    "frozen_selector": "tests/test_back_rtlil.py::PrintTestCase::test_escape_curly",
+    "frozen_selector_base": "expected failure",
+    "frozen_selector_fixed": "passed (1 test)"
+  },
+  "related_issue_family": {
+    "exact_duplicate_found": "no duplicate surfaced in the targeted issue/PR and comment review",
+    "exhaustive_repository_wide_family_review": false,
+    "status": "prepared_subject_to_project_lead_review",
+    "caveat": "This is not an exhaustive review of every Amaranth issue or historical formatting defect. Keep one Amaranth sampling unit."
+  },
+  "exposure": {
+    "prior_pipeline_debug_exposure": "pending_project_lead_declaration",
+    "researcher_source_exposure": "full_for_issue_PR_exact_base_source_selector_and_artifact",
+    "blinded_adjudication_claimed": false,
+    "inter_rater_claimed": false
+  },
+  "temporal_exposure": {
+    "status": "chronology_screen_prepared_project_lead_acknowledgement_pending",
+    "pinned_model": "Qwen/Qwen2.5-3B-Instruct",
+    "pinned_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "checkpoint_weights_initial_public_upload": "2024-09-17T14:27:00Z via HF commit 3ca5f5b",
+    "public_family_announcement": "2024-09-19",
+    "issue_report": "2024-09-20T13:41:02Z",
+    "fix_pr": "2024-09-20T14:00:49Z",
+    "secondary_reported_knowledge_cutoff": "2023-10",
+    "conclusion": "Issue/PR-specific exposure is less likely based on chronology; pre-existing Amaranth source-code exposure remains unresolved; no absence proof."
+  },
+  "boundaries": {
+    "project_lead_gold_tier_approval": "pending",
+    "project_lead_e3_sample_suitability_review": "pending",
+    "project_lead_temporal_exposure_acknowledgement": "pending",
+    "final_case_acceptance": "not_accepted",
+    "registry_inclusion": false,
+    "legal_clearance": false,
+    "inference_authorized": false
+  }
+}
