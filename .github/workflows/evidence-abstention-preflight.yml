@@ -208,6 +208,200 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
+
+  audit-rank51-52-frozen-rows:
+    if: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/research/')) || (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'research/2026-11-16-followup-evidence-validation') }}
+    needs: no-inference-preflight
+    name: Authenticate exact rank 51-52 frozen rows (metadata only; no inference)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout research repository only
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install the pinned Parquet reader
+        run: python -m pip install --disable-pip-version-check --no-deps "pyarrow==19.0.1"
+
+      - name: Download pinned dataset and verify whole-file SHA-256
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p rank51-52-row-evidence
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output rank51-52-row-evidence/train-00000-of-00001.parquet
+          test "$(stat -c '%s' rank51-52-row-evidence/train-00000-of-00001.parquet)" = "226272977"
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  rank51-52-row-evidence/train-00000-of-00001.parquet" | sha256sum --check
+
+      - name: Extract exact rows, full problem statements and canonical digests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import datetime as dt
+          import hashlib
+          import json
+          from pathlib import Path
+          import pyarrow.parquet as pq
+
+          DATASET_REVISION = "fb9aa226b2ce37c708ea7732e7b980abacdadb67"
+          PARQUET_SHA256 = "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+          TARGETS = {
+              "cuthbertLab__music21-1736": {
+                  "rank": 51,
+                  "repo": "cuthbertLab/music21",
+                  "base_commit": "e05fc53dfef7b2c9ac974c0cacb8b85e9c4d4605",
+                  "issue_url": "https://github.com/cuthbertLab/music21/issues/1735",
+                  "pull_request_url": "https://github.com/cuthbertLab/music21/pull/1736",
+              },
+              "geopandas__geopandas-3591": {
+                  "rank": 52,
+                  "repo": "geopandas/geopandas",
+                  "base_commit": "c36eba059f6170715b63a9aa065817c64025d263",
+                  "issue_url": "https://github.com/geopandas/geopandas/issues/3590",
+                  "pull_request_url": "https://github.com/geopandas/geopandas/pull/3591",
+              },
+          }
+
+          def normalize(value):
+              if isinstance(value, (dt.datetime, dt.date, dt.time)):
+                  return value.isoformat()
+              if isinstance(value, dict):
+                  return {str(k): normalize(v) for k, v in value.items()}
+              if isinstance(value, (list, tuple)):
+                  return [normalize(v) for v in value]
+              return value
+
+          parquet_path = Path("rank51-52-row-evidence/train-00000-of-00001.parquet")
+          parquet = pq.ParquetFile(parquet_path)
+          if parquet.metadata.num_rows != 6272:
+              raise SystemExit(f"Unexpected Parquet row count: {parquet.metadata.num_rows}")
+          manifest = {
+              "record_type": "swe_rebench_v2_exact_frozen_row_audit_no_inference",
+              "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+              "dataset_revision": DATASET_REVISION,
+              "parquet_sha256": PARQUET_SHA256,
+              "parquet_bytes": parquet_path.stat().st_size,
+              "parquet_rows": parquet.metadata.num_rows,
+              "pyarrow_version": __import__("pyarrow").__version__,
+              "rows": [],
+              "execution_boundary": {
+                  "upstream_repository_checkout": False,
+                  "upstream_package_install": False,
+                  "upstream_tests_or_build": False,
+                  "model_loading": False,
+                  "model_inference": False,
+                  "fine_tuning": False,
+                  "training": False,
+              },
+          }
+          row_dir = Path("rank51-52-row-evidence/canonical_rows")
+          row_dir.mkdir(parents=True, exist_ok=True)
+
+          for instance_id, expected in TARGETS.items():
+              table = pq.read_table(parquet_path, filters=[("instance_id", "=", instance_id)])
+              rows = table.to_pylist()
+              if len(rows) != 1:
+                  raise SystemExit(f"{instance_id}: expected exactly one row, found {len(rows)}")
+              row = normalize(rows[0])
+              if row.get("instance_id") != instance_id:
+                  raise SystemExit(f"{instance_id}: extracted instance id mismatch")
+              if row.get("repo") != expected["repo"]:
+                  raise SystemExit(f"{instance_id}: expected repo {expected['repo']}, got {row.get('repo')}")
+              if row.get("base_commit") != expected["base_commit"]:
+                  raise SystemExit(f"{instance_id}: base commit mismatch: {row.get('base_commit')}")
+              if row.get("language") != "python":
+                  raise SystemExit(f"{instance_id}: expected Python language, got {row.get('language')}")
+              if not isinstance(row.get("problem_statement"), str) or not row["problem_statement"].strip():
+                  raise SystemExit(f"{instance_id}: missing problem statement")
+              if not isinstance(row.get("FAIL_TO_PASS"), list) or not row["FAIL_TO_PASS"]:
+                  raise SystemExit(f"{instance_id}: missing/malformed FAIL_TO_PASS list")
+              if "patch" not in row or "test_patch" not in row:
+                  raise SystemExit(f"{instance_id}: full canonical row missing patch/test_patch")
+
+              canonical = json.dumps(
+                  row, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+              ).encode("utf-8")
+              row_sha = hashlib.sha256(canonical).hexdigest()
+              statement_sha = hashlib.sha256(row["problem_statement"].encode("utf-8")).hexdigest()
+              canonical_name = instance_id + ".canonical.json"
+              pretty_name = instance_id + ".json"
+              (row_dir / canonical_name).write_bytes(canonical)
+              (row_dir / pretty_name).write_text(
+                  json.dumps(row, sort_keys=True, indent=2, ensure_ascii=False) + "\\n",
+                  encoding="utf-8",
+              )
+              item = {
+                  "cohort_rank": expected["rank"],
+                  "instance_id": instance_id,
+                  "repo": row["repo"],
+                  "base_commit": row["base_commit"],
+                  "created_at": row.get("created_at"),
+                  "language": row["language"],
+                  "license": row.get("license"),
+                  "fail_to_pass_count": len(row["FAIL_TO_PASS"]),
+                  "fail_to_pass_selectors": row["FAIL_TO_PASS"],
+                  "pass_to_pass_count": len(row.get("PASS_TO_PASS") or []),
+                  "problem_statement": row["problem_statement"],
+                  "problem_statement_sha256": statement_sha,
+                  "patch_sha256": hashlib.sha256(str(row["patch"]).encode("utf-8")).hexdigest(),
+                  "test_patch_sha256": hashlib.sha256(str(row["test_patch"]).encode("utf-8")).hexdigest(),
+                  "canonical_row_sha256": row_sha,
+                  "canonical_row_path": "canonical_rows/" + canonical_name,
+                  "pretty_row_path": "canonical_rows/" + pretty_name,
+                  "issue_url": expected["issue_url"],
+                  "pull_request_url": expected["pull_request_url"],
+              }
+              manifest["rows"].append(item)
+              print(
+                  f"PASS_ROW rank={expected['rank']} id={instance_id} "
+                  f"base={row['base_commit']} created_at={row.get('created_at')} "
+                  f"license={row.get('license')} fail_to_pass={len(row['FAIL_TO_PASS'])} "
+                  f"row_sha256={row_sha} problem_statement_sha256={statement_sha}"
+              )
+              print("=== FROZEN E3 PROBLEM STATEMENT: " + instance_id + " ===")
+              print(row["problem_statement"])
+              for selector in row["FAIL_TO_PASS"]:
+                  print("FAIL_TO_PASS_SELECTOR " + instance_id + " " + selector)
+
+          manifest["rows"].sort(key=lambda item: item["cohort_rank"])
+          out = Path("rank51-52-row-evidence/dataset-row-audit-manifest.json")
+          out.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+          (Path("rank51-52-row-evidence/dataset-row-problem-statements.txt")).write_text(
+              "\\n\\n".join(
+                  f"## rank {x['cohort_rank']} — {x['instance_id']}\\n{x['problem_statement']}"
+                  for x in manifest["rows"]
+              ) + "\\n",
+              encoding="utf-8",
+          )
+          if len(manifest["rows"]) != 2:
+              raise SystemExit("Expected exactly two audited frozen rows")
+          print("PASS_EXACT_FROZEN_ROW_COUNT=2")
+          print("PASS_NO_UPSTREAM_TESTS_NO_INFERENCE")
+          PY
+          rm rank51-52-row-evidence/train-00000-of-00001.parquet
+          (cd rank51-52-row-evidence && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt)
+          (cd rank51-52-row-evidence && sha256sum --check SHA256SUMS.txt)
+
+      - name: Upload canonical rows and evidence manifest
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: swe-rebench-v2-rank51-52-row-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: rank51-52-row-evidence/
+          if-no-files-found: error
+          retention-days: 90
+
   dishka-issue-435-reproduction:
     needs: no-inference-preflight
     runs-on: ubuntu-22.04
