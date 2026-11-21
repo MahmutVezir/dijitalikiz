@@ -1,0 +1,32 @@
+{
+  "schema_version": "0.1-geopandas-frozen-row-audit-reference",
+  "capture_kind": "E3_frozen_dataset_row_provenance_reference_not_raw_row_payload",
+  "captured_at": "2026-11-21T20:58:43+03:00",
+  "dataset": {
+    "id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "source_path": "data/train-00000-of-00001.parquet"
+  },
+  "row": {
+    "instance_id": "geopandas__geopandas-3591",
+    "canonical_row_sha256": "e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2",
+    "problem_statement_sha256": "c4aeb4909495887c065f1f7ae5ec0e321fb350e98ea789cde3f931cad597f12d",
+    "fail_to_pass_selectors": [
+      "geopandas/tests/test_geodataframe.py::TestConstructor::test_geometry_nan_scalar"
+    ]
+  },
+  "extraction_audit": {
+    "workflow_run_id": 44924570231,
+    "job_id": 136907864713,
+    "artifact_id": 14715535728,
+    "artifact_sha256": "1abca7d09dfcbf4c4ba773ab87fb21225ec8f4208f44f2f7fbb19b613352459b",
+    "independent_integrity": "outer ZIP SHA256 matched; ZIP CRC passed; 6/6 internal hashes passed",
+    "upstream_checkout": false,
+    "package_install": false,
+    "selector_execution": false,
+    "model_loading": false,
+    "model_inference": false
+  },
+  "tier_boundary": "Use only the frozen dataset row/problem_statement hashes for E3. The later issue comments and PR review discussion are not part of this frozen E3 capture."
+}
