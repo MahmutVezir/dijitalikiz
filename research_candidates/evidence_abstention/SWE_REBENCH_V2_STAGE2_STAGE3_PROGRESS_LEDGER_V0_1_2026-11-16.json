@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T11:27:00Z",
+  "generated_at_utc": "2026-11-21T11:40:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -3479,7 +3479,7 @@
       "pyro-ppl/numpyro #1916": "not_accepted; source-aware gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open",
       "OpenMDAO/dymos #1166": "not_accepted; source-aware gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open",
       "CS-SI/eodag #1530": "not_accepted; issue-family review, gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open",
-      "meltano/sdk #3090": "not_accepted; technical gold/tier approved; candidate-specific prior pipeline/debug exposure, bounded license scope, proposed case record validation and separate final YES/NO remain open",
+      "meltano/sdk #3090": "not_accepted; technical gold/tier approved and prior pipeline/debug exposure declared none; bounded license scope, proposed case record validation and separate final YES/NO remain open",
       "pyfar/pyfar #721": "not_accepted; supersede stale review notes, source-aware gold/tier, prior pipeline/debug exposure, bounded license scope and final record remain open"
     },
     "first_batch_work_order": [
@@ -3523,7 +3523,7 @@
     "e3_clue_handling": "The issue's tentative 'presumably already visited' wording is retained as a hypothesis, not treated as proof of shared mutable traversal state.",
     "adjudication": "single_source_aware_project_lead_adjudicator; researcher prior issue/PR review disclosed; no blinded or inter-rater claim",
     "stage3_technical_gold_tier_gate": "closed",
-    "candidate_specific_prior_pipeline_debug_exposure": "pending_explicit_project_lead_declaration",
+    "candidate_specific_prior_pipeline_debug_exposure": "none",
     "bounded_license_scope_acknowledgement": "pending_human_review",
     "final_case_acceptance": "not_accepted; separate final YES/NO decision required",
     "registry_inclusion": false,
@@ -3533,7 +3533,17 @@
     "model_loading_authorized": false,
     "inference_authorized": false,
     "fine_tuning_authorized": false,
-    "training_authorized": false
+    "training_authorized": false,
+    "exposure_decision_record": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_EXPOSURE_DECISION_MELTANO_3090_2026-11-21.md",
+    "exposure_decision_date": "2026-11-21",
+    "researcher_source_exposure": "full",
+    "prior_pipeline_debug_exposure_gate": "closed_on_project_lead_self_report",
+    "blinded_adjudication_claimed": false,
+    "remaining_gates": [
+      "bounded_documentary_license_scope_acknowledgement_after_exact_dataset_card_and_dependency_notice_reconciliation",
+      "proposed_case_record_fail_closed_validation",
+      "separate_final_project_lead_yes_no_case_acceptance"
+    ]
   },
   "latest_meltano_project_lead_decision_validation": {
     "validated_commit": "864896d4cfb12cbe68c76eab2abd3edf0929f21c",
@@ -3576,5 +3586,16 @@
       "conclusion": "success"
     },
     "scope": "No model weights loaded; no inference, fine-tuning, or training. This is CI verification of records and existing no-inference gates only."
+  },
+  "meltano_3090_exposure_declaration": {
+    "decision": "none",
+    "decision_date": "2026-11-21",
+    "decision_maker_role": "student_project_lead",
+    "decision_record_path": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_EXPOSURE_DECISION_MELTANO_3090_2026-11-21.md",
+    "scope": "No prior use of Meltano #3090 / PR #3091, source, selector, or reproducer for shared pipeline development/debugging or prompt/test tuning before prospective case validation.",
+    "verification_limit": "Direct self-report; not independently witnessed or externally audited.",
+    "researcher_source_exposure": "full",
+    "blinding_claimed": false,
+    "gate_status": "closed"
   }
 }
