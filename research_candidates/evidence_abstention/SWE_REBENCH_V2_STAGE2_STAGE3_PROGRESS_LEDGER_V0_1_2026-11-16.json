@@ -5557,11 +5557,10 @@
     "accepted_case_record_blob_sha1": "6feab60ba5fe3bdd4bb85462f62bfaeb351753da",
     "acceptance_scope": "v0.2_exploratory_feasibility_registry_only",
     "final_case_validation": {
-      "run_id": 44931419750,
-      "job_id": 136928658938,
+      "run_id": 44931859751,
+      "job_id": 136930010486,
       "conclusion": "success",
-      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931419750",
-      "job_name": "Validate accepted case, three-project registry and no-inference boundary",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931859751",
       "case_validation": {
         "status": "structurally_complete_candidate",
         "blockers": 0,
@@ -5575,8 +5574,15 @@
         "accepted_project_count": 3,
         "primary_target_met": false
       },
-      "manifest_validation": "accepted_case_count=3; accepted_project_count=3; exactly one accepted GeoFileOps review record",
+      "manifest_validation": "PASS_3_cases_3_projects_exactly_one_GeoFileOps_manifest_record",
       "inference_authorized": false
+    },
+    "proposal_archive_validation": {
+      "run_id": 44931859714,
+      "job_id": 136930010402,
+      "conclusion": "success",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931859714",
+      "result": "PASS_historical_proposal_remains_pending_accepted_copy_preserves_exact_evidence_except_final_decision_fields"
     }
   },
   "latest_geofileops_649_stage2_stage3_review": {
@@ -5647,11 +5653,10 @@
     "final_acceptance_timestamp_utc": "2026-11-21T17:37:00Z",
     "case_record_structural_validation": "PASS_final_accepted_case_and_registry; zero blockers",
     "final_case_validation": {
-      "run_id": 44931419750,
-      "job_id": 136928658938,
+      "run_id": 44931859751,
+      "job_id": 136930010486,
       "conclusion": "success",
-      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931419750",
-      "job_name": "Validate accepted case, three-project registry and no-inference boundary",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931859751",
       "case_validation": {
         "status": "structurally_complete_candidate",
         "blockers": 0,
@@ -5665,8 +5670,29 @@
         "accepted_project_count": 3,
         "primary_target_met": false
       },
-      "manifest_validation": "accepted_case_count=3; accepted_project_count=3; exactly one accepted GeoFileOps review record",
+      "manifest_validation": "PASS_3_cases_3_projects_exactly_one_GeoFileOps_manifest_record",
       "inference_authorized": false
+    },
+    "proposal_archive_validation": {
+      "run_id": 44931859714,
+      "job_id": 136930010402,
+      "conclusion": "success",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931859714",
+      "result": "PASS_historical_proposal_remains_pending_accepted_copy_preserves_exact_evidence_except_final_decision_fields"
+    },
+    "repository_validation": {
+      "run_id": 44931859733,
+      "job_id": 136930010746,
+      "conclusion": "success",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931859733",
+      "description": "Repository/configuration validation (no inference), including pytest and compileall, succeeded at commit 907406d4a536fa2c6c1304f39b0a4565869ef07f."
+    },
+    "general_unit_tests": {
+      "run_id": 44931859823,
+      "job_id": 136930010592,
+      "conclusion": "success",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931859823",
+      "description": "Evidence abstention uncertainty unit tests succeeded."
     }
   },
   "latest_lektor_1213_stage2_selector_integrity_hold": {
@@ -6118,11 +6144,10 @@
     "inference_authorized": false,
     "final_accepted_record_ci_validation": "success",
     "final_acceptance_validation_workflow": {
-      "run_id": 44931419750,
-      "job_id": 136928658938,
+      "run_id": 44931859751,
+      "job_id": 136930010486,
       "conclusion": "success",
-      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931419750",
-      "job_name": "Validate accepted case, three-project registry and no-inference boundary",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931859751",
       "case_validation": {
         "status": "structurally_complete_candidate",
         "blockers": 0,
@@ -6136,16 +6161,65 @@
         "accepted_project_count": 3,
         "primary_target_met": false
       },
-      "manifest_validation": "accepted_case_count=3; accepted_project_count=3; exactly one accepted GeoFileOps review record",
+      "manifest_validation": "PASS_3_cases_3_projects_exactly_one_GeoFileOps_manifest_record",
       "inference_authorized": false
     },
     "proposal_archive_validation": {
-      "run_id": 44931414386,
-      "job_id": 136928642817,
+      "run_id": 44931859714,
+      "job_id": 136930010402,
       "conclusion": "success",
-      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931414386",
-      "result": "historical proposed/pending record preserved; accepted copy differs only in final decision fields"
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931859714",
+      "result": "PASS_historical_proposal_remains_pending_accepted_copy_preserves_exact_evidence_except_final_decision_fields"
     },
-    "registry_validation_addendum": "research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_FINAL_ACCEPTANCE_AND_REGISTRY_VALIDATION_2026-11-21.md"
+    "registry_validation_addendum": "research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_FINAL_ACCEPTANCE_AND_REGISTRY_VALIDATION_2026-11-21.md",
+    "repository_validation": {
+      "run_id": 44931859733,
+      "job_id": 136930010746,
+      "conclusion": "success",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931859733",
+      "description": "Repository/configuration validation (no inference), including pytest and compileall, succeeded at commit 907406d4a536fa2c6c1304f39b0a4565869ef07f."
+    },
+    "general_unit_tests": {
+      "run_id": 44931859823,
+      "job_id": 136930010592,
+      "conclusion": "success",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931859823",
+      "description": "Evidence abstention uncertainty unit tests succeeded."
+    },
+    "latest_global_no_inference_preflight": {
+      "run_id": 44931859902,
+      "job_id": 136930011846,
+      "conclusion": "success_for_preflight_report_job",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931859902",
+      "report_status": "blocked_before_inference",
+      "ready_for_inference": false,
+      "accepted_case_count": 3,
+      "accepted_project_count": 3,
+      "registry_status": "structurally_valid_candidate_registry",
+      "blocker_count": 13,
+      "inference_authorized": false,
+      "note": "The no-inference readiness report job succeeded and reported 13 global blockers. Other non-inference reproduction/audit fan-out jobs were still running when this ledger entry was recorded."
+    }
+  },
+  "latest_general_repository_validation": {
+    "run_id": 44931859733,
+    "job_id": 136930010746,
+    "conclusion": "success",
+    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931859733",
+    "description": "Repository/configuration validation (no inference), including pytest and compileall, succeeded at commit 907406d4a536fa2c6c1304f39b0a4565869ef07f."
+  },
+  "latest_global_no_inference_preflight": {
+    "run_id": 44931859902,
+    "job_id": 136930011846,
+    "conclusion": "success_for_preflight_report_job",
+    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44931859902",
+    "report_status": "blocked_before_inference",
+    "ready_for_inference": false,
+    "accepted_case_count": 3,
+    "accepted_project_count": 3,
+    "registry_status": "structurally_valid_candidate_registry",
+    "blocker_count": 13,
+    "inference_authorized": false,
+    "note": "The no-inference readiness report job succeeded and reported 13 global blockers. Other non-inference reproduction/audit fan-out jobs were still running when this ledger entry was recorded."
   }
 }
