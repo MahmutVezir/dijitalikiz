@@ -1,12 +1,6 @@
 name: GeoFileOps #649 exact-build Conda license and notice audit (no inference)
 
 on:
-  push:
-    branches:
-      - "research/2026-11-16-followup-evidence-validation"
-    paths:
-      - ".github/workflows/geofileops-649-conda-license-notice-audit.yml"
-      - "scripts/geofileops_649_conda_license_notice_audit.py"
   pull_request:
     branches:
       - main
