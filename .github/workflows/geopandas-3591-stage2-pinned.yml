@@ -8,6 +8,13 @@ on:
       - ".github/workflows/geopandas-3591-stage2-pinned.yml"
       - "research_candidates/evidence_abstention/reproduction/geopandas_3591/requirements.lock"
       - "research_candidates/evidence_abstention/reproduction/geopandas_3591/reproduce_geometry_nan_case.py"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/geopandas-3591-stage2-pinned.yml"
+      - "research_candidates/evidence_abstention/reproduction/geopandas_3591/requirements.lock"
+      - "research_candidates/evidence_abstention/reproduction/geopandas_3591/reproduce_geometry_nan_case.py"
   workflow_dispatch:
 
 permissions:
@@ -19,7 +26,7 @@ concurrency:
 
 jobs:
   geopandas-3591-stage2:
-    if: ${{ github.ref == 'refs/heads/research/2026-11-16-followup-evidence-validation' }}
+    if: ${{ (github.event_name == 'pull_request' && github.head_ref == 'research/2026-11-16-followup-evidence-validation') || github.ref == 'refs/heads/research/2026-11-16-followup-evidence-validation' }}
     runs-on: ubuntu-22.04
     timeout-minutes: 45
     env:
@@ -64,7 +71,6 @@ jobs:
           git -C upstream-geopandas fetch --no-tags origin "$BASE_SHA" "$FIX_SHA"
           git -C upstream-geopandas cat-file -e "${BASE_SHA}^{commit}"
           git -C upstream-geopandas cat-file -e "${FIX_SHA}^{commit}"
-          test "$(git -C upstream-geopandas rev-parse HEAD:"$BASE_SHA":geopandas/geodataframe.py 2>/dev/null || true)" = ""
           test "$(git -C upstream-geopandas rev-parse "$BASE_SHA":geopandas/geodataframe.py)" = "$BASE_GDF_BLOB_SHA1"
           test "$(git -C upstream-geopandas rev-parse "$FIX_SHA":geopandas/geodataframe.py)" = "$FIX_GDF_BLOB_SHA1"
           test "$(git -C upstream-geopandas rev-parse "$FIX_SHA":geopandas/tests/test_geodataframe.py)" = "$FIX_TEST_BLOB_SHA1"
