@@ -123,6 +123,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          git -C upstream-geopandas checkout --detach "$BASE_SHA"
+          test "$(git -C upstream-geopandas rev-parse HEAD)" = "$BASE_SHA"
+          grep -F 'build-backend = "setuptools.build_meta"' upstream-geopandas/pyproject.toml
           python -m venv .venv-geopandas
           .venv-geopandas/bin/python -m pip install --disable-pip-version-check -r "$LOCK_FILE"
           .venv-geopandas/bin/python -m pip install --disable-pip-version-check --no-build-isolation --no-deps --editable ./upstream-geopandas
