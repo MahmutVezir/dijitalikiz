@@ -119,9 +119,9 @@
   },
   "independence_status": {
     "stage2_technical_reproduction": "passed",
-    "final_case_acceptance": "not_accepted",
+    "final_case_acceptance": "accepted_v0_2_exploratory_feasibility_only",
     "inference_authorized": false,
     "source_aware_gold_tier_decision": "approved_by_project_lead_2026-11-21",
-    "final_case_acceptance_note": "Project lead approved source-aware gold/tiers, self-declared no prior pipeline/debug use, and acknowledged the bounded documentary license scope. A complete schema-conformant proposed case record passed the fail-closed structural validator; the existing registry also validated and remains unchanged. EODAG remains proposed outside the accepted registry pending a separate project-lead final YES/NO. Global study readiness is still blocked; no inference is authorized."
+    "final_case_acceptance_note": "Project lead approved source-aware gold/tiers, self-declared no prior pipeline/debug use, acknowledged the bounded documentary license scope, and separately issued a final YES to accept EODAG #1530 into the v0.2 exploratory/feasibility registry on 2026-11-21 at 13:36:50+03:00. The complete schema-conformant case record previously passed pre-acceptance validation and has been marked accepted; the latest-head post-acceptance structural/registry CI is pending. Full researcher source exposure remains disclosed. This is not confirmatory acceptance or inference authorization."
   }
 }
