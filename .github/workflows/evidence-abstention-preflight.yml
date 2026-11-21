@@ -3497,7 +3497,6 @@ jobs:
           git -C upstream-geofileops diff f7f8a4cf49b1278f3e9e5f4157718de441a21b57 ec1438fbf8527269cd1193647d05c8d7fdb83802 > reproduction-evidence/pr-649-full.patch
           git -C upstream-geofileops diff f7f8a4cf49b1278f3e9e5f4157718de441a21b57 ec1438fbf8527269cd1193647d05c8d7fdb83802 -- tests/test_geofile.py > reproduction-evidence/dataset-test.patch
           sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-setup.py reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-649-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
-          cp reproduction-evidence/python-license-inventory.json reproduction-evidence/
 
       - name: Build exact buggy-base GeofileOps source
         run: |
