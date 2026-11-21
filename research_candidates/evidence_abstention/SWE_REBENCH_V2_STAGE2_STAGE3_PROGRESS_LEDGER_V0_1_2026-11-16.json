@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T13:15:00Z",
+  "generated_at_utc": "2026-11-21T15:17:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -2395,12 +2395,23 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": null,
-      "stage2_status": "not_started",
-      "stage2_workflow_job_id": null,
-      "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage2_status": "blocked_dataset_selector_integrity",
+      "stage2_workflow_job_id": 136887636693,
+      "stage2_evidence_note": "research_candidates/evidence_abstention/lektor_1213/LEKTOR_1213_STAGE2_SELECTOR_INTEGRITY_HOLD_2026-11-21.md",
+      "stage3_status": "not_started_stage2_not_passed",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage2_latest_run_id": 44917970732,
+      "stage2_latest_job_id": 136887636693,
+      "stage2_latest_artifact_id": 14712348769,
+      "stage2_latest_artifact_sha256": "dc0345c2d3284f795721b10d226db6523db75c004e2823c525a0d943143bdb2c",
+      "stage2_latest_artifact_integrity": "GitHub and independently downloaded outer SHA-256 match; ZIP CRC PASS; 13 members; SHA256SUMS.txt 12/12 internal hashes PASS. Archive lacks a complete selector-results matrix because the base selector step stopped at the first unexpected pass.",
+      "stage2_dataset_instance_id": "lektor__lektor-1214",
+      "stage2_dataset_row_sha256": "4e0b0674a9307164e9486009aa21690973135f599761a489d9a595c2ccea282d",
+      "stage2_frozen_fail_to_pass_selector_count": 149,
+      "stage2_buggy_base_commit": "c22e224ec56620c2a1d90016d74518970b1dd578",
+      "stage2_fixed_pr_commit": "7d8bfed7ae0a2eb970acd5be824eeb380239e675",
+      "next_required_gate": "Audit all 149 frozen FAIL_TO_PASS selectors without early exit, run the independent reproducer on exact fixed PR revision, and reconcile the selector-row mismatch before any Stage 2 pass or Stage 3 review."
     },
     {
       "cohort_rank": 51,
@@ -5109,5 +5120,43 @@
     "final_case_acceptance": "not_accepted",
     "registry_inclusion": false,
     "inference_authorized": false
+  },
+  "latest_lektor_1213_stage2_selector_integrity_hold": {
+    "date": "2026-11-21",
+    "upstream_issue": "https://github.com/lektor/lektor/issues/1213",
+    "upstream_pr": "https://github.com/lektor/lektor/pull/1214",
+    "buggy_base_commit": "c22e224ec56620c2a1d90016d74518970b1dd578",
+    "fixed_pr_commit": "7d8bfed7ae0a2eb970acd5be824eeb380239e675",
+    "research_head_commit": "52e29ee78765722abeed7195ea9fe933ae22825c",
+    "workflow_run_id": 44917970732,
+    "workflow_job_id": 136887636693,
+    "artifact_id": 14712348769,
+    "artifact_sha256": "dc0345c2d3284f795721b10d226db6523db75c004e2823c525a0d943143bdb2c",
+    "artifact_integrity": "outer digest matched GitHub; ZIP CRC PASS; 13 members; 12/12 internal SHA256SUMS entries PASS",
+    "dataset_instance_id": "lektor__lektor-1214",
+    "dataset_row_sha256": "4e0b0674a9307164e9486009aa21690973135f599761a489d9a595c2ccea282d",
+    "fail_to_pass_selector_count": 149,
+    "selectors_by_file": {
+      "tests/test_builder.py": 24,
+      "tests/test_utils.py": 125
+    },
+    "independent_issue_reproducer": {
+      "status": "buggy_base_expected_failure_verified",
+      "observed_mode": "0o600",
+      "normal_file_mode": "0o644",
+      "fixed_revision_run": "skipped_not_verified"
+    },
+    "selector_audit": {
+      "status": "blocked_unexpected_base_pass",
+      "first_selector": "tests/test_builder.py::test_basic_build",
+      "first_selector_result": "unexpected_pass_on_buggy_base",
+      "remaining_selectors": "not_run_in_this_attempt",
+      "fixed_revision_selectors": "skipped"
+    },
+    "disposition": "blocked_dataset_selector_integrity",
+    "stage3_status": "not_started_stage2_not_passed",
+    "final_case_acceptance": "not_accepted",
+    "inference_authorized": false,
+    "evidence_note": "research_candidates/evidence_abstention/lektor_1213/LEKTOR_1213_STAGE2_SELECTOR_INTEGRITY_HOLD_2026-11-21.md"
   }
 }
