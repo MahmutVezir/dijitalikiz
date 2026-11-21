@@ -132,3 +132,15 @@ The corrected no-inference frozen-row audit completed successfully:
 The earlier statement that the row-audit workflow had not executed is superseded by this successful execution. The first attempt's incorrect guessed music21 instance ID and the correction are preserved in the ledger/history; no data was fabricated or inferred from the guessed ID.
 
 **Phase 2 remains partially complete, not closed:** GeoFileOps #649 still has temporal, licensing/provenance/scope and final acceptance gates; GeoPandas #3591 still has its E3 suitability decision. Rank 55 does not start until earlier-ranked open gates are resolved or formally excluded.
+
+## Project-lead E3 adjudication update — GeoPandas #3591 — 21 November 2026
+
+The exact frozen row and problem statement were authenticated in the no-inference audit recorded above. The project lead has now made the pending semantic E3 decision:
+
+- **E3: ABSTAIN.** The frozen statement gives the all-`np.nan` geometry input, error, workaround and valid-geometry contrast, but does not identify the constructor's internal geometry/dtype-recognition branch. Under the approved implementation-mechanism diagnostic granularity, the implementation mechanism is not disclosed by E3.
+- This is not a statement that the mechanism cannot be recovered from source code, and it is not an automatic E2/E1 decision. E2 and E1 remain separate.
+- Prior pipeline/debug exposure: **none**.
+- Candidate disposition: **HOLD remains**; no final exclusion, final acceptance or registry inclusion.
+- **No Stage 2 execution is authorized by this decision.** No inference, model loading, fine-tuning or training is authorized.
+
+The earlier statements in this review that the GeoPandas project-lead E3 decision was pending are superseded by this amendment. The rank 52 semantic E3 gate is now resolved as ABSTAIN; the candidate remains held under the stated no-run boundary. This does not close Phase 2: GeoFileOps #649 still has its temporal-exposure, bounded license/dependency/provenance/scope, complete-record, fail-closed validation and separate final-acceptance gates. No later-ranked candidate is advanced by this update.
