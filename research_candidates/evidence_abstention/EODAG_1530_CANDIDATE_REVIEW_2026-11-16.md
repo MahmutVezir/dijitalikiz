@@ -168,3 +168,10 @@ SHA-256: `6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6`
 This is not legal advice, formal legal review, legal clearance, SPDX certification or a complete native/bundled dependency audit. The 52-package metadata inventory is not legal clearance.
 
 **Remaining:** complete schema-conformant proposed case record and fail-closed registry validation, followed by a separate final project-lead YES/NO. EODAG remains outside the accepted registry. No model loading, inference, fine-tuning or training is authorized.
+
+
+## Proposed v0.2 case record prepared — 21 November 2026
+
+A complete candidate record has been prepared at [SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json](eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json). It records the pinned dataset row and source revisions, technical reproduction, project-lead-approved gold and E1/E2/E3 survivor sets, full researcher source exposure, the self-declared absence of prior pipeline/debug use, and the bounded documentary license-scope acknowledgement.
+
+The record's `acceptance_decision` is **proposed** and `final_acceptance.status` is **pending**. EODAG is not inserted into the accepted registry. Latest-head CI must run the structural case validator and fail-closed registry validation. No model execution is authorized.
