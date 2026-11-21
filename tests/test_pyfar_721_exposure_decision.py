@@ -45,7 +45,7 @@ class PyFar721ExposureDecisionTests(unittest.TestCase):
         self.assertEqual(pyfar["stage3_exposure"]["prior_pipeline_debug_exposure_gate"], "closed_on_project_lead_self_report")
         self.assertNotIn("prior_pipeline_debug_exposure_declaration_pending", pyfar["stage3_status"])
         self.assertNotIn("prior pipeline/debug exposure declaration", pyfar["next_required_gate"].lower())
-        self.assertIn("not_approved", pyfar["stage3_proposed_tiers"]["tier_decision_status"])
+        self.assertEqual(pyfar["stage3_proposed_tiers"]["tier_decision_status"], "advisory_proposal_only_not_project_lead_approved")
         self.assertEqual(pyfar["final_case_acceptance"], "not_accepted")
         self.assertFalse(pyfar["model_inference_authorized"])
         self.assertIn("prior_pipeline_debug_exposure = `none`", proposal)
