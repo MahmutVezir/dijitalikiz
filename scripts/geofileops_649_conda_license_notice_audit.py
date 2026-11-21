@@ -24,12 +24,24 @@ NOTICES = OUT / "package-notices"
 OUT.mkdir(parents=True, exist_ok=True)
 NOTICES.mkdir(parents=True, exist_ok=True)
 
+class StripAuthorizationOnExternalRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        redirected = super().redirect_request(req, fp, code, msg, headers, newurl)
+        if redirected is not None:
+            target_host = urllib.parse.urlparse(newurl).hostname
+            if target_host != "api.github.com":
+                redirected.remove_header("Authorization")
+                redirected.remove_header("authorization")
+        return redirected
+
+
 def request_bytes(url: str, *, headers: dict[str, str] | None = None, timeout: int = 180) -> bytes:
     request = urllib.request.Request(url, headers=headers or {"User-Agent": "MahmutVezir-research-audit/1.0"})
+    opener = urllib.request.build_opener(StripAuthorizationOnExternalRedirect())
     last_error: Exception | None = None
     for attempt in range(5):
         try:
-            with urllib.request.urlopen(request, timeout=timeout) as response:
+            with opener.open(request, timeout=timeout) as response:
                 return response.read()
         except Exception as exc:
             last_error = exc
