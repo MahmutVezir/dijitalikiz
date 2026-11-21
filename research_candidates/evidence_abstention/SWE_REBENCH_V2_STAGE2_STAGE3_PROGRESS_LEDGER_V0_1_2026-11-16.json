@@ -1078,7 +1078,17 @@
         "design_scoring_tests": "10 passed",
         "inference_authorized": false
       },
-      "generated_at_utc": "2026-11-21T11:02:00Z"
+      "generated_at_utc": "2026-11-21T11:02:00Z",
+      "stage2_latest_repeat": {
+        "workflow_run_id": 44903822528,
+        "job_id": 136845091011,
+        "artifact_id": 14707022685,
+        "artifact_sha256": "698e2f6b9d37522fd276f58ce57d85934bb0e8df16cd978284c3e79ef3a346dc",
+        "conclusion": "success",
+        "base": "exact buggy base executed and failed with expected [1,1] vs [5,15] mismatch",
+        "fixed": "same reproducer passed on exact fixed PR head",
+        "independent_local_integrity": "outer SHA-256 matches GitHub; ZIP CRC PASS; 15/15 inner hashes PASS"
+      }
     },
     {
       "cohort_rank": 16,
@@ -3811,5 +3821,16 @@
     "final_case_acceptance": "not_accepted",
     "registry_inclusion": false,
     "inference_authorized": false
+  },
+  "latest_dymos_1166_independent_reproduction_repeat": {
+    "validated_branch_head": "f575d12bd7eb19a745dd2a2ffbdd8ffa8814d0fe",
+    "workflow_run_id": 44903822528,
+    "job_id": 136845091011,
+    "conclusion": "success",
+    "artifact_id": 14707022685,
+    "artifact_sha256": "698e2f6b9d37522fd276f58ce57d85934bb0e8df16cd978284c3e79ef3a346dc",
+    "local_integrity": "outer SHA-256 match; ZIP CRC PASS; internal SHA256SUMS 15/15 PASS",
+    "same_reproducer": "buggy exact base expected failure; fixed exact PR head pass",
+    "scope": "Technical reproduction and artifact integrity only. Dymos remains not accepted pending a separate explicit project-lead YES/NO. No inference authorized."
   }
 }
