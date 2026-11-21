@@ -3417,3 +3417,238 @@ jobs:
           path: reproduction-evidence/
           if-no-files-found: warn
           retention-days: 90
+
+  geofileops-issue-648-reproduction:
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates) || (github.event_name == 'push' && (contains(github.event.head_commit.modified, 'research_candidates/evidence_abstention/reproduction/geofileops_issue_648/') || contains(github.event.head_commit.modified, '.github/workflows/evidence-abstention-preflight.yml'))) || (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'research/2026-11-16-followup-evidence-validation') }}
+    needs: no-inference-preflight
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Create upstream-compatible pinned-shape GIS environment
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          micromamba-version: '1.5.1-0'
+          environment-file: research_candidates/evidence_abstention/reproduction/geofileops_issue_648/environment.yml
+          environment-name: geofileops-stage2
+          init-shell: bash
+          cache-environment: true
+
+      - name: Record runtime, exact conda package set, and Python distribution license metadata
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          python -VV
+          micromamba list --explicit > reproduction-evidence/conda-explicit.txt
+          python - <<'PY'
+          import importlib.metadata as md
+          import json
+          names = [
+              "cloudpickle", "GDAL", "geopandas", "numpy", "packaging",
+              "pandas", "psutil", "pygeoops", "pyogrio", "pyproj",
+              "shapely", "simplification", "pytest", "pytest-xdist",
+          ]
+          inventory = {}
+          for name in names:
+              dist = md.metadata(name)
+              classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+              inventory[name] = {
+                  "version": md.version(name),
+                  "license": dist.get("License") or dist.get("License-Expression"),
+                  "license_expression": dist.get("License-Expression"),
+                  "license_classifiers": classifiers,
+              }
+          with open("reproduction-evidence/python-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Clone exact GeofileOps source and authenticate source provenance
+        run: |
+          set -euo pipefail
+          git clone https://github.com/geofileops/geofileops.git upstream-geofileops
+          git -C upstream-geofileops fetch --no-tags origin f7f8a4cf49b1278f3e9e5f4157718de441a21b57 ec1438fbf8527269cd1193647d05c8d7fdb83802
+          git -C upstream-geofileops checkout --detach f7f8a4cf49b1278f3e9e5f4157718de441a21b57
+          test "$(git -C upstream-geofileops rev-parse HEAD)" = "f7f8a4cf49b1278f3e9e5f4157718de441a21b57"
+          test "$(git -C upstream-geofileops rev-parse HEAD:LICENSE.txt)" = "ecf40d7a30bd534ebd781bca089abd3168bc13a1"
+          test "$(git -C upstream-geofileops rev-parse HEAD:setup.py)" = "373decfebc09acb19ae0694337b8cf9bee195b50"
+          test "$(git -C upstream-geofileops rev-parse HEAD:pyproject.toml)" = "96daa9707683dd3b24de733b7cb37dbb6cb336d2"
+          test "$(git -C upstream-geofileops rev-parse HEAD:geofileops/fileops.py)" = "9edeb1c1bf7eb7d0f35b246611b27bad33fdcc7e"
+          test "$(git -C upstream-geofileops rev-parse HEAD:tests/test_geofile.py)" = "52047a77a384dc2f469029c50be4775f5ee1eae4"
+          git -C upstream-geofileops show HEAD:LICENSE.txt > reproduction-evidence/upstream-LICENSE.txt
+          git -C upstream-geofileops show HEAD:setup.py > reproduction-evidence/upstream-setup.py
+          git -C upstream-geofileops show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
+          git -C upstream-geofileops diff f7f8a4cf49b1278f3e9e5f4157718de441a21b57 ec1438fbf8527269cd1193647d05c8d7fdb83802 > reproduction-evidence/pr-649-full.patch
+          git -C upstream-geofileops diff f7f8a4cf49b1278f3e9e5f4157718de441a21b57 ec1438fbf8527269cd1193647d05c8d7fdb83802 -- tests/test_geofile.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-setup.py reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-649-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
+          cp reproduction-evidence/conda-explicit.txt reproduction-evidence/
+          cp reproduction-evidence/python-license-inventory.json reproduction-evidence/
+
+      - name: Build exact buggy-base GeofileOps source
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e upstream-geofileops
+          python - <<'PY'
+          import geofileops
+          import geopandas
+          import pyogrio
+          import shapely
+          print({
+              "geofileops": geofileops.__version__,
+              "geopandas": geopandas.__version__,
+              "pyogrio": pyogrio.__version__,
+              "shapely": shapely.__version__,
+          })
+          PY
+
+      - name: Run independent destination-stem reproducer on buggy base (failure required)
+        run: |
+          set -euo pipefail
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-geofileops" python -m pytest -q "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/geofileops_issue_648/test_issue_648.py" -k default_destination > reproduction-evidence/base-issue-test.log 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-issue-test.log
+          if [ "$status" -eq 0 ]; then
+            echo "Expected default destination layer to differ from destination filename stem on buggy base." >&2
+            exit 1
+          fi
+          grep -E "source_layer|destination_result|AssertionError" reproduction-evidence/base-issue-test.log
+
+      - name: Run explicit destination-layer positive control on buggy base
+        run: |
+          set -euo pipefail
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-geofileops" python -m pytest -q "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/geofileops_issue_648/test_issue_648.py" -k explicit_destination > reproduction-evidence/base-positive-control.log 2>&1
+          cat reproduction-evidence/base-positive-control.log
+
+      - name: Extract exact SWE-rebench row and authenticate provenance
+        run: |
+          set -euo pipefail
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          .venv-dataset/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          dist = md.metadata("pyarrow")
+          classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+          license_text = dist.get("License") or dist.get("License-Expression")
+          if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
+              raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
+          with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump({"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}, f, indent=2)
+              f.write("\\n")
+          PY
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+          .venv-dataset/bin/python - <<'PY'
+          import hashlib
+          import json
+          import pyarrow.parquet as pq
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          rows = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "geofileops__geofileops-649")]).to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected exactly one GeofileOps row, got {len(rows)}")
+          row = rows[0]
+          assert row["repo"] == "geofileops/geofileops", row
+          assert row["base_commit"] == "f7f8a4cf49b1278f3e9e5f4157718de441a21b57", row
+          assert row["language"] == "python", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2025-03-06 15:39:28", row
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\\n")
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\\n".join(row["FAIL_TO_PASS"]) + "\\n")
+          with open("reproduction-evidence/dataset-problem-statement.txt", "w", encoding="utf-8") as f:
+              f.write(row["problem_statement"])
+          print("dataset_row_sha256=" + digest)
+          print("dataset_created_at=" + str(row["created_at"]))
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          PY
+
+      - name: Apply exact PR test patch and run frozen selectors on buggy base (failure required)
+        run: |
+          set -euo pipefail
+          git -C upstream-geofileops checkout --detach f7f8a4cf49b1278f3e9e5f4157718de441a21b57
+          git -C upstream-geofileops apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "geofileops__geofileops-649")]).to_pylist()[0]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], "micromamba/envs/geofileops-stage2/bin/python")
+          if not os.path.exists(python):
+              python = os.path.join(os.environ["MAMBA_ROOT_PREFIX"], "envs/geofileops-stage2/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-geofileops")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-geofileops", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\\n" + result.stdout)
+              if result.returncode == 0:
+                  raise SystemExit("Dataset selector unexpectedly passed on buggy base: " + selector)
+              if "destination" not in result.stdout.lower() and "layer" not in result.stdout.lower():
+                  raise SystemExit("Buggy-base selector did not fail for destination-layer semantics: " + selector + "\\n" + result.stdout)
+          output = "\\n".join(logs)
+          with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Run independent reproducer and frozen selectors on exact fixed revision (pass required)
+        run: |
+          set -euo pipefail
+          git -C upstream-geofileops checkout --detach --force ec1438fbf8527269cd1193647d05c8d7fdb83802
+          test "$(git -C upstream-geofileops rev-parse HEAD:geofileops/fileops.py)" = "29738ee57088279b7bf7c656b34721dbc8d78f7b"
+          test "$(git -C upstream-geofileops rev-parse HEAD:tests/test_geofile.py)" = "64cd2ab90f37c9f53672388ce0b0ee4112a2104f"
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-geofileops" python -m pytest -q "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/geofileops_issue_648/test_issue_648.py" > reproduction-evidence/fixed-issue-test.log 2>&1
+          cat reproduction-evidence/fixed-issue-test.log
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "geofileops__geofileops-649")]).to_pylist()[0]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], "micromamba/envs/geofileops-stage2/bin/python")
+          if not os.path.exists(python):
+              python = os.path.join(os.environ["MAMBA_ROOT_PREFIX"], "envs/geofileops-stage2/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-geofileops")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-geofileops", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\\n" + result.stdout)
+              if result.returncode != 0:
+                  raise SystemExit("Dataset selector failed on fixed revision: " + selector + "\\n" + result.stdout)
+          output = "\\n".join(logs)
+          with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Prepare and upload raw GeofileOps reproduction evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          rm -f reproduction-evidence/train-00000-of-00001.parquet
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+
+      - name: Upload raw GeofileOps reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: geofileops-issue-648-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
