@@ -151,6 +151,10 @@ def test_eodag_1530_project_decision_is_in_manifest_and_ledger_but_not_registry(
         (RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json")
         .read_text(encoding="utf-8")
     )
+    provenance = json.loads(
+        (EODAG / "EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_1_2026-11-20.json")
+        .read_text(encoding="utf-8")
+    )
 
     decisions = [
         item for item in manifest["project_lead_decisions"]
