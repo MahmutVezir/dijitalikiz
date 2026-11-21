@@ -5555,6 +5555,36 @@
       }
     ],
     "accepted_cases_remain": "Dishka and EODAG only",
-    "inference_authorized": false
+    "inference_authorized": false,
+    "phase2_status": "partially_complete_not_closed_pending_rank51_52_exact_row_authentication_and_project_lead_decisions",
+    "phase2_review_document": "research_candidates/evidence_abstention/STAGE2_RANK49_52_CLOSURE_REVIEW_2026-11-21.md"
+  },
+  "stage2_rank49_52_closure_review_2026_11_21": {
+    "date": "2026-11-21",
+    "status": "partially_complete_not_closed_pending_project_lead_decisions_and_exact_row_authentication",
+    "review_document_path": "research_candidates/evidence_abstention/STAGE2_RANK49_52_CLOSURE_REVIEW_2026-11-21.md",
+    "review_document_git_blob_sha": "7bce07080f650a0e33747e204774a028ffcb9a5f",
+    "rank_dispositions": {
+      "49_geofileops_649": "stage2_exact_reproduction_pass; stage3_diagnostic_granularity_and_project_lead_gates_pending; recommended_strict_mechanism_E3_ABSTAIN_E2_ABSTAIN_E1_ANSWER",
+      "50_lektor_1214": "stage2_frozen_selector_integrity_contract_failed; preserve_all_149_selectors; no_stage3_or_primary_sample_acceptance",
+      "51_music21_1736": "held_before_stage2_pending_exact_frozen_row_authentication; high_E3_answerability_risk_due_issue_describing_split_tuple_to_plain_tuple_transition_and_attribute_error",
+      "52_geopandas_3591": "held_before_stage2_pending_exact_frozen_row_authentication_and_project_lead_exposure_declaration; retain_as_potential_strict_mechanism_case"
+    },
+    "exact_row_extraction": {
+      "rank_51": "not_completed",
+      "rank_52": "not_completed",
+      "pinned_dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+      "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+      "reason": "Available GitHub Actions controls did not execute the newly drafted no-inference row audit; no row hash or E3 packet was fabricated."
+    },
+    "frozen_cohort_changed": false,
+    "accepted_registry_changed": false,
+    "accepted_cases_remain": [
+      "Dishka",
+      "EODAG"
+    ],
+    "easy_answer_control_group_created": false,
+    "inference_authorized": false,
+    "next_open_work_order_unchanged": true
   }
 }
