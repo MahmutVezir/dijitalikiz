@@ -1055,7 +1055,7 @@
       "stage2_status": "passed_issue_specific_independent_reproducer_and_2_dataset_selectors_base_fail_fixed_pass",
       "stage2_workflow_job_id": 134161227052,
       "stage2_evidence_note": "Independent YAML reproducer: duplicate geodes key removes geodes_s3 on buggy base, passes on fixed. Exact Parquet row cs-si__eodag-1536 authenticated (created_at 2025-02-21 10:04:30; row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47). Both exact issue-specific selectors executed: 2/2 failed on buggy base and 2/2 passed on fixed. Test-only patch changed tests/units/test_core.py only. Focused Python 3.11.9 environment: 52 resolved distributions with license metadata, pip check passed; full license scope signoff remains pending. Artifact 14344421574 SHA-256 0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33; internal SHA256SUMS 22/22 verified.",
-      "stage3_status": "project_lead_source_aware_gold_and_tier_adjudication_approved; packet_hash_and_nesting_validation_passed; prior_pipeline_debug_exposure_and_bounded_license_scope_acknowledgement_pending; final_case_acceptance_pending",
+      "stage3_status": "project_lead_gold_and_tiers_approved; prior_pipeline_debug_exposure_none_declared; bounded_license_scope_acknowledgement_pending; final_case_acceptance_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44117944004,
@@ -1122,9 +1122,14 @@
         },
         "adjudication_route": "single source-aware project-lead exploratory adjudication; full researcher source exposure disclosed; no independent blinded Panel A/Panel B or inter-rater claim"
       },
-      "prior_pipeline_debug_exposure": "pending_project_lead_self_declaration",
+      "prior_pipeline_debug_exposure": "none",
       "researcher_source_exposure": "full_disclosed",
-      "bounded_license_scope_acknowledgement": "pending"
+      "bounded_license_scope_acknowledgement": "pending",
+      "prior_pipeline_debug_exposure_status": "project_lead_self_declared_none_2026-11-21",
+      "exposure_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
+      "exposure_decision_record_sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38",
+      "exposure_decision_date": "2026-11-21",
+      "study_evaluation_status_note": "The project lead self-declared no prior pipeline/debug use of EODAG #1530 before prospective validation. Full source exposure remains disclosed. This is not final case acceptance; the bounded license-scope acknowledgement, complete schema-conformant record, fail-closed registry validation and separate final YES remain open. No model inference is authorized."
     },
     {
       "cohort_rank": 17,
