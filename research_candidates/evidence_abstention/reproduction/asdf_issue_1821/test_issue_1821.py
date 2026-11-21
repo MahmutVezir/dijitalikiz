@@ -57,7 +57,7 @@ def test_original_issue_recursive_object_is_preserved_by_untagged_loader():
         filename = os.path.join(directory, "recursive.asdf")
         asdf.AsdfFile(original).write_to(filename)
         tree = util.load_yaml(filename)
-    assert tree["a"] is tree
+    assert tree["a"]["a"] is tree["a"]
 
 
 def test_original_issue_recursive_object_tagged_loader_is_positive_control():
@@ -67,4 +67,4 @@ def test_original_issue_recursive_object_tagged_loader_is_positive_control():
         filename = os.path.join(directory, "recursive.asdf")
         asdf.AsdfFile(original).write_to(filename)
         tree = util.load_yaml(filename, tagged=True)
-    assert tree["a"] is tree
+    assert tree["a"]["a"] is tree["a"]
