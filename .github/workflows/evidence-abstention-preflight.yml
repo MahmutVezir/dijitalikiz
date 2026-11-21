@@ -256,22 +256,24 @@ jobs:
 
           DATASET_REVISION = "fb9aa226b2ce37c708ea7732e7b980abacdadb67"
           PARQUET_SHA256 = "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
-          TARGETS = {
-              "cuthbertLab__music21-1736": {
+          TARGETS = [
+              {
                   "rank": 51,
-                  "repo": "cuthbertLab/music21",
+                  "pr_number": 1736,
+                  "repo_slug": "music21",
                   "base_commit": "e05fc53dfef7b2c9ac974c0cacb8b85e9c4d4605",
                   "issue_url": "https://github.com/cuthbertLab/music21/issues/1735",
                   "pull_request_url": "https://github.com/cuthbertLab/music21/pull/1736",
               },
-              "geopandas__geopandas-3591": {
+              {
                   "rank": 52,
-                  "repo": "geopandas/geopandas",
+                  "pr_number": 3591,
+                  "repo_slug": "geopandas",
                   "base_commit": "c36eba059f6170715b63a9aa065817c64025d263",
                   "issue_url": "https://github.com/geopandas/geopandas/issues/3590",
                   "pull_request_url": "https://github.com/geopandas/geopandas/pull/3591",
               },
-          }
+          ]
 
           def normalize(value):
               if isinstance(value, (dt.datetime, dt.date, dt.time)):
@@ -286,6 +288,48 @@ jobs:
           parquet = pq.ParquetFile(parquet_path)
           if parquet.metadata.num_rows != 6272:
               raise SystemExit(f"Unexpected Parquet row count: {parquet.metadata.num_rows}")
+
+          # Discover the exact dataset instance_id from immutable base SHA + PR suffix;
+          # do not assume the owner/name slug used in upstream GitHub URLs.
+          metadata_columns = [
+              "instance_id", "repo", "base_commit", "created_at",
+              "language", "license", "FAIL_TO_PASS", "problem_statement",
+          ]
+          metadata_rows = pq.read_table(
+              parquet_path, columns=metadata_columns
+          ).to_pylist()
+          for target in TARGETS:
+              candidates = [
+                  row for row in metadata_rows
+                  if row.get("base_commit") == target["base_commit"]
+                  and str(row.get("instance_id") or "").endswith(
+                      "-" + str(target["pr_number"])
+                  )
+                  and str(row.get("repo") or "").split("/")[-1].casefold()
+                      == target["repo_slug"]
+              ]
+              if len(candidates) != 1:
+                  same_base = [
+                      {
+                          "instance_id": row.get("instance_id"),
+                          "repo": row.get("repo"),
+                          "base_commit": row.get("base_commit"),
+                      }
+                      for row in metadata_rows
+                      if row.get("base_commit") == target["base_commit"]
+                  ]
+                  print("BASE_COMMIT_MATCHES " + json.dumps(same_base, ensure_ascii=False))
+                  raise SystemExit(
+                      f"rank {target['rank']} PR #{target['pr_number']}: "
+                      f"expected exactly one row matching base SHA + PR suffix + repo slug; "
+                      f"found {len(candidates)}"
+                  )
+              target["instance_id"] = candidates[0]["instance_id"]
+              print(
+                  f"DISCOVERED_ROW rank={target['rank']} "
+                  f"instance_id={target['instance_id']} repo={candidates[0]['repo']} "
+                  f"created_at={candidates[0]['created_at']}"
+              )
           manifest = {
               "record_type": "swe_rebench_v2_exact_frozen_row_audit_no_inference",
               "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -308,16 +352,17 @@ jobs:
           row_dir = Path("rank51-52-row-evidence/canonical_rows")
           row_dir.mkdir(parents=True, exist_ok=True)
 
-          for instance_id, expected in TARGETS.items():
+          for expected in TARGETS:
+              instance_id = expected["instance_id"]
               table = pq.read_table(parquet_path, filters=[("instance_id", "=", instance_id)])
               rows = table.to_pylist()
               if len(rows) != 1:
-                  raise SystemExit(f"{instance_id}: expected exactly one row, found {len(rows)}")
+                  raise SystemExit(f"{instance_id}: expected exactly one full row, found {len(rows)}")
               row = normalize(rows[0])
               if row.get("instance_id") != instance_id:
                   raise SystemExit(f"{instance_id}: extracted instance id mismatch")
-              if row.get("repo") != expected["repo"]:
-                  raise SystemExit(f"{instance_id}: expected repo {expected['repo']}, got {row.get('repo')}")
+              if str(row.get("repo") or "").split("/")[-1].casefold() != expected["repo_slug"]:
+                  raise SystemExit(f"{instance_id}: repository slug mismatch: {row.get('repo')}")
               if row.get("base_commit") != expected["base_commit"]:
                   raise SystemExit(f"{instance_id}: base commit mismatch: {row.get('base_commit')}")
               if row.get("language") != "python":
@@ -338,7 +383,7 @@ jobs:
               pretty_name = instance_id + ".json"
               (row_dir / canonical_name).write_bytes(canonical)
               (row_dir / pretty_name).write_text(
-                  json.dumps(row, sort_keys=True, indent=2, ensure_ascii=False) + "\n",
+                  json.dumps(row, sort_keys=True, indent=2, ensure_ascii=False) + "\\n",
                   encoding="utf-8",
               )
               item = {
@@ -365,8 +410,9 @@ jobs:
               manifest["rows"].append(item)
               print(
                   f"PASS_ROW rank={expected['rank']} id={instance_id} "
-                  f"base={row['base_commit']} created_at={row.get('created_at')} "
-                  f"license={row.get('license')} fail_to_pass={len(row['FAIL_TO_PASS'])} "
+                  f"repo={row['repo']} base={row['base_commit']} "
+                  f"created_at={row.get('created_at')} license={row.get('license')} "
+                  f"fail_to_pass={len(row['FAIL_TO_PASS'])} "
                   f"row_sha256={row_sha} problem_statement_sha256={statement_sha}"
               )
               print("=== FROZEN E3 PROBLEM STATEMENT: " + instance_id + " ===")
