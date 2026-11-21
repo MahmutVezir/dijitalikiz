@@ -1055,7 +1055,7 @@
       "stage2_status": "passed_issue_specific_independent_reproducer_and_2_dataset_selectors_base_fail_fixed_pass",
       "stage2_workflow_job_id": 134161227052,
       "stage2_evidence_note": "Independent YAML reproducer: duplicate geodes key removes geodes_s3 on buggy base, passes on fixed. Exact Parquet row cs-si__eodag-1536 authenticated (created_at 2025-02-21 10:04:30; row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47). Both exact issue-specific selectors executed: 2/2 failed on buggy base and 2/2 passed on fixed. Test-only patch changed tests/units/test_core.py only. Focused Python 3.11.9 environment: 52 resolved distributions with license metadata, pip check passed; full license scope signoff remains pending. Artifact 14344421574 SHA-256 0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33; internal SHA256SUMS 22/22 verified.",
-      "stage3_status": "project_lead_gold_and_tiers_approved; prior_pipeline_debug_exposure_none_declared; bounded_license_scope_acknowledgement_pending; final_case_acceptance_pending",
+      "stage3_status": "gold_and_tiers_approved; prior_pipeline_debug_exposure_none_declared; bounded_license_scope_acknowledged; schema_record_and_registry_validation_pending",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44117944004,
@@ -1124,12 +1124,15 @@
       },
       "prior_pipeline_debug_exposure": "none",
       "researcher_source_exposure": "full_disclosed",
-      "bounded_license_scope_acknowledgement": "pending",
+      "bounded_license_scope_acknowledgement": "approved_bounded_documentary_scope_only_2026-11-21",
       "prior_pipeline_debug_exposure_status": "project_lead_self_declared_none_2026-11-21",
       "exposure_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
       "exposure_decision_record_sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38",
       "exposure_decision_date": "2026-11-21",
-      "study_evaluation_status_note": "The project lead self-declared no prior pipeline/debug use of EODAG #1530 before prospective validation. Full source exposure remains disclosed. This is not final case acceptance; the bounded license-scope acknowledgement, complete schema-conformant record, fail-closed registry validation and separate final YES remain open. No model inference is authorized."
+      "study_evaluation_status_note": "The project lead approved source-aware gold/tier decisions, self-declared no prior pipeline/debug use, and acknowledged the bounded documentary license scope. Full researcher source exposure remains disclosed. The acknowledgement is not legal clearance or blanket redistribution permission. A complete schema-conformant proposed case record and fail-closed registry validation remain open; final acceptance is not yet granted. No model inference is authorized.",
+      "bounded_license_scope_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md",
+      "bounded_license_scope_decision_record_sha256": "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6",
+      "bounded_license_scope_decision_date": "2026-11-21"
     },
     {
       "cohort_rank": 17,
