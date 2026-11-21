@@ -87,8 +87,8 @@
   "packet_set_path": "research_candidates/evidence_abstention/eodag_1530/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
   "packet_set_sha256": "e1c15239ba0599c13d19c35ffad922d77ae10bb570aced8199d6db97163d3189",
   "semantic_review": {
-    "status": "proposed_source_aware_project_lead_gold_and_tier_decision",
-    "adjudication_completed": false,
+    "status": "project_lead_source_aware_adjudication_recorded",
+    "adjudication_completed": true,
     "assistant_role": "AI technical advisor only",
     "proposed_gold": "The duplicated top-level geodes YAML key is parsed into a single mapping; the later AWS credential mapping overwrites the earlier public API-key mapping and no separate geodes_s3 provider mapping is emitted.",
     "proposed_tier_outcomes": {
@@ -96,7 +96,40 @@
       "E2": "ANSWER — independent pinned parser reproducer plus buggy-base output show geodes_s3 absent and the surviving geodes mapping carrying AWS credentials.",
       "E1": "ANSWER — E2 plus upstream test fixture source showing yaml.safe_load on the packaged template and generated provider mapping."
     },
-    "project_lead_decision": "pending"
+    "project_lead_decision": "approved",
+    "adjudication_route": "single_source-aware student project lead in v0.2 exploratory/feasibility design; no independent blinded Panel A/Panel B or inter-rater reliability claim",
+    "decision_date": "2026-11-21",
+    "decision_record": {
+      "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_EODAG_1530_2026-11-21.md",
+      "sha256": "b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e"
+    },
+    "approved_gold": "The exact buggy packaged user_conf_template.yml contains two top-level geodes mappings; yaml.safe_load retains the later AWS mapping, removing the public apikey mapping and a distinct geodes_s3 mapping. The in-repository fixture loads this packaged template with yaml.safe_load and iterates the resulting provider mapping. The separate StacListAssets change and issue #1517 remain out of scope.",
+    "approved_tier_outcomes": {
+      "E3": "ABSTAIN — issue narrative alone does not establish exact pinned parser output or fixture path.",
+      "E2": "ABSTAIN — exact pinned YAML parse output is visible, but the packaged-template fixture/loading path is not; A2 and A3 remain plausible.",
+      "E1": "ANSWER — active test-fixture source connects packaged template loading via yaml.safe_load to provider-configuration generation; only G1 survives under the project lead's source-aware adjudication."
+    },
+    "approved_surviving_mechanisms": {
+      "E3": [
+        "G1",
+        "A1",
+        "A2",
+        "A3"
+      ],
+      "E2": [
+        "G1",
+        "A2",
+        "A3"
+      ],
+      "E1": [
+        "G1"
+      ]
+    },
+    "independent_blinded_validation": "not_claimed",
+    "researcher_source_exposure": "full_disclosed",
+    "prior_pipeline_debug_exposure": "pending_project_lead_self_declaration",
+    "final_case_acceptance": "pending_remaining_mandatory_gates",
+    "inference_authorized": false
   },
   "structural_validation": {
     "status": "passed_hash_and_nesting_only",
