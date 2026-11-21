@@ -278,8 +278,8 @@ def test_eodag_1530_case_record_is_accepted_and_registry_is_structurally_valid()
     registry_result = validate_registry(registry)
 
     assert registry_result["status"] == "structurally_valid_candidate_registry", registry_result["blockers"]
-    assert registry_result["accepted_case_count"] == 2
-    assert registry_result["accepted_project_count"] == 2
+    assert registry_result["accepted_case_count"] == 3
+    assert registry_result["accepted_project_count"] == 3
     assert [item["case_id"] for item in registry["records"]] == [
         "SRV2E-DISHKA_435", "SRV2E-EODAG_1530", "SRV2E-GEOFILEOPS_649"
     ]
