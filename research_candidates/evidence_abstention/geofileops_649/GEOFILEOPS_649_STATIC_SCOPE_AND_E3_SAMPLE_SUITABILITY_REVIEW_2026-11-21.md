@@ -92,3 +92,12 @@ The sample-suitability issue is narrower than the original summary suggests. The
 - If the predeclared gold target is the implementation-level root-cause mechanism, E3 should abstain; the audited E2 evidence removes the copy-only and append-only alternatives while the exact source chain at E1 resolves the missing fallback. The proposed strict-mechanism tiers remain E3 ABSTAIN / E2 ABSTAIN / E1 ANSWER.
 
 **Project-lead decision is still required** to freeze the diagnostic granularity before any primary-sample inclusion. Prior pipeline/debug exposure, temporal-exposure acknowledgement, bounded license/notice scope review, final case record and separate final acceptance remain open. No registry inclusion or inference is authorized.
+
+
+## 8. Project-lead decision amendment — 21 November 2026
+
+**APPROVED.** The project lead has frozen the diagnostic target at implementation-mechanism root cause (not API-contract diagnosis), approved gold `MISSING_NONE_TO_DESTINATION_STEM_FALLBACK`, and approved tiers **E3 ABSTAIN / E2 ABSTAIN / E1 ANSWER**. The project lead's candidate-specific prior pipeline/debug exposure declaration is **none**.
+
+This resolves the diagnostic-granularity and prior-debug-exposure gates. It does not establish the checkpoint's exact training-data cutoff or rule out exposure to pre-existing repository code. Temporal-exposure acknowledgement, human dependency/native notice and dataset-card provenance review, bounded research-scope acknowledgement, complete case record, fail-closed validation, and separate final YES/NO acceptance remain open. Registry inclusion and inference remain false.
+
+Decision record: `PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md`.
