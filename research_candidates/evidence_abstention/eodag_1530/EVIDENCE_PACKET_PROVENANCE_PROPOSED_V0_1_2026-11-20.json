@@ -153,5 +153,23 @@
     "semantic_sufficiency_assessed": false,
     "project_lead_decision": "pending",
     "model_inference_performed": false
+  },
+  "license_scope_acknowledgement": {
+    "status": "approved_bounded_documentary_scope_only",
+    "decision_record": {
+      "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md",
+      "sha256": "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6",
+      "decision_date": "2026-11-21"
+    },
+    "limits": {
+      "legal_advice": false,
+      "formal_legal_review": false,
+      "legal_clearance": false,
+      "spdx_certification": false,
+      "complete_native_or_bundled_dependency_audit": false,
+      "blanket_redistribution_permission": false
+    },
+    "final_case_acceptance": "pending_remaining_mandatory_gates",
+    "inference_authorized": false
   }
 }
