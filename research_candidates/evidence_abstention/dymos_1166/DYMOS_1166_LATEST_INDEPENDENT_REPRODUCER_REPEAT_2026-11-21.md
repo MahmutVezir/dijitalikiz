@@ -38,3 +38,15 @@ A further run on the corrected PR head repeated the same independent issue-level
 - Base output again showed `[[1.0], [1.0]]` instead of requested `[[5.0], [15.0]]`; fixed test result: `1 passed`.
 
 This is an additional technical repeat, not a second case. The case record remains strictly schema-conformant and pending final project-lead acceptance; no registry inclusion or model-execution authorization is inferred.
+
+
+## Final test-head reproduction repeat — 21 November 2026
+
+The independent public-API reproducer was run again on validated code/test head `2013162c0105973fe5ce95c421e4af7f2e46f471`:
+- Workflow run: `44904689950`; job: `136847632352` — **success**.
+- Exact buggy base again produced `[[1.0], [1.0]]` rather than requested `[[5.0], [15.0]]`; the defect-specific assertion executed and failed as required.
+- Identical reproducer on exact fixed PR head: **1 passed**.
+- Artifact: `14706839946`; GitHub SHA-256: `2a7a0c3c98043567a37193a9509c64160273f5985f0cfaf6ad7d040f667dd055`.
+- Independently downloaded ZIP SHA-256 matched GitHub exactly; ZIP CRC **PASS**; internal SHA256SUMS **15/15 PASS** (16 archive members including the manifest).
+
+This is a technical repeat for the same Dymos case, not another independent sample. The strict proposed case record remains structurally valid and pending final project-lead acceptance. No inference authorization is created.
