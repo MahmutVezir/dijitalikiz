@@ -143,3 +143,20 @@ A future reproducibility enhancement may add per-wheel hashes and a generated SP
 6. Only after the documentary/publication scope is resolved should the project lead make a separate final case-acceptance decision.
 
 **No model was loaded; no inference, fine-tuning or training was performed.**
+
+## 9. Reconciliation with the separate source-level dependency screen — 21 November 2026
+
+A separate, earlier documentary record exists at:
+
+research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_SOURCE_AND_DEPENDENCY_LICENSE_PROVENANCE_SCREEN_2026-11-21.md
+
+That source-level screen records declared licenses and exact source-tag/license-file identities for the 18 pinned Python distributions. It also identifies important native-library relationships, including Shapely/GEOS, Pyogrio/GDAL, Pyproj/PROJ, and NumPy/OpenBLAS. This limited audit should therefore **not** be read as saying that the project has no package-level license research.
+
+The distinction is:
+
+- **Research repository:** contains the separate documentary source-level license screen described above.
+- **Stage 2 execution ZIP:** contains the pinned version lock and execution evidence, but does not embed package license texts, wheel binaries, local wheel hashes, or a complete SPDX SBOM.
+- **Still unresolved:** byte-for-byte wheel provenance and the complete third-party notice set inside every exact platform-specific binary wheel, particularly native/bundled components.
+
+The source-level screen is the appropriate companion record for package license declarations. The limitations stated in this audit apply to the Stage 2 archive and to binary redistribution; they do not invalidate the separately documented source-level screen.
+
