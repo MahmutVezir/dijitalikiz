@@ -283,7 +283,8 @@
     "Rater_B is restricted to model-output evidence-support scoring and must not see hidden gold, source patch, case identity, tier or policy labels before lock. The project lead alone retains gold and E1/E2/E3 tier decisions. Two original output ratings are preserved; disagreement adjudication occurs only after both are locked.",
     "The dual-human scoring amendment does not waive the existing candidate exclusion for prior pipeline debugging, test-oracle troubleshooting or prompt calibration. It does not authorize model loading or inference.",
     "As of 18 November 2026, no human-human ratings or Cohen kappa have yet been produced; Rater_B participation, case-specific exposure screening and calibration remain pending.",
-    "Superseding update 2026-11-20: Dishka #435 / SRV2E-DISHKA_435 was explicitly accepted by the project lead for v0.2 exploratory/feasibility only. Hasan's recommendation is recorded as project-lead-reported supplementary input, not as a separate signed decision or independent technical adjudication. The accepted registry contains one case from one upstream project. This does not close global readiness or authorize model loading, inference, fine-tuning or training."
+    "Superseding update 2026-11-20: Dishka #435 / SRV2E-DISHKA_435 was explicitly accepted by the project lead for v0.2 exploratory/feasibility only. Hasan's recommendation is recorded as project-lead-reported supplementary input, not as a separate signed decision or independent technical adjudication. The accepted registry contains one case from one upstream project. This does not close global readiness or authorize model loading, inference, fine-tuning or training.",
+    "EODAG #1530 project-lead prior pipeline/debug exposure declaration recorded 2026-11-21: none. This is distinct from full researcher source exposure, which remains disclosed; the declaration is a self-report, not independently verified telemetry. Bounded license-scope acknowledgement and final acceptance gates remain open; no inference is authorized."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -974,7 +975,7 @@
     {
       "instance_id": "cs-si__eodag-1536",
       "cohort_rank": 16,
-      "status": "stage2_pass_independent_yaml_reproducer_and_2_exact_dataset_selectors_buggy_base_fail_fixed_revision_pass",
+      "status": "stage3_gold_tier_approved_prior_pipeline_debug_exposure_none_declared_license_scope_pending_final_acceptance_pending",
       "issue_url": "https://github.com/CS-SI/eodag/issues/1530",
       "pull_request_url": "https://github.com/CS-SI/eodag/pull/1536",
       "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
@@ -1001,7 +1002,6 @@
         "construct_complete_schema_conformant_final_case_record_and_pass_fail_closed_registry_validation",
         "project_lead_separate_final_case_acceptance_decision",
         "project_lead_source_aware_gold_and_E1_E2_E3_membership_and_semantic_sufficiency_decision",
-        "truthful_candidate_specific_prior_pipeline_debug_exposure_declaration",
         "project_lead_bounded_dependency_source_and_dataset_license_scope_acknowledgement",
         "schema_conformant_final_case_record",
         "fail_closed_registry_validation",
@@ -1108,7 +1108,13 @@
         "decision": "accepted_for_stage3_case_evaluation",
         "decision_date": "2026-11-20",
         "final_case_acceptance": "not_accepted"
-      }
+      },
+      "prior_pipeline_debug_exposure": "none",
+      "prior_pipeline_debug_exposure_status": "project_lead_self_declared_none_2026-11-21",
+      "exposure_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
+      "exposure_decision_record_sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38",
+      "exposure_decision_date": "2026-11-21",
+      "bounded_license_scope_acknowledgement": "pending"
     },
     {
       "instance_id": "pallets__click-2788",
@@ -1637,9 +1643,28 @@
       },
       "adjudication_route": "single source-aware project-lead exploratory adjudication; full researcher source exposure disclosed; no independent blinded Panel A/Panel B or inter-rater reliability claim",
       "boundaries": {
-        "prior_pipeline_debug_exposure": "pending candidate-specific project-lead self-declaration; do not infer none",
+        "prior_pipeline_debug_exposure": "none; project-lead self-declaration recorded separately",
         "license_scope": "bounded documentary scope acknowledgement pending; not legal clearance",
         "final_case_acceptance": "not_accepted until mandatory gates, schema record and registry validation pass",
+        "inference_authorized": false,
+        "prior_pipeline_debug_exposure_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
+        "prior_pipeline_debug_exposure_decision_record_sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38"
+      }
+    },
+    {
+      "date": "2026-11-21",
+      "scope": "EODAG_1530_prior_pipeline_debug_exposure_declaration",
+      "candidate": "CS-SI/eodag issue #1530 / PR #1536; dataset row cs-si__eodag-1536",
+      "decision": "none",
+      "wording": "The project lead did not use this candidate before prospective validation to solve, debug, calibrate or repair the shared study pipeline, test runner, dataset selector, test oracle or prompt.",
+      "decision_record": {
+        "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
+        "sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38"
+      },
+      "boundaries": {
+        "researcher_source_exposure": "full_disclosed; source-blinding is not claimed",
+        "bounded_license_scope_acknowledgement": "pending",
+        "final_case_acceptance": "not_accepted",
         "inference_authorized": false
       }
     }
