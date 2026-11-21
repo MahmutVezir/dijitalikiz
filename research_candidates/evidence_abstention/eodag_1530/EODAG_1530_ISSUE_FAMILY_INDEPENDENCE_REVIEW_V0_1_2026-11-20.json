@@ -96,18 +96,25 @@
     "one_case_per_upstream_project": true
   },
   "exposure_and_roles": {
-    "project_lead_source_exposure": "full (issue, PR, exact source files, reproduction artifact and candidate review inspected)",
+    "project_lead_source_exposure": "full_disclosed",
     "researcher_source_exposure": "full_disclosed",
-    "prior_candidate_specific_pipeline_debug_exposure": "not_yet_declared_by_project_lead",
+    "prior_candidate_specific_pipeline_debug_exposure": "pending_project_lead_self_declaration",
     "prior_pipeline_debug_exposure_status": "pending_project_lead_self_declaration",
     "panel_b_blinded_eligible": false,
     "independent_human_adjudicator": "not appointed; Dishka-equivalent v0.2 exploratory source-aware single project-lead adjudication route is proposed",
-    "prior_pipeline_debug_exposure_decision_record": null
+    "prior_pipeline_debug_exposure_decision_record": null,
+    "source_aware_gold_tier_decision": {
+      "status": "approved_2026-11-21",
+      "decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_EODAG_1530_2026-11-21.md",
+      "decision_record_sha256": "b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e",
+      "route": "single_source-aware project-lead exploratory adjudication",
+      "independent_blinded_panel_or_interrater_claim": false
+    }
   },
   "independence_status": {
     "stage2_technical_reproduction": "passed",
-    "final_case_acceptance": "not_accepted",
+    "final_case_acceptance": "pending_exposure_license_scope_case_record_and_registry_validation",
     "inference_authorized": false,
-    "source_aware_gold_tier_decision": "pending_project_lead"
+    "source_aware_gold_tier_decision": "approved_by_project_lead_2026-11-21"
   }
 }
