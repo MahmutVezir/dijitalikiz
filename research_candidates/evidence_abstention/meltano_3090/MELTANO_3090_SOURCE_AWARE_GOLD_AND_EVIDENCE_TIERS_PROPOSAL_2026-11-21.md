@@ -1,13 +1,13 @@
 # Meltano SDK #3090 — source-aware gold and evidence-tier proposal
 
-**Status:** ADVISORY PROPOSAL ONLY — not project-lead approved, not a case acceptance decision  
+**Status:** PROJECT-LEAD APPROVED — technical gold and evidence tiers only; not a case acceptance decision  
 **Prepared:** 2026-11-21  
 **Candidate:** meltano/sdk issue #3090 / fix PR #3091  
 **Proposed case ID:** SRV2E-MELTANO_3090  
 **Dataset row:** meltano__sdk-3091  
 **Cohort position:** primary cohort rank 26/96; project-lead selection on 2026-11-20 permits Stage 3 evaluation only
 
-## 1. Proposed technical gold
+## 1. Approved technical gold
 
 **G1 — shared mutable visited-reference set leaks across sibling schema branches.**
 
@@ -38,7 +38,7 @@ These are hypotheses for the human adjudicator to consider, not claims that they
 
 The pinned base source makes G1 the supported mechanism: the second sibling is returned at the visited-reference guard before a second resolver.lookup occurs. The three alternatives are included to make the evidential discrimination explicit; they are not independent dataset cases.
 
-## 3. Proposed evidence-tier decisions
+## 3. Approved evidence-tier decisions
 
 | Tier | Proposed supplied evidence | Proposed outcome | Rationale |
 |---|---|---|---|
@@ -72,19 +72,20 @@ This establishes Stage 2 technical reproducibility, not independent human adjudi
 
 ## 5. Adjudication and exposure limits
 
-The 20 November project-lead decision selected this candidate for Stage 3 evaluation only. It did not approve this gold or the proposed E1/E2/E3 decisions.
+The 21 November project-lead decision explicitly approved G1 and the E3/E2/E1 outcomes recorded in the decision record linked below. The 20 November selection remains candidate-selection approval only.
 
 The candidate review states that the researcher had already reviewed the issue and PR during screening. Accordingly, perfect blinding must not be claimed. The exact degree of prior source-code exposure should be recorded conservatively. A candidate-specific declaration of prior pipeline/debug exposure is still required; no “none” value is inferred from the existing review.
 
-This proposal uses a source-aware single-project-lead adjudication route if approved. It is not independent blinded adjudication, an inter-rater reliability result, or a second-rater review.
+This decision uses a source-aware single-project-lead adjudication route. It is not independent blinded adjudication, an inter-rater reliability result, or a second-rater review.
 
 ## 6. Explicitly not decided
 
-This proposal does not:
-- approve the technical gold or tier membership on behalf of the project lead;
+This approval does not:
 - approve any license scope or state that legal review is complete;
 - accept Meltano into the exploratory registry;
 - add a second Meltano case from related PR #3009;
 - authorize model loading, inference, fine-tuning, or training.
 
-The next gates are the project lead's separate gold/tier decision, candidate-specific exposure declaration, bounded license-scope acknowledgement, final proposed-record validation, and a separate final YES/NO case-acceptance decision.
+The remaining gates are the candidate-specific exposure declaration, bounded license-scope acknowledgement, final proposed-record validation, and a separate final YES/NO case-acceptance decision.
+
+**Decision record:** `research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIER_DECISION_MELTANO_3090_2026-11-21.md`.
