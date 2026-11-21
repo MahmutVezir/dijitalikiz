@@ -1,7 +1,7 @@
 {
   "schema_version": "0.1-v02-exploratory",
   "case_id": "SRV2E-EODAG_1530",
-  "acceptance_decision": "proposed",
+  "acceptance_decision": "accepted",
   "dataset": {
     "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
     "file_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
@@ -309,10 +309,13 @@
     }
   },
   "final_acceptance": {
-    "status": "pending",
+    "status": "approved",
     "decision_maker_role": "student_project_lead",
-    "decision_timestamp_utc": null,
-    "rationale": "No separate final case-acceptance YES/NO has been given. This proposed record documents technical reproduction, source-aware gold/tier adjudication, no prior pipeline/debug-use self-declaration, and bounded documentary license-scope acknowledgement only. It is not final acceptance and does not authorize model execution.",
-    "decision_record": null
+    "decision_timestamp_utc": "2026-11-21T13:36:50+03:00",
+    "rationale": "YES — accept SRV2E-EODAG_1530 into the v0.2 exploratory/feasibility accepted-case registry only. This is the separate project-lead final acceptance decision recorded after technical Stage 2 reproduction, source-aware gold and E1/E2/E3 adjudication, project-lead self-declaration of no prior pipeline/debug use, bounded documentary license-scope acknowledgement, proposed record preparation, and successful schema/cross-field and fail-closed registry validation. Full researcher source exposure and single-project-lead source-aware adjudication remain disclosed. This is not confirmatory-sample acceptance, independent blinded review, legal clearance, or model-experiment authorization. Study-wide readiness remains blocked by 13 global prerequisites. Model loading, inference, fine-tuning and training are not authorized.",
+    "decision_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/e7a6753204e80eabf9435adb085d8d14041d4bf7/research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_EODAG_1530_2026-11-21.md",
+      "sha256": "5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d"
+    }
   }
 }
