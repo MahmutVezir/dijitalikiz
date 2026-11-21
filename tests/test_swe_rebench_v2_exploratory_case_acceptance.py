@@ -624,14 +624,16 @@ def test_meltano_3090_stage3_project_lead_gold_tier_approved_but_case_gates_rema
     assert registry_result["inference_authorized"] is False
 
 
-def test_pyfar_721_stage3_advisory_review_remains_unapproved_and_fail_closed():
+def test_pyfar_721_gold_tier_approved_but_case_acceptance_remains_pending_and_fail_closed():
     candidate_dir = RESEARCH / "pyfar_721"
     proposal_path = candidate_dir / "PYFAR_721_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_2026-11-21.md"
     independence_path = candidate_dir / "PYFAR_721_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json"
     license_path = candidate_dir / "PYFAR_721_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-21.json"
     integrity_path = candidate_dir / "PYFAR_721_STAGE2_ARTIFACT_INTEGRITY_REVIEW_2026-11-21.md"
+    gold_decision_path = candidate_dir / "PROJECT_LEAD_GOLD_TIER_DECISION_PYFAR_721_2026-11-21.md"
 
     proposal = proposal_path.read_text(encoding="utf-8")
+    gold_decision = gold_decision_path.read_text(encoding="utf-8")
     independence = json.loads(independence_path.read_text(encoding="utf-8"))
     license_review = json.loads(license_path.read_text(encoding="utf-8"))
     integrity = integrity_path.read_text(encoding="utf-8")
@@ -642,8 +644,10 @@ def test_pyfar_721_stage3_advisory_review_remains_unapproved_and_fail_closed():
     )
     pyfar = next(item for item in ledger["records"] if item["repository"] == "pyfar/pyfar")
 
-    assert "ADVISORY PROPOSAL ONLY" in proposal
+    assert "G1 GOLD MECHANISM AND E3/E2/E1 OUTCOMES PROJECT-LEAD APPROVED" in proposal
     assert "E3 ABSTAIN, E2 ABSTAIN, E1 ANSWER" in proposal
+    assert "PROJECT-LEAD APPROVED" in gold_decision
+    assert "ENERGY_POWER_TARGET_AND_REFERENCE_NOT_SQUARE_ROOTED" in gold_decision
     assert "not a separately authored issue-level reproducer" in proposal
     assert "14/14" in integrity
     assert "23/23" in integrity
@@ -680,8 +684,16 @@ def test_pyfar_721_stage3_advisory_review_remains_unapproved_and_fail_closed():
     assert pyfar["stage2_artifact_local_integrity"]["buggy_base_expected_failures"] == "23/23"
     assert pyfar["stage2_artifact_local_integrity"]["fixed_revision_passes"] == "23/23"
     assert pyfar["stage3_proposed_tiers"]["tier_decision_status"] == (
-        "advisory_proposal_only_not_project_lead_approved"
+        "project_lead_approved_2026_11_21"
     )
+    assert pyfar["stage3_project_lead_gold_tier_decision"]["decision"] == "approved"
+    assert pyfar["stage3_project_lead_gold_tier_decision"]["approved_gold"] == (
+        "ENERGY_POWER_TARGET_AND_REFERENCE_NOT_SQUARE_ROOTED"
+    )
+    assert pyfar["stage3_project_lead_gold_tier_decision"]["approved_tiers"] == {
+        "E3": "ABSTAIN", "E2": "ABSTAIN", "E1": "ANSWER"
+    }
+    assert ledger["pyfar_721_gold_tier_decision"]["decision"] == "approved"
     assert pyfar["final_case_acceptance"] == "not_accepted"
     assert pyfar["model_inference_authorized"] is False
     assert ledger["summary"]["accepted_exploratory_cases"] == 2
