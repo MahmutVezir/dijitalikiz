@@ -549,7 +549,7 @@ def test_meltano_3090_stage3_project_lead_gold_tier_approved_but_case_gates_rema
     assert "E3 — ABSTAIN" in decision_record
     assert "E2 — ABSTAIN" in decision_record
     assert "E1 — ANSWER" in decision_record
-    assert "- accept Meltano into the v0.2 exploratory registry" in decision_record
+    assert "does **not** accept Meltano into the v0.2 exploratory registry" in decision_record
     assert "14/14 files matched" in integrity_review
     assert "14/14" in integrity_review
 
