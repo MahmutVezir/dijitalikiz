@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T19:05:00Z",
+  "generated_at_utc": "2026-11-21T20:15:00Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -3024,7 +3024,7 @@
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "candidate_review_commit": "fadd837bc7799740af7f54e04692ab539faf8e9b",
-      "project_lead_prior_pipeline_debug_exposure": "pending_explicit_candidate_specific_declaration",
+      "project_lead_prior_pipeline_debug_exposure": "none",
       "researcher_source_exposure": "full_disclosed_after_static_review",
       "dataset_row_authentication": {
         "workflow_run_id": 44941417507,
@@ -3066,92 +3066,176 @@
         "E1": "ANSWER_recommended_pinned_base_fixed_source_and_PR_description_disclose_storage_url_method",
         "risk": "Frozen issue body itself says storage-prefix versus generated-URL mismatch; if project lead considers this sufficient for implementation-mechanism diagnosis, exclude candidate from strict three-tier sample rather than force E3 ABSTAIN."
       },
-      "next_required_gate": "Project lead declares candidate-specific prior pipeline/debug exposure; project lead reviews/approves or revises proposed gold and tier boundaries; Stage 2 remains blocked until rank52 GeoPandas is formally resolved or excluded under the sequential frozen queue."
+      "next_required_gate": "Rank52 GeoPandas separate final disposition; then project-lead gold/tier decision and separately authorized Stage2 for rank55.",
+      "project_lead_exposure_declaration": {
+        "status": "explicitly_declared_none",
+        "value": "none",
+        "declaration_date": "2026-11-21",
+        "source": "explicit_user_reply_to_candidate-specific_question",
+        "scope": "Prior use for experiment-pipeline, test-oracle, or prompt debugging only; does not change current full researcher source exposure."
+      }
     },
     {
       "cohort_rank": 56,
       "repository": "vacanza/holidays",
       "pull_request_number": 2106,
       "pull_request_url": "https://github.com/vacanza/holidays/pull/2106",
-      "static_screening_classification": "excluded",
-      "static_scope_decision": "Dışla: veri/içerik düzeltmesi",
-      "second_pass_disposition": "none_recorded",
-      "second_pass_reason": null,
+      "static_screening_classification": "excluded_data_or_calendar_content_correction_confirmed",
+      "static_scope_decision": "Issue #2103 concerns whether Columbus Day should be represented as a countrywide holiday; PR #2106 explicitly classifies the change as supported country/market holiday update (calendar discrepancy fix/localization). Source logic, tests and snapshot changes represent calendar content/policy, not a software execution defect.",
+      "second_pass_disposition": "exclude_from_software_root_cause_sample",
+      "second_pass_reason": "Domain holiday-calendar content correction; no demonstrated software implementation contract failure.",
       "candidate_review_document": null,
       "stage2_status": "not_applicable_static_exclusion",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": null,
       "stage3_status": "not_applicable_static_exclusion",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "batch_review_2026_11_21": {
+        "report_path": "research_candidates/evidence_abstention/BATCH_REVIEW_RANK56_60_2026-11-21.md",
+        "report_commit": "17f1cd72b860b19d6e7ccfd4d699b99fd4528428",
+        "dataset_row_audit": {
+          "workflow_run_id": 44942458120,
+          "job_id": 136962437715,
+          "artifact_id": 14721714538,
+          "artifact_sha256": "bee2402b83844ba6fd46ecff47a03af00b5f13e0e5a6661cef2d8630165ab7bf",
+          "metadata_file_sha256": "4db7069de2efa922991b6d3ecdbc5fec3d1ce20b3285643864fb46a47c92c59e",
+          "zip_crc": "pass",
+          "internal_sha256_check": "pass",
+          "raw_problem_or_patch_retained": false
+        }
+      }
     },
     {
       "cohort_rank": 57,
       "repository": "ApeWorX/web3.py",
       "pull_request_number": 3690,
       "pull_request_url": "https://github.com/ApeWorX/web3.py/pull/3690",
-      "static_screening_classification": "provisional_candidate",
-      "static_scope_decision": "Defect candidate",
-      "second_pass_disposition": "none_recorded",
-      "second_pass_reason": null,
-      "candidate_review_document": null,
-      "stage2_status": "not_started",
+      "static_screening_classification": "valid_software_defect_e3_answerability_leak",
+      "static_scope_decision": "Issue #3689 reports that TaskNotRunning is logged without terminating SubscriptionManager.handle_subscriptions, after which the next queue.get waits indefinitely; the issue itself suggests missing return/break. PR #3690 adds break in that exact exception branch.",
+      "second_pass_disposition": "recommend_exclude_from_strict_three_tier_sample_pending_project_lead_decision",
+      "second_pass_reason": "Frozen issue body nearly identifies the causal control-flow correction; E3 is likely already answerable, contrary to E3=ABSTAIN requirement.",
+      "candidate_review_document": "research_candidates/evidence_abstention/BATCH_REVIEW_RANK56_60_2026-11-21.md",
+      "stage2_status": "not_started_rank52_and_rank55_sequential_gates",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage3_status": "static_source_scope_reviewed;E3_answerability_risk_high;project_lead_decision_pending",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "project_lead_prior_pipeline_debug_exposure": "pending_explicit_candidate_specific_declaration",
+      "researcher_source_exposure": "full_disclosed_after_static_review",
+      "batch_review_2026_11_21": {
+        "report_path": "research_candidates/evidence_abstention/BATCH_REVIEW_RANK56_60_2026-11-21.md",
+        "report_commit": "17f1cd72b860b19d6e7ccfd4d699b99fd4528428",
+        "dataset_row_audit": {
+          "workflow_run_id": 44942458120,
+          "job_id": 136962437715,
+          "artifact_id": 14721714538,
+          "artifact_sha256": "bee2402b83844ba6fd46ecff47a03af00b5f13e0e5a6661cef2d8630165ab7bf",
+          "metadata_file_sha256": "4db7069de2efa922991b6d3ecdbc5fec3d1ce20b3285643864fb46a47c92c59e",
+          "zip_crc": "pass",
+          "internal_sha256_check": "pass",
+          "raw_problem_or_patch_retained": false
+        }
+      }
     },
     {
       "cohort_rank": 58,
       "repository": "PyPSA/linopy",
       "pull_request_number": 438,
       "pull_request_url": "https://github.com/PyPSA/linopy/pull/438",
-      "static_screening_classification": "provisional_candidate",
-      "static_scope_decision": "Defect candidate; verify reproducer",
-      "second_pass_disposition": "none_recorded",
-      "second_pass_reason": null,
-      "candidate_review_document": null,
-      "stage2_status": "not_started",
+      "static_screening_classification": "conditional_software_defect_candidate_reproducer_and_E3_boundary_hold",
+      "static_scope_decision": "Issue #340 documents RecursionError during dill unpickling with stack frames in Variables.__getattr__; PR #438 adds explicit __getstate__/__setstate__ to Variables and Constraints and a standard-library pickle regression test.",
+      "second_pass_disposition": "retain_conditionally_for_issue_faithful_reproduction_and_project_lead_tier_review",
+      "second_pass_reason": "Frozen FAIL_TO_PASS test uses pickle, while issue example uses dill round-trip and mentions ProcessPoolExecutor; source traceback is highly diagnostic and may make E3 answerable.",
+      "candidate_review_document": "research_candidates/evidence_abstention/BATCH_REVIEW_RANK56_60_2026-11-21.md",
+      "stage2_status": "not_started_rank52_and_rank55_sequential_gates",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage3_status": "static_source_scope_reviewed;E3_answerability_and_reproducer_alignment_pending",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "project_lead_prior_pipeline_debug_exposure": "pending_explicit_candidate_specific_declaration",
+      "researcher_source_exposure": "full_disclosed_after_static_review",
+      "batch_review_2026_11_21": {
+        "report_path": "research_candidates/evidence_abstention/BATCH_REVIEW_RANK56_60_2026-11-21.md",
+        "report_commit": "17f1cd72b860b19d6e7ccfd4d699b99fd4528428",
+        "dataset_row_audit": {
+          "workflow_run_id": 44942458120,
+          "job_id": 136962437715,
+          "artifact_id": 14721714538,
+          "artifact_sha256": "bee2402b83844ba6fd46ecff47a03af00b5f13e0e5a6661cef2d8630165ab7bf",
+          "metadata_file_sha256": "4db7069de2efa922991b6d3ecdbc5fec3d1ce20b3285643864fb46a47c92c59e",
+          "zip_crc": "pass",
+          "internal_sha256_check": "pass",
+          "raw_problem_or_patch_retained": false
+        }
+      }
     },
     {
       "cohort_rank": 59,
       "repository": "jazzband/tablib",
       "pull_request_number": 613,
       "pull_request_url": "https://github.com/jazzband/tablib/pull/613",
-      "static_screening_classification": "provisional_candidate",
-      "static_scope_decision": "Defect candidate",
-      "second_pass_disposition": "none_recorded",
-      "second_pass_reason": null,
-      "candidate_review_document": null,
-      "stage2_status": "not_started",
+      "static_screening_classification": "strong_provisional_software_bug_candidate",
+      "static_scope_decision": "Issue #612 gives a concrete ODS round-trip failure for an empty-string cell; PR #613 catches ValueError when the expected value attribute is absent and adds empty-string round-trip coverage.",
+      "second_pass_disposition": "prioritise_for_project_lead_gold_tier_review_after_preceding_gates",
+      "second_pass_reason": "Best E3/E2/E1 boundary in this batch: E3 issue symptom and None contrast; E2 regression test confirms empty-string round trip without internal parser mechanism; E1 source identifies missing-value-attribute exception handling.",
+      "candidate_review_document": "research_candidates/evidence_abstention/BATCH_REVIEW_RANK56_60_2026-11-21.md",
+      "stage2_status": "not_started_rank52_and_rank55_sequential_gates",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage3_status": "static_source_scope_reviewed;strong_provisional;project_lead_gold_tier_and_exposure_declaration_pending",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "project_lead_prior_pipeline_debug_exposure": "pending_explicit_candidate_specific_declaration",
+      "researcher_source_exposure": "full_disclosed_after_static_review",
+      "technical_risk": "Patch also changes child-node traversal from first truthy result to first subnode result; after authorized Stage2, add supplementary multi-child and mixed-content cell regressions.",
+      "batch_review_2026_11_21": {
+        "report_path": "research_candidates/evidence_abstention/BATCH_REVIEW_RANK56_60_2026-11-21.md",
+        "report_commit": "17f1cd72b860b19d6e7ccfd4d699b99fd4528428",
+        "dataset_row_audit": {
+          "workflow_run_id": 44942458120,
+          "job_id": 136962437715,
+          "artifact_id": 14721714538,
+          "artifact_sha256": "bee2402b83844ba6fd46ecff47a03af00b5f13e0e5a6661cef2d8630165ab7bf",
+          "metadata_file_sha256": "4db7069de2efa922991b6d3ecdbc5fec3d1ce20b3285643864fb46a47c92c59e",
+          "zip_crc": "pass",
+          "internal_sha256_check": "pass",
+          "raw_problem_or_patch_retained": false
+        }
+      }
     },
     {
       "cohort_rank": 60,
       "repository": "silx-kit/silx",
       "pull_request_number": 4282,
       "pull_request_url": "https://github.com/silx-kit/silx/pull/4282",
-      "static_screening_classification": "excluded",
-      "static_scope_decision": "Exclude — feature/usability enhancement",
-      "second_pass_disposition": "none_recorded",
-      "second_pass_reason": null,
+      "static_screening_classification": "excluded_feature_or_usability_enhancement_confirmed",
+      "static_scope_decision": "Issues #2927 and #4199 request displaying unit attributes alongside signal/axis labels; PR #4282 adds this new display behavior and associated tests.",
+      "second_pass_disposition": "exclude_from_software_root_cause_sample",
+      "second_pass_reason": "Requested additive feature; no existing software contract violation or malfunction evidenced.",
       "candidate_review_document": null,
       "stage2_status": "not_applicable_static_exclusion",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": null,
       "stage3_status": "not_applicable_static_exclusion",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "batch_review_2026_11_21": {
+        "report_path": "research_candidates/evidence_abstention/BATCH_REVIEW_RANK56_60_2026-11-21.md",
+        "report_commit": "17f1cd72b860b19d6e7ccfd4d699b99fd4528428",
+        "dataset_row_audit": {
+          "workflow_run_id": 44942458120,
+          "job_id": 136962437715,
+          "artifact_id": 14721714538,
+          "artifact_sha256": "bee2402b83844ba6fd46ecff47a03af00b5f13e0e5a6661cef2d8630165ab7bf",
+          "metadata_file_sha256": "4db7069de2efa922991b6d3ecdbc5fec3d1ce20b3285643864fb46a47c92c59e",
+          "zip_crc": "pass",
+          "internal_sha256_check": "pass",
+          "raw_problem_or_patch_retained": false
+        }
+      }
     },
     {
       "cohort_rank": 61,
@@ -6772,5 +6856,40 @@
       "inference_authorized": false,
       "full_matrix_workflow_status_at_capture": "in_progress"
     }
+  },
+  "latest_rank56_60_batch_review_2026_11_21": {
+    "date": "2026-11-21",
+    "status": "static_review_complete_five_rows_exactly_authenticated",
+    "report_path": "research_candidates/evidence_abstention/BATCH_REVIEW_RANK56_60_2026-11-21.md",
+    "report_commit": "17f1cd72b860b19d6e7ccfd4d699b99fd4528428",
+    "row_audit": {
+      "workflow_run_id": 44942458120,
+      "job_id": 136962437715,
+      "artifact_id": 14721714538,
+      "artifact_sha256": "bee2402b83844ba6fd46ecff47a03af00b5f13e0e5a6661cef2d8630165ab7bf",
+      "metadata_file_sha256": "4db7069de2efa922991b6d3ecdbc5fec3d1ce20b3285643864fb46a47c92c59e",
+      "zip_crc": "pass",
+      "internal_checksum": "pass",
+      "rows_authenticated": 5,
+      "unique_instance_ids": 5,
+      "raw_problem_statements_or_patches_retained": false
+    },
+    "summary": {
+      "rank56": "exclude_calendar_content_correction",
+      "rank57": "valid_bug_but_E3_issue_body_already_discloses_missing_break; recommend exclude strict three-tier set",
+      "rank58": "conditional_hold_issue_reproducer_dill_vs_pickle_and_E3_leakage_risk",
+      "rank59": "strongest_provisional_candidate_E3_ABSTAIN_E2_ABSTAIN_E1_ANSWER_recommended",
+      "rank60": "exclude_feature_request"
+    },
+    "counts": {
+      "rows_reviewed": 5,
+      "excluded_or_not_suitable_for_strict_tiers": 3,
+      "conditional_candidates": 1,
+      "strong_provisional_candidates": 1,
+      "accepted_cases": 0,
+      "stage2_runs": 0,
+      "inference_runs": 0
+    },
+    "next_stage2_boundary": "No rank57-60 Stage2 may start before rank52 GeoPandas final disposition and rank55 Django-bird project-lead gold/tier decision under frozen sequential intake."
   }
 }
