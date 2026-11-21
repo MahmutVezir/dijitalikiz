@@ -285,7 +285,8 @@
     "As of 18 November 2026, no human-human ratings or Cohen kappa have yet been produced; Rater_B participation, case-specific exposure screening and calibration remain pending.",
     "Superseding update 2026-11-20: Dishka #435 / SRV2E-DISHKA_435 was explicitly accepted by the project lead for v0.2 exploratory/feasibility only. Hasan's recommendation is recorded as project-lead-reported supplementary input, not as a separate signed decision or independent technical adjudication. The accepted registry contains one case from one upstream project. This does not close global readiness or authorize model loading, inference, fine-tuning or training.",
     "EODAG #1530 project-lead prior pipeline/debug exposure declaration recorded 2026-11-21: none. This is distinct from full researcher source exposure, which remains disclosed; the declaration is a self-report, not independently verified telemetry. Bounded license-scope acknowledgement and final acceptance gates remain open; no inference is authorized.",
-    "EODAG #1530 project-lead bounded documentary license-scope acknowledgement recorded 2026-11-21. It covers one defect/one dataset row, minimal source excerpts, immutable upstream links and attribution/NOTICE preservation where applicable. It excludes full dataset/repository/dependency-binary redistribution and blanket commercial rights. This is not legal advice, legal review, SPDX certification or legal clearance. EODAG remains outside the accepted registry pending a schema-conformant case record and fail-closed validation."
+    "EODAG #1530 project-lead bounded documentary license-scope acknowledgement recorded 2026-11-21. It covers one defect/one dataset row, minimal source excerpts, immutable upstream links and attribution/NOTICE preservation where applicable. It excludes full dataset/repository/dependency-binary redistribution and blanket commercial rights. This is not legal advice, legal review, SPDX certification or legal clearance. EODAG remains outside the accepted registry pending a schema-conformant case record and fail-closed validation.",
+    "EODAG #1530 has a schema-shaped proposed v0.2 case record at eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json. The final_acceptance object is pending, the record is not in CASE_REGISTRY, and latest-head CI must validate the case record and prove the accepted registry remains unchanged. This proposed-record validation does not authorize inference."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -976,7 +977,7 @@
     {
       "instance_id": "cs-si__eodag-1536",
       "cohort_rank": 16,
-      "status": "stage3_gold_tier_and_bounded_license_scope_approved_prior_pipeline_debug_exposure_none_declared_final_acceptance_pending",
+      "status": "stage3_gates_acknowledged_proposed_case_record_created_latest_head_validation_pending",
       "issue_url": "https://github.com/CS-SI/eodag/issues/1530",
       "pull_request_url": "https://github.com/CS-SI/eodag/pull/1536",
       "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
@@ -1117,7 +1118,14 @@
       "bounded_license_scope_acknowledgement": "approved_bounded_documentary_scope_only_2026-11-21",
       "bounded_license_scope_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md",
       "bounded_license_scope_decision_record_sha256": "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6",
-      "bounded_license_scope_decision_date": "2026-11-21"
+      "bounded_license_scope_decision_date": "2026-11-21",
+      "proposed_case_acceptance_record_path": "research_candidates/evidence_abstention/eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
+      "case_record_structural_validation": {
+        "status": "pending_latest_head_ci",
+        "validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
+        "decision": "proposed",
+        "eligible_for_registry": false
+      }
     },
     {
       "instance_id": "pallets__click-2788",
