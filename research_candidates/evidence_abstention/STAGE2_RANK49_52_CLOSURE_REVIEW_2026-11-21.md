@@ -144,3 +144,18 @@ The exact frozen row and problem statement were authenticated in the no-inferenc
 - **No Stage 2 execution is authorized by this decision.** No inference, model loading, fine-tuning or training is authorized.
 
 The earlier statements in this review that the GeoPandas project-lead E3 decision was pending are superseded by this amendment. The rank 52 semantic E3 gate is now resolved as ABSTAIN; the candidate remains held under the stated no-run boundary. This does not close Phase 2: GeoFileOps #649 still has its temporal-exposure, bounded license/dependency/provenance/scope, complete-record, fail-closed validation and separate final-acceptance gates. No later-ranked candidate is advanced by this update.
+
+## GeoFileOps temporal-exposure acknowledgement update — 21 November 2026
+
+The project lead has explicitly acknowledged the bounded temporal-exposure assessment for rank 49:
+
+- Issue #648 and PR #649 were created on 6 March 2025, approximately 162 days after the active pinned `Qwen/Qwen2.5-3B-Instruct` revision dated 25 September 2024.
+- Issue/PR-specific exposure is chronologically unlikely for that released revision.
+- The exact model training-data cutoff is not established, and exposure to pre-existing GeofileOps source code cannot be ruled out.
+- The candidate is **not declared contamination-free**; residual uncertainty remains part of the study record.
+
+This closes the project-lead acknowledgement gate for the bounded temporal assessment only. It does not close the exact-build license/copyright/NOTICE audit for all 105 Conda packages, the unresolved `pygeoops 0.4.0` license metadata, bounded dataset/source attribution and research-scope acknowledgement, schema-conformant case-record validation, or separate final acceptance.
+
+Updated audit: `geofileops_649/GEOFILEOPS_649_TEMPORAL_AND_DEPENDENCY_LICENSE_AUDIT_2026-11-21.md`.
+
+**Phase 2 remains partially complete, not closed.** Rank 49 remains unaccepted and excluded from the registry pending the remaining gates. Rank 52 GeoPandas #3591 remains on HOLD after the approved E3=ABSTAIN decision; no Stage 2 is authorized. No model inference, fine-tuning or training is authorized.
