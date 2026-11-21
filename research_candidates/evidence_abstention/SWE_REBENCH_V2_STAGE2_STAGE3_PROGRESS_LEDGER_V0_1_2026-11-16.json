@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T18:31:48Z",
+  "generated_at_utc": "2026-11-21T18:33:48Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -2779,10 +2779,10 @@
         "model_output_included": false,
         "inference_authorized": false
       },
-      "stage2_latest_run_id": 44935740419,
-      "stage2_latest_job_id": 136941838630,
-      "stage2_artifact_id": 14719727030,
-      "stage2_artifact_sha256": "bc807d9c1bdec02e72c61783d9f3e8a5640574fd620fd0da5de2ec4468a1894e",
+      "stage2_latest_run_id": 44936142633,
+      "stage2_latest_job_id": 136943052631,
+      "stage2_artifact_id": 14719339097,
+      "stage2_artifact_sha256": "eda44a04658c9250e4fa559c824a512ec4a91e7ff3f8595db0379db9c9ecd41e",
       "stage2_execution": {
         "status": "passed_technical_reproduction",
         "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44935740419",
@@ -2868,7 +2868,27 @@
         "final_case_acceptance": "not_accepted",
         "candidate_disposition": "HOLD_pending_separate_final_acceptance_and_documentary_license_scope_review"
       },
-      "stage2_authorization_record_path": "research_candidates/evidence_abstention/geopandas_3591/PROJECT_LEAD_STAGE2_EXECUTION_AUTHORIZATION_2026-11-21.md"
+      "stage2_authorization_record_path": "research_candidates/evidence_abstention/geopandas_3591/PROJECT_LEAD_STAGE2_EXECUTION_AUTHORIZATION_2026-11-21.md",
+      "stage2_repeat_confirmation": {
+        "status": "passed_exact_repeat_on_latest_ledger_commit",
+        "workflow_run_id": 44936142633,
+        "job_id": 136943052631,
+        "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44936142633",
+        "completed_at_utc": "2026-11-21T18:33:48Z",
+        "branch_head_sha": "6d4008dd244e75607498b58e4443989e8dfc467c",
+        "artifact_id": 14719339097,
+        "artifact_name": "geopandas-3591-stage2-44936142633",
+        "artifact_sha256": "eda44a04658c9250e4fa559c824a512ec4a91e7ff3f8595db0379db9c9ecd41e",
+        "independent_download_verified": true,
+        "outer_sha256_matches_github_digest": true,
+        "zip_crc": "pass",
+        "internal_sha256_files_verified": 17,
+        "internal_sha256_files_total": 17,
+        "stage2_all_checks_passed": true,
+        "model_loading_performed": false,
+        "model_inference_performed": false,
+        "fine_tuning_or_training_performed": false
+      }
     },
     {
       "cohort_rank": 53,
@@ -6532,6 +6552,15 @@
     "artifact_sha256": "bc807d9c1bdec02e72c61783d9f3e8a5640574fd620fd0da5de2ec4468a1894e",
     "evidence_report_path": "research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_STAGE2_TECHNICAL_REPRODUCTION_RESULT_2026-11-21.md",
     "model_inference_performed": false,
-    "final_case_acceptance": "not_accepted"
+    "final_case_acceptance": "not_accepted",
+    "latest_repeat_confirmation": {
+      "workflow_run_id": 44936142633,
+      "job_id": 136943052631,
+      "artifact_id": 14719339097,
+      "artifact_sha256": "eda44a04658c9250e4fa559c824a512ec4a91e7ff3f8595db0379db9c9ecd41e",
+      "branch_head_sha": "6d4008dd244e75607498b58e4443989e8dfc467c",
+      "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44936142633",
+      "artifact_integrity": "outer_digest_matches;zip_crc_pass;17_of_17_internal_sha256_pass"
+    }
   }
 }
