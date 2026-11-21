@@ -14,7 +14,7 @@
 - Exact PR base: `f7f8a4cf49b1278f3e9e5f4157718de441a21b57`.
 - Exact PR head: `ec1438fbf8527269cd1193647d05c8d7fdb83802`.
 - Merge commit: `d475d6d2ec5719c7f00d1e441e1cdbe0765087b7`.
-- Changed files: `CHANGELOG.md`, `geofileops/fileops.py`, `geofileops/util/_geoops_gpd.py`, `geofileops/util/_geoops_sql.py`, `tests/test_geofile.py` (9 files reported across the PR; file list retrieved above).
+- Changed files: `CHANGELOG.md`, `geofileops/fileops.py`, `geofileops/util/_geoops_gpd.py`, `geofileops/util/_geoops_sql.py`, and `tests/test_geofile.py` (5 files).
 
 ## 2. Static issue/PR alignment
 
