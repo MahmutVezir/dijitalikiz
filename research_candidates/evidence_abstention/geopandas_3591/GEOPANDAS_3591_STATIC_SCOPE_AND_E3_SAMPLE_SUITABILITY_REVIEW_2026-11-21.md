@@ -92,3 +92,26 @@ The project lead confirmed candidate-specific `prior_pipeline_debug_exposure=non
 The next gates remain exact frozen-row and selector authentication, confirmation of the frozen E3 packet boundary, and project-lead semantic E3 suitability adjudication. Until those pass, do not run Stage 2 or include the candidate in the primary sample.
 
 Decision record: `PROJECT_LEAD_RANK49_52_STAGE2_STAGE3_DECISIONS_2026-11-21.md`.
+
+
+## 8. Exact frozen-row authentication — 21 November 2026
+
+The exact pinned dataset row is now authenticated by the no-inference workflow run 44924570231, job 136907864713, artifact 14715535728.
+
+- Dataset: PrimeIntellect/SWE-rebench-V2-Filtered-Verified, revision fb9aa226b2ce37c708ea7732e7b980abacdadb67.
+- Whole Parquet SHA-256: 7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9; 226,272,977 bytes; 6,272 rows.
+- Exact row ID: geopandas__geopandas-3591; repository geopandas/geopandas; base c36eba059f6170715b63a9aa065817c64025d263.
+- Dataset created_at: 2025-06-05 07:55:40; dataset license metadata: BSD-3-Clause.
+- Canonical row SHA-256: e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2.
+- Frozen problem_statement SHA-256: c4aeb4909495887c065f1f7ae5ec0e321fb350e98ea789cde3f931cad597f12d.
+- Frozen FAIL_TO_PASS count: 1; selector: geopandas/tests/test_geodataframe.py::TestConstructor::test_geometry_nan_scalar.
+
+The authenticated problem statement confirms the previously reviewed E3 boundary: it supplies the one-row all-np.nan geometry input, GeoPandas 1.1.0's CRS/geometry-column error, the explicit geometry="geometry" workaround, and a non-failing mixed NaN/valid-Point contrast. It still does **not** identify the constructor's internal dtype gate or the all-null isna().all() condition. The source-level mechanism therefore remains undisclosed by this E3 packet.
+
+**Disposition unchanged: HOLD.** The prior pipeline/debug exposure declaration is none. The project lead has not yet made the semantic E3 tier decision. Do not run Stage 2, include in the primary sample, or mark accepted until that decision is recorded.
+
+Artifact integrity:
+- Artifact URL: https://github.com/MahmutVezir/dijitalikiz/actions/runs/44924570231/artifacts/14715535728
+- GitHub artifact SHA-256: 1abca7d09dfcbf4c4ba773ab87fb21225ec8f4208f44f2f7fbb19b613352459b.
+- Independently downloaded ZIP SHA-256: identical; ZIP CRC passed; all 6 internal SHA256SUMS entries passed.
+- The workflow performed metadata and exact-row extraction only; no upstream source checkout, package installation, upstream test/build, model loading, inference, fine-tuning or training.
