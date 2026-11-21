@@ -1,0 +1,194 @@
+name: SWE-rebench V2 Rank 56-60 Frozen Row Audit (Metadata Only, No Inference)
+
+on:
+  push:
+    branches:
+      - "research/2026-11-16-followup-evidence-validation"
+    paths:
+      - ".github/workflows/swe-rebench-v2-rank56-60-row-audit.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/swe-rebench-v2-rank56-60-row-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  authenticate-rank56-60:
+    name: Authenticate five frozen rows and selectors without retaining raw payload
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout research repository only
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11.9"
+
+      - name: Install pinned Parquet reader only
+        run: python -m pip install --disable-pip-version-check --no-deps "pyarrow==19.0.1"
+
+      - name: Download and authenticate exact pinned dataset
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p rank56-60-row-audit
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          test "$(stat -c '%s' "$RUNNER_TEMP/train-00000-of-00001.parquet")" = "226272977"
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  $RUNNER_TEMP/train-00000-of-00001.parquet" | sha256sum --check
+
+      - name: Extract five exact canonical rows and metadata only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import datetime as dt
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import pyarrow.parquet as pq
+
+          DATASET_ID = "PrimeIntellect/SWE-rebench-V2-Filtered-Verified"
+          DATASET_REVISION = "fb9aa226b2ce37c708ea7732e7b980abacdadb67"
+          PARQUET_SHA256 = "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+          EXPECTED_BYTES = 226272977
+          EXPECTED_ROWS = 6272
+          TARGETS = [
+              {"rank":56,"pr":2106,"base":"60966eaeca137cf2e08826a2b3e08fe6f5af7b36","slug":"holidays","repos":["vacanza/holidays"],"issue_urls":["https://github.com/vacanza/holidays/issues/2103"],"pr_url":"https://github.com/vacanza/holidays/pull/2106"},
+              {"rank":57,"pr":3690,"base":"a08787d08a8f30a099ea1daf1a5e6575dff07681","slug":"web3.py","repos":["ethereum/web3.py","ApeWorX/web3.py"],"issue_urls":["https://github.com/ApeWorX/web3.py/issues/3689"],"pr_url":"https://github.com/ApeWorX/web3.py/pull/3690"},
+              {"rank":58,"pr":438,"base":"a57d24be104dfcdbf316ee68f9b89d06ca30795f","slug":"linopy","repos":["PyPSA/linopy"],"issue_urls":["https://github.com/PyPSA/linopy/issues/340"],"pr_url":"https://github.com/PyPSA/linopy/pull/438"},
+              {"rank":59,"pr":613,"base":"70775bc922602ae535e0b2e525f6926030334ab8","slug":"tablib","repos":["jazzband/tablib"],"issue_urls":["https://github.com/jazzband/tablib/issues/612"],"pr_url":"https://github.com/jazzband/tablib/pull/613"},
+              {"rank":60,"pr":4282,"base":"ca54e9e34df37ca791d6db9703fd274a8beada9a","slug":"silx","repos":["silx-kit/silx"],"issue_urls":["https://github.com/silx-kit/silx/issues/2927","https://github.com/silx-kit/silx/issues/4199"],"pr_url":"https://github.com/silx-kit/silx/pull/4282"}
+          ]
+
+          def normalize(value):
+              if isinstance(value, (dt.datetime, dt.date, dt.time)):
+                  return value.isoformat()
+              if isinstance(value, dict):
+                  return {str(k): normalize(v) for k, v in value.items()}
+              if isinstance(value, (list, tuple)):
+                  return [normalize(v) for v in value]
+              return value
+
+          parquet_path = Path(os.environ["RUNNER_TEMP"]) / "train-00000-of-00001.parquet"
+          if parquet_path.stat().st_size != EXPECTED_BYTES:
+              raise SystemExit("Unexpected Parquet byte count")
+          actual_sha = hashlib.sha256(parquet_path.read_bytes()).hexdigest()
+          if actual_sha != PARQUET_SHA256:
+              raise SystemExit("Pinned dataset SHA-256 mismatch")
+          parquet = pq.ParquetFile(parquet_path)
+          if parquet.metadata.num_rows != EXPECTED_ROWS:
+              raise SystemExit("Unexpected Parquet row count")
+
+          metadata = pq.read_table(
+              parquet_path,
+              columns=["instance_id","repo","base_commit","created_at","language","license","FAIL_TO_PASS","PASS_TO_PASS"]
+          ).to_pylist()
+          results = []
+          for target in TARGETS:
+              matches = [
+                  row for row in metadata
+                  if row.get("base_commit") == target["base"]
+                  and str(row.get("instance_id") or "").endswith("-" + str(target["pr"]))
+                  and str(row.get("repo") or "") in target["repos"]
+              ]
+              if len(matches) != 1:
+                  raise SystemExit("rank " + str(target["rank"]) + ": expected one row, found " + str(len(matches)))
+              instance_id = matches[0]["instance_id"]
+              full_rows = pq.read_table(parquet_path, filters=[("instance_id","=",instance_id)]).to_pylist()
+              if len(full_rows) != 1:
+                  raise SystemExit(instance_id + ": expected one full row")
+              row = normalize(full_rows[0])
+              if row.get("base_commit") != target["base"]:
+                  raise SystemExit(instance_id + ": base SHA mismatch")
+              if row.get("repo") not in target["repos"]:
+                  raise SystemExit(instance_id + ": repository identity mismatch")
+              if row.get("language") != "python":
+                  raise SystemExit(instance_id + ": expected Python source")
+              if not isinstance(row.get("problem_statement"), str) or not row["problem_statement"].strip():
+                  raise SystemExit(instance_id + ": missing problem_statement")
+              if not isinstance(row.get("FAIL_TO_PASS"), list) or not row["FAIL_TO_PASS"]:
+                  raise SystemExit(instance_id + ": missing FAIL_TO_PASS selectors")
+              if "patch" not in row or "test_patch" not in row:
+                  raise SystemExit(instance_id + ": missing canonical patch fields")
+
+              canonical = json.dumps(row,sort_keys=True,separators=(",",":"),ensure_ascii=False).encode("utf-8")
+              item = {
+                  "cohort_rank":target["rank"],
+                  "dataset_id":DATASET_ID,
+                  "dataset_revision":DATASET_REVISION,
+                  "parquet_sha256":actual_sha,
+                  "instance_id":instance_id,
+                  "repository":row["repo"],
+                  "base_commit":row["base_commit"],
+                  "created_at":row.get("created_at"),
+                  "language":row["language"],
+                  "source_repository_license_field":row.get("license"),
+                  "canonical_row_sha256":hashlib.sha256(canonical).hexdigest(),
+                  "problem_statement_sha256":hashlib.sha256(row["problem_statement"].encode("utf-8")).hexdigest(),
+                  "patch_sha256":hashlib.sha256(str(row["patch"]).encode("utf-8")).hexdigest(),
+                  "test_patch_sha256":hashlib.sha256(str(row["test_patch"]).encode("utf-8")).hexdigest(),
+                  "fail_to_pass_count":len(row["FAIL_TO_PASS"]),
+                  "fail_to_pass_selectors":row["FAIL_TO_PASS"],
+                  "pass_to_pass_count":len(row.get("PASS_TO_PASS") or []),
+                  "pass_to_pass_selectors":row.get("PASS_TO_PASS") or [],
+                  "issue_urls":target["issue_urls"],
+                  "pull_request_url":target["pr_url"],
+                  "execution_boundary":{
+                      "raw_problem_statement_retained":False,
+                      "raw_patch_retained":False,
+                      "raw_test_patch_retained":False,
+                      "upstream_checkout":False,
+                      "package_install":False,
+                      "upstream_tests_or_build":False,
+                      "model_loading":False,
+                      "model_inference":False,
+                      "fine_tuning":False,
+                      "training":False
+                  }
+              }
+              results.append(item)
+              print("PASS rank=" + str(target["rank"]) + " instance=" + instance_id +
+                    " repo=" + row["repo"] + " fail_to_pass=" + str(item["fail_to_pass_count"]) +
+                    " pass_to_pass=" + str(item["pass_to_pass_count"]) +
+                    " row_sha256=" + item["canonical_row_sha256"])
+
+          if len(results) != 5 or len({x["instance_id"] for x in results}) != 5:
+              raise SystemExit("Expected five unique frozen rows")
+          out = {
+              "schema_version":"0.1-rank56-60-metadata-only",
+              "dataset_id":DATASET_ID,
+              "dataset_revision":DATASET_REVISION,
+              "parquet_sha256":actual_sha,
+              "parquet_bytes":EXPECTED_BYTES,
+              "parquet_rows":EXPECTED_ROWS,
+              "pyarrow_version":__import__("pyarrow").__version__,
+              "rows":results,
+              "model_loading":False,
+              "model_inference":False,
+              "training":False
+          }
+          target = Path("rank56-60-row-audit/rows-metadata.json")
+          target.write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+          rm -f "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          (cd rank56-60-row-audit && sha256sum rows-metadata.json > SHA256SUMS.txt)
+          (cd rank56-60-row-audit && sha256sum --check SHA256SUMS.txt)
+
+      - name: Upload metadata-only row audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: swe-rebench-v2-rank56-60-row-audit
+          path: rank56-60-row-audit/
+          if-no-files-found: error
+          retention-days: 90
