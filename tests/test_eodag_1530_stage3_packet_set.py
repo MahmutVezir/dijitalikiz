@@ -9,6 +9,7 @@ IMPLEMENTATION = RESEARCH / "implementation"
 sys.path.insert(0, str(IMPLEMENTATION))
 
 from evidence_level_packet_set import validate_packet_set
+from swe_rebench_v2_exploratory_case_acceptance import validate_case_record, validate_registry
 
 
 def test_eodag_1530_packet_set_is_hash_valid_and_strictly_nested():
@@ -227,3 +228,36 @@ def test_eodag_1530_project_decision_is_in_manifest_and_ledger_but_not_registry(
     assert not any(record.get("case_id") == "SRV2E-EODAG_1530" for record in registry["records"])
     assert registry["accepted_project_count"] == 1
     assert [record["case_id"] for record in registry["records"]] == ["SRV2E-DISHKA_435"]
+
+
+
+def test_eodag_1530_case_record_is_structurally_complete_but_not_accepted():
+    case_record = json.loads(
+        (EODAG / "SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json")
+        .read_text(encoding="utf-8")
+    )
+
+    result = validate_case_record(case_record)
+
+    assert result["status"] == "structurally_complete_candidate", result["blockers"]
+    assert result["case_id"] == "SRV2E-EODAG_1530"
+    assert result["acceptance_decision"] == "proposed"
+    assert result["eligible_for_registry"] is False
+    assert result["inference_authorized"] is False
+    assert case_record["human_decision"]["decision_timestamp_utc"] == "2026-11-21T10:07:34Z"
+    assert "exact interaction time is not captured" in case_record["human_decision"]["rationale"]
+    assert case_record["final_acceptance"]["status"] == "pending"
+    assert case_record["final_acceptance"]["decision_timestamp_utc"] is None
+    assert case_record["final_acceptance"]["decision_record"] is None
+
+    registry = json.loads(
+        (RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json")
+        .read_text(encoding="utf-8")
+    )
+    registry_result = validate_registry(registry)
+
+    assert registry_result["status"] == "structurally_valid_candidate_registry", registry_result["blockers"]
+    assert registry_result["accepted_case_count"] == 1
+    assert registry_result["accepted_project_count"] == 1
+    assert [item["case_id"] for item in registry["records"]] == ["SRV2E-DISHKA_435"]
+    assert all(item["case_id"] != "SRV2E-EODAG_1530" for item in registry["records"])
