@@ -21,8 +21,8 @@ class TestV02ExploratoryPreflight(unittest.TestCase):
     def test_accepted_registry_is_valid_but_global_gates_still_block_inference(self):
         report = evaluate(ROOT)
         self.assertEqual(report["registry_status"], "structurally_valid_candidate_registry")
-        self.assertEqual(report["accepted_case_count"], 1)
-        self.assertEqual(report["accepted_project_count"], 1)
+        self.assertEqual(report["accepted_case_count"], 2)
+        self.assertEqual(report["accepted_project_count"], 2)
         self.assertFalse(report["ready_for_inference"])
         self.assertNotIn(
             "No accepted case is registered; at least one fully accepted independent-project case is required before any model inference.",
