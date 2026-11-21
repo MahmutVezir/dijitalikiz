@@ -186,14 +186,14 @@
       "status": "draft_not_frozen"
     },
     {
-      "path": "research_candidates/evidence_abstention/HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md",
+      "path": "research_candidates/evidence_abstention/SINGLE_HUMAN_REVIEW_AMENDMENT_V0_2_2026-11-21.md",
       "sha256": null,
-      "status": "draft_pending_Rater_B_consent_exposure_screen_and_freeze"
+      "status": "draft_not_frozen"
     },
     {
-      "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md",
+      "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_SINGLE_HUMAN_OUTPUT_SCORING_RUBRIC_V0_2_2026-11-21.md",
       "sha256": null,
-      "status": "draft_pending_Rater_B_calibration_and_freeze"
+      "status": "draft_not_frozen"
     }
   ],
   "case_registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json",
@@ -1811,5 +1811,5 @@
     "inference_authorized": false,
     "note": "Post-acceptance branch-head Research Validation and no-inference preflight both passed. The accepted registry has two cases/two distinct upstream projects, with all model-execution gates still closed and 13 global readiness blockers remaining."
   },
-  "generated_at_utc": "2026-11-21T19:51:00Z"
+  "generated_at_utc": "2026-11-21T19:58:00Z"
 }
