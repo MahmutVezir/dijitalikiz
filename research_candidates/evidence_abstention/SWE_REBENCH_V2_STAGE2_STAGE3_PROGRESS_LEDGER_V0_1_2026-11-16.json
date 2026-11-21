@@ -1088,6 +1088,51 @@
         "base": "exact buggy base executed and failed with expected [1,1] vs [5,15] mismatch",
         "fixed": "same reproducer passed on exact fixed PR head",
         "independent_local_integrity": "outer SHA-256 matches GitHub; ZIP CRC PASS; 15/15 inner hashes PASS"
+      },
+      "stage3_evidence_elimination_matrix": {
+        "path": "research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_E3_E2_E1_EVIDENCE_ELIMINATION_MATRIX_V0_1_2026-11-21.md",
+        "commit": "4deadb22c733ab0b06c669dbaed377c7c54a0410",
+        "status": "source_and_packet_audited; strengthened E2 alternative-elimination criterion satisfied; existing project-lead gold_tier approval substantiated; final case acceptance pending",
+        "approved_tiers": {
+          "G1": "POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+          "E3": "ABSTAIN",
+          "E2": "ABSTAIN",
+          "E1": "ANSWER"
+        },
+        "surviving_mechanism_sets": {
+          "E3": [
+            "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+            "A1_POLYNOMIAL_VALUE_SHAPE_NORMALIZATION",
+            "A2_STALE_TEST_SETUP_VALUE_OVERRIDE",
+            "A3_ODE_TARGET_UNITS_OR_STATE_CONFIGURATION"
+          ],
+          "E2": [
+            "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+            "A1_POLYNOMIAL_VALUE_SHAPE_NORMALIZATION"
+          ],
+          "E1": [
+            "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED"
+          ]
+        },
+        "E2_eliminated_alternatives": [
+          "A2_STALE_TEST_SETUP_VALUE_OVERRIDE: independent reproducer builds a fresh problem and does not make post-setup set_val calls",
+          "A3_ODE_TARGET_UNITS_OR_STATE_CONFIGURATION: reproducer reads the promoted controls input directly instead of inferring it from downstream ODE outputs"
+        ],
+        "E2_remaining_alternatives": [
+          "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+          "A1_POLYNOMIAL_VALUE_SHAPE_NORMALIZATION"
+        ],
+        "E1_source_chain": {
+          "Phase.add_control": "dymos/phase/phase.py lines 639-650 forwards val to set_control_options",
+          "Phase.set_control_options": "dymos/phase/phase.py lines 785-786 stores control_options[name]['val']",
+          "transcription": "dymos/transcriptions/transcription_base.py lines 145-147 passes control_options to ControlInterpComp",
+          "active_input_initialization": "dymos/transcriptions/common/control_comp.py line 120 uses val=np.ones(input_shape)"
+        },
+        "prior_project_lead_decision_record": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
+        "prior_decision_retained_without_silent_amendment": true,
+        "final_case_acceptance": "pending_separate_project_lead_yes_no",
+        "registry_inclusion": false,
+        "inference_authorized": false
       }
     },
     {
@@ -4359,6 +4404,61 @@
       "inference_performed": false,
       "fine_tuning_performed": false,
       "training_performed": false
+    }
+  },
+  "latest_dymos_1166_evidence_elimination_matrix": {
+    "date": "2026-11-21",
+    "path": "research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_E3_E2_E1_EVIDENCE_ELIMINATION_MATRIX_V0_1_2026-11-21.md",
+    "commit": "4deadb22c733ab0b06c669dbaed377c7c54a0410",
+    "status": "source_and_packet_audited; strengthened E2 alternative-elimination criterion satisfied; existing project-lead gold_tier approval substantiated; final case acceptance pending",
+    "approved_tiers": {
+      "G1": "POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+      "E3": "ABSTAIN",
+      "E2": "ABSTAIN",
+      "E1": "ANSWER"
+    },
+    "surviving_mechanism_sets": {
+      "E3": [
+        "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+        "A1_POLYNOMIAL_VALUE_SHAPE_NORMALIZATION",
+        "A2_STALE_TEST_SETUP_VALUE_OVERRIDE",
+        "A3_ODE_TARGET_UNITS_OR_STATE_CONFIGURATION"
+      ],
+      "E2": [
+        "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+        "A1_POLYNOMIAL_VALUE_SHAPE_NORMALIZATION"
+      ],
+      "E1": [
+        "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED"
+      ]
+    },
+    "E2_eliminated_alternatives": [
+      "A2_STALE_TEST_SETUP_VALUE_OVERRIDE: independent reproducer builds a fresh problem and does not make post-setup set_val calls",
+      "A3_ODE_TARGET_UNITS_OR_STATE_CONFIGURATION: reproducer reads the promoted controls input directly instead of inferring it from downstream ODE outputs"
+    ],
+    "E2_remaining_alternatives": [
+      "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+      "A1_POLYNOMIAL_VALUE_SHAPE_NORMALIZATION"
+    ],
+    "E1_source_chain": {
+      "Phase.add_control": "dymos/phase/phase.py lines 639-650 forwards val to set_control_options",
+      "Phase.set_control_options": "dymos/phase/phase.py lines 785-786 stores control_options[name]['val']",
+      "transcription": "dymos/transcriptions/transcription_base.py lines 145-147 passes control_options to ControlInterpComp",
+      "active_input_initialization": "dymos/transcriptions/common/control_comp.py line 120 uses val=np.ones(input_shape)"
+    },
+    "prior_project_lead_decision_record": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
+    "prior_decision_retained_without_silent_amendment": true,
+    "final_case_acceptance": "pending_separate_project_lead_yes_no",
+    "registry_inclusion": false,
+    "inference_authorized": false,
+    "independent_reproduction_latest": {
+      "run_id": 44904689950,
+      "job_id": 136847632352,
+      "artifact_id": 14706839946,
+      "artifact_sha256": "2a7a0c3c98043567a37193a9509c64160273f5985f0cfaf6ad7d040f667dd055",
+      "base_observation": "[[1.0], [1.0]] instead of [[5.0], [15.0]]",
+      "fixed_revision": "same reproducer passed (1 test)",
+      "archive_integrity": "outer SHA matched; ZIP CRC PASS; internal SHA256SUMS 15/15 PASS"
     }
   }
 }
