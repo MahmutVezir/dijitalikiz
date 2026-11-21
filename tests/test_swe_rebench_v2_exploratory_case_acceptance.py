@@ -21,8 +21,8 @@ def test_v02_accepted_registry_is_valid_but_does_not_authorize_inference():
     registry = json.loads((RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text())
     result = validate_registry(registry)
     assert result["status"] == "structurally_valid_candidate_registry"
-    assert result["accepted_case_count"] == 2
-    assert result["accepted_project_count"] == 2
+    assert result["accepted_case_count"] == 3
+    assert result["accepted_project_count"] == 3
     assert result["minimum_feasibility_count_met"] is True
     assert result["inference_authorized"] is False
     assert result["comparative_efficacy_claim_permitted"] is False
@@ -249,11 +249,11 @@ def test_dishka_accepted_case_is_in_the_v02_registry():
     )
 
     assert proposed["acceptance_decision"] == "accepted"
-    assert len(registry["records"]) == 2
+    assert len(registry["records"]) == 3
     result = validate_registry(registry)
     assert result["status"] == "structurally_valid_candidate_registry", result["blockers"]
-    assert result["accepted_case_count"] == 2
-    assert result["accepted_project_count"] == 2
+    assert result["accepted_case_count"] == 3
+    assert result["accepted_project_count"] == 3
     assert result["minimum_feasibility_count_met"] is True
     assert result["primary_target_met"] is False
     assert result["inference_authorized"] is False
@@ -365,8 +365,8 @@ def test_dishka_final_decision_artifacts_are_hashed_and_inference_remains_disabl
     registry = json.loads((RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text())
     result = validate_registry(registry)
     assert result["status"] == "structurally_valid_candidate_registry", result["blockers"]
-    assert result["accepted_case_count"] == 2
-    assert result["accepted_project_count"] == 2
+    assert result["accepted_case_count"] == 3
+    assert result["accepted_project_count"] == 3
     assert result["inference_authorized"] is False
 
 
@@ -512,8 +512,8 @@ def test_dymos_real_proposed_case_is_structurally_complete_but_not_accepted():
     )
     registry_result = validate_registry(registry)
     assert registry_result["status"] == "structurally_valid_candidate_registry"
-    assert registry_result["accepted_case_count"] == 2
-    assert registry_result["accepted_project_count"] == 2
+    assert registry_result["accepted_case_count"] == 3
+    assert registry_result["accepted_project_count"] == 3
     assert "SRV2E-DYMOS_1166" not in {item["case_id"] for item in registry["records"]}
     assert registry_result["inference_authorized"] is False
 
@@ -618,8 +618,8 @@ def test_meltano_3090_stage3_project_lead_gold_tier_approved_but_case_gates_rema
     )
     registry_result = validate_registry(registry)
     assert registry_result["status"] == "structurally_valid_candidate_registry"
-    assert registry_result["accepted_case_count"] == 2
-    assert registry_result["accepted_project_count"] == 2
+    assert registry_result["accepted_case_count"] == 3
+    assert registry_result["accepted_project_count"] == 3
     assert "SRV2E-MELTANO_3090" not in {item["case_id"] for item in registry["records"]}
     assert registry_result["inference_authorized"] is False
 
@@ -696,8 +696,8 @@ def test_pyfar_721_gold_tier_approved_but_case_acceptance_remains_pending_and_fa
     assert ledger["pyfar_721_gold_tier_decision"]["decision"] == "approved"
     assert pyfar["final_case_acceptance"] == "not_accepted"
     assert pyfar["model_inference_authorized"] is False
-    assert ledger["summary"]["accepted_exploratory_cases"] == 2
-    assert ledger["summary"]["accepted_exploratory_projects"] == 2
+    assert ledger["summary"]["accepted_exploratory_cases"] == 3
+    assert ledger["summary"]["accepted_exploratory_projects"] == 3
 
     registry = json.loads(
         (RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text(
@@ -706,7 +706,51 @@ def test_pyfar_721_gold_tier_approved_but_case_acceptance_remains_pending_and_fa
     )
     registry_result = validate_registry(registry)
     assert registry_result["status"] == "structurally_valid_candidate_registry"
-    assert registry_result["accepted_case_count"] == 2
-    assert registry_result["accepted_project_count"] == 2
+    assert registry_result["accepted_case_count"] == 3
+    assert registry_result["accepted_project_count"] == 3
     assert "SRV2E-PYFAR_721" not in {item["case_id"] for item in registry["records"]}
+    assert registry_result["inference_authorized"] is False
+
+
+def test_geofileops_649_final_acceptance_is_hashed_and_registered_without_inference():
+    proposed_path = RESEARCH / "geofileops_649" / "SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_PROPOSED_V0_2_2026-11-21.json"
+    accepted_path = RESEARCH / "geofileops_649" / "SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_V0_2_2026-11-21.json"
+    proposed = json.loads(proposed_path.read_text(encoding="utf-8"))
+    accepted = json.loads(accepted_path.read_text(encoding="utf-8"))
+
+    assert proposed["acceptance_decision"] == "proposed"
+    assert proposed["final_acceptance"]["status"] == "pending"
+    assert accepted["acceptance_decision"] == "accepted"
+    assert accepted["final_acceptance"]["status"] == "approved"
+    assert accepted["final_acceptance"]["decision_maker_role"] == "student_project_lead"
+
+    decision_ref = accepted["final_acceptance"]["decision_record"]
+    relative = decision_ref["uri"].split(
+        "/blob/research/2026-11-16-followup-evidence-validation/", 1
+    )[1]
+    decision_bytes = (ROOT / relative).read_bytes()
+    assert hashlib.sha256(decision_bytes).hexdigest() == decision_ref["sha256"]
+
+    # The accepted record must preserve every technical/evidence field from the
+    # historical proposal snapshot; only the separately approved final decision changes.
+    expected = copy.deepcopy(proposed)
+    expected["acceptance_decision"] = "accepted"
+    expected["final_acceptance"] = accepted["final_acceptance"]
+    assert accepted == expected
+
+    result = validate_case_record(accepted)
+    assert result["status"] == "structurally_complete_candidate", result
+    assert result["blockers"] == [], result
+    assert result["eligible_for_registry"] is True
+    assert result["inference_authorized"] is False
+
+    registry = json.loads((RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text())
+    matches = [item for item in registry["records"] if item["case_id"] == accepted["case_id"]]
+    assert len(matches) == 1
+    assert matches[0] == accepted
+    registry_result = validate_registry(registry)
+    assert registry_result["status"] == "structurally_valid_candidate_registry"
+    assert registry_result["accepted_case_count"] == 3
+    assert registry_result["accepted_project_count"] == 3
+    assert registry_result["primary_target_met"] is False
     assert registry_result["inference_authorized"] is False
