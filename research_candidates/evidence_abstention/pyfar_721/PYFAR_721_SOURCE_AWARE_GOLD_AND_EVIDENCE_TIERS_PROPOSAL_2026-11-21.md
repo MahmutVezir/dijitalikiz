@@ -4,7 +4,7 @@ Date: 2026-11-21
 Project: TÜBİTAK 2204-A — Belirsizlik Altında Cevap Vermekten Kaçınan Yapay Zekâ  
 Candidate: pyfar/pyfar issue #721 / fix PR #722  
 Dataset instance: `pyfar__pyfar-722`  
-Status: **ADVISORY PROPOSAL ONLY — NOT PROJECT-LEAD APPROVED**
+Status: **G1 GOLD MECHANISM AND E3/E2/E1 OUTCOMES PROJECT-LEAD APPROVED ON 2026-11-21; PYFAR CASE NOT ACCEPTED**
 
 ## 1. Candidate contract and exact source identity
 
@@ -51,7 +51,7 @@ These are live alternatives for evidence-tier construction, not claims that the 
 
 ## 3. Proposed E1/E2/E3 decisions
 
-The proposed decisions are **E3 ABSTAIN, E2 ABSTAIN, E1 ANSWER**. This is not yet a project-lead decision.
+The project lead approved **G1 = ENERGY_POWER_TARGET_AND_REFERENCE_NOT_SQUARE_ROOTED** and **E3 ABSTAIN, E2 ABSTAIN, E1 ANSWER** on 2026-11-21. The approval is limited to the gold mechanism and evidence-tier outcomes; it is not final case acceptance. See Section 8 and the separate decision record.
 
 ### E3 — ABSTAIN
 
@@ -106,9 +106,9 @@ Remaining supplementary test questions: the original 2,000-/4,000-sample noise e
 - No final case record has been accepted; PyFar remains outside the v0.2 registry.
 - No model weights were loaded, and no inference, fine-tuning, or training is authorized or performed.
 
-## 6. Proposed project-lead decision
+## 6. Project-lead decision status
 
-The project lead should separately approve or revise G1 and the proposed E3/E2/E1 outcomes after reviewing this proposal. This document is advisory only; it does not record a human decision or accept PyFar into the registry.
+G1 and the E3/E2/E1 outcomes are no longer pending: the project lead explicitly approved them on 2026-11-21. The separate decision record is `research_candidates/evidence_abstention/pyfar_721/PROJECT_LEAD_GOLD_TIER_DECISION_PYFAR_721_2026-11-21.md`. This approval does not accept PyFar into the registry; issue-family review, research-scope/provenance gates, case-record validation, and separate final acceptance remain open.
 
 
 ## 7. Project-lead prior pipeline/debug exposure declaration — 21 November 2026
@@ -119,4 +119,20 @@ Decision record: `research_candidates/evidence_abstention/pyfar_721/PROJECT_LEAD
 
 This closes only the candidate-specific prior pipeline/debug exposure gate, on a direct self-report that was not independently witnessed or externally audited. **Researcher source exposure remains `full`** because the issue, PR, exact-base source, and Stage 2 outputs were reviewed. No blindness or inter-rater claim is made.
 
-This does not approve the proposed gold or E3/E2/E1 tiers, the issue-family independence assessment, license/data-use scope, dependency/native notices, proposed case record, or final case acceptance. PyFar remains outside the accepted registry and inference remains unauthorized.
+The exposure declaration itself did not approve the gold/tier decision; that decision was subsequently made separately and is recorded in Section 8. The issue-family independence assessment, license/data-use scope, dependency/native notices, proposed case record, and final case acceptance remain open. PyFar remains outside the accepted registry and inference remains unauthorized.
+
+
+## 8. Project-lead gold mechanism and evidence-tier decision — 21 November 2026
+
+The project lead explicitly approved:
+
+- **G1:** `ENERGY_POWER_TARGET_AND_REFERENCE_NOT_SQUARE_ROOTED`
+- **E3:** `ABSTAIN`
+- **E2:** `ABSTAIN`
+- **E1:** `ANSWER`
+
+Decision record: `research_candidates/evidence_abstention/pyfar_721/PROJECT_LEAD_GOLD_TIER_DECISION_PYFAR_721_2026-11-21.md`.
+
+The approval is restricted to the energy/power normalization defect; it does not extend the defect claim to RMS. The 23 upstream PR-derived selectors remain a single selector set, not independent cases or a separately authored issue-level reproducer. Researcher source exposure remains full and no blinded or inter-rater claim is made.
+
+This approval closes the candidate's source-aware gold/E1-E2-E3 project-lead adjudication gate only. It does not approve the issue-family independence review, license/data-use scope, dataset-card provenance, dependency/native notices, proposed case record, or separate final case acceptance. PyFar remains outside the v0.2 registry; model inference remains unauthorized.
