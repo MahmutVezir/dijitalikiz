@@ -577,16 +577,39 @@ def test_meltano_3090_stage3_project_lead_gold_tier_approved_but_case_gates_rema
     assert progress_ledger["meltano_3090_exposure_declaration"]["decision"] == "none"
     assert progress_ledger["meltano_3090_exposure_declaration"]["researcher_source_exposure"] == "full"
     assert progress_ledger["meltano_3090_exposure_declaration"]["gate_status"] == "closed"
+    scope_ledger = progress_ledger["meltano_3090_license_scope_acknowledgement"]
+    assert scope_ledger["decision"] == "acknowledged_bounded_research_scope_in_principle_with_open_verification_gates"
+    assert scope_ledger["legal_clearance"] is False
+    assert scope_ledger["redistribution_authorized"] is False
+    assert scope_ledger["final_case_acceptance"] == "not_accepted"
+    assert scope_ledger["accepted_case_count_unchanged"] == 2
     assert independence["boundaries"]["final_case_acceptance"] == "not_accepted"
     assert independence["boundaries"]["registry_inclusion"] is False
     assert independence["boundaries"]["inference_authorized"] is False
 
-    assert license_review["human_review"]["project_lead_scope_acknowledgement"] == "pending"
+    assert license_review["human_review"]["project_lead_scope_acknowledgement"] == (
+        "acknowledged_in_principle_with_explicit_conditions"
+    )
+    assert license_review["human_review"]["bounded_research_scope_acknowledged_in_principle"] is True
+    assert license_review["human_review"]["accepted_research_scope"] is False
     assert license_review["human_review"]["nested_dependency_review"] == "open"
-    assert license_review["human_review"]["research_use_decision"] == "pending_human_review"
+    assert license_review["human_review"]["notice_and_provenance_review"] == "open"
+    assert license_review["human_review"]["research_use_decision"].startswith(
+        "bounded_scope_acknowledged_in_principle;"
+    )
+    assert license_review["dataset_scope"]["exact_pinned_card_review"].startswith("pending;")
     assert license_review["boundaries"]["legal_clearance"] is False
+    assert license_review["boundaries"]["redistribution_authorized"] is False
     assert license_review["boundaries"]["final_case_acceptance"] is False
     assert license_review["boundaries"]["inference_authorized"] is False
+
+    scope_decision = (
+        candidate_dir
+        / "PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md"
+    ).read_text(encoding="utf-8")
+    assert "bounded_research_scope_acknowledged_in_principle_with_open_verification_gates" in scope_decision
+    assert "This is not legal advice" in scope_decision
+    assert "complete Meltano repository or complete dataset" in scope_decision
 
     registry = json.loads(
         (RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text(
