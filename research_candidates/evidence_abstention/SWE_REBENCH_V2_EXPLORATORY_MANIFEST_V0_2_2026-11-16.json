@@ -284,7 +284,8 @@
     "The dual-human scoring amendment does not waive the existing candidate exclusion for prior pipeline debugging, test-oracle troubleshooting or prompt calibration. It does not authorize model loading or inference.",
     "As of 18 November 2026, no human-human ratings or Cohen kappa have yet been produced; Rater_B participation, case-specific exposure screening and calibration remain pending.",
     "Superseding update 2026-11-20: Dishka #435 / SRV2E-DISHKA_435 was explicitly accepted by the project lead for v0.2 exploratory/feasibility only. Hasan's recommendation is recorded as project-lead-reported supplementary input, not as a separate signed decision or independent technical adjudication. The accepted registry contains one case from one upstream project. This does not close global readiness or authorize model loading, inference, fine-tuning or training.",
-    "EODAG #1530 project-lead prior pipeline/debug exposure declaration recorded 2026-11-21: none. This is distinct from full researcher source exposure, which remains disclosed; the declaration is a self-report, not independently verified telemetry. Bounded license-scope acknowledgement and final acceptance gates remain open; no inference is authorized."
+    "EODAG #1530 project-lead prior pipeline/debug exposure declaration recorded 2026-11-21: none. This is distinct from full researcher source exposure, which remains disclosed; the declaration is a self-report, not independently verified telemetry. Bounded license-scope acknowledgement and final acceptance gates remain open; no inference is authorized.",
+    "EODAG #1530 project-lead bounded documentary license-scope acknowledgement recorded 2026-11-21. It covers one defect/one dataset row, minimal source excerpts, immutable upstream links and attribution/NOTICE preservation where applicable. It excludes full dataset/repository/dependency-binary redistribution and blanket commercial rights. This is not legal advice, legal review, SPDX certification or legal clearance. EODAG remains outside the accepted registry pending a schema-conformant case record and fail-closed validation."
   ],
   "case_acceptance_schema_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json",
   "case_acceptance_validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
@@ -975,7 +976,7 @@
     {
       "instance_id": "cs-si__eodag-1536",
       "cohort_rank": 16,
-      "status": "stage3_gold_tier_approved_prior_pipeline_debug_exposure_none_declared_license_scope_pending_final_acceptance_pending",
+      "status": "stage3_gold_tier_and_bounded_license_scope_approved_prior_pipeline_debug_exposure_none_declared_final_acceptance_pending",
       "issue_url": "https://github.com/CS-SI/eodag/issues/1530",
       "pull_request_url": "https://github.com/CS-SI/eodag/pull/1536",
       "base_commit": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
@@ -994,7 +995,6 @@
       "case_acceptance": "not_accepted",
       "inference_authorized": false,
       "remaining_gates": [
-        "project_lead_review_of_all_52_distribution_license_metadata_and_any_bundled_library_notices",
         "independence_and_related_issue_family_review_including_StacListAssets_issue_family",
         "human_gold_root_cause_and_alternative_hypotheses_adjudication",
         "prepare_nested_E1_E2_E3_evidence_packets_and_manifests",
@@ -1002,10 +1002,10 @@
         "construct_complete_schema_conformant_final_case_record_and_pass_fail_closed_registry_validation",
         "project_lead_separate_final_case_acceptance_decision",
         "project_lead_source_aware_gold_and_E1_E2_E3_membership_and_semantic_sufficiency_decision",
-        "project_lead_bounded_dependency_source_and_dataset_license_scope_acknowledgement",
         "schema_conformant_final_case_record",
         "fail_closed_registry_validation",
-        "separate_project_lead_final_case_acceptance_YES"
+        "separate_project_lead_final_case_acceptance_YES",
+        "complete_schema_conformant_proposed_case_record_and_fail_closed_registry_validation"
       ],
       "issue_created_at": "2025-02-20T11:38:36Z",
       "pull_request_created_at": "2025-02-21T10:04:30Z",
@@ -1114,7 +1114,10 @@
       "exposure_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
       "exposure_decision_record_sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38",
       "exposure_decision_date": "2026-11-21",
-      "bounded_license_scope_acknowledgement": "pending"
+      "bounded_license_scope_acknowledgement": "approved_bounded_documentary_scope_only_2026-11-21",
+      "bounded_license_scope_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md",
+      "bounded_license_scope_decision_record_sha256": "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6",
+      "bounded_license_scope_decision_date": "2026-11-21"
     },
     {
       "instance_id": "pallets__click-2788",
@@ -1665,6 +1668,26 @@
         "researcher_source_exposure": "full_disclosed; source-blinding is not claimed",
         "bounded_license_scope_acknowledgement": "pending",
         "final_case_acceptance": "not_accepted",
+        "inference_authorized": false
+      }
+    },
+    {
+      "date": "2026-11-21",
+      "scope": "EODAG_1530_bounded_documentary_license_scope_acknowledgement",
+      "candidate": "CS-SI/eodag issue #1530 / PR #1536; dataset row cs-si__eodag-1536",
+      "decision": "acknowledged_bounded_documentary_scope_only",
+      "decision_record": {
+        "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md",
+        "sha256": "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6"
+      },
+      "boundaries": {
+        "full_dataset_redistribution": false,
+        "full_upstream_repository_redistribution": false,
+        "dependency_wheels_binaries_native_libraries_or_environment_redistribution": false,
+        "commercial_blanket_permission": false,
+        "external_legal_review": "not_performed",
+        "legal_clearance": false,
+        "final_case_acceptance": "not_accepted_pending_schema_record_and_fail_closed_registry_validation",
         "inference_authorized": false
       }
     }
