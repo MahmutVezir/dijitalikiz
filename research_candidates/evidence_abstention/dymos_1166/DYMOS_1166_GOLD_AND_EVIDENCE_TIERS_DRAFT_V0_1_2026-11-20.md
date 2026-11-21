@@ -57,3 +57,19 @@ No model loading, inference, fine-tuning, or training is authorized.
 ## Project-lead adjudication status
 
 The project-lead source-aware gold/tier decision is recorded and approved in `PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md` (SHA-256 `9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392`). E3 and E2 require abstention; E1 supports an answer. The remaining gates are documentary license scope, exact pinned dataset-card license verification, complete case record, fail-closed registry validation, and a separate final YES/NO acceptance decision.
+
+
+## Strengthened E3/E2/E1 evidence-elimination audit — 21 November 2026
+
+The source- and packet-audited matrix is recorded at:
+
+`research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_E3_E2_E1_EVIDENCE_ELIMINATION_MATRIX_V0_1_2026-11-21.md`
+
+The audit confirms that the approved tier construction satisfies the strengthened rule requiring E2 to eliminate at least one predeclared alternative while retaining at least two plausible mechanisms:
+
+- E3 contains only the issue narrative; G1, shape normalization, stale fixture override, and downstream ODE/units/state setup remain possible.
+- E2 adds the fresh independent public-API reproducer and its exact buggy-base output. The reproducer constructs a new one-phase problem, makes no post-setup `set_val`, and reads the promoted `phase0.controls:theta` input directly. This eliminates the stale-fixture/post-setup-override and downstream ODE interpretation alternatives.
+- E2 still leaves G1 and shape normalization plausible; it does not expose the active input-construction statement.
+- E1 adds the exact buggy-base source chain from `add_control` forwarding and storage, through transcription option propagation, to the active polynomial-control `add_input(..., val=np.ones(input_shape))` statement. This distinguishes G1 from shape normalization.
+
+The surviving mechanism sets are E3 `{G1, A1, A2, A3}`, E2 `{G1, A1}`, and E1 `{G1}`. The previously recorded project-lead decision (G1; E3 ABSTAIN, E2 ABSTAIN, E1 ANSWER) is retained. This audit substantiates that decision and does not change final acceptance or inference authorization.
