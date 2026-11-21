@@ -109,7 +109,7 @@ Interpretation: the issue and fix postdate both the initial public checkpoint up
 References for the chronology:
 - Official Qwen announcement: https://qwenlm.github.io/blog/qwen2.5/
 - Hugging Face model repository: https://huggingface.co/Qwen/Qwen2.5-3B-Instruct
-- November 2026 AACL paper on contamination-resistant evaluation: https://aclanthology.org/2026.aacl-long.XXX/ (reported October 2023 cutoff; exact paper identifier/link must be verified before treating this as a final bibliographic citation).
+- November 2026 AACL paper by Hassan et al., “Private Evaluation Protocol: Contamination-Resistant Black-Box Evaluation via Public-Slice Surrogates,” Table 5: https://aclanthology.org/2026.aacl-long.168/ (reports October 2023 cutoff for Qwen2.5-3B-Instruct; this is a secondary-source statement, not a vendor guarantee).
 
 ## 9. Decision boundaries
 
