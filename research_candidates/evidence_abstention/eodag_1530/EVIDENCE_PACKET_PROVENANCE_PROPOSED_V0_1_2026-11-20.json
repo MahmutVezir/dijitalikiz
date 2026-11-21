@@ -127,9 +127,15 @@
     },
     "independent_blinded_validation": "not_claimed",
     "researcher_source_exposure": "full_disclosed",
-    "prior_pipeline_debug_exposure": "pending_project_lead_self_declaration",
+    "prior_pipeline_debug_exposure": "none",
     "final_case_acceptance": "pending_remaining_mandatory_gates",
-    "inference_authorized": false
+    "inference_authorized": false,
+    "prior_pipeline_debug_exposure_decision_record": {
+      "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
+      "sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38",
+      "decision_date": "2026-11-21",
+      "decision": "none"
+    }
   },
   "structural_validation": {
     "status": "passed_hash_and_nesting_only",
