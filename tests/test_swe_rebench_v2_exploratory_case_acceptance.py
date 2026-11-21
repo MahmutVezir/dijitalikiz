@@ -544,7 +544,13 @@ def test_meltano_3090_stage3_project_lead_gold_tier_approved_but_case_gates_rema
     assert "E3" in gold_proposal and "ABSTAIN" in gold_proposal
     assert "E2" in gold_proposal and "ABSTAIN" in gold_proposal
     assert "E1" in gold_proposal and "ANSWER" in gold_proposal
-    assert "candidate-specific declaration of prior pipeline/debug exposure is still required" in gold_proposal
+    assert "project lead explicitly declared `prior_pipeline_debug_exposure = none`" in gold_proposal
+    exposure_record = (
+        candidate_dir / "PROJECT_LEAD_EXPOSURE_DECISION_MELTANO_3090_2026-11-21.md"
+    ).read_text(encoding="utf-8")
+    assert "**Declared value:** `none`" in exposure_record
+    assert "`researcher_source_exposure = full`" in exposure_record
+    assert "not an independently witnessed audit" in exposure_record
     decision_record = (candidate_dir / "PROJECT_LEAD_GOLD_AND_EVIDENCE_TIER_DECISION_MELTANO_3090_2026-11-21.md").read_text(encoding="utf-8")
     assert "E3 — ABSTAIN" in decision_record
     assert "E2 — ABSTAIN" in decision_record
@@ -558,6 +564,10 @@ def test_meltano_3090_stage3_project_lead_gold_tier_approved_but_case_gates_rema
         "ACCEPTED_FOR_STAGE3_CASE_EVALUATION"
     )
     assert independence["independence_disposition"]["one_case_per_repository_rule_preserved"] is True
+    assert independence["exposure"]["prior_pipeline_debug_exposure"] == "none"
+    assert independence["exposure"]["researcher_source_exposure"] == "full"
+    assert independence["exposure"]["blind_adjudication_claimed"] is False
+    assert independence["boundaries"]["prior_pipeline_debug_exposure_gate"] == "closed_on_project_lead_self_report"
     assert independence["boundaries"]["final_case_acceptance"] == "not_accepted"
     assert independence["boundaries"]["registry_inclusion"] is False
     assert independence["boundaries"]["inference_authorized"] is False
