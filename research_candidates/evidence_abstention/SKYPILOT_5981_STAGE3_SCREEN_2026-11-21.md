@@ -3,7 +3,7 @@
 **Date:** 21 November 2026  
 **Candidate:** skypilot-org/skypilot issue #5981 / fix PR #5985  
 **Dataset row:** `skypilot-org__skypilot-5985`  
-**Disposition:** Stage 2 technically verified; **not recommended for the primary three-tier abstention sample** pending project-lead decision on its evidence-disclosure problem. Not accepted.
+**Disposition:** Stage 2 technically verified; **excluded from the primary three-tier abstention sample by project-lead decision (21 November 2026)** because the frozen E3 statement discloses the central mechanism. Not accepted.
 
 ## 1. Exact Stage 2 evidence recheck
 
@@ -32,7 +32,7 @@ The defect mechanism is that Python `str.lstrip("ssh-")` removes any leading cha
 
 Under the approved v0.2 protocol, E3 must leave multiple predeclared causal mechanisms genuinely possible. Here, a model can identify the central defect from the task statement alone. An honest E3 packet cannot remove or rewrite that statement to make the case artificially ambiguous.
 
-**Advisory recommendation:** do not advance SkyPilot #5981 into the primary three-tier abstention sample unless the project lead can demonstrate a defensible, meaning-preserving E3 ambiguity that does not hide or rewrite the source task. In its current frozen form it is better treated as:
+**Project-lead decision (21 November 2026):** exclude SkyPilot #5981 from the primary three-tier abstention sample. The frozen E3 prompt must not be rewritten or weakened to manufacture uncertainty. Preserve the technical reproduction as feasibility evidence; an easy-answer control is possible only if separately allowed by protocol. In its current frozen form it is better treated as:
 - a technical reproduction / engineering-feasibility case; or
 - a possible easy-answer control outside the primary three-tier sample.
 
@@ -51,14 +51,14 @@ This is the same root-cause family, not an independent project. #7662 is a later
 - The dataset card's CC-BY-4.0 is a separate data-source license; it does not relicense upstream source.
 - The Stage 2 lock inventory contains 86 installed distributions. Eight have a null license field despite permissive classifiers; other entries need canonical-license review, including multiple/alternative SPDX expressions and `psycopg2-binary` (reported as LGPL with exceptions). NumPy's bundled binary notices include OpenBLAS/LAPACK plus GCC runtime / libquadmath components; these require applicable notice/scope checking.
 - Exact pinned dataset-card README revision/bytes provenance and canonical dependency/notice checks remain open. No bounded research-scope acknowledgement or legal clearance is recorded.
-- Candidate-specific prior pipeline/debug exposure has **not yet been declared by the project lead**. Do not infer `none`.
+- Candidate-specific prior pipeline/debug exposure: **`none` by direct project-lead self-report**. Decision record: `SKYPILOT_5981_PROJECT_LEAD_EXPOSURE_AND_SAMPLE_DISPOSITION_2026-11-21.md`. This was not independently witnessed or audited.
 - Researcher source exposure is `full` after review of issue, PR, exact source, selector, and Stage 2 evidence. No blinded adjudication or inter-rater claim is made.
 - The pinned Qwen model's precise training-data cutoff is not established by the reviewed model metadata. Issue/PR publication dates after the public Qwen2.5 release do not prove absence from all pretraining data; do not claim a verified no-contamination result.
 
 ## 5. Status boundary
 
 - Stage 2 technical reproduction: passed and archive integrity rechecked.
-- Three-tier sample suitability: advisory no-go pending project-lead review of E3 disclosure.
+- Three-tier sample suitability: excluded by project-lead decision due to frozen E3 causal disclosure.
 - Prior pipeline/debug exposure: pending direct declaration.
 - Bounded research scope: pending source/data/dependency/native-notice review and later explicit acknowledgement.
 - Final case acceptance: not accepted.
