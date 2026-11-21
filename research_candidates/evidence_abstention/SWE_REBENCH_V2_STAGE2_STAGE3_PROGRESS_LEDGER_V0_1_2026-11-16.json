@@ -1129,10 +1129,17 @@
       "exposure_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
       "exposure_decision_record_sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38",
       "exposure_decision_date": "2026-11-21",
-      "study_evaluation_status_note": "The project lead approved source-aware gold/tier decisions, self-declared no prior pipeline/debug use, and acknowledged the bounded documentary license scope. Full researcher source exposure remains disclosed. The acknowledgement is not legal clearance or blanket redistribution permission. A complete schema-conformant proposed case record and fail-closed registry validation remain open; final acceptance is not yet granted. No model inference is authorized.",
+      "study_evaluation_status_note": "The project lead approved source-aware gold/tier decisions, self-declared no prior pipeline/debug use, and acknowledged the bounded documentary license scope. A schema-conformant proposed case record has been added. Its structural and fail-closed registry validation are pending latest-head CI; the record remains proposed, outside the accepted registry, and does not authorize inference. Full researcher source exposure remains disclosed; bounded license acknowledgement is not legal clearance.",
       "bounded_license_scope_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md",
       "bounded_license_scope_decision_record_sha256": "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6",
-      "bounded_license_scope_decision_date": "2026-11-21"
+      "bounded_license_scope_decision_date": "2026-11-21",
+      "proposed_case_acceptance_record_path": "research_candidates/evidence_abstention/eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
+      "case_record_structural_validation": {
+        "status": "pending_latest_head_ci",
+        "validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
+        "decision": "proposed",
+        "eligible_for_registry": false
+      }
     },
     {
       "cohort_rank": 17,
