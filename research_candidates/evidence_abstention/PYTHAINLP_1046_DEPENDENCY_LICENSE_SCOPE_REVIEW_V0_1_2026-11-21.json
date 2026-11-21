@@ -1,0 +1,53 @@
+{
+  "schema_version": "0.1-v02-bounded-license-scope-screen",
+  "review_date": "2026-11-21",
+  "candidate": "PyThaiNLP/pythainlp issue #1004 / PR #1046",
+  "source_identity": {
+    "exact_base": "188904f22c4c80fd7406706850c798f611690a4a",
+    "root_license": "Apache-2.0",
+    "root_license_blob_sha1": "8dada3edaf50dbc082c9a125058f25def75e625a",
+    "dataset_row_license_metadata": "Apache-2.0",
+    "dataset_card_license": "CC-BY-4.0",
+    "dataset_card_exact_pinned_readme_commit_and_bytes": "pending"
+  },
+  "stage2_runtime_inventory": {
+    "installed_distribution_count": 20,
+    "distributions_with_null_license_field_but_permissive_classifier": [
+      "exceptiongroup==1.3.1",
+      "setuptools==65.5.0",
+      "wheel==0.45.1"
+    ],
+    "native_runtime": {
+      "pyicu": "2.17",
+      "icu_native": "70.1",
+      "followup": "verify exact PyICU/ICU upstream license files and applicable notices for the installed native runtime/build artifacts"
+    },
+    "numpy_binary_components": [
+      "OpenBLAS (BSD-3-Clause)",
+      "LAPACK (BSD-3-Clause-Attribution)",
+      "libdivide (Zlib)",
+      "dragon4 (MIT)",
+      "GCC runtime library (GPL-3.0 with GCC Runtime Library Exception)",
+      "libquadmath (LGPL-2.1-or-later)"
+    ],
+    "evidence_artifact_id": 14351751109,
+    "artifact_sha256": "ce2ab3bbefd3148510992a7503d8c07b17fb87fe2c2a76173c1971d21e12dcb8",
+    "zip_crc": "passed",
+    "internal_sha256_manifest_entries": 17,
+    "internal_sha256_matches": 17
+  },
+  "review_status": {
+    "canonical_license_text_review": "open",
+    "numpy_bundled_component_notice_review": "open",
+    "pyicu_icu_native_scope_and_notice_review": "open",
+    "exact_dataset_card_readme_provenance": "open",
+    "bounded_research_scope_acknowledgement": "not_requested_pending_completion",
+    "legal_clearance": false,
+    "redistribution_authorized": false
+  },
+  "boundaries": {
+    "package_metadata_is_not_legal_approval": true,
+    "source_license_and_dataset_card_license_must_not_be_conflated": true,
+    "inference_authorized": false
+  }
+}
