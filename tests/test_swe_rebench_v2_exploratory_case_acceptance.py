@@ -649,9 +649,23 @@ def test_pyfar_721_stage3_advisory_review_remains_unapproved_and_fail_closed():
     assert "23/23" in integrity
     assert independence["candidate"]["case_id"] == "SRV2E-PYFAR_721"
     assert independence["independence_disposition"]["exact_duplicate_found"] is False
-    assert independence["exposure"]["prior_pipeline_debug_exposure"] == (
-        "pending_project_lead_self_declaration"
+    assert independence["exposure"]["prior_pipeline_debug_exposure"] == "none"
+    assert independence["exposure"]["researcher_source_exposure"] == (
+        "full_for_issue_PR_exact_base_source_and_stage2_outputs"
     )
+    assert independence["exposure"]["prior_pipeline_debug_exposure_gate"] == (
+        "closed_on_project_lead_self_report"
+    )
+    assert independence["exposure"]["evidence_class"] == (
+        "direct_project_lead_self_report_in_conversation"
+    )
+    assert independence["exposure"]["decision_record_path"] == (
+        "research_candidates/evidence_abstention/pyfar_721/"
+        "PROJECT_LEAD_EXPOSURE_DECISION_PYFAR_721_2026-11-21.md"
+    )
+    assert independence["exposure"]["independent_witnessed_or_audited"] is False
+    assert independence["exposure"]["blind_adjudication_claimed"] is False
+    assert independence["exposure"]["inter_rater_claimed"] is False
     assert independence["boundaries"]["final_case_acceptance"] == "not_accepted"
     assert independence["boundaries"]["registry_inclusion"] is False
     assert license_review["human_review"]["project_lead_scope_acknowledgement"] == "pending"
