@@ -119,33 +119,6 @@
     "review_record": {
       "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_1_2026-11-20.json",
       "sha256": "3f1be6b34b7b7e6fce8108f5228940d4fe280b60715210d9a520141e6443164c"
-    },
-    "latest_independent_reproducer_repeat": {
-      "status": "passed_exact_buggy_base_fail_fixed_revision_pass",
-      "workflow_run_id": 44903822528,
-      "job_id": 136845091011,
-      "artifact_id": 14707022685,
-      "artifact_sha256": "698e2f6b9d37522fd276f58ce57d85934bb0e8df16cd978284c3e79ef3a346dc",
-      "local_integrity": {
-        "independently_downloaded": true,
-        "outer_zip_sha256_recomputed": true,
-        "outer_zip_sha256_matches_github": true,
-        "zip_crc": "passed",
-        "internal_sha256_manifest_entries": 15,
-        "internal_sha256_manifest_matches": 15
-      },
-      "buggy_base": {
-        "commit_sha": "3efd1035c3bf62890034eb9e07de543f3d117867",
-        "observed_values": "[[1.0], [1.0]]",
-        "expected_values": "[[5.0], [15.0]]",
-        "defect_specific_test_executed_and_failed": true
-      },
-      "fixed_revision": {
-        "commit_sha": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
-        "same_reproducer_passed": true,
-        "test_result": "1 passed"
-      },
-      "note": "A repeat of the independent issue-level public-API reproducer. This does not change the separate final acceptance decision."
     }
   },
   "gold_standard": {
