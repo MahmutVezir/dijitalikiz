@@ -398,3 +398,121 @@ def test_dymos_proposed_case_record_is_structurally_complete_without_acceptance_
     assert len(record["evidence_tiers"]["E1"]["evidence_items"]) == 7
     assert len(record["evidence_tiers"]["E2"]["evidence_items"]) == 3
     assert len(record["evidence_tiers"]["E3"]["evidence_items"]) == 1
+
+
+def test_dymos_real_proposed_case_is_structurally_complete_but_not_accepted():
+    case_path = (
+        RESEARCH
+        / "dymos_1166"
+        / "SWE_REBENCH_V2_DYMOS_1166_CASE_RECORD_PROPOSED_V0_1_2026-11-20.json"
+    )
+    record = json.loads(case_path.read_text(encoding="utf-8"))
+
+    result = validate_case_record(record)
+
+    assert result["status"] == "structurally_complete_candidate", result["blockers"]
+    assert result["case_id"] == "SRV2E-DYMOS_1166"
+    assert result["acceptance_decision"] == "proposed"
+    assert result["eligible_for_registry"] is False
+    assert result["inference_authorized"] is False
+    assert record["final_acceptance"]["status"] == "pending"
+    assert record["final_acceptance"]["decision_timestamp_utc"] is None
+    assert record["final_acceptance"]["decision_record"] is None
+    assert record["exposure"]["prior_pipeline_debug_exposure"] == "none"
+    assert record["exposure"]["researcher_source_exposure"] == "full"
+    assert record["gold_standard"]["gold_mechanism_id"] == "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED"
+    assert record["evidence_tiers"]["E3"]["surviving_mechanism_ids"] == [
+        "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+        "A1_POLYNOMIAL_VALUE_SHAPE_NORMALIZATION",
+        "A2_STALE_TEST_SETUP_VALUE_OVERRIDE",
+        "A3_ODE_TARGET_UNITS_OR_STATE_CONFIGURATION",
+    ]
+    assert record["evidence_tiers"]["E2"]["surviving_mechanism_ids"] == [
+        "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+        "A1_POLYNOMIAL_VALUE_SHAPE_NORMALIZATION",
+    ]
+    assert record["evidence_tiers"]["E1"]["surviving_mechanism_ids"] == [
+        "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED"
+    ]
+    assert [
+        len(record["evidence_tiers"][level]["evidence_items"])
+        for level in ("E3", "E2", "E1")
+    ] == [1, 3, 7]
+
+    license_review_path = (
+        RESEARCH / "dymos_1166"
+        / "DYMOS_1166_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json"
+    )
+    license_review = json.loads(license_review_path.read_text(encoding="utf-8"))
+    assert license_review["human_review"]["project_lead_scope_acknowledgement"] == (
+        "acknowledged_with_scientific_independence_condition"
+    )
+    assert license_review["human_review"]["accepted_as_legal_clearance"] is False
+    assert license_review["human_review"]["external_legal_review"] == "not_performed"
+    assert license_review["dataset"]["revision"] == "fb9aa226b2ce37c708ea7732e7b980abacdadb67"
+    assert license_review["dataset"]["pinned_card_verification"]["license_displayed_at_exact_revision"] == "CC-BY-4.0"
+
+    pinned_commit = "9b2036cf455e50ac5668c72870b3ed1822ad397a"
+    references = [
+        (
+            record["dataset"]["timestamp_review_record"],
+            RESEARCH / "dymos_1166" / "DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
+        ),
+        (
+            record["independence"]["review_record"],
+            RESEARCH / "dymos_1166" / "DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
+        ),
+        (
+            record["exposure"]["review_record"],
+            RESEARCH / "dymos_1166" / "PROJECT_LEAD_EXPOSURE_DECISION_DYMOS_1166_2026-11-20.md",
+        ),
+        (
+            record["license_review"]["review_record"],
+            license_review_path,
+        ),
+        (
+            record["license_review"]["changed_file_license_manifest"],
+            RESEARCH / "dymos_1166" / "DYMOS_1166_CHANGED_FILE_LICENSE_MANIFEST_V0_1_2026-11-20.json",
+        ),
+        (
+            record["technical_reproduction"]["review_record"],
+            RESEARCH / "dymos_1166" / "EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_1_2026-11-20.json",
+        ),
+        (
+            record["gold_standard"]["review_record"],
+            RESEARCH / "dymos_1166" / "PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
+        ),
+        (
+            record["evidence_tiers"]["tier_decision_record"],
+            RESEARCH / "dymos_1166" / "PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
+        ),
+        (
+            record["human_decision"]["ai_critique_record"],
+            RESEARCH / "dymos_1166" / "DYMOS_1166_AI_ADVISORY_STRUCTURAL_CASE_REVIEW_2026-11-20.md",
+        ),
+    ]
+    for artifact_ref, source_path in references:
+        relative_path = str(source_path.relative_to(ROOT)).replace("\\\\", "/")
+        actual_sha256 = hashlib.sha256(source_path.read_bytes()).hexdigest()
+        assert actual_sha256 == artifact_ref["sha256"], relative_path
+        assert f"/blob/{pinned_commit}/" in artifact_ref["uri"], artifact_ref["uri"]
+        assert artifact_ref["uri"].split("#", 1)[0].endswith("/" + relative_path)
+
+    packet_uri = record["evidence_tiers"]["E1"]["packet"]["uri"]
+    assert f"/blob/{pinned_commit}/" in packet_uri
+    assert packet_uri.split("#", 1)[0].endswith(
+        "/research_candidates/evidence_abstention/dymos_1166/"
+        "OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json"
+    )
+
+    registry = json.loads(
+        (RESEARCH / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    registry_result = validate_registry(registry)
+    assert registry_result["status"] == "structurally_valid_candidate_registry"
+    assert registry_result["accepted_case_count"] == 2
+    assert registry_result["accepted_project_count"] == 2
+    assert "SRV2E-DYMOS_1166" not in {item["case_id"] for item in registry["records"]}
+    assert registry_result["inference_authorized"] is False
