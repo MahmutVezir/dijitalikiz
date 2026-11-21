@@ -109,3 +109,19 @@ This acknowledgement is limited to the temporal-exposure assessment. It does **n
 The superseded GPTQ configuration is not treated as the active pilot model: the frozen pilot manifest records that it was replaced before any pilot inference record was written. The temporal assessment is based on the active pinned `Qwen/Qwen2.5-3B-Instruct` revision recorded in that manifest.
 
 Remaining GeoFileOps gates: full exact-build dependency/native copyright and license/NOTICE review for all 105 Conda packages; bounded source/dataset attribution and research-scope acknowledgement; complete schema-conformant case record and fail-closed validation; separate final project-lead YES/NO acceptance. No registry inclusion or inference is authorized by this acknowledgement.
+
+## 9. GeoPandas #3591 — project-lead gold mechanism and E1/E2/E3 decision — 21 November 2026
+
+**Project-lead decision: APPROVED.** Approval timestamp captured: 2026-11-21T20:58:43+03:00 (Europe/Istanbul).
+
+- Candidate: geopandas/geopandas issue #3590 / PR #3591, frozen rank 52; frozen row geopandas__geopandas-3591.
+- Approved gold: G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION.
+- Approved tier results: **E3 = ABSTAIN; E2 = ABSTAIN; E1 = ANSWER**.
+- Approved alternatives: A1 single-row data-shape/alignment path; A2 independent CRS/active-geometry state-transition defect.
+- Surviving mechanisms: E3 = G1/A1/A2; E2 = G1/A2; E1 = G1.
+- E2 excludes the exact PR review suggestion that spells out the all-null predicate. That source is E1-only.
+- Frozen packet manifests: E3 research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E3_PACKET_MANIFEST_V0_1.json; E2 research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E2_PACKET_MANIFEST_V0_1.json; E1 research_candidates/evidence_abstention/geopandas_3591/GEOPANDAS_3591_E1_PACKET_MANIFEST_V0_1.json.
+- The packet set is frozen semantic source evidence only. Stage 2 has **not** run: no base-fail/fixed-pass reproduction, selector run, locked environment or Stage 2 artifact is claimed.
+- Candidate remains **HOLD** and is not finally accepted or added to the registry. A separate explicit project-lead approval is required before Stage 2. Model loading/inference/training remain unauthorized.
+- Researcher source exposure remains full and disclosed; no blinded researcher adjudication or inter-rater reliability is claimed. No legal/licensing clearance is implied.
+- Decision record: research_candidates/evidence_abstention/geopandas_3591/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_GEOPANDAS_3591_2026-11-21.md (SHA-256 1de86ffa8c09983c53ecf43cfce536df6be1dcb8b93a57a76ae2bdb1f7d0f3cf).
