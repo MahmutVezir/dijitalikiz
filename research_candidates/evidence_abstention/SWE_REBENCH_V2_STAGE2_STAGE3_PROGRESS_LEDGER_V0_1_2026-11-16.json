@@ -3675,6 +3675,44 @@
     "inference_authorized": false,
     "model_loading_authorized": false,
     "fine_tuning_authorized": false,
-    "training_authorized": false
+    "training_authorized": false,
+    "decision_record_commit": "e5d4f434121eb95b3a50117ed63196641a19c73a"
+  },
+  "latest_meltano_license_scope_decision_validation": {
+    "validated_commit": "d4b1178f4cb01a9850eb4bef6bba7db65b177029",
+    "branch": "research/2026-11-16-followup-evidence-validation",
+    "decision_record_path": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md",
+    "decision_record_commit": "e5d4f434121eb95b3a50117ed63196641a19c73a",
+    "evidence_abstention_preflight": {
+      "workflow_run_id": 44902405360,
+      "job_id": 136840861482,
+      "conclusion": "success",
+      "v02_acceptance_and_readiness_tests": "28 passed",
+      "design_and_scoring_tests": "10 passed",
+      "readiness_blockers": 13,
+      "accepted_cases": 2,
+      "accepted_projects": 2,
+      "ready_for_inference": false,
+      "inference_authorized": false,
+      "artifact_id": 14706840236
+    },
+    "research_validation": {
+      "workflow_run_id": 44902405575,
+      "job_id": 136840862182,
+      "conclusion": "success",
+      "result": "480 passed, 6 skipped, 56 subtests passed"
+    },
+    "uncertainty_unit_tests": {
+      "workflow_run_id": 44902405487,
+      "job_id": 136840861594,
+      "conclusion": "success",
+      "result": "171 tests passed"
+    },
+    "qwen_adapter_cpu_tests": {
+      "workflow_run_id": 44902405429,
+      "job_id": 136840861612,
+      "conclusion": "success"
+    },
+    "scope": "Record and regression-test validation only. No model weights loaded; no inference, fine-tuning, or training. Meltano remains outside the accepted registry; legal/dependency/notice/card provenance reviews remain open."
   }
 }
