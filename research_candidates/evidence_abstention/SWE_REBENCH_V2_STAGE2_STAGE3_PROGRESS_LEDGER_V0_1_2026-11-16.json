@@ -2151,12 +2151,14 @@
       "second_pass_disposition": "none_recorded",
       "second_pass_reason": null,
       "candidate_review_document": null,
-      "stage2_status": "not_started",
+      "stage2_status": "held_high_pre_release_temporal_exposure_risk_no_stage2_execution",
       "stage2_workflow_job_id": null,
-      "stage2_evidence_note": null,
-      "stage3_status": "not_started_stage2_or_scope_gate",
+      "stage2_evidence_note": "Frozen exploratory manifest candidate_review_records[12] records mpmath__mpmath-902 as held out of primary evaluation because issue #511 was published 2020-01-17, more than four years before Qwen2.5-3B-Instruct public release in Sep 2024; training-data exposure is plausible and cannot be ruled out. Static issue/PR/source review was performed in continuation, but no Stage 2 build, independent reproducer, dataset-row extraction, selector execution, or artifact was produced. Do not re-enter the primary sample absent an explicit project-lead amendment to the frozen temporal-exposure policy.",
+      "stage3_status": "not_applicable_temporal_exposure_hold; static_technical_screen_only",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "temporal_exposure_hold_record": "research_candidates/evidence_abstention/mpmath_902/MPMATH_902_TEMPORAL_EXPOSURE_HOLD_CONFIRMATION_2026-11-21.md",
+      "next_required_gate": "No primary-sample Stage 2. Any re-entry requires explicit project-lead amendment to the frozen temporal-exposure rule with documented scientific justification. Candidate remains provenance-only / possible separately labelled engineering control, not an independent primary case."
     },
     {
       "cohort_rank": 41,
@@ -4773,5 +4775,26 @@
     "final_case_acceptance": "not_accepted",
     "registry_inclusion": false,
     "inference_authorized": false
+  },
+  "latest_mpmath_902_disposition": {
+    "date": "2026-11-21",
+    "status": "held_high_pre_release_temporal_exposure_risk",
+    "frozen_manifest_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json",
+    "frozen_manifest_record_index": 12,
+    "issue_url": "https://github.com/mpmath/mpmath/issues/511",
+    "pr_url": "https://github.com/mpmath/mpmath/pull/902",
+    "issue_created_at_utc": "2020-01-17T19:05:48Z",
+    "public_model_release_reference": "Qwen2.5-3B-Instruct public release September 2024",
+    "technical_static_screen": "issue and patch alignment/source reviewed; Stage 2 not run",
+    "stage2_execution": false,
+    "dataset_row_extracted": false,
+    "independent_reproducer_run": false,
+    "selector_run": false,
+    "artifact_id": null,
+    "primary_sample_eligible": false,
+    "case_acceptance": "not_accepted",
+    "inference_authorized": false,
+    "hold_confirmation_path": "research_candidates/evidence_abstention/mpmath_902/MPMATH_902_TEMPORAL_EXPOSURE_HOLD_CONFIRMATION_2026-11-21.md",
+    "primary_reentry_requirement": "explicit project-lead amendment to frozen temporal-exposure policy and documented justification"
   }
 }
