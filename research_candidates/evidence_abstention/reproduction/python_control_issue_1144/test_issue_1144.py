@@ -14,12 +14,24 @@ class PythonControlIssue1144Regression(unittest.TestCase):
         figure, axes = plt.subplots(2, 2)
         try:
             system = ct.tf([1], [2, 1])
-            plt.sca(axes[1, 1])
-            ct.nyquist_plot(system, ax=axes[1, 0])
-            self.assertGreater(len(axes[1, 0].lines), 0)
-            self.assertEqual(len(axes[0, 0].lines), 0)
-            self.assertEqual(len(axes[0, 1].lines), 0)
-            self.assertEqual(len(axes[1, 1].lines), 0)
+            explicit_axes = axes[1, 0]
+            current_axes = axes[1, 1]
+            plt.sca(current_axes)
+            ct.nyquist_plot(system, ax=explicit_axes)
+
+            actual_line_counts = {
+                "explicit_axes": len(explicit_axes.lines),
+                "current_global_axes": len(current_axes.lines),
+                "upper_left": len(axes[0, 0].lines),
+                "upper_right": len(axes[0, 1].lines),
+            }
+            self.assertTrue(
+                actual_line_counts["explicit_axes"] > 0
+                and actual_line_counts["current_global_axes"] == 0,
+                msg=f"Expected all Nyquist lines on explicit Axes only; observed {actual_line_counts}",
+            )
+            self.assertEqual(actual_line_counts["upper_left"], 0)
+            self.assertEqual(actual_line_counts["upper_right"], 0)
         finally:
             plt.close(figure)
 

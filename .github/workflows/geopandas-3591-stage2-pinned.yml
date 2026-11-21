@@ -1,0 +1,256 @@
+name: "GeoPandas #3591 Stage 2 Pinned Base/Fix Reproduction"
+
+on:
+  push:
+    branches:
+      - research/2026-11-16-followup-evidence-validation
+    paths:
+      - ".github/workflows/geopandas-3591-stage2-pinned.yml"
+      - "research_candidates/evidence_abstention/reproduction/geopandas_3591/requirements.lock"
+      - "research_candidates/evidence_abstention/reproduction/geopandas_3591/reproduce_geometry_nan_case.py"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/geopandas-3591-stage2-pinned.yml"
+      - "research_candidates/evidence_abstention/reproduction/geopandas_3591/requirements.lock"
+      - "research_candidates/evidence_abstention/reproduction/geopandas_3591/reproduce_geometry_nan_case.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: geopandas-3591-stage2-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  geopandas-3591-stage2:
+    if: ${{ (github.event_name == 'pull_request' && github.head_ref == 'research/2026-11-16-followup-evidence-validation') || github.ref == 'refs/heads/research/2026-11-16-followup-evidence-validation' }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    env:
+      PYTHONUNBUFFERED: "1"
+      BASE_SHA: "c36eba059f6170715b63a9aa065817c64025d263"
+      FIX_SHA: "b3259ce23a37abd32650d7df098f3cdc8c4bb261"
+      BASE_GDF_BLOB_SHA1: "1a607cbb5baea0c3ddc50b03042734c44b7945da"
+      FIX_GDF_BLOB_SHA1: "243d98759878754975e1b8b1732cfb503dd1bf0a"
+      FIX_TEST_BLOB_SHA1: "61eac57b37d9b0550a8b7d97f603a03d82725d28"
+      BASE_CHANGELOG_BLOB_SHA1: "f3cc885587583b6badcf8cb67e9303d3ac2aae04"
+      FIX_CHANGELOG_BLOB_SHA1: "56554d4f7a07cddd51abaf9170dfa08462e9f1ac"
+      LOCK_FILE: "research_candidates/evidence_abstention/reproduction/geopandas_3591/requirements.lock"
+      REPRODUCER: "research_candidates/evidence_abstention/reproduction/geopandas_3591/reproduce_geometry_nan_case.py"
+
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up pinned Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+          cache: "pip"
+          cache-dependency-path: research_candidates/evidence_abstention/reproduction/geopandas_3591/requirements.lock
+
+      - name: Initialize sanitized evidence directory
+        id: evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          cp "$LOCK_FILE" reproduction-evidence/requirements.lock
+          python --version | tee reproduction-evidence/python-version.txt
+          uname -a > reproduction-evidence/runner-kernel.txt
+          . /etc/os-release
+          printf '%s\n' "$PRETTY_NAME" > reproduction-evidence/runner-os.txt
+
+      - name: Authenticate exact upstream commits, source blobs and patch scope
+        id: source_auth
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone https://github.com/geopandas/geopandas.git upstream-geopandas
+          git -C upstream-geopandas fetch --no-tags origin "$BASE_SHA" "$FIX_SHA"
+          git -C upstream-geopandas cat-file -e "${BASE_SHA}^{commit}"
+          git -C upstream-geopandas cat-file -e "${FIX_SHA}^{commit}"
+          test "$(git -C upstream-geopandas rev-parse "$BASE_SHA":geopandas/geodataframe.py)" = "$BASE_GDF_BLOB_SHA1"
+          test "$(git -C upstream-geopandas rev-parse "$FIX_SHA":geopandas/geodataframe.py)" = "$FIX_GDF_BLOB_SHA1"
+          test "$(git -C upstream-geopandas rev-parse "$FIX_SHA":geopandas/tests/test_geodataframe.py)" = "$FIX_TEST_BLOB_SHA1"
+          test "$(git -C upstream-geopandas rev-parse "$BASE_SHA":CHANGELOG.md)" = "$BASE_CHANGELOG_BLOB_SHA1"
+          test "$(git -C upstream-geopandas rev-parse "$FIX_SHA":CHANGELOG.md)" = "$FIX_CHANGELOG_BLOB_SHA1"
+
+          git -C upstream-geopandas diff --name-only "$BASE_SHA" "$FIX_SHA" | LC_ALL=C sort > reproduction-evidence/upstream-changed-paths.txt
+          cat > reproduction-evidence/expected-upstream-changed-paths.txt <<'EOF'
+          CHANGELOG.md
+          geopandas/geodataframe.py
+          geopandas/tests/test_geodataframe.py
+          EOF
+          diff -u reproduction-evidence/expected-upstream-changed-paths.txt reproduction-evidence/upstream-changed-paths.txt
+
+          patch_sha256="$(git -C upstream-geopandas diff "$BASE_SHA" "$FIX_SHA" | sha256sum | awk '{print $1}')"
+          base_tree="$(git -C upstream-geopandas rev-parse "$BASE_SHA^{tree}")"
+          fix_tree="$(git -C upstream-geopandas rev-parse "$FIX_SHA^{tree}")"
+          export patch_sha256 base_tree fix_tree
+          python - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          data = {
+              "repository": "geopandas/geopandas",
+              "base_commit": os.environ["BASE_SHA"],
+              "fixed_commit": os.environ["FIX_SHA"],
+              "base_tree": os.environ["base_tree"],
+              "fixed_tree": os.environ["fix_tree"],
+              "base_geodataframe_blob_sha1": os.environ["BASE_GDF_BLOB_SHA1"],
+              "fixed_geodataframe_blob_sha1": os.environ["FIX_GDF_BLOB_SHA1"],
+              "fixed_regression_test_blob_sha1": os.environ["FIX_TEST_BLOB_SHA1"],
+              "base_changelog_blob_sha1": os.environ["BASE_CHANGELOG_BLOB_SHA1"],
+              "fixed_changelog_blob_sha1": os.environ["FIX_CHANGELOG_BLOB_SHA1"],
+              "changelog_change_classification": "release_note_only; records GeoPandas 1.1.1 fix #3591; not runtime/test code",
+              "base_to_fix_patch_sha256": os.environ["patch_sha256"],
+              "changed_paths": Path("reproduction-evidence/upstream-changed-paths.txt").read_text().splitlines(),
+              "upstream_source_or_patch_saved_to_artifact": False,
+              "test_fixture_source_saved_to_artifact": False,
+              "dataset_row_or_problem_statement_saved_to_artifact": False,
+          }
+          Path("reproduction-evidence/source-provenance.json").write_text(
+              json.dumps(data, indent=2) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(data, indent=2))
+          PY
+
+      - name: Install fully pinned test environment
+        id: install_env
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-geopandas checkout --detach "$BASE_SHA"
+          test "$(git -C upstream-geopandas rev-parse HEAD)" = "$BASE_SHA"
+          grep -F 'build-backend = "setuptools.build_meta"' upstream-geopandas/pyproject.toml
+          python -m venv .venv-geopandas
+          .venv-geopandas/bin/python -m pip install --disable-pip-version-check -r "$LOCK_FILE"
+          .venv-geopandas/bin/python -m pip install --disable-pip-version-check --no-build-isolation --no-deps --editable ./upstream-geopandas
+          .venv-geopandas/bin/python -m pip check | tee reproduction-evidence/pip-check.txt
+          grep -Ev '^(#|$)' "$LOCK_FILE" | LC_ALL=C sort > "$RUNNER_TEMP/geopandas-expected-freeze.txt"
+          .venv-geopandas/bin/python -m pip freeze --all | grep -v '^-e ' | LC_ALL=C sort > "$RUNNER_TEMP/geopandas-observed-freeze.txt"
+          diff -u "$RUNNER_TEMP/geopandas-expected-freeze.txt" "$RUNNER_TEMP/geopandas-observed-freeze.txt"
+          cp "$RUNNER_TEMP/geopandas-observed-freeze.txt" reproduction-evidence/pinned-environment-freeze.txt
+          .venv-geopandas/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json, platform, sys
+          from pathlib import Path
+          names = ["pip", "setuptools", "wheel", "numpy", "pandas", "shapely", "pyproj", "pyogrio", "packaging", "pytest"]
+          data = {
+              "python": sys.version,
+              "platform": platform.platform(),
+              "distributions": {name: md.version(name) for name in names},
+              "geopandas_source_checkout": "upstream-geopandas",
+              "dependency_lock_verified_against_pip_freeze": True,
+          }
+          Path("reproduction-evidence/runtime-summary.json").write_text(
+              json.dumps(data, indent=2) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(data, indent=2))
+          PY
+
+      - name: Reproduce frozen input on buggy base (expected exact ValueError)
+        id: base_reproducer
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-geopandas checkout --detach "$BASE_SHA"
+          test "$(git -C upstream-geopandas rev-parse HEAD)" = "$BASE_SHA"
+          (
+            cd upstream-geopandas
+            "$GITHUB_WORKSPACE/.venv-geopandas/bin/python" "$GITHUB_WORKSPACE/$REPRODUCER" \
+              --source-root "$GITHUB_WORKSPACE/upstream-geopandas" \
+              --expected base-failure \
+              --output "$GITHUB_WORKSPACE/reproduction-evidence/base-reproducer-result.json"
+          ) 2>&1 | tee reproduction-evidence/base-reproducer.log
+
+      - name: Reproduce frozen input on fixed revision (expected successful construction)
+        id: fixed_reproducer
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-geopandas checkout --detach "$FIX_SHA"
+          test "$(git -C upstream-geopandas rev-parse HEAD)" = "$FIX_SHA"
+          test "$(git -C upstream-geopandas rev-parse HEAD:geopandas/geodataframe.py)" = "$FIX_GDF_BLOB_SHA1"
+          (
+            cd upstream-geopandas
+            "$GITHUB_WORKSPACE/.venv-geopandas/bin/python" "$GITHUB_WORKSPACE/$REPRODUCER" \
+              --source-root "$GITHUB_WORKSPACE/upstream-geopandas" \
+              --expected fixed-pass \
+              --output "$GITHUB_WORKSPACE/reproduction-evidence/fixed-reproducer-result.json"
+          ) 2>&1 | tee reproduction-evidence/fixed-reproducer.log
+
+      - name: Run exact frozen FAIL_TO_PASS selector on fixed revision
+        id: fixed_pytest
+        shell: bash
+        run: |
+          set -euo pipefail
+          (
+            cd upstream-geopandas
+            "$GITHUB_WORKSPACE/.venv-geopandas/bin/python" -m pytest -q -rA \
+              geopandas/tests/test_geodataframe.py::TestConstructor::test_geometry_nan_scalar
+          ) 2>&1 | tee "$GITHUB_WORKSPACE/reproduction-evidence/fixed-frozen-selector-pytest.log"
+
+      - name: Finalize Stage 2 status record
+        if: always()
+        env:
+          SOURCE_AUTH_OUTCOME: ${{ steps.source_auth.outcome || 'not_run' }}
+          ENVIRONMENT_OUTCOME: ${{ steps.install_env.outcome || 'not_run' }}
+          BASE_OUTCOME: ${{ steps.base_reproducer.outcome || 'not_run' }}
+          FIXED_REPRO_OUTCOME: ${{ steps.fixed_reproducer.outcome || 'not_run' }}
+          FIXED_PYTEST_OUTCOME: ${{ steps.fixed_pytest.outcome || 'not_run' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          checks = {
+              "source_authentication": os.environ["SOURCE_AUTH_OUTCOME"],
+              "pinned_environment": os.environ["ENVIRONMENT_OUTCOME"],
+              "buggy_base_reproducer": os.environ["BASE_OUTCOME"],
+              "fixed_revision_reproducer": os.environ["FIXED_REPRO_OUTCOME"],
+              "fixed_revision_frozen_pytest_selector": os.environ["FIXED_PYTEST_OUTCOME"],
+          }
+          passed = all(value == "success" for value in checks.values())
+          data = {
+              "candidate": "geopandas/geopandas issue #3590 / PR #3591",
+              "dataset_instance_id": "geopandas__geopandas-3591",
+              "stage": "Stage 2 exact base/fix reproduction",
+              "stage2_technical_result": "passed_technical_reproduction" if passed else "failed_or_incomplete",
+              "checks": checks,
+              "model_loading_performed": False,
+              "model_inference_performed": False,
+              "fine_tuning_or_training_performed": False,
+              "final_case_acceptance": "not_decided",
+              "candidate_disposition": "HOLD_pending_stage3_and_independent_acceptance_review",
+          }
+          Path("reproduction-evidence/stage2-result.json").write_text(
+              json.dumps(data, indent=2) + "\n", encoding="utf-8"
+          )
+          Path("reproduction-evidence/stage2-result.txt").write_text(
+              data["stage2_technical_result"] + "\n", encoding="utf-8"
+          )
+          print(json.dumps(data, indent=2))
+          PY
+
+      - name: Generate SHA-256 evidence index
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd reproduction-evidence
+          find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 -r sha256sum > SHA256SUMS
+          cat SHA256SUMS
+
+      - name: Upload sanitized Stage 2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: geopandas-3591-stage2-${{ github.run_id }}
+          path: reproduction-evidence/
+          if-no-files-found: error
+          retention-days: 90

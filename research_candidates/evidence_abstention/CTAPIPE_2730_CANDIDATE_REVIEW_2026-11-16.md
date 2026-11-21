@@ -1,46 +1,332 @@
-# cta-observatory/ctapipe issue #2730 — conditional candidate review
+# cta-observatory/ctapipe issue #2730 — candidate review and Stage 2 result
 
 **Cohort rank:** 31 of 96 primary candidates  
-**Dataset instance:** cta-observatory__ctapipe-2732 (exact row identity to be authenticated)  
+**Dataset instance:** `cta-observatory__ctapipe-2732`  
 **Issue:** https://github.com/cta-observatory/ctapipe/issues/2730  
 **Fix PR:** https://github.com/cta-observatory/ctapipe/pull/2732  
-**Review status:** source/patch alignment is plausible, but the return-type contract is internally inconsistent. Conditional hold; not an accepted case.
+**Technical Stage 2:** PASS — exact frozen selector and independent HDF5 mixed-type reproducer both fail on the exact buggy base and pass on the exact fixed PR head.  
+**Candidate disposition:** Conditional hold pending issue-configuration/provenance reconciliation and Stage 3 review. Not a final accepted case.
 
-## 1. Defect contract and unresolved semantic point
+## 1. Defect contract and source-level failure mechanism
 
-Issue #2730 reports a DataWriter failure involving muon-parameter skewness and excess kurtosis. PR #2732 changes the radial-light-distribution routine so that skewness and excess kurtosis are returned as plain numeric values rather than dimensionless Astropy quantities. It also changes the zero-image branch to return plain NaN values. The regression test asserts that both outputs are float or numpy.floating.
+The exact buggy-base `MuonParametersContainer` declares:
 
-However, the exact-base and fixed source retain docstring return annotations describing skewness and excess_kurtosis as astropy.units.Quantity, while the fixed implementation and new tests require plain numeric values. This documentation/contract mismatch must be resolved before the gold mechanism can be locked. The issue's short description alone does not fully explain why DataWriter's conversion path fails.
+- `skewness = Field(nan, ...)`
+- `excess_kurtosis = Field(nan, ...)`
 
-## 2. Pinned source identity
+Neither field declares a unit, and neither declares `type`, `dtype`, or `ndim`. This is an untyped field with a plain-float default, not a strict runtime type contract. The exact-base `Field.validate` only requires/converts a Quantity when `self.unit is not None`; because these fields have no unit or other type/dtype/dimension constraint, it accepts both a Quantity and a plain float. The docstring on `radial_light_distribution` nevertheless describes both outputs as `astropy.units.Quantity`; the PR's new test and implementation make the intended output change to plain floats, but the docstring was not updated.
 
-- Repository: cta-observatory/ctapipe
-- Buggy base: 287e7685e0e963f3fb44d92832ca97ac8c265c40
-- Fixed PR head: 5007b6ab61887d7555155edb4d1d296603a9735e
-- Merge commit: ba4546f2027e2f820982c4e40730097b7e16434c
-- Issue #2730 created: 2025-04-02T15:59:14Z
-- PR #2732 created: 2025-04-02T17:48:48Z
-- Exact-base root LICENSE Git blob: 7d85dda24fa481e24c4b33dd98dbc13245ee1fd2
-- Exact-base pyproject.toml Git blob: 9f4bbee5eb6619a36bf327d7f34157a2c2ee0bd5
-- Exact-base features.py Git blob: 8d547bf52c52dee18a3fa82dd47395a03bded282
-- Fixed features.py Git blob: f18f1c3f16b41a5e7b1076512296ca8a4efa1c2f
-- Exact-base project license declaration: BSD-3-Clause.
+The exact-base HDF5 writer path is:
 
-## 3. Scientific/technical gate
+1. `HDF5TableWriter._add_column_to_schema` detects a Quantity in the first row and creates a `QuantityColumnTransform` using the value's unit when the field has no unit.
+2. `QuantityColumnTransform.__call__` evaluates `value.to_value(self.unit)`.
+3. `HDF5TableWriter._append_row` applies the already-registered transform to later rows in that same column.
+4. When a later row has an ordinary Python float, the transform calls `float.to_value(...)`, producing the observed `AttributeError`.
 
-The issue-specific function is radial_light_distribution. The PR changes the output types for skewness and excess kurtosis, and the test verifies those types plus numerical values for a uniform synthetic image. A narrow AST-extracted test could execute this exact function with only NumPy and Astropy, avoiding unrelated ctapipe runtime imports.
+This is directly supported by the reporter's full issue traceback: `DataWriter.__call__` -> `_write_muon_telescope_events` -> `HDF5TableWriter.write` -> `_append_row` -> `_apply_col_transform` -> `QuantityColumnTransform.__call__` -> `value.to_value(self.unit)`, ending in `AttributeError: 'float' object has no attribute 'to_value'`.
 
-Before advancing, we must:
-1. reconcile the public return contract (docstring vs implementation/test);
-2. verify the DataWriter failure path and show that the type change addresses it;
-3. authenticate and run the dataset FAIL_TO_PASS selectors on the exact base and fixed revisions;
-4. confirm that no external test data or provenance-sensitive fixtures are involved.
+The pipeline source also contains two relevant output paths: valid muon parameters are calculated through `radial_light_distribution`, while invalid-ring processing can return the default `INVALID_PARAMETERS = MuonParametersContainer()`. The direct reproduction below deliberately writes a calculated (base: Quantity-valued) `MuonParametersContainer` followed by a default container (plain float defaults), reproducing the column-transform type mismatch.
 
-No inference or training is authorized.
+## 2. Important issue reproduction discrepancy — still open
 
-## 4. Current decision
+The frozen issue problem statement includes this YAML:
 
-Issue/patch alignment: plausible.  
-Technical semantic contract: unresolved.  
-License: exact-base BSD-3-Clause screen passed.  
-Final case acceptance: not accepted; conditional hold.
+```yaml
+DataWriter:
+  write_muon_parameters: False
+```
+
+Yet exact-base `DataWriter.__call__` calls `_write_muon_telescope_events(event)` only under `if self.write_muon_parameters:`, and the reporter traceback proves that the muon writer ran.
+
+Therefore the published YAML, if literally used as the effective configuration without an override, does not explain the observed call path. A transcription error, a different effective configuration, or an override are possible, but none has been established. This discrepancy does not undo the independently reproduced HDF5 mechanism, but it means that the issue YAML is not a self-sufficient reproducer and the original run's effective configuration remains a provenance question.
+
+## 3. Pinned source and frozen dataset identity
+
+- Repository: `cta-observatory/ctapipe`
+- Buggy base: `287e7685e0e963f3fb44d92832ca97ac8c265c40`
+- Fixed PR head: `5007b6ab61887d7555155edb4d1d296603a9735e`
+- Merge commit: `ba4546f2027e2f820982c4e40730097b7e16434c`
+- Issue #2730 created: `2025-04-02T15:59:14Z`
+- PR/dataset row created: `2025-04-02T17:48:48Z`
+- Exact-base root LICENSE Git blob: `7d85dda24fa481e24c4b33dd98dbc13245ee1fd2`
+- Exact-base pyproject.toml Git blob: `9f4bbee5eb6619a36bf327d7f34157a2c2ee0bd5`
+- Exact-base containers.py blob: `89b33ac0c25516ca57fa23254808e276ac5944d2`
+- Exact-base core/container.py blob: `70ce1cc66ea1442c5b228bd3dd619ea89ecb0b3c`
+- Exact-base hdf5tableio.py blob: `df7514632f59da73a609179fd916ff316620e77a`
+- Exact-base tableio.py blob: `ee059630af80dc746eae5ecbfbaa9727bbfe768a`
+- Exact-base datawriter.py blob: `dbd5b36b1528d850537885b956dfc4a1f24be5e4`
+- Exact-base features.py blob: `8d547bf52c52dee18a3fa82dd47395a03bded282`
+- Fixed features.py blob: `f18f1c3f16b41a5e7b1076512296ca8a4efa1c2f`
+- Fixed test_muon_features.py blob: `b9f44ed8d8254ce3f55c6df79471d071f6de7540`
+- Exact-base project license declaration: BSD-3-Clause (documentary root-source screen, not legal advice or blanket dependency clearance).
+
+Frozen dataset:
+- Dataset: `PrimeIntellect/SWE-rebench-V2-Filtered-Verified`
+- Revision: `fb9aa226b2ce37c708ea7732e7b980abacdadb67`
+- Parquet SHA-256: `7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9`
+- Instance ID: `cta-observatory__ctapipe-2732`
+- Row SHA-256 (canonical JSON): `9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d`
+- Frozen `FAIL_TO_PASS` count: **1**
+- Exact unchanged selector: `src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution`
+
+The row was extracted from the exact pinned Parquet file in a successful Python 3.11.9 audit run. Canonical row JSON and selector text were saved in the artifact, the artifact digest matched GitHub's reported digest, all four internal file hashes passed, and the row SHA-256 was independently recalculated from the retained canonical JSON.
+- Row audit run: `44298746628`
+- Row audit artifact ID: `14424887790`
+- Row audit ZIP SHA-256: `4653884c0f6f127c0d8150b3011924bc1be0c515800a5df762ac839be67c151c`
+
+## 4. Technical Stage 2 — exact base-fail / fixed-pass
+
+A dedicated no-inference workflow used CPython 3.11.9 and pinned direct/test dependencies. The exact upstream PR changed three files:
+
+1. `docs/changes/2732.bugfix.rst`
+2. `src/ctapipe/image/muon/features.py`
+3. `src/ctapipe/image/muon/tests/test_muon_features.py`
+
+On the buggy base, the workflow applied only the upstream test-file patch; its worktree status confirms only `src/ctapipe/image/muon/tests/test_muon_features.py` was modified. No production fix was applied to the buggy base.
+
+### 4.1 Frozen SWE-rebench selector
+
+- Buggy base: **FAIL** at the regression assertion. Actual observed type was `astropy.units.quantity.Quantity`, whereas the patched test requires `float` or `numpy.floating`. Result: `1 failed in 0.05s`.
+- Fixed PR head: **PASS**. Result: `1 passed in 0.02s`.
+
+This was a defect-specific assertion failure, not collection or environment failure.
+
+### 4.2 Independent HDF5 mixed-type reproducer
+
+The supplemental test writes a calculated muon-parameter container and then a default `MuonParametersContainer` through the real `HDF5TableWriter`.
+
+- Buggy base: **FAIL** at the exact HDF5 transform. The traceback ends with `AttributeError: 'float' object has no attribute 'to_value'` in `QuantityColumnTransform.__call__`. Result: `1 failed in 1.08s`.
+- Fixed PR head: **PASS**. Result: `1 passed in 1.07s`.
+
+This provides direct mechanism-level evidence beyond the frozen selector's type assertion.
+
+### 4.3 Environment and artifact
+
+- CPython: 3.11.9
+- NumPy: 1.26.4
+- Astropy: 6.1.7
+- pytest: 8.3.5
+- pytest-astropy-header: 0.2.2
+- PyTables: 3.10.2
+- `pip check`: `No broken requirements found`
+- Installed distributions captured: 51
+- Dependency license metadata: 51 distributions captured; all had at least one of a license field, license classifier, or detected license file. 50 had detected license files; tqdm had a license field and classifiers but no license file among the captured metadata paths. This is an inventory, not human legal clearance.
+
+Primary Stage 2 repeat run:
+- Workflow run: `44300812600`
+- Job: `134789741250`
+- Artifact ID: `14424704542`
+- Artifact name: `ctapipe-2732-stage2-base-fixed-44300812600-1`
+- Artifact ZIP SHA-256: `bc5c7c022cb0b7685415877beea3d678945a5740dcc21b44b1989e224a0f3426`
+- All 22 evidence-file hashes in `SHA256SUMS.txt` were independently checked successfully.
+- The artifact additionally includes SHA-256 hashes for the workflow, direct HDF5 test file, exact selector file, frozen row manifest, and dependency input lock.
+- The HDF5 reproducer now explicitly calls `validate()` on both the calculated Quantity-valued and default-float containers; both validate successfully before the base writer failure.
+- Environment input SHA-256: `1b6e82f8db8dcad6a1720666f19c8868ae5d6ef6e13cae2228d9c0e7e7a62edb`
+- Dependency-license metadata SHA-256: `f9151d1e3824a96da76dff15401e4e112a904fd4f25a52c2865903e1e1d3a868`
+
+An earlier complete Stage 2 execution independently gave the same base-fail/fixed-pass outcomes:
+- Workflow run: `44299388651`, job `134784814840`
+- Artifact ID: `14424942732`
+- Artifact ZIP SHA-256: `f6ddfd91afa97b3720c10c0f7816f409a7c354f85883fa61b837bfc823621ea`
+
+A machine-readable combined evidence manifest is stored at `research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/stage2_evidence_manifest.json`.
+
+## 5. Remaining Stage 3 and provenance gates
+
+1. Resolve or formally record the issue YAML/effective-configuration discrepancy. If it cannot be resolved, preserve the scope limitation and do not claim that the posted YAML alone reproduces the original run.
+2. Complete direct/transitive dependency, optional/bundled third-party, and system-level license/provenance review. The recorded 51-distribution metadata inventory is not a substitute for human scope review.
+3. Complete independent-project and related-issue-family review.
+4. Record researcher exposure and timing/cutoff assessment.
+5. Complete human gold-mechanism adjudication and nested E1/E2/E3 evidence-tier decisions.
+6. Keep the final accepted case registry unchanged until a schema-conformant acceptance record and separate project-lead decision are recorded.
+
+No model was loaded; no inference or fine-tuning was performed.
+
+## 6. Upstream discussion and test-coverage limitations
+
+- The reporter's issue comment provides the full exception traceback.
+- The PR author says some skewness/excess-kurtosis values had a dimensionless unit while others did not, although the container fields declared no units; the author states container validation would reject the inconsistency but was not normally run. **That validation claim conflicts with the exact-base implementation:** `Field.validate` has no unit, type, dtype, or ndim constraint for these fields, and `Container.validate` delegates to that method. The revised direct HDF5 test explicitly calls `validate()` on both a Quantity-valued calculated container and a default-float container; both pass on the buggy base. The error then occurs later, when HDF5TableWriter applies the transform registered from the first row's Quantity to the second row's float.
+- A reviewer questioned attaching a dimensionless unit only to remove it later. The author referred to new type assertions.
+- The reporter later confirmed that the patched branch created the HDF5 output file; invalid sqrt/log warnings were treated as unrelated.
+- A reviewer noted that an integration test writing muon parameters through DataWriter could have caught the defect. The PR author considered type assertions adequate. The missing end-to-end test remains a coverage limitation; the research-side direct HDF5 reproducer now addresses the mechanism for our Stage 2 evaluation.
+
+## 7. Current decision
+
+- Source-level failure mechanism: **corroborated by exact-base code, reporter traceback, and independent HDF5 reproducer**.
+- Intended serialized field contract: **unitless numeric values**, supported by `Field(nan)` container declarations and the HDF5 behavior.
+- Docstring: **stale/inconsistent** with the field schema and implementation.
+- Frozen dataset row and exact selector: **authenticated**.
+- Exact frozen selector: **base-fail / fixed-pass**.
+- Direct HDF5 mixed-type reproducer: **base-fail / fixed-pass**.
+- Technical Stage 2: **PASS**.
+- Candidate disposition: **conditional hold pending YAML/config provenance and Stage 3**.
+- Stage 3: **not started**.
+- Final case acceptance: **not accepted**.
+- Model loading/inference/training: **not performed**.
+
+
+## 8. Authoritative Stage 2 rerun and flag-discrepancy experiment (2026-11-18 addendum)
+
+The earlier Stage 2 runs established the frozen selector and direct HDF5 base-fail/fixed-pass result. The latest complete run now strengthens the direct reproducer by exercising the actual upstream `DataWriter.__call__` method and explicitly testing the flag stated in the issue YAML.
+
+### Latest successful run
+
+- Workflow run: `44308927754`
+- Job: `134817682862`
+- Artifact ID: `14429866192`
+- Artifact name: `ctapipe-2732-stage2-base-fixed-44308927754-1`
+- Artifact ZIP SHA-256: `55b08b31634afcdc052c2f8ef973db35a1fea49c342e9e5974adf386729bbd4f`
+- ZIP file count: 137 (including `SHA256SUMS.txt`)
+- Internal SHA256SUMS entries independently rechecked: **136/136 passed**.
+
+### Exact DataWriter flag-path test
+
+The updated reproduction calls the exact production `DataWriter.__call__` method, with unrelated trigger/DL1 writers isolated and the real `DataWriter._write_muon_telescope_events` and `HDF5TableWriter` retained.
+
+- With `write_muon_parameters=False`: the call passed and the muon writer call count stayed at zero.
+- With `write_muon_parameters=True` on the buggy base: first calculated Quantity-valued muon event was written; the second default-float event reached the actual muon writer and failed at `QuantityColumnTransform.__call__` with `AttributeError: 'float' object has no attribute 'to_value'`.
+- On the exact fixed PR head: both false/true branches passed; the enabled branch wrote both rows to the HDF5 muon table.
+- Frozen upstream selector: defect-specific failure on base and one pass on fixed, unchanged.
+
+This establishes that the issue's published `write_muon_parameters: False` YAML cannot, if effective and unoverridden, generate the traceback in the same run. Exact-base `ProcessorTool.should_compute_muon_parameters` also gates MuonProcessor on this flag. Therefore the YAML and traceback are internally inconsistent as published. **The reporter's actual effective configuration remains unknown**. We must not call it a typo, assert an override, or silently change the source YAML.
+
+### Updated dependency and changed-file license inventory
+
+The latest artifact includes:
+- Exact-base root LICENSE (BSD-3-Clause), SHA-256 `c6bbc92e621766f4c19c9cd223d377cfa40df0073908da2398b2efbf9e5085b2`.
+- Exact fixed-revision snapshots of all 3 PR-changed files, including Git blob SHA-1 and SHA-256.
+- A changed-file BSD-3-Clause inheritance manifest, SHA-256 `25f3c1a633a0df6a604fd301efad7c47ba74a8a8867d37292959c8aff99a626e`.
+- Installed-distribution metadata for 51 distributions.
+- 106 detected license/NOTICE file entries captured (106/106); no detected file exceeded the capture limit.
+- Dependency license file manifest SHA-256 `51a9b64dfca57fa03a0553e2ad23bb96dcb0f70d85c4a8d263f4a019ee5fa66f`.
+- `pip check`: no broken requirements.
+
+The exact changed-file and dependency inventory is recorded in `CTAPIPE_2730_LICENSE_SCREEN_DRAFT_2026-11-18.md`. It flags third-party or bundled license notices in NumPy/SciPy, Blosc2, Docutils, llvmlite/Numba, tqdm, and other installed packages. This remains documentary screening only, not legal advice or a blanket redistribution clearance. Student project-lead review is pending.
+
+## 9. Researcher exposure and cohort independence caveat
+
+The upstream repository metadata identifies `cta-observatory/ctapipe` as canonical (`fork=false`). The frozen 96-primary-candidate queue lists a single CTAPIpe row at rank 31; no second CTAPIpe project row is listed for counting as an independent project. This is not a complete semantic related-defect-family audit, which remains pending.
+
+The student researcher and AI research assistant have now reviewed the issue, reporter traceback, base/fixed source, regression test, HDF5 mechanism, and direct reproduction. Record **full researcher source exposure**. No model prompt calibration, model output scoring, model inference, or model training occurred. The selected model release predates the issue/PR timestamps, but its complete training-data cutoff and absence of related code cannot be independently proven.
+
+This candidate's technical test harness was also refined against this specific case; that is a candidate-level technical exposure, not a blinded review. Under the exploratory protocol, it must not be described as researcher-blinded or as an independent human adjudication. Whether this candidate can remain in the exploratory feasibility sample versus being excluded under the prior pipeline-debug exposure rule must be explicitly decided by the project lead; do not infer that it qualifies for a confirmatory sample.
+
+## 10. Current decision after the 2026-11-18 rerun
+
+- Frozen dataset row and original selector: **authenticated**.
+- Exact frozen selector: **base-fail / fixed-pass**.
+- Direct DataWriter/HDF5 reproduction: **base-fail / fixed-pass**, with the false/true config branch tested.
+- Container validation: both mixed-value containers pass; HDF5 transform later fails on base.
+- Source-level mechanism: **corroborated** by source, reporter traceback, and direct reproduction.
+- Source license: exact base BSD-3-Clause; all PR changed files recorded as inheriting that license in documentary screen.
+- Dependency notices: 106 captured files across 51 installed distributions; human scope review pending.
+- Issue YAML/effective-config inconsistency: **proven, actual reporter configuration unresolved**.
+- Gold and E3/E2/E1: AI proposal drafted; human project-lead decision pending.
+- Independence / related issue family / exposure adjudication: pending; full source exposure disclosed.
+- Technical Stage 2: **PASS**.
+- Candidate disposition: **conditional hold**.
+- Stage 3 human adjudication: not complete.
+- Final case acceptance: **not accepted**.
+- Model load, inference, or training: not performed or authorized.
+
+
+## 12. Final packet, project-family, and latest reproduction corrections (2026-11-18)
+
+The previous section 9 statement that the frozen primary queue contained one CTAPIpe row has been superseded by a complete scan of the frozen Parquet: there are five task rows for `cta-observatory/ctapipe`. The five rows have distinct defect families and are itemized, with complete 16-column row hashes, in `CTAPIPE_2730_FROZEN_PROJECT_ROW_FAMILY_REVIEW_2026-11-18.md`. Under the one-project rule, CTAPIpe contributes at most one accepted case; #2732 is the only selected row in the muon Quantity/float HDF5 defect family. The other four are not separately counted.
+
+The full 16-column frozen #2732 row hash is `e7d40ebfdfa47f6d2b92940d83d4e1c74afea6a096e9dca0d682ebb0854e7006`. The previous `9d8e145e...` hash is retained as the canonical hash of the eight-column discovery subset, not the full row.
+
+The current model-facing packet hierarchy is:
+- E3: original issue title and body only.
+- E2: E3 verbatim plus reporter traceback, container field declarations, `Field.validate`, and the HDF5 transform source.
+- E1: E2 verbatim plus exact-base producer paths and processing/write configuration gates.
+- No fixed source, PR patch, fixed test results, researcher-created reproducer, gold labels, or tier labels appear in the model-facing packets.
+
+Packet audit run `44314922057` succeeded:
+- Artifact ID `14432203104`; ZIP SHA-256 `d01e245530599ee690b8ffb1b2effacb40aca7f2652b817937cf28ac9c1da0da`.
+- E2 begins with E3 exact bytes; E1 begins with E2 exact bytes.
+- E3/E2/E1 packet hashes are recorded in the gold/tier draft and generated manifest.
+- Hidden-label leakage guards passed.
+
+The first successful packet audit artifact had a self-referential checksum entry for `SHA256SUMS.txt` (the empty-file hash). Four actual packet/manifest file entries were correct. The checksum generator has been fixed to exclude `SHA256SUMS.txt` from its own list; a new audit run is in progress. We do not treat the first artifact as the final checksum handoff.
+
+The latest Stage 2 repeat remains `44311798828`, artifact `14430672248`, ZIP SHA-256 `bc2fff5cd42ad137b18a45a529732f14e0d4d265c651488cbc89994ab3c580e0`; both exact frozen selector and real `DataWriter.__call__`/HDF5 reproducer pass the strict base-fail/fixed-pass comparison, including the explicit false/true configuration gate test.
+
+**Candidate disposition remains conditional hold.** The technical evidence is assembled and the packet hierarchy passes its structural/leakage audit, but the following still require explicit project-lead decisions: gold mechanism, normative contract alternatives, tier membership/sufficiency, full researcher-exposure and one-adjudicator limitations, prior pipeline-debug exposure classification, dependency license-scope acknowledgement, and separate final case acceptance. No model inference is authorized.
+
+
+## 13. Branch-head Stage 2 verification and final packet-audit correction (2026-11-18)
+
+The follow-up branch now has a newer complete Stage 2 repeat than the runs listed above. This addendum supersedes the older “latest repeat” reference in section 12:
+
+- Workflow run: `44317298277`
+- Job: `134846673050` — all 14 substantive workflow steps completed successfully.
+- Artifact: `14433995574` (`ctapipe-2732-stage2-base-fixed-44317298277-1`)
+- Artifact ZIP SHA-256: `9494954a09a956887a2f1610e948d89eb84a5fb0f776f65285ac4a224e47337e`
+- Downloaded archive size: 295,208 bytes; 137 members; ZIP CRC: PASS; internal `SHA256SUMS.txt`: **136/136 passed** under independent recalculation.
+- Exact frozen selector: defect-specific failure on the exact buggy base (Quantity returned where float is asserted); 1/1 pass on the exact fixed PR head.
+- Real `DataWriter.__call__`/HDF5 reproducer: `write_muon_parameters=False` skips the muon writer; with the flag true, the actual HDF5 path reproduces `AttributeError: 'float' object has no attribute 'to_value'` on the buggy base. Both branches pass on the fixed revision; 2/2 tests pass and both rows are written.
+- The base worktree contains only the upstream test-file patch, not a production fix. `pip check` is clean.
+- No model was loaded; no inference, fine-tuning, or training was performed.
+
+The packet-audit status in section 12 is also superseded by the final clean audit: run `44316015132`, job `134842193908`, artifact `14432113942`, ZIP SHA-256 `fd7fc7ed0cf7953f51efae7ef174aa6593b4860806bafdf9e03ba8fa88a25a38`. That archive passed ZIP CRC and **4/4** internal checksums, excluded the checksum file from its own checksum list, verified exact E3→E2→E1 byte inheritance, and passed the hidden-label leakage checks. The earlier self-referential checksum attempt is not the final packet artifact.
+
+**Scientific disposition is unchanged:** technical Stage 2 PASS; E1/E2/E3 technical packaging and integrity audit PASS; CTAPIpe remains on conditional hold. The actual reporter configuration behind the issue/traceback mismatch is still unknown; human gold/tier adjudication, prior pipeline-debug exposure classification, independence approval, dependency-license scope acknowledgement, and separate final acceptance remain pending. The global accepted-case count remains zero. No inference is authorized.
+
+
+## 14. v0.2 acceptance-schema constraint and project-wide no-inference gate (2026-11-18)
+
+A review of the active v0.2 exploratory schema and validator adds an important acceptance constraint that was not explicit in the earlier CTAPIpe note:
+
+- The schema permits `researcher_source_exposure` to be `full`; full source exposure must be disclosed and is not, by itself, a structural rejection.
+- The validator requires `exposure.prior_pipeline_debug_exposure == "none"`. Any other classification adds the blocker “prior pipeline/debug exposure permanently excludes this candidate.”
+- CTAPIpe's technical reproduction/test harness was refined against this specific case. That fact is disclosed above; it must not be silently coded as `none`. The project lead must classify whether this work meets the protocol's prior pipeline/debug exposure exclusion. If yes, #2732 remains a documented technical-development case and must not enter the accepted-case registry. The validator must not be weakened merely to admit it.
+- The same v0.2 schema requires project-lead-recorded gold and evidence-tier decisions, a student-project-lead license review, and a separate human decision record. When AI critique is used, its advisory record must also be separately hashed. The current G1/A1/A2 and E3/E2/E1 proposal is not yet a human decision.
+
+The project-wide no-inference preflight was rerun on the updated PR head:
+- Run `44318994967`, job `134852608128`; outcome: successful test/report execution.
+- Artifact `14434555521`; ZIP SHA-256 `85d23c485ff9007b6a5f9311d723dc757b540dee46551271724dc1e0f6e4dc7d`; downloaded archive size 3,750 bytes, five members, ZIP CRC PASS.
+- Packet-audit tests: 12 passed; operational packet/triage tests: 24 passed; selector-runner contract tests: 6 passed; v0.2 acceptance/preflight tests: 15 passed.
+- The generated readiness report is `blocked_before_inference`, `ready_for_inference=false`, with 11 blockers. It confirms a valid schema and a valid empty registry, but **0 accepted cases / 0 accepted projects**.
+
+The 11 blockers are: dataset/source provenance and license gate open; upstream changed-file/source license review open; raw upstream timestamp authentication open; exact Qwen revision license/use approval open; model/tokenizer/runtime verification not run; generation settings not frozen; protocol/analysis/generation/scoring hash freeze incomplete; the study-design decision, v0.2 protocol, and v0.2 analysis plan are not yet frozen/hash-recorded; and no accepted independent-project case is registered. The first five are substantive evidence/model gates; the remaining items include protocol finalization and the minimum one accepted case.
+
+**Current conclusion:** CTAPIpe Stage 2 is technically reproducible and its packet artefacts are structurally clean. It is not accepted. The v0.2 study is not ready for inference. No model loading, inference, fine-tuning, or training has occurred or is authorized.
+
+
+## 15. Latest CTAPIpe Stage 2 repeat on the refreshed branch (2026-11-18)
+
+This section supersedes section 13's “latest repeat” reference. After the evidence records were refreshed, the CTAPIpe workflow ran again on the updated branch:
+
+- Run `44318994654`; job `134852611469`; all substantive workflow steps completed successfully.
+- Artifact `14434206824`, `ctapipe-2732-stage2-base-fixed-44318994654-1`.
+- ZIP SHA-256: `aeb4666c0c69c581199c41a4a0fc140f8e0e643ea4a43a2a818005fb5b0d0100`; 295,206 bytes; 137 members; ZIP CRC PASS; **136/136** internal SHA256SUMS entries independently verified.
+- Frozen selector: exact buggy base FAIL on the Quantity-vs-float assertion; exact fixed PR head PASS (1/1).
+- Direct `DataWriter.__call__`/HDF5 reproduction: false flag skips muon writer; true flag produces the expected `float.to_value` AttributeError on buggy base. Fixed revision passes both config branches and writes both rows (2/2).
+- `pip check` reports no broken requirements. No model was loaded; no inference, fine-tuning, or training occurred.
+
+The new run is a repeat of technical reproduction only. It does not resolve the published YAML versus reporter-traceback effective-configuration discrepancy, supply student project-lead adjudication, or change the conditional-hold / not-accepted disposition.
+
+
+
+## 16. Latest CTAPIpe Stage 2 repeat after case-readiness updates (2026-11-18)
+
+- Run `44321922328`; job `134862837802`; artifact `14436170101` (`ctapipe-2732-stage2-base-fixed-44321922328-1`).
+- ZIP SHA-256: `9575c5f120d01c6bd9618aa512d299946d6c1564f3bba3c9699705386d405360`; 295,208 bytes; 137 members; ZIP CRC PASS; **136/136** internal SHA256SUMS entries independently verified.
+- The exact frozen selector again fails on the buggy base with the Quantity-vs-float defect assertion and passes on the exact fixed PR head (1/1).
+- The direct `DataWriter.__call__`/HDF5 reproducer again shows false config skips the muon writer; true config reproduces `AttributeError: 'float' object has no attribute 'to_value'` on the buggy base. The fixed revision passes both config branches and writes both rows (2/2).
+- `pip check`: no broken requirements. No model loaded; no inference, fine-tuning or training.
+
+This is a repeat of technical Stage 2, not a change in case disposition. The published YAML/effective-configuration discrepancy, human gold/tier approvals, project-lead prior-debug exposure classification, license scope sign-off, and final case acceptance remain separate gates.
+
+
+## 10. Human evaluator amendment and pipeline/debug exposure proposal (2026-11-18)
+
+A second human evaluator has been identified by the project lead. The public repository uses the pseudonym `Rater_B`; explicit agreement, case-specific independence/exposure screening and calibration remain pending. The proposed role is limited to independent blinded scoring of raw model outputs. Rater_B is not a gold/tier adjudicator, legal reviewer or external auditor. The project lead remains the final decision-maker and retains gold/E1/E2/E3 decisions. See:
+- `HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md`
+- `SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md`
+- `RATER_B_CONSENT_AND_EXPOSURE_SCREEN_TEMPLATE_V0_1_2026-11-18.md`
+
+**Candidate-specific pipeline/debug exposure:** the project record states that the CTAPIpe test harness was refined against this exact case. The evidence-based proposed classification is `some`, not `none`. Under the active v0.2 protocol exclusion rule, approving `some` means #2732 is excluded from the model-evaluation sample and retained as a technical reproduction / engineering-pilot artifact. Rater_B's participation does not cure the project lead's exposure or waive the rule. The final exposure classification remains pending explicit project-lead decision. See `CTAPIPE_2732_EXPOSURE_DECISION_PROPOSAL_2026-11-18.md`.
+
+No model output has been generated, no response has been rated, no human-human agreement statistic exists, and no inference is authorized.

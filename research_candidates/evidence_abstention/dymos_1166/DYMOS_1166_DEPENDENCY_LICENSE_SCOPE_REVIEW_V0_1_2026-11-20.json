@@ -1,0 +1,409 @@
+{
+  "schema_version": "0.1-dymos-1166-dependency-license-scope-review",
+  "generated_date": "2026-11-20",
+  "upstream_source": {
+    "repository": "OpenMDAO/dymos",
+    "base_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
+    "fixed_pr_head": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
+    "root_license_file": "LICENSE",
+    "root_license_spdx": "Apache-2.0",
+    "root_license_git_blob_sha1": "55da29e11b1fb2465936598779085f1cbcdf2908",
+    "project_metadata_file": "pyproject.toml",
+    "project_metadata_git_blob_sha1": "739e56592adfa10e0583b5f71fa4d36837e5a88c",
+    "project_metadata_license": "Apache-2.0",
+    "changed_files": [
+      "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+      "dymos/transcriptions/common/control_comp.py",
+      "dymos/transcriptions/common/test/test_control_interp_comp.py",
+      "dymos/transcriptions/explicit_shooting/explicit_shooting.py",
+      "dymos/transcriptions/explicit_shooting/ode_evaluation_group.py",
+      "dymos/utils/misc.py"
+    ],
+    "changed_file_scope": "Repository-level Apache-2.0 governs the upstream tree; no claim of per-file SPDX headers is made.",
+    "full_pr_patch_sha256": "651c7d79f67ea27405a29859c2367ca3392a833bdf5adca0876acd373ef833d4",
+    "test_only_patch_sha256": "1e5b106e92a3167aea9ea3a46d34d36a95f9009deeaa1defaa102f9c4f7bd774"
+  },
+  "dataset": {
+    "repository": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "row_id": "openmdao__dymos-1165",
+    "row_license_field": "Apache-2.0",
+    "row_license_scope": "Per-row identifier of the upstream source repository, not the dataset repository's own license.",
+    "current_hub_card_license": "CC-BY-4.0",
+    "current_hub_card_metadata_source": "Hugging Face Hub immutable commit page for exact dataset revision fb9aa226b2ce37c708ea7732e7b980abacdadb67, retrieved 2026-11-20",
+    "exact_pinned_dataset_card_license_verified": true,
+    "attribution_and_source_repository_licenses_must_both_be_respected": true,
+    "pinned_card_verification": {
+      "repo_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+      "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+      "immutable_commit_page": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commit/fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+      "license_displayed_at_exact_revision": "CC-BY-4.0",
+      "commit_changes": [
+        "README.md",
+        "data/train-00000-of-00001.parquet"
+      ],
+      "verification_method": "Read the Hub commit page at the exact pinned SHA; the page displays CC-BY-4.0 and confirms README.md was present/changed at that commit.",
+      "verification_date": "2026-11-20",
+      "caveat": "This authenticates the pinned dataset-card license metadata; it is not a legal clearance and does not replace the row-specific Dymos Apache-2.0 license field."
+    }
+  },
+  "reproduction_environment": {
+    "stage2_workflow_run_id": 44114656908,
+    "stage2_workflow_job_id": 134149456631,
+    "stage2_artifact_id": 14341424466,
+    "stage2_artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
+    "stage2_archive_integrity": {
+      "zip_crc": "PASS",
+      "internal_hashes": "18/18 PASS"
+    },
+    "dependency_inventory_path": "dependency-license-inventory.json",
+    "dependency_inventory_sha256": "6e8f21e813fd0332fa3a5c370f76a0a52653d49868348d4316cb0eb40d0c3c89",
+    "dataset_extraction_license_inventory_sha256": "ac40d99c0eeaa6654aa5197b320429c6efa6e720420692d146f4810798dfa068",
+    "dependency_inventory_bytes": 110853,
+    "python_version": "3.11.9",
+    "runtime_packages": [
+      {
+        "name": "numpy",
+        "version": "1.26.4",
+        "license_summary": "BSD; bundled notices include LAPACK-lite BSD-3-Clause, Tempita MIT, Dragon4 MIT, libdivide Zlib, OpenBLAS BSD-3-Clause, LAPACK BSD-3-Clause-Attribution, GCC runtime library GPL-3.0 with GCC Runtime Library Exception"
+      },
+      {
+        "name": "scipy",
+        "version": "1.13.1",
+        "license_summary": "BSD; full license text and bundled-library notices recorded in the inventory; includes OpenBLAS/LAPACK components"
+      },
+      {
+        "name": "networkx",
+        "version": "3.3",
+        "license_classifier": "BSD"
+      },
+      {
+        "name": "packaging",
+        "version": "24.2",
+        "license_classifiers": [
+          "Apache-2.0",
+          "BSD"
+        ]
+      },
+      {
+        "name": "requests",
+        "version": "2.32.3",
+        "license": "Apache-2.0"
+      },
+      {
+        "name": "certifi",
+        "version": "2024.8.30",
+        "license": "MPL-2.0"
+      },
+      {
+        "name": "charset-normalizer",
+        "version": "3.4.0",
+        "license": "MIT"
+      },
+      {
+        "name": "idna",
+        "version": "3.10",
+        "license_classifier": "BSD"
+      },
+      {
+        "name": "urllib3",
+        "version": "2.2.3",
+        "license_classifier": "MIT"
+      },
+      {
+        "name": "openmdao",
+        "version": "3.38.0",
+        "license": "Apache-2.0"
+      },
+      {
+        "name": "pytest",
+        "version": "8.3.3",
+        "license": "MIT"
+      },
+      {
+        "name": "iniconfig",
+        "version": "2.0.0",
+        "license": "MIT"
+      },
+      {
+        "name": "pluggy",
+        "version": "1.5.0",
+        "license": "MIT"
+      },
+      {
+        "name": "Pygments",
+        "version": "2.18.0",
+        "license": "BSD-2-Clause"
+      }
+    ],
+    "separate_dataset_extraction_tool": {
+      "package": "pyarrow",
+      "version": "19.0.1",
+      "license": "Apache Software License",
+      "scope": "Separate extraction environment used only to read the pinned Parquet row; not part of the 14-package upstream test runtime."
+    },
+    "independent_reproducer_run_id": 44739419824,
+    "independent_reproducer_artifact_id": 14629598269,
+    "independent_reproducer_artifact_sha256": "33bb899d7e4e56d177fe4c9d119eebea49519528e88d74af3efc4acf7def08d8",
+    "independent_reproducer_archive_integrity": {
+      "zip_crc": "PASS",
+      "internal_hashes": "15/15 PASS"
+    },
+    "independent_reproducer_runtime": "CPython 3.11.9, CPU-compatible numerical environment; no optional optimizer installed or invoked",
+    "package_inventory": {
+      "artifact_id": 14341424466,
+      "artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
+      "zip_crc": "PASS",
+      "internal_hashes": "18/18 PASS",
+      "dependency_inventory_sha256": "6e8f21e813fd0332fa3a5c370f76a0a52653d49868348d4316cb0eb40d0c3c89",
+      "dataset_extraction_inventory_sha256": "ac40d99c0eeaa6654aa5197b320429c6efa6e720420692d146f4810798dfa068",
+      "runtime_package_count": 14,
+      "runtime_packages": [
+        {
+          "name": "numpy",
+          "version": "1.26.4",
+          "declared_license": "BSD family",
+          "binary_bundles": [
+            {
+              "name": "OpenBLAS",
+              "license": "BSD-3-Clause"
+            },
+            {
+              "name": "LAPACK",
+              "license": "BSD-3-Clause-Attribution"
+            },
+            {
+              "name": "GCC runtime library",
+              "license": "GPL-3.0-with-GCC-exception"
+            },
+            {
+              "name": "libquadmath",
+              "license": "LGPL-2.1-or-later"
+            }
+          ]
+        },
+        {
+          "name": "scipy",
+          "version": "1.13.1",
+          "declared_license": "BSD family",
+          "binary_bundles": [
+            {
+              "name": "OpenBLAS",
+              "license": "BSD-3-Clause-Attribution"
+            },
+            {
+              "name": "LAPACK",
+              "license": "BSD-3-Clause-Attribution"
+            },
+            {
+              "name": "GCC runtime library",
+              "license": "GPL-3.0-with-GCC-exception"
+            },
+            {
+              "name": "libquadmath",
+              "license": "LGPL-2.1-or-later"
+            }
+          ]
+        },
+        {
+          "name": "networkx",
+          "version": "3.3",
+          "license": "BSD"
+        },
+        {
+          "name": "packaging",
+          "version": "24.2",
+          "license": "Apache-2.0 and BSD classifiers; no single SPDX expression in captured metadata"
+        },
+        {
+          "name": "requests",
+          "version": "2.32.3",
+          "license": "Apache-2.0"
+        },
+        {
+          "name": "certifi",
+          "version": "2024.8.30",
+          "license": "MPL-2.0"
+        },
+        {
+          "name": "charset-normalizer",
+          "version": "3.4.0",
+          "license": "MIT"
+        },
+        {
+          "name": "idna",
+          "version": "3.10",
+          "license": "BSD"
+        },
+        {
+          "name": "urllib3",
+          "version": "2.2.3",
+          "license": "MIT"
+        },
+        {
+          "name": "openmdao",
+          "version": "3.38.0",
+          "license": "Apache-2.0"
+        },
+        {
+          "name": "pytest",
+          "version": "8.3.3",
+          "license": "MIT"
+        },
+        {
+          "name": "iniconfig",
+          "version": "2.0.0",
+          "license": "MIT"
+        },
+        {
+          "name": "pluggy",
+          "version": "1.5.0",
+          "license": "MIT"
+        },
+        {
+          "name": "Pygments",
+          "version": "2.18.0",
+          "license": "BSD-2-Clause"
+        }
+      ],
+      "separate_dataset_extraction_tool": {
+        "name": "pyarrow",
+        "version": "19.0.1",
+        "license": "Apache Software License",
+        "scope": "separate extraction environment, not part of the 14-package test runtime"
+      },
+      "source_or_sdist_only_components_listed_in_numpy_metadata": [
+        {
+          "name": "lapack-lite",
+          "license": "BSD-3-Clause"
+        },
+        {
+          "name": "Tempita",
+          "license": "MIT"
+        },
+        {
+          "name": "Dragon4",
+          "license": "MIT"
+        },
+        {
+          "name": "libdivide",
+          "license": "Zlib"
+        },
+        {
+          "name": "Meson",
+          "license": "Apache-2.0",
+          "scope": "repository/sdist not installed wheel"
+        },
+        {
+          "name": "spin",
+          "license": "BSD-3",
+          "scope": "repository/sdist not installed wheel"
+        }
+      ],
+      "binary_distributions_not_included_in_project_artifacts": true
+    },
+    "retained_artifacts": [
+      {
+        "artifact_id": 14341424466,
+        "sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
+        "contents": [
+          "one canonical dataset row and 517-character problem_statement",
+          "dataset-selector logs/results and test-only patch",
+          "full upstream PR #1165 patch (24,143 bytes)",
+          "upstream Dymos LICENSE text (10,760 bytes)",
+          "dependency and extraction license inventories",
+          "runtime/package metadata and source change inventory"
+        ]
+      },
+      {
+        "artifact_id": 14650442090,
+        "sha256": "9667f304d0a259ab3b1aedd19a5751bab9fc43a5d7544a21dc5f3b126b91ee00",
+        "contents": [
+          "full upstream PR patch (24,131 bytes)",
+          "complete captured buggy/fixed control_comp.py and misc.py source files",
+          "buggy-base LICENSE and pyproject metadata",
+          "reproduction logs, runtime freeze and hashes"
+        ]
+      },
+      {
+        "artifact_id": 14651026003,
+        "workflow_run_id": 44779508337,
+        "artifact_sha256": "84f884f0ff358c5811221099983bb2531ded7dfe501e1a042da7765ab298aa25",
+        "local_integrity": {
+          "outer_sha256_matches_github_digest": true,
+          "zip_crc": "PASS",
+          "internal_hashes": "15/15 PASS"
+        },
+        "contents": [
+          "full upstream PR patch",
+          "complete captured buggy/fixed control_comp.py and misc.py source files",
+          "buggy-base LICENSE and pyproject metadata",
+          "logs, runtime freeze and hash manifest"
+        ]
+      }
+    ]
+  },
+  "human_review": {
+    "project_lead_scope_acknowledgement": "acknowledged_with_scientific_independence_condition",
+    "hasan_scope_review": "not_recorded",
+    "external_legal_review": "not_performed",
+    "accepted_as_legal_clearance": false,
+    "prior_pipeline_debug_exposure_declaration": "none_declared_by_project_lead_on_2026-11-20; direct self-report, not independently witnessed",
+    "panel_b_blinded_review": "not_proposed for gold/tier; project lead will be source-exposed",
+    "final_case_acceptance": "not_accepted"
+  },
+  "blockers": [
+    "Project-lead acknowledgement is limited to factual scope documentation and is conditional on preserving scientific integrity and legitimate research progress.",
+    "No formal legal review was performed; no legal clearance or redistribution permission is claimed."
+  ],
+  "inference_authorized": false,
+  "project_lead_scope_acknowledgement_proposal": {
+    "status": "acknowledged_with_scientific_independence_condition",
+    "path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_CONDITIONAL_SCOPE_ACKNOWLEDGEMENT_DYMOS_1166_2026-11-20.md",
+    "sha256": "65243fe9abce793a171c12e1564c0a071f9dd146b8fb93176b61ad083522ca99",
+    "proposed_scope": "Educational/scientific study of one Dymos defect, one selected dataset row, pinned CPU reproductions, limited source excerpts plus already-retained full PR patch/source snapshots in CI artifacts, proper Dymos/dataset/row/dependency attribution and notices.",
+    "explicit_exclusions": [
+      "complete SWE-rebench dataset",
+      "complete Dymos repository",
+      "redistribution of NumPy/SciPy/PyArrow wheels or binaries",
+      "commercial product use",
+      "legal clearance"
+    ],
+    "note": "Project lead acknowledgement is conditional on scientific independence; repository and CI evidence are public, not private-only. This is not legal advice, legal clearance, or formal legal review."
+  },
+  "latest_current_head_validation": {
+    "branch_head": "66ae020c498bd7a0e0159f76b523a68c9c9a31ad",
+    "no_inference_preflight": {
+      "workflow_run_id": 44779507956,
+      "job_id": 136438118615,
+      "conclusion": "success",
+      "dymos_review_contract_tests": "8 passed",
+      "blocker_count": 13,
+      "ready_for_inference": false,
+      "inference_authorized": false
+    },
+    "research_validation": {
+      "workflow_run_id": 44779508142,
+      "job_id": 136438155861,
+      "conclusion": "success",
+      "tests": "471 passed, 6 skipped, 56 subtests passed"
+    },
+    "independent_reproducer": {
+      "workflow_run_id": 44779508337,
+      "job_id": 136438121470,
+      "conclusion": "success",
+      "artifact_id": 14651026003,
+      "artifact_sha256": "84f884f0ff358c5811221099983bb2531ded7dfe501e1a042da7765ab298aa25",
+      "local_integrity": {
+        "outer_sha256_matches_github_digest": true,
+        "zip_crc": "PASS",
+        "internal_hashes": "15/15 PASS"
+      },
+      "base_result": "executed expected failure on exact buggy base",
+      "fixed_result": "same test passed on exact fixed PR head; 1 passed in 0.35s"
+    },
+    "model_loading_performed": false,
+    "model_inference_performed": false,
+    "fine_tuning_performed": false
+  }
+}

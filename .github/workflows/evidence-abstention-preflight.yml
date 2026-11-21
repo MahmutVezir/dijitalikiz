@@ -1,29 +1,75 @@
 name: Evidence Abstention Preflight (No Inference)
+# Candidate jobs retain raw buggy-base and fixed-revision evidence even when a selector audit fails.
 
 on:
   push:
     branches:
       - "research/**"
     paths:
-      - "research_candidates/evidence_abstention/**"
+      - ".github/workflows/evidence-abstention-preflight.yml"
+      - "research_candidates/evidence_abstention/implementation/**"
+      - "research_candidates/evidence_abstention/numpyro_1916/**"
+      - "research_candidates/evidence_abstention/dymos_1166/**"
+      - "research_candidates/evidence_abstention/eodag_1530/**"
+      - "tests/test_dymos_1166_proposed_packet_set.py"
+      - "tests/test_eodag_1530_stage3_packet_set.py"
+      - "tests/test_numpyro_1916_proposed_packet_set.py"
+      - "tests/test_numpyro_1916_license_and_independence_records.py"
+      - "tests/test_build_numpyro_1916_blinded_review_packets.py"
+      - "research_candidates/evidence_abstention/reproduction/**/test_*.py"
+      - "research_candidates/evidence_abstention/reproduction/**/requirements*.lock"
+      - "research_candidates/evidence_abstention/reproduction/**/dataset_test_requirements.lock"
+      - "research_candidates/evidence_abstention/reproduction/**/reproduction_environment_lock.json"
+      - "research_candidates/evidence_abstention/reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json"
+      - "research_candidates/evidence_abstention/STUDY_DESIGN_DECISION_V0_2_EXPLORATORY_2026-11-16.md"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_PROTOCOL_V0_2_EXPLORATORY_DRAFT_2026-11-16.md"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_ANALYSIS_PLAN_V0_2_EXPLORATORY_DRAFT_2026-11-16.md"
+      - "research_candidates/evidence_abstention/HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md"
+      - "research_candidates/evidence_abstention/SINGLE_HUMAN_REVIEW_AMENDMENT_V0_2_2026-11-21.md"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_SINGLE_HUMAN_OUTPUT_SCORING_RUBRIC_V0_2_2026-11-21.md"
+      - "tests/test_swe_rebench_v2_exploratory_design.py"
       - "scripts/evidence_abstention_preflight.py"
+      - "scripts/swe_rebench_v2_exploratory_preflight.py"
       - "tests/test_evidence_abstention_preflight.py"
       - "tests/test_evidence_packet_audit.py"
       - "tests/test_swe_rebench_v2_exploratory_case_acceptance.py"
       - "tests/test_swe_rebench_v2_exploratory_preflight.py"
-      - "scripts/swe_rebench_v2_exploratory_preflight.py"
-      - ".github/workflows/evidence-abstention-preflight.yml"
   pull_request:
     paths:
-      - "research_candidates/evidence_abstention/**"
+      - ".github/workflows/evidence-abstention-preflight.yml"
+      - "research_candidates/evidence_abstention/implementation/**"
+      - "research_candidates/evidence_abstention/numpyro_1916/**"
+      - "research_candidates/evidence_abstention/dymos_1166/**"
+      - "research_candidates/evidence_abstention/eodag_1530/**"
+      - "tests/test_dymos_1166_proposed_packet_set.py"
+      - "tests/test_eodag_1530_stage3_packet_set.py"
+      - "tests/test_numpyro_1916_proposed_packet_set.py"
+      - "tests/test_numpyro_1916_license_and_independence_records.py"
+      - "tests/test_build_numpyro_1916_blinded_review_packets.py"
+      - "research_candidates/evidence_abstention/reproduction/**/test_*.py"
+      - "research_candidates/evidence_abstention/reproduction/**/requirements*.lock"
+      - "research_candidates/evidence_abstention/reproduction/**/dataset_test_requirements.lock"
+      - "research_candidates/evidence_abstention/reproduction/**/reproduction_environment_lock.json"
+      - "research_candidates/evidence_abstention/reproduction/dishka_issue_435/SWE_REBENCH_V2_DISHKA_435_CASE_ACCEPTANCE_PROPOSED_V0_2.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json"
       - "scripts/evidence_abstention_preflight.py"
+      - "scripts/swe_rebench_v2_exploratory_preflight.py"
       - "tests/test_evidence_abstention_preflight.py"
       - "tests/test_evidence_packet_audit.py"
       - "tests/test_swe_rebench_v2_exploratory_case_acceptance.py"
       - "tests/test_swe_rebench_v2_exploratory_preflight.py"
-      - "scripts/swe_rebench_v2_exploratory_preflight.py"
-      - ".github/workflows/evidence-abstention-preflight.yml"
   workflow_dispatch:
+    inputs:
+      run_non_dishka_candidates:
+        description: "Run the 12 other candidate reproductions; leave false for Dishka-only validation."
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -69,6 +115,50 @@ jobs:
           echo "Operational packet tests exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
           exit "$test_status"
 
+      - name: Unit-test NumPyro #1916 packet, license, independence and blind-bundle contracts
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/test_numpyro_1916_proposed_packet_set.py tests/test_numpyro_1916_license_and_independence_records.py tests/test_build_numpyro_1916_blinded_review_packets.py > numpyro-1916-review-tests.log 2>&1
+          test_status=$?
+          cat numpyro-1916-review-tests.log
+          echo "NumPyro #1916 review-contract test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
+
+      - name: Unit-test Dymos #1166 packet, provenance, issue family and license scope
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/test_dymos_1166_proposed_packet_set.py > dymos-1166-review-tests.log 2>&1
+          test_status=$?
+          cat dymos-1166-review-tests.log
+          echo "Dymos #1166 review-contract test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
+
+      - name: Unit-test EODAG #1530 nested packet, provenance, independence and license-scope contracts
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/test_eodag_1530_stage3_packet_set.py > eodag-1530-review-tests.log 2>&1
+          test_status=$?
+          cat eodag-1530-review-tests.log
+          echo "EODAG #1530 review-contract test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
+
+      - name: Unit-test fail-to-pass selector runner contract
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          PYTHONPATH=research_candidates/evidence_abstention/implementation python -m unittest test_run_swe_rebench_fail_to_pass -v > selector-runner-tests.log 2>&1
+          test_status=$?
+          cat selector-runner-tests.log
+          echo "Fail-to-pass selector-runner contract test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
+
       - name: Unit-test v0.2 exploratory acceptance and readiness contracts
         if: always()
         shell: bash
@@ -78,6 +168,17 @@ jobs:
           test_status=$?
           cat v0.2-exploratory-tests.log
           echo "v0.2 exploratory contract test exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
+
+      - name: Unit-test v0.2 study design and single-human scoring amendment
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          python -m pytest -q tests/test_swe_rebench_v2_exploratory_design.py > v0.2-design-tests.log 2>&1
+          test_status=$?
+          cat v0.2-design-tests.log
+          echo "v0.2 study-design and dual-human scoring tests exit code: ${test_status}" >> "$GITHUB_STEP_SUMMARY"
           exit "$test_status"
 
       - name: Report SWE-rebench V2 readiness blockers without model execution
@@ -97,19 +198,267 @@ jobs:
         with:
           name: evidence-abstention-preflight-logs-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
+            selector-runner-tests.log
             packet-audit-tests.log
             operational-packet-tests.log
+            numpyro-1916-review-tests.log
+            dymos-1166-review-tests.log
+            eodag-1530-review-tests.log
             v0.2-exploratory-tests.log
+            v0.2-design-tests.log
             swe-rebench-v2-readiness-report.json
           if-no-files-found: warn
           retention-days: 14
 
+
+  audit-rank51-52-frozen-rows:
+    if: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/research/')) || (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'research/2026-11-16-followup-evidence-validation') }}
+    needs: no-inference-preflight
+    name: Authenticate exact rank 51-52 frozen rows (metadata only; no inference)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout research repository only
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install the pinned Parquet reader
+        run: python -m pip install --disable-pip-version-check --no-deps "pyarrow==19.0.1"
+
+      - name: Download pinned dataset and verify whole-file SHA-256
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p rank51-52-row-evidence
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output rank51-52-row-evidence/train-00000-of-00001.parquet
+          test "$(stat -c '%s' rank51-52-row-evidence/train-00000-of-00001.parquet)" = "226272977"
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  rank51-52-row-evidence/train-00000-of-00001.parquet" | sha256sum --check
+
+      - name: Extract exact rows, full problem statements and canonical digests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import datetime as dt
+          import hashlib
+          import json
+          from pathlib import Path
+          import pyarrow.parquet as pq
+
+          DATASET_REVISION = "fb9aa226b2ce37c708ea7732e7b980abacdadb67"
+          PARQUET_SHA256 = "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+          TARGETS = [
+              {
+                  "rank": 51,
+                  "pr_number": 1736,
+                  "repo_slug": "music21",
+                  "base_commit": "e05fc53dfef7b2c9ac974c0cacb8b85e9c4d4605",
+                  "issue_url": "https://github.com/cuthbertLab/music21/issues/1735",
+                  "pull_request_url": "https://github.com/cuthbertLab/music21/pull/1736",
+              },
+              {
+                  "rank": 52,
+                  "pr_number": 3591,
+                  "repo_slug": "geopandas",
+                  "base_commit": "c36eba059f6170715b63a9aa065817c64025d263",
+                  "issue_url": "https://github.com/geopandas/geopandas/issues/3590",
+                  "pull_request_url": "https://github.com/geopandas/geopandas/pull/3591",
+              },
+          ]
+
+          def normalize(value):
+              if isinstance(value, (dt.datetime, dt.date, dt.time)):
+                  return value.isoformat()
+              if isinstance(value, dict):
+                  return {str(k): normalize(v) for k, v in value.items()}
+              if isinstance(value, (list, tuple)):
+                  return [normalize(v) for v in value]
+              return value
+
+          parquet_path = Path("rank51-52-row-evidence/train-00000-of-00001.parquet")
+          parquet = pq.ParquetFile(parquet_path)
+          if parquet.metadata.num_rows != 6272:
+              raise SystemExit(f"Unexpected Parquet row count: {parquet.metadata.num_rows}")
+
+          # Discover the exact dataset instance_id from immutable base SHA + PR suffix;
+          # do not assume the owner/name slug used in upstream GitHub URLs.
+          metadata_columns = [
+              "instance_id", "repo", "base_commit", "created_at",
+              "language", "license", "FAIL_TO_PASS", "problem_statement",
+          ]
+          metadata_rows = pq.read_table(
+              parquet_path, columns=metadata_columns
+          ).to_pylist()
+          for target in TARGETS:
+              candidates = [
+                  row for row in metadata_rows
+                  if row.get("base_commit") == target["base_commit"]
+                  and str(row.get("instance_id") or "").endswith(
+                      "-" + str(target["pr_number"])
+                  )
+                  and str(row.get("repo") or "").split("/")[-1].casefold()
+                      == target["repo_slug"]
+              ]
+              if len(candidates) != 1:
+                  same_base = [
+                      {
+                          "instance_id": row.get("instance_id"),
+                          "repo": row.get("repo"),
+                          "base_commit": row.get("base_commit"),
+                      }
+                      for row in metadata_rows
+                      if row.get("base_commit") == target["base_commit"]
+                  ]
+                  print("BASE_COMMIT_MATCHES " + json.dumps(same_base, ensure_ascii=False))
+                  raise SystemExit(
+                      f"rank {target['rank']} PR #{target['pr_number']}: "
+                      f"expected exactly one row matching base SHA + PR suffix + repo slug; "
+                      f"found {len(candidates)}"
+                  )
+              target["instance_id"] = candidates[0]["instance_id"]
+              print(
+                  f"DISCOVERED_ROW rank={target['rank']} "
+                  f"instance_id={target['instance_id']} repo={candidates[0]['repo']} "
+                  f"created_at={candidates[0]['created_at']}"
+              )
+          manifest = {
+              "record_type": "swe_rebench_v2_exact_frozen_row_audit_no_inference",
+              "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+              "dataset_revision": DATASET_REVISION,
+              "parquet_sha256": PARQUET_SHA256,
+              "parquet_bytes": parquet_path.stat().st_size,
+              "parquet_rows": parquet.metadata.num_rows,
+              "pyarrow_version": __import__("pyarrow").__version__,
+              "rows": [],
+              "execution_boundary": {
+                  "upstream_repository_checkout": False,
+                  "upstream_package_install": False,
+                  "upstream_tests_or_build": False,
+                  "model_loading": False,
+                  "model_inference": False,
+                  "fine_tuning": False,
+                  "training": False,
+              },
+          }
+          row_dir = Path("rank51-52-row-evidence/canonical_rows")
+          row_dir.mkdir(parents=True, exist_ok=True)
+
+          for expected in TARGETS:
+              instance_id = expected["instance_id"]
+              table = pq.read_table(parquet_path, filters=[("instance_id", "=", instance_id)])
+              rows = table.to_pylist()
+              if len(rows) != 1:
+                  raise SystemExit(f"{instance_id}: expected exactly one full row, found {len(rows)}")
+              row = normalize(rows[0])
+              if row.get("instance_id") != instance_id:
+                  raise SystemExit(f"{instance_id}: extracted instance id mismatch")
+              if str(row.get("repo") or "").split("/")[-1].casefold() != expected["repo_slug"]:
+                  raise SystemExit(f"{instance_id}: repository slug mismatch: {row.get('repo')}")
+              if row.get("base_commit") != expected["base_commit"]:
+                  raise SystemExit(f"{instance_id}: base commit mismatch: {row.get('base_commit')}")
+              if row.get("language") != "python":
+                  raise SystemExit(f"{instance_id}: expected Python language, got {row.get('language')}")
+              if not isinstance(row.get("problem_statement"), str) or not row["problem_statement"].strip():
+                  raise SystemExit(f"{instance_id}: missing problem statement")
+              if not isinstance(row.get("FAIL_TO_PASS"), list) or not row["FAIL_TO_PASS"]:
+                  raise SystemExit(f"{instance_id}: missing/malformed FAIL_TO_PASS list")
+              if "patch" not in row or "test_patch" not in row:
+                  raise SystemExit(f"{instance_id}: full canonical row missing patch/test_patch")
+
+              canonical = json.dumps(
+                  row, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+              ).encode("utf-8")
+              row_sha = hashlib.sha256(canonical).hexdigest()
+              statement_sha = hashlib.sha256(row["problem_statement"].encode("utf-8")).hexdigest()
+              canonical_name = instance_id + ".canonical.json"
+              pretty_name = instance_id + ".json"
+              (row_dir / canonical_name).write_bytes(canonical)
+              (row_dir / pretty_name).write_text(
+                  json.dumps(row, sort_keys=True, indent=2, ensure_ascii=False) + "\n",
+                  encoding="utf-8",
+              )
+              item = {
+                  "cohort_rank": expected["rank"],
+                  "instance_id": instance_id,
+                  "repo": row["repo"],
+                  "base_commit": row["base_commit"],
+                  "created_at": row.get("created_at"),
+                  "language": row["language"],
+                  "license": row.get("license"),
+                  "fail_to_pass_count": len(row["FAIL_TO_PASS"]),
+                  "fail_to_pass_selectors": row["FAIL_TO_PASS"],
+                  "pass_to_pass_count": len(row.get("PASS_TO_PASS") or []),
+                  "problem_statement": row["problem_statement"],
+                  "problem_statement_sha256": statement_sha,
+                  "patch_sha256": hashlib.sha256(str(row["patch"]).encode("utf-8")).hexdigest(),
+                  "test_patch_sha256": hashlib.sha256(str(row["test_patch"]).encode("utf-8")).hexdigest(),
+                  "canonical_row_sha256": row_sha,
+                  "canonical_row_path": "canonical_rows/" + canonical_name,
+                  "pretty_row_path": "canonical_rows/" + pretty_name,
+                  "issue_url": expected["issue_url"],
+                  "pull_request_url": expected["pull_request_url"],
+              }
+              manifest["rows"].append(item)
+              print(
+                  f"PASS_ROW rank={expected['rank']} id={instance_id} "
+                  f"repo={row['repo']} base={row['base_commit']} "
+                  f"created_at={row.get('created_at')} license={row.get('license')} "
+                  f"fail_to_pass={len(row['FAIL_TO_PASS'])} "
+                  f"row_sha256={row_sha} problem_statement_sha256={statement_sha}"
+              )
+              print("=== FROZEN E3 PROBLEM STATEMENT: " + instance_id + " ===")
+              print(row["problem_statement"])
+              for selector in row["FAIL_TO_PASS"]:
+                  print("FAIL_TO_PASS_SELECTOR " + instance_id + " " + selector)
+
+          manifest["rows"].sort(key=lambda item: item["cohort_rank"])
+          out = Path("rank51-52-row-evidence/dataset-row-audit-manifest.json")
+          out.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          (Path("rank51-52-row-evidence/dataset-row-problem-statements.txt")).write_text(
+              "\n\n".join(
+                  f"## rank {x['cohort_rank']} — {x['instance_id']}\n{x['problem_statement']}"
+                  for x in manifest["rows"]
+              ) + "\n",
+              encoding="utf-8",
+          )
+          if len(manifest["rows"]) != 2:
+              raise SystemExit("Expected exactly two audited frozen rows")
+          print("PASS_EXACT_FROZEN_ROW_COUNT=2")
+          print("PASS_NO_UPSTREAM_TESTS_NO_INFERENCE")
+          PY
+          rm rank51-52-row-evidence/train-00000-of-00001.parquet
+          (cd rank51-52-row-evidence && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt)
+          (cd rank51-52-row-evidence && sha256sum --check SHA256SUMS.txt)
+
+      - name: Upload canonical rows and evidence manifest
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: swe-rebench-v2-rank51-52-row-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: rank51-52-row-evidence/
+          if-no-files-found: error
+          retention-days: 90
+
   dishka-issue-435-reproduction:
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
-      - name: Checkout research repository
+      - name: Checkout exact research PR head
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up exact Python version
         uses: actions/setup-python@v5
@@ -224,6 +573,7 @@ jobs:
           grep -F "AssertionError: 1 != 42" reproduction-evidence/base-test.log
 
       - name: Run the same issue reproducer on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
@@ -276,7 +626,199 @@ jobs:
           retention-days: 90
 
 
+
+  dishka-435-raw-provenance-audit:
+    needs: no-inference-preflight
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Capture raw upstream GitHub and pinned dataset-card payloads
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dishka-raw-provenance
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header dishka-raw-provenance/issue-435-response-headers.txt \
+            --output dishka-raw-provenance/issue-435-response.json \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/reagento/dishka/issues/435"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header dishka-raw-provenance/pull-436-response-headers.txt \
+            --output dishka-raw-provenance/pull-436-response.json \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/reagento/dishka/pulls/436"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header dishka-raw-provenance/dataset-revision-response-headers.txt \
+            --output dishka-raw-provenance/dataset-revision-response.json \
+            "https://huggingface.co/api/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/revision/fb9aa226b2ce37c708ea7732e7b980abacdadb67"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header dishka-raw-provenance/dataset-card-response-headers.txt \
+            --output dishka-raw-provenance/dataset-README.md \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/README.md"
+          cp research_candidates/evidence_abstention/reproduction/dishka_issue_435/dataset_parquet_row_canonical.json dishka-raw-provenance/
+          cp research_candidates/evidence_abstention/reproduction/dishka_issue_435/cohort_selection_row_snapshot.json dishka-raw-provenance/
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          out = Path("dishka-raw-provenance")
+          issue = json.loads((out / "issue-435-response.json").read_text(encoding="utf-8"))
+          pull = json.loads((out / "pull-436-response.json").read_text(encoding="utf-8"))
+          dataset_revision = json.loads((out / "dataset-revision-response.json").read_text(encoding="utf-8"))
+          readme = (out / "dataset-README.md").read_text(encoding="utf-8")
+
+          assert issue["number"] == 435
+          assert issue["title"] == "bug: Provider doesn't override factory with lower scope"
+          assert issue["created_at"] == "2025-04-14T17:22:16Z"
+          assert issue["state"] == "closed"
+
+          assert pull["number"] == 436
+          assert pull["title"] == "Defer scopes processing to handle overriding properly"
+          assert pull["created_at"] == "2025-04-15T22:52:26Z"
+          assert pull["merged_at"] == "2025-04-24T20:51:58Z"
+          assert pull["base"]["sha"] == "8718d5af93f9e48bc2506c64827663fdccc5ad89"
+          assert pull["head"]["sha"] == "b1eae11734e64551d7b101195f27cb6870e1c364"
+
+          expected_revision = "fb9aa226b2ce37c708ea7732e7b980abacdadb67"
+          assert dataset_revision["sha"] == expected_revision
+          card_license = (dataset_revision.get("cardData") or {}).get("license")
+          if card_license is not None:
+              assert str(card_license).lower() == "cc-by-4.0", card_license
+          front_matter = readme.split("---", 2)[1] if readme.startswith("---") else readme
+          match = re.search(r"(?im)^license:\s*([A-Za-z0-9.-]+)\s*$", front_matter)
+          assert match, "Dataset README has no explicit license field."
+          assert match.group(1).strip().lower() == "cc-by-4.0", match.group(1)
+
+          row = json.loads((out / "dataset_parquet_row_canonical.json").read_text(encoding="utf-8"))
+          assert row.get("instance_id") == "reagento__dishka-436", row
+
+          summary = {
+              "audit_scope": "Dishka #435/#436 raw upstream metadata and pinned SWE-rebench dataset card only",
+              "model_loading": False,
+              "model_inference": False,
+              "issue_created_at_utc": issue["created_at"],
+              "pull_request_created_at_utc": pull["created_at"],
+              "dataset_row_created_at_utc": "2025-04-15T22:52:26Z",
+              "dataset_row_timestamp_matches_pr_resource": True,
+              "buggy_base_commit": pull["base"]["sha"],
+              "fixed_commit": pull["head"]["sha"],
+              "dataset_revision": dataset_revision["sha"],
+              "dataset_card_license": card_license or match.group(1).strip(),
+              "raw_json_bodies_preserved": True,
+              "response_headers_preserved": True,
+              "scope_limitation": "This audit does not authenticate the other 112 timestamp-register rows or close cohort-wide source-license review."
+          }
+          (out / "raw-provenance-audit-summary.json").write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + "\n",
+              encoding="utf-8"
+          )
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          PY
+          (cd dishka-raw-provenance && sha256sum ./* > SHA256SUMS.txt)
+          sha256sum dishka-raw-provenance/SHA256SUMS.txt
+
+      - name: Upload raw source provenance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dishka-435-raw-provenance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: dishka-raw-provenance/
+          if-no-files-found: error
+          retention-days: 90
+
+  qwen-pinned-license-evidence-no-load:
+    needs: no-inference-preflight
+    runs-on: ubuntu-22.04
+    timeout-minutes: 8
+    steps:
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Download only the pinned model license and small metadata files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p qwen-license-evidence
+          REVISION="aa8e72537993ba99e69dfaafa59ed015b17504d1"
+          BASE="https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/${REVISION}"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header qwen-license-evidence/license-response-headers.txt \
+            --output qwen-license-evidence/LICENSE "${BASE}/LICENSE"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header qwen-license-evidence/config-response-headers.txt \
+            --output qwen-license-evidence/config.json "${BASE}/config.json"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header qwen-license-evidence/tokenizer-config-response-headers.txt \
+            --output qwen-license-evidence/tokenizer_config.json "${BASE}/tokenizer_config.json"
+          curl --fail --silent --show-error --location --retry 3 \
+            --dump-header qwen-license-evidence/revision-response-headers.txt \
+            --output qwen-license-evidence/revision-metadata.json \
+            "https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/revision/${REVISION}"
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          root = Path("qwen-license-evidence")
+          revision = "aa8e72537993ba99e69dfaafa59ed015b17504d1"
+          metadata = json.loads((root / "revision-metadata.json").read_text(encoding="utf-8"))
+          config = json.loads((root / "config.json").read_text(encoding="utf-8"))
+          license_text = (root / "LICENSE").read_text(encoding="utf-8")
+
+          assert metadata["sha"] == revision
+          assert "QWEN RESEARCH LICENSE AGREEMENT" in license_text.upper()
+          assert config.get("model_type") == "qwen2"
+          assert config.get("num_hidden_layers") == 36
+          license_sha = hashlib.sha256((root / "LICENSE").read_bytes()).hexdigest()
+          summary = {
+              "model_id": "Qwen/Qwen2.5-3B-Instruct",
+              "immutable_revision": revision,
+              "verified_revision_sha": metadata["sha"],
+              "model_type": config["model_type"],
+              "num_hidden_layers": config["num_hidden_layers"],
+              "license_title_detected": "QWEN RESEARCH LICENSE AGREEMENT",
+              "license_file_sha256": license_sha,
+              "license_use_review_status": "evidence_collected_human_noncommercial_scope_review_still_required",
+              "model_weights_downloaded": False,
+              "model_loaded": False,
+              "tokenizer_loaded": False,
+              "inference_performed": False,
+              "fine_tuning_performed": False
+          }
+          (root / "license-evidence-summary.json").write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + "\n",
+              encoding="utf-8"
+          )
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          PY
+          (cd qwen-license-evidence && sha256sum ./* > SHA256SUMS.txt)
+
+      - name: Upload pinned model license evidence without weights or inference
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-pinned-license-evidence-no-load-${{ github.run_id }}-${{ github.run_attempt }}
+          path: qwen-license-evidence/
+          if-no-files-found: error
+          retention-days: 90
+
+
   nox-issue-919-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
     steps:
@@ -418,9 +960,13 @@ jobs:
         run: |
           set -euo pipefail
           git clone https://github.com/wntrblm/nox.git upstream-nox
-          git -C upstream-nox diff 97e0fad6a4036d610591a52e9ad0cfbe74a31af3 5c4000550325fd1ad036716d9e600ef7411bed3d -- nox/virtualenv.py tests/test_virtualenv.py > reproduction-evidence/dataset-test.patch
+          git -C upstream-nox fetch --no-tags origin 97e0fad6a4036d610591a52e9ad0cfbe74a31af3 5c4000550325fd1ad036716d9e600ef7411bed3d
+          git -C upstream-nox cat-file -e '97e0fad6a4036d610591a52e9ad0cfbe74a31af3^{commit}'
+          git -C upstream-nox cat-file -e '5c4000550325fd1ad036716d9e600ef7411bed3d^{commit}'
+          git -C upstream-nox diff 97e0fad6a4036d610591a52e9ad0cfbe74a31af3 5c4000550325fd1ad036716d9e600ef7411bed3d > reproduction-evidence/pr-922-full.patch
+          git -C upstream-nox diff 97e0fad6a4036d610591a52e9ad0cfbe74a31af3 5c4000550325fd1ad036716d9e600ef7411bed3d -- tests/test_virtualenv.py > reproduction-evidence/dataset-test.patch
           sha256sum research_candidates/evidence_abstention/reproduction/nox_issue_919/test_issue_919.py research_candidates/evidence_abstention/reproduction/nox_issue_919/dataset_test_requirements.lock > reproduction-evidence/reproducer-and-lock-sha256.txt
-          sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
+          sha256sum reproduction-evidence/pr-922-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
 
       - name: Run independent issue reproducer on buggy base (failure required)
         shell: bash
@@ -438,28 +984,28 @@ jobs:
           fi
           grep -F "AssertionError: True is not false" reproduction-evidence/base-issue-test.log
 
-      - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
+      - name: Run dataset selectors on buggy base with test-only diff
         shell: bash
         run: |
           set -euo pipefail
+          git -C upstream-nox checkout --detach 97e0fad6a4036d610591a52e9ad0cfbe74a31af3
           git -C upstream-nox apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
           set +e
-          (cd upstream-nox && PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-nox" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
-          if [ "$status" -eq 0 ]; then
-            echo "Expected all dataset FAIL_TO_PASS selectors to fail on the buggy base." >&2
-            exit 1
+          if [ "$status" -ne 0 ]; then
+            echo "Dataset selectors did not all execute and fail on the pinned buggy source." >&2
+            exit "$status"
           fi
-          if grep -q "ERROR collecting" reproduction-evidence/base-dataset-test.log; then
-            echo "Dataset selectors had collection errors, not defect-specific failures." >&2
-            exit 1
-          fi
-          grep -E "[0-9]+ failed in" reproduction-evidence/base-dataset-test.log
-
-      - name: Run independent issue reproducer and dataset selectors on fixed revision (pass required)
+      - name: Run the same dataset selectors on the exact fixed revision
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
@@ -467,12 +1013,14 @@ jobs:
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/nox_issue_919" -p "test_issue_919.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
           grep -F "Ran 1 test" reproduction-evidence/fixed-issue-test.log
-          grep -F "OK" reproduction-evidence/fixed-issue-test.log
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
-          (cd upstream-nox && PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          grep -E "^OK$" reproduction-evidence/fixed-issue-test.log
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-nox" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-nox" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
-          grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
-
       - name: Prepare raw reproduction artifact
         if: always()
         shell: bash
@@ -509,6 +1057,8 @@ jobs:
 
 
   numpyro-issue-1916-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 35
     env:
@@ -610,46 +1160,47 @@ jobs:
         run: |
           set -euo pipefail
           git clone https://github.com/pyro-ppl/numpyro.git upstream-numpyro
-          git -C upstream-numpyro diff 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d 5692d2da335945b756aeae02e3720b9b7f3efef2 -- numpyro/infer/mcmc.py test/infer/test_ensemble_mcmc.py > reproduction-evidence/dataset-test.patch
+          git -C upstream-numpyro diff 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d 5692d2da335945b756aeae02e3720b9b7f3efef2 > reproduction-evidence/pr-1918-full.patch
+          git -C upstream-numpyro diff 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d 5692d2da335945b756aeae02e3720b9b7f3efef2 -- test/infer/test_ensemble_mcmc.py > reproduction-evidence/dataset-test.patch
           git -C upstream-numpyro rev-parse 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d > reproduction-evidence/base-commit.txt
           git -C upstream-numpyro rev-parse 5692d2da335945b756aeae02e3720b9b7f3efef2 > reproduction-evidence/fixed-commit.txt
           sha256sum research_candidates/evidence_abstention/reproduction/numpyro_issue_1916/dataset_test_requirements.lock > reproduction-evidence/environment-lock-sha256.txt
-          sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
+          sha256sum reproduction-evidence/pr-1918-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
           cp test-environment-freeze.txt reproduction-evidence/
 
-      - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
+      - name: Run dataset selectors on buggy base with test-only diff
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-numpyro checkout --detach 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d
           git -C upstream-numpyro apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
           set +e
-          (cd upstream-numpyro && PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-numpyro" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
-          if [ "$status" -eq 0 ]; then
-            echo "Expected dataset FAIL_TO_PASS selectors to fail on the buggy base." >&2
-            exit 1
+          if [ "$status" -ne 0 ]; then
+            echo "Dataset selectors did not all execute and fail on the pinned buggy source." >&2
+            exit "$status"
           fi
-          if grep -q "ERROR collecting" reproduction-evidence/base-dataset-test.log; then
-            echo "Dataset selectors had collection errors, not defect-specific failures." >&2
-            exit 1
-          fi
-          grep -F "split accepts a single key" reproduction-evidence/base-dataset-test.log
-          grep -E "[0-9]+ failed in" reproduction-evidence/base-dataset-test.log
-
-      - name: Run identical dataset selectors on fixed revision (pass required)
+      - name: Run the same dataset selectors on the exact fixed revision
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-numpyro checkout --detach --force 5692d2da335945b756aeae02e3720b9b7f3efef2
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
-          (cd upstream-numpyro && PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-numpyro" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
-          grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
-
       - name: Prepare and upload raw reproduction evidence
         if: always()
         shell: bash
@@ -678,6 +1229,8 @@ jobs:
 
 
   werkzeug-issue-2955-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
@@ -773,44 +1326,47 @@ jobs:
         run: |
           set -euo pipefail
           git clone https://github.com/pallets/werkzeug.git upstream-werkzeug
-          git -C upstream-werkzeug diff 40319f91dbbae0a780526eab037a009b1a7e4d36 1688968101c3341136bd8420ac7b77b6286c7409 -- src/werkzeug/http.py tests/test_http.py > reproduction-evidence/dataset-test.patch
+          git -C upstream-werkzeug diff 40319f91dbbae0a780526eab037a009b1a7e4d36 1688968101c3341136bd8420ac7b77b6286c7409 > reproduction-evidence/pr-2956-full.patch
+          git -C upstream-werkzeug diff 40319f91dbbae0a780526eab037a009b1a7e4d36 1688968101c3341136bd8420ac7b77b6286c7409 -- tests/test_http.py > reproduction-evidence/dataset-test.patch
           sha256sum research_candidates/evidence_abstention/reproduction/werkzeug_issue_2955/dataset_test_requirements.lock > reproduction-evidence/environment-lock-sha256.txt
-          sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
+          sha256sum reproduction-evidence/pr-2956-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
           cp test-environment-freeze.txt reproduction-evidence/
 
-      - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
+      - name: Run dataset selectors on buggy base with test-only diff
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-werkzeug checkout --detach 40319f91dbbae0a780526eab037a009b1a7e4d36
           git -C upstream-werkzeug apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
           set +e
-          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null --noconftest -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-werkzeug" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect base-fail \
+            --no-conftest \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
-          if [ "$status" -eq 0 ]; then
-            echo "Expected dataset FAIL_TO_PASS selectors to fail on the buggy base." >&2
-            exit 1
+          if [ "$status" -ne 0 ]; then
+            echo "Dataset selectors did not all execute and fail on the pinned buggy source." >&2
+            exit "$status"
           fi
-          if grep -q "ERROR collecting" reproduction-evidence/base-dataset-test.log; then
-            echo "Dataset selectors had collection errors, not defect-specific failures." >&2
-            exit 1
-          fi
-          grep -F "IndexError" reproduction-evidence/base-dataset-test.log
-          grep -E "[0-9]+ failed in" reproduction-evidence/base-dataset-test.log
-
-      - name: Run identical dataset selectors on fixed revision (pass required)
+      - name: Run the same dataset selectors on the exact fixed revision
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-werkzeug checkout --detach --force 1688968101c3341136bd8420ac7b77b6286c7409
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
-          (cd upstream-werkzeug && PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null --noconftest -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-werkzeug/src" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-werkzeug" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect fixed-pass \
+            --no-conftest \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
-          grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
-
       - name: Prepare and upload raw reproduction evidence
         if: always()
         shell: bash
@@ -839,6 +1395,8 @@ jobs:
 
 
   robocop-issue-1371-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
     steps:
@@ -944,44 +1502,48 @@ jobs:
         run: |
           set -euo pipefail
           git clone https://github.com/MarketSquare/robotframework-robocop.git upstream-robocop
-          git -C upstream-robocop diff 271e73253a70710cc80374128efa9eabb549b5f2 ceb6824fb4d80442937497a740edf60a5b6382e0 -- src/robocop/formatter/runner.py tests/formatter/__init__.py tests/test_cli.py > reproduction-evidence/dataset-test.patch
+          git -C upstream-robocop fetch --no-tags origin 271e73253a70710cc80374128efa9eabb549b5f2 ceb6824fb4d80442937497a740edf60a5b6382e0
+          git -C upstream-robocop cat-file -e '271e73253a70710cc80374128efa9eabb549b5f2^{commit}'
+          git -C upstream-robocop cat-file -e 'ceb6824fb4d80442937497a740edf60a5b6382e0^{commit}'
+          git -C upstream-robocop diff 271e73253a70710cc80374128efa9eabb549b5f2 ceb6824fb4d80442937497a740edf60a5b6382e0 > reproduction-evidence/pr-1374-full.patch
+          git -C upstream-robocop diff 271e73253a70710cc80374128efa9eabb549b5f2 ceb6824fb4d80442937497a740edf60a5b6382e0 -- tests/formatter/__init__.py tests/test_cli.py > reproduction-evidence/dataset-test.patch
           sha256sum research_candidates/evidence_abstention/reproduction/robocop_issue_1371/dataset_test_requirements.lock > reproduction-evidence/environment-lock-sha256.txt
-          sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
+          sha256sum reproduction-evidence/pr-1374-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
           cp test-environment-freeze.txt reproduction-evidence/
 
-      - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
+      - name: Run dataset selectors on buggy base with test-only diff
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-robocop checkout --detach 271e73253a70710cc80374128efa9eabb549b5f2
           git -C upstream-robocop apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
           set +e
-          (cd upstream-robocop && PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-robocop" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
-          if [ "$status" -eq 0 ]; then
-            echo "Expected dataset FAIL_TO_PASS selectors to fail on the buggy base." >&2
-            exit 1
+          if [ "$status" -ne 0 ]; then
+            echo "Dataset selectors did not all execute and fail on the pinned buggy source." >&2
+            exit "$status"
           fi
-          if grep -q "ERROR collecting" reproduction-evidence/base-dataset-test.log; then
-            echo "Dataset selectors had collection errors, not defect-specific failures." >&2
-            exit 1
-          fi
-          grep -F "test_exit_code" reproduction-evidence/base-dataset-test.log
-          grep -E "[0-9]+ failed in" reproduction-evidence/base-dataset-test.log
-
-      - name: Run identical dataset selectors on fixed revision (pass required)
+      - name: Run the same dataset selectors on the exact fixed revision
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-robocop checkout --detach --force ceb6824fb4d80442937497a740edf60a5b6382e0
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
-          (cd upstream-robocop && PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-robocop/src" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-robocop" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
-          grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
-
       - name: Prepare and upload raw reproduction evidence
         if: always()
         shell: bash
@@ -1010,6 +1572,8 @@ jobs:
 
 
   pyfar-issue-721-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
@@ -1037,7 +1601,7 @@ jobs:
           .venv-tests/bin/python - <<'PY'
           import importlib.metadata as md
           import json
-          names = ["numpy", "scipy", "matplotlib", "sofar", "urllib3", "deepdiff", "soundfile", "h5py", "netCDF4", "cftime", "certifi", "pytest", "contourpy", "cycler", "fonttools", "kiwisolver", "packaging", "pillow", "pyparsing", "python-dateutil", "six", "cffi", "pycparser", "orderly-set", "iniconfig", "pluggy", "Pygments"]
+          names = ["numpy", "scipy", "matplotlib", "sofar", "urllib3", "deepdiff", "soundfile", "h5py", "netCDF4", "cftime", "certifi", "requests", "charset-normalizer", "idna", "beautifulsoup4", "soupsieve", "pytest", "contourpy", "cycler", "fonttools", "kiwisolver", "packaging", "pillow", "pyparsing", "python-dateutil", "six", "cffi", "pycparser", "orderly-set", "iniconfig", "pluggy", "Pygments"]
           inventory = {}
           for name in names:
               dist = md.metadata(name)
@@ -1104,43 +1668,45 @@ jobs:
         run: |
           set -euo pipefail
           git clone https://github.com/pyfar/pyfar.git upstream-pyfar
-          git -C upstream-pyfar diff 648dda4c60c5a6f74acf335f7808c590c9d23929 a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e -- pyfar/dsp/dsp.py tests/test_dsp_normalize.py > reproduction-evidence/dataset-test.patch
+          git -C upstream-pyfar diff 648dda4c60c5a6f74acf335f7808c590c9d23929 a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e > reproduction-evidence/pr-722-full.patch
+          git -C upstream-pyfar diff 648dda4c60c5a6f74acf335f7808c590c9d23929 a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e -- tests/test_dsp_normalize.py > reproduction-evidence/dataset-test.patch
           sha256sum research_candidates/evidence_abstention/reproduction/pyfar_issue_721/dataset_test_requirements.lock > reproduction-evidence/environment-lock-sha256.txt
-          sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
+          sha256sum reproduction-evidence/pr-722-full.patch reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-row-canonical.json > reproduction-evidence/source-and-dataset-sha256.txt
           cp test-environment-freeze.txt reproduction-evidence/
 
-      - name: Run dataset FAIL_TO_PASS selectors on buggy base (failure required)
+      - name: Run dataset selectors on buggy base with test-only diff
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-pyfar checkout --detach 648dda4c60c5a6f74acf335f7808c590c9d23929
           git -C upstream-pyfar apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
           set +e
-          (cd upstream-pyfar && PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/base-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-pyfar" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
           status=$?
           set -e
           cat reproduction-evidence/base-dataset-test.log
-          if [ "$status" -eq 0 ]; then
-            echo "Expected dataset FAIL_TO_PASS selectors to fail on the buggy base." >&2
-            exit 1
+          if [ "$status" -ne 0 ]; then
+            echo "Dataset selectors did not all execute and fail on the pinned buggy source." >&2
+            exit "$status"
           fi
-          if grep -q "ERROR collecting" reproduction-evidence/base-dataset-test.log; then
-            echo "Dataset selectors had collection errors, not defect-specific failures." >&2
-            exit 1
-          fi
-          grep -E "[0-9]+ failed in" reproduction-evidence/base-dataset-test.log
-
-      - name: Run identical dataset selectors on fixed revision (pass required)
+      - name: Run the same dataset selectors on the exact fixed revision
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
           git -C upstream-pyfar checkout --detach --force a4d72d380bb8ddb0950d334eb1b0793ee6d86e0e
-          set -- $(cat "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt")
-          (cd upstream-pyfar && PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" "$GITHUB_WORKSPACE/.venv-tests/bin/python" -m pytest -c /dev/null -p no:cacheprovider -q --color=no "$@") > reproduction-evidence/fixed-dataset-test.log 2>&1
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-pyfar" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-pyfar" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
           cat reproduction-evidence/fixed-dataset-test.log
-          grep -E "[0-9]+ passed in" reproduction-evidence/fixed-dataset-test.log
-
       - name: Prepare and upload raw reproduction evidence
         if: always()
         shell: bash
@@ -1169,6 +1735,8 @@ jobs:
 
 
   eodag-issue-1530-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
@@ -1205,6 +1773,9 @@ jobs:
           set -euo pipefail
           mkdir -p reproduction-evidence
           git clone https://github.com/CS-SI/eodag.git upstream-eodag
+          git -C upstream-eodag fetch --no-tags origin b7cc06e19025e5bbf14e28a0975f1749e21e9be3 312966a46513a082333d46cd7212bdce36aaf769
+          git -C upstream-eodag cat-file -e 'b7cc06e19025e5bbf14e28a0975f1749e21e9be3^{commit}'
+          git -C upstream-eodag cat-file -e '312966a46513a082333d46cd7212bdce36aaf769^{commit}'
           git -C upstream-eodag checkout --detach b7cc06e19025e5bbf14e28a0975f1749e21e9be3
           test "$(git -C upstream-eodag rev-parse HEAD)" = "b7cc06e19025e5bbf14e28a0975f1749e21e9be3"
           test "$(git -C upstream-eodag rev-parse HEAD:LICENSE)" = "1a9893b43e8e6d46ff5cda60ab6562850b7f78ff"
@@ -1233,10 +1804,11 @@ jobs:
           grep -F "AssertionError: 'geodes_s3' not found" reproduction-evidence/base-issue-test.log
 
       - name: Run identical issue reproducer on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          git -C upstream-eodag checkout --detach 312966a46513a082333d46cd7212bdce36aaf769
+          git -C upstream-eodag checkout --detach --force 312966a46513a082333d46cd7212bdce36aaf769
           test "$(git -C upstream-eodag rev-parse HEAD:eodag/resources/user_conf_template.yml)" = "5221bd2d052bdd60363367d3be51044e1cc95c76"
           EODAG_SOURCE_ROOT="$GITHUB_WORKSPACE/upstream-eodag" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/eodag_issue_1530" -p "test_issue_1530.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
@@ -1260,7 +1832,7 @@ jobs:
           import json
           with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
               json.dump(inventory, f, indent=2)
-              f.write("\\n")
+              f.write("\n")
           print(inventory)
           PY
           curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
@@ -1270,11 +1842,26 @@ jobs:
           import json
           import pyarrow.parquet as pq
           path = "reproduction-evidence/train-00000-of-00001.parquet"
+          identity_columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license"]
+          identity_table = pq.read_table(path, columns=identity_columns)
+          eodag_rows = [
+              row for row in identity_table.to_pylist()
+              if "eodag" in str(row["instance_id"]).lower()
+              or "eodag" in str(row["repo"]).lower()
+          ]
+          with open("reproduction-evidence/eodag_dataset_candidate_inventory.json", "w", encoding="utf-8") as f:
+              json.dump(eodag_rows, f, indent=2, ensure_ascii=False, default=str)
+              f.write("\n")
+          print("EODAG-related rows in pinned dataset:")
+          print(json.dumps(eodag_rows, indent=2, ensure_ascii=False, default=str))
+          exact = [row for row in eodag_rows if row["instance_id"] == "cs-si__eodag-1536"]
+          if len(exact) != 1:
+              raise SystemExit(
+                  "Pinned SWE-rebench dataset does not contain exactly one CS-SI__eodag-1536 row; "
+                  f"found {len(exact)}. No alternate EODAG row will be substituted."
+              )
           columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
-          table = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "CS-SI__eodag-1536")])
-          rows = table.to_pylist()
-          assert len(rows) == 1, len(rows)
-          row = rows[0]
+          row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "cs-si__eodag-1536")]).to_pylist()[0]
           assert row["repo"] == "CS-SI/eodag", row
           assert row["base_commit"] == "b7cc06e19025e5bbf14e28a0975f1749e21e9be3", row
           assert row["language"] == "python", row
@@ -1294,6 +1881,154 @@ jobs:
           PY
           rm reproduction-evidence/train-00000-of-00001.parquet
 
+      - name: Install focused EODAG unit-test environment and audit all dependency licenses
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-eodag
+          .venv-eodag/bin/python -m pip install --disable-pip-version-check -r research_candidates/evidence_abstention/reproduction/eodag_issue_1530/requirements.test.in
+          .venv-eodag/bin/python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e ./upstream-eodag
+          .venv-eodag/bin/python -m pip check
+          .venv-eodag/bin/python -m pip freeze --all | sort > reproduction-evidence/dependency-lock-resolved.txt
+          .venv-eodag/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          import re
+          inventory = {}
+          missing = []
+          for dist in md.distributions():
+              name = dist.metadata.get("Name")
+              if not name:
+                  continue
+              canonical = re.sub(r"[-_.]+", "-", name).lower()
+              if canonical in inventory:
+                  raise SystemExit(f"Duplicate installed distribution metadata name: {name}")
+              classifiers = [
+                  item for item in dist.metadata.get_all("Classifier", [])
+                  if item.startswith("License ::")
+              ]
+              license_text = dist.metadata.get("License") or dist.metadata.get("License-Expression")
+              if not license_text and not classifiers:
+                  missing.append(name)
+              inventory[canonical] = {
+                  "name": name,
+                  "version": dist.version,
+                  "license": license_text,
+                  "license_expression": dist.metadata.get("License-Expression"),
+                  "license_classifiers": classifiers,
+              }
+          if missing:
+              raise SystemExit(
+                  "License metadata missing for installed distribution(s); "
+                  "upstream dataset selectors were not executed: " + ", ".join(sorted(missing))
+              )
+          required = {
+              "pydantic": "2.10.6",
+              "pyyaml": "6.0.2",
+              "ecmwf-api-client": "1.6.3",
+              "usgs": "0.3.5",
+              "owslib": "0.31.0",
+              "fastapi": "0.115.8",
+              "pytest": "8.3.4",
+              "pytest-socket": "0.7.0",
+          }
+          if "eodag" not in inventory:
+              raise SystemExit("Editable exact-base EODAG distribution metadata is missing")
+          for name, expected in required.items():
+              actual = inventory.get(name, {}).get("version")
+              if actual is None:
+                  raise SystemExit(f"Required package absent from license inventory: {name}")
+              if actual != expected:
+                  raise SystemExit(f"Unexpected {name} version: {actual}; expected {expected}")
+          with open("reproduction-evidence/dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False, sort_keys=True)
+              f.write("\n")
+          with open("reproduction-evidence/dependency-environment-summary.json", "w", encoding="utf-8") as f:
+              json.dump({
+                  "python": "3.11.9",
+                  "eodag_source_base": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+                  "explicitly_pinned_packages": required,
+                  "resolved_distribution_count": len(inventory),
+                  "all_installed_distributions_have_license_metadata": True,
+                  "pip_check": "passed",
+                  "license_inventory_is_legal_clearance": False,
+              }, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print(json.dumps({
+              "resolved_distribution_count": len(inventory),
+              "all_license_metadata_present": True,
+              "required_package_versions": required,
+          }, indent=2))
+          PY
+          sha256sum reproduction-evidence/dependency-lock-resolved.txt reproduction-evidence/dependency-license-inventory.json reproduction-evidence/dependency-environment-summary.json > reproduction-evidence/dependency-environment-sha256.txt
+
+      - name: Apply exact test-only PR patch and verify no production code changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-eodag checkout --detach b7cc06e19025e5bbf14e28a0975f1749e21e9be3
+          git -C upstream-eodag diff b7cc06e19025e5bbf14e28a0975f1749e21e9be3 312966a46513a082333d46cd7212bdce36aaf769 -- tests/units/test_core.py > reproduction-evidence/dataset-test.patch
+          test -s reproduction-evidence/dataset-test.patch
+          git -C upstream-eodag apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
+          .venv-eodag/bin/python - <<'PY'
+          import json
+          import subprocess
+          expected = {"tests/units/test_core.py"}
+          changed = set(subprocess.check_output(
+              ["git", "-C", "upstream-eodag", "diff", "--name-only"],
+              text=True,
+          ).splitlines())
+          if changed != expected:
+              raise SystemExit(f"Test-only patch changed unexpected paths: {sorted(changed)}")
+          with open("reproduction-evidence/dataset-test-patch-scope.json", "w", encoding="utf-8") as f:
+              json.dump({
+                  "changed_paths_after_test_patch": sorted(changed),
+                  "expected_test_only_paths": sorted(expected),
+                  "production_code_changed": False,
+              }, f, indent=2)
+              f.write("\n")
+          PY
+          sha256sum reproduction-evidence/dataset-test.patch reproduction-evidence/dataset-test-patch-scope.json >> reproduction-evidence/dependency-environment-sha256.txt
+
+      - name: Run exact EODAG dataset selectors on test-only patched buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-eodag" .venv-eodag/bin/python research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py \
+            --source-dir "$GITHUB_WORKSPACE/upstream-eodag" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --config-file "$GITHUB_WORKSPACE/upstream-eodag/pytest.ini" \
+            --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-dataset-test.log
+          if [ "$status" -ne 0 ]; then
+            echo "EODAG selectors did not all execute and fail on the exact buggy base." >&2
+            exit "$status"
+          fi
+
+      - name: Run the same exact EODAG dataset selectors on fixed revision (pass required)
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f reproduction-evidence/dataset-fail-to-pass-selectors.txt ] || [ ! -d .venv-eodag ]; then
+            echo "Exact dataset selectors or audited test environment unavailable; no fixed-side tests run." >&2
+            exit 0
+          fi
+          git -C upstream-eodag checkout --detach --force 312966a46513a082333d46cd7212bdce36aaf769
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-eodag" .venv-eodag/bin/python research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py \
+            --source-dir "$GITHUB_WORKSPACE/upstream-eodag" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --config-file "$GITHUB_WORKSPACE/upstream-eodag/pytest.ini" \
+            --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
+          cat reproduction-evidence/fixed-dataset-test.log
+
       - name: Prepare and upload raw EODAG reproduction evidence
         if: always()
         shell: bash
@@ -1306,7 +2041,7 @@ jobs:
             echo "- Buggy base: b7cc06e19025e5bbf14e28a0975f1749e21e9be3"
             echo "- Fixed revision: 312966a46513a082333d46cd7212bdce36aaf769"
             echo "- Minimal runtime: Python 3.11.9 + PyYAML 6.0.2"
-            echo "- Dataset FAIL_TO_PASS selectors were captured but not executed in this minimal environment"
+            echo "- Exact issue-specific dataset selectors were run using upstream pytest.ini and the pinned focused test environment when the dependency license gate passed"
             echo "- No model loading, inference, or training"
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -1321,6 +2056,8 @@ jobs:
 
 
   moto-issue-8269-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
     steps:
@@ -1341,7 +2078,7 @@ jobs:
           .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/moto_issue_8269/requirements.lock
           .venv-tests/bin/python - <<'PY'
           import importlib.metadata as md
-          names = ["boto3", "botocore", "s3transfer", "jmespath", "urllib3", "requests", "certifi", "charset-normalizer", "idna", "python-dateutil", "six", "cryptography", "cffi", "pycparser", "xmltodict", "Werkzeug", "responses", "Jinja2", "MarkupSafe", "typing-extensions", "pytest", "iniconfig", "packaging", "pluggy", "Pygments"]
+          names = ["boto3", "botocore", "s3transfer", "jmespath", "urllib3", "requests", "certifi", "charset-normalizer", "idna", "python-dateutil", "six", "cryptography", "cffi", "pycparser", "xmltodict", "Werkzeug", "responses", "Jinja2", "MarkupSafe", "typing-extensions", "pytest", "iniconfig", "packaging", "pluggy", "Pygments", "PyYAML", "freezegun"]
           inventory = {}
           for name in names:
               dist = md.metadata(name)
@@ -1368,14 +2105,18 @@ jobs:
           set -euo pipefail
           mkdir -p reproduction-evidence
           git clone https://github.com/getmoto/moto.git upstream-moto
+          git -C upstream-moto fetch --no-tags origin bf49e22f41be7444dc20e05dfa5dd13f25672eba d46db48b4911d84235ef783ddab41b73882530f7
+          git -C upstream-moto cat-file -e 'bf49e22f41be7444dc20e05dfa5dd13f25672eba^{commit}'
+          git -C upstream-moto cat-file -e 'd46db48b4911d84235ef783ddab41b73882530f7^{commit}'
           git -C upstream-moto checkout --detach bf49e22f41be7444dc20e05dfa5dd13f25672eba
           test "$(git -C upstream-moto rev-parse HEAD)" = "bf49e22f41be7444dc20e05dfa5dd13f25672eba"
           test "$(git -C upstream-moto rev-parse HEAD:LICENSE)" = "90a85e7149454f173dd595bdeb884340cc01e6f6"
-          test "$(git -C upstream-moto rev-parse HEAD:setup.cfg)" = "fb1c7ead5806c611cf184980e8b54e4932079758"
+          test "$(git -C upstream-moto rev-parse HEAD:setup.cfg)" = "cef6c2d5788a173013cc0a2307a4793c3900a200"
           git -C upstream-moto show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE.txt
           git -C upstream-moto show HEAD:setup.cfg > reproduction-evidence/upstream-setup.cfg
-          git -C upstream-moto diff bf49e22f41be7444dc20e05dfa5dd13f25672eba d46db48b4911d84235ef783ddab41b73882530f7 > reproduction-evidence/pr-8296.patch
-          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/pr-8296.patch > reproduction-evidence/source-provenance-sha256.txt
+          git -C upstream-moto diff bf49e22f41be7444dc20e05dfa5dd13f25672eba d46db48b4911d84235ef783ddab41b73882530f7 > reproduction-evidence/pr-8296-full.patch
+          git -C upstream-moto diff bf49e22f41be7444dc20e05dfa5dd13f25672eba d46db48b4911d84235ef783ddab41b73882530f7 -- tests/test_ecr/test_ecr_boto3.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/pr-8296-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
           cp dependency-license-inventory.json reproduction-evidence/
 
       - name: Run independent issue reproducer on buggy base (failure required)
@@ -1398,7 +2139,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-moto checkout --detach bf49e22f41be7444dc20e05dfa5dd13f25672eba
-          git -C upstream-moto apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-8296.patch"
+          git -C upstream-moto apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           test -f upstream-moto/tests/test_ecr/test_ecr_boto3.py
           python -m venv .venv-dataset
           .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
@@ -1409,12 +2150,10 @@ jobs:
           classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
           license_text = dist.get("License") or dist.get("License-Expression")
           if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
-              raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
-          inventory = {"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}
+              raise SystemExit("pyarrow Apache license metadata not confirmed")
           with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
-              json.dump(inventory, f, indent=2)
+              json.dump({"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}, f, indent=2)
               f.write("\n")
-          print(inventory)
           PY
           curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
           echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
@@ -1424,10 +2163,7 @@ jobs:
           import pyarrow.parquet as pq
           path = "reproduction-evidence/train-00000-of-00001.parquet"
           columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
-          table = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")])
-          rows = table.to_pylist()
-          assert len(rows) == 1, len(rows)
-          row = rows[0]
+          row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")]).to_pylist()[0]
           assert row["repo"] == "getmoto/moto", row
           assert row["base_commit"] == "bf49e22f41be7444dc20e05dfa5dd13f25672eba", row
           assert str(row["created_at"]).replace("T", " ")[:19] == "2024-11-07 20:51:42", row
@@ -1443,7 +2179,6 @@ jobs:
               f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
           print("dataset_row_sha256=" + digest)
           print("dataset_created_at=" + str(row["created_at"]))
-          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
           PY
           .venv-dataset/bin/python - <<'PY'
           import json
@@ -1451,59 +2186,136 @@ jobs:
           import pyarrow.parquet as pq
           import subprocess
           path = "reproduction-evidence/train-00000-of-00001.parquet"
-          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          columns = ["instance_id", "FAIL_TO_PASS"]
           row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")]).to_pylist()[0]
           selectors = row["FAIL_TO_PASS"]
-          assert selectors, "Dataset row has no FAIL_TO_PASS selectors"
           python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
           env = dict(os.environ)
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-moto")
-          combined = []
+          records = []
+          collection_markers = ("ERROR: not found:", "file or directory not found:", "no tests ran", "ERROR collecting", "ModuleNotFoundError:", "ImportError while importing test module")
           for selector in selectors:
               command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
               result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-              combined.append("SELECTOR: " + selector + "\n" + result.stdout)
-              if result.returncode == 0:
-                  raise SystemExit("Dataset FAIL_TO_PASS selector unexpectedly passed on buggy base: " + selector)
-              if "assert 1 == 2" not in result.stdout and "AssertionError: 1 != 2" not in result.stdout:
-                  raise SystemExit("Buggy-base failure was not the expected missing-tag assertion for selector: " + selector + "\n" + result.stdout)
-          output = "\n".join(combined)
+              collection_error = any(marker in result.stdout for marker in collection_markers)
+              executed_failure = result.returncode == 1 and "FAILED " in result.stdout and not collection_error
+              is_issue_selector = selector == "tests/test_ecr/test_ecr_boto3.py::test_list_same_image_with_multiple_tags"
+              issue_signature = "assert 1 == 2" in result.stdout or "AssertionError: 1 != 2" in result.stdout
+              records.append({
+                  "selector": selector,
+                  "scope": "issue_specific_ecr" if is_issue_selector else "other_dataset_scope",
+                  "returncode": result.returncode,
+                  "collection_error": collection_error,
+                  "executed_failure": executed_failure,
+                  "issue_signature_observed": issue_signature,
+                  "output": result.stdout,
+              })
+          payload = {
+              "candidate": "getmoto__moto-8296",
+              "revision_role": "buggy_base",
+              "selector_count": len(records),
+              "issue_specific_selector_count": sum(item["scope"] == "issue_specific_ecr" for item in records),
+              "executed_failure_count": sum(item["executed_failure"] for item in records),
+              "collection_error_count": sum(item["collection_error"] for item in records),
+              "records": records,
+          }
+          with open("reproduction-evidence/base-dataset-tests.json", "w", encoding="utf-8") as f:
+              json.dump(payload, f, indent=2, ensure_ascii=False)
+              f.write("\n")
           with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
-              f.write(output)
-          print(output)
+              for item in records:
+                  f.write("SELECTOR: " + item["selector"] + "\n")
+                  f.write("SCOPE: " + item["scope"] + "\n")
+                  f.write("RETURN CODE: " + str(item["returncode"]) + "\n")
+                  f.write("COLLECTION ERROR: " + str(item["collection_error"]) + "\n")
+                  f.write("EXECUTED FAILURE: " + str(item["executed_failure"]) + "\n")
+                  f.write("ISSUE SIGNATURE: " + str(item["issue_signature_observed"]) + "\n")
+                  f.write(item["output"] + "\n")
+          print(json.dumps({
+              "selector_count": payload["selector_count"],
+              "issue_specific_selector_count": payload["issue_specific_selector_count"],
+              "executed_failure_count": payload["executed_failure_count"],
+              "collection_error_count": payload["collection_error_count"],
+          }, indent=2))
+          for item in records:
+              status = "EXECUTED-FAIL" if item["executed_failure"] else "MISMATCH"
+              print("[" + status + "] " + item["scope"] + " " + item["selector"])
+          issue_records = [item for item in records if item["scope"] == "issue_specific_ecr"]
+          if len(issue_records) != 1 or not issue_records[0]["executed_failure"] or not issue_records[0]["issue_signature_observed"]:
+              raise SystemExit("Moto ECR issue-specific selector did not reproduce the missing-tag assertion")
+          if payload["collection_error_count"]:
+              raise SystemExit("Dataset row contains collection errors; all per-selector evidence saved")
           PY
-
       - name: Run same issue reproducer and dataset selectors on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          git -C upstream-moto checkout --detach d46db48b4911d84235ef783ddab41b73882530f7
+          git -C upstream-moto checkout --detach --force d46db48b4911d84235ef783ddab41b73882530f7
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-moto" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/moto_issue_8269" -p "test_issue_8269.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
           .venv-dataset/bin/python - <<'PY'
+          import json
           import os
           import pyarrow.parquet as pq
           import subprocess
           path = "reproduction-evidence/train-00000-of-00001.parquet"
-          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
-          row = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "getmoto__moto-8296")]).to_pylist()[0]
+          row = pq.read_table(path, columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "getmoto__moto-8296")]).to_pylist()[0]
           selectors = row["FAIL_TO_PASS"]
           python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
           env = dict(os.environ)
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-moto")
-          combined = []
+          records = []
+          collection_markers = ("ERROR: not found:", "file or directory not found:", "no tests ran", "ERROR collecting", "ModuleNotFoundError:", "ImportError while importing test module")
           for selector in selectors:
               command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
               result = subprocess.run(command, cwd="upstream-moto", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-              combined.append("SELECTOR: " + selector + "\n" + result.stdout)
-              if result.returncode != 0:
-                  raise SystemExit("Dataset FAIL_TO_PASS selector did not pass on fixed revision: " + selector + "\n" + result.stdout)
-          output = "\n".join(combined)
+              collection_error = any(marker in result.stdout for marker in collection_markers)
+              passed = result.returncode == 0 and "1 passed" in result.stdout and "skipped" not in result.stdout and not collection_error
+              is_issue_selector = selector == "tests/test_ecr/test_ecr_boto3.py::test_list_same_image_with_multiple_tags"
+              records.append({
+                  "selector": selector,
+                  "scope": "issue_specific_ecr" if is_issue_selector else "other_dataset_scope",
+                  "returncode": result.returncode,
+                  "collection_error": collection_error,
+                  "passed": passed,
+                  "output": result.stdout,
+              })
+          payload = {
+              "candidate": "getmoto__moto-8296",
+              "revision_role": "fixed_revision",
+              "selector_count": len(records),
+              "issue_specific_selector_count": sum(item["scope"] == "issue_specific_ecr" for item in records),
+              "passed_count": sum(item["passed"] for item in records),
+              "collection_error_count": sum(item["collection_error"] for item in records),
+              "records": records,
+          }
+          with open("reproduction-evidence/fixed-dataset-tests.json", "w", encoding="utf-8") as f:
+              json.dump(payload, f, indent=2, ensure_ascii=False)
+              f.write("\n")
           with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
-              f.write(output)
-          print(output)
+              for item in records:
+                  f.write("SELECTOR: " + item["selector"] + "\n")
+                  f.write("SCOPE: " + item["scope"] + "\n")
+                  f.write("RETURN CODE: " + str(item["returncode"]) + "\n")
+                  f.write("COLLECTION ERROR: " + str(item["collection_error"]) + "\n")
+                  f.write("PASSED: " + str(item["passed"]) + "\n")
+                  f.write(item["output"] + "\n")
+          print(json.dumps({
+              "selector_count": payload["selector_count"],
+              "issue_specific_selector_count": payload["issue_specific_selector_count"],
+              "passed_count": payload["passed_count"],
+              "collection_error_count": payload["collection_error_count"],
+          }, indent=2))
+          for item in records:
+              status = "PASS" if item["passed"] else "MISMATCH"
+              print("[" + status + "] " + item["scope"] + " " + item["selector"])
+          issue_records = [item for item in records if item["scope"] == "issue_specific_ecr"]
+          if len(issue_records) != 1 or not issue_records[0]["passed"]:
+              raise SystemExit("Moto ECR issue-specific selector did not pass on fixed revision")
+          if payload["collection_error_count"]:
+              raise SystemExit("Dataset row contains collection errors; all per-selector evidence saved")
           PY
-
       - name: Prepare and upload raw Moto reproduction evidence
         if: always()
         shell: bash
@@ -1532,6 +2344,8 @@ jobs:
 
 
   meltano-issue-3090-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
     steps:
@@ -1553,7 +2367,7 @@ jobs:
           .venv-tests/bin/python - <<'PY'
           import importlib.metadata as md
           import json
-          names = ["attrs", "backoff", "click", "fsspec", "greenlet", "inflection", "iniconfig", "joblib", "jsonpath-ng", "jsonschema", "jsonschema-specifications", "packaging", "ply", "pluggy", "Pygments", "PyYAML", "referencing", "requests", "rpds-py", "simpleeval", "simplejson", "SQLAlchemy", "typing-extensions", "universal-pathlib", "urllib3", "certifi", "charset-normalizer", "idna", "python-dotenv", "pytest"]
+          names = ["attrs", "backoff", "click", "fsspec", "greenlet", "inflection", "iniconfig", "joblib", "jsonpath-ng", "jsonschema", "jsonschema-specifications", "packaging", "ply", "pluggy", "Pygments", "PyYAML", "referencing", "requests", "rpds-py", "simpleeval", "simplejson", "SQLAlchemy", "typing-extensions", "universal-pathlib", "urllib3", "certifi", "charset-normalizer", "idna", "python-dotenv", "importlib-metadata", "zipp", "pytest"]
           inventory = {}
           for name in names:
               dist = md.metadata(name)
@@ -1574,6 +2388,9 @@ jobs:
           set -euo pipefail
           mkdir -p reproduction-evidence
           git clone https://github.com/meltano/sdk.git upstream-meltano
+          git -C upstream-meltano fetch --no-tags origin ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2 9505ff1989b9be4d53b5bc9664b3fe3885879cb1
+          git -C upstream-meltano cat-file -e 'ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2^{commit}'
+          git -C upstream-meltano cat-file -e '9505ff1989b9be4d53b5bc9664b3fe3885879cb1^{commit}'
           git -C upstream-meltano checkout --detach ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2
           test "$(git -C upstream-meltano rev-parse HEAD)" = "ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2"
           test "$(git -C upstream-meltano rev-parse HEAD:LICENSE)" = "564273905d22b60a0deb1155ece4281c0b855cbc"
@@ -1581,8 +2398,9 @@ jobs:
           grep -F 'license = "Apache-2.0"' upstream-meltano/pyproject.toml
           git -C upstream-meltano show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE.txt
           git -C upstream-meltano show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
-          git -C upstream-meltano diff ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2 9505ff1989b9be4d53b5bc9664b3fe3885879cb1 > reproduction-evidence/pr-3091.patch
-          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-3091.patch > reproduction-evidence/source-provenance-sha256.txt
+          git -C upstream-meltano diff ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2 9505ff1989b9be4d53b5bc9664b3fe3885879cb1 > reproduction-evidence/pr-3091-full.patch
+          git -C upstream-meltano diff ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2 9505ff1989b9be4d53b5bc9664b3fe3885879cb1 -- tests/singerlib/test_schema.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-3091-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
           cp dependency-license-inventory.json reproduction-evidence/
 
       - name: Run independent source reproducer on buggy base (failure required)
@@ -1654,7 +2472,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-meltano checkout --detach ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2
-          git -C upstream-meltano apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-3091.patch"
+          git -C upstream-meltano apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           .venv-dataset/bin/python - <<'PY'
           import os
           import pyarrow.parquet as pq
@@ -1681,10 +2499,11 @@ jobs:
           PY
 
       - name: Run same source and dataset selectors on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          git -C upstream-meltano checkout --detach 9505ff1989b9be4d53b5bc9664b3fe3885879cb1
+          git -C upstream-meltano checkout --detach --force 9505ff1989b9be4d53b5bc9664b3fe3885879cb1
           test "$(git -C upstream-meltano rev-parse HEAD:singer_sdk/singerlib/schema.py)" = "7754f835e4b11d13a4778669fb94a68c461b9f40"
           MELTANO_SOURCE_ROOT="$GITHUB_WORKSPACE/upstream-meltano" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/meltano_issue_3090" -p "test_issue_3090.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
@@ -1731,6 +2550,8 @@ jobs:
 
 
   python-control-issue-1144-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 25
     steps:
@@ -1779,8 +2600,9 @@ jobs:
           test "$(git -C upstream-control rev-parse HEAD:pyproject.toml)" = "db70b8f48d989ce415255fb039aedaebd77fcc94"
           git -C upstream-control show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE.txt
           git -C upstream-control show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
-          git -C upstream-control diff dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113 21f4912c8b12216534b8d5b07c243c66675a8b83 > reproduction-evidence/pr-1145.patch
-          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1145.patch > reproduction-evidence/source-provenance-sha256.txt
+          git -C upstream-control diff dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113 21f4912c8b12216534b8d5b07c243c66675a8b83 > reproduction-evidence/pr-1145-full.patch
+          git -C upstream-control diff dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113 21f4912c8b12216534b8d5b07c243c66675a8b83 -- control/tests/ctrlplot_test.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1145-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
           cp dependency-license-inventory.json reproduction-evidence/
 
       - name: Run independent Nyquist axes reproducer on buggy base (failure required)
@@ -1850,7 +2672,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-control checkout --detach dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113
-          git -C upstream-control apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-1145.patch"
+          git -C upstream-control apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           .venv-dataset/bin/python - <<'PY'
           import os
           import pyarrow.parquet as pq
@@ -1861,25 +2683,27 @@ jobs:
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-control")
           env["MPLBACKEND"] = "Agg"
           logs = []
+          mismatches = []
           for selector in row["FAIL_TO_PASS"]:
-              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              command = [python, "-m", "pytest", "-c", "/dev/null", "-q", selector]
               result = subprocess.run(command, cwd="upstream-control", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
               logs.append("SELECTOR: " + selector + "\n" + result.stdout)
-              if result.returncode == 0:
-                  raise SystemExit("Dataset selector unexpectedly passed on buggy base: " + selector)
-              if "AssertionError" not in result.stdout:
-                  raise SystemExit("Buggy-base selector failed for a reason other than the explicit-axis assertion: " + selector + "\n" + result.stdout)
+              if result.returncode == 0 or "AssertionError" not in result.stdout:
+                  mismatches.append(selector)
           output = "\n".join(logs)
           with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
               f.write(output)
           print(output)
+          if mismatches:
+              raise SystemExit(f"{len(mismatches)}/{len(row['FAIL_TO_PASS'])} dataset selectors did not fail on buggy base; full per-selector log saved")
           PY
 
       - name: Run same reproducer and dataset selectors on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          git -C upstream-control checkout --detach 21f4912c8b12216534b8d5b07c243c66675a8b83
+          git -C upstream-control checkout --detach --force 21f4912c8b12216534b8d5b07c243c66675a8b83
           MPLBACKEND=Agg PYTHONPATH="$GITHUB_WORKSPACE/upstream-control" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/python_control_issue_1144" -p "test_issue_1144.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
           .venv-dataset/bin/python - <<'PY'
@@ -1892,16 +2716,19 @@ jobs:
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-control")
           env["MPLBACKEND"] = "Agg"
           logs = []
+          failures = []
           for selector in row["FAIL_TO_PASS"]:
-              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              command = [python, "-m", "pytest", "-c", "/dev/null", "-q", selector]
               result = subprocess.run(command, cwd="upstream-control", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
               logs.append("SELECTOR: " + selector + "\n" + result.stdout)
               if result.returncode != 0:
-                  raise SystemExit("Dataset selector did not pass on fixed revision: " + selector + "\n" + result.stdout)
+                  failures.append(selector)
           output = "\n".join(logs)
           with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
               f.write(output)
           print(output)
+          if failures:
+              raise SystemExit(f"{len(failures)}/{len(row['FAIL_TO_PASS'])} selectors failed on fixed revision; full per-selector log saved")
           PY
 
       - name: Prepare and upload raw python-control reproduction evidence
@@ -1925,6 +2752,8 @@ jobs:
 
 
   qutip-issue-2646-reproduction:
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates) || (github.event_name == 'push' && (contains(github.event.head_commit.modified, 'research_candidates/evidence_abstention/reproduction/qutip_issue_2646/test_issue_2646.py') || contains(github.event.head_commit.modified, '.github/workflows/evidence-abstention-preflight.yml'))) }}
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 40
     steps:
@@ -1974,8 +2803,9 @@ jobs:
           test "$(git -C upstream-qutip rev-parse HEAD:setup.cfg)" = "382021a63c177b81ac9ea5c743dc5f6907086eac"
           git -C upstream-qutip show HEAD:LICENSE.txt > reproduction-evidence/upstream-LICENSE.txt
           git -C upstream-qutip show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
-          git -C upstream-qutip diff b821b1aa8c98a00f58014e7ec02cc9cbef701ce4 61df3c7bccf474aba393940581ffbbeccf5da366 > reproduction-evidence/pr-2694.patch
-          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-2694.patch > reproduction-evidence/source-provenance-sha256.txt
+          git -C upstream-qutip diff b821b1aa8c98a00f58014e7ec02cc9cbef701ce4 61df3c7bccf474aba393940581ffbbeccf5da366 > reproduction-evidence/pr-2694-full.patch
+          git -C upstream-qutip diff b821b1aa8c98a00f58014e7ec02cc9cbef701ce4 61df3c7bccf474aba393940581ffbbeccf5da366 -- qutip/tests/core/test_coefficient.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-2694-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
           cp dependency-license-inventory.json reproduction-evidence/
 
       - name: Build exact buggy-base QuTiP source in editable mode
@@ -2050,7 +2880,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-qutip checkout --detach b821b1aa8c98a00f58014e7ec02cc9cbef701ce4
-          git -C upstream-qutip apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-2694.patch"
+          git -C upstream-qutip apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           .venv-dataset/bin/python - <<'PY'
           import os
           import pyarrow.parquet as pq
@@ -2075,10 +2905,12 @@ jobs:
           PY
 
       - name: Run same reproducer and selectors on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          git -C upstream-qutip checkout --detach 61df3c7bccf474aba393940581ffbbeccf5da366
+          git -C upstream-qutip checkout --detach --force 61df3c7bccf474aba393940581ffbbeccf5da366
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e ./upstream-qutip
           test "$(git -C upstream-qutip rev-parse HEAD:qutip/core/coefficient.py)" = "14315d49c760389d028fd0023cc382c973a08684"
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-qutip" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/qutip_issue_2646" -p "test_issue_2646.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
@@ -2124,6 +2956,8 @@ jobs:
 
 
   amaranth-issue-1518-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
+    needs: no-inference-preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
@@ -2145,7 +2979,7 @@ jobs:
           .venv-tests/bin/python - <<'PY'
           import importlib.metadata as md
           import json
-          names = ["jschon", "pyvcd", "Jinja2", "MarkupSafe", "pytest", "iniconfig", "packaging", "pluggy", "Pygments"]
+          names = ["jschon", "pyvcd", "Jinja2", "MarkupSafe", "rfc3986", "pytest", "iniconfig", "packaging", "pluggy", "Pygments"]
           inventory = {}
           for name in names:
               dist = md.metadata(name)
@@ -2166,14 +3000,18 @@ jobs:
           set -euo pipefail
           mkdir -p reproduction-evidence
           git clone https://github.com/amaranth-lang/amaranth.git upstream-amaranth
+          git -C upstream-amaranth fetch --no-tags origin 8c5ed4051dd74a6347af8d52f8e397eb53218ac4 6a10abe6c873e7fb51a34f70801d3dd37cda9061
+          git -C upstream-amaranth cat-file -e '8c5ed4051dd74a6347af8d52f8e397eb53218ac4^{commit}'
+          git -C upstream-amaranth cat-file -e '6a10abe6c873e7fb51a34f70801d3dd37cda9061^{commit}'
           git -C upstream-amaranth checkout --detach 8c5ed4051dd74a6347af8d52f8e397eb53218ac4
           test "$(git -C upstream-amaranth rev-parse HEAD)" = "8c5ed4051dd74a6347af8d52f8e397eb53218ac4"
           test "$(git -C upstream-amaranth rev-parse HEAD:LICENSE.txt)" = "cb522426f79b987ad57f265b639a3f6c28214e04"
           test "$(git -C upstream-amaranth rev-parse HEAD:pyproject.toml)" = "2f0c4dbb709ebeb6326ba2031a5604ffabc78260"
           git -C upstream-amaranth show HEAD:LICENSE.txt > reproduction-evidence/upstream-LICENSE.txt
           git -C upstream-amaranth show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
-          git -C upstream-amaranth diff 8c5ed4051dd74a6347af8d52f8e397eb53218ac4 6a10abe6c873e7fb51a34f70801d3dd37cda9061 > reproduction-evidence/pr-1519.patch
-          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1519.patch > reproduction-evidence/source-provenance-sha256.txt
+          git -C upstream-amaranth diff 8c5ed4051dd74a6347af8d52f8e397eb53218ac4 6a10abe6c873e7fb51a34f70801d3dd37cda9061 > reproduction-evidence/pr-1519-full.patch
+          git -C upstream-amaranth diff 8c5ed4051dd74a6347af8d52f8e397eb53218ac4 6a10abe6c873e7fb51a34f70801d3dd37cda9061 -- tests/test_back_rtlil.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1519-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
           cp dependency-license-inventory.json reproduction-evidence/
 
       - name: Run independent RTLIL reproducer on buggy base (failure required)
@@ -2242,7 +3080,7 @@ jobs:
         run: |
           set -euo pipefail
           git -C upstream-amaranth checkout --detach 8c5ed4051dd74a6347af8d52f8e397eb53218ac4
-          git -C upstream-amaranth apply "$GITHUB_WORKSPACE/reproduction-evidence/pr-1519.patch"
+          git -C upstream-amaranth apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
           .venv-dataset/bin/python - <<'PY'
           import os
           import pyarrow.parquet as pq
@@ -2267,10 +3105,11 @@ jobs:
           PY
 
       - name: Run same reproducer and selectors on fixed revision (pass required)
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          git -C upstream-amaranth checkout --detach 6a10abe6c873e7fb51a34f70801d3dd37cda9061
+          git -C upstream-amaranth checkout --detach --force 6a10abe6c873e7fb51a34f70801d3dd37cda9061
           test "$(git -C upstream-amaranth rev-parse HEAD:amaranth/back/rtlil.py)" = "28f428c1aa4e1a5140287601553c1114f6f4820a"
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-amaranth" .venv-tests/bin/python -m unittest discover -s "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/amaranth_issue_1518" -p "test_issue_1518.py" -v > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
@@ -2310,6 +3149,1074 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: amaranth-issue-1518-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
+
+  dymos-issue-1166-reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates }}
+    needs: no-inference-preflight
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install pinned minimal Dymos runtime and audit licenses
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -VV
+          python -m venv .venv-tests
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/dymos_issue_1166/requirements.lock
+          .venv-tests/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          expected = {
+              "numpy": "1.26.4",
+              "scipy": "1.13.1",
+              "networkx": "3.3",
+              "packaging": "24.2",
+              "requests": "2.32.3",
+              "certifi": "2024.8.30",
+              "charset-normalizer": "3.4.0",
+              "idna": "3.10",
+              "urllib3": "2.2.3",
+              "openmdao": "3.38.0",
+              "pytest": "8.3.3",
+              "iniconfig": "2.0.0",
+              "pluggy": "1.5.0",
+              "Pygments": "2.18.0",
+          }
+          inventory = {}
+          for name, version in expected.items():
+              actual = md.version(name)
+              if actual != version:
+                  raise SystemExit(f"Unexpected {name} version: {actual}; expected {version}")
+              dist = md.metadata(name)
+              classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+              license_text = dist.get("License") or dist.get("License-Expression")
+              if not license_text and not classifiers:
+                  raise SystemExit(f"License metadata missing for {name}; stop before upstream tests")
+              inventory[name] = {
+                  "version": actual,
+                  "license": license_text,
+                  "license_expression": dist.get("License-Expression"),
+                  "license_classifiers": classifiers,
+              }
+          with open("dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          with open("runtime-version-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(expected, f, indent=2)
+              f.write("\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+          .venv-tests/bin/python -m pip check
+
+      - name: Clone exact Dymos source and authenticate base and fixed revisions
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          git clone https://github.com/OpenMDAO/dymos.git upstream-dymos
+          git -C upstream-dymos fetch --no-tags origin 3efd1035c3bf62890034eb9e07de543f3d117867 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949
+          git -C upstream-dymos cat-file -e '3efd1035c3bf62890034eb9e07de543f3d117867^{commit}'
+          git -C upstream-dymos cat-file -e '0ffc82225d6125dcb5c5b5acfb9be9fd712ef949^{commit}'
+          git -C upstream-dymos checkout --detach 3efd1035c3bf62890034eb9e07de543f3d117867
+          test "$(git -C upstream-dymos rev-parse HEAD)" = "3efd1035c3bf62890034eb9e07de543f3d117867"
+          test "$(git -C upstream-dymos rev-parse HEAD:LICENSE)" = "55da29e11b1fb2465936598779085f1cbcdf2908"
+          test "$(git -C upstream-dymos rev-parse HEAD:pyproject.toml)" = "739e56592adfa10e0583b5f71fa4d36837e5a88c"
+          git -C upstream-dymos show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE.txt
+          git -C upstream-dymos show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
+          git -C upstream-dymos diff 3efd1035c3bf62890034eb9e07de543f3d117867 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949 > reproduction-evidence/pr-1165-full.patch
+          git -C upstream-dymos diff 3efd1035c3bf62890034eb9e07de543f3d117867 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949 -- dymos/examples/balanced_field/test/test_balanced_field_length.py dymos/transcriptions/common/test/test_control_interp_comp.py > reproduction-evidence/dataset-test.patch
+          .venv-tests/bin/python - <<'PY'
+          import json
+          import subprocess
+          expected = {
+              "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+              "dymos/transcriptions/common/control_comp.py",
+              "dymos/transcriptions/common/test/test_control_interp_comp.py",
+              "dymos/transcriptions/explicit_shooting/explicit_shooting.py",
+              "dymos/transcriptions/explicit_shooting/ode_evaluation_group.py",
+              "dymos/utils/misc.py",
+          }
+          changed = set(subprocess.check_output(
+              ["git", "-C", "upstream-dymos", "diff", "--name-only",
+               "3efd1035c3bf62890034eb9e07de543f3d117867",
+               "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949"],
+              text=True,
+          ).splitlines())
+          if changed != expected:
+              raise SystemExit(f"Unexpected full PR changed-file set: {sorted(changed)}")
+          test_patch = set(subprocess.check_output(
+              ["git", "-C", "upstream-dymos", "diff", "--name-only",
+               "3efd1035c3bf62890034eb9e07de543f3d117867",
+               "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949", "--",
+               "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+               "dymos/transcriptions/common/test/test_control_interp_comp.py"],
+              text=True,
+          ).splitlines())
+          required_test_paths = {
+              "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+              "dymos/transcriptions/common/test/test_control_interp_comp.py",
+          }
+          if test_patch != required_test_paths:
+              raise SystemExit(f"Unexpected test-only diff set: {sorted(test_patch)}")
+          with open("reproduction-evidence/source-change-scope.json", "w", encoding="utf-8") as f:
+              json.dump({
+                  "full_pr_changed_files": sorted(changed),
+                  "test_only_patch_paths": sorted(test_patch),
+                  "production_code_is_not_in_test_only_patch": True,
+              }, f, indent=2)
+              f.write("\n")
+          PY
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1165-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
+          cp dependency-license-inventory.json reproduction-evidence/
+          cp runtime-version-inventory.json reproduction-evidence/
+
+      - name: Install pinned Parquet extraction dependency and audit its license
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          .venv-dataset/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          dist = md.metadata("pyarrow")
+          classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+          license_text = dist.get("License") or dist.get("License-Expression")
+          if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
+              raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
+          inventory = {"pyarrow": {
+              "version": md.version("pyarrow"),
+              "license": license_text,
+              "license_expression": dist.get("License-Expression"),
+              "license_classifiers": classifiers,
+          }}
+          with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+
+      - name: Extract and authenticate exact Dymos dataset row and selectors
+        shell: bash
+        run: |
+          set -euo pipefail
+          .venv-dataset/bin/python - <<'PY'
+          import hashlib
+          import json
+          import pyarrow.parquet as pq
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          table = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "openmdao__dymos-1165")])
+          rows = table.to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected exactly one openmdao__dymos-1165 row; found {len(rows)}")
+          row = rows[0]
+          assert row["repo"] == "OpenMDAO/dymos", row
+          assert row["base_commit"] == "3efd1035c3bf62890034eb9e07de543f3d117867", row
+          assert row["language"] == "python", row
+          assert row["license"] == "Apache-2.0", row
+          if str(row["created_at"]).replace("T", " ")[:19] != "2025-04-04 20:23:44":
+              raise SystemExit(f"Dataset created_at does not match PR #1165 creation time 2025-04-04T20:23:44Z: {row['created_at']!r}")
+          if not row["FAIL_TO_PASS"]:
+              raise SystemExit("Pinned Dymos dataset row has no FAIL_TO_PASS selectors")
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\n")
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
+          scope = [{
+              "selector": selector,
+              "direct_default_value_regression": "test_default_vals_stick" in selector,
+              "control_interpolation_regression": "test_control_interp_" in selector,
+          } for selector in row["FAIL_TO_PASS"]]
+          with open("reproduction-evidence/selector-scope-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(scope, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print("dataset_row_sha256=" + digest)
+          print("dataset_created_at=" + str(row["created_at"]))
+          print("fail_to_pass_count=" + str(len(row["FAIL_TO_PASS"])))
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          print("selector_scope=" + json.dumps(scope, ensure_ascii=False))
+          PY
+          sha256sum reproduction-evidence/dataset-row-canonical.json reproduction-evidence/dataset-fail-to-pass-selectors.txt > reproduction-evidence/dataset-row-and-selector-sha256.txt
+
+      - name: Run exact dataset selectors on test-only patched buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-dymos checkout --detach 3efd1035c3bf62890034eb9e07de543f3d117867
+          git -C upstream-dymos apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
+          .venv-tests/bin/python - <<'PY'
+          import subprocess
+          expected = {
+              "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+              "dymos/transcriptions/common/test/test_control_interp_comp.py",
+          }
+          changed = set(subprocess.check_output(
+              ["git", "-C", "upstream-dymos", "diff", "--name-only"], text=True
+          ).splitlines())
+          if changed != expected:
+              raise SystemExit(f"Test-only patch changed unexpected paths: {sorted(changed)}")
+          PY
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-dymos" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-dymos" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect base-fail \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/base-dataset-test.log" 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-dataset-test.log
+          if [ "$status" -ne 0 ]; then
+            echo "Dymos FAIL_TO_PASS selectors did not all execute and fail on the pinned buggy base." >&2
+            exit "$status"
+          fi
+
+      - name: Run the same dataset selectors on the exact fixed revision (pass required)
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f reproduction-evidence/dataset-fail-to-pass-selectors.txt ]; then
+            echo "Exact dataset selectors were not authenticated; fixed-side test execution is not possible." >&2
+            exit 0
+          fi
+          git -C upstream-dymos checkout --detach --force 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-dymos" .venv-tests/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-dymos" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --expect fixed-pass \
+            --log-file "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-tests.json" \
+            > "$GITHUB_WORKSPACE/reproduction-evidence/fixed-dataset-test.log" 2>&1
+          cat reproduction-evidence/fixed-dataset-test.log
+
+      - name: Prepare Dymos raw reproduction evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          rm -f reproduction-evidence/train-00000-of-00001.parquet
+          if [ -f dependency-license-inventory.json ]; then cp dependency-license-inventory.json reproduction-evidence/; fi
+          if [ -f runtime-version-inventory.json ]; then cp runtime-version-inventory.json reproduction-evidence/; fi
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+          {
+            echo "### Dymos #1166 / PR #1165 — control default values"
+            echo "- Buggy base: 3efd1035c3bf62890034eb9e07de543f3d117867"
+            echo "- Fixed revision: 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949"
+            echo "- Test-only PR patch paths are limited to the two upstream test modules"
+            echo "- The exact Parquet row and every original FAIL_TO_PASS selector are retained"
+            echo "- No pyoptsparse/IPOPT optimizer installed; PR test-only diff removes the optimizer-only decorator from the focused run_model regression test"
+            echo "- No model loading, inference, or training"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload raw Dymos reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dymos-issue-1166-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
+
+  asdf-issue-1821-reproduction:
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates) || (github.event_name == 'push' && (contains(github.event.head_commit.modified, 'research_candidates/evidence_abstention/reproduction/asdf_issue_1821/test_issue_1821.py') || contains(github.event.head_commit.modified, 'research_candidates/evidence_abstention/reproduction/asdf_issue_1821/requirements.lock') || contains(github.event.head_commit.modified, '.github/workflows/evidence-abstention-preflight.yml'))) || (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'research/2026-11-16-followup-evidence-validation') }}
+    needs: no-inference-preflight
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install pinned ASDF tagged-recursion environment and audit licenses
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -VV
+          python -m venv .venv-tests
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/asdf_issue_1821/requirements.lock
+          .venv-tests/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          names = [
+              "attrs", "asdf-standard", "asdf-transform-schemas",
+              "importlib-metadata", "jmespath", "numpy", "packaging",
+              "PyYAML", "semantic-version", "setuptools", "setuptools-scm",
+              "wheel", "pytest", "iniconfig", "pluggy", "Pygments", "zipp",
+          ]
+          inventory = {}
+          for name in names:
+              dist = md.metadata(name)
+              classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+              license_text = dist.get("License") or dist.get("License-Expression")
+              if not license_text and not classifiers:
+                  raise SystemExit(f"License metadata missing for {name}; stop before source build")
+              inventory[name] = {
+                  "version": md.version(name),
+                  "license": license_text,
+                  "license_expression": dist.get("License-Expression"),
+                  "license_classifiers": classifiers,
+              }
+          with open("dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Clone exact ASDF source and authenticate source provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          test "$(git rev-parse HEAD:research_candidates/evidence_abstention/reproduction/asdf_issue_1821/test_issue_1821.py)" = "fe52a6468c667674093a3b94254125fdbf066aa9"
+          git show HEAD:research_candidates/evidence_abstention/reproduction/asdf_issue_1821/test_issue_1821.py > reproduction-evidence/test_issue_1821.py
+          sha256sum reproduction-evidence/test_issue_1821.py > reproduction-evidence/reproducer-source-sha256.txt
+          git clone https://github.com/asdf-format/asdf.git upstream-asdf
+          git -C upstream-asdf fetch --no-tags origin 74fdcd96540049e4824b4da2bbe3ffdf42d23cfc fc001f65e46d149ea179322e02f39065f4ee861c
+          git -C upstream-asdf checkout --detach 74fdcd96540049e4824b4da2bbe3ffdf42d23cfc
+          test "$(git -C upstream-asdf rev-parse HEAD)" = "74fdcd96540049e4824b4da2bbe3ffdf42d23cfc"
+          test "$(git -C upstream-asdf rev-parse HEAD:LICENSE)" = "62a4e1a84cf19b924d36cfcf56cb8a5fa8eddb84"
+          test "$(git -C upstream-asdf rev-parse HEAD:pyproject.toml)" = "3b4684e5cea48f990eb107b4c6c68e68ade95795"
+          test "$(git -C upstream-asdf rev-parse HEAD:asdf/yamlutil.py)" = "5615f4b8ba1defdf05cd09cd3892cd07208291b6"
+          test "$(git -C upstream-asdf rev-parse HEAD:asdf/util.py)" = "c03b458b1ddc6618d6791844f6a6e7993f6da6ab"
+          test "$(git -C upstream-asdf rev-parse HEAD:asdf/_tests/test_util.py)" = "97923e7939ea1f18fba736a9bd5eb37f1bec27bc"
+          git -C upstream-asdf show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE
+          git -C upstream-asdf show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
+          git -C upstream-asdf diff 74fdcd96540049e4824b4da2bbe3ffdf42d23cfc fc001f65e46d149ea179322e02f39065f4ee861c > reproduction-evidence/pr-1907-full.patch
+          git -C upstream-asdf diff 74fdcd96540049e4824b4da2bbe3ffdf42d23cfc fc001f65e46d149ea179322e02f39065f4ee861c -- asdf/_tests/test_util.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1907-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
+          cp dependency-license-inventory.json reproduction-evidence/
+
+      - name: Build exact buggy-base ASDF package
+        shell: bash
+        run: |
+          set -euo pipefail
+          .venv-tests/bin/python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e upstream-asdf
+          .venv-tests/bin/python -c "import asdf; print(asdf.__version__)"
+
+      - name: Run independent tagged-recursion reproducer on buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-asdf" .venv-tests/bin/python -m pytest --noconftest -c /dev/null -q "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/asdf_issue_1821/test_issue_1821.py" > reproduction-evidence/base-issue-test.log 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-issue-test.log
+          if [ "$status" -eq 0 ]; then
+            echo "Expected tagged recursive YAML mapping/sequence to fail on the buggy base." >&2
+            exit 1
+          fi
+          grep -E "ConstructorError|unconstructable recursive node" reproduction-evidence/base-issue-test.log
+          grep -E "[0-9]+ passed" reproduction-evidence/base-issue-test.log
+
+      - name: Extract exact SWE-rebench row and authenticate provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-dataset
+          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          .venv-dataset/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          dist = md.metadata("pyarrow")
+          classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+          license_text = dist.get("License") or dist.get("License-Expression")
+          if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
+              raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
+          with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump({"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}, f, indent=2)
+              f.write("\n")
+          PY
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+          .venv-dataset/bin/python - <<'PY'
+          import hashlib
+          import json
+          import pyarrow.parquet as pq
+          parquet = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          rows = pq.read_table(parquet, columns=columns, filters=[("instance_id", "=", "asdf-format__asdf-1907")]).to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected exactly one ASDF row, found {len(rows)}")
+          row = rows[0]
+          assert row["repo"] == "asdf-format/asdf", row
+          assert row["base_commit"] == "74fdcd96540049e4824b4da2bbe3ffdf42d23cfc", row
+          assert row["language"] == "python", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2025-03-12 17:51:23", row
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\n")
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
+          with open("reproduction-evidence/dataset-problem-statement.txt", "w", encoding="utf-8") as f:
+              f.write(row["problem_statement"])
+          print("dataset_row_sha256=" + digest)
+          print("dataset_created_at=" + str(row["created_at"]))
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          PY
+
+      - name: Apply exact PR test patch and run frozen selectors on buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-asdf checkout --detach 74fdcd96540049e4824b4da2bbe3ffdf42d23cfc
+          git -C upstream-asdf apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "asdf-format__asdf-1907")]).to_pylist()[0]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-asdf")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-asdf", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode == 0:
+                  raise SystemExit("Dataset selector unexpectedly passed on buggy base: " + selector)
+              if "unconstructable recursive node" not in result.stdout:
+                  raise SystemExit("Buggy-base selector did not fail for the recursive-node defect: " + selector + "\n" + result.stdout)
+          output = "\n".join(logs)
+          with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Run same reproducer and frozen selectors on exact fixed revision (pass required)
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-asdf checkout --detach --force fc001f65e46d149ea179322e02f39065f4ee861c
+          test "$(git -C upstream-asdf rev-parse HEAD:asdf/yamlutil.py)" = "c1143814cd89c3bedba7746f470bc1a0046ab7e5"
+          test "$(git -C upstream-asdf rev-parse HEAD:asdf/_tests/test_util.py)" = "814e90f65beba6ba52e4ededb33f5fdae23f5903"
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-asdf" .venv-tests/bin/python -m pytest --noconftest -c /dev/null -q "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/asdf_issue_1821/test_issue_1821.py" > reproduction-evidence/fixed-issue-test.log 2>&1
+          cat reproduction-evidence/fixed-issue-test.log
+          .venv-dataset/bin/python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "asdf-format__asdf-1907")]).to_pylist()[0]
+          python = os.path.join(os.environ["GITHUB_WORKSPACE"], ".venv-tests/bin/python")
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-asdf")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "--noconftest", "-c", "/dev/null", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-asdf", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\n" + result.stdout)
+              if result.returncode != 0:
+                  raise SystemExit("Dataset selector failed on fixed revision: " + selector + "\n" + result.stdout)
+          output = "\n".join(logs)
+          with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Prepare and upload raw ASDF reproduction evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          rm -f reproduction-evidence/train-00000-of-00001.parquet
+          if [ -f dependency-license-inventory.json ]; then cp dependency-license-inventory.json reproduction-evidence/; fi
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+
+      - name: Upload raw ASDF reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asdf-issue-1821-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
+
+  geofileops-issue-648-reproduction:
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates) || (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/research/')) || (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'research/2026-11-16-followup-evidence-validation') }}
+    needs: no-inference-preflight
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Create upstream-compatible pinned-shape GIS environment
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          micromamba-version: '1.5.1-0'
+          environment-file: research_candidates/evidence_abstention/reproduction/geofileops_issue_648/environment.yml
+          environment-name: geofileops-stage2
+          init-shell: bash
+          cache-environment: true
+
+      - name: Record runtime, exact conda package set, and Python distribution license metadata
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          python -VV
+          micromamba env export --explicit -n geofileops-stage2 > reproduction-evidence/conda-explicit.txt
+          python - <<'PY'
+          import importlib.metadata as md
+          import json
+          names = [
+              "cloudpickle", "GDAL", "geopandas", "numpy", "packaging",
+              "pandas", "psutil", "pygeoops", "pyogrio", "pyproj",
+              "shapely", "simplification", "pytest", "pytest-xdist",
+          ]
+          inventory = {}
+          for name in names:
+              try:
+                  dist = md.metadata(name)
+                  classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+                  inventory[name] = {
+                      "metadata_status": "available",
+                      "version": md.version(name),
+                      "license": dist.get("License") or dist.get("License-Expression"),
+                      "license_expression": dist.get("License-Expression"),
+                      "license_classifiers": classifiers,
+                  }
+              except md.PackageNotFoundError:
+                  inventory[name] = {
+                      "metadata_status": "not-exposed-as-python-distribution",
+                      "version": None,
+                      "license": None,
+                      "license_expression": None,
+                      "license_classifiers": [],
+                  }
+          with open("reproduction-evidence/python-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Clone exact GeofileOps source and authenticate source provenance
+        run: |
+          set -euo pipefail
+          git clone https://github.com/geofileops/geofileops.git upstream-geofileops
+          git -C upstream-geofileops fetch --no-tags origin f7f8a4cf49b1278f3e9e5f4157718de441a21b57 ec1438fbf8527269cd1193647d05c8d7fdb83802
+          git -C upstream-geofileops checkout --detach f7f8a4cf49b1278f3e9e5f4157718de441a21b57
+          test "$(git -C upstream-geofileops rev-parse HEAD)" = "f7f8a4cf49b1278f3e9e5f4157718de441a21b57"
+          test "$(git -C upstream-geofileops rev-parse HEAD:LICENSE.txt)" = "ecf40d7a30bd534ebd781bca089abd3168bc13a1"
+          test "$(git -C upstream-geofileops rev-parse HEAD:setup.py)" = "373decfebc09acb19ae0694337b8cf9bee195b50"
+          test "$(git -C upstream-geofileops rev-parse HEAD:pyproject.toml)" = "96daa9707683dd3b24de733b7cb37dbb6cb336d2"
+          test "$(git -C upstream-geofileops rev-parse HEAD:geofileops/fileops.py)" = "9edeb1c1bf7eb7d0f35b246611b27bad33fdcc7e"
+          test "$(git -C upstream-geofileops rev-parse HEAD:tests/test_geofile.py)" = "52047a77a384dc2f469029c50be4775f5ee1eae4"
+          git -C upstream-geofileops show HEAD:LICENSE.txt > reproduction-evidence/upstream-LICENSE.txt
+          git -C upstream-geofileops show HEAD:setup.py > reproduction-evidence/upstream-setup.py
+          git -C upstream-geofileops show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
+          git -C upstream-geofileops diff f7f8a4cf49b1278f3e9e5f4157718de441a21b57 ec1438fbf8527269cd1193647d05c8d7fdb83802 > reproduction-evidence/pr-649-full.patch
+          git -C upstream-geofileops diff f7f8a4cf49b1278f3e9e5f4157718de441a21b57 ec1438fbf8527269cd1193647d05c8d7fdb83802 -- tests/test_geofile.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE.txt reproduction-evidence/upstream-setup.py reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-649-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
+
+      - name: Build exact buggy-base GeofileOps source
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e upstream-geofileops
+          python - <<'PY'
+          import geofileops
+          import geopandas
+          import pyogrio
+          import shapely
+          print({
+              "geofileops": geofileops.__version__,
+              "geopandas": geopandas.__version__,
+              "pyogrio": pyogrio.__version__,
+              "shapely": shapely.__version__,
+          })
+          PY
+
+      - name: Run independent destination-stem reproducer on buggy base (failure required)
+        run: |
+          set -euo pipefail
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-geofileops" python -m pytest -q "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/geofileops_issue_648/test_issue_648.py" -k default_destination > reproduction-evidence/base-issue-test.log 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-issue-test.log
+          if [ "$status" -eq 0 ]; then
+            echo "Expected default destination layer to differ from destination filename stem on buggy base." >&2
+            exit 1
+          fi
+          grep -E "source_layer|destination_result|AssertionError" reproduction-evidence/base-issue-test.log
+
+      - name: Run explicit destination-layer positive control on buggy base
+        run: |
+          set -euo pipefail
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-geofileops" python -m pytest -q "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/geofileops_issue_648/test_issue_648.py" -k explicit_destination > reproduction-evidence/base-positive-control.log 2>&1
+          cat reproduction-evidence/base-positive-control.log
+
+      - name: Extract exact SWE-rebench row and authenticate provenance
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          python - <<'PY'
+          import importlib.metadata as md
+          import json
+          dist = md.metadata("pyarrow")
+          classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+          license_text = dist.get("License") or dist.get("License-Expression")
+          if "Apache" not in str(license_text) and not any("Apache Software License" in x for x in classifiers):
+              raise SystemExit(f"pyarrow Apache license metadata not confirmed: {license_text!r} {classifiers!r}")
+          with open("reproduction-evidence/dataset-extraction-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump({"pyarrow": {"version": md.version("pyarrow"), "license": license_text, "license_classifiers": classifiers}}, f, indent=2)
+              f.write("\\n")
+          PY
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+          python - <<'PY'
+          import hashlib
+          import json
+          import pyarrow.parquet as pq
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          rows = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "geofileops__geofileops-649")]).to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected exactly one GeofileOps row, got {len(rows)}")
+          row = rows[0]
+          assert row["repo"] == "geofileops/geofileops", row
+          assert row["base_commit"] == "f7f8a4cf49b1278f3e9e5f4157718de441a21b57", row
+          assert row["language"] == "python", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2025-03-06 15:39:28", row
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\\n")
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\\n".join(row["FAIL_TO_PASS"]) + "\\n")
+          with open("reproduction-evidence/dataset-problem-statement.txt", "w", encoding="utf-8") as f:
+              f.write(row["problem_statement"])
+          print("dataset_row_sha256=" + digest)
+          print("dataset_created_at=" + str(row["created_at"]))
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          PY
+
+      - name: Apply exact PR test patch and run frozen selectors on buggy base (failure required)
+        run: |
+          set -euo pipefail
+          git -C upstream-geofileops checkout --detach f7f8a4cf49b1278f3e9e5f4157718de441a21b57
+          git -C upstream-geofileops apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
+          python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "geofileops__geofileops-649")]).to_pylist()[0]
+          import sys
+          python = sys.executable
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-geofileops")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-geofileops", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\\n" + result.stdout)
+              if result.returncode == 0:
+                  raise SystemExit("Dataset selector unexpectedly passed on buggy base: " + selector)
+              if "destination" not in result.stdout.lower() and "layer" not in result.stdout.lower():
+                  raise SystemExit("Buggy-base selector did not fail for destination-layer semantics: " + selector + "\\n" + result.stdout)
+          output = "\\n".join(logs)
+          with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Run independent reproducer and frozen selectors on exact fixed revision (pass required)
+        run: |
+          set -euo pipefail
+          git -C upstream-geofileops checkout --detach --force ec1438fbf8527269cd1193647d05c8d7fdb83802
+          test "$(git -C upstream-geofileops rev-parse HEAD:geofileops/fileops.py)" = "29738ee57088279b7bf7c656b34721dbc8d78f7b"
+          test "$(git -C upstream-geofileops rev-parse HEAD:tests/test_geofile.py)" = "64cd2ab90f37c9f53672388ce0b0ee4112a2104f"
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-geofileops" python -m pytest -q "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/geofileops_issue_648/test_issue_648.py" > reproduction-evidence/fixed-issue-test.log 2>&1
+          cat reproduction-evidence/fixed-issue-test.log
+          python - <<'PY'
+          import os
+          import pyarrow.parquet as pq
+          import subprocess
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "geofileops__geofileops-649")]).to_pylist()[0]
+          import sys
+          python = sys.executable
+          env = dict(os.environ)
+          env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-geofileops")
+          logs = []
+          for selector in row["FAIL_TO_PASS"]:
+              command = [python, "-m", "pytest", "-q", selector]
+              result = subprocess.run(command, cwd="upstream-geofileops", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              logs.append("SELECTOR: " + selector + "\\n" + result.stdout)
+              if result.returncode != 0:
+                  raise SystemExit("Dataset selector failed on fixed revision: " + selector + "\\n" + result.stdout)
+          output = "\\n".join(logs)
+          with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
+              f.write(output)
+          print(output)
+          PY
+
+      - name: Prepare and upload raw GeofileOps reproduction evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          rm -f reproduction-evidence/train-00000-of-00001.parquet
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+
+      - name: Upload raw GeofileOps reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: geofileops-issue-648-reproduction
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90
+
+
+  lektor-issue-1213-reproduction:
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_non_dishka_candidates) || (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/research/')) || (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'research/2026-11-16-followup-evidence-validation') }}
+    needs: no-inference-preflight
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+          cache: "pip"
+
+      - name: Clone exact Lektor source and authenticate source provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          git clone https://github.com/lektor/lektor.git upstream-lektor
+          git -C upstream-lektor fetch --no-tags origin c22e224ec56620c2a1d90016d74518970b1dd578 7d8bfed7ae0a2eb970acd5be824eeb380239e675
+          git -C upstream-lektor checkout --detach c22e224ec56620c2a1d90016d74518970b1dd578
+          test "$(git -C upstream-lektor rev-parse HEAD)" = "c22e224ec56620c2a1d90016d74518970b1dd578"
+          test "$(git -C upstream-lektor rev-parse HEAD:LICENSE)" = "b7ddaf0a1fd8cbfae2750f342404c23251552181"
+          test "$(git -C upstream-lektor rev-parse HEAD:pyproject.toml)" = "9738aead17c76d397da93fb42e2947c2a2d4ca58"
+          test "$(git -C upstream-lektor rev-parse HEAD:lektor/builder.py)" = "68667c723fa2b79281497afe35d1977f1ee3e830"
+          test "$(git -C upstream-lektor rev-parse HEAD:lektor/utils.py)" = "05e7bd84683d5d5a8b2e7862730dfd52747aa1e9"
+          test "$(git -C upstream-lektor rev-parse HEAD:tests/test_builder.py)" = "e9e172c3fbc3c4777d5db8fe4143876fe63bf510"
+          test "$(git -C upstream-lektor rev-parse HEAD:tests/test_utils.py)" = "de26ecf635e879d2e3888d2fbbd6dcd8ca2a2ad1"
+          git -C upstream-lektor show HEAD:LICENSE > reproduction-evidence/upstream-LICENSE
+          git -C upstream-lektor show HEAD:pyproject.toml > reproduction-evidence/upstream-pyproject.toml
+          git -C upstream-lektor diff c22e224ec56620c2a1d90016d74518970b1dd578 7d8bfed7ae0a2eb970acd5be824eeb380239e675 > reproduction-evidence/pr-1214-full.patch
+          git -C upstream-lektor diff c22e224ec56620c2a1d90016d74518970b1dd578 7d8bfed7ae0a2eb970acd5be824eeb380239e675 -- tests/test_builder.py tests/test_utils.py > reproduction-evidence/dataset-test.patch
+          sha256sum reproduction-evidence/upstream-LICENSE reproduction-evidence/upstream-pyproject.toml reproduction-evidence/pr-1214-full.patch reproduction-evidence/dataset-test.patch > reproduction-evidence/source-provenance-sha256.txt
+
+      - name: Install project and pinned test tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -VV
+          python -m pip install --disable-pip-version-check --upgrade pip==24.3.1
+          python -m pip install --disable-pip-version-check \
+            hatchling==1.27.0 hatch-vcs==0.4.0 editables==0.5 \
+            pytest==8.3.4 pytest-click==1.1.0 pytest-mock==3.14.0 \
+            "coverage[toml]==7.6.9" iniconfig==2.0.0 wheel==0.45.1 pyarrow==19.0.1
+          HATCH_BUILD_NO_HOOKS=true python -m pip install --disable-pip-version-check --no-build-isolation -e ./upstream-lektor
+          python -m pip freeze --all > reproduction-evidence/pip-freeze.txt
+          python - <<'PY'
+          import importlib.metadata as md
+          import json
+          names = [
+              "Lektor", "Babel", "click", "Flask", "inifile", "Jinja2",
+              "MarkupSafe", "marshmallow", "marshmallow-dataclass", "mistune",
+              "Pillow", "python-slugify", "requests", "Werkzeug", "hatchling",
+              "hatch-vcs", "pytest", "pytest-click", "pytest-mock",
+              "coverage", "iniconfig", "pyarrow",
+          ]
+          inventory = {}
+          for name in names:
+              try:
+                  dist = md.metadata(name)
+                  classifiers = [x for x in dist.get_all("Classifier", []) if x.startswith("License ::")]
+                  inventory[name] = {
+                      "status": "available",
+                      "version": md.version(name),
+                      "license": dist.get("License") or dist.get("License-Expression"),
+                      "license_expression": dist.get("License-Expression"),
+                      "license_classifiers": classifiers,
+                  }
+              except md.PackageNotFoundError:
+                  inventory[name] = {"status": "not-installed-or-no-python-metadata"}
+          with open("reproduction-evidence/python-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print(json.dumps(inventory, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Run independent build-artifact permission reproducer on buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/lektor_issue_1213/test_issue_1213.py" upstream-lektor/tests/test_issue_1213_independent.py
+          set +e
+          (cd upstream-lektor && HATCH_BUILD_NO_HOOKS=true python -m pytest -q -c pyproject.toml tests/test_issue_1213_independent.py) > reproduction-evidence/base-issue-test.log 2>&1
+          status=$?
+          set -e
+          cat reproduction-evidence/base-issue-test.log
+          if [ "$status" -eq 0 ]; then
+            echo "Expected the buggy artifact writer to use restrictive mkstemp mode." >&2
+            exit 1
+          fi
+          grep -E "artifact mode=0o600; normal file mode=0o644" reproduction-evidence/base-issue-test.log
+
+      - name: Extract exact SWE-rebench row and authenticate provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
+          python - <<'PY'
+          import hashlib
+          import json
+          import pyarrow.parquet as pq
+          path = "reproduction-evidence/train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          rows = pq.read_table(path, columns=columns, filters=[("instance_id", "=", "lektor__lektor-1214")]).to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected one Lektor row, got {len(rows)}")
+          row = rows[0]
+          assert row["repo"] == "lektor/lektor", row
+          assert row["base_commit"] == "c22e224ec56620c2a1d90016d74518970b1dd578", row
+          assert row["language"] == "python", row
+          assert str(row["created_at"]).replace("T", " ")[:19] == "2024-12-04 23:49:21", row
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          with open("reproduction-evidence/dataset-row-canonical.json", "wb") as f:
+              f.write(canonical)
+          digest = hashlib.sha256(canonical).hexdigest()
+          with open("reproduction-evidence/dataset-row-sha256.txt", "w", encoding="utf-8") as f:
+              f.write(digest + "  dataset-row-canonical.json\n")
+          with open("reproduction-evidence/dataset-fail-to-pass-selectors.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(row["FAIL_TO_PASS"]) + "\n")
+          with open("reproduction-evidence/dataset-problem-statement.txt", "w", encoding="utf-8") as f:
+              f.write(row["problem_statement"])
+          print("dataset_row_sha256=" + digest)
+          print("fail_to_pass_count=" + str(len(row["FAIL_TO_PASS"])))
+          print("fail_to_pass=" + json.dumps(row["FAIL_TO_PASS"], ensure_ascii=False))
+          PY
+
+      - name: Apply exact PR test patch and collect every selector on buggy base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-lektor checkout --detach c22e224ec56620c2a1d90016d74518970b1dd578
+          git -C upstream-lektor apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          import sys
+          import pyarrow.parquet as pq
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "lektor__lektor-1214")]).to_pylist()[0]
+          env = dict(os.environ)
+          env["HATCH_BUILD_NO_HOOKS"] = "true"
+          env["PYTHONPATH"] = os.path.join(os.getcwd(), "upstream-lektor")
+          python = sys.executable
+          results = []
+          for index, selector in enumerate(row["FAIL_TO_PASS"], start=1):
+              command = [python, "-m", "pytest", "-q", "-c", "pyproject.toml", selector]
+              run = subprocess.run(command, cwd="upstream-lektor", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              out = run.stdout
+              target_specific = "0o600" in out and "0o644" in out
+              status = "base_fail_target_specific" if run.returncode != 0 and target_specific else (
+                  "base_fail_non_target_or_collection_error" if run.returncode != 0 else "unexpected_base_pass"
+              )
+              results.append({
+                  "index": index,
+                  "selector": selector,
+                  "returncode": run.returncode,
+                  "status": status,
+                  "output": out,
+              })
+              print(f"[base {index}/{len(row['FAIL_TO_PASS'])}] {status}: {selector}")
+          with open("reproduction-evidence/base-selector-results.json", "w", encoding="utf-8") as f:
+              json.dump(results, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          with open("reproduction-evidence/base-dataset-tests.log", "w", encoding="utf-8") as f:
+              for item in results:
+                  f.write("SELECTOR: " + item["selector"] + "\n")
+                  f.write(item["output"])
+                  if not item["output"].endswith("\n"):
+                      f.write("\n")
+          counts = {}
+          for item in results:
+              counts[item["status"]] = counts.get(item["status"], 0) + 1
+          print(json.dumps({"selector_count": len(results), "status_counts": counts}, indent=2))
+          PY
+
+      - name: Run independent reproducer and collect every selector on exact fixed revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-lektor checkout --detach --force 7d8bfed7ae0a2eb970acd5be824eeb380239e675
+          test "$(git -C upstream-lektor rev-parse HEAD:lektor/builder.py)" = "798b297e92178a7f8d147ddd5db0a14694ca76fd"
+          test "$(git -C upstream-lektor rev-parse HEAD:lektor/utils.py)" = "9cbcd9aba9281d6f9dc9e0f2df6a00ef5f90fcad"
+          cp "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/lektor_issue_1213/test_issue_1213.py" upstream-lektor/tests/test_issue_1213_independent.py
+          HATCH_BUILD_NO_HOOKS=true python -m pip install --disable-pip-version-check --no-build-isolation --no-deps -e ./upstream-lektor
+          set +e
+          (cd upstream-lektor && HATCH_BUILD_NO_HOOKS=true python -m pytest -q -c pyproject.toml tests/test_issue_1213_independent.py) > reproduction-evidence/fixed-issue-test.log 2>&1
+          fixed_issue_status=$?
+          set -e
+          printf '%s\n' "$fixed_issue_status" > reproduction-evidence/fixed-issue-test-status.txt
+          cat reproduction-evidence/fixed-issue-test.log
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          import sys
+          import pyarrow.parquet as pq
+          row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "lektor__lektor-1214")]).to_pylist()[0]
+          env = dict(os.environ)
+          env["HATCH_BUILD_NO_HOOKS"] = "true"
+          env["PYTHONPATH"] = os.path.join(os.getcwd(), "upstream-lektor")
+          python = sys.executable
+          results = []
+          for index, selector in enumerate(row["FAIL_TO_PASS"], start=1):
+              command = [python, "-m", "pytest", "-q", "-c", "pyproject.toml", selector]
+              run = subprocess.run(command, cwd="upstream-lektor", env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+              results.append({
+                  "index": index,
+                  "selector": selector,
+                  "returncode": run.returncode,
+                  "status": "fixed_pass" if run.returncode == 0 else "fixed_fail",
+                  "output": run.stdout,
+              })
+              print(f"[fixed {index}/{len(row['FAIL_TO_PASS'])}] {results[-1]['status']}: {selector}")
+          with open("reproduction-evidence/fixed-selector-results.json", "w", encoding="utf-8") as f:
+              json.dump(results, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          with open("reproduction-evidence/fixed-dataset-tests.log", "w", encoding="utf-8") as f:
+              for item in results:
+                  f.write("SELECTOR: " + item["selector"] + "\n")
+                  f.write(item["output"])
+                  if not item["output"].endswith("\n"):
+                      f.write("\n")
+          counts = {}
+          for item in results:
+              counts[item["status"]] = counts.get(item["status"], 0) + 1
+          print(json.dumps({
+              "fixed_issue_reproducer_returncode": open("reproduction-evidence/fixed-issue-test-status.txt", encoding="utf-8").read().strip(),
+              "selector_count": len(results),
+              "status_counts": counts,
+          }, indent=2))
+          PY
+
+      - name: Enforce complete Lektor Stage 2 contract after collecting both selector matrices
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("reproduction-evidence")
+          def load_json(name):
+              path = root / name
+              if not path.exists():
+                  return None
+              with path.open(encoding="utf-8") as stream:
+                  return json.load(stream)
+
+          row = load_json("dataset-row-canonical.json")
+          base = load_json("base-selector-results.json")
+          fixed = load_json("fixed-selector-results.json")
+          expected = row.get("FAIL_TO_PASS", []) if isinstance(row, dict) else []
+          base_issue_log = (root / "base-issue-test.log").read_text(encoding="utf-8") if (root / "base-issue-test.log").exists() else ""
+          fixed_issue_log = (root / "fixed-issue-test.log").read_text(encoding="utf-8") if (root / "fixed-issue-test.log").exists() else ""
+          fixed_status_path = root / "fixed-issue-test-status.txt"
+          fixed_issue_status = fixed_status_path.read_text(encoding="utf-8").strip() if fixed_status_path.exists() else None
+
+          base = base if isinstance(base, list) else []
+          fixed = fixed if isinstance(fixed, list) else []
+          expected_base_failure = "artifact mode=0o600; normal file mode=0o644" in base_issue_log
+          fixed_issue_passed = fixed_issue_status == "0" and ("1 passed" in fixed_issue_log or "1 passed" in fixed_issue_log.lower())
+          base_order_matches = [item.get("selector") for item in base] == expected
+          fixed_order_matches = [item.get("selector") for item in fixed] == expected
+          base_unexpected_passes = [item.get("selector") for item in base if item.get("returncode") == 0]
+          fixed_failures = [item.get("selector") for item in fixed if item.get("returncode") != 0]
+          checks = {
+              "dataset_selector_count": len(expected),
+              "base_selector_results_count": len(base),
+              "fixed_selector_results_count": len(fixed),
+              "base_matrix_complete_and_in_order": bool(expected) and base_order_matches,
+              "fixed_matrix_complete_and_in_order": bool(expected) and fixed_order_matches,
+              "independent_issue_reproducer_fails_on_buggy_base_as_expected": expected_base_failure,
+              "independent_issue_reproducer_passes_on_fixed_revision": fixed_issue_passed,
+              "unexpected_buggy_base_pass_count": len(base_unexpected_passes),
+              "fixed_selector_failure_count": len(fixed_failures),
+              "buggy_base_unexpected_pass_examples": base_unexpected_passes[:20],
+              "fixed_selector_failure_examples": fixed_failures[:20],
+          }
+          passed = (
+              bool(expected)
+              and base_order_matches
+              and fixed_order_matches
+              and len(base) == len(expected)
+              and len(fixed) == len(expected)
+              and expected_base_failure
+              and fixed_issue_passed
+              and not base_unexpected_passes
+              and not fixed_failures
+          )
+          checks["stage2_contract_passed"] = passed
+          with (root / "stage2-contract-audit.json").open("w", encoding="utf-8") as stream:
+              json.dump(checks, stream, indent=2, ensure_ascii=False)
+              stream.write("\n")
+          print(json.dumps(checks, indent=2, ensure_ascii=False))
+          if not passed:
+              raise SystemExit("Lektor Stage 2 contract not satisfied; complete evidence matrices have been retained.")
+          PY
+
+      - name: Prepare and upload raw Lektor reproduction evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          rm -f reproduction-evidence/train-00000-of-00001.parquet
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+
+      - name: Upload raw Lektor reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lektor-issue-1213-reproduction
           path: reproduction-evidence/
           if-no-files-found: warn
           retention-days: 90

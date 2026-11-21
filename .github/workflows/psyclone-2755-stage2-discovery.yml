@@ -1,0 +1,292 @@
+name: "PSyclone #2755 Frozen Dataset Row Discovery (No Reproduction, No Inference)"
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/psyclone-2755-stage2-discovery.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  psyclone-2755-row-discovery:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Download and authenticate frozen SWE-rebench V2 snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv "$RUNNER_TEMP/psyclone-data-venv"
+          "$RUNNER_TEMP/psyclone-data-venv/bin/python" -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  $RUNNER_TEMP/train-00000-of-00001.parquet" | sha256sum --check
+          mkdir -p psyclone-discovery-evidence
+
+      - name: Extract exact PSyclone row and selectors only
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/psyclone-data-venv/bin/python" - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import pyarrow.parquet as pq
+
+          parquet = Path(os.environ["RUNNER_TEMP"]) / "train-00000-of-00001.parquet"
+          schema = pq.read_schema(parquet)
+          required = {
+              "instance_id", "repo", "base_commit", "created_at",
+              "language", "license", "FAIL_TO_PASS", "problem_statement",
+              "patch", "test_patch"
+          }
+          missing = sorted(required.difference(schema.names))
+          if missing:
+              raise SystemExit(f"Frozen Parquet schema lacks required columns: {missing}")
+          optional = {"PASS_TO_PASS", "environment_setup_commit", "version"}
+          selected_columns = sorted(required | (optional & set(schema.names)))
+
+          table = pq.read_table(
+              parquet,
+              columns=selected_columns,
+              filters=[("repo", "=", "stfc/PSyclone")]
+          )
+          rows = [
+              row for row in table.to_pylist()
+              if str(row["instance_id"]).lower().endswith("-2767")
+          ]
+          if len(rows) != 1:
+              raise SystemExit(
+                  "Expected exactly one stfc/PSyclone PR #2767 row; "
+                  f"observed {len(rows)} candidates: {[r['instance_id'] for r in rows]}"
+              )
+
+          row = rows[0]
+          expected = {
+              "repo": "stfc/PSyclone",
+              "base_commit": "a33a99b7953130220ed7d3ad38d358c1124276af",
+              "language": "python",
+              "license": "BSD-3-Clause",
+          }
+          for key, value in expected.items():
+              if str(row[key]) != value:
+                  raise SystemExit(
+                      f"Frozen row {key} mismatch: expected={value!r}; observed={row[key]!r}"
+                  )
+
+          selectors = row["FAIL_TO_PASS"]
+          if not isinstance(selectors, list) or not selectors:
+              raise SystemExit("Frozen PSyclone row has no non-empty FAIL_TO_PASS selector list")
+          if any(not isinstance(x, str) or not x.strip() for x in selectors):
+              raise SystemExit("Frozen PSyclone row contains an empty or non-string selector")
+          if len(selectors) != len(set(selectors)):
+              raise SystemExit("Frozen PSyclone row contains duplicate FAIL_TO_PASS selectors")
+
+          import re
+          patch = row.get("patch") or ""
+          test_patch = row.get("test_patch") or ""
+          if not patch.strip() or not test_patch.strip():
+              raise SystemExit("Frozen PSyclone row has an empty production patch or test_patch")
+          test_patch_files = sorted(set(re.findall(r"^\+\+\+ b/(.+)$", test_patch, flags=re.MULTILINE)))
+          expected_test_files = {
+              "src/psyclone/tests/psyad/tl2ad_test.py",
+              "src/psyclone/tests/psyad/transformations/test_preprocess.py",
+              "src/psyclone/tests/psyir/nodes/array_mixin_test.py",
+          }
+          missing_test_files = sorted(expected_test_files.difference(test_patch_files))
+          if missing_test_files:
+              raise SystemExit(
+                  "Frozen test_patch does not include every selector test file: "
+                  f"{missing_test_files}; observed={test_patch_files}"
+              )
+          test_patch_checks = {
+              "new_adjoint_error_test_in_test_patch": (
+                  "test_generate_adjoint_str_trans_error" in test_patch
+              ),
+              "new_preprocess_failure_test_in_test_patch": (
+                  "test_preprocess_arrayassign2loop_failure" in test_patch
+              ),
+              "array_mixin_test_file_in_test_patch": (
+                  "src/psyclone/tests/psyir/nodes/array_mixin_test.py" in test_patch
+              ),
+              "array_mixin_regression_expression_in_test_patch": (
+                  "b(idx, 1+indices(1,1):) = 1" in test_patch
+              ),
+          }
+          if not all(test_patch_checks.values()):
+              raise SystemExit(f"Original test_patch does not cover the expected selectors: {test_patch_checks}")
+
+          problem = row.get("problem_statement") or ""
+          alignment = {
+              "mentions_active_vector": "vector" in problem.lower(),
+              "mentions_array_assignment": "vector(:)" in problem,
+              "mentions_constant": "constant(:)" in problem,
+              "mentions_scalar": "scalar" in problem.lower(),
+              "mentions_adjoint_or_adjointed": (
+                  "adjoint" in problem.lower() or "adjoints" in problem.lower()
+              ),
+          }
+          canonical = json.dumps(
+              row, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+          ).encode("utf-8")
+          row_sha = hashlib.sha256(canonical).hexdigest()
+          problem_sha = hashlib.sha256(problem.encode("utf-8")).hexdigest()
+
+          summary = {
+              "discovery_status": "row_identity_and_selector_extraction_only",
+              "instance_id": row["instance_id"],
+              "repo": row["repo"],
+              "base_commit": row["base_commit"],
+              "created_at": str(row["created_at"]),
+              "language": row["language"],
+              "license": row["license"],
+              "selected_fields_row_sha256": row_sha,
+              "selected_fields": selected_columns,
+              "problem_statement_sha256": problem_sha,
+              "patch_sha256": hashlib.sha256(patch.encode("utf-8")).hexdigest(),
+              "patch_utf8_bytes": len(patch.encode("utf-8")),
+              "test_patch_sha256": hashlib.sha256(test_patch.encode("utf-8")).hexdigest(),
+              "test_patch_utf8_bytes": len(test_patch.encode("utf-8")),
+              "test_patch_files": test_patch_files,
+              "test_patch_selector_checks": test_patch_checks,
+              "dataset_optional_environment_metadata": {
+                  name: row.get(name) for name in sorted(optional) if name in row
+              },
+              "selector_count": len(selectors),
+              "selectors": selectors,
+              "problem_statement_alignment_checks": alignment,
+              "pr_created_at_expected": "2024-11-05T14:18:14Z",
+              "issue_created_at_reference": "2024-10-24T10:03:42Z",
+              "issue_created_at_is_not_dataset_pr_created_at": True,
+              "created_at_timezone_note": "The dataset value is serialized without an explicit timezone suffix; its wall-clock components match the GitHub PR created_at UTC timestamp. Preserve this serialization caveat in the record.",
+              "upstream_pr_base_expected": "a33a99b7953130220ed7d3ad38d358c1124276af",
+              "upstream_pr_head_reference": "fbd511fa5ba096b84d8756bb9d84fc8efb0d5706",
+              "upstream_pr_merge_commit_reference": "816177c33851f96a840aea1041fe1894bc2b3e25",
+              "upstream_tests_executed": False,
+              "upstream_source_built": False,
+              "dataset_row_saved_verbatim": False,
+              "model_inference_performed": False,
+              "case_accepted": False,
+          }
+
+          evidence = Path("psyclone-discovery-evidence")
+          (evidence / "dataset-row-summary.json").write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + "\n",
+              encoding="utf-8"
+          )
+          (evidence / "dataset-fail-to-pass-selectors.txt").write_text(
+              "\n".join(selectors) + "\n", encoding="utf-8"
+          )
+          (evidence / "dataset-row-sha256.txt").write_text(
+              row_sha + "  selected-fields-row-serialization-not-entire-parquet-row\n",
+              encoding="utf-8"
+          )
+          (evidence / "problem-statement-sha256.txt").write_text(
+              problem_sha + "  problem-statement-not-stored\n", encoding="utf-8"
+          )
+          (evidence / "production-patch.diff").write_text(patch, encoding="utf-8")
+          (evidence / "test-patch.diff").write_text(test_patch, encoding="utf-8")
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Static patch application and selector-source preflight (no tests)
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="a33a99b7953130220ed7d3ad38d358c1124276af"
+          fixed="816177c33851f96a840aea1041fe1894bc2b3e25"
+          git clone --filter=blob:none https://github.com/stfc/PSyclone.git "$RUNNER_TEMP/psyclone-base-testpatch"
+          git -C "$RUNNER_TEMP/psyclone-base-testpatch" checkout --detach "$base"
+          test "$(git -C "$RUNNER_TEMP/psyclone-base-testpatch" rev-parse HEAD)" = "$base"
+          git -C "$RUNNER_TEMP/psyclone-base-testpatch" apply --check "$GITHUB_WORKSPACE/psyclone-discovery-evidence/test-patch.diff"
+          git -C "$RUNNER_TEMP/psyclone-base-testpatch" apply "$GITHUB_WORKSPACE/psyclone-discovery-evidence/test-patch.diff"
+
+          git clone --filter=blob:none https://github.com/stfc/PSyclone.git "$RUNNER_TEMP/psyclone-base-patch"
+          git -C "$RUNNER_TEMP/psyclone-base-patch" checkout --detach "$base"
+          test "$(git -C "$RUNNER_TEMP/psyclone-base-patch" rev-parse HEAD)" = "$base"
+          git -C "$RUNNER_TEMP/psyclone-base-patch" apply --check "$GITHUB_WORKSPACE/psyclone-discovery-evidence/production-patch.diff"
+
+          git clone --filter=blob:none https://github.com/stfc/PSyclone.git "$RUNNER_TEMP/psyclone-fixed"
+          git -C "$RUNNER_TEMP/psyclone-fixed" checkout --detach "$fixed"
+          test "$(git -C "$RUNNER_TEMP/psyclone-fixed" rev-parse HEAD)" = "$fixed"
+
+          python - <<'PY'
+          import ast
+          import json
+          import os
+          from pathlib import Path
+
+          evidence = Path("psyclone-discovery-evidence")
+          selectors = [
+              "src/psyclone/tests/psyad/tl2ad_test.py::test_generate_adjoint_str_trans_error",
+              "src/psyclone/tests/psyad/transformations/test_preprocess.py::test_preprocess_arrayassign2loop_failure",
+              "src/psyclone/tests/psyir/nodes/array_mixin_test.py::test_get_effective_shape",
+          ]
+
+          def check(root, label):
+              results = []
+              for selector in selectors:
+                  file_name, function_name = selector.split("::", 1)
+                  source = (root / file_name).read_text(encoding="utf-8")
+                  tree = ast.parse(source, filename=str(root / file_name))
+                  found = any(
+                      isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                      and node.name == function_name
+                      for node in ast.walk(tree)
+                  )
+                  results.append({"selector": selector, "function_defined": found})
+              missing = [item["selector"] for item in results if not item["function_defined"]]
+              if missing:
+                  raise SystemExit(f"{label}: selector functions missing after static inspection: {missing}")
+              return results
+
+          base_root = Path(os.environ["RUNNER_TEMP"]) / "psyclone-base-testpatch"
+          fixed_root = Path(os.environ["RUNNER_TEMP"]) / "psyclone-fixed"
+          summary = {
+              "test_patch_applies_cleanly_to_buggy_base": True,
+              "production_patch_applies_cleanly_to_buggy_base": True,
+              "buggy_base_commit": "a33a99b7953130220ed7d3ad38d358c1124276af",
+              "fixed_revision_commit": "816177c33851f96a840aea1041fe1894bc2b3e25",
+              "selectors_defined_after_test_patch_on_buggy_base": check(base_root, "buggy base + test_patch"),
+              "selectors_defined_on_fixed_revision": check(fixed_root, "fixed revision"),
+              "pytest_or_other_tests_executed": False,
+              "source_build_performed": False,
+              "model_inference_performed": False,
+              "case_accepted": False,
+          }
+          (evidence / "static-patch-application-preflight.json").write_text(
+              json.dumps(summary, indent=2) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(summary, indent=2))
+          PY
+
+      - name: Remove temporary dataset bytes and hash discovery evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          rm -rf "$RUNNER_TEMP/psyclone-data-venv"
+          test ! -e "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          (cd psyclone-discovery-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
+          (cd psyclone-discovery-evidence && sha256sum --check SHA256SUMS.txt)
+
+      - name: Upload selector-only discovery evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: psyclone-2755-frozen-row-selector-discovery
+          path: psyclone-discovery-evidence/
+          if-no-files-found: error
+          retention-days: 90

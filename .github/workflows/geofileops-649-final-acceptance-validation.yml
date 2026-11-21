@@ -1,0 +1,108 @@
+name: GeoFileOps #649 — final acceptance and registry validation (no inference)
+
+on:
+  push:
+    branches:
+      - "research/2026-11-16-followup-evidence-validation"
+    paths:
+      - ".github/workflows/geofileops-649-final-acceptance-validation.yml"
+      - "research_candidates/evidence_abstention/geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_V0_2_2026-11-21.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json"
+      - "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/geofileops-649-final-acceptance-validation.yml"
+      - "research_candidates/evidence_abstention/geofileops_649/**"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json"
+      - "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_ACCEPTANCE_SCHEMA_V0_1.json"
+      - "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: geofileops-649-final-acceptance-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-accepted-case-and-registry:
+    name: Validate accepted case, three-project registry and no-inference boundary
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+      - name: Set up Python 3.11
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11"
+      - name: Install pinned schema validator
+        run: python -m pip install --disable-pip-version-check jsonschema==4.23.0
+      - name: Validate final accepted case and registry
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="research_candidates/evidence_abstention/implementation${PYTHONPATH:+:$PYTHONPATH}"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from swe_rebench_v2_exploratory_case_acceptance import validate_case_record, validate_registry
+
+          root = Path("research_candidates/evidence_abstention")
+          case_path = root / "geofileops_649/SWE_REBENCH_V2_GEOFILEOPS_649_CASE_ACCEPTANCE_V0_2_2026-11-21.json"
+          registry_path = root / "SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json"
+          manifest_path = root / "SWE_REBENCH_V2_EXPLORATORY_MANIFEST_V0_2_2026-11-16.json"
+
+          case = json.loads(case_path.read_text(encoding="utf-8"))
+          registry = json.loads(registry_path.read_text(encoding="utf-8"))
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+          case_result = validate_case_record(case)
+          print("CASE VALIDATION")
+          print(json.dumps(case_result, ensure_ascii=False, indent=2))
+          assert case_result["status"] == "structurally_complete_candidate", case_result
+          assert case_result["blockers"] == [], case_result
+          assert case_result["eligible_for_registry"] is True, case_result
+          assert case_result["acceptance_decision"] == "accepted", case_result
+          assert case_result["inference_authorized"] is False, case_result
+          assert case["final_acceptance"]["status"] == "approved"
+          assert case["final_acceptance"]["decision_record"]["sha256"]
+          assert case["final_acceptance"]["decision_timestamp_utc"]
+
+          registry_result = validate_registry(registry)
+          print("REGISTRY VALIDATION")
+          print(json.dumps(registry_result, ensure_ascii=False, indent=2))
+          assert registry_result["status"] == "structurally_valid_candidate_registry", registry_result
+          assert registry_result["blockers"] == [], registry_result
+          assert registry_result["accepted_case_count"] == 3, registry_result
+          assert registry_result["accepted_project_count"] == 3, registry_result
+          assert registry_result["minimum_feasibility_count_met"] is True
+          assert registry_result["primary_target_met"] is False
+          assert registry_result["inference_authorized"] is False
+
+          entries = [item for item in registry["records"] if item.get("case_id") == case["case_id"]]
+          assert len(entries) == 1, "Accepted case must occur exactly once in registry"
+          assert entries[0] == case, "Registry copy must exactly match accepted case record"
+
+          assert manifest["accepted_case_count"] == 3
+          assert manifest["accepted_project_count"] == 3
+          assert manifest["inference_authorized"] is False
+          assert manifest["model_loading_performed"] is False
+          assert manifest["model_inference_performed"] is False
+          assert manifest["fine_tuning_performed"] is False
+          reviews = [item for item in manifest["candidate_review_records"]
+                     if item.get("instance_id") == case["dataset"]["row_locator"]["value"]]
+          assert len(reviews) == 1, "Manifest must have one GeoFileOps acceptance review"
+          assert reviews[0]["case_acceptance"] == "accepted"
+          assert reviews[0]["accepted_case_record_blob_sha1"]
+          print("PASS: accepted case, registry, manifest and no-inference invariants are consistent.")
+          PY

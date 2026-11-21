@@ -1,0 +1,65 @@
+{
+  "record_type": "changed_file_license_and_provenance_manifest",
+  "repository": "geofileops/geofileops",
+  "base_commit": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+  "fixed_commit": "ec1438fbf8527269cd1193647d05c8d7fdb83802",
+  "root_license": {
+    "path": "LICENSE.txt",
+    "commit_sha": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+    "blob_sha": "ecf40d7a30bd534ebd781bca089abd3168bc13a1",
+    "content_sha256": "c05e8bdd9716d5d3ca08da7e5dd8c805603ccf9668372270600f5854197223f2",
+    "license_expression": "BSD-3-Clause"
+  },
+  "changed_files": [
+    {
+      "path": "CHANGELOG.md",
+      "base_blob_sha1": "65f49f13b55770357289e6f4314e6cacf85d0532",
+      "fixed_blob_sha1": "0821ce2d27cae5eafb942a76c1816a2008edd9ba",
+      "reviewed": true
+    },
+    {
+      "path": "geofileops/fileops.py",
+      "base_blob_sha1": "9edeb1c1bf7eb7d0f35b246611b27bad33fdcc7e",
+      "fixed_blob_sha1": "29738ee57088279b7bf7c656b34721dbc8d78f7b",
+      "reviewed": true
+    },
+    {
+      "path": "geofileops/util/_geoops_gpd.py",
+      "base_blob_sha1": "12ed06a773f1afb0a2d58efaea9dac365abf8cd2",
+      "fixed_blob_sha1": "474fd86a2cae498684fcf51705f6e609aff8fce6",
+      "reviewed": true
+    },
+    {
+      "path": "geofileops/util/_geoops_sql.py",
+      "base_blob_sha1": "eb44f2acd35138340027518e50684e7ee73a4715",
+      "fixed_blob_sha1": "cd5e527b33266b223d7f325f8e026ab291aaf4cf",
+      "reviewed": true
+    },
+    {
+      "path": "tests/test_geofile.py",
+      "base_blob_sha1": "52047a77a384dc2f469029c50be4775f5ee1eae4",
+      "fixed_blob_sha1": "64cd2ab90f37c9f53672388ce0b0ee4112a2104f",
+      "reviewed": true
+    }
+  ],
+  "patch": {
+    "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=pr-649-full.patch",
+    "sha256": "401892d800a76b6e1dbbd04d6c956e6d3aab5084789a3bcddb6d56c1342bca10"
+  },
+  "result": "The five exact PR changed paths were authenticated against the base/fixed Git trees. No added LICENSE/NOTICE/COPYING file appears among these changed paths; the unchanged upstream BSD-3-Clause root license is recorded separately.",
+  "dependency_notice_inventory": {
+    "locked_packages": 105,
+    "archive_md5_verified": 105,
+    "package_index_verified": 105,
+    "license_metadata_present": 105,
+    "extracted_notice_files": 253,
+    "packages_with_notice_files": 103,
+    "package_audit_artifact": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44927884852/artifacts/14716462835",
+    "package_audit_artifact_sha256": "ff397b7a2afbed6ac524f570019f7e5211dfb49304d1f111a817233536a8ca49"
+  },
+  "limitations": [
+    "Documentary package metadata and notice inventory only",
+    "GPL/LGPL/MPL license expressions are preserved and disclosed",
+    "No legal opinion, blanket compatibility conclusion or redistribution authorization"
+  ]
+}

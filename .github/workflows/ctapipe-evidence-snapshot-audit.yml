@@ -1,0 +1,172 @@
+name: "CTAPIpe #2730 Source Snapshot Audit (No Inference)"
+
+on:
+  push:
+    branches:
+      - "research/**"
+    paths:
+      - ".github/workflows/ctapipe-evidence-snapshot-audit.yml"
+      - "research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/source_snapshots/**"
+      - "research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730/dataset_row_manifest.json"
+      - "research_candidates/evidence_abstention/CTAPIPE_2730_GOLD_AND_EVIDENCE_TIERS_DRAFT_2026-11-18.md"
+      - "research_candidates/evidence_abstention/CTAPIPE_2730_LICENSE_SCREEN_DRAFT_2026-11-18.md"
+      - "research_candidates/evidence_abstention/CTAPIPE_2730_INDEPENDENCE_EXPOSURE_DRAFT_2026-11-18.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-source-snapshots:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Clone and verify pinned upstream base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none --no-checkout https://github.com/cta-observatory/ctapipe.git upstream-ctapipe
+          git -C upstream-ctapipe checkout --detach 287e7685e0e963f3fb44d92832ca97ac8c265c40
+          test "$(git -C upstream-ctapipe rev-parse HEAD)" = "287e7685e0e963f3fb44d92832ca97ac8c265c40"
+          mkdir -p ctapipe-source-snapshot-audit
+
+      - name: Verify source snapshots and hash issue/PR payloads
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import subprocess
+          from pathlib import Path
+
+          repo = Path("upstream-ctapipe")
+          root = Path("research_candidates/evidence_abstention/reproduction/ctapipe_issue_2730")
+          out = Path("ctapipe-source-snapshot-audit")
+          base = "287e7685e0e963f3fb44d92832ca97ac8c265c40"
+          mapping = [
+              ("src/ctapipe/containers.py", "source_snapshots/base/src__ctapipe__containers.py.txt", "89b33ac0c25516ca57fa23254808e276ac5944d2"),
+              ("src/ctapipe/core/container.py", "source_snapshots/base/src__ctapipe__core__container.py.txt", "70ce1cc66ea1442c5b228bd3dd619ea89ecb0b3c"),
+              ("src/ctapipe/image/muon/features.py", "source_snapshots/base/src__ctapipe__image__muon__features.py.txt", "8d547bf52c52dee18a3fa82dd47395a03bded282"),
+              ("src/ctapipe/image/muon/processor.py", "source_snapshots/base/src__ctapipe__image__muon__processor.py.txt", "4a877b92e0801affa595e89742f26840634ba0c9"),
+              ("src/ctapipe/io/tableio.py", "source_snapshots/base/src__ctapipe__io__tableio.py.txt", "ee059630af80dc746eae5ecbfbaa9727bbfe768a"),
+              ("src/ctapipe/io/hdf5tableio.py", "source_snapshots/base/src__ctapipe__io__hdf5tableio.py.txt", "df7514632f59da73a609179fd916ff316620e77a"),
+              ("src/ctapipe/io/datawriter.py", "source_snapshots/base/src__ctapipe__io__datawriter.py.txt", "dbd5b36b1528d850537885b956dfc4a1f24be5e4"),
+              ("src/ctapipe/tools/process.py", "source_snapshots/base/src__ctapipe__tools__process.py.txt", "7ae3d86e52ef31d2997dea4ad3a5a1d0f84f75e9"),
+          ]
+          snapshots = []
+          for upstream_path, local_path, expected_blob in mapping:
+              data = (root / local_path).read_bytes()
+              local_blob = subprocess.check_output(
+                  ["git", "-C", str(repo), "hash-object", "--stdin"],
+                  input=data,
+              ).decode().strip()
+              upstream_blob = subprocess.check_output(
+                  ["git", "-C", str(repo), "rev-parse", f"{base}:{upstream_path}"],
+                  text=True,
+              ).strip()
+              upstream_bytes = subprocess.check_output(
+                  ["git", "-C", str(repo), "show", f"{base}:{upstream_path}"]
+              )
+              assert local_blob == expected_blob, (local_path, local_blob, expected_blob)
+              assert upstream_blob == expected_blob, (upstream_path, upstream_blob, expected_blob)
+              assert data == upstream_bytes, f"Byte mismatch: {local_path}"
+              digest = hashlib.sha256(data).hexdigest()
+              snapshots.append({
+                  "upstream_path": upstream_path,
+                  "local_path": local_path,
+                  "upstream_commit": base,
+                  "upstream_git_blob_sha1": upstream_blob,
+                  "local_git_blob_sha1": local_blob,
+                  "content_sha256": digest,
+                  "byte_length": len(data),
+                  "byte_identical_to_pinned_upstream": True,
+              })
+              print("SOURCE_SNAPSHOT_OK", upstream_path, digest)
+
+          issue = json.loads((root / "source_snapshots/issue_2730.json").read_text(encoding="utf-8"))
+          reporter = json.loads((root / "source_snapshots/reporter_comment_2773115947.json").read_text(encoding="utf-8"))
+          author = json.loads((root / "source_snapshots/pr_author_comment_2775258008.json").read_text(encoding="utf-8"))
+          pr = json.loads((root / "source_snapshots/pr_2732.json").read_text(encoding="utf-8"))
+
+          assert issue["number"] == 2730
+          assert issue["created_at"] == "2025-04-02T15:59:14Z"
+          assert "write_muon_parameters: False" in issue["body"]
+          assert reporter["id"] == 2773115947
+          assert reporter["created_at"] == "2025-04-02T16:25:41Z"
+          assert "AttributeError: 'float' object has no attribute 'to_value'" in reporter["body"]
+          assert "datawriter.py\", line 340" in reporter["body"]
+          assert author["id"] == 2775258008
+          assert "container validation" in author["body"].lower()
+          assert pr["number"] == 2732
+          assert pr["head"]["sha"] == "5007b6ab61887d7555155edb4d1d296603a9735e"
+          assert pr["merge_commit_sha"] == "ba4546f2027e2f820982c4e40730097b7e16434c"
+
+          payloads = []
+          for local_path, label in [
+              ("source_snapshots/issue_2730.json", "issue_2730"),
+              ("source_snapshots/reporter_comment_2773115947.json", "reporter_comment_2773115947"),
+              ("source_snapshots/pr_author_comment_2775258008.json", "pr_author_comment_2775258008"),
+              ("source_snapshots/pr_2732.json", "pr_2732"),
+          ]:
+              data = (root / local_path).read_bytes()
+              payloads.append({
+                  "label": label,
+                  "local_path": local_path,
+                  "source_url": json.loads(data).get("html_url"),
+                  "content_sha256": hashlib.sha256(data).hexdigest(),
+                  "byte_length": len(data),
+              })
+
+          row_manifest = (root / "dataset_row_manifest.json").read_bytes()
+          manifest = {
+              "schema_version": "1.0",
+              "candidate": "cta-observatory/ctapipe issue #2730 / PR #2732",
+              "upstream_base": base,
+              "fixed_pr_head": "5007b6ab61887d7555155edb4d1d296603a9735e",
+              "merge_commit": "ba4546f2027e2f820982c4e40730097b7e16434c",
+              "upstream_source_snapshots": snapshots,
+              "upstream_issue_and_discussion_payloads": payloads,
+              "dataset_row_manifest": {
+                  "path": "dataset_row_manifest.json",
+                  "content_sha256": hashlib.sha256(row_manifest).hexdigest(),
+              },
+              "validation": {
+                  "all_eight_base_source_snapshots_byte_identical": True,
+                  "all_expected_git_blob_sha1s_match": True,
+                  "issue_false_flag_present": True,
+                  "reporter_traceback_executes_muon_writer": True,
+                  "pr_author_container_validation_comment_retained": True,
+                  "model_load_performed": False,
+                  "model_inference_performed": False,
+                  "model_training_performed": False,
+              },
+              "limitations": [
+                  "GitHub issue/PR JSON snapshots are captured API representations, not cryptographically signed upstream statements.",
+                  "Hashes prove the captured bytes have not changed since this audit; they do not prove semantic sufficiency or researcher independence.",
+                  "This workflow does not run tests, load a model, perform inference, or adjudicate case acceptance.",
+              ],
+          }
+          (out / "source-snapshot-manifest.json").write_text(
+              json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
+              encoding="utf-8",
+          )
+          print("ISSUE_CONFIG_FALSE_YAML_AND_REPORTER_TRACEBACK_BOTH_AUTHENTICATED")
+          print("SOURCE_SNAPSHOTS=", len(snapshots))
+          print("DISCUSSION_PAYLOADS=", len(payloads))
+          PY
+          (cd ctapipe-source-snapshot-audit && find . -type f ! -name SHA256SUMS.txt -print0 | xargs -0 sha256sum | LC_ALL=C sort > SHA256SUMS.txt)
+          cat ctapipe-source-snapshot-audit/source-snapshot-manifest.json
+
+      - name: Upload source snapshot audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ctapipe-2730-source-snapshot-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ctapipe-source-snapshot-audit/
+          if-no-files-found: warn
+          retention-days: 90

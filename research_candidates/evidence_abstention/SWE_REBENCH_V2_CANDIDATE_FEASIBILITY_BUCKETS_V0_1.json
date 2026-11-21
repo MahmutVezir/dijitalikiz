@@ -1,0 +1,898 @@
+{
+  "schema_version": "0.1-candidate-feasibility-buckets",
+  "generated_at_utc": "2026-11-16T16:50:00Z",
+  "source_cohort_ledger": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
+  "counts": {
+    "TEKNİK OLARAK GEÇTİ (Stage 2+3)": 1,
+    "OLABİLİR (kanıt bekliyor)": 62,
+    "OLAMAZ (sıkı havuzdan dışlandı)": 31,
+    "BEKLEMEDE (hold)": 2
+  },
+  "runner_blocked_candidates": [
+    "wntrblm/nox",
+    "getmoto/moto",
+    "pyro-ppl/numpyro",
+    "CS-SI/eodag",
+    "MarketSquare/robotframework-robocop",
+    "meltano/sdk",
+    "amaranth-lang/amaranth",
+    "pallets/werkzeug",
+    "python-control/python-control",
+    "qutip/qutip",
+    "pyfar/pyfar"
+  ],
+  "external_fixture_blocked_candidate": "ecmwf/earthkit-data",
+  "latest_runner_diagnostic": {
+    "smoke_run_id": 43910854136,
+    "smoke_job_id": 133452039262,
+    "preflight_run_id": 43910854227,
+    "all_jobs_zero_steps": true
+  },
+  "categories": [
+    {
+      "cohort_rank": 1,
+      "repository": "aristanetworks/anta",
+      "pr": 956,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude from primary bug-root-cause pool: test-suite correction rather than a production-code defect fix",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude from primary bug-root-cause pool: test-suite correction rather than a production-code defect fix"
+    },
+    {
+      "cohort_rank": 2,
+      "repository": "reagento/dishka",
+      "pr": 436,
+      "bucket": "TEKNİK OLARAK GEÇTİ (Stage 2+3)",
+      "status": "Stage 2 PASS; Stage 3 teknik insan kararı PASS; nihai kabul hâlâ exposure/single-adjudicator acknowledgement + registry validator bekliyor.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally"
+    },
+    {
+      "cohort_rank": 3,
+      "repository": "theupdateframework/python-tuf",
+      "pr": 2808,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude from strict bug pool: classified as enhancement; retain provenance only",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool: classified as enhancement; retain provenance only"
+    },
+    {
+      "cohort_rank": 4,
+      "repository": "ecmwf/earthkit-data",
+      "pr": 592,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Stage 2 harici GRIB fixture hash/lisans/provenans kapısında; Stage 3 başlamadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally"
+    },
+    {
+      "cohort_rank": 5,
+      "repository": "googleapis/python-bigquery",
+      "pr": 2140,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude from strict bug pool: feature addition",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool: feature addition"
+    },
+    {
+      "cohort_rank": 6,
+      "repository": "wntrblm/nox",
+      "pr": 922,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Runner tahsisi yok; lisans kaynak incelemesi kısmen tamam, exact base/fix test çifti bekliyor.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally"
+    },
+    {
+      "cohort_rank": 7,
+      "repository": "GoogleCloudPlatform/cloud-sql-python-connector",
+      "pr": 1221,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude from strict bug pool: feature addition",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool: feature addition"
+    },
+    {
+      "cohort_rank": 8,
+      "repository": "databricks/dbt-databricks",
+      "pr": 995,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "İkinci tur oracle denetimi: eklenen testler bildirilen cleanup/UUID kusurunu yakalamıyor.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally; direct cleanup-path test adequacy remains to be checked"
+    },
+    {
+      "cohort_rank": 9,
+      "repository": "getmoto/moto",
+      "pr": 8296,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Runner tahsisi yok; statik mekanizma güçlü, base/fix test çifti bekliyor.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally"
+    },
+    {
+      "cohort_rank": 10,
+      "repository": "dwavesystems/dwave-system",
+      "pr": 554,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude from strict bug pool — feature/API addition",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool — feature/API addition"
+    },
+    {
+      "cohort_rank": 11,
+      "repository": "PrefectHQ/fastmcp",
+      "pr": 164,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude from strict bug pool — new API behavior/enhancement, not a demonstrated regression",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool — new API behavior/enhancement, not a demonstrated regression"
+    },
+    {
+      "cohort_rank": 12,
+      "repository": "pyro-ppl/numpyro",
+      "pr": 1918,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Runner tahsisi yok; upstream merge SHA düzeltildi, düzeltme sonrası test bekliyor.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally"
+    },
+    {
+      "cohort_rank": 13,
+      "repository": "dpkp/kafka-python",
+      "pr": 2544,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude from strict bug pool — feature addition",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool — feature addition"
+    },
+    {
+      "cohort_rank": 14,
+      "repository": "PennyLaneAI/pennylane",
+      "pr": 6738,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude from strict bug pool — API feature addition",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude from strict bug pool — API feature addition"
+    },
+    {
+      "cohort_rank": 15,
+      "repository": "OpenMDAO/dymos",
+      "pr": 1165,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally"
+    },
+    {
+      "cohort_rank": 16,
+      "repository": "CS-SI/eodag",
+      "pr": 1536,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Runner tahsisi yok; FAIL_TO_PASS seçicilerinin kusur kapsamı ayrıştırılmalı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Retain provisionally"
+    },
+    {
+      "cohort_rank": 17,
+      "repository": "skypilot-org/skypilot",
+      "pr": 5985,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 18,
+      "repository": "SQLMesh/sqlmesh",
+      "pr": 3654,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Dışla: improvement/feature",
+      "source_classification": "excluded",
+      "scope_decision": "Dışla: improvement/feature"
+    },
+    {
+      "cohort_rank": 19,
+      "repository": "napalm-automation/napalm",
+      "pr": 2152,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Koşullu aday; belirtilen kapsam/fixture/issue–patch riski çözülürse devam.",
+      "source_classification": "conditional",
+      "scope_decision": "Koşullu bug adayı — fixture/provenans hold"
+    },
+    {
+      "cohort_rank": 20,
+      "repository": "terrapower/armi",
+      "pr": 2121,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Dışla: feature request",
+      "source_classification": "excluded",
+      "scope_decision": "Dışla: feature request"
+    },
+    {
+      "cohort_rank": 21,
+      "repository": "PyThaiNLP/pythainlp",
+      "pr": 1046,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 22,
+      "repository": "modin-project/modin",
+      "pr": 7554,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 23,
+      "repository": "CrossGL/crosstl",
+      "pr": 201,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Dışla: enhancement",
+      "source_classification": "excluded",
+      "scope_decision": "Dışla: enhancement"
+    },
+    {
+      "cohort_rank": 24,
+      "repository": "MarketSquare/robotframework-robocop",
+      "pr": 1374,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Runner tahsisi yok; row resolver düzeltildi, düzeltme sonrası test bekliyor.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 25,
+      "repository": "CTFd/CTFd",
+      "pr": 2767,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Dışla: özellik/iyileştirme",
+      "source_classification": "excluded",
+      "scope_decision": "Dışla: özellik/iyileştirme"
+    },
+    {
+      "cohort_rank": 26,
+      "repository": "meltano/sdk",
+      "pr": 3091,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Runner tahsisi yok; exact row/selectors ve dependency inventory bekliyor.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 27,
+      "repository": "capitalone/datacompy",
+      "pr": 404,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı; hedef test uygunluğu riski"
+    },
+    {
+      "cohort_rank": 28,
+      "repository": "jax-ml/jax",
+      "pr": 25650,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Dışla: enhancement/yeni destek",
+      "source_classification": "excluded",
+      "scope_decision": "Dışla: enhancement/yeni destek"
+    },
+    {
+      "cohort_rank": 29,
+      "repository": "sparckles/Robyn",
+      "pr": 1002,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Dışla: özellik geliştirme",
+      "source_classification": "excluded",
+      "scope_decision": "Dışla: özellik geliştirme"
+    },
+    {
+      "cohort_rank": 30,
+      "repository": "amaranth-lang/amaranth",
+      "pr": 1519,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Runner tahsisi yok; exposure ve test execution bekliyor.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 31,
+      "repository": "cta-observatory/ctapipe",
+      "pr": 2732,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 32,
+      "repository": "pallets/werkzeug",
+      "pr": 2956,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Runner tahsisi yok; ephemeral-port-reserve lock düzeltildi, rerun bekliyor.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 33,
+      "repository": "pallets/click",
+      "pr": 2788,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 34,
+      "repository": "Kozea/WeasyPrint",
+      "pr": 2416,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı; test-provenance riski"
+    },
+    {
+      "cohort_rank": 35,
+      "repository": "python-control/python-control",
+      "pr": 1145,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Runner tahsisi yok; exact selectors ve kusur izolasyonu bekliyor.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 36,
+      "repository": "stfc/PSyclone",
+      "pr": 2767,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 37,
+      "repository": "skrub-data/skrub",
+      "pr": 1445,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Dışla: enhancement",
+      "source_classification": "excluded",
+      "scope_decision": "Dışla: enhancement"
+    },
+    {
+      "cohort_rank": 38,
+      "repository": "cogent3/cogent3",
+      "pr": 2050,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Dışla: yeni özellik",
+      "source_classification": "excluded",
+      "scope_decision": "Dışla: yeni özellik"
+    },
+    {
+      "cohort_rank": 39,
+      "repository": "qutip/qutip",
+      "pr": 2694,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Runner tahsisi yok; kaynak derleme ve exact selector çifti bekliyor.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 40,
+      "repository": "mpmath/mpmath",
+      "pr": 902,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 41,
+      "repository": "astropy/ccdproc",
+      "pr": 901,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 42,
+      "repository": "pybamm-team/PyBaMM",
+      "pr": 4465,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Dışla: feature",
+      "source_classification": "excluded",
+      "scope_decision": "Dışla: feature"
+    },
+    {
+      "cohort_rank": 43,
+      "repository": "asdf-format/asdf",
+      "pr": 1907,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 44,
+      "repository": "msgspec/msgspec",
+      "pr": 772,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 45,
+      "repository": "pallets/jinja",
+      "pr": 2033,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 46,
+      "repository": "scikit-rf/scikit-rf",
+      "pr": 1282,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Dışla: feature request",
+      "source_classification": "excluded",
+      "scope_decision": "Dışla: feature request"
+    },
+    {
+      "cohort_rank": 47,
+      "repository": "jsonpickle/jsonpickle",
+      "pr": 565,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 48,
+      "repository": "scikit-activeml/scikit-activeml",
+      "pr": 504,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı; scope riski"
+    },
+    {
+      "cohort_rank": 49,
+      "repository": "geofileops/geofileops",
+      "pr": 649,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 50,
+      "repository": "lektor/lektor",
+      "pr": 1214,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı; issue–patch uyumu riski"
+    },
+    {
+      "cohort_rank": 51,
+      "repository": "cuthbertLab/music21",
+      "pr": 1736,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 52,
+      "repository": "geopandas/geopandas",
+      "pr": 3591,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 53,
+      "repository": "python-babel/babel",
+      "pr": 1141,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 54,
+      "repository": "gammapy/gammapy",
+      "pr": 5525,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 55,
+      "repository": "joshuadavidthomas/django-bird",
+      "pr": 219,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Geçici bug adayı"
+    },
+    {
+      "cohort_rank": 56,
+      "repository": "vacanza/holidays",
+      "pr": 2106,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Dışla: veri/içerik düzeltmesi",
+      "source_classification": "excluded",
+      "scope_decision": "Dışla: veri/içerik düzeltmesi"
+    },
+    {
+      "cohort_rank": 57,
+      "repository": "ApeWorX/web3.py",
+      "pr": 3690,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate"
+    },
+    {
+      "cohort_rank": 58,
+      "repository": "PyPSA/linopy",
+      "pr": 438,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate; verify reproducer"
+    },
+    {
+      "cohort_rank": 59,
+      "repository": "jazzband/tablib",
+      "pr": 613,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate"
+    },
+    {
+      "cohort_rank": 60,
+      "repository": "silx-kit/silx",
+      "pr": 4282,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude — feature/usability enhancement",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude — feature/usability enhancement"
+    },
+    {
+      "cohort_rank": 61,
+      "repository": "twisted/towncrier",
+      "pr": 696,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate"
+    },
+    {
+      "cohort_rank": 62,
+      "repository": "sissbruecker/linkding",
+      "pr": 984,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude — explicitly requested new feature",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude — explicitly requested new feature"
+    },
+    {
+      "cohort_rank": 63,
+      "repository": "simpeg/simpeg",
+      "pr": 1633,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "İkinci tur issue–patch/oracle uyumsuzluğu: PR bildirilen beklenen davranışı uygulamıyor.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate"
+    },
+    {
+      "cohort_rank": 64,
+      "repository": "OceanParcels/Parcels",
+      "pr": 1723,
+      "bucket": "BEKLEMEDE (hold)",
+      "status": "Hold: bugfix adayı; kapsam/kanıt incelemesi tamamlanmadan kabul yok.",
+      "source_classification": "hold",
+      "scope_decision": "Provisional bugfix candidate; hold"
+    },
+    {
+      "cohort_rank": 65,
+      "repository": "mikedh/trimesh",
+      "pr": 2312,
+      "bucket": "BEKLEMEDE (hold)",
+      "status": "Hold: PR geniş release/çoklu değişiklik paketi; kusur izolasyonu gerekli.",
+      "source_classification": "hold",
+      "scope_decision": "Hold — issue fix is present, but PR is a broad release/multi-change patch"
+    },
+    {
+      "cohort_rank": 66,
+      "repository": "litestar-org/polyfactory",
+      "pr": 728,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate"
+    },
+    {
+      "cohort_rank": 67,
+      "repository": "pyccel/pyccel",
+      "pr": 2038,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate"
+    },
+    {
+      "cohort_rank": 68,
+      "repository": "pydap/pydap",
+      "pr": 481,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude — API naming/consistency migration, not a demonstrated defect",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude — API naming/consistency migration, not a demonstrated defect"
+    },
+    {
+      "cohort_rank": 69,
+      "repository": "python-attrs/attrs",
+      "pr": 1417,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Koşullu aday; belirtilen kapsam/fixture/issue–patch riski çözülürse devam.",
+      "source_classification": "conditional",
+      "scope_decision": "Conditional candidate — PR test does not reproduce the full inherited-subclass issue example"
+    },
+    {
+      "cohort_rank": 70,
+      "repository": "StingraySoftware/stingray",
+      "pr": 858,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate"
+    },
+    {
+      "cohort_rank": 71,
+      "repository": "softlayer/softlayer-python",
+      "pr": 2214,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate; preserve exact license text for legal review"
+    },
+    {
+      "cohort_rank": 72,
+      "repository": "pypa/virtualenv",
+      "pr": 2907,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate"
+    },
+    {
+      "cohort_rank": 73,
+      "repository": "crewAIInc/crewAI",
+      "pr": 2408,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate"
+    },
+    {
+      "cohort_rank": 74,
+      "repository": "microsoft/AzureTRE",
+      "pr": 4352,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude — feature request / new endpoint and UI",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude — feature request / new endpoint and UI"
+    },
+    {
+      "cohort_rank": 75,
+      "repository": "aiogram/aiogram",
+      "pr": 1657,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude — enhancement / convenience API",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude — enhancement / convenience API"
+    },
+    {
+      "cohort_rank": 76,
+      "repository": "apiflask/apiflask",
+      "pr": 642,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude — interoperability option/enhancement; keep NOTICE obligations",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude — interoperability option/enhancement; keep NOTICE obligations"
+    },
+    {
+      "cohort_rank": 77,
+      "repository": "XKNX/xknx",
+      "pr": 1663,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude — explicit feature request",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude — explicit feature request"
+    },
+    {
+      "cohort_rank": 78,
+      "repository": "narwhals-dev/narwhals",
+      "pr": 1869,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate"
+    },
+    {
+      "cohort_rank": 79,
+      "repository": "callowayproject/bump-my-version",
+      "pr": 325,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Koşullu aday; belirtilen kapsam/fixture/issue–patch riski çözülürse devam.",
+      "source_classification": "conditional",
+      "scope_decision": "Conditional defect candidate — broad Mercurial refactor; issue-specific commit proof should be strengthened"
+    },
+    {
+      "cohort_rank": 80,
+      "repository": "dynaconf/dynaconf",
+      "pr": 1293,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Geçici aday; henüz exact Stage 2 base/fix çifti kanıtlanmadı.",
+      "source_classification": "provisional_candidate",
+      "scope_decision": "Defect candidate, with expected exit-code semantics to be frozen before acceptance"
+    },
+    {
+      "cohort_rank": 81,
+      "repository": "Diaoul/subliminal",
+      "pr": 1218,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Koşullu aday; belirtilen kapsam/fixture/issue–patch riski çözülürse devam.",
+      "source_classification": "conditional",
+      "scope_decision": "Conditional — issue #1164 is a bug, but PR also addresses #1059 enhancement and performs a broad scan refactor"
+    },
+    {
+      "cohort_rank": 82,
+      "repository": "astanin/python-tabulate",
+      "pr": 362,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Statik taramada güçlü aday; Stage 2 exact base/fix reproduction ve sonra Stage 3 gerekiyor.",
+      "source_classification": "strong_candidate",
+      "scope_decision": "Strong defect candidate"
+    },
+    {
+      "cohort_rank": 83,
+      "repository": "pyjanitor-devs/pyjanitor",
+      "pr": 1451,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude — explicitly proposed alias convenience API",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude — explicitly proposed alias convenience API"
+    },
+    {
+      "cohort_rank": 84,
+      "repository": "copier-org/copier",
+      "pr": 1998,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Statik taramada güçlü aday; Stage 2 exact base/fix reproduction ve sonra Stage 3 gerekiyor.",
+      "source_classification": "strong_candidate",
+      "scope_decision": "Strong defect candidate"
+    },
+    {
+      "cohort_rank": 85,
+      "repository": "frictionlessdata/frictionless-py",
+      "pr": 1729,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude — request to add a new configurable capability",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude — request to add a new configurable capability"
+    },
+    {
+      "cohort_rank": 86,
+      "repository": "packit/packit",
+      "pr": 2556,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Koşullu aday; belirtilen kapsam/fixture/issue–patch riski çözülürse devam.",
+      "source_classification": "conditional",
+      "scope_decision": "Conditional defect candidate — verify exact expected `--config` long-option alias; patch exposes `--config-path`"
+    },
+    {
+      "cohort_rank": 87,
+      "repository": "matthewwithanm/python-markdownify",
+      "pr": 202,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Statik taramada güçlü aday; Stage 2 exact base/fix reproduction ve sonra Stage 3 gerekiyor.",
+      "source_classification": "strong_candidate",
+      "scope_decision": "Strong defect candidate"
+    },
+    {
+      "cohort_rank": 88,
+      "repository": "drivendataorg/cloudpathlib",
+      "pr": 474,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Koşullu aday; belirtilen kapsam/fixture/issue–patch riski çözülürse devam.",
+      "source_classification": "conditional",
+      "scope_decision": "Conditional — valid Python 3.13 import/API compatibility failure, but broad 17-file compatibility update"
+    },
+    {
+      "cohort_rank": 89,
+      "repository": "benavlabs/fastcrud",
+      "pr": 190,
+      "bucket": "OLAMAZ (sıkı havuzdan dışlandı)",
+      "status": "Exclude: composite multi-issue PR",
+      "source_classification": "excluded",
+      "scope_decision": "Exclude: composite multi-issue PR"
+    },
+    {
+      "cohort_rank": 90,
+      "repository": "pyfar/pyfar",
+      "pr": 722,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Runner tahsisi yok; netCDF4/cftime lock düzeltildi, rerun bekliyor.",
+      "source_classification": "strong_candidate",
+      "scope_decision": "Strong defect candidate"
+    },
+    {
+      "cohort_rank": 91,
+      "repository": "gtalarico/pyairtable",
+      "pr": 422,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Koşullu aday; belirtilen kapsam/fixture/issue–patch riski çözülürse devam.",
+      "source_classification": "conditional",
+      "scope_decision": "Conditional defect candidate"
+    },
+    {
+      "cohort_rank": 92,
+      "repository": "stanfordnlp/dspy",
+      "pr": 1853,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Koşullu aday; belirtilen kapsam/fixture/issue–patch riski çözülürse devam.",
+      "source_classification": "conditional",
+      "scope_decision": "Conditional defect candidate"
+    },
+    {
+      "cohort_rank": 93,
+      "repository": "joke2k/faker",
+      "pr": 2203,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Koşullu aday; belirtilen kapsam/fixture/issue–patch riski çözülürse devam.",
+      "source_classification": "conditional",
+      "scope_decision": "Conditional defect candidate"
+    },
+    {
+      "cohort_rank": 94,
+      "repository": "scverse/PyDESeq2",
+      "pr": 349,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Statik taramada güçlü aday; Stage 2 exact base/fix reproduction ve sonra Stage 3 gerekiyor.",
+      "source_classification": "strong_candidate",
+      "scope_decision": "Strong defect candidate; issue-state discrepancy noted"
+    },
+    {
+      "cohort_rank": 95,
+      "repository": "mitmproxy/pdoc",
+      "pr": 813,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Statik taramada güçlü aday; Stage 2 exact base/fix reproduction ve sonra Stage 3 gerekiyor.",
+      "source_classification": "strong_candidate",
+      "scope_decision": "Strong defect candidate"
+    },
+    {
+      "cohort_rank": 96,
+      "repository": "aws-cloudformation/cfn-lint",
+      "pr": 3991,
+      "bucket": "OLABİLİR (kanıt bekliyor)",
+      "status": "Koşullu aday; belirtilen kapsam/fixture/issue–patch riski çözülürse devam.",
+      "source_classification": "conditional",
+      "scope_decision": "Conditional, partial issue fix"
+    }
+  ],
+  "caveat": "These buckets classify eligibility and evidence status, not probability of success. Only Dishka has verified Stage 2+Stage 3 technical completion; it is not finally accepted."
+}

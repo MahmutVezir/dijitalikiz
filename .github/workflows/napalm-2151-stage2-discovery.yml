@@ -1,0 +1,19 @@
+name: "Historical NAPALM Stage 2 Discovery (Archived)"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  archived:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Explain archival status
+        shell: bash
+        run: |
+          echo "::notice::This exploratory workflow is archived and intentionally does not run."
+          echo "Use the sanitized pinned exact-selector workflow: .github/workflows/napalm-2151-stage2-pinned.yml"
+          echo "Canonical technical evidence: workflow run 44127350027, artifact 14348056824."
+          echo "The historical discovery artifacts are noncanonical and must not be redistributed."

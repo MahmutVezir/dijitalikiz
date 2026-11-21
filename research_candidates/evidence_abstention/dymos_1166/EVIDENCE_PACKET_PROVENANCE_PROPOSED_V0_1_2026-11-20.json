@@ -1,0 +1,261 @@
+{
+  "schema_version": "0.1-dymos-1166-evidence-provenance",
+  "generated_date": "2026-11-20",
+  "candidate": "OpenMDAO/dymos issue 1166 / PR 1165",
+  "packet_set_path": "research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
+  "packet_set_sha256": "7ca1e50290bc037e9147dc30eff10152cecc506e0cb1ac70de5c420cbf939474",
+  "source_row": {
+    "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "row_id": "openmdao__dymos-1165",
+    "canonical_row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
+    "field": "problem_statement",
+    "source_url": "https://github.com/OpenMDAO/dymos/issues/1166",
+    "dataset_row_created_at_raw": "2025-04-04 20:23:44",
+    "matched_upstream_resource": "pull_request",
+    "upstream_pr_created_at_utc": "2025-04-04T20:23:44Z",
+    "upstream_issue_created_at_utc": "2025-04-04T20:26:09Z",
+    "timestamp_reconciliation": "row timestamp matches PR creation, not the later issue creation; 145 seconds difference"
+  },
+  "reproduction_evidence": {
+    "dataset_selector": {
+      "selector": "dymos/examples/balanced_field/test/test_balanced_field_length.py::TestBalancedFieldLengthDefaultValues::test_default_vals_stick",
+      "workflow_run_id": 44114656908,
+      "workflow_job_id": 134149456631,
+      "artifact_id": 14341424466,
+      "artifact_sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
+      "archive_integrity": {
+        "zip_crc": "PASS",
+        "internal_sha256_entries": "18/18 PASS"
+      },
+      "dataset_row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
+      "selector_scope_direct_default_value_regression": true,
+      "base_result": "executed and failed: actual [[1.0],[1.0]], expected [[0],[10]]",
+      "fixed_result": "same exact selector passed"
+    },
+    "independent_public_api_reproducer": {
+      "path": "research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py",
+      "sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
+      "workflow_run_id": 44739419824,
+      "workflow_job_id": 136298973618,
+      "commit": "5308d4b25a31acee1e3753818a1d67b972a640f2",
+      "buggy_base": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "fixed_revision": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
+      "runtime": "CPython 3.11.9; OpenMDAO 3.38.0; NumPy 1.26.4; SciPy 1.13.1; NetworkX 3.3; CPU-only; no optimizer",
+      "base_result": "executed and failed: actual [[1.0],[1.0]], expected [[5.0],[15.0]]",
+      "fixed_result": "1 passed in 0.49s",
+      "artifact_id": 14629598269,
+      "artifact_sha256": "33bb899d7e4e56d177fe4c9d119eebea49519528e88d74af3efc4acf7def08d8",
+      "archive_integrity": {
+        "zip_crc": "PASS",
+        "internal_sha256_entries": "15/15 PASS"
+      },
+      "reproducer_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
+      "dependency_lock_sha256": "e229e611a88f50484343090cbb79e73f9d90a5a66ac0be990d0b1523cc029ef3",
+      "latest_branch_head_repeat": {
+        "workflow_run_id": 44745436377,
+        "workflow_job_id": 136319403418,
+        "workflow_commit": "efe677f49088eb9493fef6e8c6615b5bcb061dcb",
+        "artifact_id": 14632153920,
+        "artifact_sha256": "b70d1572ed0a8dbc89f1331da09caaa8848a7581efb2b85c9aceefef09874be2",
+        "local_integrity": {
+          "outer_sha256_matches_github_digest": true,
+          "zip_crc": "PASS",
+          "internal_sha256sums": "15/15 PASS"
+        },
+        "buggy_base_result": "Executed fresh Brachistochrone add_control(val=[5.0,15.0]) reproducer; actual [[1.0],[1.0]] rather than requested [[5.0],[15.0]].",
+        "fixed_result": "Same test on pinned fixed PR head passed (1 passed in 0.66s).",
+        "inference_performed": false
+      },
+      "final_current_branch_repeat": {
+        "workflow_run_id": 44745926619,
+        "workflow_job_id": 136321086021,
+        "workflow_commit": "b73b3ef11b633603ae84b5d85af47eb55fa7d1c9",
+        "artifact_id": 14632443444,
+        "artifact_sha256": "a59eea38a7a0384ade55d150f053cc8243fe1d27256a1a41178824101cf27241",
+        "local_integrity": {
+          "outer_sha256_matches_github_digest": true,
+          "zip_crc": "PASS",
+          "internal_sha256sums": "15/15 PASS"
+        },
+        "buggy_base_result": "Actual [[1.0],[1.0]] instead of requested [[5.0],[15.0]]; assertion executed and failed.",
+        "fixed_revision_result": "Same test passed (1 passed in 0.63s).",
+        "inference_performed": false
+      },
+      "latest_current_head_repeat": {
+        "workflow_run_id": 44777046281,
+        "workflow_job_id": 136429516642,
+        "workflow_commit": "98df08d0ddc4c8972ee653016bf6ac9f2912e560",
+        "buggy_base": "3efd1035c3bf62890034eb9e07de543f3d117867",
+        "fixed_revision": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
+        "artifact_id": 14649973489,
+        "artifact_sha256": "82aba14dbd3ffcc975989a8f3984712a0b4b3a5b89458f7d142fe1dfea4ed16b",
+        "local_integrity": {
+          "outer_sha256_matches_github_digest": true,
+          "zip_crc": "PASS",
+          "internal_sha256sums": "15/15 PASS"
+        },
+        "buggy_base_result": "Independent fresh-model public-API reproducer executed and failed with the expected [[1.0],[1.0]] vs [[5.0],[15.0]] mismatch.",
+        "fixed_revision_result": "Same public-API reproducer passed on the exact fixed PR head (1 passed in 0.65s).",
+        "inference_performed": false
+      }
+    }
+  },
+  "evidence_items": [
+    {
+      "id": "DYMOS_ISSUE_NARRATIVE",
+      "kind": "documentation",
+      "source": "pinned SWE-rebench row problem_statement",
+      "row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
+      "content_sha256": "116de1caf121bf3542eb506148bb892898eaee0c8e06a7876fb429dcc25c7ab9",
+      "source_url": "https://github.com/OpenMDAO/dymos/issues/1166"
+    },
+    {
+      "id": "DYMOS_INDEPENDENT_API_REPRODUCER",
+      "kind": "other",
+      "source_path": "research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py",
+      "source_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
+      "content_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9"
+    },
+    {
+      "id": "DYMOS_BASE_REPRODUCER_OUTPUT",
+      "kind": "test_output",
+      "source": "artifact 14629598269/base-reproducer.log",
+      "full_log_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f",
+      "content_sha256": "698710d0e08d43a66371a3c973a8628875be300d2a0ea0991e7dbf7bca532a82"
+    },
+    {
+      "id": "DYMOS_BASE_ONES_INPUT_DEFAULT",
+      "kind": "source_excerpt",
+      "source_path": "dymos/transcriptions/common/control_comp.py",
+      "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "source_git_blob_sha1": "74a1449b45329c3f87927c1fec6d4bbf936af138",
+      "source_lines_1based": [
+        95,
+        120
+      ],
+      "content_sha256": "f52ea74336cca69ae73b03aad91683e0d0f88f7667457796a64ab3ec78aa1fd4"
+    },
+    {
+      "id": "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE",
+      "kind": "source_excerpt",
+      "source_path": "dymos/phase/phase.py",
+      "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "source_git_blob_sha1": "06df4268245c5c14252fdeb5d03d3ec8ff91479f",
+      "source_lines_1based": [
+        785,
+        786
+      ],
+      "content_sha256": "bc263738775dcb898909430afd85cdb6a4dd3989863d37d6c1f5d04245ab27e9"
+    },
+    {
+      "id": "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS",
+      "kind": "source_excerpt",
+      "source_path": "dymos/transcriptions/transcription_base.py",
+      "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "source_git_blob_sha1": "ae73763ffd26c40c9fe2da18bad5fa0ce28234c6",
+      "source_lines_1based": [
+        145,
+        147
+      ],
+      "content_sha256": "c1ff713481f44148bdefe4a9c493e692d8d2a3b9457038358134c6469da7137a"
+    },
+    {
+      "id": "DYMOS_BASE_ADD_CONTROL_FORWARDS_VALUE",
+      "kind": "source_excerpt",
+      "source_path": "dymos/phase/phase.py",
+      "source_commit": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "source_git_blob_sha1": "06df4268245c5c14252fdeb5d03d3ec8ff91479f",
+      "source_lines_1based": [
+        638,
+        640
+      ],
+      "content_sha256": "a2ff7cfe0b5cc90987599357d983735ffcfd2ad42973fd35e2bbcfd26c13cb1a"
+    }
+  ],
+  "tier_membership": {
+    "E3": [
+      "DYMOS_ISSUE_NARRATIVE"
+    ],
+    "E2": [
+      "DYMOS_ISSUE_NARRATIVE",
+      "DYMOS_INDEPENDENT_API_REPRODUCER",
+      "DYMOS_BASE_REPRODUCER_OUTPUT"
+    ],
+    "E1": [
+      "DYMOS_ISSUE_NARRATIVE",
+      "DYMOS_INDEPENDENT_API_REPRODUCER",
+      "DYMOS_BASE_REPRODUCER_OUTPUT",
+      "DYMOS_BASE_ONES_INPUT_DEFAULT",
+      "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE",
+      "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS",
+      "DYMOS_BASE_ADD_CONTROL_FORWARDS_VALUE"
+    ]
+  },
+  "structural_validation": {
+    "status": "current_packet_hashes_recomputed_and_current_head_no_inference_preflight_passed; semantic adjudication separately approved",
+    "expected_inner_packet_counts": {
+      "E3": 1,
+      "E2": 3,
+      "E1": 7
+    },
+    "strictly_nested_by_design": true,
+    "semantic_sufficiency_assessed": false,
+    "model_inference_performed": false,
+    "expected_packet_counts": {
+      "E3": 1,
+      "E2": 3,
+      "E1": 7
+    },
+    "latest_preflight_run": {
+      "workflow_run_id": 44777046085,
+      "preflight_job_id": 136429516755,
+      "conclusion": "success",
+      "dymos_review_contract_tests": "8 passed",
+      "accepted_case_count": 1,
+      "blocker_count": 13,
+      "ready_for_inference": false,
+      "inference_authorized": false,
+      "semantic_sufficiency_assessed": false,
+      "model_inference_performed": false
+    }
+  },
+  "semantic_review": {
+    "status": "approved_source_aware_project_lead_gold_and_tier_decision",
+    "method": "Same exploratory source-aware single-adjudicator route used for Dishka; no blind-panel or inter-rater reliability claim.",
+    "hasan_role": "project-lead-reported supplementary technical concurrence only; no signed independent review is asserted.",
+    "independent_review_required": false,
+    "note": "The project lead approved the source-aware technical gold mechanism and E3/E2 abstain, E1 answer decisions on 2026-11-20. This is the Dishka-equivalent exploratory route, not blinded adjudication or an inter-rater reliability claim. Structural validation remains separate and does not itself assess semantic sufficiency.",
+    "adjudication_completed": true,
+    "decision_method": "Dishka-equivalent v0.2 exploratory source-aware single-human-adjudicator route; project lead decides; ChatGPT advisory only; no blind or inter-rater reliability claim.",
+    "project_lead_decision": {
+      "decision": "APPROVED",
+      "decision_date": "2026-11-20",
+      "decision_record_path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
+      "decision_record_sha256": "9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392",
+      "approved_primary_mechanism": "Caller-provided polynomial-control val is forwarded and stored, and reaches ControlInterpComp options, but the buggy polynomial-control input initialization uses np.ones(input_shape) instead of options['val']; the value is therefore discarded at component input initialization.",
+      "approved_evidence_tier_outcomes": {
+        "E3": "ABSTAIN — issue narrative only; no reproduced observation or implementation-path support for the cause.",
+        "E2": "ABSTAIN — issue narrative plus independent public-API reproduction and observed output; implementation mechanism not evidenced.",
+        "E1": "ANSWER — adds active pinned source chain from API forwarding and storage through ControlInterpComp configuration to the all-ones input default."
+      },
+      "qualification": "Project lead approval explicitly conditioned on not disrupting project progress. This closes only the source-aware technical gold/tier gate within the existing Stage 3 sequence; all license, dataset-card, case-record, registry, final-acceptance and no-inference gates remain unchanged.",
+      "human_adjudicator": "student project lead; full source/reproduction exposure disclosed",
+      "assistant_role": "ChatGPT technical advisor only; not a human adjudicator",
+      "hasan_role": "supplementary project-lead-reported technical concurrence only; no signed independent review or second adjudication claimed"
+    }
+  },
+  "blinding": {
+    "model_visible_packet_contains_fix": false,
+    "model_visible_packet_contains_fixed_test_logs": false,
+    "model_visible_packet_contains_gold_label": false,
+    "model_visible_packet_contains_tier_label": false,
+    "outer_packet_set_is_model_input": false
+  },
+  "limitations": [
+    "Structural validity does not establish semantic causal entailment.",
+    "The source-aware project lead and Hasan have now seen candidate source and reproduction evidence; no claim of blinded review is made.",
+    "The historical Dymos #531 default-value issue is a related ancestor in the same broad family and must not be counted as another case.",
+    "Dependency metadata is not legal clearance; NumPy/SciPy bundled notices require bounded scope acknowledgement."
+  ]
+}

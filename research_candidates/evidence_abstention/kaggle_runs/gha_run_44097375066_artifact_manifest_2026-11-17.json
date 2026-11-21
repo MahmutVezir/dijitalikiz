@@ -1,0 +1,228 @@
+{
+  "record_type": "github_actions_no_inference_candidate_run_audit",
+  "schema_version": "1.0",
+  "run": {
+    "repository": "MahmutVezir/dijitalikiz",
+    "workflow_name": "Evidence Abstention Preflight (No Inference)",
+    "run_id": 44097375066,
+    "run_url": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44097375066",
+    "event": "pull_request",
+    "branch": "research/2026-11-16-followup-evidence-validation",
+    "head_sha": "ab67bdfcb2ba5651673474e6dfa3cb34fbca8c17",
+    "pull_request": "https://github.com/MahmutVezir/dijitalikiz/pull/222",
+    "observed_at": "2026-11-17",
+    "overall_conclusion": "failure",
+    "job_counts": {
+      "total": 13,
+      "success": 2,
+      "failure": 11
+    },
+    "runner_smoke_test": {
+      "run_id": 44097375090,
+      "conclusion": "success",
+      "note": "Runner smoke test on same commit completed successfully."
+    },
+    "model_loaded": false,
+    "model_inference_performed": false,
+    "training_performed": false
+  },
+  "jobs": [
+    {
+      "name": "no-inference-preflight",
+      "job_id": 134087974236,
+      "conclusion": "success",
+      "finding": "All no-inference preflight tests passed."
+    },
+    {
+      "name": "dishka-issue-435-reproduction",
+      "job_id": 134087974804,
+      "conclusion": "success",
+      "finding": "Dishka reproduction job passed; final independent case-acceptance record and decision remain separate."
+    },
+    {
+      "name": "nox-issue-919-reproduction",
+      "job_id": 134087973959,
+      "conclusion": "failure",
+      "finding": "Upstream checkout and independent buggy-base reproducer succeeded; three dataset selectors were not found and zero tests ran."
+    },
+    {
+      "name": "robocop-issue-1371-reproduction",
+      "job_id": 134087974050,
+      "conclusion": "failure",
+      "finding": "Upstream checkout and dataset row validation succeeded; selected dataset test passed on buggy base when failure was required."
+    },
+    {
+      "name": "eodag-issue-1530-reproduction",
+      "job_id": 134087973392,
+      "conclusion": "failure",
+      "finding": "Independent reproducer failed on buggy base and passed on fixed revision; dataset row lookup for CS-SI__eodag-1536 returned zero rows (AssertionError: 0)."
+    },
+    {
+      "name": "meltano-issue-3090-reproduction",
+      "job_id": 134087974152,
+      "conclusion": "failure",
+      "finding": "Upstream checkout, independent source reproducer, and dataset row timestamp validation succeeded; dataset test collection stopped because importlib_metadata was missing."
+    },
+    {
+      "name": "amaranth-issue-1518-reproduction",
+      "job_id": 134087973996,
+      "conclusion": "failure",
+      "finding": "Upstream checkout/patch preparation succeeded; independent reproducer could not import because rfc3986 was missing."
+    },
+    {
+      "name": "pyfar-issue-721-reproduction",
+      "job_id": 134087974225,
+      "conclusion": "failure",
+      "finding": "Upstream checkout and dataset row validation succeeded; test conftest collection stopped because bs4 (BeautifulSoup) was missing. Existing added requests dependency pins did not resolve this."
+    },
+    {
+      "name": "numpyro-issue-1916-reproduction",
+      "job_id": 134087973761,
+      "conclusion": "failure",
+      "finding": "Upstream checkout and dataset row validation succeeded; both FAIL_TO_PASS selectors passed on buggy base, so expected failure was not observed."
+    },
+    {
+      "name": "qutip-issue-2646-reproduction",
+      "job_id": 134087973781,
+      "conclusion": "failure",
+      "finding": "Independent buggy-base coefficient reproducer gave expected failure; dataset selector test_coefficient_update_args unexpectedly passed on buggy base."
+    },
+    {
+      "name": "python-control-issue-1144-reproduction",
+      "job_id": 134087973955,
+      "conclusion": "failure",
+      "finding": "Independent buggy-base Nyquist axes reproducer gave expected failure; exact dataset selector phase returned pytest ERROR for test_plot_ax_processing[frequency_response-nichols_plot]."
+    },
+    {
+      "name": "werkzeug-issue-2955-reproduction",
+      "job_id": 134087974070,
+      "conclusion": "failure",
+      "finding": "Dataset selector test_dict_header[=foo,…] did not match any test; no tests ran."
+    },
+    {
+      "name": "moto-issue-8269-reproduction",
+      "job_id": 134087974040,
+      "conclusion": "failure",
+      "finding": "Source clone reached the pinned checkout; subsequent quiet provenance hash test failed. Available log does not identify whether LICENSE or setup.cfg hash caused the failure."
+    }
+  ],
+  "source_fetch_repairs": {
+    "candidates": [
+      "Nox #919",
+      "Robocop #1371",
+      "EODAG #1530",
+      "Meltano SDK #3090",
+      "Amaranth #1518"
+    ],
+    "observed_result": "The upstream checkout and pinned patch-preparation steps completed for all five jobs; the earlier bad-object signature did not recur.",
+    "implication": "Fetch repair worked for these steps; this does not establish candidate acceptance."
+  },
+  "pyfar_dependency_repair": {
+    "added_lock_entries": [
+      "requests==2.32.3",
+      "charset-normalizer==3.4.0",
+      "idna==3.10"
+    ],
+    "observed_result": "Dependency installation and then-current license inventory step passed; test collection later failed on missing bs4.",
+    "status": "incomplete"
+  },
+  "acceptance": {
+    "accepted_cases_count": 0,
+    "target_independent_cases": 15,
+    "note": "No candidate in this run was automatically marked technically unsuitable. Dishka technical job success does not itself constitute final case acceptance."
+  },
+  "artifacts": [
+    {
+      "name": "nox-issue-919-reproduction",
+      "artifact_id": 14334791527,
+      "size_bytes": 16465,
+      "sha256": "655ff9938fc0b41b6d73a4bb7aa3a350cf559d80966b4ef86347d051bad337ac",
+      "download_url": "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/14334791527/zip"
+    },
+    {
+      "name": "amaranth-issue-1518-reproduction",
+      "artifact_id": 14334736987,
+      "size_bytes": 6144,
+      "sha256": "1a06ba6c0d6ae1592d44ffc3004fd139932173be51909bc6d7a7ad1c4a63d7b4",
+      "download_url": "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/14334736987/zip"
+    },
+    {
+      "name": "robocop-issue-1371-reproduction",
+      "artifact_id": 14334552497,
+      "size_bytes": 5412,
+      "sha256": "2cbc6d7f8d5306a8416fc54e2821cd17fcb00a39d0e399725f8347c4dc430cd0",
+      "download_url": "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/14334552497/zip"
+    },
+    {
+      "name": "werkzeug-issue-2955-reproduction",
+      "artifact_id": 14334492334,
+      "size_bytes": 4597,
+      "sha256": "7d3388e9c168fb6e22d121af00fd90222fb0604fa0ce044685ebdd7b12f0a3e6",
+      "download_url": "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/14334492334/zip"
+    },
+    {
+      "name": "dishka-issue-435-reproduction-44097375066-1",
+      "artifact_id": 14334173121,
+      "size_bytes": 54107860,
+      "sha256": "49de35a56f5db1d7e8cc152fe70c5910897900181e62ced0b1687292ee265b1d",
+      "download_url": "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/14334173121/zip"
+    },
+    {
+      "name": "meltano-issue-3090-reproduction",
+      "artifact_id": 14334103526,
+      "size_bytes": 14376,
+      "sha256": "f0466119c9c20c18e91093b72bbd597c955c1f7370f84f2efee591f93cf3c753",
+      "download_url": "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/14334103526/zip"
+    },
+    {
+      "name": "python-control-issue-1144-reproduction",
+      "artifact_id": 14334073468,
+      "size_bytes": 40617,
+      "sha256": "e6c64e72cd493b0fe09c2e1e41a048c3f0a495c8de641584e17bf639bc710eff",
+      "download_url": "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/14334073468/zip"
+    },
+    {
+      "name": "qutip-issue-2646-reproduction",
+      "artifact_id": 14334069605,
+      "size_bytes": 36192,
+      "sha256": "0b1c5a2e813949b1f354c11223e0740f7a3f3a20392cee74817f2870e0b9ec09",
+      "download_url": "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/14334069605/zip"
+    },
+    {
+      "name": "evidence-abstention-preflight-logs-44097375066-1",
+      "artifact_id": 14333968638,
+      "size_bytes": 3334,
+      "sha256": "13c16897ff6bfe006c459ce7cf92136fa7a82a5c55f5161b4ecb8b865c8d70cf",
+      "download_url": "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/14333968638/zip"
+    },
+    {
+      "name": "pyfar-issue-721-reproduction",
+      "artifact_id": 14333884159,
+      "size_bytes": 38545,
+      "sha256": "31cf83e5aab8d8e96244dfdc406b6e22862d06037a109361c8fd930bd4144e03",
+      "download_url": "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/14333884159/zip"
+    },
+    {
+      "name": "moto-issue-8269-reproduction",
+      "artifact_id": 14333779233,
+      "size_bytes": 1814,
+      "sha256": "793a9f6e07dc957946befdb613d0ccd0f9a7b09846fec4a441e4b30b688ce67a",
+      "download_url": "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/14333779233/zip"
+    },
+    {
+      "name": "numpyro-issue-1916-reproduction",
+      "artifact_id": 14333664519,
+      "size_bytes": 39660,
+      "sha256": "ee6be8b303eb788fb5e7b5dc14833be5030aefa6c88e24ea5d499663d3017216",
+      "download_url": "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/14333664519/zip"
+    },
+    {
+      "name": "eodag-issue-1530-reproduction",
+      "artifact_id": 14333593630,
+      "size_bytes": 54084724,
+      "sha256": "c206541eb969869bb289a0f74ef1ad08082db9d33afa250604f3e490b35969e2",
+      "download_url": "https://api.github.com/repos/MahmutVezir/dijitalikiz/actions/artifacts/14333593630/zip"
+    }
+  ],
+  "artifact_retention": "90 days as configured on workflow upload steps; artifact objects remain in GitHub Actions, not embedded in this repository commit."
+}

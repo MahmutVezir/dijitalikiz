@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1-geopandas-source-capture",
+  "capture_kind": "E1_patch_mechanism_disclosure_only",
+  "captured_at": "2026-11-21T20:58:43+03:00",
+  "case_instance": "geopandas__geopandas-3591",
+  "comment": {
+    "comment_id": 2130293780,
+    "created_at_utc": "2025-06-05T20:43:12Z",
+    "author": "jorisvandenbossche",
+    "html_url": "https://github.com/geopandas/geopandas/pull/3591#discussion_r2130293780",
+    "api_url": "https://api.github.com/repos/geopandas/geopandas/pulls/comments/2130293780",
+    "commit_id": "b3259ce23a37abd32650d7df098f3cdc8c4bb261",
+    "path": "geopandas/geodataframe.py",
+    "body": "```suggestion\r\n                or ((not self.empty) and self[\"geometry\"].isna().all())\r\n```\r\n\r\n(will do the same, but I find it slightly more readable)",
+    "body_sha256": "9e73c4aec8e7270da87fbc1c090046eefb43478b5111387ff0831b8434474465",
+    "source_role": "E1_only_exact_patch_predicate_disclosure"
+  }
+}

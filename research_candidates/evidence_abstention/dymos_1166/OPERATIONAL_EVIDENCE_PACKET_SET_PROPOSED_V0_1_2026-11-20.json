@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "packet_set_id": "PACKETSET_DYMOS_1166_20261120_PROPOSED",
+  "packets": {
+    "E1": {
+      "schema_version": "1.0",
+      "packet_id": "PACKET_DYMOS_1166_E1",
+      "evidence_items": [
+        {
+          "id": "DYMOS_ISSUE_NARRATIVE",
+          "kind": "documentation",
+          "content": "Default val set in `add_control` or `set_control_options` is not applied.\n### Description\n\nSpecifying the option `val=...` in `add_control` or `set_control_options` has no impact in dymos 1.13.0.\n\n\n### Example\n\nThe test case to see if default values are \"sticking\" is no longer being applied, because the function upon which it relies overrides default values for other tests.  Removing those set_xxx_val calls will expose the error.\n\n### Dymos Version\n\n3.13.1-dev\n\n### Relevant environment information\n\n_No response_",
+          "content_sha256": "116de1caf121bf3542eb506148bb892898eaee0c8e06a7876fb429dcc25c7ab9",
+          "source_snapshot_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5"
+        },
+        {
+          "id": "DYMOS_INDEPENDENT_API_REPRODUCER",
+          "kind": "other",
+          "content": "\"\"\"Independent public-API reproducer for OpenMDAO/Dymos issue #1166.\n\nThe test builds a fresh one-phase Brachistochrone problem and checks the\npolynomial-control default immediately after setup/run_model. It does not\nimport the upstream PR's modified balanced-field regression test.\n\"\"\"\nimport numpy as np\nimport openmdao.api as om\nimport dymos as dm\nfrom dymos.examples.brachistochrone.brachistochrone_ode import BrachistochroneODE\n\n\ndef test_issue_1166_polynomial_control_default_is_applied():\n    problem = om.Problem(model=om.Group())\n    phase = dm.Phase(\n        ode_class=BrachistochroneODE,\n        transcription=dm.GaussLobatto(num_segments=1, order=3),\n    )\n    problem.model.add_subsystem(\"phase0\", phase)\n\n    phase.set_time_options(fix_initial=True, duration_val=2.0)\n    phase.add_state(\"x\", rate_source=\"xdot\", fix_initial=True, fix_final=False)\n    phase.add_state(\"y\", rate_source=\"ydot\", fix_initial=True, fix_final=False)\n    phase.add_state(\"v\", rate_source=\"vdot\", fix_initial=True, fix_final=False)\n    phase.add_control(\n        \"theta\",\n        order=1,\n        units=\"deg\",\n        lower=0.0,\n        upper=180.0,\n        control_type=\"polynomial\",\n        opt=True,\n        val=[5.0, 15.0],\n    )\n    phase.add_parameter(\"g\", units=\"m/s**2\", opt=False, val=9.80665)\n\n    problem.setup()\n    problem.run_model()\n\n    actual = problem.get_val(\"phase0.controls:theta\")\n    np.testing.assert_allclose(\n        actual,\n        np.array([[5.0], [15.0]]),\n        rtol=0.0,\n        atol=1e-12,\n    )\n",
+          "content_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
+          "source_snapshot_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9"
+        },
+        {
+          "id": "DYMOS_BASE_REPRODUCER_OUTPUT",
+          "kind": "test_output",
+          "content": "Independent fresh-model public-API reproducer on the pinned buggy base:\nactual control input = [[1.0], [1.0]]\nexpected control input = [[5.0], [15.0]]\nThe test collected and executed; the assertion failed with 2/2 mismatched values.\n",
+          "content_sha256": "698710d0e08d43a66371a3c973a8628875be300d2a0ea0991e7dbf7bca532a82",
+          "source_snapshot_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f"
+        },
+        {
+          "id": "DYMOS_BASE_ONES_INPUT_DEFAULT",
+          "kind": "source_excerpt",
+          "content": "            if 'control_type' not in options:\n                options['control_type'] = 'full'\n            if options['control_type'] == 'polynomial':\n                disc_nodes, _ = lgl(options['order'] + 1)\n                num_control_input_nodes = len(disc_nodes)\n                shape = options['shape']\n                size = np.prod(shape)\n                units = options['units']\n                rate_units = get_rate_units(units, self.options['time_units'], deriv=1)\n                rate2_units = get_rate_units(units, self.options['time_units'], deriv=2)\n\n                input_shape = (num_control_input_nodes,) + shape\n                output_shape = (num_output_nodes,) + shape\n\n                L_de, D_de = lagrange_matrices(disc_nodes, eval_nodes)\n                _, D_dd = lagrange_matrices(disc_nodes, disc_nodes)\n                D2_de = np.dot(D_de, D_dd)\n\n                self._matrices[name] = L_de, D_de, D2_de\n\n                self._input_names[name] = f'controls:{name}'\n                self._output_val_names[name] = f'control_values:{name}'\n                self._output_rate_names[name] = f'control_rates:{name}_rate'\n                self._output_rate2_names[name] = f'control_rates:{name}_rate2'\n\n                self.add_input(self._input_names[name], val=np.ones(input_shape), units=units)\n",
+          "content_sha256": "f52ea74336cca69ae73b03aad91683e0d0f88f7667457796a64ab3ec78aa1fd4",
+          "source_snapshot_sha256": "f52ea74336cca69ae73b03aad91683e0d0f88f7667457796a64ab3ec78aa1fd4"
+        },
+        {
+          "id": "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE",
+          "kind": "source_excerpt",
+          "content": "        if val is not _unspecified:\n            self.control_options[name]['val'] = val\n",
+          "content_sha256": "bc263738775dcb898909430afd85cdb6a4dd3989863d37d6c1f5d04245ab27e9",
+          "source_snapshot_sha256": "bc263738775dcb898909430afd85cdb6a4dd3989863d37d6c1f5d04245ab27e9"
+        },
+        {
+          "id": "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS",
+          "kind": "source_excerpt",
+          "content": "            control_comp = ControlInterpComp(control_options=phase.control_options,\n                                             time_units=phase.time_options['units'],\n                                             grid_data=self.grid_data)\n",
+          "content_sha256": "c1ff713481f44148bdefe4a9c493e692d8d2a3b9457038358134c6469da7137a",
+          "source_snapshot_sha256": "c1ff713481f44148bdefe4a9c493e692d8d2a3b9457038358134c6469da7137a"
+        },
+        {
+          "id": "DYMOS_BASE_ADD_CONTROL_FORWARDS_VALUE",
+          "kind": "source_excerpt",
+          "content": "        self.set_control_options(name, order=order, units=units, desc=desc, opt=opt,\n                                 fix_initial=fix_initial, fix_final=fix_final, targets=targets, rate_targets=rate_targets,\n                                 rate2_targets=rate2_targets, val=val, shape=shape, lower=lower,\n",
+          "content_sha256": "a2ff7cfe0b5cc90987599357d983735ffcfd2ad42973fd35e2bbcfd26c13cb1a",
+          "source_snapshot_sha256": "a2ff7cfe0b5cc90987599357d983735ffcfd2ad42973fd35e2bbcfd26c13cb1a"
+        }
+      ],
+      "packet_sha256": "8d78d4ac4828276485b73bb01f5411be42feec328418cd575aa828ddae0faaa5"
+    },
+    "E2": {
+      "schema_version": "1.0",
+      "packet_id": "PACKET_DYMOS_1166_E2",
+      "evidence_items": [
+        {
+          "id": "DYMOS_ISSUE_NARRATIVE",
+          "kind": "documentation",
+          "content": "Default val set in `add_control` or `set_control_options` is not applied.\n### Description\n\nSpecifying the option `val=...` in `add_control` or `set_control_options` has no impact in dymos 1.13.0.\n\n\n### Example\n\nThe test case to see if default values are \"sticking\" is no longer being applied, because the function upon which it relies overrides default values for other tests.  Removing those set_xxx_val calls will expose the error.\n\n### Dymos Version\n\n3.13.1-dev\n\n### Relevant environment information\n\n_No response_",
+          "content_sha256": "116de1caf121bf3542eb506148bb892898eaee0c8e06a7876fb429dcc25c7ab9",
+          "source_snapshot_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5"
+        },
+        {
+          "id": "DYMOS_INDEPENDENT_API_REPRODUCER",
+          "kind": "other",
+          "content": "\"\"\"Independent public-API reproducer for OpenMDAO/Dymos issue #1166.\n\nThe test builds a fresh one-phase Brachistochrone problem and checks the\npolynomial-control default immediately after setup/run_model. It does not\nimport the upstream PR's modified balanced-field regression test.\n\"\"\"\nimport numpy as np\nimport openmdao.api as om\nimport dymos as dm\nfrom dymos.examples.brachistochrone.brachistochrone_ode import BrachistochroneODE\n\n\ndef test_issue_1166_polynomial_control_default_is_applied():\n    problem = om.Problem(model=om.Group())\n    phase = dm.Phase(\n        ode_class=BrachistochroneODE,\n        transcription=dm.GaussLobatto(num_segments=1, order=3),\n    )\n    problem.model.add_subsystem(\"phase0\", phase)\n\n    phase.set_time_options(fix_initial=True, duration_val=2.0)\n    phase.add_state(\"x\", rate_source=\"xdot\", fix_initial=True, fix_final=False)\n    phase.add_state(\"y\", rate_source=\"ydot\", fix_initial=True, fix_final=False)\n    phase.add_state(\"v\", rate_source=\"vdot\", fix_initial=True, fix_final=False)\n    phase.add_control(\n        \"theta\",\n        order=1,\n        units=\"deg\",\n        lower=0.0,\n        upper=180.0,\n        control_type=\"polynomial\",\n        opt=True,\n        val=[5.0, 15.0],\n    )\n    phase.add_parameter(\"g\", units=\"m/s**2\", opt=False, val=9.80665)\n\n    problem.setup()\n    problem.run_model()\n\n    actual = problem.get_val(\"phase0.controls:theta\")\n    np.testing.assert_allclose(\n        actual,\n        np.array([[5.0], [15.0]]),\n        rtol=0.0,\n        atol=1e-12,\n    )\n",
+          "content_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
+          "source_snapshot_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9"
+        },
+        {
+          "id": "DYMOS_BASE_REPRODUCER_OUTPUT",
+          "kind": "test_output",
+          "content": "Independent fresh-model public-API reproducer on the pinned buggy base:\nactual control input = [[1.0], [1.0]]\nexpected control input = [[5.0], [15.0]]\nThe test collected and executed; the assertion failed with 2/2 mismatched values.\n",
+          "content_sha256": "698710d0e08d43a66371a3c973a8628875be300d2a0ea0991e7dbf7bca532a82",
+          "source_snapshot_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f"
+        }
+      ],
+      "packet_sha256": "7c16c6c61dadb5217493946b42b2b02a9dbdc63a0500b2e51b66982f4439385b"
+    },
+    "E3": {
+      "schema_version": "1.0",
+      "packet_id": "PACKET_DYMOS_1166_E3",
+      "evidence_items": [
+        {
+          "id": "DYMOS_ISSUE_NARRATIVE",
+          "kind": "documentation",
+          "content": "Default val set in `add_control` or `set_control_options` is not applied.\n### Description\n\nSpecifying the option `val=...` in `add_control` or `set_control_options` has no impact in dymos 1.13.0.\n\n\n### Example\n\nThe test case to see if default values are \"sticking\" is no longer being applied, because the function upon which it relies overrides default values for other tests.  Removing those set_xxx_val calls will expose the error.\n\n### Dymos Version\n\n3.13.1-dev\n\n### Relevant environment information\n\n_No response_",
+          "content_sha256": "116de1caf121bf3542eb506148bb892898eaee0c8e06a7876fb429dcc25c7ab9",
+          "source_snapshot_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5"
+        }
+      ],
+      "packet_sha256": "3aa2320ac5fc464108e3a4e79a6a062c80708caec0bc9e332fe6cd742a6bfb53"
+    }
+  },
+  "packet_set_sha256": "7ca1e50290bc037e9147dc30eff10152cecc506e0cb1ac70de5c420cbf939474"
+}

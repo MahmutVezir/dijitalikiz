@@ -1,0 +1,89 @@
+{
+  "schema_version": "0.1-geopandas-tier-packet",
+  "case_instance": "geopandas__geopandas-3591",
+  "gold_mechanism_id": "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION",
+  "stage2_status": "not_run",
+  "packet_status": "frozen_semantic_source_packet_only_stage2_reproduction_pending",
+  "model_output_included": false,
+  "inference_authorized": false,
+  "tier": "E2",
+  "packet_id": "GEOPANDAS-3591-E2",
+  "surviving_mechanism_ids": [
+    "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION",
+    "A2_CRS_ACTIVE_GEOMETRY_STATE_TRANSITION"
+  ],
+  "semantic_rationale": "E3 is retained unchanged. The maintainer comment explicitly identifies np.nan as a float rather than a geometry object/None; the reporter's follow-up says older-version behavior also worked for ten all-NaN rows and mixed np.nan/None/pd.NA, weakening the one-row shape/alignment alternative; the maintainer says geometry sanitization handles missing values elsewhere. Fixed-revision regression test source covers scalar and array null cases but is not an execution log. A1 is removed; G1 and A2 remain because E2 still does not expose the implicit constructor predicate or establish whether the CRS/active-geometry transition is primary. ABSTAIN remains the evidence-calibrated result.",
+  "inherited_packet_ids": [
+    "GEOPANDAS-3591-E3"
+  ],
+  "evidence_items": [
+    {
+      "evidence_id": "FROZEN_DATASET_ROW",
+      "content_sha256": "e543af0bbc5e779661c3b1b79c28849f67dee7c61157c000c6698b15ba1218e2",
+      "source_snapshot_sha256": "9b158320d70a98945b4d4f1029bf8a10ddf45110a5c0eeffd8413373c041eba6",
+      "source_uri": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/tree/fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+      "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+      "source_path": "data/train-00000-of-00001.parquet#instance_id=geopandas__geopandas-3591",
+      "source_snapshot_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/38136a8eb77946621260e353973e7980610c7b8f/research_candidates/evidence_abstention/geopandas_3591/source_snapshots/E3_FROZEN_ROW_AUDIT_REFERENCE_V0_1.json",
+      "source_snapshot_commit_sha": "38136a8eb77946621260e353973e7980610c7b8f",
+      "source_snapshot_kind": "audit_reference_not_raw_row_payload"
+    },
+    {
+      "evidence_id": "FROZEN_PROBLEM_STATEMENT",
+      "content_sha256": "c4aeb4909495887c065f1f7ae5ec0e321fb350e98ea789cde3f931cad597f12d",
+      "source_snapshot_sha256": "9b158320d70a98945b4d4f1029bf8a10ddf45110a5c0eeffd8413373c041eba6",
+      "source_uri": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/tree/fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+      "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+      "source_path": "data/train-00000-of-00001.parquet#instance_id=geopandas__geopandas-3591.problem_statement",
+      "source_snapshot_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/38136a8eb77946621260e353973e7980610c7b8f/research_candidates/evidence_abstention/geopandas_3591/source_snapshots/E3_FROZEN_ROW_AUDIT_REFERENCE_V0_1.json",
+      "source_snapshot_commit_sha": "38136a8eb77946621260e353973e7980610c7b8f",
+      "source_snapshot_kind": "audit_reference_not_raw_problem_statement_payload"
+    },
+    {
+      "evidence_id": "ISSUE_COMMENT_MAINTAINER_NAN_FLOAT",
+      "content_sha256": "1cf49a8144b935a4a65351dfea9105e815dc61e0469604944782873055fab1a5",
+      "source_snapshot_sha256": "55a3906110b5ce203f5a160acaa721fb88d541f8010e54400bd6dd3cc48e8765",
+      "source_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/c639c6e98bc870c6ba47c4bffa2319f4bf4d0a8e/research_candidates/evidence_abstention/geopandas_3591/source_snapshots/E2_ISSUE_DISCUSSION_SOURCE_SNAPSHOT_V0_1.json",
+      "source_commit_sha": "c639c6e98bc870c6ba47c4bffa2319f4bf4d0a8e",
+      "source_path": "research_candidates/evidence_abstention/geopandas_3591/source_snapshots/E2_ISSUE_DISCUSSION_SOURCE_SNAPSHOT_V0_1.json#/comments/2943137874",
+      "upstream_uri": "https://github.com/geopandas/geopandas/issues/3590#issuecomment-2943137874",
+      "upstream_created_at_utc": "2025-06-05T07:55:20Z",
+      "source_snapshot_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/c639c6e98bc870c6ba47c4bffa2319f4bf4d0a8e/research_candidates/evidence_abstention/geopandas_3591/source_snapshots/E2_ISSUE_DISCUSSION_SOURCE_SNAPSHOT_V0_1.json",
+      "classification": "supplementary_comment_not_independent_reproduction_log"
+    },
+    {
+      "evidence_id": "ISSUE_COMMENT_REPORTER_LONG_ALL_NULL_AND_MIXED_NULL",
+      "content_sha256": "beb9c3647b1106dbcb387b67b0571fc4c15a0474279a207174edc643e3be2656",
+      "source_snapshot_sha256": "55a3906110b5ce203f5a160acaa721fb88d541f8010e54400bd6dd3cc48e8765",
+      "source_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/c639c6e98bc870c6ba47c4bffa2319f4bf4d0a8e/research_candidates/evidence_abstention/geopandas_3591/source_snapshots/E2_ISSUE_DISCUSSION_SOURCE_SNAPSHOT_V0_1.json",
+      "source_commit_sha": "c639c6e98bc870c6ba47c4bffa2319f4bf4d0a8e",
+      "source_path": "research_candidates/evidence_abstention/geopandas_3591/source_snapshots/E2_ISSUE_DISCUSSION_SOURCE_SNAPSHOT_V0_1.json#/comments/2944863844",
+      "upstream_uri": "https://github.com/geopandas/geopandas/issues/3590#issuecomment-2944863844",
+      "upstream_created_at_utc": "2025-06-05T14:48:48Z",
+      "source_snapshot_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/c639c6e98bc870c6ba47c4bffa2319f4bf4d0a8e/research_candidates/evidence_abstention/geopandas_3591/source_snapshots/E2_ISSUE_DISCUSSION_SOURCE_SNAPSHOT_V0_1.json",
+      "classification": "supplementary_comment_not_independent_reproduction_log"
+    },
+    {
+      "evidence_id": "ISSUE_COMMENT_MAINTAINER_GEOMETRY_SANITIZATION",
+      "content_sha256": "7fbb9866b6453b6346b861acaaa98ec324f1c554de3ebf7672e319bf2ed139a8",
+      "source_snapshot_sha256": "55a3906110b5ce203f5a160acaa721fb88d541f8010e54400bd6dd3cc48e8765",
+      "source_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/c639c6e98bc870c6ba47c4bffa2319f4bf4d0a8e/research_candidates/evidence_abstention/geopandas_3591/source_snapshots/E2_ISSUE_DISCUSSION_SOURCE_SNAPSHOT_V0_1.json",
+      "source_commit_sha": "c639c6e98bc870c6ba47c4bffa2319f4bf4d0a8e",
+      "source_path": "research_candidates/evidence_abstention/geopandas_3591/source_snapshots/E2_ISSUE_DISCUSSION_SOURCE_SNAPSHOT_V0_1.json#/comments/2945606056",
+      "upstream_uri": "https://github.com/geopandas/geopandas/issues/3590#issuecomment-2945606056",
+      "upstream_created_at_utc": "2025-06-05T18:26:21Z",
+      "source_snapshot_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/c639c6e98bc870c6ba47c4bffa2319f4bf4d0a8e/research_candidates/evidence_abstention/geopandas_3591/source_snapshots/E2_ISSUE_DISCUSSION_SOURCE_SNAPSHOT_V0_1.json",
+      "classification": "supplementary_comment_not_independent_reproduction_log"
+    },
+    {
+      "evidence_id": "FIXED_REVISION_REGRESSION_TEST_SOURCE",
+      "content_sha256": "40b50d61bcd15eadd3f7a0a8ae7ff4ab7212f7618fa3dbfda8e168fb720ee439",
+      "source_snapshot_sha256": "40b50d61bcd15eadd3f7a0a8ae7ff4ab7212f7618fa3dbfda8e168fb720ee439",
+      "source_uri": "https://raw.githubusercontent.com/geopandas/geopandas/b3259ce23a37abd32650d7df098f3cdc8c4bb261/geopandas/tests/test_geodataframe.py",
+      "source_commit_sha": "b3259ce23a37abd32650d7df098f3cdc8c4bb261",
+      "source_path": "geopandas/tests/test_geodataframe.py",
+      "git_blob_sha1": "61eac57b37d9b0550a8b7d97f603a03d82725d28",
+      "interpretation": "fixed-revision test source only; neither test is claimed executed"
+    }
+  ]
+}

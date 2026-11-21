@@ -133,17 +133,24 @@ The issue report and dataset-linked pull request are separate GitHub resources w
 
 The researcher has reviewed the issue and patch during candidate screening; perfect blinding must not be claimed. The working design has one human adjudicator. ChatGPT's critique is advisory AI input, not a second human rating. No human-human inter-rater reliability or Cohen's kappa claim is permitted. The documentary license screen applies only to the pinned minimal reproduction environment and is not legal advice or blanket clearance.
 
-The evidence packet remains a draft until each source snapshot, source URI/commit/path, content hash, and proper nested-set relation is independently revalidated against the actual evidence files.
+Source snapshot hashes and the run-artifact entry hashes have now been independently recomputed/checked against the corrected repository snapshots and the downloaded immutable archive. The approved nested evidence sets are materialized as `E3_PACKET_MANIFEST_V0_1.json`, `E2_PACKET_MANIFEST_V0_1.json`, and `E1_PACKET_MANIFEST_V0_1.json`; their exact content digests and evidence counts are indexed in `DISHKA_435_EVIDENCE_PACKET_INDEX_V0_1_2026-11-16.md`. The artifact ZIP and every entry in its internal `SHA256SUMS.txt` were verified. The old run artifact's incorrect issue timestamp is explicitly reconciled by `DISHKA_435_POST_RUN_PROVENANCE_CORRECTION_V0_1_2026-11-16.md`. The tier design itself remains an adjudication specification; the evidence manifests now provide the machine-readable nested membership.
 
 ## Remaining case-acceptance gates
 
-Even after technical gold and evidence-tier adjudication, separately verify:
+The following gates now have documented evidence:
 
-1. exact dataset-row identity and timestamp/resource-type provenance;
-2. one-case-per-upstream-project independence and related-defect/fork lineage;
-3. exposure classification and the model-training contamination limitation;
-4. exact-base license and changed-file/dependency scope, with documentary evidence;
-5. immutable evidence packet files, packet hashes, and provenance;
-6. the case-acceptance schema and validator against the actual record.
+- Exact dataset row, canonical row hash, and PR-vs-issue timestamp/resource provenance: checked; post-run correction is separately recorded.
+- One-case-per-upstream-project rule, upstream repository/fork status, and related issue-family review: checked; no second candidate from this project may be counted.
+- Exact base/fix source pins, changed-path list, and minimal environment/documentary license screen: recorded; this is not legal advice or blanket clearance.
+- Immutable reproduction archive, internal file hashes, corrected source snapshot hashes, and E3/E2/E1 nested manifests: checked and indexed.
+
+The project-lead acknowledgement is now complete: on 2026-11-17 the student project lead accepted full researcher source exposure, the single-human-adjudicator limitation, the prohibition on human-human reliability/Cohen's kappa claims, and exploratory-only use of Dishka.
+
+Still open for final case acceptance:
+
+1. prepare the complete Dishka case record using only the verified evidence and provenance;
+2. validate that record against the Draft 2020-12 case schema and run the fail-closed registry checks; resolve every validator blocker without weakening the criteria.
+
+The validator performs structural and cross-field consistency checks only. It does not authenticate external URIs, execute upstream tests, decide legal questions, establish semantic truth, or authorize inference. The Stage 2 and Stage 3 pass results do not themselves accept the case or authorize model inference.
 
 Until all gates pass and the case record is accepted, the registry count remains zero and model inference remains unauthorized.

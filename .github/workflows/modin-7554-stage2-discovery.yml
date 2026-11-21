@@ -1,0 +1,116 @@
+name: "Modin #7554 Frozen Dataset Row Discovery (No Inference)"
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/modin-7554-stage2-discovery.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  modin-7554-row-discovery:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Download and authenticate frozen Modin dataset row temporarily
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv "$RUNNER_TEMP/modin-data-venv"
+          "$RUNNER_TEMP/modin-data-venv/bin/python" -m pip install --disable-pip-version-check --no-deps "pyarrow==19.0.1"
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  $RUNNER_TEMP/train-00000-of-00001.parquet" | sha256sum --check
+          mkdir -p modin-discovery-evidence
+          "$RUNNER_TEMP/modin-data-venv/bin/python" - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import pyarrow.parquet as pq
+
+          parquet = Path(os.environ["RUNNER_TEMP"]) / "train-00000-of-00001.parquet"
+          instance_id = "modin-project__modin-7554"
+          columns = [
+              "instance_id", "repo", "base_commit", "created_at",
+              "language", "license", "FAIL_TO_PASS", "problem_statement",
+          ]
+          rows = pq.read_table(parquet, columns=columns, filters=[("instance_id", "=", instance_id)]).to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected exactly one frozen row; observed {len(rows)}")
+          row = rows[0]
+          expected = {
+              "repo": "modin-project/modin",
+              "base_commit": "1817ae423ba86c467f5a737817a8c00653be75cb",
+              "created_at": "2025-05-02 19:12:19",
+              "language": "python",
+              "license": "Apache-2.0",
+          }
+          for key, value in expected.items():
+              if str(row[key]) != value:
+                  raise SystemExit(f"Frozen row {key} mismatch: expected={value!r}; observed={row[key]!r}")
+          selectors = row["FAIL_TO_PASS"]
+          if not isinstance(selectors, list) or not selectors:
+              raise SystemExit("Frozen Modin row has no FAIL_TO_PASS selector")
+          problem = row.get("problem_statement") or ""
+          alignment = {
+              "mentions_autoswitchbackend": "AutoSwitchBackend" in problem,
+              "mentions_groupby": "groupby" in problem.lower(),
+              "mentions_notimplementederror": "NotImplementedError" in problem,
+              "mentions_disabled_or_false": ("disabled" in problem.lower() or "false" in problem.lower()),
+              "mentions_enabled_or_true": ("enabled" in problem.lower() or "true" in problem.lower()),
+          }
+          if not alignment["mentions_autoswitchbackend"] or not alignment["mentions_groupby"] or not alignment["mentions_notimplementederror"]:
+              raise SystemExit(f"Problem statement does not identify the AutoSwitchBackend/groupby NotImplementedError contract: {alignment}")
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          digest = hashlib.sha256(canonical).hexdigest()
+          summary = {
+              "instance_id": instance_id,
+              "row_sha256": digest,
+              "repo": row["repo"],
+              "base_commit": row["base_commit"],
+              "created_at": str(row["created_at"]),
+              "language": row["language"],
+              "license": row["license"],
+              "selector_count": len(selectors),
+              "selectors": selectors,
+              "problem_statement_alignment_checks": alignment,
+              "problem_statement_saved": False,
+              "canonical_row_saved": False,
+              "parquet_saved_to_artifact": False,
+          }
+          evidence = Path("modin-discovery-evidence")
+          (evidence / "dataset-row-summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          (evidence / "dataset-fail-to-pass-selectors.txt").write_text("\n".join(selectors) + "\n", encoding="utf-8")
+          (evidence / "dataset-row-sha256.txt").write_text(digest + "  canonical-row-not-stored\n", encoding="utf-8")
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          PY
+          rm -f "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          rm -rf "$RUNNER_TEMP/modin-data-venv"
+          test ! -e "$RUNNER_TEMP/train-00000-of-00001.parquet"
+
+      - name: Hash selector-only evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd modin-discovery-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
+
+      - name: Upload selector-only discovery evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: modin-7554-frozen-row-selector-discovery
+          path: modin-discovery-evidence/
+          if-no-files-found: error
+          retention-days: 90

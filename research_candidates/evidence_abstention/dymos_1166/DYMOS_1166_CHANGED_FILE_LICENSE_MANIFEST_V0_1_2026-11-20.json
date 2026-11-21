@@ -1,0 +1,96 @@
+{
+  "schema_version": "0.1-dymos-1166-changed-file-license-manifest",
+  "generated_date": "2026-11-20",
+  "candidate": "OpenMDAO/dymos issue #1166 / PR #1165",
+  "exact_buggy_base": "3efd1035c3bf62890034eb9e07de543f3d117867",
+  "exact_fixed_pr_head": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
+  "upstream_root_license": {
+    "path": "LICENSE",
+    "spdx": "Apache-2.0",
+    "git_blob_sha1": "55da29e11b1fb2465936598779085f1cbcdf2908",
+    "content_sha256": "abf15e49f69033f57de7951237070b171164d008ec14432afbc0e8019292c72d",
+    "scope": "Repository-level license at the exact buggy base; no claim of per-file SPDX headers."
+  },
+  "changed_files": [
+    {
+      "path": "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+      "license_basis": "OpenMDAO/dymos root LICENSE Apache-2.0"
+    },
+    {
+      "path": "dymos/transcriptions/common/control_comp.py",
+      "license_basis": "OpenMDAO/dymos root LICENSE Apache-2.0"
+    },
+    {
+      "path": "dymos/transcriptions/common/test/test_control_interp_comp.py",
+      "license_basis": "OpenMDAO/dymos root LICENSE Apache-2.0"
+    },
+    {
+      "path": "dymos/transcriptions/explicit_shooting/explicit_shooting.py",
+      "license_basis": "OpenMDAO/dymos root LICENSE Apache-2.0"
+    },
+    {
+      "path": "dymos/transcriptions/explicit_shooting/ode_evaluation_group.py",
+      "license_basis": "OpenMDAO/dymos root LICENSE Apache-2.0"
+    },
+    {
+      "path": "dymos/utils/misc.py",
+      "license_basis": "OpenMDAO/dymos root LICENSE Apache-2.0"
+    }
+  ],
+  "dataset_scope": {
+    "repository": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "exact_revision_card_license": "CC-BY-4.0",
+    "row_id": "openmdao__dymos-1165",
+    "row_level_source_license": "Apache-2.0",
+    "distinction": "The row-level Apache-2.0 value identifies the upstream Dymos source repository; it is not the dataset repository's license.",
+    "attribution": "Retain dataset attribution and upstream Dymos source attribution separately."
+  },
+  "runtime_scope": {
+    "python": "3.11.9",
+    "runtime_package_count": 14,
+    "inventory_sha256": "6e8f21e813fd0332fa3a5c370f76a0a52653d49868348d4316cb0eb40d0c3c89",
+    "extraction_only_tool": {
+      "name": "pyarrow",
+      "version": "19.0.1",
+      "license": "Apache Software License",
+      "not_part_of_test_runtime": true
+    },
+    "bundled_notices_reviewed": [
+      "OpenBLAS",
+      "LAPACK",
+      "GCC runtime library",
+      "libquadmath"
+    ],
+    "numpy_and_scipy_binary_wheels_included_in_project_artifacts": false
+  },
+  "retained_public_artifacts": [
+    {
+      "artifact_id": 14341424466,
+      "sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051",
+      "contents": "One selected dataset row, test-only patch, full upstream PR patch, Dymos LICENSE text, dependency and extraction inventories, logs."
+    },
+    {
+      "artifact_id": 14651026003,
+      "sha256": "84f884f0ff358c5811221099983bb2531ded7dfe501e1a042da7765ab298aa25",
+      "contents": "Full upstream PR patch, captured buggy/fixed source files, base LICENSE/metadata, reproduction logs and hashes."
+    }
+  ],
+  "project_lead_scope_acknowledgement": {
+    "status": "acknowledged_with_scientific_independence_condition",
+    "record_path": "research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_CONDITIONAL_SCOPE_ACKNOWLEDGEMENT_DYMOS_1166_2026-11-20.md",
+    "record_sha256": "65243fe9abce793a171c12e1564c0a071f9dd146b8fb93176b61ad083522ca99"
+  },
+  "exclusions": [
+    "Distribution of the complete SWE-rebench dataset",
+    "Distribution of the complete Dymos repository",
+    "Distribution of NumPy/SciPy/PyArrow binary wheels or libraries",
+    "General permission for commercial product use"
+  ],
+  "legal_status": {
+    "documentary_scope_inventory_only": true,
+    "formal_legal_review_performed": false,
+    "legal_clearance_claimed": false,
+    "blanket_redistribution_permission_claimed": false
+  }
+}

@@ -6,8 +6,8 @@
 The project lead selected:
   Study type: sequential exploratory/feasibility study; primary target 15 accepted cases, stretch target 20, and no eligibility floor beyond one valid case for a feasibility report.
 - Model route: retain the pinned Qwen/Qwen2.5-3B-Instruct candidate, subject to exact-revision license and runtime review before loading or inference.
-- Working team: project lead (student researcher) and ChatGPT as an AI research assistant. ChatGPT is not a human co-investigator, independent human rater, legal reviewer, or external auditor.
-- No recruitment of additional human evaluators is planned under this working arrangement.
+- Working team: project lead (student researcher), a second human output-rater candidate (public pseudonym: Rater B; participation and independence screening pending), and ChatGPT as an AI research assistant. ChatGPT is not a human co-investigator, human rater, legal reviewer, or external auditor.
+- The project lead remains the sole project lead and final decision-maker. Rater B's proposed role is limited to independent, blinded scoring of raw model responses; Rater B is not automatically a gold-standard adjudicator or external auditor.
 
 ## 2. Research question
 On the same frozen language model and same software-defect case, does allowing abstention when the visible evidence does not distinguish plausible causes (P1), compared with requiring a diagnosis (P0), change the rate of unsupported definitive root-cause claims in E3 evidence conditions, while preserving useful diagnosis behavior in E1?
@@ -48,10 +48,10 @@ For each case, prepare a predeclared set of at least three plausible causal mech
 
 The level is a semantic claim about discriminability, not packet length or number of files. The evidence IDs, source snapshots, and packet contents must be immutable and hash-recorded. A structural validator can verify IDs, nesting, and hashes; it cannot prove causal sufficiency.
 
-Because the project will not recruit a second human panel, E-level decisions will be recorded as single-researcher judgments supported by explicit evidence-to-mechanism rationales, with ChatGPT's separate AI critique recorded as advisory only. This arrangement does not establish inter-rater reliability or independent human validation. Cases with unresolved ambiguity are excluded or reported as unclassified; they are not forced into a tier.
+E1/E2/E3 semantic tier decisions remain the project lead's judgments, supported by explicit evidence-to-mechanism rationales and a separately recorded advisory ChatGPT critique. Rater B will not see hidden gold, source code, patches, or tier labels before model-output scoring is locked; therefore Rater B is not a second human adjudicator of gold or tier sufficiency. Cases with unresolved tier ambiguity are excluded or reported as unclassified; they are not forced into a tier.
 
 ## 6. Scoring and analysis
-Primary exploratory outcome: for E3, whether an asserted causal diagnosis is unsupported, partially supported, or contradicted by the visible packet. A valid abstention without diagnosis leakage is not an unsupported diagnosis. An asserted diagnosis is not considered supported merely because it matches the hidden gold cause.
+Primary exploratory outcome: for E3, whether an asserted causal diagnosis is unsupported or contradicted by the visible packet. Partially supported is retained as a separate category and excluded from the strict primary binary endpoint. A valid abstention without diagnosis leakage is not an unsupported diagnosis. An asserted diagnosis is not considered supported merely because it matches the hidden gold cause.
 
 Secondary descriptive outcomes:
 - gold-root-cause correctness;
@@ -66,14 +66,18 @@ Secondary descriptive outcomes:
 Report paired case-level counts, risk differences, uncertainty intervals, and exact McNemar results as exploratory summaries only. With N=15–20, do not claim adequate power, definitive efficacy, or formal non-inferiority. E1 coverage is descriptive; the earlier −0.10 non-inferiority proposal is not carried forward as a confirmatory decision rule.
 
 ## 7. Reviewer and agreement limitations
-No second human evaluator is part of this project arrangement. Therefore:
-- no human-human Cohen's kappa will be calculated or claimed;
-- ChatGPT's scores or critiques will never be represented as a second human rating;
-- AI critique and researcher decisions will be stored separately;
-- disagreement between the researcher and AI critique will be reported as an audit trail, not as inter-rater reliability;
-- no independent external-audit attestation will be claimed.
 
-This is a material limitation. The project will present the E1/E2/E3 framework as a proposed operational method applied in a feasibility study, not as a fully validated measurement instrument.
+Two human raters are planned for model-output evidence-support scoring:
+- Rater A: the student project lead.
+- Rater B: a second human evaluator identified by the project lead; public records use a pseudonym, and explicit agreement plus case-specific exposure/independence screening remain pending.
+
+Both raters must independently score the same raw response using randomized response IDs. Neither may see the other rating before locking. Rater B must not see case identity, hidden evidence-tier label, P0/P1 policy identity, source repository, issue/PR, patch/fixed source, hidden gold mechanism, or the paired response from the other policy. Any prior exposure is logged; a rating is not described as blinded where the screen does not support that claim.
+
+The project lead adjudicates disagreements only after both original ratings are locked. Both raw ratings remain immutable. Report exact agreement, category confusion, six-category Cohen's kappa, and E3 binary agreement/kappa where estimable. Because outputs are clustered within cases and the study is small, agreement statistics are exploratory/descriptive; confidence intervals, if reported, must resample at case level. No minimum kappa threshold determines case acceptance.
+
+Rater B's role is output scoring only. Gold correctness and E1/E2/E3 semantic tier decisions remain the project lead's responsibility, with ChatGPT critique separately labelled advisory. This does not establish independent human validation of the gold mechanisms or evidence-tier construction. ChatGPT is never counted as a human rater. No independent external-audit attestation is claimed.
+
+Rater B's status remains identified/pending confirmation. No second-rater score, agreement statistic, or completed calibration is claimed at this stage.
 
 ## 8. Technical, legal, and execution gates
 A candidate is not accepted until the pinned dataset row, exact base/fix commits, issue scope, reproducible base-fail/fix-pass test, license/provenance, exposure status, alternatives, evidence packets, hashes, and case record are complete.
@@ -98,3 +102,7 @@ If the achieved N is 1–4, report case-level feasibility only. If N is 5–14, 
 - Model inference: no.
 - Protocol preregistered: no.
 - Inference authorization: false.
+
+## 12. Human-evaluator amendment (18 November 2026)
+
+A prospective dual-human output-scoring procedure has been added in `HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md` and `SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md`. Rater B's explicit agreement, independence/exposure screen, calibration and rubric freeze are pending. This amendment does not alter case eligibility, waive candidate-specific pipeline/debug exposure, or authorize model inference.

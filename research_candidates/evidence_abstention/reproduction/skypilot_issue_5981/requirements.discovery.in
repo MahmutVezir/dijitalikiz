@@ -1,0 +1,6 @@
+# Discovery input for the focused SkyPilot SSH unit test environment.
+# Python 3.11.9. The exact resolved transitive environment is captured as
+# dependency-lock-resolved.txt in the first artifact, reviewed, then frozen
+# into requirements.lock before a confirmatory rerun.
+pytest==8.3.4
+pyarrow==19.0.1

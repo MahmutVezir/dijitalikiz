@@ -1,0 +1,6 @@
+# Discovery inputs for the exact NAPALM NX-OS SSH fixture regression.
+# The full transitive environment is resolved once, reviewed and frozen before
+# the pinned confirmation run. PyArrow is isolated in a separate venv.
+pytest==8.3.5
+pytest-json-report==1.5.0
+mock==5.2.0

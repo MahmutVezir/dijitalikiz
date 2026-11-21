@@ -1,0 +1,1354 @@
+{
+  "schema_version": "2.0",
+  "run_id_utc": "20261117T131817Z",
+  "repository": "MahmutVezir/dijitalikiz",
+  "source_branch": "research/2026-11-16-followup-evidence-validation",
+  "source_archive_path": "research_candidates/evidence_abstention/kaggle_runs/2026-11-17_b4b8b536e82e/kaggle_no_inference_candidate_evidence.zip",
+  "source_archive_sha256": "b4b8b536e82e7ac93e94bbb51d63f71185a2b7ab2515178480189f8cf783b777",
+  "source_summary_sha256": "d0bba8618d4af349ae20348ba0a8b046fbfe0d1cc2e81e777ab3bdb27bfd564a",
+  "zip_integrity": "pass",
+  "archive_member_count": 284,
+  "expected_failed_candidate_jobs": 11,
+  "observed_failed_candidate_jobs": 11,
+  "model_loaded": false,
+  "model_inference_performed": false,
+  "training_performed": false,
+  "source_code_executed": false,
+  "patches_applied": false,
+  "acceptance_decisions_made": false,
+  "interpretation": "Path resolution and evidence extraction are mechanical triage only. Categories require explicit log signatures; unresolved cases remain unresolved. A failed job does not establish candidate invalidity.",
+  "candidate_reviews": [
+    {
+      "job": "nox-issue-919-reproduction",
+      "outcome": "failure",
+      "failed_steps": [
+        "Clone exact upstream source and prepare pinned patch"
+      ],
+      "declared_artifact_count": 14,
+      "resolved_artifact_count": 0,
+      "unresolved_artifact_count": 14,
+      "path_resolution": [
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-groups-pyproject.toml",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/attrs-pyproject.toml",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/attrs-LICENSE",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/SHA256SUMS.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/DEPENDENCY_GROUPS_1_3_0_LICENSE_REVIEW_2026-11-16.md",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-groups-LICENSE.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/attrs-source-commit.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-row-canonical.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-test.patch",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-groups-source-commit.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/ATTRS_24_3_0_LICENSE_REVIEW_2026-11-16.md",
+          "resolved_path": null,
+          "method": "not_found"
+        }
+      ],
+      "candidate_scoped_archive_file_count": 28,
+      "selected_evidence_files": [
+        "nox-issue-919-reproduction/kaggle-runner-logs/01_Checkout_research_repository.log",
+        "nox-issue-919-reproduction/kaggle-runner-logs/02_Set_up_exact_Python_version.log",
+        "nox-issue-919-reproduction/kaggle-runner-logs/03_Create_deterministic_broken_pyenv_uv_shim.log",
+        "nox-issue-919-reproduction/kaggle-runner-logs/04_Install_pinned_runtime_and_test_dependencies.log",
+        "nox-issue-919-reproduction/kaggle-runner-logs/05_Record_dependency_license_metadata_before_source_execution.log",
+        "nox-issue-919-reproduction/kaggle-runner-logs/06_Extract_and_authenticate_exact_SWE-rebench_row.log",
+        "nox-issue-919-reproduction/kaggle-runner-logs/07_Clone_exact_upstream_source_and_prepare_pinned_patch.log",
+        "nox-issue-919-reproduction/kaggle-runner-logs/08_Run_independent_issue_reproducer_on_buggy_base_failure_required_.log",
+        "nox-issue-919-reproduction/kaggle-runner-logs/09_Run_dataset_FAIL_TO_PASS_selectors_on_buggy_base_failure_required_.log",
+        "nox-issue-919-reproduction/kaggle-runner-logs/10_Run_independent_issue_reproducer_and_dataset_selectors_on_fixed_revision_pass_required_.log",
+        "nox-issue-919-reproduction/kaggle-runner-logs/11_Prepare_raw_reproduction_artifact.log",
+        "nox-issue-919-reproduction/kaggle-runner-logs/12_Upload_raw_reproduction_evidence.log",
+        "nox-issue-919-reproduction/kaggle_job_result.json",
+        "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/attrs-source-commit.txt",
+        "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-test.patch",
+        "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-groups-LICENSE.txt",
+        "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-groups-source-commit.txt",
+        "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-license-inventory.json"
+      ],
+      "readable_log_text_files": 22,
+      "evidence_category": "dependency_or_environment",
+      "category_trigger_terms": [
+        "command not found"
+      ],
+      "log_excerpt_candidates": [
+        {
+          "file": "nox-issue-919-reproduction/kaggle-runner-logs/06_Extract_and_authenticate_exact_SWE-rebench_row.log",
+          "line": 21,
+          "context": "100  215M  100  215M    0     0  40.2M      0  0:00:05  0:00:05 --:--:-- 46.1M\nreproduction-evidence/train-00000-of-00001.parquet: OK\ndataset_row_sha256=966afcb4033f5078922e357f7a3e5e92471b34a2d630406cdeee0a5190976161\nfail_to_pass=[\"tests/test__option_set.py::TestOptionSet::test_validation_options\", \"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-/home/user/.local/pipx/venvs/nox/bin/uv-True-/home/user/.local/pipx/venvs/nox/bin/uv-0.5.0-0]\", \"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-/home/user/.local/pipx/venvs/nox/bin/uv-True-/home/user/.local/pipx/venvs/nox/bin/uv-0.6.0-0]\", \"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-/home/user/.local/pipx/venvs/nox/bin/uv-False-uv-0.0.0-0]\", \"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-/home/user/.local/pipx/venvs/nox/bin/uv-False-uv-0.6.0-1]\", \"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-None-True-uv-0.6.0-0]\", \"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-None-False-uv-0.0.0-0]\", \"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-None-False-uv-0.6.0-1]\", \"tests/test_virtualenv.py::test_find_uv[None-/home/user/.local/pipx/venvs/nox/bin/uv-True-/home/user/.local/pipx/venvs/nox/bin/uv-0.5.0-0]\", \"tests/test_virtualenv.py::test_find_uv[None-None-False-uv-0.5.0-0]\", \"tests/test_virtualenv.py::test_uv_version[0-{\\\"version\\\":\", \"tests/test_virtualenv.py::test_uv_version[1-None-0.0]\", \"tests/test_virtualenv.py::test_uv_version[1-{\\\"version\\\":\", \"tests/test_virtualenv.py::test_uv_version_no_uv\", \"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version\", \"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\\\\\n-c:\\\\\\\\python37-x64\\\\\\\\python.exe-2.7]\", \"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\\\\\n-c:\\\\\\\\python37-x64\\\\\\\\python.exe-python3.7]\", \"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\\\\\n-c:\\\\\\\\python37-x64\\\\\\\\python.exe-goofy]\", \"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\\\\\n-None-2.7]\", \"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\\\\\n-None-python3.7]\", \"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\\\\\n-None-goofy]\", \"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_"
+        },
+        {
+          "file": "nox-issue-919-reproduction/kaggle-runner-logs/07_Clone_exact_upstream_source_and_prepare_pinned_patch.log",
+          "line": 2,
+          "context": "Cloning into 'upstream-nox'...\nfatal: bad object 5c4000550325fd1ad036716d9e600ef7411bed3d"
+        },
+        {
+          "file": "nox-issue-919-reproduction/kaggle_job_result.json",
+          "line": 5,
+          "context": "  \"job\": \"nox-issue-919-reproduction\",\n  \"outcome\": \"failure\",\n  \"duration_seconds\": 27.0,\n  \"failed_steps\": [\n    \"Clone exact upstream source and prepare pinned patch\"\n  ],\n  \"steps\": ["
+        },
+        {
+          "file": "nox-issue-919-reproduction/kaggle_job_result.json",
+          "line": 48,
+          "context": "    },\n    {\n      \"name\": \"Clone exact upstream source and prepare pinned patch\",\n      \"status\": \"failed\",\n      \"exit_code\": 128\n    },\n    {"
+        },
+        {
+          "file": "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+          "line": 22,
+          "context": "tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\n-None-2.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\n-None-python3.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\n-None-goofy]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-2.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-python3.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-goofy]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-2.7]"
+        },
+        {
+          "file": "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+          "line": 23,
+          "context": "tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\n-None-python3.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\n-None-goofy]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-2.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-python3.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-goofy]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-2.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-python3.7]"
+        },
+        {
+          "file": "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+          "line": 24,
+          "context": "tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\n-None-goofy]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-2.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-python3.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-goofy]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-2.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-python3.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-goofy]"
+        },
+        {
+          "file": "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+          "line": 25,
+          "context": "tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-2.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-python3.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-goofy]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-2.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-python3.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-goofy]"
+        },
+        {
+          "file": "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+          "line": 26,
+          "context": "tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-python3.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-goofy]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-2.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-python3.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-goofy]"
+        },
+        {
+          "file": "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+          "line": 27,
+          "context": "tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\python37-x64\\\\python.exe-goofy]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-2.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-python3.7]\ntests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-None-goofy]"
+        },
+        {
+          "file": "nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-row-canonical.json",
+          "line": 1,
+          "context": "{\"FAIL_TO_PASS\":[\"tests/test__option_set.py::TestOptionSet::test_validation_options\",\"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-/home/user/.local/pipx/venvs/nox/bin/uv-True-/home/user/.local/pipx/venvs/nox/bin/uv-0.5.0-0]\",\"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-/home/user/.local/pipx/venvs/nox/bin/uv-True-/home/user/.local/pipx/venvs/nox/bin/uv-0.6.0-0]\",\"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-/home/user/.local/pipx/venvs/nox/bin/uv-False-uv-0.0.0-0]\",\"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-/home/user/.local/pipx/venvs/nox/bin/uv-False-uv-0.6.0-1]\",\"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-None-True-uv-0.6.0-0]\",\"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-None-False-uv-0.0.0-0]\",\"tests/test_virtualenv.py::test_find_uv[/usr/bin/uv-None-False-uv-0.6.0-1]\",\"tests/test_virtualenv.py::test_find_uv[None-/home/user/.local/pipx/venvs/nox/bin/uv-True-/home/user/.local/pipx/venvs/nox/bin/uv-0.5.0-0]\",\"tests/test_virtualenv.py::test_find_uv[None-None-False-uv-0.5.0-0]\",\"tests/test_virtualenv.py::test_uv_version[0-{\\\"version\\\":\",\"tests/test_virtualenv.py::test_uv_version[1-None-0.0]\",\"tests/test_virtualenv.py::test_uv_version[1-{\\\"version\\\":\",\"tests/test_virtualenv.py::test_uv_version_no_uv\",\"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version\",\"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\\\\\n-c:\\\\\\\\python37-x64\\\\\\\\python.exe-2.7]\",\"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\\\\\n-c:\\\\\\\\python37-x64\\\\\\\\python.exe-python3.7]\",\"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\\\\\n-c:\\\\\\\\python37-x64\\\\\\\\python.exe-goofy]\",\"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\\\\\n-None-2.7]\",\"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\\\\\n-None-python3.7]\",\"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[3.7.3\\\\\\\\n-None-goofy]\",\"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\\\\\python37-x64\\\\\\\\python.exe-2.7]\",\"tests/test_virtualenv.py::test__resolved_interpreter_windows_path_and_version_fails[RAISE_ERROR-c:\\\\\\\\python37-x64\\\\\\\\python.exe-python3.7]\",\"tests/test_virtualenv.py::test__reso"
+        }
+      ],
+      "classification_status": "evidence_supported_triage"
+    },
+    {
+      "job": "numpyro-issue-1916-reproduction",
+      "outcome": "failure",
+      "failed_steps": [
+        "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)"
+      ],
+      "declared_artifact_count": 12,
+      "resolved_artifact_count": 0,
+      "unresolved_artifact_count": 12,
+      "path_resolution": [
+        {
+          "declared_path": "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/base-commit.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/fixed-commit.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/SHA256SUMS.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/environment-lock-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/test-environment-freeze.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/base-dataset-test.log",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/source-and-dataset-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-row-canonical.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-test.patch",
+          "resolved_path": null,
+          "method": "not_found"
+        }
+      ],
+      "candidate_scoped_archive_file_count": 24,
+      "selected_evidence_files": [
+        "numpyro-issue-1916-reproduction/kaggle-runner-logs/01_Checkout_research_repository.log",
+        "numpyro-issue-1916-reproduction/kaggle-runner-logs/02_Set_up_exact_Python_version.log",
+        "numpyro-issue-1916-reproduction/kaggle-runner-logs/03_Install_pinned_CPU_runtime_and_test_dependencies.log",
+        "numpyro-issue-1916-reproduction/kaggle-runner-logs/04_Record_dependency_license_metadata_before_source_execution.log",
+        "numpyro-issue-1916-reproduction/kaggle-runner-logs/05_Extract_and_authenticate_exact_SWE-rebench_row.log",
+        "numpyro-issue-1916-reproduction/kaggle-runner-logs/06_Clone_exact_upstream_source_and_prepare_pinned_patch.log",
+        "numpyro-issue-1916-reproduction/kaggle-runner-logs/07_Run_dataset_FAIL_TO_PASS_selectors_on_buggy_base_failure_required_.log",
+        "numpyro-issue-1916-reproduction/kaggle-runner-logs/08_Run_identical_dataset_selectors_on_fixed_revision_pass_required_.log",
+        "numpyro-issue-1916-reproduction/kaggle-runner-logs/09_Prepare_and_upload_raw_reproduction_evidence.log",
+        "numpyro-issue-1916-reproduction/kaggle-runner-logs/10_Upload_raw_reproduction_evidence.log",
+        "numpyro-issue-1916-reproduction/kaggle_job_result.json",
+        "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/base-commit.txt",
+        "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/base-dataset-test.log",
+        "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-test.patch",
+        "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/environment-lock-sha256.txt",
+        "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/fixed-commit.txt",
+        "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/source-and-dataset-sha256.txt",
+        "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/test-environment-freeze.txt"
+      ],
+      "readable_log_text_files": 23,
+      "evidence_category": "patch_or_source_mismatch",
+      "category_trigger_terms": [
+        "does not apply"
+      ],
+      "log_excerpt_candidates": [
+        {
+          "file": "numpyro-issue-1916-reproduction/kaggle-runner-logs/04_Record_dependency_license_metadata_before_source_execution.log",
+          "line": 16,
+          "context": "  },\n  \"numpy\": {\n    \"version\": \"1.26.4\",\n    \"license\": \"Copyright (c) 2005-2023, NumPy Developers.\\nAll rights reserved.\\n\\nRedistribution and use in source and binary forms, with or without\\nmodification, are permitted provided that the following conditions are\\nmet:\\n\\n    * Redistributions of source code must retain the above copyright\\n       notice, this list of conditions and the following disclaimer.\\n\\n    * Redistributions in binary form must reproduce the above\\n       copyright notice, this list of conditions and the following\\n       disclaimer in the documentation and/or other materials provided\\n       with the distribution.\\n\\n    * Neither the name of the NumPy Developers nor the names of any\\n       contributors may be used to endorse or promote products derived\\n       from this software without specific prior written permission.\\n\\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n\\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\nOWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\nLIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\nTHEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n----\\n\\nThe NumPy repository and source distributions bundle several libraries that are\\ncompatibly licensed.  We list these here.\\n\\nName: lapack-lite\\nFiles: numpy/linalg/lapack_lite/*\\nLicense: BSD-3-Clause\\n  For details, see numpy/linalg/lapack_lite/LICENSE.txt\\n\\nName: tempita\\nFiles: tools/npy_tempita/*\\nLicense: MIT\\n  For details, see tools/npy_tempita/license.txt\\n\\nName: dragon4\\nFiles: numpy/core/src/multiarray/dragon4.c\\nLicense: MIT\\n  For license text, see numpy/core/src/multiarray/dragon4.c\\n\\nName: libdivide\\nFiles: numpy/core/include/numpy/libdivide/*\\nLicense: Zlib\\n  For license text, see numpy/core/include/numpy/libdivide/LICENSE.txt\\n\\n\\nNote that the following files are vendored in the repository and sdist but not\\ninstalled in bui"
+        },
+        {
+          "file": "numpyro-issue-1916-reproduction/kaggle-runner-logs/04_Record_dependency_license_metadata_before_source_execution.log",
+          "line": 24,
+          "context": "  },\n  \"scipy\": {\n    \"version\": \"1.14.1\",\n    \"license\": \"Copyright (c) 2001-2002 Enthought, Inc. 2003-2024, SciPy Developers.\\nAll rights reserved.\\n\\nRedistribution and use in source and binary forms, with or without\\nmodification, are permitted provided that the following conditions\\nare met:\\n\\n1. Redistributions of source code must retain the above copyright\\n   notice, this list of conditions and the following disclaimer.\\n\\n2. Redistributions in binary form must reproduce the above\\n   copyright notice, this list of conditions and the following\\n   disclaimer in the documentation and/or other materials provided\\n   with the distribution.\\n\\n3. Neither the name of the copyright holder nor the names of its\\n   contributors may be used to endorse or promote products derived\\n   from this software without specific prior written permission.\\n\\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n\\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\nOWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\nLIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\nTHEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n----\\n\\nThis binary distribution of SciPy also bundles the following software:\\n\\n\\nName: OpenBLAS\\nFiles: scipy.libs/libopenblas*.so\\nDescription: bundled as a dynamically linked library\\nAvailability: https://github.com/OpenMathLib/OpenBLAS/\\nLicense: BSD-3-Clause-Attribution\\n  Copyright (c) 2011-2014, The OpenBLAS Project\\n  All rights reserved.\\n\\n  Redistribution and use in source and binary forms, with or without\\n  modification, are permitted provided that the following conditions are\\n  met:\\n\\n     1. Redistributions of source code must retain the above copyright\\n        notice, this list of conditions and the following disclaimer.\\n\\n     2. Redistributions in binary form must reproduce the above copyright\\n        notice, this list of conditions an"
+        },
+        {
+          "file": "numpyro-issue-1916-reproduction/kaggle_job_result.json",
+          "line": 5,
+          "context": "  \"job\": \"numpyro-issue-1916-reproduction\",\n  \"outcome\": \"failure\",\n  \"duration_seconds\": 76.14,\n  \"failed_steps\": [\n    \"Run dataset FAIL_TO_PASS selectors on buggy base (failure required)\"\n  ],\n  \"steps\": ["
+        },
+        {
+          "file": "numpyro-issue-1916-reproduction/kaggle_job_result.json",
+          "line": 48,
+          "context": "    },\n    {\n      \"name\": \"Run dataset FAIL_TO_PASS selectors on buggy base (failure required)\",\n      \"status\": \"failed\",\n      \"exit_code\": 1\n    },\n    {"
+        },
+        {
+          "file": "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-row-canonical.json",
+          "line": 1,
+          "context": "{\"FAIL_TO_PASS\":[\"test/infer/test_ensemble_mcmc.py::test_warmup[AIES]\",\"test/infer/test_ensemble_mcmc.py::test_warmup[ESS]\"],\"base_commit\":\"07e4c9bc4524cc0a741ba8f8ad41339d34a0288d\",\"created_at\":\"2024-11-28 00:54:29\",\"instance_id\":\"pyro-ppl__numpyro-1918\",\"language\":\"python\",\"license\":\"Apache-2.0\",\"problem_statement\":\"`MCMC.run` gets error after `MCMC.warmup` with `AIES`\\nHi, I get an error when I `MCMC.run` after `warmup` with `AIES`.\\r\\nHere is the example\\r\\n```\\r\\nimport jax\\r\\nimport jax.numpy as jnp\\r\\nimport numpyro\\r\\nfrom numpyro.infer import MCMC, AIES\\r\\nimport numpyro.distributions as dist\\r\\n\\r\\nn_dim, num_chains = 5, 100\\r\\nmu, sigma = jnp.zeros(n_dim), jnp.ones(n_dim)\\r\\n\\r\\ndef model(mu, sigma):\\r\\n    with numpyro.plate('n_dim', n_dim):\\r\\n        numpyro.sample(\\\"x\\\", dist.Normal(mu, sigma))\\r\\n\\r\\nkernel = AIES(model, moves={AIES.DEMove() : 0.5,\\r\\n                            AIES.StretchMove() : 0.5})\\r\\n\\r\\nmcmc = MCMC(kernel, \\r\\n            num_warmup=100,\\r\\n            num_samples=100, \\r\\n            num_chains=num_chains, \\r\\n            chain_method='vectorized')\\r\\n\\r\\nmcmc.warmup(jax.random.PRNGKey(0), mu, sigma)\\r\\nmcmc.run(jax.random.PRNGKey(1), mu, sigma)\\r\\n```\\r\\nThe error\\r\\n```\\r\\n{\\r\\n\\t\\\"name\\\": \\\"ValueError\\\",\\r\\n\\t\\\"message\\\": \\\"split accepts a single key, but was given a key array of shape (100, 2) != (). Use jax.vmap for batching.\\\",\\r\\n\\t\\\"stack\\\": \\\"---------------------------------------------------------------------------\\r\\nValueError                                Traceback (most recent call last)\\r\\nCell In[13], line 26\\r\\n     18 mcmc = MCMC(kernel, \\r\\n     19             num_warmup=100,\\r\\n     20             num_samples=100, \\r\\n     21             num_chains=num_chains, \\r\\n     22             chain_method='vectorized')\\r\\n     25 mcmc.warmup(jax.random.PRNGKey(0), mu, sigma)\\r\\n---> 26 mcmc.run(jax.random.PRNGKey(1), mu, sigma)\\r\\n\\r\\nFile ~/anaconda3/lib/python3.11/site-packages/numpyro/infer/mcmc.py:675, in MCMC.run(self, rng_key, extra_fields, init_params, *args, **kwargs)\\r\\n    673 else:\\r\\n    674     assert self.chain_method == \\\\\\\"vectorized\\\\\\\"\\r\\n--> 675     states, last_state = partial_map_fn(map_args)\\r\\n    676     # swap num_samples x num_chains to num_chains x num_samples\\r\\n    677     states = tree_map(lambda x: jnp.swapaxes(x, 0, 1), states)\\r\\n\\r\\nFile ~/anaconda3/lib/python3.11/site-"
+        },
+        {
+          "file": "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "line": 16,
+          "context": "  },\n  \"numpy\": {\n    \"version\": \"1.26.4\",\n    \"license\": \"Copyright (c) 2005-2023, NumPy Developers.\\nAll rights reserved.\\n\\nRedistribution and use in source and binary forms, with or without\\nmodification, are permitted provided that the following conditions are\\nmet:\\n\\n    * Redistributions of source code must retain the above copyright\\n       notice, this list of conditions and the following disclaimer.\\n\\n    * Redistributions in binary form must reproduce the above\\n       copyright notice, this list of conditions and the following\\n       disclaimer in the documentation and/or other materials provided\\n       with the distribution.\\n\\n    * Neither the name of the NumPy Developers nor the names of any\\n       contributors may be used to endorse or promote products derived\\n       from this software without specific prior written permission.\\n\\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n\\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\nOWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\nLIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\nTHEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n----\\n\\nThe NumPy repository and source distributions bundle several libraries that are\\ncompatibly licensed.  We list these here.\\n\\nName: lapack-lite\\nFiles: numpy/linalg/lapack_lite/*\\nLicense: BSD-3-Clause\\n  For details, see numpy/linalg/lapack_lite/LICENSE.txt\\n\\nName: tempita\\nFiles: tools/npy_tempita/*\\nLicense: MIT\\n  For details, see tools/npy_tempita/license.txt\\n\\nName: dragon4\\nFiles: numpy/core/src/multiarray/dragon4.c\\nLicense: MIT\\n  For license text, see numpy/core/src/multiarray/dragon4.c\\n\\nName: libdivide\\nFiles: numpy/core/include/numpy/libdivide/*\\nLicense: Zlib\\n  For license text, see numpy/core/include/numpy/libdivide/LICENSE.txt\\n\\n\\nNote that the following files are vendored in the repository and sdist but not\\ninstalled in bui"
+        },
+        {
+          "file": "numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "line": 24,
+          "context": "  },\n  \"scipy\": {\n    \"version\": \"1.14.1\",\n    \"license\": \"Copyright (c) 2001-2002 Enthought, Inc. 2003-2024, SciPy Developers.\\nAll rights reserved.\\n\\nRedistribution and use in source and binary forms, with or without\\nmodification, are permitted provided that the following conditions\\nare met:\\n\\n1. Redistributions of source code must retain the above copyright\\n   notice, this list of conditions and the following disclaimer.\\n\\n2. Redistributions in binary form must reproduce the above\\n   copyright notice, this list of conditions and the following\\n   disclaimer in the documentation and/or other materials provided\\n   with the distribution.\\n\\n3. Neither the name of the copyright holder nor the names of its\\n   contributors may be used to endorse or promote products derived\\n   from this software without specific prior written permission.\\n\\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n\\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\nOWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\nLIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\nTHEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n----\\n\\nThis binary distribution of SciPy also bundles the following software:\\n\\n\\nName: OpenBLAS\\nFiles: scipy.libs/libopenblas*.so\\nDescription: bundled as a dynamically linked library\\nAvailability: https://github.com/OpenMathLib/OpenBLAS/\\nLicense: BSD-3-Clause-Attribution\\n  Copyright (c) 2011-2014, The OpenBLAS Project\\n  All rights reserved.\\n\\n  Redistribution and use in source and binary forms, with or without\\n  modification, are permitted provided that the following conditions are\\n  met:\\n\\n     1. Redistributions of source code must retain the above copyright\\n        notice, this list of conditions and the following disclaimer.\\n\\n     2. Redistributions in binary form must reproduce the above copyright\\n        notice, this list of conditions an"
+        }
+      ],
+      "classification_status": "evidence_supported_triage"
+    },
+    {
+      "job": "werkzeug-issue-2955-reproduction",
+      "outcome": "failure",
+      "failed_steps": [
+        "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)"
+      ],
+      "declared_artifact_count": 10,
+      "resolved_artifact_count": 0,
+      "unresolved_artifact_count": 10,
+      "path_resolution": [
+        {
+          "declared_path": "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/SHA256SUMS.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/environment-lock-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/test-environment-freeze.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/base-dataset-test.log",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/source-and-dataset-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-row-canonical.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-test.patch",
+          "resolved_path": null,
+          "method": "not_found"
+        }
+      ],
+      "candidate_scoped_archive_file_count": 22,
+      "selected_evidence_files": [
+        "werkzeug-issue-2955-reproduction/kaggle-runner-logs/01_Checkout_research_repository.log",
+        "werkzeug-issue-2955-reproduction/kaggle-runner-logs/02_Set_up_issue-matched_Python_version.log",
+        "werkzeug-issue-2955-reproduction/kaggle-runner-logs/03_Install_pinned_runtime_and_test_dependencies.log",
+        "werkzeug-issue-2955-reproduction/kaggle-runner-logs/04_Record_dependency_license_metadata_before_source_execution.log",
+        "werkzeug-issue-2955-reproduction/kaggle-runner-logs/05_Extract_and_authenticate_exact_SWE-rebench_row.log",
+        "werkzeug-issue-2955-reproduction/kaggle-runner-logs/06_Clone_exact_upstream_source_and_prepare_pinned_patch.log",
+        "werkzeug-issue-2955-reproduction/kaggle-runner-logs/07_Run_dataset_FAIL_TO_PASS_selectors_on_buggy_base_failure_required_.log",
+        "werkzeug-issue-2955-reproduction/kaggle-runner-logs/08_Run_identical_dataset_selectors_on_fixed_revision_pass_required_.log",
+        "werkzeug-issue-2955-reproduction/kaggle-runner-logs/09_Prepare_and_upload_raw_reproduction_evidence.log",
+        "werkzeug-issue-2955-reproduction/kaggle-runner-logs/10_Upload_raw_reproduction_evidence.log",
+        "werkzeug-issue-2955-reproduction/kaggle_job_result.json",
+        "werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/base-dataset-test.log",
+        "werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-test.patch",
+        "werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/environment-lock-sha256.txt",
+        "werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/source-and-dataset-sha256.txt",
+        "werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/test-environment-freeze.txt"
+      ],
+      "readable_log_text_files": 21,
+      "evidence_category": "test_step_failure_cause_unresolved",
+      "category_trigger_terms": [],
+      "log_excerpt_candidates": [
+        {
+          "file": "werkzeug-issue-2955-reproduction/kaggle-runner-logs/07_Run_dataset_FAIL_TO_PASS_selectors_on_buggy_base_failure_required_.log",
+          "line": 2,
+          "context": "HEAD is now at 40319f91 Fix logging of client addresses with IPv6 scope (#2953)\nERROR: not found: /kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/werkzeug-issue-2955-reproduction/upstream-werkzeug/tests/test_http.py::TestHTTPUtility::test_dict_header[=foo,\n(no match in any of [<Class TestHTTPUtility>])\n\n"
+        },
+        {
+          "file": "werkzeug-issue-2955-reproduction/kaggle_job_result.json",
+          "line": 5,
+          "context": "  \"job\": \"werkzeug-issue-2955-reproduction\",\n  \"outcome\": \"failure\",\n  \"duration_seconds\": 23.26,\n  \"failed_steps\": [\n    \"Run dataset FAIL_TO_PASS selectors on buggy base (failure required)\"\n  ],\n  \"steps\": ["
+        },
+        {
+          "file": "werkzeug-issue-2955-reproduction/kaggle_job_result.json",
+          "line": 48,
+          "context": "    },\n    {\n      \"name\": \"Run dataset FAIL_TO_PASS selectors on buggy base (failure required)\",\n      \"status\": \"failed\",\n      \"exit_code\": 1\n    },\n    {"
+        },
+        {
+          "file": "werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/base-dataset-test.log",
+          "line": 1,
+          "context": "ERROR: not found: /kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/werkzeug-issue-2955-reproduction/upstream-werkzeug/tests/test_http.py::TestHTTPUtility::test_dict_header[=foo,\n(no match in any of [<Class TestHTTPUtility>])\n\n"
+        },
+        {
+          "file": "werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-row-canonical.json",
+          "line": 1,
+          "context": "{\"FAIL_TO_PASS\":[\"tests/test_http.py::TestHTTPUtility::test_dict_header[=foo,\",\"tests/test_http.py::TestHTTPUtility::test_authorization_ignore_invalid_parameters\"],\"base_commit\":\"40319f91dbbae0a780526eab037a009b1a7e4d36\",\"created_at\":\"2024-10-10 21:07:05\",\"instance_id\":\"pallets__werkzeug-2956\",\"language\":\"python\",\"license\":\"BSD-3-Clause\",\"problem_statement\":\"Authorization parameter parsing fails on invalid value\\n### Steps to reproduce\\r\\n```\\r\\n>>> from werkzeug.datastructures import Authorization\\r\\n>>> Authorization.from_header(\\\"Digest =foo\\\")\\r\\n---------------------------------------------------------------------------\\r\\nIndexError                                Traceback (most recent call last)\\r\\nCell In[2], line 1\\r\\n----> 1 Authorization.from_header(\\\"Digest =foo\\\")\\r\\n\\r\\nFile ~/Downloads/.venv/lib/python3.12/site-packages/werkzeug/datastructures/auth.py:114, in Authorization.from_header(cls, value)\\r\\n    110     return cls(scheme, {\\\"username\\\": username, \\\"password\\\": password})\\r\\n    112 if \\\"=\\\" in rest.rstrip(\\\"=\\\"):\\r\\n    113     # = that is not trailing, this is parameters.\\r\\n--> 114     return cls(scheme, parse_dict_header(rest), None)\\r\\n    116 # No = or only trailing =, this is a token.\\r\\n    117 return cls(scheme, None, rest)\\r\\n\\r\\nFile ~/Downloads/.venv/lib/python3.12/site-packages/werkzeug/http.py:371, in parse_dict_header(value)\\r\\n    368 value = value.strip()\\r\\n    369 encoding: str | None = None\\r\\n--> 371 if key[-1] == \\\"*\\\":\\r\\n    372     # key*=charset''value becomes key=value, where value is percent encoded\\r\\n    373     # adapted from parse_options_header, without the continuation handling\\r\\n    374     key = key[:-1]\\r\\n    375     match = _charset_value_re.match(value)\\r\\n\\r\\nIndexError: string index out of range\\r\\n```\\r\\n\\r\\n### Expected behavior\\r\\nGracefully handle invalid inputs by skipping them\\r\\n\\r\\n### Environment\\r\\n\\r\\n- Python version: `3.12.7`\\r\\n- Werkzeug version: `3.0.4`\\r\\n\",\"repo\":\"pallets/werkzeug\"}"
+        }
+      ],
+      "classification_status": "unresolved_no_specific_log_signature"
+    },
+    {
+      "job": "robocop-issue-1371-reproduction",
+      "outcome": "failure",
+      "failed_steps": [
+        "Clone exact upstream source and prepare pinned patch"
+      ],
+      "declared_artifact_count": 7,
+      "resolved_artifact_count": 0,
+      "unresolved_artifact_count": 7,
+      "path_resolution": [
+        {
+          "declared_path": "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/SHA256SUMS.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/test-environment-freeze.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-row-canonical.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-test.patch",
+          "resolved_path": null,
+          "method": "not_found"
+        }
+      ],
+      "candidate_scoped_archive_file_count": 19,
+      "selected_evidence_files": [
+        "robocop-issue-1371-reproduction/kaggle-runner-logs/01_Checkout_research_repository.log",
+        "robocop-issue-1371-reproduction/kaggle-runner-logs/02_Set_up_exact_Python_version.log",
+        "robocop-issue-1371-reproduction/kaggle-runner-logs/03_Install_pinned_runtime_and_test_dependencies.log",
+        "robocop-issue-1371-reproduction/kaggle-runner-logs/04_Record_dependency_license_metadata_before_source_execution.log",
+        "robocop-issue-1371-reproduction/kaggle-runner-logs/05_Extract_and_authenticate_exact_SWE-rebench_row.log",
+        "robocop-issue-1371-reproduction/kaggle-runner-logs/06_Clone_exact_upstream_source_and_prepare_pinned_patch.log",
+        "robocop-issue-1371-reproduction/kaggle-runner-logs/07_Run_dataset_FAIL_TO_PASS_selectors_on_buggy_base_failure_required_.log",
+        "robocop-issue-1371-reproduction/kaggle-runner-logs/08_Run_identical_dataset_selectors_on_fixed_revision_pass_required_.log",
+        "robocop-issue-1371-reproduction/kaggle-runner-logs/09_Prepare_and_upload_raw_reproduction_evidence.log",
+        "robocop-issue-1371-reproduction/kaggle-runner-logs/10_Upload_raw_reproduction_evidence.log",
+        "robocop-issue-1371-reproduction/kaggle_job_result.json",
+        "robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-test.patch",
+        "robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/test-environment-freeze.txt"
+      ],
+      "readable_log_text_files": 18,
+      "evidence_category": "source_checkout_failure_cause_unresolved",
+      "category_trigger_terms": [],
+      "log_excerpt_candidates": [
+        {
+          "file": "robocop-issue-1371-reproduction/kaggle-runner-logs/06_Clone_exact_upstream_source_and_prepare_pinned_patch.log",
+          "line": 2,
+          "context": "Cloning into 'upstream-robocop'...\nfatal: bad object ceb6824fb4d80442937497a740edf60a5b6382e0"
+        },
+        {
+          "file": "robocop-issue-1371-reproduction/kaggle_job_result.json",
+          "line": 5,
+          "context": "  \"job\": \"robocop-issue-1371-reproduction\",\n  \"outcome\": \"failure\",\n  \"duration_seconds\": 27.06,\n  \"failed_steps\": [\n    \"Clone exact upstream source and prepare pinned patch\"\n  ],\n  \"steps\": ["
+        },
+        {
+          "file": "robocop-issue-1371-reproduction/kaggle_job_result.json",
+          "line": 43,
+          "context": "    },\n    {\n      \"name\": \"Clone exact upstream source and prepare pinned patch\",\n      \"status\": \"failed\",\n      \"exit_code\": 128\n    },\n    {"
+        }
+      ],
+      "classification_status": "unresolved_no_specific_log_signature"
+    },
+    {
+      "job": "pyfar-issue-721-reproduction",
+      "outcome": "failure",
+      "failed_steps": [
+        "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)"
+      ],
+      "declared_artifact_count": 10,
+      "resolved_artifact_count": 0,
+      "unresolved_artifact_count": 10,
+      "path_resolution": [
+        {
+          "declared_path": "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/SHA256SUMS.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/environment-lock-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/test-environment-freeze.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/base-dataset-test.log",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/source-and-dataset-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-row-canonical.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-test.patch",
+          "resolved_path": null,
+          "method": "not_found"
+        }
+      ],
+      "candidate_scoped_archive_file_count": 22,
+      "selected_evidence_files": [
+        "pyfar-issue-721-reproduction/kaggle-runner-logs/01_Checkout_research_repository.log",
+        "pyfar-issue-721-reproduction/kaggle-runner-logs/02_Set_up_issue-matched_Python_version.log",
+        "pyfar-issue-721-reproduction/kaggle-runner-logs/03_Install_pinned_pyfar_runtime_and_test_dependencies.log",
+        "pyfar-issue-721-reproduction/kaggle-runner-logs/04_Record_dependency_license_metadata_before_source_execution.log",
+        "pyfar-issue-721-reproduction/kaggle-runner-logs/05_Extract_and_authenticate_exact_SWE-rebench_row.log",
+        "pyfar-issue-721-reproduction/kaggle-runner-logs/06_Clone_exact_upstream_source_and_prepare_pinned_patch.log",
+        "pyfar-issue-721-reproduction/kaggle-runner-logs/07_Run_dataset_FAIL_TO_PASS_selectors_on_buggy_base_failure_required_.log",
+        "pyfar-issue-721-reproduction/kaggle-runner-logs/08_Run_identical_dataset_selectors_on_fixed_revision_pass_required_.log",
+        "pyfar-issue-721-reproduction/kaggle-runner-logs/09_Prepare_and_upload_raw_reproduction_evidence.log",
+        "pyfar-issue-721-reproduction/kaggle-runner-logs/10_Upload_raw_reproduction_evidence.log",
+        "pyfar-issue-721-reproduction/kaggle_job_result.json",
+        "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/base-dataset-test.log",
+        "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-test.patch",
+        "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/environment-lock-sha256.txt",
+        "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/source-and-dataset-sha256.txt",
+        "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/test-environment-freeze.txt"
+      ],
+      "readable_log_text_files": 21,
+      "evidence_category": "dependency_or_environment",
+      "category_trigger_terms": [
+        "modulenotfounderror",
+        "no module named"
+      ],
+      "log_excerpt_candidates": [
+        {
+          "file": "pyfar-issue-721-reproduction/kaggle-runner-logs/04_Record_dependency_license_metadata_before_source_execution.log",
+          "line": 4,
+          "context": "{\n  \"numpy\": {\n    \"version\": \"1.26.4\",\n    \"license\": \"Copyright (c) 2005-2023, NumPy Developers.\\nAll rights reserved.\\n\\nRedistribution and use in source and binary forms, with or without\\nmodification, are permitted provided that the following conditions are\\nmet:\\n\\n    * Redistributions of source code must retain the above copyright\\n       notice, this list of conditions and the following disclaimer.\\n\\n    * Redistributions in binary form must reproduce the above\\n       copyright notice, this list of conditions and the following\\n       disclaimer in the documentation and/or other materials provided\\n       with the distribution.\\n\\n    * Neither the name of the NumPy Developers nor the names of any\\n       contributors may be used to endorse or promote products derived\\n       from this software without specific prior written permission.\\n\\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n\\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\nOWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\nLIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\nTHEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n----\\n\\nThe NumPy repository and source distributions bundle several libraries that are\\ncompatibly licensed.  We list these here.\\n\\nName: lapack-lite\\nFiles: numpy/linalg/lapack_lite/*\\nLicense: BSD-3-Clause\\n  For details, see numpy/linalg/lapack_lite/LICENSE.txt\\n\\nName: tempita\\nFiles: tools/npy_tempita/*\\nLicense: MIT\\n  For details, see tools/npy_tempita/license.txt\\n\\nName: dragon4\\nFiles: numpy/core/src/multiarray/dragon4.c\\nLicense: MIT\\n  For license text, see numpy/core/src/multiarray/dragon4.c\\n\\nName: libdivide\\nFiles: numpy/core/include/numpy/libdivide/*\\nLicense: Zlib\\n  For license text, see numpy/core/include/numpy/libdivide/LICENSE.txt\\n\\n\\nNote that the following files are vendored in the repository and sdist but not\\ninstalled in built "
+        },
+        {
+          "file": "pyfar-issue-721-reproduction/kaggle-runner-logs/04_Record_dependency_license_metadata_before_source_execution.log",
+          "line": 12,
+          "context": "  },\n  \"scipy\": {\n    \"version\": \"1.14.1\",\n    \"license\": \"Copyright (c) 2001-2002 Enthought, Inc. 2003-2024, SciPy Developers.\\nAll rights reserved.\\n\\nRedistribution and use in source and binary forms, with or without\\nmodification, are permitted provided that the following conditions\\nare met:\\n\\n1. Redistributions of source code must retain the above copyright\\n   notice, this list of conditions and the following disclaimer.\\n\\n2. Redistributions in binary form must reproduce the above\\n   copyright notice, this list of conditions and the following\\n   disclaimer in the documentation and/or other materials provided\\n   with the distribution.\\n\\n3. Neither the name of the copyright holder nor the names of its\\n   contributors may be used to endorse or promote products derived\\n   from this software without specific prior written permission.\\n\\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n\\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\nOWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\nLIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\nTHEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n----\\n\\nThis binary distribution of SciPy also bundles the following software:\\n\\n\\nName: OpenBLAS\\nFiles: scipy.libs/libopenblas*.so\\nDescription: bundled as a dynamically linked library\\nAvailability: https://github.com/OpenMathLib/OpenBLAS/\\nLicense: BSD-3-Clause-Attribution\\n  Copyright (c) 2011-2014, The OpenBLAS Project\\n  All rights reserved.\\n\\n  Redistribution and use in source and binary forms, with or without\\n  modification, are permitted provided that the following conditions are\\n  met:\\n\\n     1. Redistributions of source code must retain the above copyright\\n        notice, this list of conditions and the following disclaimer.\\n\\n     2. Redistributions in binary form must reproduce the above copyright\\n        notice, this list of conditions an"
+        },
+        {
+          "file": "pyfar-issue-721-reproduction/kaggle-runner-logs/07_Run_dataset_FAIL_TO_PASS_selectors_on_buggy_base_failure_required_.log",
+          "line": 2,
+          "context": "HEAD is now at 648dda4c Revert \"Merge pull request #713 from pyfar/feature/correlate\"\nImportError while loading conftest '/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/pyfar-issue-721-reproduction/upstream-pyfar/tests/conftest.py'.\ntests/conftest.py:4: in <module>\n    import sofar as sf\n../.venv-tests/lib/python3.12/site-packages/sofar/__init__.py:17: in <module>"
+        },
+        {
+          "file": "pyfar-issue-721-reproduction/kaggle-runner-logs/07_Run_dataset_FAIL_TO_PASS_selectors_on_buggy_base_failure_required_.log",
+          "line": 9,
+          "context": "    from .update_conventions import update_conventions\n../.venv-tests/lib/python3.12/site-packages/sofar/update_conventions.py:5: in <module>\n    import requests\nE   ModuleNotFoundError: No module named 'requests'"
+        },
+        {
+          "file": "pyfar-issue-721-reproduction/kaggle_job_result.json",
+          "line": 5,
+          "context": "  \"job\": \"pyfar-issue-721-reproduction\",\n  \"outcome\": \"failure\",\n  \"duration_seconds\": 48.82,\n  \"failed_steps\": [\n    \"Run dataset FAIL_TO_PASS selectors on buggy base (failure required)\"\n  ],\n  \"steps\": ["
+        },
+        {
+          "file": "pyfar-issue-721-reproduction/kaggle_job_result.json",
+          "line": 48,
+          "context": "    },\n    {\n      \"name\": \"Run dataset FAIL_TO_PASS selectors on buggy base (failure required)\",\n      \"status\": \"failed\",\n      \"exit_code\": 1\n    },\n    {"
+        },
+        {
+          "file": "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/base-dataset-test.log",
+          "line": 1,
+          "context": "ImportError while loading conftest '/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/pyfar-issue-721-reproduction/upstream-pyfar/tests/conftest.py'.\ntests/conftest.py:4: in <module>\n    import sofar as sf\n../.venv-tests/lib/python3.12/site-packages/sofar/__init__.py:17: in <module>"
+        },
+        {
+          "file": "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/base-dataset-test.log",
+          "line": 8,
+          "context": "    from .update_conventions import update_conventions\n../.venv-tests/lib/python3.12/site-packages/sofar/update_conventions.py:5: in <module>\n    import requests\nE   ModuleNotFoundError: No module named 'requests'"
+        },
+        {
+          "file": "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-test.patch",
+          "line": 24,
+          "context": " \n@@ -2661,6 +2669,13 @@ def normalize(signal, reference_method='max', domain='auto',\n     else:\n         raise ValueError((\"channel_handling must be 'individual', 'max', \"\n                           \"'min' or 'mean'.\"))\n+\n+    # scale normalization and target to achieve target energy and power. This"
+        },
+        {
+          "file": "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "line": 4,
+          "context": "{\n  \"numpy\": {\n    \"version\": \"1.26.4\",\n    \"license\": \"Copyright (c) 2005-2023, NumPy Developers.\\nAll rights reserved.\\n\\nRedistribution and use in source and binary forms, with or without\\nmodification, are permitted provided that the following conditions are\\nmet:\\n\\n    * Redistributions of source code must retain the above copyright\\n       notice, this list of conditions and the following disclaimer.\\n\\n    * Redistributions in binary form must reproduce the above\\n       copyright notice, this list of conditions and the following\\n       disclaimer in the documentation and/or other materials provided\\n       with the distribution.\\n\\n    * Neither the name of the NumPy Developers nor the names of any\\n       contributors may be used to endorse or promote products derived\\n       from this software without specific prior written permission.\\n\\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n\\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\nOWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\nLIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\nTHEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n----\\n\\nThe NumPy repository and source distributions bundle several libraries that are\\ncompatibly licensed.  We list these here.\\n\\nName: lapack-lite\\nFiles: numpy/linalg/lapack_lite/*\\nLicense: BSD-3-Clause\\n  For details, see numpy/linalg/lapack_lite/LICENSE.txt\\n\\nName: tempita\\nFiles: tools/npy_tempita/*\\nLicense: MIT\\n  For details, see tools/npy_tempita/license.txt\\n\\nName: dragon4\\nFiles: numpy/core/src/multiarray/dragon4.c\\nLicense: MIT\\n  For license text, see numpy/core/src/multiarray/dragon4.c\\n\\nName: libdivide\\nFiles: numpy/core/include/numpy/libdivide/*\\nLicense: Zlib\\n  For license text, see numpy/core/include/numpy/libdivide/LICENSE.txt\\n\\n\\nNote that the following files are vendored in the repository and sdist but not\\ninstalled in built "
+        },
+        {
+          "file": "pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "line": 12,
+          "context": "  },\n  \"scipy\": {\n    \"version\": \"1.14.1\",\n    \"license\": \"Copyright (c) 2001-2002 Enthought, Inc. 2003-2024, SciPy Developers.\\nAll rights reserved.\\n\\nRedistribution and use in source and binary forms, with or without\\nmodification, are permitted provided that the following conditions\\nare met:\\n\\n1. Redistributions of source code must retain the above copyright\\n   notice, this list of conditions and the following disclaimer.\\n\\n2. Redistributions in binary form must reproduce the above\\n   copyright notice, this list of conditions and the following\\n   disclaimer in the documentation and/or other materials provided\\n   with the distribution.\\n\\n3. Neither the name of the copyright holder nor the names of its\\n   contributors may be used to endorse or promote products derived\\n   from this software without specific prior written permission.\\n\\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n\\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\nOWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\nLIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\nTHEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n----\\n\\nThis binary distribution of SciPy also bundles the following software:\\n\\n\\nName: OpenBLAS\\nFiles: scipy.libs/libopenblas*.so\\nDescription: bundled as a dynamically linked library\\nAvailability: https://github.com/OpenMathLib/OpenBLAS/\\nLicense: BSD-3-Clause-Attribution\\n  Copyright (c) 2011-2014, The OpenBLAS Project\\n  All rights reserved.\\n\\n  Redistribution and use in source and binary forms, with or without\\n  modification, are permitted provided that the following conditions are\\n  met:\\n\\n     1. Redistributions of source code must retain the above copyright\\n        notice, this list of conditions and the following disclaimer.\\n\\n     2. Redistributions in binary form must reproduce the above copyright\\n        notice, this list of conditions an"
+        }
+      ],
+      "classification_status": "evidence_supported_triage"
+    },
+    {
+      "job": "eodag-issue-1530-reproduction",
+      "outcome": "failure",
+      "failed_steps": [
+        "Clone and authenticate exact upstream source snapshots"
+      ],
+      "declared_artifact_count": 5,
+      "resolved_artifact_count": 0,
+      "unresolved_artifact_count": 5,
+      "path_resolution": [
+        {
+          "declared_path": "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/base-user_conf_template.yml",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/SHA256SUMS.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/issue-1530-source.patch",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/upstream-NOTICE.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/upstream-LICENSE.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        }
+      ],
+      "candidate_scoped_archive_file_count": 16,
+      "selected_evidence_files": [
+        "eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/base-user_conf_template.yml",
+        "eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/issue-1530-source.patch",
+        "eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/upstream-LICENSE.txt",
+        "eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/upstream-NOTICE.txt",
+        "eodag-issue-1530-reproduction/kaggle-runner-logs/01_Checkout_research_repository.log",
+        "eodag-issue-1530-reproduction/kaggle-runner-logs/02_Set_up_exact_Python_version.log",
+        "eodag-issue-1530-reproduction/kaggle-runner-logs/03_Install_minimal_pinned_YAML_reproducer_dependency.log",
+        "eodag-issue-1530-reproduction/kaggle-runner-logs/04_Clone_and_authenticate_exact_upstream_source_snapshots.log",
+        "eodag-issue-1530-reproduction/kaggle-runner-logs/05_Run_identical_issue_reproducer_on_buggy_base_failure_required_.log",
+        "eodag-issue-1530-reproduction/kaggle-runner-logs/06_Run_identical_issue_reproducer_on_fixed_revision_pass_required_.log",
+        "eodag-issue-1530-reproduction/kaggle-runner-logs/07_Extract_exact_dataset_row_and_record_FAIL_TO_PASS_selectors_without_executing_upstream_tests.log",
+        "eodag-issue-1530-reproduction/kaggle-runner-logs/08_Prepare_and_upload_raw_EODAG_reproduction_evidence.log",
+        "eodag-issue-1530-reproduction/kaggle-runner-logs/09_Upload_raw_EODAG_reproduction_evidence.log",
+        "eodag-issue-1530-reproduction/kaggle_job_result.json"
+      ],
+      "readable_log_text_files": 15,
+      "evidence_category": "source_checkout_failure_cause_unresolved",
+      "category_trigger_terms": [],
+      "log_excerpt_candidates": [
+        {
+          "file": "eodag-issue-1530-reproduction/kaggle-runner-logs/04_Clone_and_authenticate_exact_upstream_source_snapshots.log",
+          "line": 3,
+          "context": "Cloning into 'upstream-eodag'...\nHEAD is now at b7cc06e19 fix: update external product types reference (#1525)\nfatal: bad object 312966a46513a082333d46cd7212bdce36aaf769"
+        },
+        {
+          "file": "eodag-issue-1530-reproduction/kaggle_job_result.json",
+          "line": 5,
+          "context": "  \"job\": \"eodag-issue-1530-reproduction\",\n  \"outcome\": \"failure\",\n  \"duration_seconds\": 22.0,\n  \"failed_steps\": [\n    \"Clone and authenticate exact upstream source snapshots\"\n  ],\n  \"steps\": ["
+        },
+        {
+          "file": "eodag-issue-1530-reproduction/kaggle_job_result.json",
+          "line": 33,
+          "context": "    },\n    {\n      \"name\": \"Clone and authenticate exact upstream source snapshots\",\n      \"status\": \"failed\",\n      \"exit_code\": 128\n    },\n    {"
+        }
+      ],
+      "classification_status": "unresolved_no_specific_log_signature"
+    },
+    {
+      "job": "moto-issue-8269-reproduction",
+      "outcome": "failure",
+      "failed_steps": [
+        "Clone exact Moto source and prepare patch"
+      ],
+      "declared_artifact_count": 2,
+      "resolved_artifact_count": 0,
+      "unresolved_artifact_count": 2,
+      "path_resolution": [
+        {
+          "declared_path": "collected_artifacts/moto-issue-8269-reproduction/moto-issue-8269-reproduction/reproduction-evidence/SHA256SUMS.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/moto-issue-8269-reproduction/moto-issue-8269-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "resolved_path": null,
+          "method": "not_found"
+        }
+      ],
+      "candidate_scoped_archive_file_count": 13,
+      "selected_evidence_files": [
+        "moto-issue-8269-reproduction/kaggle-runner-logs/01_Checkout_research_repository.log",
+        "moto-issue-8269-reproduction/kaggle-runner-logs/02_Set_up_exact_Python_version.log",
+        "moto-issue-8269-reproduction/kaggle-runner-logs/03_Install_pinned_Moto_ECR_reproduction_environment.log",
+        "moto-issue-8269-reproduction/kaggle-runner-logs/04_Clone_exact_Moto_source_and_prepare_patch.log",
+        "moto-issue-8269-reproduction/kaggle-runner-logs/05_Run_independent_issue_reproducer_on_buggy_base_failure_required_.log",
+        "moto-issue-8269-reproduction/kaggle-runner-logs/06_Run_exact_dataset_FAIL_TO_PASS_selectors_on_patched_buggy_base_failure_required_.log",
+        "moto-issue-8269-reproduction/kaggle-runner-logs/07_Run_same_issue_reproducer_and_dataset_selectors_on_fixed_revision_pass_required_.log",
+        "moto-issue-8269-reproduction/kaggle-runner-logs/08_Prepare_and_upload_raw_Moto_reproduction_evidence.log",
+        "moto-issue-8269-reproduction/kaggle-runner-logs/09_Upload_raw_Moto_reproduction_evidence.log",
+        "moto-issue-8269-reproduction/kaggle_job_result.json",
+        "moto-issue-8269-reproduction/moto-issue-8269-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "moto-issue-8269-reproduction/moto-issue-8269-reproduction/reproduction-evidence/dependency-license-inventory.json"
+      ],
+      "readable_log_text_files": 12,
+      "evidence_category": "source_checkout_failure_cause_unresolved",
+      "category_trigger_terms": [],
+      "log_excerpt_candidates": [
+        {
+          "file": "moto-issue-8269-reproduction/kaggle_job_result.json",
+          "line": 5,
+          "context": "  \"job\": \"moto-issue-8269-reproduction\",\n  \"outcome\": \"failure\",\n  \"duration_seconds\": 35.4,\n  \"failed_steps\": [\n    \"Clone exact Moto source and prepare patch\"\n  ],\n  \"steps\": ["
+        },
+        {
+          "file": "moto-issue-8269-reproduction/kaggle_job_result.json",
+          "line": 33,
+          "context": "    },\n    {\n      \"name\": \"Clone exact Moto source and prepare patch\",\n      \"status\": \"failed\",\n      \"exit_code\": 1\n    },\n    {"
+        }
+      ],
+      "classification_status": "unresolved_no_specific_log_signature"
+    },
+    {
+      "job": "meltano-issue-3090-reproduction",
+      "outcome": "failure",
+      "failed_steps": [
+        "Clone exact Singer SDK source and authenticate license"
+      ],
+      "declared_artifact_count": 5,
+      "resolved_artifact_count": 0,
+      "unresolved_artifact_count": 5,
+      "path_resolution": [
+        {
+          "declared_path": "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/SHA256SUMS.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/pr-3091.patch",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/upstream-pyproject.toml",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/upstream-LICENSE.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        }
+      ],
+      "candidate_scoped_archive_file_count": 17,
+      "selected_evidence_files": [
+        "meltano-issue-3090-reproduction/kaggle-runner-logs/01_Checkout_research_repository.log",
+        "meltano-issue-3090-reproduction/kaggle-runner-logs/02_Set_up_exact_Python_version.log",
+        "meltano-issue-3090-reproduction/kaggle-runner-logs/03_Install_pinned_Singer_SDK_schema-test_environment_and_audit_licenses.log",
+        "meltano-issue-3090-reproduction/kaggle-runner-logs/04_Clone_exact_Singer_SDK_source_and_authenticate_license.log",
+        "meltano-issue-3090-reproduction/kaggle-runner-logs/05_Run_independent_source_reproducer_on_buggy_base_failure_required_.log",
+        "meltano-issue-3090-reproduction/kaggle-runner-logs/06_Extract_exact_dataset_row_and_authenticate_timestamp.log",
+        "meltano-issue-3090-reproduction/kaggle-runner-logs/07_Run_exact_dataset_selectors_on_patched_buggy_base_failure_required_.log",
+        "meltano-issue-3090-reproduction/kaggle-runner-logs/08_Run_same_source_and_dataset_selectors_on_fixed_revision_pass_required_.log",
+        "meltano-issue-3090-reproduction/kaggle-runner-logs/09_Prepare_and_upload_raw_Meltano_reproduction_evidence.log",
+        "meltano-issue-3090-reproduction/kaggle-runner-logs/10_Upload_raw_Meltano_reproduction_evidence.log",
+        "meltano-issue-3090-reproduction/kaggle_job_result.json",
+        "meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/pr-3091.patch",
+        "meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/upstream-LICENSE.txt"
+      ],
+      "readable_log_text_files": 15,
+      "evidence_category": "source_checkout_failure_cause_unresolved",
+      "category_trigger_terms": [],
+      "log_excerpt_candidates": [
+        {
+          "file": "meltano-issue-3090-reproduction/kaggle-runner-logs/04_Clone_exact_Singer_SDK_source_and_authenticate_license.log",
+          "line": 4,
+          "context": "Cloning into 'upstream-meltano'...\nHEAD is now at ae326fe3 chore: Clean up deptry ignores (#3089)\nlicense = \"Apache-2.0\"\nfatal: bad object 9505ff1989b9be4d53b5bc9664b3fe3885879cb1"
+        },
+        {
+          "file": "meltano-issue-3090-reproduction/kaggle_job_result.json",
+          "line": 5,
+          "context": "  \"job\": \"meltano-issue-3090-reproduction\",\n  \"outcome\": \"failure\",\n  \"duration_seconds\": 20.42,\n  \"failed_steps\": [\n    \"Clone exact Singer SDK source and authenticate license\"\n  ],\n  \"steps\": ["
+        },
+        {
+          "file": "meltano-issue-3090-reproduction/kaggle_job_result.json",
+          "line": 33,
+          "context": "    },\n    {\n      \"name\": \"Clone exact Singer SDK source and authenticate license\",\n      \"status\": \"failed\",\n      \"exit_code\": 128\n    },\n    {"
+        }
+      ],
+      "classification_status": "unresolved_no_specific_log_signature"
+    },
+    {
+      "job": "python-control-issue-1144-reproduction",
+      "outcome": "failure",
+      "failed_steps": [
+        "Run exact dataset selectors on patched buggy base (failure required)"
+      ],
+      "declared_artifact_count": 11,
+      "resolved_artifact_count": 0,
+      "unresolved_artifact_count": 11,
+      "path_resolution": [
+        {
+          "declared_path": "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/SHA256SUMS.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/source-provenance-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-extraction-license-inventory.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/upstream-pyproject.toml",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-row-canonical.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/upstream-LICENSE.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/base-issue-test.log",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/pr-1145.patch",
+          "resolved_path": null,
+          "method": "not_found"
+        }
+      ],
+      "candidate_scoped_archive_file_count": 23,
+      "selected_evidence_files": [
+        "python-control-issue-1144-reproduction/kaggle-runner-logs/01_Checkout_research_repository.log",
+        "python-control-issue-1144-reproduction/kaggle-runner-logs/02_Set_up_exact_Python_version.log",
+        "python-control-issue-1144-reproduction/kaggle-runner-logs/03_Install_pinned_plotting_environment_and_audit_licenses.log",
+        "python-control-issue-1144-reproduction/kaggle-runner-logs/04_Clone_exact_python-control_source_and_prepare_patch.log",
+        "python-control-issue-1144-reproduction/kaggle-runner-logs/05_Run_independent_Nyquist_axes_reproducer_on_buggy_base_failure_required_.log",
+        "python-control-issue-1144-reproduction/kaggle-runner-logs/06_Extract_and_authenticate_exact_dataset_row.log",
+        "python-control-issue-1144-reproduction/kaggle-runner-logs/07_Run_exact_dataset_selectors_on_patched_buggy_base_failure_required_.log",
+        "python-control-issue-1144-reproduction/kaggle-runner-logs/08_Run_same_reproducer_and_dataset_selectors_on_fixed_revision_pass_required_.log",
+        "python-control-issue-1144-reproduction/kaggle-runner-logs/09_Prepare_and_upload_raw_python-control_reproduction_evidence.log",
+        "python-control-issue-1144-reproduction/kaggle-runner-logs/10_Upload_raw_python-control_reproduction_evidence.log",
+        "python-control-issue-1144-reproduction/kaggle_job_result.json",
+        "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/base-issue-test.log",
+        "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-extraction-license-inventory.json",
+        "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/pr-1145.patch",
+        "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/source-provenance-sha256.txt",
+        "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/upstream-LICENSE.txt"
+      ],
+      "readable_log_text_files": 21,
+      "evidence_category": "patch_or_source_mismatch",
+      "category_trigger_terms": [
+        "does not apply"
+      ],
+      "log_excerpt_candidates": [
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle-runner-logs/03_Install_pinned_plotting_environment_and_audit_licenses.log",
+          "line": 63,
+          "context": "{\n  \"numpy\": {\n    \"version\": \"2.1.3\",\n    \"license\": \"Copyright (c) 2005-2024, NumPy Developers.\\n All rights reserved.\\n\\n Redistribution and use in source and binary forms, with or without\\n modification, are permitted provided that the following conditions are\\n met:\\n\\n     * Redistributions of source code must retain the above copyright\\n        notice, this list of conditions and the following disclaimer.\\n\\n     * Redistributions in binary form must reproduce the above\\n        copyright notice, this list of conditions and the following\\n        disclaimer in the documentation and/or other materials provided\\n        with the distribution.\\n\\n     * Neither the name of the NumPy Developers nor the names of any\\n        contributors may be used to endorse or promote products derived\\n        from this software without specific prior written permission.\\n\\n THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n \\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\n LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\n A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\n OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\n SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\n LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\n DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\n THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\n OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n ----\\n\\n The NumPy repository and source distributions bundle several libraries that are\\n compatibly licensed.  We list these here.\\n\\n Name: lapack-lite\\n Files: numpy/linalg/lapack_lite/*\\n License: BSD-3-Clause\\n   For details, see numpy/linalg/lapack_lite/LICENSE.txt\\n\\n Name: dragon4\\n Files: numpy/_core/src/multiarray/dragon4.c\\n License: MIT\\n   For license text, see numpy/_core/src/multiarray/dragon4.c\\n\\n Name: libdivide\\n Files: numpy/_core/include/numpy/libdivide/*\\n License: Zlib\\n   For license text, see numpy/_core/include/numpy/libdivide/LICENSE.txt\\n\\n\\n Note that the following files are vendored in the repository and sdist but not\\n installed in built numpy packages:\\n\\n Name: Meson\\n Files: vendored-meson/meson/*\\n"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle-runner-logs/03_Install_pinned_plotting_environment_and_audit_licenses.log",
+          "line": 71,
+          "context": "  },\n  \"scipy\": {\n    \"version\": \"1.14.1\",\n    \"license\": \"Copyright (c) 2001-2002 Enthought, Inc. 2003-2024, SciPy Developers.\\nAll rights reserved.\\n\\nRedistribution and use in source and binary forms, with or without\\nmodification, are permitted provided that the following conditions\\nare met:\\n\\n1. Redistributions of source code must retain the above copyright\\n   notice, this list of conditions and the following disclaimer.\\n\\n2. Redistributions in binary form must reproduce the above\\n   copyright notice, this list of conditions and the following\\n   disclaimer in the documentation and/or other materials provided\\n   with the distribution.\\n\\n3. Neither the name of the copyright holder nor the names of its\\n   contributors may be used to endorse or promote products derived\\n   from this software without specific prior written permission.\\n\\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n\\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\nOWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\nLIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\nTHEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n----\\n\\nThis binary distribution of SciPy also bundles the following software:\\n\\n\\nName: OpenBLAS\\nFiles: scipy.libs/libopenblas*.so\\nDescription: bundled as a dynamically linked library\\nAvailability: https://github.com/OpenMathLib/OpenBLAS/\\nLicense: BSD-3-Clause-Attribution\\n  Copyright (c) 2011-2014, The OpenBLAS Project\\n  All rights reserved.\\n\\n  Redistribution and use in source and binary forms, with or without\\n  modification, are permitted provided that the following conditions are\\n  met:\\n\\n     1. Redistributions of source code must retain the above copyright\\n        notice, this list of conditions and the following disclaimer.\\n\\n     2. Redistributions in binary form must reproduce the above copyright\\n        notice, this list of conditions an"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle-runner-logs/05_Run_independent_Nyquist_axes_reproducer_on_buggy_base_failure_required_.log",
+          "line": 6,
+          "context": "======================================================================\nFAIL: test_nyquist_plot_uses_the_explicitly_supplied_axes (test_issue_1144.PythonControlIssue1144Regression.test_nyquist_plot_uses_the_explicitly_supplied_axes)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/python-control-issue-1144-reproduction/research_candidates/evidence_abstention/reproduction/python_control_issue_1144/test_issue_1144.py\", line 19, in test_nyquist_plot_uses_the_explicitly_supplied_axes\n    self.assertGreater(len(axes[1, 0].lines), 0)\nAssertionError: 0 not greater than 0"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle-runner-logs/05_Run_independent_Nyquist_axes_reproducer_on_buggy_base_failure_required_.log",
+          "line": 9,
+          "context": "Traceback (most recent call last):\n  File \"/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/python-control-issue-1144-reproduction/research_candidates/evidence_abstention/reproduction/python_control_issue_1144/test_issue_1144.py\", line 19, in test_nyquist_plot_uses_the_explicitly_supplied_axes\n    self.assertGreater(len(axes[1, 0].lines), 0)\nAssertionError: 0 not greater than 0\n\n----------------------------------------------------------------------\nRan 1 test in 0.094s"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle-runner-logs/05_Run_independent_Nyquist_axes_reproducer_on_buggy_base_failure_required_.log",
+          "line": 14,
+          "context": "----------------------------------------------------------------------\nRan 1 test in 0.094s\n\nFAILED (failures=1)\nAssertionError: 0 not greater than 0"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle-runner-logs/05_Run_independent_Nyquist_axes_reproducer_on_buggy_base_failure_required_.log",
+          "line": 15,
+          "context": "Ran 1 test in 0.094s\n\nFAILED (failures=1)\nAssertionError: 0 not greater than 0"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle-runner-logs/07_Run_exact_dataset_selectors_on_patched_buggy_base_failure_required_.log",
+          "line": 2,
+          "context": "HEAD is now at dc7d71bd Merge pull request #1142 from murrayrm/xferfcn_typecheck-23Mar2025\nBuggy-base selector failed for a reason other than the explicit-axis assertion: control/tests/ctrlplot_test.py::test_plot_ax_processing[frequency_response-nichols_plot]\nE                                                                        [100%]\n==================================== ERRORS ====================================\n__ ERROR at setup of test_plot_ax_processing[frequency_response-nichols_plot] __"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle-runner-logs/07_Run_exact_dataset_selectors_on_patched_buggy_base_failure_required_.log",
+          "line": 4,
+          "context": "HEAD is now at dc7d71bd Merge pull request #1142 from murrayrm/xferfcn_typecheck-23Mar2025\nBuggy-base selector failed for a reason other than the explicit-axis assertion: control/tests/ctrlplot_test.py::test_plot_ax_processing[frequency_response-nichols_plot]\nE                                                                        [100%]\n==================================== ERRORS ====================================\n__ ERROR at setup of test_plot_ax_processing[frequency_response-nichols_plot] __\nfile /kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/python-control-issue-1144-reproduction/upstream-control/control/tests/ctrlplot_test.py, line 156\n  @pytest.mark.parametrize(\"resp_fcn, plot_fcn\", resp_plot_fcns)"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle-runner-logs/07_Run_exact_dataset_selectors_on_patched_buggy_base_failure_required_.log",
+          "line": 5,
+          "context": "Buggy-base selector failed for a reason other than the explicit-axis assertion: control/tests/ctrlplot_test.py::test_plot_ax_processing[frequency_response-nichols_plot]\nE                                                                        [100%]\n==================================== ERRORS ====================================\n__ ERROR at setup of test_plot_ax_processing[frequency_response-nichols_plot] __\nfile /kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/python-control-issue-1144-reproduction/upstream-control/control/tests/ctrlplot_test.py, line 156\n  @pytest.mark.parametrize(\"resp_fcn, plot_fcn\", resp_plot_fcns)\n  @pytest.mark.usefixtures('mplcleanup')"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle-runner-logs/07_Run_exact_dataset_selectors_on_patched_buggy_base_failure_required_.log",
+          "line": 10,
+          "context": "  @pytest.mark.parametrize(\"resp_fcn, plot_fcn\", resp_plot_fcns)\n  @pytest.mark.usefixtures('mplcleanup')\n  def test_plot_ax_processing(resp_fcn, plot_fcn):\nE       fixture 'mplcleanup' not found\n>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, doctest_namespace, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory\n>       use 'pytest --fixtures [testpath]' for help on them.\n"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle-runner-logs/07_Run_exact_dataset_selectors_on_patched_buggy_base_failure_required_.log",
+          "line": 16,
+          "context": "\n/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/python-control-issue-1144-reproduction/upstream-control/control/tests/ctrlplot_test.py:156\n=========================== short test summary info ============================\nERROR ../../../../../../dev::test_plot_ax_processing[frequency_response-nichols_plot]\n1 error in 1.01s\n"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle-runner-logs/07_Run_exact_dataset_selectors_on_patched_buggy_base_failure_required_.log",
+          "line": 17,
+          "context": "/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/python-control-issue-1144-reproduction/upstream-control/control/tests/ctrlplot_test.py:156\n=========================== short test summary info ============================\nERROR ../../../../../../dev::test_plot_ax_processing[frequency_response-nichols_plot]\n1 error in 1.01s\n"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle_job_result.json",
+          "line": 5,
+          "context": "  \"job\": \"python-control-issue-1144-reproduction\",\n  \"outcome\": \"failure\",\n  \"duration_seconds\": 39.88,\n  \"failed_steps\": [\n    \"Run exact dataset selectors on patched buggy base (failure required)\"\n  ],\n  \"steps\": ["
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/kaggle_job_result.json",
+          "line": 48,
+          "context": "    },\n    {\n      \"name\": \"Run exact dataset selectors on patched buggy base (failure required)\",\n      \"status\": \"failed\",\n      \"exit_code\": 1\n    },\n    {"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/base-issue-test.log",
+          "line": 6,
+          "context": "======================================================================\nFAIL: test_nyquist_plot_uses_the_explicitly_supplied_axes (test_issue_1144.PythonControlIssue1144Regression.test_nyquist_plot_uses_the_explicitly_supplied_axes)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/python-control-issue-1144-reproduction/research_candidates/evidence_abstention/reproduction/python_control_issue_1144/test_issue_1144.py\", line 19, in test_nyquist_plot_uses_the_explicitly_supplied_axes\n    self.assertGreater(len(axes[1, 0].lines), 0)\nAssertionError: 0 not greater than 0"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/base-issue-test.log",
+          "line": 9,
+          "context": "Traceback (most recent call last):\n  File \"/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/python-control-issue-1144-reproduction/research_candidates/evidence_abstention/reproduction/python_control_issue_1144/test_issue_1144.py\", line 19, in test_nyquist_plot_uses_the_explicitly_supplied_axes\n    self.assertGreater(len(axes[1, 0].lines), 0)\nAssertionError: 0 not greater than 0\n\n----------------------------------------------------------------------\nRan 1 test in 0.094s"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/base-issue-test.log",
+          "line": 14,
+          "context": "----------------------------------------------------------------------\nRan 1 test in 0.094s\n\nFAILED (failures=1)"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "line": 4,
+          "context": "{\n  \"numpy\": {\n    \"version\": \"2.1.3\",\n    \"license\": \"Copyright (c) 2005-2024, NumPy Developers.\\n All rights reserved.\\n\\n Redistribution and use in source and binary forms, with or without\\n modification, are permitted provided that the following conditions are\\n met:\\n\\n     * Redistributions of source code must retain the above copyright\\n        notice, this list of conditions and the following disclaimer.\\n\\n     * Redistributions in binary form must reproduce the above\\n        copyright notice, this list of conditions and the following\\n        disclaimer in the documentation and/or other materials provided\\n        with the distribution.\\n\\n     * Neither the name of the NumPy Developers nor the names of any\\n        contributors may be used to endorse or promote products derived\\n        from this software without specific prior written permission.\\n\\n THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n \\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\n LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\n A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\n OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\n SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\n LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\n DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\n THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\n OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n ----\\n\\n The NumPy repository and source distributions bundle several libraries that are\\n compatibly licensed.  We list these here.\\n\\n Name: lapack-lite\\n Files: numpy/linalg/lapack_lite/*\\n License: BSD-3-Clause\\n   For details, see numpy/linalg/lapack_lite/LICENSE.txt\\n\\n Name: dragon4\\n Files: numpy/_core/src/multiarray/dragon4.c\\n License: MIT\\n   For license text, see numpy/_core/src/multiarray/dragon4.c\\n\\n Name: libdivide\\n Files: numpy/_core/include/numpy/libdivide/*\\n License: Zlib\\n   For license text, see numpy/_core/include/numpy/libdivide/LICENSE.txt\\n\\n\\n Note that the following files are vendored in the repository and sdist but not\\n installed in built numpy packages:\\n\\n Name: Meson\\n Files: vendored-meson/meson/*\\n"
+        },
+        {
+          "file": "python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "line": 12,
+          "context": "  },\n  \"scipy\": {\n    \"version\": \"1.14.1\",\n    \"license\": \"Copyright (c) 2001-2002 Enthought, Inc. 2003-2024, SciPy Developers.\\nAll rights reserved.\\n\\nRedistribution and use in source and binary forms, with or without\\nmodification, are permitted provided that the following conditions\\nare met:\\n\\n1. Redistributions of source code must retain the above copyright\\n   notice, this list of conditions and the following disclaimer.\\n\\n2. Redistributions in binary form must reproduce the above\\n   copyright notice, this list of conditions and the following\\n   disclaimer in the documentation and/or other materials provided\\n   with the distribution.\\n\\n3. Neither the name of the copyright holder nor the names of its\\n   contributors may be used to endorse or promote products derived\\n   from this software without specific prior written permission.\\n\\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n\\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\nOWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\nLIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\nTHEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n----\\n\\nThis binary distribution of SciPy also bundles the following software:\\n\\n\\nName: OpenBLAS\\nFiles: scipy.libs/libopenblas*.so\\nDescription: bundled as a dynamically linked library\\nAvailability: https://github.com/OpenMathLib/OpenBLAS/\\nLicense: BSD-3-Clause-Attribution\\n  Copyright (c) 2011-2014, The OpenBLAS Project\\n  All rights reserved.\\n\\n  Redistribution and use in source and binary forms, with or without\\n  modification, are permitted provided that the following conditions are\\n  met:\\n\\n     1. Redistributions of source code must retain the above copyright\\n        notice, this list of conditions and the following disclaimer.\\n\\n     2. Redistributions in binary form must reproduce the above copyright\\n        notice, this list of conditions an"
+        }
+      ],
+      "classification_status": "evidence_supported_triage"
+    },
+    {
+      "job": "qutip-issue-2646-reproduction",
+      "outcome": "failure",
+      "failed_steps": [
+        "Apply exact PR patch and run dataset selectors on buggy base (failure required)"
+      ],
+      "declared_artifact_count": 11,
+      "resolved_artifact_count": 0,
+      "unresolved_artifact_count": 11,
+      "path_resolution": [
+        {
+          "declared_path": "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/pr-2694.patch",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/SHA256SUMS.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/source-provenance-sha256.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-extraction-license-inventory.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/upstream-pyproject.toml",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-row-canonical.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/upstream-LICENSE.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/base-issue-test.log",
+          "resolved_path": null,
+          "method": "not_found"
+        }
+      ],
+      "candidate_scoped_archive_file_count": 24,
+      "selected_evidence_files": [
+        "qutip-issue-2646-reproduction/kaggle-runner-logs/01_Checkout_research_repository.log",
+        "qutip-issue-2646-reproduction/kaggle-runner-logs/02_Set_up_exact_Python_version.log",
+        "qutip-issue-2646-reproduction/kaggle-runner-logs/03_Install_pinned_QuTiP_build_test_environment_and_audit_licenses.log",
+        "qutip-issue-2646-reproduction/kaggle-runner-logs/04_Clone_exact_QuTiP_source_and_authenticate_license.log",
+        "qutip-issue-2646-reproduction/kaggle-runner-logs/05_Build_exact_buggy-base_QuTiP_source_in_editable_mode.log",
+        "qutip-issue-2646-reproduction/kaggle-runner-logs/06_Run_independent_coefficient_reproducer_on_buggy_base_failure_required_.log",
+        "qutip-issue-2646-reproduction/kaggle-runner-logs/07_Extract_exact_dataset_row_and_authenticate_timestamp.log",
+        "qutip-issue-2646-reproduction/kaggle-runner-logs/08_Apply_exact_PR_patch_and_run_dataset_selectors_on_buggy_base_failure_required_.log",
+        "qutip-issue-2646-reproduction/kaggle-runner-logs/09_Run_same_reproducer_and_selectors_on_fixed_revision_pass_required_.log",
+        "qutip-issue-2646-reproduction/kaggle-runner-logs/10_Prepare_and_upload_raw_QuTiP_reproduction_evidence.log",
+        "qutip-issue-2646-reproduction/kaggle-runner-logs/11_Upload_raw_QuTiP_reproduction_evidence.log",
+        "qutip-issue-2646-reproduction/kaggle_job_result.json",
+        "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/base-issue-test.log",
+        "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-extraction-license-inventory.json",
+        "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+        "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-row-canonical.json",
+        "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+        "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/pr-2694.patch",
+        "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/source-provenance-sha256.txt",
+        "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/upstream-LICENSE.txt"
+      ],
+      "readable_log_text_files": 22,
+      "evidence_category": "patch_or_source_mismatch",
+      "category_trigger_terms": [
+        "does not apply"
+      ],
+      "log_excerpt_candidates": [
+        {
+          "file": "qutip-issue-2646-reproduction/kaggle-runner-logs/03_Install_pinned_QuTiP_build_test_environment_and_audit_licenses.log",
+          "line": 52,
+          "context": "  },\n  \"numpy\": {\n    \"version\": \"2.1.3\",\n    \"license\": \"Copyright (c) 2005-2024, NumPy Developers.\\n All rights reserved.\\n\\n Redistribution and use in source and binary forms, with or without\\n modification, are permitted provided that the following conditions are\\n met:\\n\\n     * Redistributions of source code must retain the above copyright\\n        notice, this list of conditions and the following disclaimer.\\n\\n     * Redistributions in binary form must reproduce the above\\n        copyright notice, this list of conditions and the following\\n        disclaimer in the documentation and/or other materials provided\\n        with the distribution.\\n\\n     * Neither the name of the NumPy Developers nor the names of any\\n        contributors may be used to endorse or promote products derived\\n        from this software without specific prior written permission.\\n\\n THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n \\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\n LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\n A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\n OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\n SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\n LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\n DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\n THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\n OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n ----\\n\\n The NumPy repository and source distributions bundle several libraries that are\\n compatibly licensed.  We list these here.\\n\\n Name: lapack-lite\\n Files: numpy/linalg/lapack_lite/*\\n License: BSD-3-Clause\\n   For details, see numpy/linalg/lapack_lite/LICENSE.txt\\n\\n Name: dragon4\\n Files: numpy/_core/src/multiarray/dragon4.c\\n License: MIT\\n   For license text, see numpy/_core/src/multiarray/dragon4.c\\n\\n Name: libdivide\\n Files: numpy/_core/include/numpy/libdivide/*\\n License: Zlib\\n   For license text, see numpy/_core/include/numpy/libdivide/LICENSE.txt\\n\\n\\n Note that the following files are vendored in the repository and sdist but not\\n installed in built numpy packages:\\n\\n Name: Meson\\n Files: vendored-meson/meson/"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/kaggle-runner-logs/03_Install_pinned_QuTiP_build_test_environment_and_audit_licenses.log",
+          "line": 60,
+          "context": "  },\n  \"scipy\": {\n    \"version\": \"1.14.1\",\n    \"license\": \"Copyright (c) 2001-2002 Enthought, Inc. 2003-2024, SciPy Developers.\\nAll rights reserved.\\n\\nRedistribution and use in source and binary forms, with or without\\nmodification, are permitted provided that the following conditions\\nare met:\\n\\n1. Redistributions of source code must retain the above copyright\\n   notice, this list of conditions and the following disclaimer.\\n\\n2. Redistributions in binary form must reproduce the above\\n   copyright notice, this list of conditions and the following\\n   disclaimer in the documentation and/or other materials provided\\n   with the distribution.\\n\\n3. Neither the name of the copyright holder nor the names of its\\n   contributors may be used to endorse or promote products derived\\n   from this software without specific prior written permission.\\n\\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n\\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\nOWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\nLIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\nTHEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n----\\n\\nThis binary distribution of SciPy also bundles the following software:\\n\\n\\nName: OpenBLAS\\nFiles: scipy.libs/libopenblas*.so\\nDescription: bundled as a dynamically linked library\\nAvailability: https://github.com/OpenMathLib/OpenBLAS/\\nLicense: BSD-3-Clause-Attribution\\n  Copyright (c) 2011-2014, The OpenBLAS Project\\n  All rights reserved.\\n\\n  Redistribution and use in source and binary forms, with or without\\n  modification, are permitted provided that the following conditions are\\n  met:\\n\\n     1. Redistributions of source code must retain the above copyright\\n        notice, this list of conditions and the following disclaimer.\\n\\n     2. Redistributions in binary form must reproduce the above copyright\\n        notice, this list of conditions an"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/kaggle-runner-logs/06_Run_independent_coefficient_reproducer_on_buggy_base_failure_required_.log",
+          "line": 1,
+          "context": "/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/qutip-issue-2646-reproduction/upstream-qutip/qutip/__init__.py:24: UserWarning: matplotlib not found: Graphics will not work.\n  warnings.warn(\"matplotlib not found: Graphics will not work.\")\ntest_rewrapping_a_coefficient_updates_its_arguments (test_issue_2646.QuTiPIssue2646Regression.test_rewrapping_a_coefficient_updates_its_arguments) ... FAIL\n"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/kaggle-runner-logs/06_Run_independent_coefficient_reproducer_on_buggy_base_failure_required_.log",
+          "line": 2,
+          "context": "/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/qutip-issue-2646-reproduction/upstream-qutip/qutip/__init__.py:24: UserWarning: matplotlib not found: Graphics will not work.\n  warnings.warn(\"matplotlib not found: Graphics will not work.\")\ntest_rewrapping_a_coefficient_updates_its_arguments (test_issue_2646.QuTiPIssue2646Regression.test_rewrapping_a_coefficient_updates_its_arguments) ... FAIL\n\n======================================================================"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/kaggle-runner-logs/06_Run_independent_coefficient_reproducer_on_buggy_base_failure_required_.log",
+          "line": 8,
+          "context": "======================================================================\nFAIL: test_rewrapping_a_coefficient_updates_its_arguments (test_issue_2646.QuTiPIssue2646Regression.test_rewrapping_a_coefficient_updates_its_arguments)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/qutip-issue-2646-reproduction/research_candidates/evidence_abstention/reproduction/qutip_issue_2646/test_issue_2646.py\", line 16, in test_rewrapping_a_coefficient_updates_its_arguments\n    self.assertEqual(updated(0), 2)\nAssertionError: 1 != 2"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/kaggle-runner-logs/06_Run_independent_coefficient_reproducer_on_buggy_base_failure_required_.log",
+          "line": 11,
+          "context": "Traceback (most recent call last):\n  File \"/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/qutip-issue-2646-reproduction/research_candidates/evidence_abstention/reproduction/qutip_issue_2646/test_issue_2646.py\", line 16, in test_rewrapping_a_coefficient_updates_its_arguments\n    self.assertEqual(updated(0), 2)\nAssertionError: 1 != 2\n\n----------------------------------------------------------------------\nRan 1 test in 0.002s"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/kaggle-runner-logs/06_Run_independent_coefficient_reproducer_on_buggy_base_failure_required_.log",
+          "line": 16,
+          "context": "----------------------------------------------------------------------\nRan 1 test in 0.002s\n\nFAILED (failures=1)\nAssertionError: 1 != 2"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/kaggle-runner-logs/06_Run_independent_coefficient_reproducer_on_buggy_base_failure_required_.log",
+          "line": 17,
+          "context": "Ran 1 test in 0.002s\n\nFAILED (failures=1)\nAssertionError: 1 != 2"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/kaggle_job_result.json",
+          "line": 5,
+          "context": "  \"job\": \"qutip-issue-2646-reproduction\",\n  \"outcome\": \"failure\",\n  \"duration_seconds\": 437.62,\n  \"failed_steps\": [\n    \"Apply exact PR patch and run dataset selectors on buggy base (failure required)\"\n  ],\n  \"steps\": ["
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/kaggle_job_result.json",
+          "line": 53,
+          "context": "    },\n    {\n      \"name\": \"Apply exact PR patch and run dataset selectors on buggy base (failure required)\",\n      \"status\": \"failed\",\n      \"exit_code\": 1\n    },\n    {"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/base-issue-test.log",
+          "line": 1,
+          "context": "/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/qutip-issue-2646-reproduction/upstream-qutip/qutip/__init__.py:24: UserWarning: matplotlib not found: Graphics will not work.\n  warnings.warn(\"matplotlib not found: Graphics will not work.\")\ntest_rewrapping_a_coefficient_updates_its_arguments (test_issue_2646.QuTiPIssue2646Regression.test_rewrapping_a_coefficient_updates_its_arguments) ... FAIL\n"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/base-issue-test.log",
+          "line": 2,
+          "context": "/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/qutip-issue-2646-reproduction/upstream-qutip/qutip/__init__.py:24: UserWarning: matplotlib not found: Graphics will not work.\n  warnings.warn(\"matplotlib not found: Graphics will not work.\")\ntest_rewrapping_a_coefficient_updates_its_arguments (test_issue_2646.QuTiPIssue2646Regression.test_rewrapping_a_coefficient_updates_its_arguments) ... FAIL\n\n======================================================================"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/base-issue-test.log",
+          "line": 8,
+          "context": "======================================================================\nFAIL: test_rewrapping_a_coefficient_updates_its_arguments (test_issue_2646.QuTiPIssue2646Regression.test_rewrapping_a_coefficient_updates_its_arguments)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/qutip-issue-2646-reproduction/research_candidates/evidence_abstention/reproduction/qutip_issue_2646/test_issue_2646.py\", line 16, in test_rewrapping_a_coefficient_updates_its_arguments\n    self.assertEqual(updated(0), 2)\nAssertionError: 1 != 2"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/base-issue-test.log",
+          "line": 11,
+          "context": "Traceback (most recent call last):\n  File \"/kaggle/working/tubitak_v02_kaggle_runner_v4/jobs/qutip-issue-2646-reproduction/research_candidates/evidence_abstention/reproduction/qutip_issue_2646/test_issue_2646.py\", line 16, in test_rewrapping_a_coefficient_updates_its_arguments\n    self.assertEqual(updated(0), 2)\nAssertionError: 1 != 2\n\n----------------------------------------------------------------------\nRan 1 test in 0.002s"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/base-issue-test.log",
+          "line": 16,
+          "context": "----------------------------------------------------------------------\nRan 1 test in 0.002s\n\nFAILED (failures=1)"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "line": 12,
+          "context": "  },\n  \"numpy\": {\n    \"version\": \"2.1.3\",\n    \"license\": \"Copyright (c) 2005-2024, NumPy Developers.\\n All rights reserved.\\n\\n Redistribution and use in source and binary forms, with or without\\n modification, are permitted provided that the following conditions are\\n met:\\n\\n     * Redistributions of source code must retain the above copyright\\n        notice, this list of conditions and the following disclaimer.\\n\\n     * Redistributions in binary form must reproduce the above\\n        copyright notice, this list of conditions and the following\\n        disclaimer in the documentation and/or other materials provided\\n        with the distribution.\\n\\n     * Neither the name of the NumPy Developers nor the names of any\\n        contributors may be used to endorse or promote products derived\\n        from this software without specific prior written permission.\\n\\n THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n \\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\n LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\n A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\n OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\n SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\n LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\n DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\n THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\n OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n ----\\n\\n The NumPy repository and source distributions bundle several libraries that are\\n compatibly licensed.  We list these here.\\n\\n Name: lapack-lite\\n Files: numpy/linalg/lapack_lite/*\\n License: BSD-3-Clause\\n   For details, see numpy/linalg/lapack_lite/LICENSE.txt\\n\\n Name: dragon4\\n Files: numpy/_core/src/multiarray/dragon4.c\\n License: MIT\\n   For license text, see numpy/_core/src/multiarray/dragon4.c\\n\\n Name: libdivide\\n Files: numpy/_core/include/numpy/libdivide/*\\n License: Zlib\\n   For license text, see numpy/_core/include/numpy/libdivide/LICENSE.txt\\n\\n\\n Note that the following files are vendored in the repository and sdist but not\\n installed in built numpy packages:\\n\\n Name: Meson\\n Files: vendored-meson/meson/"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "line": 20,
+          "context": "  },\n  \"scipy\": {\n    \"version\": \"1.14.1\",\n    \"license\": \"Copyright (c) 2001-2002 Enthought, Inc. 2003-2024, SciPy Developers.\\nAll rights reserved.\\n\\nRedistribution and use in source and binary forms, with or without\\nmodification, are permitted provided that the following conditions\\nare met:\\n\\n1. Redistributions of source code must retain the above copyright\\n   notice, this list of conditions and the following disclaimer.\\n\\n2. Redistributions in binary form must reproduce the above\\n   copyright notice, this list of conditions and the following\\n   disclaimer in the documentation and/or other materials provided\\n   with the distribution.\\n\\n3. Neither the name of the copyright holder nor the names of its\\n   contributors may be used to endorse or promote products derived\\n   from this software without specific prior written permission.\\n\\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\\n\\\"AS IS\\\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\\nOWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\\nLIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\\nTHEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\\n\\n----\\n\\nThis binary distribution of SciPy also bundles the following software:\\n\\n\\nName: OpenBLAS\\nFiles: scipy.libs/libopenblas*.so\\nDescription: bundled as a dynamically linked library\\nAvailability: https://github.com/OpenMathLib/OpenBLAS/\\nLicense: BSD-3-Clause-Attribution\\n  Copyright (c) 2011-2014, The OpenBLAS Project\\n  All rights reserved.\\n\\n  Redistribution and use in source and binary forms, with or without\\n  modification, are permitted provided that the following conditions are\\n  met:\\n\\n     1. Redistributions of source code must retain the above copyright\\n        notice, this list of conditions and the following disclaimer.\\n\\n     2. Redistributions in binary form must reproduce the above copyright\\n        notice, this list of conditions an"
+        },
+        {
+          "file": "qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/pr-2694.patch",
+          "line": 53,
+          "context": "+        args = args or {}\n         op = FunctionCoefficient(base, args.copy(), style=function_style)\n         if not isinstance(op(0), numbers.Number):\n             raise TypeError(\"The coefficient function must return a number\")\ndiff --git a/qutip/tests/core/test_coefficient.py b/qutip/tests/core/test_coefficient.py\nindex ea87c122d..b4a2e6e8c 100644\n--- a/qutip/tests/core/test_coefficient.py"
+        }
+      ],
+      "classification_status": "evidence_supported_triage"
+    },
+    {
+      "job": "amaranth-issue-1518-reproduction",
+      "outcome": "failure",
+      "failed_steps": [
+        "Clone exact Amaranth source and prepare patch"
+      ],
+      "declared_artifact_count": 5,
+      "resolved_artifact_count": 0,
+      "unresolved_artifact_count": 5,
+      "path_resolution": [
+        {
+          "declared_path": "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/SHA256SUMS.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/pr-1519.patch",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/dependency-license-inventory.json",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/upstream-pyproject.toml",
+          "resolved_path": null,
+          "method": "not_found"
+        },
+        {
+          "declared_path": "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/upstream-LICENSE.txt",
+          "resolved_path": null,
+          "method": "not_found"
+        }
+      ],
+      "candidate_scoped_archive_file_count": 17,
+      "selected_evidence_files": [
+        "amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/SHA256SUMS.txt",
+        "amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/dependency-license-inventory.json",
+        "amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/pr-1519.patch",
+        "amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/upstream-LICENSE.txt",
+        "amaranth-issue-1518-reproduction/kaggle-runner-logs/01_Checkout_research_repository.log",
+        "amaranth-issue-1518-reproduction/kaggle-runner-logs/02_Set_up_exact_Python_version.log",
+        "amaranth-issue-1518-reproduction/kaggle-runner-logs/03_Install_pinned_Amaranth_RTLIL_environment_and_audit_licenses.log",
+        "amaranth-issue-1518-reproduction/kaggle-runner-logs/04_Clone_exact_Amaranth_source_and_prepare_patch.log",
+        "amaranth-issue-1518-reproduction/kaggle-runner-logs/05_Run_independent_RTLIL_reproducer_on_buggy_base_failure_required_.log",
+        "amaranth-issue-1518-reproduction/kaggle-runner-logs/06_Extract_and_authenticate_exact_dataset_row.log",
+        "amaranth-issue-1518-reproduction/kaggle-runner-logs/07_Apply_exact_PR_patch_and_run_dataset_selectors_on_buggy_base_failure_required_.log",
+        "amaranth-issue-1518-reproduction/kaggle-runner-logs/08_Run_same_reproducer_and_selectors_on_fixed_revision_pass_required_.log",
+        "amaranth-issue-1518-reproduction/kaggle-runner-logs/09_Prepare_and_upload_raw_Amaranth_reproduction_evidence.log",
+        "amaranth-issue-1518-reproduction/kaggle-runner-logs/10_Upload_raw_Amaranth_reproduction_evidence.log",
+        "amaranth-issue-1518-reproduction/kaggle_job_result.json"
+      ],
+      "readable_log_text_files": 15,
+      "evidence_category": "source_checkout_failure_cause_unresolved",
+      "category_trigger_terms": [],
+      "log_excerpt_candidates": [
+        {
+          "file": "amaranth-issue-1518-reproduction/kaggle-runner-logs/04_Clone_exact_Amaranth_source_and_prepare_patch.log",
+          "line": 3,
+          "context": "Cloning into 'upstream-amaranth'...\nHEAD is now at 8c5ed40 hdl._nir: AssignmentList: fix comb_edges_to\nfatal: bad object 6a10abe6c873e7fb51a34f70801d3dd37cda9061"
+        },
+        {
+          "file": "amaranth-issue-1518-reproduction/kaggle_job_result.json",
+          "line": 5,
+          "context": "  \"job\": \"amaranth-issue-1518-reproduction\",\n  \"outcome\": \"failure\",\n  \"duration_seconds\": 10.51,\n  \"failed_steps\": [\n    \"Clone exact Amaranth source and prepare patch\"\n  ],\n  \"steps\": ["
+        },
+        {
+          "file": "amaranth-issue-1518-reproduction/kaggle_job_result.json",
+          "line": 33,
+          "context": "    },\n    {\n      \"name\": \"Clone exact Amaranth source and prepare patch\",\n      \"status\": \"failed\",\n      \"exit_code\": 128\n    },\n    {"
+        }
+      ],
+      "classification_status": "unresolved_no_specific_log_signature"
+    }
+  ]
+}

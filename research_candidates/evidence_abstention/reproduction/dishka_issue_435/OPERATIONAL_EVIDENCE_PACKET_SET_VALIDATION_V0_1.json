@@ -1,0 +1,33 @@
+{
+  "status": "valid",
+  "blockers": [],
+  "packet_set_id": "PACKETSET_DISHKA_435_20261116",
+  "packet_set_sha256": "55de204e87a9c2b5e24b56b4cb366fb3fc6a620ad7cbffd506c3c76fbca75604",
+  "packet_sha256_by_level": {
+    "E1": "cc46494b6b2deb0de40a757b19ec2a7cdf70b7c916518ff277c22f0d4ea99496",
+    "E2": "4cb061896822edee06a6c331591442d8507d0c356e0eddf15e78c46e76f42573",
+    "E3": "5abc525103a7714833a78ef2c2fd04456e79f7a39200392394342ea4e678fe09"
+  },
+  "evidence_count_by_level": {
+    "E1": 13,
+    "E2": 9,
+    "E3": 7
+  },
+  "strictly_nested": true,
+  "added_ids": {
+    "E2_over_E3": [
+      "BASE_CONTAINER_LOOKUP",
+      "BASE_REGISTRY_LOOKUP"
+    ],
+    "E1_over_E2": [
+      "BASE_REGISTRY_BUILDER",
+      "FIXED_REGISTRY_BUILDER",
+      "REGISTRY_BUILDER_DIFF",
+      "UPSTREAM_CROSS_SCOPE_TEST"
+    ]
+  },
+  "semantic_sufficiency_assessed": false,
+  "gold_root_cause_read": false,
+  "model_inference_performed": false,
+  "method": "Offline structural/hash checks implementing the same fail-closed rules inspected in operational_packet_validator.py and evidence_level_packet_set.py. Not a semantic sufficiency audit; not execution of the repository CLI."
+}

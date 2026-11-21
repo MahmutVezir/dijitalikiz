@@ -1,0 +1,131 @@
+name: NumPyro #1916 Independent Issue Reproducer (No Inference)
+
+on:
+  workflow_dispatch:
+    inputs:
+      scope_approval:
+        description: "Use only after a separate, current project-lead decision approves the exact research-use scope."
+        required: true
+        type: choice
+        options:
+          - not-approved
+          - approved
+        default: not-approved
+
+permissions:
+  contents: read
+
+jobs:
+  independent-issue-reproducer:
+    if: inputs.scope_approval == 'approved'
+    name: Exact buggy-base failure / fixed-revision pass
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout this research repository
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install the pinned CPU-only NumPyro issue environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-numpyro
+          .venv-numpyro/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/numpyro_issue_1916/dataset_test_requirements.lock
+          .venv-numpyro/bin/python -m pip check
+          .venv-numpyro/bin/python -VV > runtime.txt
+          .venv-numpyro/bin/python -m pip freeze > runtime-freeze.txt
+
+      - name: Clone NumPyro and authenticate exact base/fixed source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          git clone --filter=blob:none https://github.com/pyro-ppl/numpyro.git upstream-numpyro
+          git -C upstream-numpyro fetch --depth=1 origin 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d
+          git -C upstream-numpyro fetch --depth=1 origin 5692d2da335945b756aeae02e3720b9b7f3efef2
+          git -C upstream-numpyro cat-file -e '07e4c9bc4524cc0a741ba8f8ad41339d34a0288d^{commit}'
+          git -C upstream-numpyro cat-file -e '5692d2da335945b756aeae02e3720b9b7f3efef2^{commit}'
+          git -C upstream-numpyro checkout --detach 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d
+          test "$(git -C upstream-numpyro rev-parse HEAD)" = "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d"
+          test "$(git -C upstream-numpyro rev-parse HEAD:LICENSE.md)" = "d645695673349e3947e8e5ae42332d0ac3164cd7"
+          test "$(git -C upstream-numpyro rev-parse HEAD:setup.py)" = "61057684bd3ec88c64431dbee4486d584a70fc1c"
+          test "$(git -C upstream-numpyro rev-parse HEAD:numpyro/infer/mcmc.py)" = "dd3ec0c3a782c1e1530b138153d821392ee5bebd"
+          test "$(git -C upstream-numpyro rev-parse HEAD:numpyro/infer/ensemble.py)" = "64a2870ade0565cb6547cc92d97c11502e769bfd"
+          git -C upstream-numpyro show HEAD:LICENSE.md > reproduction-evidence/buggy-base-LICENSE.md
+          git -C upstream-numpyro show HEAD:numpyro/infer/mcmc.py > reproduction-evidence/buggy-base-mcmc.py
+          git -C upstream-numpyro show HEAD:numpyro/infer/ensemble.py > reproduction-evidence/buggy-base-ensemble.py
+          git -C upstream-numpyro diff 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d 5692d2da335945b756aeae02e3720b9b7f3efef2 -- numpyro/infer/mcmc.py test/infer/test_ensemble_mcmc.py > reproduction-evidence/fix-relevant-diff.patch
+          sha256sum reproduction-evidence/buggy-base-LICENSE.md reproduction-evidence/buggy-base-mcmc.py reproduction-evidence/buggy-base-ensemble.py reproduction-evidence/fix-relevant-diff.patch > reproduction-evidence/source-sha256.txt
+          sha256sum research_candidates/evidence_abstention/reproduction/numpyro_issue_1916/test_issue_1916.py research_candidates/evidence_abstention/reproduction/numpyro_issue_1916/dataset_test_requirements.lock > reproduction-evidence/reproducer-and-lock-sha256.txt
+
+      - name: Run independent issue reproducer on exact buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-numpyro checkout --detach 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" .venv-numpyro/bin/python -m pytest -c /dev/null -p no:cacheprovider -q research_candidates/evidence_abstention/reproduction/numpyro_issue_1916/test_issue_1916.py > reproduction-evidence/base-reproducer.log 2>&1
+          test_status=$?
+          set -e
+          cat reproduction-evidence/base-reproducer.log
+          if [ "$test_status" -eq 0 ]; then
+            echo "::error::The independent issue reproducer unexpectedly passed on the pinned buggy base."
+            exit 1
+          fi
+          if grep -q "ERROR collecting" reproduction-evidence/base-reproducer.log; then
+            echo "::error::The independent reproducer failed during collection, not during the reported defect."
+            exit 1
+          fi
+          if ! grep -Fq "key array of shape (100, 2)" reproduction-evidence/base-reproducer.log; then
+            echo "::error::The buggy base did not reproduce the reported batched PRNG-key shape error."
+            exit 1
+          fi
+          echo "BASE_EXPECTED_FAILURE=PASS" >> "$GITHUB_STEP_SUMMARY"
+          echo "Independent public-API warmup-then-run reproducer failed on the exact buggy base with the reported (100, 2) key-shape error." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run the identical independent issue reproducer on exact fixed revision (pass required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-numpyro checkout --detach 5692d2da335945b756aeae02e3720b9b7f3efef2
+          test "$(git -C upstream-numpyro rev-parse HEAD)" = "5692d2da335945b756aeae02e3720b9b7f3efef2"
+          test "$(git -C upstream-numpyro rev-parse HEAD:numpyro/infer/mcmc.py)" = "7dd596bca382c4f6517e93458c5806c690cddb59"
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-numpyro" .venv-numpyro/bin/python -m pytest -c /dev/null -p no:cacheprovider -q research_candidates/evidence_abstention/reproduction/numpyro_issue_1916/test_issue_1916.py > reproduction-evidence/fixed-reproducer.log 2>&1
+          cat reproduction-evidence/fixed-reproducer.log
+          grep -Fq "1 passed" reproduction-evidence/fixed-reproducer.log
+          echo "FIX_EXPECTED_PASS=PASS" >> "$GITHUB_STEP_SUMMARY"
+          echo "The exact same independent reproducer passed on the pinned fixed merge in the same runtime." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Record source, runtime and log identities
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## NumPyro #1916 independent issue reproducer"
+            echo "- Repository: pyro-ppl/numpyro"
+            echo "- Issue: #1916; fix PR: #1918"
+            echo "- Buggy base: 07e4c9bc4524cc0a741ba8f8ad41339d34a0288d"
+            echo "- Fixed merge: 5692d2da335945b756aeae02e3720b9b7f3efef2"
+            echo "- Python: 3.11.9; CPU-only JAX/JAXlib: 0.4.35"
+            echo "- Reproducer: independent public-API warmup() then run() sequence with AIES and 100 vectorized chains"
+            echo "- Same source, test, runtime and lock used at both revisions"
+            echo "- No model loading, inference, fine-tuning or training"
+            sha256sum runtime.txt runtime-freeze.txt reproduction-evidence/*.log reproduction-evidence/*sha256.txt 2>/dev/null || true
+          } >> "$GITHUB_STEP_SUMMARY"
+          mkdir -p reproduction-evidence
+          cp runtime.txt runtime-freeze.txt reproduction-evidence/ 2>/dev/null || true
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+
+      - name: Upload independent reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: numpyro-1916-independent-issue-reproducer
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90

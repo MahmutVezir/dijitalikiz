@@ -1,0 +1,391 @@
+name: "Modin #7554 Stage 2 Pinned Exact Selector Reproduction (Sanitized, No Inference)"
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/modin-7554-stage2-pinned.yml"
+      - "research_candidates/evidence_abstention/reproduction/modin_issue_7553/requirements.lock"
+      - "research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  modin-7554-pinned-exact-selectors:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    env:
+      PYTHONUNBUFFERED: "1"
+      BASE_SHA: "1817ae423ba86c467f5a737817a8c00653be75cb"
+      FIX_SHA: "48ef1adda0b09791081909ffc267730e265b2f88"
+      EXPECTED_ROW_SHA256: "02d8f6266c2b60eb29cb417fb1c157bd56ebe2152e39b53bcadd423e4490631a"
+      EXPECTED_PARQUET_SHA256: "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Authenticate exact upstream Modin commits and source blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone https://github.com/modin-project/modin.git upstream-modin
+          git -C upstream-modin fetch --no-tags origin "$BASE_SHA" "$FIX_SHA"
+          git -C upstream-modin cat-file -e "${BASE_SHA}^{commit}"
+          git -C upstream-modin cat-file -e "${FIX_SHA}^{commit}"
+          git -C upstream-modin checkout --detach "$BASE_SHA"
+          test "$(git -C upstream-modin rev-parse HEAD)" = "$BASE_SHA"
+          test "$(git -C upstream-modin rev-parse HEAD:modin/core/storage_formats/pandas/query_compiler_caster.py)" = "a7bf3a19644100682166debcb15bc76f50c7a6ea"
+          test "$(git -C upstream-modin rev-parse "${FIX_SHA}:modin/core/storage_formats/pandas/query_compiler_caster.py")" = "3027d238563a6102c5e48c8761d5d8e1bfb94b90"
+          test "$(git -C upstream-modin rev-parse HEAD:modin/tests/pandas/native_df_interoperability/test_compiler_caster.py)" = "1f6ada74433d930179144bf25d7bf3ffd548ad69"
+          test "$(git -C upstream-modin rev-parse "${FIX_SHA}:modin/tests/pandas/native_df_interoperability/test_compiler_caster.py")" = "688a568551989e62eb71e70c024f669a7bc3bf03"
+          test "$(git -C upstream-modin rev-parse HEAD:LICENSE)" = "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64"
+          test "$(git -C upstream-modin rev-parse HEAD:NOTICE)" = "77a9b8402671f140659c8956a98b3dc05d62eea0"
+          mkdir -p reproduction-evidence
+          patch_sha256="$(git -C upstream-modin diff "$BASE_SHA" "$FIX_SHA" -- modin/tests/pandas/native_df_interoperability/test_compiler_caster.py | sha256sum | awk '{print $1}')"
+          full_patch_sha256="$(git -C upstream-modin diff "$BASE_SHA" "$FIX_SHA" | sha256sum | awk '{print $1}')"
+          export patch_sha256 full_patch_sha256
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+          repo = Path("upstream-modin")
+          def git(*args):
+              return subprocess.check_output(["git", "-C", str(repo), *args], text=True).strip()
+          data = {
+              "repository": "modin-project/modin",
+              "base_commit": os.environ["BASE_SHA"],
+              "fixed_commit": os.environ["FIX_SHA"],
+              "base_query_compiler_caster_blob": git("rev-parse", "HEAD:modin/core/storage_formats/pandas/query_compiler_caster.py"),
+              "fixed_query_compiler_caster_blob": git("rev-parse", os.environ["FIX_SHA"] + ":modin/core/storage_formats/pandas/query_compiler_caster.py"),
+              "base_test_file_blob": git("rev-parse", "HEAD:modin/tests/pandas/native_df_interoperability/test_compiler_caster.py"),
+              "fixed_test_file_blob": git("rev-parse", os.environ["FIX_SHA"] + ":modin/tests/pandas/native_df_interoperability/test_compiler_caster.py"),
+              "base_license_blob": git("rev-parse", "HEAD:LICENSE"),
+              "base_notice_blob": git("rev-parse", "HEAD:NOTICE"),
+              "full_pr_patch_sha256_not_saved": os.environ["full_patch_sha256"],
+              "test_file_patch_sha256_not_saved": os.environ["patch_sha256"],
+              "root_license": "Apache-2.0",
+              "full_pr_patch_contents_saved": False,
+          }
+          Path("reproduction-evidence/source-provenance.json").write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(data, indent=2))
+          PY
+
+      - name: Authenticate frozen Modin row temporarily
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv "$RUNNER_TEMP/modin-data-venv"
+          "$RUNNER_TEMP/modin-data-venv/bin/python" -m pip install --disable-pip-version-check --no-deps "pyarrow==19.0.1"
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          echo "$EXPECTED_PARQUET_SHA256  $RUNNER_TEMP/train-00000-of-00001.parquet" | sha256sum --check
+          "$RUNNER_TEMP/modin-data-venv/bin/python" - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import pyarrow.parquet as pq
+          parquet = Path(os.environ["RUNNER_TEMP"]) / "train-00000-of-00001.parquet"
+          columns = ["instance_id", "repo", "base_commit", "created_at", "language", "license", "FAIL_TO_PASS", "problem_statement"]
+          rows = pq.read_table(parquet, columns=columns, filters=[("instance_id", "=", "modin-project__modin-7554")]).to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected exactly one frozen row; observed {len(rows)}")
+          row = rows[0]
+          expected = {
+              "repo": "modin-project/modin",
+              "base_commit": os.environ["BASE_SHA"],
+              "created_at": "2025-05-02 19:12:19",
+              "language": "python",
+              "license": "Apache-2.0",
+          }
+          for key, value in expected.items():
+              if str(row[key]) != value:
+                  raise SystemExit(f"Frozen row {key} mismatch: expected={value!r}; observed={row[key]!r}")
+          expected_selectors = [
+              "modin/tests/pandas/native_df_interoperability/test_compiler_caster.py::TestSwitchBackendPostOpDependingOnDataSize::test_auto_switch_config_can_disable_groupby_agg_auto_switch[auto_switch_backend_False-DataFrameGroupBy]",
+              "modin/tests/pandas/native_df_interoperability/test_compiler_caster.py::TestSwitchBackendPostOpDependingOnDataSize::test_auto_switch_config_can_disable_groupby_agg_auto_switch[auto_switch_backend_False-SeriesGroupBy]",
+          ]
+          selectors = row["FAIL_TO_PASS"]
+          if selectors != expected_selectors:
+              raise SystemExit(f"Frozen selector list mismatch: {selectors!r}")
+          problem = row.get("problem_statement") or ""
+          alignment = {
+              "mentions_autoswitchbackend": "AutoSwitchBackend" in problem,
+              "mentions_groupby": "groupby" in problem.lower(),
+              "mentions_notimplementederror": "NotImplementedError" in problem,
+              "selectors_explicitly_target_false": all("auto_switch_backend_False" in x for x in selectors),
+          }
+          if not all(alignment.values()):
+              raise SystemExit(f"Frozen problem statement/selector contract mismatch: {alignment}")
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          digest = hashlib.sha256(canonical).hexdigest()
+          if digest != os.environ["EXPECTED_ROW_SHA256"]:
+              raise SystemExit(f"Frozen row SHA-256 mismatch: {digest}")
+          summary = {
+              "instance_id": row["instance_id"],
+              "row_sha256": digest,
+              "repo": row["repo"],
+              "base_commit": row["base_commit"],
+              "created_at": str(row["created_at"]),
+              "language": row["language"],
+              "license": row["license"],
+              "selector_count": len(selectors),
+              "selectors": selectors,
+              "problem_statement_alignment_checks": alignment,
+              "issue_title_vs_PR_scope": {
+                  "issue_title_says_autoswitch_on": True,
+                  "PR_body_says_autoswitch_off": True,
+                  "selector_ids_say_autoswitch_false": True,
+                  "discrepancy_resolved_by_researcher": False,
+              },
+              "problem_statement_saved": False,
+              "canonical_row_saved": False,
+              "parquet_saved_to_artifact": False,
+          }
+          evidence = Path("reproduction-evidence")
+          (evidence / "dataset-row-summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          (evidence / "dataset-fail-to-pass-selectors.txt").write_text("\n".join(selectors) + "\n", encoding="utf-8")
+          (evidence / "dataset-row-sha256.txt").write_text(digest + "  canonical-row-not-stored\n", encoding="utf-8")
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          PY
+          rm -f "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          rm -rf "$RUNNER_TEMP/modin-data-venv"
+          test ! -e "$RUNNER_TEMP/train-00000-of-00001.parquet"
+
+      - name: Install exact pinned Modin runtime and verify freeze
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-modin
+          .venv-modin/bin/python -m pip install --disable-pip-version-check "pip==24.3.1"
+          .venv-modin/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/modin_issue_7553/requirements.lock
+          .venv-modin/bin/python -m pip install --disable-pip-version-check --no-deps --no-build-isolation -e ./upstream-modin
+          .venv-modin/bin/python -m pip check | tee reproduction-evidence/pip-check.txt
+          sed '/^#/d;/^$/d' research_candidates/evidence_abstention/reproduction/modin_issue_7553/requirements.lock | LC_ALL=C sort > "$RUNNER_TEMP/modin-expected-freeze.txt"
+          .venv-modin/bin/python -m pip freeze --all | grep -v '^-e ' | LC_ALL=C sort > "$RUNNER_TEMP/modin-observed-freeze.txt"
+          diff -u "$RUNNER_TEMP/modin-expected-freeze.txt" "$RUNNER_TEMP/modin-observed-freeze.txt"
+          cp "$RUNNER_TEMP/modin-observed-freeze.txt" reproduction-evidence/pinned-environment-freeze.txt
+          cp research_candidates/evidence_abstention/reproduction/modin_issue_7553/requirements.lock reproduction-evidence/requirements.lock
+          .venv-modin/bin/python - <<'PY'
+          import importlib.metadata as md
+          import json
+          import re
+          import sys
+          inventory = {}
+          missing = []
+          for dist in md.distributions():
+              name = dist.metadata.get("Name")
+              if not name:
+                  continue
+              key = re.sub(r"[-_.]+", "-", name).lower()
+              classifiers = [v for v in dist.metadata.get_all("Classifier", []) if v.startswith("License ::")]
+              license_text = dist.metadata.get("License") or dist.metadata.get("License-Expression")
+              if not license_text and not classifiers:
+                  missing.append(name)
+              inventory[key] = {
+                  "name": name,
+                  "version": dist.version,
+                  "license": license_text,
+                  "license_expression": dist.metadata.get("License-Expression"),
+                  "license_classifiers": classifiers,
+              }
+          if missing:
+              raise SystemExit("Installed distributions missing license metadata: " + ", ".join(sorted(missing)))
+          with open("reproduction-evidence/dependency-license-inventory.json", "w", encoding="utf-8") as f:
+              json.dump(inventory, f, indent=2, sort_keys=True)
+              f.write("\n")
+          summary = {
+              "python": sys.version.split()[0],
+              "pip": md.version("pip"),
+              "pytest": md.version("pytest"),
+              "modin": md.version("modin"),
+              "pandas": md.version("pandas"),
+              "numpy": md.version("numpy"),
+              "distribution_count": len(inventory),
+              "license_metadata_missing": sorted(missing),
+              "license_metadata_complete": not missing,
+          }
+          with open("reproduction-evidence/runtime-summary.json", "w", encoding="utf-8") as f:
+              json.dump(summary, f, indent=2)
+              f.write("\n")
+          print(json.dumps(summary, indent=2))
+          PY
+
+      - name: Insert only the frozen regression method into the buggy base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-modin checkout --detach "$BASE_SHA"
+          .venv-modin/bin/python - <<'PY'
+          import hashlib
+          import json
+          import subprocess
+          from pathlib import Path
+          repo = Path("upstream-modin")
+          path = "modin/tests/pandas/native_df_interoperability/test_compiler_caster.py"
+          fixed_text = subprocess.check_output([
+              "git", "-C", str(repo), "show",
+              "48ef1adda0b09791081909ffc267730e265b2f88:" + path,
+          ], text=True)
+          base_path = repo / path
+          base_text = base_path.read_text(encoding="utf-8")
+          marker = '    @pytest.mark.parametrize(\n        "groupby_class,operation",'
+          anchor = "\n\nclass TestSwitchBackendPreOp:"
+          start = fixed_text.find(marker)
+          end = fixed_text.find(anchor, start)
+          if start < 0 or end < 0 or anchor not in base_text:
+              raise SystemExit("Could not isolate exact PR regression method insertion")
+          addition = fixed_text[start:end].rstrip() + "\n"
+          updated = base_text.replace(anchor, "\n\n" + addition + anchor, 1)
+          base_path.write_text(updated, encoding="utf-8")
+          tracked = subprocess.check_output(["git", "-C", str(repo), "diff", "--name-only"], text=True).splitlines()
+          source_blob = subprocess.check_output([
+              "git", "-C", str(repo), "rev-parse",
+              "HEAD:modin/core/storage_formats/pandas/query_compiler_caster.py",
+          ], text=True).strip()
+          if tracked != [path]:
+              raise SystemExit(f"Test-only insertion changed unexpected paths: {tracked}")
+          if source_blob != "a7bf3a19644100682166debcb15bc76f50c7a6ea":
+              raise SystemExit("Buggy-base production source was modified")
+          summary = {
+              "changed_paths": tracked,
+              "inserted_method_sha256": hashlib.sha256(addition.encode("utf-8")).hexdigest(),
+              "inserted_method_line_count": len(addition.splitlines()),
+              "base_production_source_blob_unchanged": source_blob,
+              "only_test_method_inserted": True,
+              "full_production_patch_applied_to_base": False,
+          }
+          Path("reproduction-evidence/test-only-patch-scope.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(summary, indent=2))
+          PY
+
+      - name: Run exact frozen selectors on buggy base and retain only real exception summaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-modin" \
+            .venv-modin/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-modin" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --no-conftest --expect base-fail \
+            --log-file "$RUNNER_TEMP/modin-base-tests.json" \
+            > "$RUNNER_TEMP/modin-base-output.log" 2>&1
+          status=$?
+          set -e
+          if [ "$status" -ne 0 ]; then
+            echo "Frozen selectors did not satisfy the base-fail runner contract." >&2
+            exit "$status"
+          fi
+          .venv-modin/bin/python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          temp = Path(os.environ["RUNNER_TEMP"])
+          report = json.loads((temp / "modin-base-tests.json").read_text(encoding="utf-8"))
+          if not report.get("success") or report.get("expectation") != "base-fail" or report.get("selector_count") != 2:
+              raise SystemExit("Base runner contract does not show two executed failed tests")
+          summaries = []
+          for item in report["results"]:
+              lines = item.get("output", "").splitlines()
+              exception = next((
+                  line.strip() for line in lines
+                  if line.lstrip().startswith("E") and "NotImplementedError:" in line
+              ), None)
+              if not item.get("ok") or item.get("returncode") != 1 or not exception:
+                  raise SystemExit(
+                      f"Selector did not expose a real NotImplementedError traceback line: {item.get('selector')}"
+                  )
+              summaries.append({
+                  "selector": item["selector"],
+                  "expectation": "base-fail",
+                  "returncode": item["returncode"],
+                  "runner_reason": item["reason"],
+                  "exception_line": exception,
+                  "raw_test_output_saved": False,
+              })
+          Path("reproduction-evidence/base-dataset-tests.json").write_text(
+              json.dumps(summaries, indent=2) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(summaries, indent=2))
+          PY
+
+      - name: Run identical frozen selectors on exact fixed revision
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f reproduction-evidence/dataset-fail-to-pass-selectors.txt ] || [ ! -x .venv-modin/bin/python ]; then
+            echo "Selector file or pinned environment missing; fixed-side pass is not available." >&2
+            exit 1
+          fi
+          git -C upstream-modin checkout --detach --force "$FIX_SHA"
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-modin" \
+            .venv-modin/bin/python "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/implementation/run_swe_rebench_fail_to_pass.py" \
+            --source-dir "$GITHUB_WORKSPACE/upstream-modin" \
+            --selectors-file "$GITHUB_WORKSPACE/reproduction-evidence/dataset-fail-to-pass-selectors.txt" \
+            --no-conftest --expect fixed-pass \
+            --log-file "$RUNNER_TEMP/modin-fixed-tests.json" \
+            > "$RUNNER_TEMP/modin-fixed-output.log" 2>&1
+          .venv-modin/bin/python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          temp = Path(os.environ["RUNNER_TEMP"])
+          report = json.loads((temp / "modin-fixed-tests.json").read_text(encoding="utf-8"))
+          if not report.get("success") or report.get("expectation") != "fixed-pass" or report.get("selector_count") != 2:
+              raise SystemExit("Fixed runner contract does not show two executed passing tests")
+          summaries = []
+          for item in report["results"]:
+              if not item.get("ok") or item.get("returncode") != 0:
+                  raise SystemExit(f"Exact selector did not pass on fixed revision: {item.get('selector')}")
+              summaries.append({
+                  "selector": item["selector"],
+                  "expectation": "fixed-pass",
+                  "returncode": item["returncode"],
+                  "runner_reason": item["reason"],
+                  "raw_test_output_saved": False,
+              })
+          Path("reproduction-evidence/fixed-dataset-tests.json").write_text(
+              json.dumps(summaries, indent=2) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(summaries, indent=2))
+          PY
+          rm -f "$RUNNER_TEMP/modin-base-tests.json" "$RUNNER_TEMP/modin-fixed-tests.json" \
+                "$RUNNER_TEMP/modin-base-output.log" "$RUNNER_TEMP/modin-fixed-output.log"
+
+      - name: Hash sanitized evidence and declare the issue-title/PR-scope discrepancy
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "### Modin #7554 — pinned exact-selector reproduction"
+            echo "- Frozen row SHA-256: $EXPECTED_ROW_SHA256"
+            echo "- Base: $BASE_SHA"
+            echo "- Fixed: $FIX_SHA"
+            echo "- The two parameter selectors are one dataset case, not two independent cases."
+            echo "- Issue title says AutoSwitchBackend is on; PR body and frozen selector IDs target AutoSwitchBackend=False. This remains an explicit human scope-review gate."
+            echo "- Only the new test method was inserted into the buggy base; production code was not changed."
+            echo "- No model loading, inference, fine-tuning, or training."
+          } >> "$GITHUB_STEP_SUMMARY"
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
+
+      - name: Upload sanitized pinned evidence only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: modin-7554-pinned-exact-selector-evidence
+          path: reproduction-evidence/
+          if-no-files-found: error
+          retention-days: 90

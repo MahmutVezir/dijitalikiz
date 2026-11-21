@@ -1,3 +1,4 @@
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -18,22 +19,84 @@ class TestV02ExploratoryPreflight(unittest.TestCase):
         self.assertFalse(report["primary_target_met"])
         self.assertFalse(report["stretch_target_met"])
 
-    def test_empty_registry_blocks_inference_without_becoming_invalid(self):
+    def test_accepted_registry_is_valid_but_global_gates_still_block_inference(self):
         report = evaluate(ROOT)
-        self.assertEqual(report["registry_status"], "valid_empty_registry")
-        self.assertEqual(report["accepted_case_count"], 0)
-        self.assertEqual(report["accepted_project_count"], 0)
+        self.assertEqual(report["registry_status"], "structurally_valid_candidate_registry")
+        self.assertEqual(report["accepted_case_count"], 3)
+        self.assertEqual(report["accepted_project_count"], 3)
         self.assertFalse(report["ready_for_inference"])
-        self.assertIn(
+        self.assertNotIn(
             "No accepted case is registered; at least one fully accepted independent-project case is required before any model inference.",
             report["blockers"],
         )
-
-    def test_single_human_design_does_not_require_second_rater(self):
-        report = evaluate(ROOT)
-        self.assertEqual(report["human_review_mode"], "single_researcher_adjudicator")
+        self.assertIn("The exact immutable model revision's license/use review is not approved.", report["blockers"])
+        self.assertNotIn("Rater B participation and case-specific independence/exposure screening are not confirmed.", report["blockers"])
+        self.assertEqual(report["human_review_mode"], "single_human_condition_masked_not_blinded")
+        self.assertEqual(report["human_participant_count"], 1)
         self.assertFalse(report["second_human_rater_required"])
+
+    def test_meltano_bounded_scope_acknowledgement_keeps_open_gates_fail_closed(self):
+        license_path = ROOT / "research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-21.json"
+        ledger_path = ROOT / "research_candidates/evidence_abstention/SWE_REBENCH_V2_STAGE2_STAGE3_PROGRESS_LEDGER_V0_1_2026-11-16.json"
+        registry_path = ROOT / "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json"
+        decision_path = ROOT / "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md"
+
+        license_review = json.loads(license_path.read_text(encoding="utf-8"))
+        ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        decision = decision_path.read_text(encoding="utf-8")
+
+        human = license_review["human_review"]
+        self.assertTrue(human["bounded_research_scope_acknowledged_in_principle"])
+        self.assertEqual(
+            human["project_lead_scope_acknowledgement"],
+            "acknowledged_in_principle_with_explicit_conditions",
+        )
+        self.assertEqual(human["nested_dependency_review"], "open")
+        self.assertEqual(human["notice_and_provenance_review"], "open")
+        self.assertFalse(human["accepted_research_scope"])
+        self.assertFalse(human["accepted_as_legal_clearance"])
+        self.assertFalse(license_review["boundaries"]["legal_clearance"])
+        self.assertFalse(license_review["boundaries"]["redistribution_authorized"])
+        self.assertFalse(license_review["boundaries"]["final_case_acceptance"])
+        self.assertFalse(license_review["boundaries"]["inference_authorized"])
+        self.assertEqual(
+            license_review["dataset_scope"]["exact_pinned_card_review"].split(";")[0],
+            "pending",
+        )
+
+        meltano = next(record for record in ledger["records"] if record["repository"] == "meltano/sdk")
+        self.assertEqual(meltano["final_case_acceptance"], "not_accepted")
+        self.assertFalse(meltano["model_inference_authorized"])
+        self.assertEqual(ledger["summary"]["accepted_exploratory_cases"], 3)
+        self.assertEqual(ledger["summary"]["accepted_exploratory_projects"], 3)
+        self.assertFalse(any(
+            case.get("case_id") == "SRV2E-MELTANO_3090"
+            for case in registry.get("cases", [])
+        ))
+        self.assertIn("not legal advice", decision.lower())
+        self.assertIn("does not", decision.lower())
+
+    def test_single_human_output_scoring_contract_is_enforced(self):
+        report = evaluate(ROOT)
+        self.assertEqual(report["human_review_mode"], "single_human_condition_masked_not_blinded")
+        self.assertEqual(report["human_participant_count"], 1)
+        self.assertEqual(report["single_human_scorer"], "student_project_lead")
+        self.assertFalse(report["second_human_rater_required"])
+        self.assertEqual(
+            report["second_human_rater_status"],
+            "not_applicable_no_second_human_in_project",
+        )
+        self.assertEqual(
+            report["scoring_blinding_status"],
+            "condition_masked_not_blinded_to_case_source_gold_or_tier",
+        )
         self.assertFalse(report["interrater_reliability_claimed"])
+        self.assertEqual(report["agreement_statistics_planned"], [])
+        self.assertNotIn(
+            "The active v0.2 output-scoring design must be single-human, not dual-human.",
+            report["blockers"],
+        )
 
     def test_external_preregistration_is_not_a_v02_gate(self):
         report = evaluate(ROOT)

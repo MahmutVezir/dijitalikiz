@@ -1,0 +1,137 @@
+name: Dymos #1166 Independent Issue Reproducer (No Inference)
+
+on:
+  push:
+    branches:
+      - "research/**"
+    paths:
+      - ".github/workflows/dymos-1166-independent-reproducer.yml"
+      - "research_candidates/evidence_abstention/reproduction/dymos_issue_1166/**"
+  pull_request:
+    paths:
+      - ".github/workflows/dymos-1166-independent-reproducer.yml"
+      - "research_candidates/evidence_abstention/reproduction/dymos_issue_1166/**"
+
+permissions:
+  contents: read
+
+jobs:
+  independent-issue-reproducer:
+    name: Exact buggy-base failure / fixed-revision pass
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout this research repository
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Install the pinned CPU-compatible Dymos environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv .venv-dymos
+          .venv-dymos/bin/python -m pip install --disable-pip-version-check --no-deps -r research_candidates/evidence_abstention/reproduction/dymos_issue_1166/requirements.lock
+          .venv-dymos/bin/python -m pip check
+          .venv-dymos/bin/python -VV > runtime.txt
+          .venv-dymos/bin/python -m pip freeze > runtime-freeze.txt
+
+      - name: Clone Dymos and authenticate exact base/fixed source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reproduction-evidence
+          git clone --filter=blob:none https://github.com/OpenMDAO/dymos.git upstream-dymos
+          git -C upstream-dymos fetch --depth=1 origin 3efd1035c3bf62890034eb9e07de543f3d117867
+          git -C upstream-dymos fetch --depth=1 origin 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949
+          git -C upstream-dymos cat-file -e '3efd1035c3bf62890034eb9e07de543f3d117867^{commit}'
+          git -C upstream-dymos cat-file -e '0ffc82225d6125dcb5c5b5acfb9be9fd712ef949^{commit}'
+          git -C upstream-dymos checkout --detach 3efd1035c3bf62890034eb9e07de543f3d117867
+          test "$(git -C upstream-dymos rev-parse HEAD)" = "3efd1035c3bf62890034eb9e07de543f3d117867"
+          test "$(git -C upstream-dymos rev-parse HEAD:LICENSE)" = "55da29e11b1fb2465936598779085f1cbcdf2908"
+          test "$(git -C upstream-dymos rev-parse HEAD:pyproject.toml)" = "739e56592adfa10e0583b5f71fa4d36837e5a88c"
+          test "$(git -C upstream-dymos rev-parse HEAD:dymos/transcriptions/common/control_comp.py)" = "74a1449b45329c3f87927c1fec6d4bbf936af138"
+          test "$(git -C upstream-dymos rev-parse HEAD:dymos/utils/misc.py)" = "c0e115063ce33b8d43561b2de12187527da22679"
+          git -C upstream-dymos show HEAD:LICENSE > reproduction-evidence/buggy-base-LICENSE
+          git -C upstream-dymos show HEAD:pyproject.toml > reproduction-evidence/buggy-base-pyproject.toml
+          git -C upstream-dymos show HEAD:dymos/transcriptions/common/control_comp.py > reproduction-evidence/buggy-base-control_comp.py
+          git -C upstream-dymos show HEAD:dymos/utils/misc.py > reproduction-evidence/buggy-base-misc.py
+          git -C upstream-dymos diff 3efd1035c3bf62890034eb9e07de543f3d117867 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949 > reproduction-evidence/full-pr.patch
+          git -C upstream-dymos diff 3efd1035c3bf62890034eb9e07de543f3d117867 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949 -- dymos/transcriptions/common/control_comp.py dymos/utils/misc.py > reproduction-evidence/default-value-fix.patch
+          git -C upstream-dymos checkout --detach 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949
+          test "$(git -C upstream-dymos rev-parse HEAD)" = "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949"
+          test "$(git -C upstream-dymos rev-parse HEAD:dymos/transcriptions/common/control_comp.py)" = "ca4a18c082020416322f00548913a562fc0fb73d"
+          test "$(git -C upstream-dymos rev-parse HEAD:dymos/utils/misc.py)" = "338686076616cd22d61a53e663e664a746c53ab0"
+          git -C upstream-dymos show HEAD:dymos/transcriptions/common/control_comp.py > reproduction-evidence/fixed-control_comp.py
+          git -C upstream-dymos show HEAD:dymos/utils/misc.py > reproduction-evidence/fixed-misc.py
+          sha256sum reproduction-evidence/* > reproduction-evidence/source-sha256.txt
+          sha256sum research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py research_candidates/evidence_abstention/reproduction/dymos_issue_1166/requirements.lock > reproduction-evidence/reproducer-and-lock-sha256.txt
+          git -C upstream-dymos diff --name-only 3efd1035c3bf62890034eb9e07de543f3d117867 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949 > reproduction-evidence/upstream-pr-changed-files.txt
+
+      - name: Run independent public-API reproducer on exact buggy base (failure required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-dymos checkout --detach 3efd1035c3bf62890034eb9e07de543f3d117867
+          set +e
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-dymos" .venv-dymos/bin/python -m pytest -c /dev/null -p no:cacheprovider -q research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py > reproduction-evidence/base-reproducer.log 2>&1
+          test_status=$?
+          set -e
+          cat reproduction-evidence/base-reproducer.log
+          if [ "$test_status" -eq 0 ]; then
+            echo "::error::The independent Dymos issue reproducer unexpectedly passed on the pinned buggy base."
+            exit 1
+          fi
+          if grep -q "ERROR collecting" reproduction-evidence/base-reproducer.log; then
+            echo "::error::The independent reproducer failed during collection, not during the reported defect."
+            exit 1
+          fi
+          if ! grep -Fq "x: array([[1.]," reproduction-evidence/base-reproducer.log || ! grep -Fq "y: array([[ 5.]," reproduction-evidence/base-reproducer.log; then
+            echo "::error::The buggy base did not reproduce the expected default-value mismatch."
+            exit 1
+          fi
+          echo "BASE_EXPECTED_FAILURE=PASS" >> "$GITHUB_STEP_SUMMARY"
+          echo "Independent fresh-model add_control(val=[5, 15]) reproducer failed on exact buggy base with the expected all-ones control input." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run the identical independent reproducer on exact fixed revision (pass required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C upstream-dymos checkout --detach 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949
+          PYTHONPATH="$GITHUB_WORKSPACE/upstream-dymos" .venv-dymos/bin/python -m pytest -c /dev/null -p no:cacheprovider -q research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py > reproduction-evidence/fixed-reproducer.log 2>&1
+          cat reproduction-evidence/fixed-reproducer.log
+          grep -Fq "1 passed" reproduction-evidence/fixed-reproducer.log
+          echo "FIX_EXPECTED_PASS=PASS" >> "$GITHUB_STEP_SUMMARY"
+          echo "The same independent public-API reproducer passed on the exact fixed PR head." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Record source, runtime, and log identities
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Dymos #1166 independent issue reproducer"
+            echo "- Repository: OpenMDAO/dymos"
+            echo "- Issue: #1166; fix PR: #1165"
+            echo "- Buggy base: 3efd1035c3bf62890034eb9e07de543f3d117867"
+            echo "- Fixed PR head: 0ffc82225d6125dcb5c5b5acfb9be9fd712ef949"
+            echo "- Python: 3.11.9"
+            echo "- Reproducer: fresh one-phase Brachistochrone problem; add_control(val=[5, 15]); setup and run_model; assert controls:theta"
+            echo "- Same source, test, runtime and lock used at both revisions"
+            echo "- No optimization driver or optional optimizer is invoked"
+            echo "- No model loading, inference, fine-tuning or training"
+            sha256sum runtime.txt runtime-freeze.txt reproduction-evidence/*.log reproduction-evidence/*sha256.txt 2>/dev/null || true
+          } >> "$GITHUB_STEP_SUMMARY"
+          cp runtime.txt runtime-freeze.txt reproduction-evidence/ 2>/dev/null || true
+          (cd reproduction-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum > SHA256SUMS.txt)
+
+      - name: Upload independent reproduction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dymos-1166-independent-issue-reproducer
+          path: reproduction-evidence/
+          if-no-files-found: warn
+          retention-days: 90

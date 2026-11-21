@@ -1,0 +1,355 @@
+{
+  "schema_version": "0.1-numpyro-1916-evidence-provenance",
+  "generated_date": "2026-11-20",
+  "candidate": "pyro-ppl/numpyro issue 1916 / PR 1918",
+  "packet_set_path": "research_candidates/evidence_abstention/numpyro_1916/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_2_2026-11-20.json",
+  "packet_set_sha256": "b53d655f38466f2aa5b164a3a96c13a630e4419986401e472f2ed4371ffd7edb",
+  "source_row": {
+    "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "row_id": "pyro-ppl__numpyro-1918",
+    "canonical_row_sha256": "d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646",
+    "field": "problem_statement",
+    "source_url": "https://github.com/pyro-ppl/numpyro/issues/1916"
+  },
+  "evidence_items": [
+    {
+      "id": "NP1916_ISSUE_NARRATIVE_CODE",
+      "kind": "documentation",
+      "source": "dataset row problem_statement",
+      "byte_range_utf8_exclusive": [
+        0,
+        836
+      ],
+      "content_sha256": "3a1b4b412dfeb9f33a5fa9a6534a4a7522d79dddd7a8760540c358f21d81bf2c",
+      "source_snapshot_sha256": "d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646",
+      "source_url": "https://github.com/pyro-ppl/numpyro/issues/1916"
+    },
+    {
+      "id": "NP1916_ISSUE_TRACEBACK",
+      "kind": "stack_trace",
+      "source": "dataset row problem_statement",
+      "byte_range_utf8_exclusive": [
+        838,
+        5775
+      ],
+      "content_sha256": "4ba5d2d4d78a306adce6b8ce850a3f47fc66b6a1ebce934fcb3b318eed6ada36",
+      "source_snapshot_sha256": "d0dfd87ddd0598ebf368352385419aad6e2d571d2ac83dad04fe57612a7b9646",
+      "source_url": "https://github.com/pyro-ppl/numpyro/issues/1916"
+    },
+    {
+      "id": "NP1916_BASE_MCMC_RUN_HANDOFF",
+      "kind": "source_excerpt",
+      "source_path": "numpyro/infer/mcmc.py",
+      "source_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+      "source_git_blob_sha1": "dd3ec0c3a782c1e1530b138153d821392ee5bebd",
+      "source_lines_1based": [
+        654,
+        660
+      ],
+      "content_sha256": "f2b649fd9a8c9771ef857c01c04c36dc98f75bea82a2da908be6fe4147401e4f",
+      "source_snapshot_sha256": "f2b649fd9a8c9771ef857c01c04c36dc98f75bea82a2da908be6fe4147401e4f",
+      "source_url": "https://github.com/pyro-ppl/numpyro/blob/07e4c9bc4524cc0a741ba8f8ad41339d34a0288d/numpyro/infer/mcmc.py"
+    },
+    {
+      "id": "NP1916_BASE_ENSEMBLE_SPLIT",
+      "kind": "source_excerpt",
+      "source_path": "numpyro/infer/ensemble.py",
+      "source_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+      "source_git_blob_sha1": "64a2870ade0565cb6547cc92d97c11502e769bfd",
+      "source_lines_1based": [
+        190,
+        193
+      ],
+      "content_sha256": "de79ca7039c71eb3999ca8daf9f190d6a70c1659221514e945a554d6218be190",
+      "source_snapshot_sha256": "de79ca7039c71eb3999ca8daf9f190d6a70c1659221514e945a554d6218be190",
+      "source_url": "https://github.com/pyro-ppl/numpyro/blob/07e4c9bc4524cc0a741ba8f8ad41339d34a0288d/numpyro/infer/ensemble.py"
+    },
+    {
+      "id": "NP1916_BASE_ENSEMBLE_INIT_KEY_NORMALIZATION",
+      "kind": "source_excerpt",
+      "source_path": "numpyro/infer/ensemble.py",
+      "source_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+      "source_git_blob_sha1": "64a2870ade0565cb6547cc92d97c11502e769bfd",
+      "source_lines_1based": [
+        150,
+        183
+      ],
+      "content_sha256": "3792bc9a542c5a8896cb5f399ca4147c97fadbbe4e80b0e20bb542611a82ae07",
+      "source_snapshot_sha256": "3792bc9a542c5a8896cb5f399ca4147c97fadbbe4e80b0e20bb542611a82ae07",
+      "source_url": "https://github.com/pyro-ppl/numpyro/blob/07e4c9bc4524cc0a741ba8f8ad41339d34a0288d/numpyro/infer/ensemble.py"
+    },
+    {
+      "id": "NP1916_BASE_MCMC_WARMUP_METHOD_CONTRACT",
+      "kind": "source_excerpt",
+      "source_path": "numpyro/infer/mcmc.py",
+      "source_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+      "source_git_blob_sha1": "dd3ec0c3a782c1e1530b138153d821392ee5bebd",
+      "source_lines_1based": [
+        584,
+        586
+      ],
+      "content_sha256": "af4b22cb0bf337b141ca89fa98f5f5969b22f8d48a5de826256a85069f55efd8",
+      "source_snapshot_sha256": "af4b22cb0bf337b141ca89fa98f5f5969b22f8d48a5de826256a85069f55efd8",
+      "source_url": "https://github.com/pyro-ppl/numpyro/blob/07e4c9bc4524cc0a741ba8f8ad41339d34a0288d/numpyro/infer/mcmc.py"
+    },
+    {
+      "id": "NP1916_BASE_MCMC_RUN_KEY_CONTRACT",
+      "kind": "source_excerpt",
+      "source_path": "numpyro/infer/mcmc.py",
+      "source_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+      "source_git_blob_sha1": "dd3ec0c3a782c1e1530b138153d821392ee5bebd",
+      "source_lines_1based": [
+        624,
+        626
+      ],
+      "content_sha256": "f5771b132e123a8ea8237cb74d57dd1e6485598427e0792de9464b398bc974ea",
+      "source_snapshot_sha256": "f5771b132e123a8ea8237cb74d57dd1e6485598427e0792de9464b398bc974ea",
+      "source_url": "https://github.com/pyro-ppl/numpyro/blob/07e4c9bc4524cc0a741ba8f8ad41339d34a0288d/numpyro/infer/mcmc.py"
+    }
+  ],
+  "tier_membership": {
+    "E3": [
+      "NP1916_ISSUE_NARRATIVE_CODE"
+    ],
+    "E2": [
+      "NP1916_ISSUE_NARRATIVE_CODE",
+      "NP1916_ISSUE_TRACEBACK",
+      "NP1916_BASE_MCMC_WARMUP_METHOD_CONTRACT",
+      "NP1916_BASE_MCMC_RUN_KEY_CONTRACT"
+    ],
+    "E1": [
+      "NP1916_ISSUE_NARRATIVE_CODE",
+      "NP1916_ISSUE_TRACEBACK",
+      "NP1916_BASE_MCMC_WARMUP_METHOD_CONTRACT",
+      "NP1916_BASE_MCMC_RUN_KEY_CONTRACT",
+      "NP1916_BASE_MCMC_RUN_HANDOFF",
+      "NP1916_BASE_ENSEMBLE_SPLIT",
+      "NP1916_BASE_ENSEMBLE_INIT_KEY_NORMALIZATION"
+    ]
+  },
+  "structural_validation": {
+    "status": "CI_CONTRACT_TESTS_PASS_STRUCTURAL_ONLY",
+    "validator_modules": [
+      "operational_packet_validator.py",
+      "evidence_level_packet_set.py"
+    ],
+    "semantic_sufficiency_assessed": false,
+    "model_inference_performed": false,
+    "supersedes_packet_set_sha256": "e1730956eb9cfc9015bb43c5725f49d3ebff9dfc3c564594060209bab5e5485d",
+    "latest_validation_run_id": 44764979467,
+    "latest_validation_job_id": 136387054032,
+    "latest_validation_commit": "927c6dc57a90f02c1089dc825d5fc42f88d5228c",
+    "test_groups": {
+      "packet_audit": 12,
+      "operational_and_nested_packet_contracts": 25,
+      "numpyro_review_contracts": 8,
+      "dymos_review_contracts": 5,
+      "selector_runner": 6,
+      "exploratory_acceptance_and_readiness": 24,
+      "study_design_and_dual_human_scoring": 10,
+      "total": 90
+    },
+    "preflight_artifact_id": 14644060972,
+    "preflight_artifact_sha256": "5723567a421224785931fdaf119693f0a7d6fcb89bfeac0ce185f070c9a1f0d2",
+    "validation_note": "The project-lead tier decision, amended E3=1/E2=4/E1=7 packet set, and associated provenance/test contracts passed branch-head no-inference CI on the latest test-fix commit. The CI verifies structure, hashes and test contracts only; it is not a substitute for the source-aware project-lead semantic decision or later acceptance gates."
+  },
+  "semantic_review": {
+    "status": "project_lead_gold_and_E1_E2_E3_semantic_decision_approved; prior_pipeline_debug_exposure_and_bounded_license_scope_pending",
+    "adjudication_route": "v0.2 exploratory; single source-aware project-lead technical adjudicator, matching the Dishka #435 accepted precedent",
+    "project_lead_role": "sole human decision-maker for technical gold mechanism, alternatives and E1/E2/E3 tier membership/sufficiency; full source exposure disclosed",
+    "chatgpt_role": "AI advisory critique only; never counted as a human reviewer or adjudicator",
+    "hasan_role": "project-lead-reported supplementary source-aware technical input only; not a separate signed independent adjudication, blinded review or inter-rater statistic",
+    "blinded_panel_for_gold_tiers_required": false,
+    "rationale": "The active v0.2 protocol and accepted Dishka precedent do not require two blind reviewers or a third adjudicator for gold/E1/E2/E3. The two-human Rater A/Rater B requirement applies to later blinded scoring of raw model-output evidence support, not to source-aware gold/tier construction.",
+    "sufficiency_caution": "The project lead approved E3 as leaving multiple mechanisms, E2 as retaining at least two internal mechanisms after public API contract evidence, and E1 as isolating the single approved warmup-resume key-shape handoff mechanism. This is the source-aware project-lead decision under v0.2; it is separate from structural CI and final case acceptance.",
+    "output_scoring_gate": "Two independent human scorers are still required for model-output evidence-support scoring before any such ratings; Rater B consent, case-specific exposure screening and calibration remain pending.",
+    "inference_performed": false,
+    "project_lead_gold_decision": {
+      "decision": "APPROVED",
+      "decision_date": "2026-11-20",
+      "decision_source": "Explicit project-lead approval in ChatGPT conversation",
+      "approved_gold_mechanism_tr": "MCMC.run(), warmup sonrasında saklanan sampler durumundaki skaler PRNG anahtarını vektörleştirilmiş zincirler için oluşturulan anahtar dizisiyle değiştiriyor. EnsembleSampler.sample() ise bu alanı skaler kabul ederek random.split() çağırıyor. Hata, sampler durumundaki anahtar biçiminin bu iki aşama arasında tutarsız hale gelmesinden kaynaklanıyor.",
+      "scope": "The exact technical gold mechanism is approved. This does not approve the proposed E1/E2/E3 membership or sufficiency, alternative-hypothesis disposition, license scope, exposure declaration, complete case record, or final case acceptance.",
+      "adjudicator": "Student project lead",
+      "chatgpt_role": "Advisory only"
+    },
+    "tier_membership_decision": "APPROVED_E3_1_E2_4_E1_7",
+    "alternative_hypotheses_decision": "APPROVED_E3_MULTIPLE_E2_TWO_E1_ONE_GOLD",
+    "final_case_acceptance": "NOT_ACCEPTED_pending_prior_pipeline_debug_exposure_bounded_license_scope_complete_case_record_registry_validation_and_separate_final_yes",
+    "candidate_selection_decision": {
+      "decision": "ACCEPTED_FOR_STAGE3_CASE_EVALUATION",
+      "date": "2026-11-20",
+      "first_batch_candidates": [
+        "pyro-ppl/numpyro #1916",
+        "OpenMDAO/dymos #1166",
+        "CS-SI/eodag #1530",
+        "meltano/sdk #3090",
+        "pyfar/pyfar #721"
+      ],
+      "scope": "Candidate selection for continued Stage 3 evaluation only; not final case acceptance."
+    },
+    "packet_membership_construction_decision": {
+      "decision": "APPROVED_FOR_PACKET_CONSTRUCTION_AND_STRUCTURAL_VALIDATION",
+      "decision_date": "2026-11-20",
+      "decision_source": "Explicit project-lead approval in ChatGPT conversation",
+      "approved_membership": {
+        "E3": 1,
+        "E2": 4,
+        "E1": 7
+      },
+      "scope": "Approval is limited to adding the two exact pinned buggy-base MCMC API-contract excerpts to E2 and E1 and preparing the requested nested packet structure. It does not establish semantic sufficiency, close alternative-hypothesis adjudication, accept the candidate, or authorize model inference."
+    },
+    "project_lead_tier_decision": {
+      "decision": "APPROVED",
+      "decision_date": "2026-11-20",
+      "decision_source": "Explicit project-lead assessment and instruction to proceed in the 20 November 2026 conversation",
+      "decision_record": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/44f00ea34708032476103b230967ee27290deeed/research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_TIER_DECISION_NUMPYRO_1916_2026-11-20.md",
+        "sha256": "6148aa21a6122c3552ef01394e4d314b792cacda7164aea74f22c36d6f217df9"
+      },
+      "adjudicator": "Student project lead",
+      "chatgpt_role": "Advisory only; not a human rater or adjudicator",
+      "packet_set_sha256": "b53d655f38466f2aa5b164a3a96c13a630e4419986401e472f2ed4371ffd7edb",
+      "approved_membership": {
+        "E3": 1,
+        "E2": 4,
+        "E1": 7
+      },
+      "surviving_mechanisms": {
+        "E3": [
+          "H1_CALLER_API_LIFECYCLE_OR_KEY_USAGE",
+          "H2_WARMUP_RESUME_STATE_KEY_SHAPE_HANDOFF",
+          "H3_ENSEMBLE_SAMPLE_BATCH_KEY_CONTRACT",
+          "H4_GENERAL_JAX_OR_RUNTIME_INCOMPATIBILITY"
+        ],
+        "E2": [
+          "H2_WARMUP_RESUME_STATE_KEY_SHAPE_HANDOFF",
+          "H3_ENSEMBLE_SAMPLE_BATCH_KEY_CONTRACT"
+        ],
+        "E1": [
+          "H2_WARMUP_RESUME_STATE_KEY_SHAPE_HANDOFF"
+        ]
+      },
+      "scope": "Source-aware semantic sufficiency and alternative disposition only. Prior pipeline/debug exposure, bounded documentary license scope, full case record, registry validation, final case acceptance and inference authorization remain separate."
+    }
+  },
+  "blinding": {
+    "model_visible_packet_contains_fix": false,
+    "model_visible_packet_contains_fixed_test_logs": false,
+    "model_visible_packet_contains_gold_label": false,
+    "model_visible_packet_contains_level_label": false,
+    "outer_packet_set_is_model_input": false
+  },
+  "limitations": [
+    "Structural validity does not establish causal entailment or semantic tier sufficiency.",
+    "For source-code items, source_snapshot_sha256 binds the exact verbatim excerpt snapshot; parent files are separately anchored by immutable upstream commit and Git blob SHA-1.",
+    "The project lead and Hasan have seen candidate source/design material; neither is eligible for blinded raw-response scoring for this case. This does not prevent the project lead's source-aware gold/tier decision under the Dishka-equivalent exploratory method.",
+    "Two-human independent scoring remains required for raw model responses; that role is distinct from technical gold/E1/E2/E3 adjudication.",
+    "The project lead approved E3/E2/E1 semantic sufficiency and alternative disposition on 20 November 2026; this does not supply the separate prior pipeline/debug exposure declaration or bounded license-scope acknowledgement."
+  ],
+  "branch_head_stage2_repeat": {
+    "workflow_run_id": 44741768086,
+    "workflow_job_id": 136306920441,
+    "artifact_id": 14630982034,
+    "artifact_sha256": "bdbe89447f1b1b5b4bbbd3c682d90d6f56e6abe0d2097eddce79acaf9e32fc0d",
+    "local_integrity": {
+      "outer_sha256_matches_github_digest": true,
+      "zip_crc": "PASS",
+      "internal_sha256sums": "10/10 PASS"
+    },
+    "buggy_base": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+    "fixed_revision": "5692d2da335945b756aeae02e3720b9b7f3efef2",
+    "reproducer_result": "AIES 100-chain warmup()->run() executed and failed on buggy base with expected JAX key shape (100, 2), same test passed on fixed revision (1 passed in 3.00s)",
+    "model_loading": false,
+    "model_inference": false,
+    "fine_tuning": false
+  },
+  "branch_head_repeat": {
+    "workflow_run_id": 44745436388,
+    "workflow_job_id": 136319403263,
+    "workflow_commit": "efe677f49088eb9493fef6e8c6615b5bcb061dcb",
+    "artifact_id": 14633131434,
+    "artifact_sha256": "2c9f3ddf1ea249650a18062fd6648536b0132e413fcea0c0007f8c4473a856d3",
+    "local_integrity": {
+      "outer_sha256_matches_github_digest": true,
+      "zip_crc": "PASS",
+      "internal_sha256sums": "10/10 PASS"
+    },
+    "buggy_base": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+    "fixed_revision": "5692d2da335945b756aeae02e3720b9b7f3efef2",
+    "base_result": "Executed warmup()->run() AIES 100 vectorized chains and raised the expected JAX PRNG key array shape (100, 2) error.",
+    "fixed_result": "The exact same test passed (1 passed in 3.97s).",
+    "model_loading": false,
+    "model_inference": false,
+    "fine_tuning": false
+  },
+  "final_current_branch_repeat": {
+    "workflow_run_id": 44755560775,
+    "workflow_job_id": 136354249543,
+    "workflow_commit": "dabd65d149b9e0ee2bfcaa25261ccc3425d673f3",
+    "artifact_id": 14637651511,
+    "artifact_sha256": "bd05413602aaf5de6e8b213708dee68cfc863a97dd9f7620ed196afc2b071d3a",
+    "github_job_conclusion": "success",
+    "buggy_base_result": "The independent AIES 100-chain warmup()->run() reproducer executed and failed with the expected JAX PRNG key shape (100, 2) error.",
+    "fixed_revision_result": "The identical reproducer completed successfully on the exact pinned fixed revision.",
+    "local_integrity_verification": "Not independently downloaded and rehashed in this update; GitHub-reported artifact digest is retained.",
+    "model_loading": false,
+    "model_inference": false,
+    "fine_tuning": false
+  },
+  "latest_no_inference_preflight": {
+    "workflow_run_id": 44764979467,
+    "job_id": 136387054032,
+    "conclusion": "success",
+    "commit": "927c6dc57a90f02c1089dc825d5fc42f88d5228c",
+    "tests": "90 passed across packet audit (12), operational/nested packet contracts (25), NumPyro review contracts (8), Dymos review contracts (5), selector runner (6), exploratory acceptance/readiness (24), and study-design/dual-human scoring (10).",
+    "artifact_id": 14644060972,
+    "artifact_sha256": "5723567a421224785931fdaf119693f0a7d6fcb89bfeac0ce185f070c9a1f0d2",
+    "readiness": "blocked_before_inference",
+    "accepted_case_count": 1,
+    "blocker_count": 13,
+    "ready_for_inference": false,
+    "model_loading_performed": false,
+    "model_inference_performed": false,
+    "fine_tuning_performed": false,
+    "inference_authorized": false
+  },
+  "packet_amendment_approval": {
+    "date": "2026-11-20",
+    "decision": "approved_by_project_lead_for_packet_construction",
+    "packet_counts": {
+      "E3": 1,
+      "E2": 4,
+      "E1": 7
+    },
+    "additions": [
+      "NP1916_BASE_MCMC_WARMUP_METHOD_CONTRACT",
+      "NP1916_BASE_MCMC_RUN_KEY_CONTRACT"
+    ],
+    "source_commit": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+    "source_file": "numpyro/infer/mcmc.py",
+    "semantic_sufficiency_and_final_acceptance": "not_approved_by_this_packet-construction_decision"
+  },
+  "latest_independent_issue_reproducer": {
+    "workflow_run_id": 44764979166,
+    "job_id": 136387052615,
+    "conclusion": "success",
+    "commit": "927c6dc57a90f02c1089dc825d5fc42f88d5228c",
+    "artifact_id": 14644011099,
+    "artifact_github_digest": "sha256:909350914a7d748022462cdfce5b141ee4071877eaf1b8a12fb8f0dc3c5c2c60",
+    "artifact_locally_rehashed": false,
+    "buggy_base": "07e4c9bc4524cc0a741ba8f8ad41339d34a0288d",
+    "buggy_base_result": "Independent public-API AIES/100-vectorized-chain warmup()->run() reproducer executed on exact buggy base and failed with the expected JAX PRNG key shape (100, 2).",
+    "fixed_revision": "5692d2da335945b756aeae02e3720b9b7f3efef2",
+    "fixed_revision_result": "The same reproducer passed on the exact fixed merge (1 passed in 3.97s) under the same Python 3.11.9 / CPU JAX/JAXlib 0.4.35 environment.",
+    "runtime": "CPython 3.11.9; CPU-only JAX/JAXlib 0.4.35",
+    "model_inference_performed": false
+  },
+  "project_lead_tier_decision_record": {
+    "path": "research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_TIER_DECISION_NUMPYRO_1916_2026-11-20.md",
+    "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/44f00ea34708032476103b230967ee27290deeed/research_candidates/evidence_abstention/numpyro_1916/PROJECT_LEAD_TIER_DECISION_NUMPYRO_1916_2026-11-20.md",
+    "sha256": "6148aa21a6122c3552ef01394e4d314b792cacda7164aea74f22c36d6f217df9",
+    "commit": "44f00ea34708032476103b230967ee27290deeed"
+  }
+}

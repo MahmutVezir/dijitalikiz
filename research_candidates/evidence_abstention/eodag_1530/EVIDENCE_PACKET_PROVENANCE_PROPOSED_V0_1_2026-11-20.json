@@ -1,0 +1,206 @@
+{
+  "schema_version": "0.1-eodag-1530-evidence-provenance",
+  "generated_date": "2026-11-20",
+  "candidate": "CS-SI/eodag issue #1530 / PR #1536",
+  "dataset_row": {
+    "repository": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "row_id": "cs-si__eodag-1536",
+    "row_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47",
+    "field": "problem_statement",
+    "content_sha256": "73d6b57f813432c75e29767922e7a9f54b06ea05cb1de04cd510aa9e50c8b988",
+    "created_at_dataset_raw": "2025-02-21 10:04:30",
+    "created_at_upstream_pr_utc": "2025-02-21T10:04:30Z",
+    "created_at_upstream_issue_utc": "2025-02-20T11:38:36Z"
+  },
+  "reproduction": {
+    "workflow_run_id": 44331092872,
+    "job_id": 134895967977,
+    "artifact_id": 14440370494,
+    "artifact_sha256": "6a732364873d12d78d407f41aa671cc56851f67b58492c4762ff33e36a59a437",
+    "base_issue_reproducer": {
+      "status": "executed_expected_failure",
+      "log_sha256": "35409ef103071d26e03913015c5d14e04d5725d13cf8d4b674c7e8b44a72d9a7",
+      "actual": "geodes_s3 absent from parsed mapping; surviving geodes credentials are AWS fields",
+      "fixed": "same reproducer passed on exact fixed PR head",
+      "fixed_log_sha256": "7e614c6cb542bc744f777d03ae16be0a2f9333cb6083782b2f672d6a12694b36"
+    },
+    "frozen_selectors": [
+      "tests/units/test_core.py::TestCore::test_available_sortables",
+      "tests/units/test_core.py::TestCore::test_list_product_types_for_provider_ok"
+    ],
+    "base_dataset_result": "2/2 selectors executed and failed on the expected missing geodes_s3 provider/sortables behavior",
+    "base_dataset_log_sha256": "8eb8c0d98137eef51c65a6a8579acfee970da81c129ddcae8ff7c6e77df16de3",
+    "fixed_dataset_result": "Same 2/2 selectors passed",
+    "fixed_dataset_log_sha256": "b037b97436f9da48b7575a364a225ac1bf1186b800ef58b9c7735e08e96cd2d1",
+    "test_only_patch_scope": "tests/units/test_core.py only; production_code_changed=false",
+    "runtime": {
+      "python": "3.11.9",
+      "resolved_distribution_count": 52,
+      "pip_check": "passed"
+    }
+  },
+  "evidence_items": [
+    {
+      "id": "EODAG_ISSUE_NARRATIVE",
+      "kind": "documentation",
+      "content_sha256": "73d6b57f813432c75e29767922e7a9f54b06ea05cb1de04cd510aa9e50c8b988",
+      "source_snapshot_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47"
+    },
+    {
+      "id": "EODAG_BASE_TEMPLATE_DUPLICATE_KEYS",
+      "kind": "configuration",
+      "content_sha256": "c2f48ed5612ec3f21e0a8f8cb14810323603b0994a60167752f31fd419225b3c",
+      "source_snapshot_sha256": "1bf1b945d09ae7805450dc9777175e35625ede2d6bf899c5d586bc6f08c297ff"
+    },
+    {
+      "id": "EODAG_INDEPENDENT_YAML_REPRODUCER",
+      "kind": "other",
+      "content_sha256": "ff45e54e3fb1a202aa75543fd9db9f98745a5722feada6158f702431d05163ac",
+      "source_snapshot_sha256": "ff45e54e3fb1a202aa75543fd9db9f98745a5722feada6158f702431d05163ac"
+    },
+    {
+      "id": "EODAG_BASE_YAML_PARSE_FAILURE",
+      "kind": "test_output",
+      "content_sha256": "291825b349815e03adcf1c24c9d58c31474360ec0cd50e3f148a39b9725819ba",
+      "source_snapshot_sha256": "6a732364873d12d78d407f41aa671cc56851f67b58492c4762ff33e36a59a437"
+    },
+    {
+      "id": "EODAG_TEST_FIXTURE_SAFE_LOAD_PATH",
+      "kind": "source_excerpt",
+      "content_sha256": "e3040adac1dbb538e3981a074dfb6f0f4ab461927f78c1fe8ddf2034ebb0c473",
+      "source_snapshot_sha256": "2859d5efb695434511575735e9a85ef3d2701db08f1284eacf3d50cc5613718b"
+    },
+    {
+      "id": "EODAG_TEST_SELECTOR_CALL_PATH",
+      "kind": "source_excerpt",
+      "content_sha256": "a62c2599494f25845f12903c7a5ef353db8389a98facd8d1ae2d5b95ecc21742",
+      "source_snapshot_sha256": "3bcd1300603a131db22d2008a798803f124f685a6a2122e58beca21d704710ef"
+    },
+    {
+      "id": "EODAG_BASE_SUPPORTED_PROVIDER_LIST",
+      "kind": "source_excerpt",
+      "content_sha256": "b1eca9436ca0a7947c0a0c0dc22e08a9291980846b8cfd86ef5b454337b86f7e",
+      "source_snapshot_sha256": "3bcd1300603a131db22d2008a798803f124f685a6a2122e58beca21d704710ef"
+    }
+  ],
+  "packet_set_path": "research_candidates/evidence_abstention/eodag_1530/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json",
+  "packet_set_sha256": "e1c15239ba0599c13d19c35ffad922d77ae10bb570aced8199d6db97163d3189",
+  "semantic_review": {
+    "status": "project_lead_source_aware_adjudication_recorded",
+    "adjudication_completed": true,
+    "assistant_role": "AI technical advisor only",
+    "proposed_gold": "The duplicated top-level geodes YAML key is parsed into a single mapping; the later AWS credential mapping overwrites the earlier public API-key mapping and no separate geodes_s3 provider mapping is emitted.",
+    "proposed_tier_outcomes": {
+      "E3": "ABSTAIN — the issue narrative shows a duplicate key and symptom but not the exact pinned parser output/source fixture path.",
+      "E2": "ANSWER — independent pinned parser reproducer plus buggy-base output show geodes_s3 absent and the surviving geodes mapping carrying AWS credentials.",
+      "E1": "ANSWER — E2 plus upstream test fixture source showing yaml.safe_load on the packaged template and generated provider mapping."
+    },
+    "project_lead_decision": "approved",
+    "adjudication_route": "single_source-aware student project lead in v0.2 exploratory/feasibility design; no independent blinded Panel A/Panel B or inter-rater reliability claim",
+    "decision_date": "2026-11-21",
+    "decision_record": {
+      "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_EODAG_1530_2026-11-21.md",
+      "sha256": "b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e"
+    },
+    "approved_gold": "The exact buggy packaged user_conf_template.yml contains two top-level geodes mappings; yaml.safe_load retains the later AWS mapping, removing the public apikey mapping and a distinct geodes_s3 mapping. The in-repository fixture loads this packaged template with yaml.safe_load and iterates the resulting provider mapping. The separate StacListAssets change and issue #1517 remain out of scope.",
+    "approved_tier_outcomes": {
+      "E3": "ABSTAIN — issue narrative alone does not establish exact pinned parser output or fixture path.",
+      "E2": "ABSTAIN — exact pinned YAML parse output is visible, but the packaged-template fixture/loading path is not; A2 and A3 remain plausible.",
+      "E1": "ANSWER — active test-fixture source connects packaged template loading via yaml.safe_load to provider-configuration generation; only G1 survives under the project lead's source-aware adjudication."
+    },
+    "approved_surviving_mechanisms": {
+      "E3": [
+        "G1",
+        "A1",
+        "A2",
+        "A3"
+      ],
+      "E2": [
+        "G1",
+        "A2",
+        "A3"
+      ],
+      "E1": [
+        "G1"
+      ]
+    },
+    "independent_blinded_validation": "not_claimed",
+    "researcher_source_exposure": "full_disclosed",
+    "prior_pipeline_debug_exposure": "none",
+    "final_case_acceptance": "accepted_v0_2_exploratory_feasibility_only",
+    "inference_authorized": false,
+    "prior_pipeline_debug_exposure_decision_record": {
+      "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
+      "sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38",
+      "decision_date": "2026-11-21",
+      "decision": "none"
+    }
+  },
+  "structural_validation": {
+    "status": "passed_hash_and_nesting_only",
+    "workflow_run_id": 44891779892,
+    "workflow_job_id": 136808957711,
+    "workflow_commit": "ad97169c2578c921502222906598a4c5e1255025",
+    "test_path": "tests/test_eodag_1530_stage3_packet_set.py",
+    "test_result": "3 passed in 0.02s",
+    "preflight_artifact_id": 14701594453,
+    "preflight_artifact_sha256": "2ade3c85c1b6cc5a8d29136cba1cb0366d802f9732efb8d63b6fa000818ba85b",
+    "preflight_artifact_locally_verified": true,
+    "packet_set_sha256": "e1c15239ba0599c13d19c35ffad922d77ae10bb570aced8199d6db97163d3189",
+    "strictly_nested": true,
+    "source_and_packet_hashes_validated": true,
+    "semantic_sufficiency_assessed": false,
+    "project_lead_decision": "pending",
+    "model_inference_performed": false
+  },
+  "license_scope_acknowledgement": {
+    "status": "approved_bounded_documentary_scope_only",
+    "decision_record": {
+      "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md",
+      "sha256": "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6",
+      "decision_date": "2026-11-21"
+    },
+    "limits": {
+      "legal_advice": false,
+      "formal_legal_review": false,
+      "legal_clearance": false,
+      "spdx_certification": false,
+      "complete_native_or_bundled_dependency_audit": false,
+      "blanket_redistribution_permission": false
+    },
+    "final_case_acceptance": "pending_remaining_mandatory_gates",
+    "inference_authorized": false
+  },
+  "case_acceptance_record": {
+    "path": "research_candidates/evidence_abstention/eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
+    "status": "accepted",
+    "final_acceptance": "approved",
+    "decision_timestamp_utc": "2026-11-21T13:36:50+03:00",
+    "decision_record": {
+      "path": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_EODAG_1530_2026-11-21.md",
+      "sha256": "5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d"
+    },
+    "registry_path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_EXPLORATORY_CASE_REGISTRY_V0_2.json",
+    "registry_included": true,
+    "post_acceptance_validation": {
+      "status": "structurally_valid_candidate",
+      "workflow_run_id": 44895500211,
+      "job_id": 136820151510,
+      "branch_head": "0e7c53e7cda000b6682b93fc2036035662fdbc80",
+      "eodag_review_contract_tests": "5 passed",
+      "acceptance_and_readiness_tests": "25 passed",
+      "registry_case_count": 2,
+      "registry_project_count": 2,
+      "inference_authorized": false
+    },
+    "inference_authorized": false
+  },
+  "latest_research_validation": {
+    "workflow_run_id": 44895500199,
+    "job_id": 136820191554,
+    "conclusion": "success",
+    "tests": "477 passed, 6 skipped, 56 subtests passed",
+    "inference_performed": false
+  }
+}

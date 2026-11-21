@@ -56,17 +56,20 @@ Semantic definitions:
 
 A level is not determined by packet length or evidence count. If a case cannot support all three defensible tiers, it is excluded from the three-tier comparison or recorded as unclassifiable. Do not manufacture evidence or force a tier.
 
-## 6. Review and scoring arrangement
-The working team consists of the student project lead and ChatGPT as an AI research assistant. ChatGPT is not a human reviewer, independent auditor, legal reviewer, or second investigator.
+## 6. Review and scoring arrangement — single-human amendment
 
-The project lead records the human research decisions. ChatGPT may conduct a separately labelled AI critique using only the material assigned to that review step. The critique is advisory and is not independent human validation. Since the project has no second human rater:
-- no human-human Cohen's kappa or inter-rater reliability claim is permitted;
-- researcher and AI judgments remain separate;
-- disagreements and their resolution are logged;
-- the evidence-tier framework is reported as a proposed operationalization applied in a feasibility study, not a validated measurement instrument.
+The project has one human participant: the student project lead. This person is the sole human technical adjudicator, E1/E2/E3 decision-maker, candidate-acceptance authority, raw model-output scorer and final interpreter. There is no second human rater, technical-review panel or independent external human reviewer.
 
-For model-output scoring, use a predeclared rubric and randomized response IDs. The scorer should see the model-visible packet and raw response, but not policy identity, hidden tier, case identity, patch, or gold cause until evidence-support scoring is locked. Because a single researcher may have source exposure, perfect blinding cannot be assumed. Record any unavoidable exposure and treat scoring as exploratory. ChatGPT may perform a separate blind-style critique, but this does not create independent human blinding.
+ChatGPT is an AI research assistant only. Its critique is advisory, separately logged and never counted as a human rating, independent review, external audit, legal review or second investigator.
 
+For model-output scoring, the project lead assigns the evidence-support category and related flags to each raw response using only the exact evidence packet visible in that cell. Response IDs and scoring order are randomized. P0/P1 policy labels, paired responses and policy-level aggregate results are hidden during initial evidence-support scoring where technically feasible. The original rating, rationale, response hash, packet hash and timestamp are locked before the scorer consults the separate gold record for the scoring event.
+
+This is condition-masked single-human scoring, not blinded scoring. The project lead has full disclosed exposure to case identity, issue/PR, source, patch, gold mechanism and evidence-tier decisions. Masking the policy label and paired response is a bias-reduction measure only; it does not remove prior source/gold knowledge or guarantee that condition cannot be inferred from response wording.
+
+No human-human agreement statistics are defined. Do not calculate or claim Cohen's kappa, a two-rater confusion matrix, independent human replication or inter-rater reliability. Report the single-human procedure, full source exposure, policy-masking controls, ambiguous/unscorable ratings and common-method/expectancy limitations. E1/E2/E3 semantic tier construction and technical-gold adjudication are also single-project-lead judgments with separately logged ChatGPT critique.
+
+Use `SWE_REBENCH_V2_SINGLE_HUMAN_OUTPUT_SCORING_RUBRIC_V0_2_2026-11-21.md` and `SINGLE_HUMAN_REVIEW_AMENDMENT_V0_2_2026-11-21.md`. These active documents supersede the previous dual-human draft for v0.2.
+ 
 ## 7. Experimental conditions
 Each case has six cells: E1/P0, E1/P1, E2/P0, E2/P1, E3/P0, E3/P1.
 
@@ -118,4 +121,13 @@ No model load or inference until:
 No training or fine-tuning is permitted under this protocol.
 
 ## 13. Current status
-Accepted cases/projects: 0/0. Evidence packet sets: 0. Model load: not performed. Inference: not performed and not authorized. Protocol: draft, not preregistered. The prior v0.1 confirmatory design requiring 60 independent projects and independent human panels is retained as historical record and is not the selected working design for this exploratory study.
+Accepted exploratory cases/projects: 3/3 (Dishka, EODAG and GeoFileOps); GeoPandas #3591 remains on hold and is not in the registry. Model load: not performed. Inference: not performed and not authorized. Protocol: draft, not preregistered. The prior v0.1 confirmatory design requiring 60 independent projects and independent human panels is retained as historical record and is not the selected working design for this exploratory study.
+
+## 14. Historical human-evaluator proposal (18 November 2026)
+
+The dual-human output-scoring proposal in `HUMAN_EVALUATOR_AMENDMENT_V0_1_2026-11-18.md` and `SWE_REBENCH_V2_DUAL_HUMAN_OUTPUT_SCORING_RUBRIC_V0_1_DRAFT_2026-11-18.md` is retained as historical design history only. It does not describe the active team and must not be used to claim that a second human evaluator, reviewer panel or independent rater participates. It is superseded by the single-human amendment dated 21 November 2026. The pre-existing candidate rule excluding cases used for earlier pipeline debugging, test-oracle troubleshooting or prompt calibration remains unchanged.
+
+
+## 15. Active single-human amendment (21 November 2026)
+
+The active governance amendment is `SINGLE_HUMAN_REVIEW_AMENDMENT_V0_2_2026-11-21.md`; the active scoring rubric is `SWE_REBENCH_V2_SINGLE_HUMAN_OUTPUT_SCORING_RUBRIC_V0_2_2026-11-21.md`. Only the student project lead is a human participant and scorer. ChatGPT remains advisory. Initial output scoring randomizes response IDs/order and masks policy labels and paired responses where feasible, but is explicitly not blinded to case identity, source, gold or evidence tier. No inter-rater reliability or Cohen's kappa is claimed. This amendment does not authorize model loading, inference, fine-tuning or training.

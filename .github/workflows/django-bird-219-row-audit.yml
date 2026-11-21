@@ -1,0 +1,185 @@
+name: Django-bird #219 Frozen Dataset Row Audit (Metadata Only, No Inference)
+
+on:
+  push:
+    branches:
+      - "research/2026-11-16-followup-evidence-validation"
+    paths:
+      - ".github/workflows/django-bird-219-row-audit.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/django-bird-219-row-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  authenticate-frozen-row:
+    name: Authenticate rank 55 row and selectors without retaining raw payload
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout research repository only
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11.9"
+
+      - name: Install pinned Parquet reader only
+        run: python -m pip install --disable-pip-version-check --no-deps "pyarrow==19.0.1"
+
+      - name: Download exact pinned dataset and verify whole-file identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p django-bird-219-row-audit
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          test "$(stat -c '%s' "$RUNNER_TEMP/train-00000-of-00001.parquet")" = "226272977"
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  $RUNNER_TEMP/train-00000-of-00001.parquet" | sha256sum --check
+
+      - name: Authenticate rank 55 row and hash without retaining source text or patches
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import datetime as dt
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import pyarrow.parquet as pq
+
+          DATASET_REVISION = "fb9aa226b2ce37c708ea7732e7b980abacdadb67"
+          PARQUET_SHA256 = "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9"
+          EXPECTED_BYTES = 226272977
+          EXPECTED_ROWS = 6272
+          EXPECTED_BASE = "6641de58a71e94689fb96c09a3aca25aab8efc25"
+          EXPECTED_PR = 219
+          EXPECTED_REPO_SLUG = "django-bird"
+          DATASET_ID = "PrimeIntellect/SWE-rebench-V2-Filtered-Verified"
+
+          def normalize(value):
+              if isinstance(value, (dt.datetime, dt.date, dt.time)):
+                  return value.isoformat()
+              if isinstance(value, dict):
+                  return {str(k): normalize(v) for k, v in value.items()}
+              if isinstance(value, (list, tuple)):
+                  return [normalize(v) for v in value]
+              return value
+
+          parquet_path = Path(os.environ["RUNNER_TEMP"]) / "train-00000-of-00001.parquet"
+          if parquet_path.stat().st_size != EXPECTED_BYTES:
+              raise SystemExit("Unexpected Parquet byte count")
+          actual_parquet_sha = hashlib.sha256(parquet_path.read_bytes()).hexdigest()
+          if actual_parquet_sha != PARQUET_SHA256:
+              raise SystemExit("Pinned Parquet SHA-256 mismatch")
+
+          parquet = pq.ParquetFile(parquet_path)
+          if parquet.metadata.num_rows != EXPECTED_ROWS:
+              raise SystemExit("Unexpected Parquet row count")
+
+          metadata_columns = [
+              "instance_id", "repo", "base_commit", "created_at",
+              "language", "license", "FAIL_TO_PASS", "PASS_TO_PASS",
+          ]
+          metadata_rows = pq.read_table(parquet_path, columns=metadata_columns).to_pylist()
+          candidates = [
+              row for row in metadata_rows
+              if row.get("base_commit") == EXPECTED_BASE
+              and str(row.get("instance_id") or "").endswith("-219")
+              and str(row.get("repo") or "").split("/")[-1].casefold() == EXPECTED_REPO_SLUG
+          ]
+          if len(candidates) != 1:
+              print("BASE_COMMIT_MATCHES", json.dumps([
+                  {"instance_id": row.get("instance_id"), "repo": row.get("repo"), "base_commit": row.get("base_commit")}
+                  for row in metadata_rows if row.get("base_commit") == EXPECTED_BASE
+              ], ensure_ascii=False))
+              raise SystemExit("Expected exactly one frozen row, found " + str(len(candidates)))
+
+          instance_id = candidates[0]["instance_id"]
+          full_rows = pq.read_table(parquet_path, filters=[("instance_id", "=", instance_id)]).to_pylist()
+          if len(full_rows) != 1:
+              raise SystemExit("Expected exactly one full row, got " + str(len(full_rows)))
+          row = normalize(full_rows[0])
+
+          if row.get("base_commit") != EXPECTED_BASE:
+              raise SystemExit("Full-row base commit mismatch")
+          if str(row.get("repo") or "").split("/")[-1].casefold() != EXPECTED_REPO_SLUG:
+              raise SystemExit("Full-row repository slug mismatch")
+          if row.get("language") != "python":
+              raise SystemExit("Expected Python repository row")
+          if not isinstance(row.get("problem_statement"), str) or not row["problem_statement"].strip():
+              raise SystemExit("Problem statement missing")
+          if not isinstance(row.get("FAIL_TO_PASS"), list) or not row["FAIL_TO_PASS"]:
+              raise SystemExit("FAIL_TO_PASS must be a non-empty list")
+          if "patch" not in row or "test_patch" not in row:
+              raise SystemExit("Canonical row missing patch/test_patch fields")
+
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          statement_bytes = row["problem_statement"].encode("utf-8")
+          patch_bytes = str(row["patch"]).encode("utf-8")
+          test_patch_bytes = str(row["test_patch"]).encode("utf-8")
+
+          result = {
+              "schema_version": "0.1-django-bird-row-audit-metadata",
+              "cohort_rank": 55,
+              "dataset_id": DATASET_ID,
+              "dataset_revision": DATASET_REVISION,
+              "parquet_sha256": actual_parquet_sha,
+              "parquet_bytes": EXPECTED_BYTES,
+              "parquet_rows": EXPECTED_ROWS,
+              "pyarrow_version": __import__("pyarrow").__version__,
+              "instance_id": instance_id,
+              "repository": row["repo"],
+              "base_commit": row["base_commit"],
+              "created_at": row.get("created_at"),
+              "language": row["language"],
+              "source_repository_license_field": row.get("license"),
+              "canonical_row_sha256": hashlib.sha256(canonical).hexdigest(),
+              "problem_statement_sha256": hashlib.sha256(statement_bytes).hexdigest(),
+              "patch_sha256": hashlib.sha256(patch_bytes).hexdigest(),
+              "test_patch_sha256": hashlib.sha256(test_patch_bytes).hexdigest(),
+              "fail_to_pass_count": len(row["FAIL_TO_PASS"]),
+              "fail_to_pass_selectors": row["FAIL_TO_PASS"],
+              "pass_to_pass_count": len(row.get("PASS_TO_PASS") or []),
+              "pass_to_pass_selectors": row.get("PASS_TO_PASS") or [],
+              "issue_url": "https://github.com/joshuadavidthomas/django-bird/issues/218",
+              "pull_request_url": "https://github.com/joshuadavidthomas/django-bird/pull/219",
+              "upstream_buggy_base_expected": EXPECTED_BASE,
+              "execution_boundary": {
+                  "upstream_repository_checkout": False,
+                  "upstream_package_install": False,
+                  "upstream_tests_or_build": False,
+                  "raw_problem_statement_retained": False,
+                  "raw_patch_retained": False,
+                  "raw_test_patch_retained": False,
+                  "model_loading": False,
+                  "model_inference": False,
+                  "fine_tuning": False,
+                  "training": False
+              }
+          }
+
+          out = Path("django-bird-219-row-audit/row-audit-metadata.json")
+          out.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(result, ensure_ascii=False, indent=2))
+          PY
+          rm -f "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          (cd django-bird-219-row-audit && sha256sum row-audit-metadata.json > SHA256SUMS.txt)
+          (cd django-bird-219-row-audit && sha256sum --check SHA256SUMS.txt)
+
+      - name: Upload metadata-only frozen row audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: django-bird-219-row-audit
+          path: django-bird-219-row-audit/
+          if-no-files-found: error
+          retention-days: 90

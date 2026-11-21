@@ -1,0 +1,533 @@
+name: "PSyclone #2755 Stage 2 Exact Base-Fail / Fixed-Pass (No Inference)"
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_stage2_protocol:
+        description: "Authorize the frozen-row Stage 2 reproduction only; this never authorizes model inference."
+        required: true
+        type: boolean
+        default: false
+      confirm_model_inference_disabled:
+        description: "Confirm that model loading, generation, fine-tuning and training remain disabled."
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: psyclone-2755-stage2-no-inference
+  cancel-in-progress: false
+
+jobs:
+  exact_selector_reproduction:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    name: Exact PSyclone #2755 frozen selector reproduction
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Require explicit Stage 2 and no-inference confirmations
+        shell: bash
+        env:
+          CONFIRM_STAGE2: ${{ inputs.confirm_stage2_protocol }}
+          CONFIRM_NO_INFERENCE: ${{ inputs.confirm_model_inference_disabled }}
+        run: |
+          set -euo pipefail
+          test "$CONFIRM_STAGE2" = "true"
+          test "$CONFIRM_NO_INFERENCE" = "true"
+          mkdir -p "$RUNNER_TEMP/psyclone-2755-evidence"
+          printf '%s\n' "stage2_protocol_confirmed=true" "model_inference_disabled_confirmed=true" > "$RUNNER_TEMP/psyclone-2755-evidence/authorization.txt"
+
+      - name: Checkout exact buggy base
+        uses: actions/checkout@v4
+        with:
+          repository: stfc/PSyclone
+          ref: a33a99b7953130220ed7d3ad38d358c1124276af
+          path: psyclone-buggy
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Checkout exact fixed merge revision
+        uses: actions/checkout@v4
+        with:
+          repository: stfc/PSyclone
+          ref: 816177c33851f96a840aea1041fe1894bc2b3e25
+          path: psyclone-fixed
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up exact Python 3.13.0
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13.0"
+
+      - name: Authenticate frozen dataset and extract original patches and selectors
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv "$RUNNER_TEMP/psyclone-data-env"
+          "$RUNNER_TEMP/psyclone-data-env/bin/python" -m pip install --disable-pip-version-check --no-deps "pyarrow==19.0.1"
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  $RUNNER_TEMP/train-00000-of-00001.parquet" | sha256sum --check
+          "$RUNNER_TEMP/psyclone-data-env/bin/python" - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import pyarrow.parquet as pq
+
+          parquet = Path(os.environ["RUNNER_TEMP"]) / "train-00000-of-00001.parquet"
+          required = {
+              "instance_id", "repo", "base_commit", "created_at",
+              "language", "license", "FAIL_TO_PASS", "problem_statement",
+              "patch", "test_patch"
+          }
+          optional = {"PASS_TO_PASS", "environment_setup_commit", "version"}
+          schema = pq.read_schema(parquet)
+          missing = sorted(required.difference(schema.names))
+          if missing:
+              raise SystemExit(f"Frozen Parquet schema lacks required columns: {missing}")
+          columns = sorted(required | (optional & set(schema.names)))
+          table = pq.read_table(
+              parquet, columns=columns,
+              filters=[("repo", "=", "stfc/PSyclone")]
+          )
+          rows = [
+              row for row in table.to_pylist()
+              if row["instance_id"] == "stfc__psyclone-2767"
+          ]
+          if len(rows) != 1:
+              raise SystemExit(f"Expected one stfc__psyclone-2767 row, observed {len(rows)}")
+          row = rows[0]
+
+          canonical = json.dumps(
+              row, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+          ).encode("utf-8")
+          row_sha = hashlib.sha256(canonical).hexdigest()
+          problem_sha = hashlib.sha256((row.get("problem_statement") or "").encode("utf-8")).hexdigest()
+          patch = row.get("patch") or ""
+          test_patch = row.get("test_patch") or ""
+          patch_sha = hashlib.sha256(patch.encode("utf-8")).hexdigest()
+          test_patch_sha = hashlib.sha256(test_patch.encode("utf-8")).hexdigest()
+
+          expected = {
+              "base_commit": "a33a99b7953130220ed7d3ad38d358c1124276af",
+              "row_sha256": "8da9b19d64375edb59bb3ebcdc2e27cf5d350411fa4ccdcdeeb5a31e590bf10a",
+              "problem_sha256": "6701682bc3a949b81c54d7acb8348a7e20d539441bb62f101e09e5669695d5da",
+              "patch_sha256": "65480091a2d3f05c9929e6a0cc7974b2fdd46d697edef7fb068087dcf52013ca",
+              "test_patch_sha256": "f72b5a377528d246aa0a8c14ff01ee12b49d0f312e3624d7bd272c785b71e295",
+          }
+          actual = {
+              "base_commit": str(row["base_commit"]),
+              "row_sha256": row_sha,
+              "problem_sha256": problem_sha,
+              "patch_sha256": patch_sha,
+              "test_patch_sha256": test_patch_sha,
+          }
+          if actual != expected:
+              raise SystemExit(f"Frozen PSyclone row or patch hash mismatch: {actual}")
+
+          f2p = row["FAIL_TO_PASS"]
+          p2p = row.get("PASS_TO_PASS") or []
+          expected_f2p = [
+              "src/psyclone/tests/psyad/tl2ad_test.py::test_generate_adjoint_str_trans_error",
+              "src/psyclone/tests/psyad/transformations/test_preprocess.py::test_preprocess_arrayassign2loop_failure",
+              "src/psyclone/tests/psyir/nodes/array_mixin_test.py::test_get_effective_shape",
+          ]
+          if f2p != expected_f2p:
+              raise SystemExit(f"FAIL_TO_PASS selectors differ from frozen reviewed list: {f2p}")
+          if len(p2p) != 84 or len(set(p2p)) != 84:
+              raise SystemExit(f"Expected 84 unique PASS_TO_PASS selectors, observed {len(p2p)}")
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "psyclone-2755-evidence"
+          (out / "production-patch.diff").write_text(patch, encoding="utf-8")
+          (out / "test-patch.diff").write_text(test_patch, encoding="utf-8")
+          (out / "FAIL_TO_PASS.txt").write_text("\n".join(f2p) + "\n", encoding="utf-8")
+          (out / "PASS_TO_PASS.txt").write_text("\n".join(p2p) + "\n", encoding="utf-8")
+          provenance = {
+              "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+              "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+              "instance_id": row["instance_id"],
+              "repo": row["repo"],
+              "base_commit": row["base_commit"],
+              "created_at": str(row["created_at"]),
+              "created_at_timezone_note": "Dataset serialization has no explicit timezone suffix; wall-clock components match the GitHub PR creation timestamp 2024-11-05T14:18:14Z.",
+              "issue_created_at": "2024-10-24T10:03:42Z",
+              "language": row["language"],
+              "license": row["license"],
+              "selected_fields_row_sha256": row_sha,
+              "problem_statement_sha256": problem_sha,
+              "patch_sha256": patch_sha,
+              "test_patch_sha256": test_patch_sha,
+              "FAIL_TO_PASS_count": len(f2p),
+              "PASS_TO_PASS_count": len(p2p),
+              "FAIL_TO_PASS": f2p,
+              "PASS_TO_PASS": p2p,
+              "runtime_from_dataset": {
+                  "environment_setup_commit": row.get("environment_setup_commit"),
+                  "version": row.get("version"),
+              },
+              "model_inference_performed": False,
+              "case_accepted": False,
+          }
+          (out / "dataset-row-provenance.json").write_text(
+              json.dumps(provenance, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8"
+          )
+          (out / "row-authentication.txt").write_text(
+              json.dumps(actual, indent=2) + "\n", encoding="utf-8"
+          )
+          print(json.dumps({
+              "instance_id": row["instance_id"],
+              "selected_fields_row_sha256": row_sha,
+              "FAIL_TO_PASS_count": len(f2p),
+              "PASS_TO_PASS_count": len(p2p),
+              "patch_sha256": patch_sha,
+              "test_patch_sha256": test_patch_sha,
+          }, indent=2))
+          PY
+          rm -f "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          rm -rf "$RUNNER_TEMP/psyclone-data-env"
+
+      - name: Verify source revisions and patch-to-fixed identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="a33a99b7953130220ed7d3ad38d358c1124276af"
+          FIXED="816177c33851f96a840aea1041fe1894bc2b3e25"
+          test "$(git -C psyclone-buggy rev-parse HEAD)" = "$BASE"
+          test "$(git -C psyclone-fixed rev-parse HEAD)" = "$FIXED"
+          mkdir -p "$RUNNER_TEMP/psyclone-patch-verify"
+          git clone --shared psyclone-buggy "$RUNNER_TEMP/psyclone-patch-verify"
+          git -C "$RUNNER_TEMP/psyclone-patch-verify" checkout --detach "$BASE"
+          git -C "$RUNNER_TEMP/psyclone-patch-verify" apply --check "$RUNNER_TEMP/psyclone-2755-evidence/production-patch.diff"
+          git -C "$RUNNER_TEMP/psyclone-patch-verify" apply "$RUNNER_TEMP/psyclone-2755-evidence/production-patch.diff"
+          git -C "$RUNNER_TEMP/psyclone-patch-verify" apply --check "$RUNNER_TEMP/psyclone-2755-evidence/test-patch.diff"
+          git -C "$RUNNER_TEMP/psyclone-patch-verify" apply "$RUNNER_TEMP/psyclone-2755-evidence/test-patch.diff"
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+
+          repo = Path(os.environ["GITHUB_WORKSPACE"])
+          patch_tree = Path(os.environ["RUNNER_TEMP"]) / "psyclone-patch-verify"
+          fixed_tree = repo / "psyclone-fixed"
+          files = [
+              "src/psyclone/psyad/tl2ad.py",
+              "src/psyclone/psyad/transformations/preprocess.py",
+              "src/psyclone/psyir/nodes/array_mixin.py",
+              "src/psyclone/tests/psyad/tl2ad_test.py",
+              "src/psyclone/tests/psyad/transformations/test_preprocess.py",
+              "src/psyclone/tests/psyir/nodes/array_mixin_test.py",
+          ]
+          records = []
+          for name in files:
+              fixed_bytes = subprocess.run(
+                  ["git", "-C", str(fixed_tree), "show", f"HEAD:{name}"],
+                  check=True, capture_output=True
+              ).stdout
+              patched_bytes = (patch_tree / name).read_bytes()
+              equal = fixed_bytes == patched_bytes
+              records.append({
+                  "path": name,
+                  "patched_sha256": hashlib.sha256(patched_bytes).hexdigest(),
+                  "fixed_sha256": hashlib.sha256(fixed_bytes).hexdigest(),
+                  "identical": equal,
+              })
+          if not all(x["identical"] for x in records):
+              raise SystemExit("Dataset production+test patches do not reconstruct all six source/test files at fixed merge revision")
+          out = Path(os.environ["RUNNER_TEMP"]) / "psyclone-2755-evidence"
+          (out / "patch-to-fixed-file-comparison.json").write_text(
+              json.dumps(records, indent=2) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(records, indent=2))
+          PY
+
+      - name: Apply the frozen test_patch to the buggy-base checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="a33a99b7953130220ed7d3ad38d358c1124276af"
+          PATCH="$RUNNER_TEMP/psyclone-2755-evidence/test-patch.diff"
+          test "$(git -C psyclone-buggy rev-parse HEAD)" = "$BASE"
+          git -C psyclone-buggy apply --check "$PATCH"
+          git -C psyclone-buggy apply "$PATCH"
+          python - <<'PY'
+          import ast
+          import json
+          from pathlib import Path
+          import subprocess
+
+          root = Path("psyclone-buggy")
+          changed = subprocess.run(
+              ["git", "-C", str(root), "diff", "--name-only"],
+              check=True, capture_output=True, text=True
+          ).stdout.splitlines()
+          if not changed:
+              raise SystemExit("Applying the frozen test_patch produced no source changes")
+          unexpected = [name for name in changed if not name.startswith("src/psyclone/tests/")]
+          if unexpected:
+              raise SystemExit(f"test_patch modified non-test paths: {unexpected}")
+
+          provenance = json.loads(
+              (Path(__import__("os").environ["RUNNER_TEMP"]) /
+               "psyclone-2755-evidence" / "dataset-row-provenance.json")
+              .read_text(encoding="utf-8")
+          )
+          selector_checks = []
+          for selector in provenance["FAIL_TO_PASS"]:
+              filename, function = selector.split("::", 1)
+              source = (root / filename).read_text(encoding="utf-8")
+              tree = ast.parse(source, filename=str(root / filename))
+              found = any(
+                  isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                  and node.name == function
+                  for node in ast.walk(tree)
+              )
+              selector_checks.append({"selector": selector, "defined_after_test_patch": found})
+          if not all(item["defined_after_test_patch"] for item in selector_checks):
+              raise SystemExit(f"Frozen FAIL_TO_PASS selectors are not all present after test_patch: {selector_checks}")
+
+          expected_base = "a33a99b7953130220ed7d3ad38d358c1124276af"
+          actual_base = subprocess.run(
+              ["git", "-C", str(root), "rev-parse", "HEAD"],
+              check=True, capture_output=True, text=True
+          ).stdout.strip()
+          if actual_base != expected_base:
+              raise SystemExit(f"Buggy-base commit changed after applying test_patch: {actual_base}")
+
+          summary = {
+              "buggy_base_commit_unchanged": actual_base,
+              "frozen_test_patch_applied_to_actual_buggy_base_test_tree": True,
+              "changed_paths": changed,
+              "production_source_paths_modified": False,
+              "FAIL_TO_PASS_selector_presence": selector_checks,
+              "production_patch_applied_to_buggy_base": False,
+              "model_inference_performed": False,
+          }
+          out = Path(__import__("os").environ["RUNNER_TEMP"]) / "psyclone-2755-evidence"
+          (out / "buggy-base-test-patch-application.json").write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + "\\n",
+              encoding="utf-8"
+          )
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Install exact wheel-hashed Python environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import platform
+          import sys
+          if platform.python_version() != "3.13.0":
+              raise SystemExit(f"Expected Python 3.13.0, got {platform.python_version()}")
+          if platform.machine() != "x86_64":
+              raise SystemExit(f"Expected x86_64, got {platform.machine()}")
+          PY
+          LOCK="research_candidates/evidence_abstention/PSYCLONE_2755_REQUIREMENTS_HASHED_PY313_2026-11-19.txt"
+          echo "2c17aa350aa253a1ee75c10e27069a5aa46157511791108a63b1a071a24085ca  $LOCK" | sha256sum --check
+          python -m venv "$RUNNER_TEMP/psyclone-test-env"
+          "$RUNNER_TEMP/psyclone-test-env/bin/python" -m pip install --disable-pip-version-check --require-hashes --no-deps --requirement "$LOCK"
+          "$RUNNER_TEMP/psyclone-test-env/bin/python" -m pip check
+          "$RUNNER_TEMP/psyclone-test-env/bin/python" - <<'PY'
+          import importlib.metadata as md
+          import json
+          import platform
+          from pathlib import Path
+          import sys
+
+          expected = {
+              "python": "3.13.0",
+              "pip": "24.3.1",
+              "setuptools": "75.3.0",
+              "wheel": "0.45.0",
+              "pytest": "9.2.0",
+              "fparser": "0.2.5",
+              "sympy": "1.14.0",
+          }
+          observed = {
+              "python": platform.python_version(),
+              "pip": md.version("pip"),
+              "setuptools": md.version("setuptools"),
+              "wheel": md.version("wheel"),
+              "pytest": md.version("pytest"),
+              "fparser": md.version("fparser"),
+              "sympy": md.version("sympy"),
+          }
+          if observed != expected:
+              raise SystemExit(f"Runtime differs from exact environment lock: {observed}")
+          packages = [
+              {"name": d.metadata["Name"].lower(), "version": d.version}
+              for d in md.distributions() if d.metadata.get("Name")
+          ]
+          packages.sort(key=lambda x: x["name"])
+          out = Path(__import__("os").environ["RUNNER_TEMP"]) / "psyclone-2755-evidence"
+          (out / "runtime-fingerprint.json").write_text(
+              json.dumps({
+                  "python": observed["python"],
+                  "pip": observed["pip"],
+                  "setuptools": observed["setuptools"],
+                  "wheel": observed["wheel"],
+                  "platform": platform.platform(),
+                  "machine": platform.machine(),
+                  "packages": packages,
+                  "model_inference_performed": False,
+              }, indent=2) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(observed, indent=2))
+          PY
+          cp "$LOCK" "$RUNNER_TEMP/psyclone-2755-evidence/requirements.hashed.lock.txt"
+
+      - name: Run exact base-fail and fixed-pass selectors plus P2P controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/psyclone-test-env/bin/python" - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          import sys
+
+          root = Path(os.environ["RUNNER_TEMP"]) / "psyclone-2755-evidence"
+          provenance = json.loads((root / "dataset-row-provenance.json").read_text(encoding="utf-8"))
+          buggy = Path(os.environ["GITHUB_WORKSPACE"]) / "psyclone-buggy"
+          fixed = Path(os.environ["GITHUB_WORKSPACE"]) / "psyclone-fixed"
+          python = str(Path(os.environ["RUNNER_TEMP"]) / "psyclone-test-env" / "bin" / "python")
+
+          results = {"buggy_base": {"FAIL_TO_PASS": [], "PASS_TO_PASS": None},
+                     "fixed_revision": {"FAIL_TO_PASS": [], "PASS_TO_PASS": None}}
+          env_base = os.environ.copy()
+
+          def run_one(tree, selector, side, expectation):
+              env = env_base.copy()
+              env["PYTHONPATH"] = str(tree / "src")
+              proc = subprocess.run(
+                  [python, "-m", "pytest", "-q", "-vv", selector],
+                  cwd=tree, env=env, text=True,
+                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+              )
+              safe = selector.replace("/", "__").replace("::", "__").replace("[", "_").replace("]", "_")
+              log = root / f"{side}-F2P-{safe}.log"
+              log.write_text(proc.stdout, encoding="utf-8")
+              observed_signatures = []
+              if expectation == "base_fail":
+                  selector_name = selector.split("::", 1)[1].split("[", 1)[0]
+                  allowed_signatures = {
+                      "test_generate_adjoint_str_trans_error": ("TransformationError",),
+                      "test_preprocess_arrayassign2loop_failure": ("NotImplementedError", "DID NOT RAISE"),
+                      "test_get_effective_shape": ("NotImplementedError",),
+                  }.get(selector_name)
+                  if not allowed_signatures:
+                      raise SystemExit(f"No frozen defect-specific base-failure signature for selector: {selector}")
+                  if proc.returncode != 1 or "FAILED" not in proc.stdout or "1 failed" not in proc.stdout:
+                      raise SystemExit(f"Base selector did not produce exactly one executed pytest failure: {selector}; see {log}")
+                  observed_signatures = [marker for marker in allowed_signatures if marker in proc.stdout]
+                  if not observed_signatures:
+                      raise SystemExit(
+                          f"Base failure did not match the predeclared defect-specific signature for {selector}; "
+                          f"allowed={allowed_signatures}; see {log}"
+                      )
+                  status = "expected_bug_specific_failure"
+              else:
+                  if proc.returncode != 0:
+                      raise SystemExit(f"Expected fixed pass, exit={proc.returncode}: {selector}; see {log}")
+                  if "1 passed" not in proc.stdout:
+                      raise SystemExit(f"Fixed selector did not report exactly one pytest pass: {selector}; see {log}")
+                  status = "passed"
+              result = {
+                  "selector": selector,
+                  "exit_code": proc.returncode,
+                  "status": status,
+                  "observed_expected_failure_signatures": observed_signatures,
+                  "log_file": log.name,
+              }
+              return result
+
+          for selector in provenance["FAIL_TO_PASS"]:
+              results["buggy_base"]["FAIL_TO_PASS"].append(
+                  run_one(buggy, selector, "buggy-base", "base_fail")
+              )
+          for selector in provenance["FAIL_TO_PASS"]:
+              results["fixed_revision"]["FAIL_TO_PASS"].append(
+                  run_one(fixed, selector, "fixed", "fixed_pass")
+              )
+
+          p2p = provenance["PASS_TO_PASS"]
+          for side, tree in [("buggy_base", buggy), ("fixed_revision", fixed)]:
+              env = env_base.copy()
+              env["PYTHONPATH"] = str(tree / "src")
+              proc = subprocess.run(
+                  [python, "-m", "pytest", "-q", "-vv", *p2p],
+                  cwd=tree, env=env, text=True,
+                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+              )
+              log = root / f"{side}-PASS_TO_PASS.log"
+              log.write_text(proc.stdout, encoding="utf-8")
+              if proc.returncode != 0 or f"{len(p2p)} passed" not in proc.stdout:
+                  raise SystemExit(f"{side} PASS_TO_PASS controls did not all pass without skips; see {log}")
+              results[side]["PASS_TO_PASS"] = {
+                  "selector_count": len(p2p),
+                  "exit_code": proc.returncode,
+                  "status": "all_passed",
+                  "log_file": log.name,
+              }
+
+          summary = {
+              "candidate": "stfc/PSyclone issue #2755 / PR #2767",
+              "technical_stage2_status": "passed",
+              "buggy_base_commit": "a33a99b7953130220ed7d3ad38d358c1124276af",
+              "fixed_revision_commit": "816177c33851f96a840aea1041fe1894bc2b3e25",
+              "FAIL_TO_PASS_count": len(provenance["FAIL_TO_PASS"]),
+              "PASS_TO_PASS_count": len(p2p),
+              "results": results,
+              "all_three_F2P_failed_for_defect_on_base": True,
+              "all_three_F2P_passed_on_fixed": True,
+              "all_84_P2P_passed_on_both_revisions": True,
+              "upstream_tests_executed": True,
+              "model_loading_performed": False,
+              "model_inference_performed": False,
+              "fine_tuning_performed": False,
+              "case_accepted": False,
+              "stage3_status": "pending_independent_gold_evidence_semantic_license_exposure_and_audit_reviews",
+          }
+          (root / "stage2-summary.json").write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8"
+          )
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Finalize Stage 2 evidence hashes (always)
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="$RUNNER_TEMP/psyclone-2755-evidence"
+          mkdir -p "$ROOT"
+          if [ ! -f "$ROOT/stage2-summary.json" ]; then
+            printf '%s\n' '{"technical_stage2_status":"incomplete_or_blocked","upstream_tests_executed":false,"model_inference_performed":false,"case_accepted":false}' > "$ROOT/stage2-summary.json"
+          fi
+          cd "$ROOT"
+          rm -f SHA256SUMS.txt
+          find . -maxdepth 1 -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt
+          sha256sum --check SHA256SUMS.txt
+
+      - name: Upload raw Stage 2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: psyclone-2755-stage2-reproduction-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/psyclone-2755-evidence/
+          if-no-files-found: error
+          retention-days: 90

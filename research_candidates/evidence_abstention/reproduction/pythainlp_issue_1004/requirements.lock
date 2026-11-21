@@ -1,0 +1,26 @@
+# Exact runtime distribution lock captured from exploratory run 44131231150.
+# Platform: ubuntu-22.04 / CPython 3.10.15 / libicu-dev 70.1-2.
+# PyICU is intentionally built from the exact PyPI source release with
+# --no-build-isolation, using the setuptools and wheel versions pinned below.
+# The editable PyThaiNLP source tree is installed separately from exact commit
+# 188904f22c4c80fd7406706850c798f611690a4a or fixed commit
+# 6f1dc929f853ecd9910d1d25a56716b864b2ee98 with --no-deps.
+PyYAML==6.0.3
+certifi==2026.10.23
+charset-normalizer==3.5.2
+exceptiongroup==1.3.1
+idna==3.20
+iniconfig==2.3.1
+numpy==2.2.6
+packaging==26.3
+pip==24.3.1
+pluggy==1.7.0
+pyicu==2.17
+pytest==8.3.5
+python-crfsuite==0.9.12
+requests==2.34.2
+setuptools==65.5.0
+tomli==2.5.0
+typing_extensions==4.16.0
+urllib3==2.8.0
+wheel==0.45.1

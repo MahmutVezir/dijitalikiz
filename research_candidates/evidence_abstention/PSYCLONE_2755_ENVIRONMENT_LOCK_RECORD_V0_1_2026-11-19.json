@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "status": "environment_locked_no_tests_executed",
+  "recorded_at": "2026-11-19T11:08:37Z",
+  "upstream_repository": "stfc/PSyclone",
+  "dataset": {
+    "repository": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "instance_id": "stfc__psyclone-2767",
+    "selected_fields_row_sha256": "8da9b19d64375edb59bb3ebcdc2e27cf5d350411fa4ccdcdeeb5a31e590bf10a"
+  },
+  "source_revisions": {
+    "buggy_base": "a33a99b7953130220ed7d3ad38d358c1124276af",
+    "fixed_merge": "816177c33851f96a840aea1041fe1894bc2b3e25",
+    "upstream_pr_head": "fbd511fa5ba096b84d8756bb9d84fc8efb0d5706"
+  },
+  "runtime": {
+    "os": "ubuntu-22.04 x86_64",
+    "python": "3.13.0",
+    "pip": "24.3.1",
+    "setuptools": "75.3.0",
+    "wheel": "0.45.0",
+    "python_selection_rationale": "PSyclone base commit's own python-package CI matrix explicitly includes Python 3.13; the frozen dataset row itself does not specify Python.",
+    "package_count": 37,
+    "wheel_artifact_count": 37,
+    "submodules": [
+      "FortCL@401148e4b6d6efdd4d0157123b118ed07d831446",
+      "dl_esm_inf@ad209e9d252995bd83127de4c481232ca14ed655",
+      "fparser@6d8481c334fc5996a43f7339c181d87b3d0877a2"
+    ]
+  },
+  "hashes": {
+    "unhashed_version_lock_sha256": "e80073977fea7ebca9ce25a554f63593f5abf499e5c7b6ff21bd8078795a09a7",
+    "hashed_requirements_lock_sha256": "2c17aa350aa253a1ee75c10e27069a5aa46157511791108a63b1a071a24085ca",
+    "wheel_hashes_manifest_sha256": "0773f43f4c924d630aebfcd067bb17b53a2ec31697332e1fe29b07d460e6a5fd",
+    "environment_artifact_id": 14523342337,
+    "environment_artifact_sha256": "d266fa63b294b75cf503ad38459c923de108985c5ea9d4fe8ef4473df5d4a222"
+  },
+  "setup_notes": {
+    "source_build_performed_during_lock_resolution": true,
+    "explanation": "pip install .[test] built and installed the local upstream PSyclone wheel as part of dependency resolution. Stage 2 will not reinstall this wheel and will import the tested checkout using PYTHONPATH=src.",
+    "tests_executed_during_lock_resolution": false,
+    "model_inference_performed": false,
+    "license_metadata_collected": true,
+    "human_dependency_license_review_completed": false
+  },
+  "stage2": {
+    "status": "not_started",
+    "fail_to_pass_count": 3,
+    "pass_to_pass_count": 84,
+    "case_accepted": false,
+    "model_inference_authorized": false
+  }
+}

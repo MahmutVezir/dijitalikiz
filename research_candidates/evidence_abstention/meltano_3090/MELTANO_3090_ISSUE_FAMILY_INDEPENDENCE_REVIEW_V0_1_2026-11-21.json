@@ -1,0 +1,103 @@
+{
+  "schema_version": "0.1-v02-candidate-independence-review",
+  "review_date": "2026-11-21",
+  "candidate": {
+    "case_id": "SRV2E-MELTANO_3090",
+    "repository_full_name": "meltano/sdk",
+    "issue_url": "https://github.com/meltano/sdk/issues/3090",
+    "fix_pr_url": "https://github.com/meltano/sdk/pull/3091",
+    "dataset_instance_id": "meltano__sdk-3091",
+    "cohort_rank": 26,
+    "cohort_size": 96
+  },
+  "repository_identity": {
+    "canonical_upstream_repository": "meltano/sdk",
+    "github_metadata_fork": false,
+    "public_repository": true,
+    "reviewed_root_license": "Apache-2.0",
+    "status": "canonical_upstream_not_fork_or_mirror"
+  },
+  "sampling_unit": {
+    "unit": "upstream_repository",
+    "maximum_accepted_cases_per_upstream_project": 1,
+    "accepted_case_ids_for_this_repository": [],
+    "registry_contains_candidate": false
+  },
+  "related_issue_family": [
+    {
+      "reference": "https://github.com/meltano/sdk/pull/3009",
+      "kind": "prior_introduction_in_same_code_path",
+      "title": "Fix infinite recursion error when resolving JSON schemas with circular references",
+      "created_at_utc": "2025-05-01T04:52:34Z",
+      "merged_at_utc": "2025-05-02T19:14:55Z",
+      "merge_commit": "a64b6b90a4f82482ca595ca77956260466442f5e",
+      "relevance": "Introduced visited-reference tracking to prevent genuine recursive-reference loops. PR #3091 explicitly links #3009 as the introduction history. The #3090 defect is an unintended sibling-branch side effect in this same resolver path.",
+      "counting_decision": "related lineage only; not a second candidate or independent case"
+    },
+    {
+      "reference": "https://github.com/meltano/sdk/issues/3090",
+      "kind": "target_defect",
+      "title": "JSON schema references are incorrectly resolved when multiple properties use the same reference",
+      "created_at_utc": "2025-06-12T01:45:49Z",
+      "counting_decision": "single candidate defect"
+    },
+    {
+      "reference": "https://github.com/meltano/sdk/pull/3091",
+      "kind": "fix",
+      "created_at_utc": "2025-06-12T01:47:30Z",
+      "merged_at_utc": "2025-06-12T02:02:02Z",
+      "merge_commit": "948bcec790bafebbb571cf3c0d58116a49d6f6aa",
+      "counting_decision": "same target defect and same repository unit"
+    }
+  ],
+  "dataset_identity": {
+    "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "instance_id": "meltano__sdk-3091",
+    "row_sha256": "318893b8546a4a6b2d8bc75d986a079c818951658fc1293ac59ba05d84682266",
+    "created_at_dataset_naive": "2025-06-12 01:47:30",
+    "matching_upstream_pr_created_at_utc": "2025-06-12T01:47:30Z",
+    "timestamp_status": "exact_second_match_to_PR_creation_time; issue_creation_time_is_earlier",
+    "row_selector": "tests/singerlib/test_schema.py::test_resolve_schema_references[resolve_schema_multiple_properties_with_same_reference]"
+  },
+  "project_lead_selection": {
+    "decision": "ACCEPTED_FOR_STAGE3_CASE_EVALUATION",
+    "date": "2026-11-20",
+    "scope": "candidate selection only; not gold/tier approval, license approval, or final case acceptance"
+  },
+  "independence_disposition": {
+    "status": "passed_for_exploratory_candidate_uniqueness",
+    "upstream_project_id": "meltano/sdk",
+    "defect_cluster_id": "meltano-sdk-schema-resolver-sibling-reference-state-issue-3090",
+    "is_fork_or_mirror": false,
+    "related_case_ids": [],
+    "one_case_per_repository_rule_preserved": true,
+    "notes": "The #3009 predecessor is retained as code-lineage context, not counted as an additional candidate. No Meltano case is currently in the accepted registry."
+  },
+  "source_references": {
+    "buggy_source": "https://github.com/meltano/sdk/blob/ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2/singer_sdk/singerlib/schema.py",
+    "fixed_source": "https://github.com/meltano/sdk/blob/9505ff1989b9be4d53b5bc9664b3fe3885879cb1/singer_sdk/singerlib/schema.py",
+    "stage2_artifact": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44331092872/artifacts/14440520435"
+  },
+  "boundaries": {
+    "final_case_acceptance": "not_accepted",
+    "registry_inclusion": false,
+    "inference_authorized": false,
+    "blinded_adjudication_claimed": false,
+    "inter_rater_claimed": false,
+    "legal_clearance": false,
+    "prior_pipeline_debug_exposure_gate": "closed_on_project_lead_self_report"
+  },
+  "exposure": {
+    "prior_pipeline_debug_exposure": "none",
+    "researcher_source_exposure": "full",
+    "decision_date": "2026-11-21",
+    "decision_maker_role": "student_project_lead",
+    "decision_source": "direct candidate-specific self-declaration in the project conversation",
+    "decision_record": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_EXPOSURE_DECISION_MELTANO_3090_2026-11-21.md",
+    "exposure_scope": "The project lead reports no prior use of Meltano #3090 / PR #3091, its source, dataset selector, or reproducer to develop/debug the shared research pipeline or tune prompts/tests before prospective case validation.",
+    "verification_limit": "Self-report, not an independently witnessed audit or external verification.",
+    "blind_adjudication_claimed": false,
+    "inter_rater_claimed": false
+  }
+}

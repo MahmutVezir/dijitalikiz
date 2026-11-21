@@ -1,0 +1,40 @@
+{
+  "record_type": "immutable_git_source_snapshot_manifest",
+  "repository": "geofileops/geofileops",
+  "commit_sha": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+  "snapshot_role": "buggy_base",
+  "files": [
+    {
+      "path": "CHANGELOG.md",
+      "git_blob_sha1": "65f49f13b55770357289e6f4314e6cacf85d0532",
+      "immutable_uri": "https://github.com/geofileops/geofileops/blob/f7f8a4cf49b1278f3e9e5f4157718de441a21b57/CHANGELOG.md"
+    },
+    {
+      "path": "geofileops/fileops.py",
+      "git_blob_sha1": "9edeb1c1bf7eb7d0f35b246611b27bad33fdcc7e",
+      "immutable_uri": "https://github.com/geofileops/geofileops/blob/f7f8a4cf49b1278f3e9e5f4157718de441a21b57/geofileops/fileops.py"
+    },
+    {
+      "path": "geofileops/util/_geoops_gpd.py",
+      "git_blob_sha1": "12ed06a773f1afb0a2d58efaea9dac365abf8cd2",
+      "immutable_uri": "https://github.com/geofileops/geofileops/blob/f7f8a4cf49b1278f3e9e5f4157718de441a21b57/geofileops/util/_geoops_gpd.py"
+    },
+    {
+      "path": "geofileops/util/_geoops_sql.py",
+      "git_blob_sha1": "eb44f2acd35138340027518e50684e7ee73a4715",
+      "immutable_uri": "https://github.com/geofileops/geofileops/blob/f7f8a4cf49b1278f3e9e5f4157718de441a21b57/geofileops/util/_geoops_sql.py"
+    },
+    {
+      "path": "tests/test_geofile.py",
+      "git_blob_sha1": "52047a77a384dc2f469029c50be4775f5ee1eae4",
+      "immutable_uri": "https://github.com/geofileops/geofileops/blob/f7f8a4cf49b1278f3e9e5f4157718de441a21b57/tests/test_geofile.py"
+    }
+  ],
+  "root_license": {
+    "path": "LICENSE.txt",
+    "git_blob_sha1": "ecf40d7a30bd534ebd781bca089abd3168bc13a1",
+    "content_sha256": "c05e8bdd9716d5d3ca08da7e5dd8c805603ccf9668372270600f5854197223f2",
+    "expression": "BSD-3-Clause"
+  },
+  "evidence_basis": "GitHub Git tree at exact base commit. This is a commit/blob identity manifest, not a copy of the complete source tree."
+}

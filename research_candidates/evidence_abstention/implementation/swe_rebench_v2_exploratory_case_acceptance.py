@@ -121,6 +121,21 @@ def validate_case_record(record: Any) -> dict[str, Any]:
         blockers.append("upstream project identity is required.")
     if record["exposure"]["prior_pipeline_debug_exposure"] != "none":
         blockers.append("prior pipeline/debug exposure permanently excludes this candidate.")
+    final_acceptance = record["final_acceptance"]
+    decision = record["acceptance_decision"]
+    expected_final_status = {
+        "proposed": "pending",
+        "accepted": "approved",
+        "rejected": "rejected",
+    }[decision]
+    if final_acceptance["status"] != expected_final_status:
+        blockers.append("final_acceptance.status must match acceptance_decision.")
+    if decision == "proposed":
+        if final_acceptance["decision_timestamp_utc"] is not None or final_acceptance["decision_record"] is not None:
+            blockers.append("proposed candidates must not contain a final-decision timestamp or decision record.")
+    else:
+        if final_acceptance["decision_timestamp_utc"] is None or final_acceptance["decision_record"] is None:
+            blockers.append("accepted/rejected candidates require a timestamped, hashed project-lead final-decision record.")
     if record["human_decision"]["ai_critique_used"] and record["human_decision"]["ai_critique_record"] is None:
         blockers.append("AI critique use must have a separate, hashed advisory record.")
     if not record["human_decision"]["ai_critique_used"] and record["human_decision"]["ai_critique_record"] is not None:
@@ -132,6 +147,8 @@ def validate_case_record(record: Any) -> dict[str, Any]:
         "case_id": record["case_id"],
         "upstream_project_id": independence["upstream_project_id"],
         "defect_cluster_id": independence["defect_cluster_id"],
+        "acceptance_decision": decision,
+        "eligible_for_registry": decision == "accepted" and not blockers,
         "structural_only": True,
         "inference_authorized": False,
     }
@@ -170,9 +187,17 @@ def validate_registry(registry: Any) -> dict[str, Any]:
         blockers.append("records must be a list.")
         records = []
     results = [validate_case_record(record) for record in records]
-    for index, result in enumerate(results):
+    for index, (record, result) in enumerate(zip(records, results)):
         if result["status"] != "structurally_complete_candidate":
             blockers.extend(f"records[{index}]: {item}" for item in result["blockers"])
+        if not isinstance(record, Mapping):
+            blockers.append(f"records[{index}]: registry record must be an object.")
+            continue
+        if record.get("acceptance_decision") != "accepted":
+            blockers.append(f"records[{index}]: only explicitly accepted cases may enter the accepted-case registry.")
+        final_decision = record.get("final_acceptance", {})
+        if not isinstance(final_decision, Mapping) or final_decision.get("status") != "approved":
+            blockers.append(f"records[{index}]: an approved project-lead final decision is required for registry inclusion.")
     case_ids = [result.get("case_id") for result in results if result.get("case_id")]
     project_ids = [result.get("upstream_project_id") for result in results if result.get("upstream_project_id")]
     defect_ids = [result.get("defect_cluster_id") for result in results if result.get("defect_cluster_id")]

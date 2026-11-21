@@ -1,0 +1,18 @@
+# Pinned Python 3.11.9 environment for the ASDF recursive YAML loader reproducer.
+attrs==24.3.0
+asdf-standard==1.1.1
+asdf-transform-schemas==0.5.0
+importlib-metadata==8.5.0
+jmespath==1.0.1
+numpy==2.1.3
+packaging==24.2
+PyYAML==6.0.2
+semantic-version==2.10.0
+setuptools==75.6.0
+setuptools-scm==8.1.0
+wheel==0.45.1
+pytest==8.3.4
+iniconfig==2.0.0
+pluggy==1.5.0
+Pygments==2.18.0
+zipp==3.21.0

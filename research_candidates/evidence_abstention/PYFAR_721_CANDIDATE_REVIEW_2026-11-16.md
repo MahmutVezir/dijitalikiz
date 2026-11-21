@@ -59,3 +59,55 @@ Exact base-fail/fix-pass reproduction: not run; initial attempt stopped at colle
 Gold mechanism and E1/E2/E3 packet: pending human adjudication.  
 Final case acceptance: not accepted.  
 Model loading and inference authorization: false.
+
+## Superseding corrected-environment Stage 2 addendum — 20 November 2026
+
+The previous sections describing the missing netCDF4 import and pending corrected-lock execution are historical. The lock was corrected to include netCDF4, cftime and certifi, and the candidate-matrix rerun completed successfully:
+- Workflow run: 44331092872; job: 134895967816 — success.
+- Artifact: 14440390942; GitHub-reported SHA-256: 17e80ba9a81153ea833ce0cee05271f1815c6c6d597653c12f9bbe11f0f95bf8.
+- Exact Parquet row was authenticated.
+- All 23 frozen FAIL_TO_PASS selectors executed and failed on the exact buggy base with the expected energy/power normalization assertions; the same 23 selectors passed on the exact fixed revision (23/23 in both directions).
+- The corrected pinned environment completed dependency installation and dependency-license metadata capture successfully.
+
+The issue/PR scope is coherent: issue #721 explicitly concerns both energy and power normalization, and PR #722 applies the square-root relationship to energy and power. The core mathematical reason is that these measures are quadratic in signal amplitude, so scaling amplitude by target/reference does not produce the requested energy/power; the required amplitude factor is the square root of the energetic ratio. RMS controls must remain analytically distinct because RMS is already amplitude-linear.
+
+**Evidence limitation:** this latest Stage 2 result is based on the 23 exact frozen dataset selectors. The current record does not claim a separately authored independent public-API issue reproducer for PyFar. A minimal standalone reproducer is recommended as an additional parity check against the strongest cases; it is not represented as already run.
+
+**Current disposition:** Stage 2 technical reproduction PASS; strong numerical candidate, not accepted. The older assignment's proposed multi-panel gold/tier requirement is superseded by the Dishka-equivalent v0.2 route: the project lead is the single source-aware human adjudicator for gold and E1/E2/E3; ChatGPT is advisory; Hasan's input may be reported only as supplementary source-aware concurrence. Remaining gates: issue-family/lineage review, candidate-specific prior pipeline/debug exposure declaration, bounded license scope including the corrected runtime and native/system notices, source-aware gold/tier decision, complete proposed record and fail-closed registry validation.
+
+## Project-lead selection decision
+
+## Project-lead first-batch selection — 20 November 2026
+
+The student project lead explicitly accepted PyFar #721 as one of the strong first-batch candidates to continue through v0.2 Stage 3 case evaluation, applying the unchanged Dishka-equivalent criteria.
+
+This is candidate-selection approval only. It does **not** approve the proposed PyFar gold mechanism or E1/E2/E3 tier membership; those remain for a separate source-aware project-lead decision. The bounded corrected-runtime/native-system-notice scope acknowledgement, candidate-specific prior pipeline/debug exposure declaration, related issue/lineage review, complete case record, fail-closed registry validation and separate final case YES/NO remain pending.
+
+All 23 frozen selectors remain one PyFar case. A separately authored issue-level reproducer has not yet been run and must not be claimed as existing evidence. This candidate remains not accepted as a final case. No model load, inference, fine-tuning or training is authorized.
+
+
+## Stage 3 source-aware advisory and documentary screening — 21 November 2026
+
+The corrected Stage 2 artifact was downloaded and independently rechecked:
+- Workflow run 44331092872; job 134895967816; artifact 14440390942.
+- Recomputed ZIP SHA-256 matches GitHub's recorded digest `17e80ba9a81153ea833ce0cee05271f1815c6c6d597653c12f9bbe11f0f95bf8`.
+- ZIP CRC passed; internal SHA256SUMS manifest verified 14/14 files.
+- The single canonical row hash is `82444bd1dcaa0c52bcac4a5c0b76efc20ed0ad26606de1edc338265843aca6bd`.
+- All 23 frozen selectors execute/fail on the exact buggy base and pass on the exact fixed revision.
+
+The Stage 3 advisory proposal is now recorded at:
+`research_candidates/evidence_abstention/pyfar_721/PYFAR_721_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_2026-11-21.md`.
+
+**Proposed, not approved, gold:** `ENERGY_POWER_TARGET_AND_REFERENCE_NOT_SQUARE_ROOTED`. The exact buggy source takes an energy/power reference, applies channel reduction, and then scales with the unrooted ratio `target / reference_norm`. Since energy/power are quadratic under amplitude scaling, the resulting measure is `T^2/R` rather than target `T`; the intended amplitude factor is `sqrt(T/R)`. The RMS path is distinct and remains amplitude-linear.
+
+**Proposed tiers:** E3 ABSTAIN, E2 ABSTAIN, E1 ANSWER. The proposal preserves alternatives and distinguishes issue-only evidence, exact-base symptom/test evidence, and exact-base source evidence. It explicitly states that the 23 selectors come from the PR-added regression-test suite, are one candidate's selectors rather than independent cases, and are not a separately authored public-API reproducer. No standalone issue-level reproducer is claimed.
+
+Formal issue-family screen file:
+`research_candidates/evidence_abstention/pyfar_721/PYFAR_721_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json`.
+Earlier issues #323 and #338 are recorded as implementation lineage for normalize/energy-power APIs; #267 and #384 are broad roadmaps. They do not describe the same later energy/power target-scaling defect. The one-case-per-upstream-project rule remains active.
+
+License screen file:
+`research_candidates/evidence_abstention/pyfar_721/PYFAR_721_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-21.json`.
+The exact-base root license and setup metadata identify MIT; the dataset row's upstream license field says MIT, while current Hugging Face Hub metadata displays CC-BY-4.0 for the dataset card. These are separate license layers. Exact immutable README/card SHA and bytes remain uncaptured. The corrected runtime inventory contains 32 distribution entries: four have null raw License fields and rely on classifiers, two have multiple License classifiers, and NumPy/SciPy metadata lists bundled OpenBLAS/LAPACK and GCC runtime/libquadmath components. Canonical notices, actual binary-level scope, host-library scope, and exact pinned card provenance remain open human-review items.
+
+**Current disposition:** Stage 2 technical reproduction and artifact integrity PASS; source-aware gold/tier remains an advisory proposal; issue-family review prepared but not project-lead approved; prior pipeline/debug exposure declaration pending; bounded research-scope acknowledgement pending; no final case record or separate final YES/NO acceptance. PyFar remains outside the registry. No inference, fine-tuning or training is authorized.

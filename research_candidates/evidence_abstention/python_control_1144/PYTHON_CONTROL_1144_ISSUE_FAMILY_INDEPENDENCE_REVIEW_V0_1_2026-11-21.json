@@ -1,0 +1,84 @@
+{
+  "schema_version": "0.1-v02-candidate-independence-review",
+  "review_date": "2026-11-21",
+  "candidate": {
+    "case_id": "SRV2E-PYTHON_CONTROL_1144",
+    "repository_full_name": "python-control/python-control",
+    "issue_url": "https://github.com/python-control/python-control/issues/1144",
+    "fix_pr_url": "https://github.com/python-control/python-control/pull/1145",
+    "dataset_instance_id": "python-control__python-control-1145",
+    "dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "dataset_row_sha256": "0dbc94f964604302bea3afc9322596577bab3bb990f2292a640c51d80e8099eb",
+    "exact_buggy_base": "dc7d71bd1a2d143f10fa8fe91d31292bdf8f5113",
+    "exact_fixed_pr_head": "21f4912c8b12216534b8d5b07c243c66675a8b83"
+  },
+  "sampling_unit": {
+    "unit": "canonical_upstream_repository",
+    "maximum_accepted_cases_per_upstream_project": 1,
+    "registry_contains_candidate": false
+  },
+  "target_issue": {
+    "issue_number": 1144,
+    "created_at_utc": "2025-04-16T16:21:23Z",
+    "kind": "target_defect",
+    "disposition": "Explicit Matplotlib Axes passed to nyquist_plot is not respected; the Nyquist plot appears in a different/current subplot. The reporter contrasts this with step_response(...).plot(ax=...) working correctly."
+  },
+  "fix_pull_request": {
+    "number": 1145,
+    "created_at_utc": "2025-04-17T03:16:40Z",
+    "merged": true,
+    "merge_commit": "632391cae6d126ed5c632a01fe65be96dc28a344",
+    "disposition": "Fixes issue #1144 and states related explicit-Axes routing bugs in Nichols and describing-function plots were also corrected. One PR and one upstream project."
+  },
+  "related_issue_family": [
+    {
+      "issue_number": 1143,
+      "url": "https://github.com/python-control/python-control/issues/1143",
+      "created_at_utc": "2025-03-24T13:24:55Z",
+      "kind": "related_nyquist_plot_api_context",
+      "disposition": "Primarily a separate Nyquist rescaling discussion. A later issue comment notes that two resp.plot(ax=...) calls unexpectedly drew to the same current Axes. The PR description explicitly links this comment as related context. Not an exact duplicate of #1144 and not an additional independent case."
+    },
+    {
+      "issue_number": 1144,
+      "url": "https://github.com/python-control/python-control/issues/1144",
+      "kind": "target_defect",
+      "disposition": "Single target issue for explicit-Axes handling in nyquist_plot."
+    },
+    {
+      "issue_number": 1145,
+      "url": "https://github.com/python-control/python-control/pull/1145",
+      "kind": "fix",
+      "disposition": "One fix PR for #1144 plus related explicit-Axes problems in Nichols and describing-function plotting."
+    }
+  ],
+  "dataset_selector_family": {
+    "selectors": [
+      "control/tests/ctrlplot_test.py::test_plot_ax_processing[frequency_response-nichols_plot]",
+      "control/tests/ctrlplot_test.py::test_plot_ax_processing[describing_function_response-describing_function_plot]",
+      "control/tests/ctrlplot_test.py::test_plot_ax_processing[nyquist_response-nyquist_plot]"
+    ],
+    "disposition": "Three parameterizations of one upstream test function and one candidate defect family. They are not three independent cases.",
+    "stage2_result": "All three failed on exact buggy base and passed on exact fixed PR head."
+  },
+  "independence_disposition": {
+    "exact_duplicate_found": false,
+    "related_same_api_family_found": true,
+    "same_upstream_project_sampling_unit": true,
+    "status": "prepared_subject_to_project_lead_review",
+    "note": "Keep one Python-Control sampling unit. Issue #1143 is related API-family context, not a duplicate or a second candidate. The three PR selectors must not be counted as separate cases."
+  },
+  "exposure": {
+    "prior_pipeline_debug_exposure": "pending_project_lead_declaration",
+    "researcher_source_exposure": "full_for_issue_PR_exact_base_source_and_stage2_artifact",
+    "blinded_adjudication_claimed": false,
+    "inter_rater_claimed": false,
+    "verification_limit": "Researcher reviewed the issue, PR, exact base source and reproduction artifacts. No independent blinding or second-rater process is claimed."
+  },
+  "boundaries": {
+    "project_lead_gold_tier_approval": "pending",
+    "final_case_acceptance": "not_accepted",
+    "registry_inclusion": false,
+    "legal_clearance": false,
+    "inference_authorized": false
+  }
+}

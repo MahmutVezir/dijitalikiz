@@ -1,0 +1,39 @@
+{
+  "schema_version": "0.1-geopandas-source-capture",
+  "capture_kind": "E2_issue_discussion_only",
+  "captured_at": "2026-11-21T20:58:43+03:00",
+  "case_instance": "geopandas__geopandas-3591",
+  "issue_url": "https://github.com/geopandas/geopandas/issues/3590",
+  "comments": [
+    {
+      "comment_id": 2943137874,
+      "created_at_utc": "2025-06-05T07:55:20Z",
+      "author": "martinfleis",
+      "html_url": "https://github.com/geopandas/geopandas/issues/3590#issuecomment-2943137874",
+      "api_url": "https://api.github.com/repos/geopandas/geopandas/issues/comments/2943137874",
+      "body": "Thanks for the report. It is bit of a corner case as np.nan is technically a float not a geometry object or None. But given this works, the snippet above should likely too.\n\n```py\ngdf = gpd.GeoDataFrame(\n    data=[[np.nan]],\n    columns=[\"something\"],\n    geometry=[np.nan],\n    crs=\"EPSG:4326\",\n)\n```\n\nFix is coming up.",
+      "body_sha256": "1cf49a8144b935a4a65351dfea9105e815dc61e0469604944782873055fab1a5",
+      "source_role": "E2_supplemental_issue_discussion_not_independent_reproduction_log"
+    },
+    {
+      "comment_id": 2944863844,
+      "created_at_utc": "2025-06-05T14:48:48Z",
+      "author": "zmoon",
+      "html_url": "https://github.com/geopandas/geopandas/issues/3590#issuecomment-2944863844",
+      "api_url": "https://api.github.com/repos/geopandas/geopandas/issues/comments/2944863844",
+      "body": "Thanks for the swift response @martinfleis , I agree it is an unusual case, I wouldn't think it would come up often. I only noticed because I was creating some data in a test that way.\n\nLooking at the PR and experimenting a bit more, I would note that in v1.0.1 it also works for longer columns where `np.nan` is the only unique value, not just size-one.\n```python\ngdf = gpd.GeoDataFrame(\n    data=np.full((10, 2), np.nan),\n    columns=[\"geometry\", \"something\"],\n    crs=\"EPSG:4326\",\n)\n```\n\nSame with a mix of null types:\n```python\ngdf = gpd.GeoDataFrame(\n    {\n        \"geometry\": [np.nan, None, pd.NA],\n        \"something\": [np.nan, np.nan, np.nan],\n    },\n    crs=\"EPSG:4326\",\n)\n```",
+      "body_sha256": "beb9c3647b1106dbcb387b67b0571fc4c15a0474279a207174edc643e3be2656",
+      "source_role": "E2_supplemental_issue_discussion_not_independent_reproduction_log"
+    },
+    {
+      "comment_id": 2945606056,
+      "created_at_utc": "2025-06-05T18:26:21Z",
+      "author": "martinfleis",
+      "html_url": "https://github.com/geopandas/geopandas/issues/3590#issuecomment-2945606056",
+      "api_url": "https://api.github.com/repos/geopandas/geopandas/issues/comments/2945606056",
+      "body": "Thanks. I have updated the PR. I am still not sure if this is a behaviour we should encourage but given our geometry sanitisation deals with it in other cases, no need to disallow it here.",
+      "body_sha256": "7fbb9866b6453b6346b861acaaa98ec324f1c554de3ebf7672e319bf2ed139a8",
+      "source_role": "E2_supplemental_issue_discussion_not_independent_reproduction_log"
+    }
+  ]
+}

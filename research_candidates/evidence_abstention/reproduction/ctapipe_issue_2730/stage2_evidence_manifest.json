@@ -1,0 +1,341 @@
+{
+  "schema_version": "1.0",
+  "candidate": "cta-observatory/ctapipe issue #2730 / PR #2732",
+  "cohort_rank": 31,
+  "instance_id": "cta-observatory__ctapipe-2732",
+  "dataset": {
+    "name": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "row_sha256": "9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d",
+    "fail_to_pass_count": 1,
+    "fail_to_pass_selectors": [
+      "src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution"
+    ],
+    "row_audit_workflow_run_id": 44298746628,
+    "row_audit_artifact_id": 14424887790,
+    "row_audit_artifact_sha256": "4653884c0f6f127c0d8150b3011924bc1be0c515800a5df762ac839be67c151c",
+    "canonical_row_sha256_recalculated_from_retained_json": true,
+    "internal_artifact_hashes": "4/4 files verified",
+    "full_row_canonical_sha256": "e7d40ebfdfa47f6d2b92940d83d4e1c74afea6a096e9dca0d682ebb0854e7006",
+    "selected_columns_row_sha256": "9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d",
+    "selected_columns_row_scope": [
+      "instance_id",
+      "repo",
+      "base_commit",
+      "created_at",
+      "language",
+      "license",
+      "FAIL_TO_PASS",
+      "problem_statement"
+    ],
+    "full_row_hash_scope": "All 16 columns in the frozen Parquet row, sorted keys, compact UTF-8 JSON",
+    "canonical_row_hash_note": "The original 9d8... digest is the canonical JSON hash of the original 8-column discovery subset. The full 16-column row hash is e7d40...; do not confuse them.",
+    "project_family_inventory": {
+      "repository": "cta-observatory/ctapipe",
+      "row_count": 5,
+      "audit_workflow_run_id": 44314613445,
+      "audit_job_id": 134837324906,
+      "audit_artifact_id": 14430743741,
+      "audit_artifact_zip_sha256": "26e47b9bf0a7bdef5525e399d114faf343d7c65d7ca2402e1a71e1e9c2fd6f8d",
+      "audit_artifact_internal_hashes": "10/10 passed",
+      "full_row_hashes": {
+        "cta-observatory__ctapipe-1872": "59d1aeb7e62bd9f53e560f0522fefd7541b5f2681a4a549b59a6dba26659631b",
+        "cta-observatory__ctapipe-1883": "04e0fc47b2c83c8b55d1e3dce73191478a9f56c6a7bac4d5153be77156f76329",
+        "cta-observatory__ctapipe-2320": "29aa95ca29633ca6cae342f83a5240fddc26a847781587ff71df919aeef294ec",
+        "cta-observatory__ctapipe-2732": "e7d40ebfdfa47f6d2b92940d83d4e1c74afea6a096e9dca0d682ebb0854e7006",
+        "cta-observatory__ctapipe-2738": "db357eac53cf7fb6675b16b0ad56af595eba2edb357dab35f50808c092bb8a3b"
+      },
+      "interpretation": "Only one accepted case may be counted per upstream project. The five rows concern five distinct defect families; only row 2732 is the selected muon HDF5 defect."
+    }
+  },
+  "source": {
+    "repository": "cta-observatory/ctapipe",
+    "buggy_base": "287e7685e0e963f3fb44d92832ca97ac8c265c40",
+    "fixed_pr_head": "5007b6ab61887d7555155edb4d1d296603a9735e",
+    "merge_commit": "ba4546f2027e2f820982c4e40730097b7e16434c",
+    "exact_pr_changed_files": [
+      "docs/changes/2732.bugfix.rst",
+      "src/ctapipe/image/muon/features.py",
+      "src/ctapipe/image/muon/tests/test_muon_features.py"
+    ],
+    "only_dataset_test_file_patch_applied_to_buggy_base": "src/ctapipe/image/muon/tests/test_muon_features.py",
+    "base_worktree_changed_files": [
+      "src/ctapipe/image/muon/tests/test_muon_features.py"
+    ]
+  },
+  "environment": {
+    "python": "3.11.9",
+    "numpy": "1.26.4",
+    "astropy": "6.1.7",
+    "pytest": "8.3.5",
+    "pytest_astropy_header": "0.2.2",
+    "pytables": "3.10.2",
+    "environment_input_sha256": "1b6e82f8db8dcad6a1720666f19c8868ae5d6ef6e13cae2228d9c0e7e7a62edb",
+    "pip_check": "No broken requirements found",
+    "installed_distribution_count": 51,
+    "dependency_license_metadata_artifact": "dependency-license-metadata.json",
+    "dependency_license_metadata_sha256": "f9151d1e3824a96da76dff15401e4e112a904fd4f25a52c2865903e1e1d3a868",
+    "dependency_license_status": "metadata captured for 51 installed distributions; no distribution lacked all of license field, license classifier, and detected license file. 50 had detected license files; tqdm had SPDX-like license field and classifiers but no license file in captured metadata. Human scope review remains pending.",
+    "dependency_license_file_manifest": "dependency-license-file-manifest.json",
+    "dependency_license_file_manifest_sha256": "51a9b64dfca57fa03a0553e2ad23bb96dcb0f70d85c4a8d263f4a019ee5fa66f",
+    "dependency_license_capture": "106/106 detected installed license/notice files captured across 51 distributions; zero detected candidates uncaptured by the 2 MB file-size rule.",
+    "root_license": {
+      "path": "LICENSE",
+      "expression": "BSD-3-Clause",
+      "base_commit": "287e7685e0e963f3fb44d92832ca97ac8c265c40",
+      "git_blob_sha1": "7d85dda24fa481e24c4b33dd98dbc13245ee1fd2",
+      "content_sha256": "c6bbc92e621766f4c19c9cd223d377cfa40df0073908da2398b2efbf9e5085b2"
+    },
+    "changed_file_license_manifest": "changed-file-license-manifest.json",
+    "changed_file_license_manifest_sha256": "25f3c1a633a0df6a604fd301efad7c47ba74a8a8867d37292959c8aff99a626e",
+    "changed_file_license_status": "3/3 PR changed paths captured with fixed Git blob SHA-1 and content SHA-256; LICENSE and pyproject.toml unchanged between base and fixed; no root NOTICE at base; documentary repository BSD-3-Clause inheritance screen. Human project-lead review pending.",
+    "license_screen_document": "research_candidates/evidence_abstention/CTAPIPE_2730_LICENSE_SCREEN_DRAFT_2026-11-18.md",
+    "scipy": "1.15.2",
+    "numba": "0.60.0",
+    "llvmlite": "0.43.0"
+  },
+  "reproduction": {
+    "workflow_run_id": 44308927754,
+    "job_id": 134817682862,
+    "artifact_id": 14429866192,
+    "artifact_name": "ctapipe-2732-stage2-base-fixed-44308927754-1",
+    "artifact_zip_sha256": "55b08b31634afcdc052c2f8ef973db35a1fea49c342e9e5974adf386729bbd4f",
+    "artifact_internal_hashes": "136/136 SHA256SUMS entries independently verified; 137 archive members including SHA256SUMS.txt",
+    "exact_frozen_selector": {
+      "buggy_base": "FAIL: defect-specific assertion; observed skewness type astropy.units.quantity.Quantity instead of float or numpy.floating",
+      "fixed_revision": "PASS: 1 passed in 0.02s"
+    },
+    "direct_hdf5_mixed_type_reproducer": {
+      "buggy_base": "PASS as defect reproduction: the config=False branch passed and made zero calls to the muon writer; config=True ran the actual DataWriter.__call__ -> _write_muon_telescope_events -> HDF5TableWriter path. The second calculated/default event failed at QuantityColumnTransform.__call__ with AttributeError: 'float' object has no attribute 'to_value'. Pytest summary: 1 failed, 1 passed.",
+      "fixed_revision": "PASS: both config=False and config=True branches passed (2 passed in 0.86s); HDF5 muon table contained both rows."
+    },
+    "base_exit_codes": {
+      "dataset_selector": 1,
+      "hdf5_reproducer": 1
+    },
+    "fixed_test_counts": {
+      "dataset_selector": "1 passed",
+      "hdf5_reproducer": "2 passed"
+    },
+    "explicit_container_validation_test": true,
+    "validation_finding": "Both Quantity-valued calculated parameters and default float parameters pass exact-base Container.validate(). The DataWriter config=False branch does not invoke the muon writer. With write_muon_parameters=True, the real DataWriter.__call__ invokes the actual muon-table method and the HDF5 writer raises only when a later float is sent through the QuantityColumnTransform registered from the first Quantity.",
+    "reproduction_input_sha256": {
+      "workflow": "9e1605b6e7912355e5870bed945da2cbbbb47b9e6c538a85ac124c7cb94f26d6",
+      "hdf5_test": "bb7c26793529fe97528f174c21400d3b7e9cc3b49b4c00d978905ab9dca3cac7",
+      "dataset_selector": "a9170e6e9b3b1cfc89c2f04f0950614a5a6f1c4621ed96b3a51ea56c5b833fed",
+      "dataset_row_manifest": "3e2b0a8968a9c75eb6aaac631dc9de17705479b512d0c417af2634e1072c987e",
+      "environment_lock": "1b6e82f8db8dcad6a1720666f19c8868ae5d6ef6e13cae2228d9c0e7e7a62edb",
+      "changed_file_license_manifest": "25f3c1a633a0df6a604fd301efad7c47ba74a8a8867d37292959c8aff99a626e",
+      "dependency_license_file_manifest": "51a9b64dfca57fa03a0553e2ad23bb96dcb0f70d85c4a8d263f4a019ee5fa66f"
+    },
+    "repeat_run": {
+      "workflow_run_id": 44299388651,
+      "job_id": 134784814840,
+      "artifact_id": 14424942732,
+      "artifact_sha256": "f6ddfd91afa97b3720c10c0f7816f409a7c354f85883fa61b837bfc823621ea",
+      "outcome": "same frozen selector and HDF5 reproducer base-fail/fixed-pass; the later run adds explicit Container.validate calls and input hashes"
+    },
+    "previous_validation_runs": [
+      {
+        "workflow_run_id": 44308616818,
+        "job_id": 134816598354,
+        "artifact_id": 14429830992,
+        "artifact_sha256": "d5c48326cd4534e90dda9690b653b48ded63ff8c77db131ef2653b6a0b4c1489",
+        "outcome": "DataWriter.__call__ False/True test base-fail/fixed-pass; 131/131 prior internal SHA256SUMS entries verified. The later run adds the changed-file BSD-3 manifest."
+      },
+      {
+        "workflow_run_id": 44300812600,
+        "job_id": 134789741250,
+        "artifact_id": 14424704542,
+        "artifact_sha256": "bc5c7c022cb0b7685415877beea3d678945a5740dcc21b44b1989e224a0f3426",
+        "outcome": "earlier direct HDF5 reproducer plus frozen selector; repeated base-fail/fixed-pass"
+      }
+    ],
+    "latest_verified_repeat": {
+      "workflow_run_id": 44324115597,
+      "job_id": 134870646827,
+      "artifact_id": 14436277116,
+      "artifact_name": "ctapipe-2732-stage2-base-fixed-44324115597-1",
+      "artifact_zip_sha256": "9e3e35f4f499a3a5947e0e6ad803dd7d6d9d1c240695a6558769e7f31ea501b2",
+      "artifact_size_bytes": 295208,
+      "archive_members": 137,
+      "zip_crc": "PASS",
+      "artifact_internal_hashes": "136/136 SHA256SUMS entries independently verified",
+      "exact_frozen_selector": {
+        "buggy_base": "FAIL: defect-specific Quantity-vs-float assertion",
+        "fixed_revision": "PASS: 1 passed"
+      },
+      "direct_hdf5_mixed_type_reproducer": {
+        "buggy_base": "FAIL as expected: false config branch skips muon writer; true branch executes real DataWriter.__call__/HDF5 path and raises AttributeError: 'float' object has no attribute 'to_value'",
+        "fixed_revision": "PASS: false and true config branches both pass; both HDF5 rows are written"
+      },
+      "pip_check": "No broken requirements found",
+      "no_model_loading_inference_or_training": true
+    },
+    "previous_manifest_latest_repeat": {
+      "workflow_run_id": 44318994654,
+      "job_id": 134852611469,
+      "artifact_id": 14434206824,
+      "artifact_name": "ctapipe-2732-stage2-base-fixed-44318994654-1",
+      "artifact_zip_sha256": "aeb4666c0c69c581199c41a4a0fc140f8e0e643ea4a43a2a818005fb5b0d0100",
+      "artifact_size_bytes": 295206,
+      "archive_members": 137,
+      "zip_crc": "PASS",
+      "artifact_internal_hashes": "136/136 SHA256SUMS entries independently verified; 137 archive members including SHA256SUMS.txt",
+      "exact_frozen_selector": {
+        "buggy_base": "FAIL: defect-specific assertion; skewness is astropy.units.quantity.Quantity rather than float or numpy.floating (1 failed in 0.08s)",
+        "fixed_revision": "PASS: 1 passed in 0.02s"
+      },
+      "direct_hdf5_mixed_type_reproducer": {
+        "buggy_base": "FAIL as expected defect reproduction: false config branch passes and skips muon writer; true config branch invokes real DataWriter.__call__/HDF5 path and fails on second default-float row with AttributeError: 'float' object has no attribute 'to_value' (1 failed, 1 passed in 1.38s).",
+        "fixed_revision": "PASS: both config branches pass and both rows are written (2 passed in 1.39s)."
+      },
+      "pip_check": "No broken requirements found",
+      "no_model_loading_inference_or_training": true
+    },
+    "latest_row_discovery": {
+      "workflow_run_id": 44324115686,
+      "job_id": 134870646636,
+      "artifact_id": 14436376289,
+      "artifact_name": "ctapipe-2732-frozen-row-selector-discovery",
+      "artifact_zip_sha256": "23625e47e655e34b37482cacc11d58e79c040b57b901d8db00aec5a809de8005",
+      "archive_members": 4,
+      "zip_crc": "PASS",
+      "artifact_internal_hashes": "3/3 SHA256SUMS entries independently verified",
+      "instance_id": "cta-observatory__ctapipe-2732",
+      "selected_columns_row_sha256": "9d8e145ebe4681e2b0cd2553b31cd14a65361fea7b64770948d34de6052c534d",
+      "selector_count": 1,
+      "selector": "src/ctapipe/image/muon/tests/test_muon_features.py::test_radial_light_distribution",
+      "full_row_sha256": "e7d40ebfdfa47f6d2b92940d83d4e1c74afea6a096e9dca0d682ebb0854e7006",
+      "note": "Latest branch-head selector-only discovery artifact independently downloaded and verified. Full row payload and five-row family audit remain in the separate authenticated row-audit artifact."
+    }
+  },
+  "unresolved": {
+    "issue_configuration_discrepancy": "The issue body YAML sets DataWriter.write_muon_parameters=False. Exact-base ProcessorTool.should_compute_muon_parameters only enables MuonProcessor if that flag is true; DataWriter.__call__ only invokes _write_muon_telescope_events if the same flag is true. A new test calls the real DataWriter.__call__: false makes zero calls to muon writer; true runs the exact traceback path and reproduces the error on base. Thus the published YAML and reporter traceback cannot represent the same effective configuration unless an override or transcription error occurred. The actual reporter effective configuration is unknown.",
+    "docstring_contract": "radial_light_distribution docstring still declares skewness and excess_kurtosis as astropy.units.Quantity, inconsistent with unitless MuonParametersContainer fields and fixed implementation.",
+    "license_human_signoff": "Machine-readable source/dependency license inventory and exact changed-file screen completed (51 installed dists, 106 notice files captured; three PR files documented under repository BSD-3-Clause). Student project-lead decision pending; not legal advice.",
+    "independence_and_exposure_review": "Project-lead pipeline/debug exposure decision is now confirmed as 'some' on 2026-11-18; CTAPIpe #2732 is excluded from the model-evaluation sample and retained only as an engineering/feasibility pilot. This resolves the project-lead exposure classification for this candidate, not the remaining issue-configuration provenance, licensing, or gold/tier gates. Rater B case-specific independence screening for any future included cases remains separate and pending.",
+    "gold_and_evidence_tier_adjudication": "E3/E2/E1 model-facing packets finalized as nested files; audit run 44316015132 passed, artifact 14432113942 SHA-256 fd7fc7ed0cf7953f51efae7ef174aa6593b4860806bafdf9e03ba8fa88a25a38. Packet set manifest SHA-256 123bcba10ed241c466299297dbf6582d45a92e8e75ad5b3e881db63d5fd14998; E2 inherits E3 and E1 inherits E2 exactly; 4/4 checksum entries independently verified, no self-checksum. Gold and tier memberships remain AI-assisted proposals, not project-lead-approved.",
+    "container_validation_comment": "The PR author's comment says Container validation would reject the mixed values. Exact-base Field.validate accepts both because these fields have no unit/type/dtype/ndim constraints; our HDF5 reproduction calls validate() on both. The error occurs in the HDF5 column transform.",
+    "project_lead_pipeline_debug_exposure": {
+      "status": "confirmed_by_project_lead",
+      "proposed_classification": "some",
+      "proposal_path": "research_candidates/evidence_abstention/CTAPIPE_2732_EXPOSURE_DECISION_PROPOSAL_2026-11-18.md",
+      "basis": "The candidate-specific reproduction/test harness was refined against CTAPIpe #2732; the v0.2 protocol excludes cases used for prior pipeline debugging, test-oracle troubleshooting or prompt calibration.",
+      "consequence_if_approved": "exclude_ctapipe_2732_from_model_evaluation_sample_and_retain_as_engineering_pilot_record",
+      "not_waived_by_second_rater": true,
+      "final_decision_maker": "student_project_lead",
+      "confirmed_classification": "some",
+      "decision_date": "2026-11-18",
+      "decision_source": "explicit_project_lead_chat_confirmation",
+      "project_lead_reports_second_reviewer_concurrence": true,
+      "approval_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_DECISION_AND_REVIEWER_CONCURRENCE_2026-11-18.md"
+    },
+    "rater_b_participation": {
+      "status": "identified_pending_explicit_consent_and_case_specific_independence_screen",
+      "public_pseudonym": "Rater_B",
+      "consent_template": "research_candidates/evidence_abstention/RATER_B_CONSENT_AND_EXPOSURE_SCREEN_TEMPLATE_V0_1_2026-11-18.md",
+      "proposed_role": "independent_blinded_model_output_evidence_support_rater_only",
+      "calibration_complete": false,
+      "no_scores_or_agreement_statistics_exist": true,
+      "second_reviewer_concurrence_on_ctapipe_exposure_decision_reported_by_project_lead": true,
+      "concurrence_report_date": "2026-11-18",
+      "concurrence_scope": "CTAPIpe #2732 prior-pipeline-debug exposure classification and exclusion only; not role consent, case-specific independence screening or calibration"
+    }
+  },
+  "decision": {
+    "stage2_technical_reproduction": "PASS: latest branch-head repeat 44324115597/job 134870646827, artifact 14436277116. Exact frozen selector: defect-specific FAIL on buggy base and PASS on exact fixed revision. Direct DataWriter.__call__/HDF5 reproducer: false flag skips muon writer; true flag reproduces float.to_value AttributeError on buggy base; fixed revision passes both branches and writes both rows. Artifact independently downloaded and verified: ZIP SHA-256 9e3e35f4f499a3a5947e0e6ad803dd7d6d9d1c240695a6558769e7f31ea501b2; 137 members; CRC PASS; 136/136 inner checksums passed. pip check clean. Latest selector-only discovery run 44324115686/artifact 14436376289 independently verified: ZIP SHA-256 23625e47e655e34b37482cacc11d58e79c040b57b901d8db00aec5a809de8005; 4 members; 3/3 inner checksums passed. No model loading, inference, fine-tuning or training.",
+    "candidate_disposition": "EXCLUDED from the model-evaluation sample by the project lead on 2026-11-18 after confirming prior_pipeline_debug_exposure='some'. Retain Stage 2 reproduction, source snapshots, integrity audits and E1/E2/E3 packets only as an engineering/feasibility pilot record. Do not register as an accepted case. The issue-YAML versus reporter-traceback effective-configuration discrepancy and project-lead license-scope acknowledgement remain unresolved; gold/tier approval remains pending. No inference is authorized.",
+    "stage3": "technical evidence, repository-family screen, nested packet preparation, strengthened current-gold/alternative/caveat leakage audit, and independent artifact integrity verification complete; human adjudication and final acceptance gate still pending",
+    "final_case_acceptance": "not_accepted",
+    "model_loading_performed": false,
+    "model_inference_performed": false,
+    "fine_tuning_performed": false,
+    "project_lead_pipeline_debug_exposure": {
+      "classification": "some",
+      "decision": "exclude_from_model_evaluation_sample",
+      "decision_date": "2026-11-18",
+      "decision_source": "explicit_project_lead_chat_confirmation",
+      "second_reviewer_concurrence_reported_by_project_lead": true,
+      "approval_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_DECISION_AND_REVIEWER_CONCURRENCE_2026-11-18.md",
+      "rationale": "Candidate-specific Stage 2 reproduction/test-harness and direct DataWriter/HDF5 reproducer development were refined against this exact case; active v0.2 protocol excludes such previously debugged cases."
+    },
+    "candidate_exclusion_does_not_authorize_inference": true
+  },
+  "source_snapshot_audit": {
+    "workflow_run_id": 44311004864,
+    "job_id": 134824823265,
+    "artifact_id": 14430756945,
+    "artifact_name": "ctapipe-2730-source-snapshot-audit-44311004864-1",
+    "artifact_zip_sha256": "33770c571614d741c70fc60507b8c7bd11c7241b39c83d093c7f47dc85b2b82b",
+    "internal_hashes": "1/1 manifest file verified",
+    "source_snapshots_count": 8,
+    "all_source_snapshots_byte_identical_to_exact_base": true,
+    "source_snapshot_manifest_sha256": "e6d0892cb85e2fc153baf492f8f74645de4c33912a40a9ed89ada905a7fa6005",
+    "issue_snapshot_sha256": "fd089bdaecd80c04c9b04c82508bc896a40a4e3d747dd33342018321f533402c",
+    "reporter_traceback_comment_sha256": "9c3e49a88e0a8d9b69f13043e62818138f693a3eb7b16f4dd0f8e38e685d4a91",
+    "pr_author_container_validation_comment_sha256": "480db3dcba66f6563d2fd251717a42bfa40d0cb36676643dc8c28064e5aab6ec",
+    "pr_metadata_snapshot_sha256": "2c803675129a4232bb56a772b87193c93ff7d711cc7c2a1a3bb89f109925d8ce",
+    "reporter_comment_created_at": "2025-04-02T16:25:41Z",
+    "issue_created_at": "2025-04-02T15:59:14Z",
+    "pr_created_at": "2025-04-02T17:48:48Z",
+    "source_snapshot_paths": [
+      "source_snapshots/base/src__ctapipe__containers.py.txt",
+      "source_snapshots/base/src__ctapipe__core__container.py.txt",
+      "source_snapshots/base/src__ctapipe__image__muon__features.py.txt",
+      "source_snapshots/base/src__ctapipe__image__muon__processor.py.txt",
+      "source_snapshots/base/src__ctapipe__io__tableio.py.txt",
+      "source_snapshots/base/src__ctapipe__io__hdf5tableio.py.txt",
+      "source_snapshots/base/src__ctapipe__io__datawriter.py.txt",
+      "source_snapshots/base/src__ctapipe__tools__process.py.txt",
+      "source_snapshots/issue_2730.json",
+      "source_snapshots/reporter_comment_2773115947.json",
+      "source_snapshots/pr_author_comment_2775258008.json",
+      "source_snapshots/pr_2732.json"
+    ],
+    "limitations": [
+      "The issue and PR snapshots are API representations, not cryptographically signed statements.",
+      "Snapshot byte hashes and Git blob checks establish identity of retrieved bytes, not semantic sufficiency or independence.",
+      "No model load, inference, or training occurred."
+    ],
+    "artifact_internal_hashes": "1/1 source-snapshot-manifest checksum independently verified"
+  },
+  "evidence_tier_packet_audit": {
+    "status": "PASS_INDEPENDENTLY_VERIFIED",
+    "workflow_run_id": 44324230929,
+    "job_id": 134871054000,
+    "artifact_id": 14435932782,
+    "artifact_name": "ctapipe-2730-evidence-tier-packet-audit-44324230929-1",
+    "artifact_zip_sha256": "a7d804576ab96cf8db0c8206fdaca1dee50c68615d35e7d9a6e5c81287051ac8",
+    "artifact_members": 5,
+    "artifact_crc": "PASS",
+    "sha256sum_entries_verified": "4/4",
+    "checksum_self_reference": "excluded; final checksum manifest clean",
+    "packet_set_manifest_sha256": "3031accc14998e4ed5dc270e7af38309cbe537e102ffd84b4557d62f8aa13070",
+    "nested_inheritance": {
+      "e2_starts_with_e3_exact_bytes": true,
+      "e1_starts_with_e2_exact_bytes": true
+    },
+    "packets": {
+      "E3": {
+        "sha256": "472bf4e37606ed8910555d50e4d5d97ef467010222f32b2ae1cc5fabe8775630",
+        "bytes": 2061
+      },
+      "E2": {
+        "sha256": "d8f82e5a53bb9fffe2060d7bb15b8792adb73827f1ca1ab97980f601f0606bf2",
+        "bytes": 6979
+      },
+      "E1": {
+        "sha256": "d37fc5dfca0a1607c9db78c0da909ba900966243cc4ec81bf8254cea769b7139",
+        "bytes": 13584
+      }
+    },
+    "leakage_audit": "PASS: hidden instance, issue/PR IDs, commit hashes, current gold ID, both alternative-contract IDs, configuration-provenance caveat, and tier labels absent from model-facing packet contents; fixed source/PR patch/test outcomes are not in the packets.",
+    "semantics": "Automated audit confirms packet byte nesting, current gold/alternative/caveat label exclusion, and expected evidence-signal placement. It does not substitute for human approval of semantic sufficiency, gold mechanisms, or the tier design.",
+    "model_load_performed": false,
+    "model_inference_performed": false,
+    "model_training_performed": false,
+    "human_approval_status": "pending"
+  }
+}

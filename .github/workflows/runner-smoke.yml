@@ -1,5 +1,8 @@
 name: Runner Smoke Test (No Secrets)
 
+# Temporary no-secret diagnostic trigger to distinguish hosted-runner allocation
+# problems from failures in the research preflight jobs.
+
 on:
   pull_request:
     branches:

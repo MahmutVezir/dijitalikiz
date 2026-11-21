@@ -1,0 +1,316 @@
+{
+  "schema_version": "0.1-v02-exploratory",
+  "case_id": "SRV2E-DYMOS_1166",
+  "acceptance_decision": "proposed",
+  "dataset": {
+    "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "file_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "file_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "row_locator": {
+      "field": "instance_id",
+      "value": "openmdao__dymos-1165"
+    },
+    "row_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
+    "cohort_role": "primary",
+    "created_at_dataset_utc": "2025-04-04T20:23:44Z",
+    "created_at_upstream_utc": "2025-04-04T20:23:44Z",
+    "timestamp_reconciliation_status": "exact_match",
+    "timestamp_review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
+      "sha256": "52eef423fd219849325bb7c32fb94853b22e366850a0f9871536f57fdc6a3597"
+    }
+  },
+  "source": {
+    "repository_full_name": "OpenMDAO/dymos",
+    "issue_or_pr_url": "https://github.com/OpenMDAO/dymos/pull/1165",
+    "base_commit_sha": "3efd1035c3bf62890034eb9e07de543f3d117867",
+    "fixed_commit_sha": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
+    "changed_paths": [
+      "dymos/examples/balanced_field/test/test_balanced_field_length.py",
+      "dymos/transcriptions/common/control_comp.py",
+      "dymos/transcriptions/common/test/test_control_interp_comp.py",
+      "dymos/transcriptions/explicit_shooting/explicit_shooting.py",
+      "dymos/transcriptions/explicit_shooting/ode_evaluation_group.py",
+      "dymos/utils/misc.py"
+    ],
+    "patch": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44779508337/artifacts/14651026003",
+      "sha256": "84f884f0ff358c5811221099983bb2531ded7dfe501e1a042da7765ab298aa25"
+    },
+    "base_source_snapshot": {
+      "uri": "https://github.com/OpenMDAO/dymos/blob/3efd1035c3bf62890034eb9e07de543f3d117867/dymos/transcriptions/common/control_comp.py",
+      "sha256": "4d6c2ea61f23c1eaaf65e89424b47d6c5d214065fbbe4d1a7411196ee5de391b"
+    },
+    "fixed_source_snapshot": {
+      "uri": "https://github.com/OpenMDAO/dymos/blob/0ffc82225d6125dcb5c5b5acfb9be9fd712ef949/dymos/transcriptions/common/control_comp.py",
+      "sha256": "5855eb4401db50ab446f19ae294d581d84125a50eeaef35441ea4083c60a1569"
+    },
+    "resource_type": "pull_request"
+  },
+  "independence": {
+    "status": "passed",
+    "upstream_project_id": "OpenMDAO/dymos",
+    "defect_cluster_id": "openmdao-dymos-polynomial-control-default-initialization-1166",
+    "is_fork_or_mirror": false,
+    "related_case_ids": [],
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
+      "sha256": "52eef423fd219849325bb7c32fb94853b22e366850a0f9871536f57fdc6a3597"
+    }
+  },
+  "exposure": {
+    "prior_pipeline_debug_exposure": "none",
+    "researcher_source_exposure": "full",
+    "exposure_notes": "The project lead directly self-reported prior_pipeline_debug_exposure=none for prospective shared pipeline, runner, selector and oracle debugging; this is not independently witnessed. Researcher source and reproduction exposure is full. No blinding is claimed.",
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_EXPOSURE_DECISION_DYMOS_1166_2026-11-20.md",
+      "sha256": "3d38e3b45f2d27cc6531ede3d73d8f2439deee0b6970c6d4618d4e02e55733ea"
+    }
+  },
+  "license_review": {
+    "root_license_expression": "Apache-2.0",
+    "exact_base_review": "passed",
+    "changed_file_review": "passed",
+    "nested_dependency_review": "passed",
+    "notice_and_provenance_review": "passed",
+    "reviewer_role": "student_project_lead",
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json",
+      "sha256": "eb658fc2cf2277797dd301daa5903cba297f182cacfd077ace0678d6eaa24630"
+    },
+    "changed_file_license_manifest": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_CHANGED_FILE_LICENSE_MANIFEST_V0_1_2026-11-20.json",
+      "sha256": "66dd69c8406cc387ed9485fc15d3e76263a80ff757c4990460dc7836cf7f5144"
+    },
+    "research_use_decision": "no_obvious_prohibition_identified",
+    "scope_limitation": "documentary_screening_only_not_legal_advice",
+    "root_license_file": {
+      "path": "LICENSE",
+      "commit_sha": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "blob_sha": "55da29e11b1fb2465936598779085f1cbcdf2908",
+      "content_sha256": "abf15e49f69033f57de7951237070b171164d008ec14432afbc0e8019292c72d",
+      "license_expression": "Apache-2.0"
+    }
+  },
+  "technical_reproduction": {
+    "status": "passed",
+    "environment_lock_sha256": "e229e611a88f50484343090cbb79e73f9d90a5a66ac0be990d0b1523cc029ef3",
+    "test_selector": "dymos/examples/balanced_field/test/test_balanced_field_length.py::TestBalancedFieldLengthDefaultValues::test_default_vals_stick",
+    "buggy_baseline": {
+      "commit_sha": "3efd1035c3bf62890034eb9e07de543f3d117867",
+      "exit_code": 1,
+      "failure_signature": "The defect-specific test executed and failed: the actual polynomial-control values were [[1.0], [1.0]] instead of the expected [[0], [10]].",
+      "run_record": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44114656908/artifacts/14341424466",
+        "sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051"
+      },
+      "test_selector": "dymos/examples/balanced_field/test/test_balanced_field_length.py::TestBalancedFieldLengthDefaultValues::test_default_vals_stick"
+    },
+    "fixed_revision": {
+      "commit_sha": "0ffc82225d6125dcb5c5b5acfb9be9fd712ef949",
+      "exit_code": 0,
+      "same_test_passed": true,
+      "run_record": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44114656908/artifacts/14341424466",
+        "sha256": "8fc5e1de9ee8c7d4be45c29b48ba9b1a0e6c82194ecb9ce2b7f5757d4fd58051"
+      },
+      "test_selector": "dymos/examples/balanced_field/test/test_balanced_field_length.py::TestBalancedFieldLengthDefaultValues::test_default_vals_stick"
+    },
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_1_2026-11-20.json",
+      "sha256": "3f1be6b34b7b7e6fce8108f5228940d4fe280b60715210d9a520141e6443164c"
+    }
+  },
+  "gold_standard": {
+    "status": "human_recorded",
+    "gold_mechanism_id": "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+    "candidate_mechanisms": [
+      {
+        "mechanism_id": "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+        "description": "The supplied polynomial-control val is forwarded and stored, but ControlInterpComp initializes the corresponding input to ones rather than the stored val.",
+        "testable_prediction": "On the buggy base, a fresh polynomial-control phase created with val=[5.0, 15.0] exposes [[1.0], [1.0]] at the promoted controls input; the fixed revision exposes [[5.0], [15.0]]."
+      },
+      {
+        "mechanism_id": "A1_POLYNOMIAL_VALUE_SHAPE_NORMALIZATION",
+        "description": "A shape/broadcast normalization defect prevents the supplied default from being represented correctly.",
+        "testable_prediction": "Changing only the valid shape of the supplied values while holding the component input-construction path constant would change or eliminate the mismatch if shape normalization were causal."
+      },
+      {
+        "mechanism_id": "A2_STALE_TEST_SETUP_VALUE_OVERRIDE",
+        "description": "A reused test fixture or post-setup set_val override replaces the caller's default before the observation.",
+        "testable_prediction": "A fresh independently constructed phase with no post-setup set_val operation would no longer reproduce the mismatch if a stale fixture override were causal."
+      },
+      {
+        "mechanism_id": "A3_ODE_TARGET_UNITS_OR_STATE_CONFIGURATION",
+        "description": "Downstream ODE targets, units, or state/parameter configuration create an apparent value mismatch even when the control input default is correct.",
+        "testable_prediction": "Reading the promoted controls input directly before interpreting downstream ODE outputs would show the requested default if this downstream configuration explanation were causal."
+      }
+    ],
+    "technical_rationale": "The pinned base source shows the caller value being forwarded and stored and the options mapping reaching ControlInterpComp, but the active polynomial-control branch adds the input with np.ones(input_shape). The independent public-API reproduction reads the promoted controls input and obtains all ones rather than the requested values. The pinned fixed PR head uses the supplied default. The conclusion is deliberately limited to this input-initialization mechanism and the tested pinned path.",
+    "evidence_refs": [
+      "DYMOS_ISSUE_NARRATIVE",
+      "DYMOS_INDEPENDENT_API_REPRODUCER",
+      "DYMOS_BASE_REPRODUCER_OUTPUT",
+      "DYMOS_BASE_ONES_INPUT_DEFAULT",
+      "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE",
+      "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS",
+      "DYMOS_BASE_ADD_CONTROL_FORWARDS_VALUE"
+    ],
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
+      "sha256": "9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392"
+    }
+  },
+  "evidence_tiers": {
+    "status": "human_recorded",
+    "tier_decision_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
+      "sha256": "9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392"
+    },
+    "E1": {
+      "packet": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json#packets/E1",
+        "sha256": "8d78d4ac4828276485b73bb01f5411be42feec328418cd575aa828ddae0faaa5"
+      },
+      "surviving_mechanism_ids": [
+        "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED"
+      ],
+      "semantic_rationale": "ANSWER: the active pinned source chain establishes that the supplied value is forwarded, stored and propagated, while the polynomial-control component input is initialized to ones instead of the stored value.",
+      "evidence_items": [
+        {
+          "evidence_id": "DYMOS_ISSUE_NARRATIVE",
+          "content_sha256": "116de1caf121bf3542eb506148bb892898eaee0c8e06a7876fb429dcc25c7ab9",
+          "source_snapshot_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
+          "source_uri": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commit/fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_path": "data/train-00000-of-00001.parquet#instance_id=openmdao__dymos-1165:problem_statement"
+        },
+        {
+          "evidence_id": "DYMOS_INDEPENDENT_API_REPRODUCER",
+          "content_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
+          "source_snapshot_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/5308d4b25a31acee1e3753818a1d67b972a640f2/research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py",
+          "source_commit_sha": "5308d4b25a31acee1e3753818a1d67b972a640f2",
+          "source_path": "research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py"
+        },
+        {
+          "evidence_id": "DYMOS_BASE_REPRODUCER_OUTPUT",
+          "content_sha256": "698710d0e08d43a66371a3c973a8628875be300d2a0ea0991e7dbf7bca532a82",
+          "source_snapshot_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44739419824/artifacts/14629598269",
+          "source_commit_sha": "5308d4b25a31acee1e3753818a1d67b972a640f2",
+          "source_path": "independent-reproducer-artifact/base-reproducer-output"
+        },
+        {
+          "evidence_id": "DYMOS_BASE_ONES_INPUT_DEFAULT",
+          "content_sha256": "f52ea74336cca69ae73b03aad91683e0d0f88f7667457796a64ab3ec78aa1fd4",
+          "source_snapshot_sha256": "f52ea74336cca69ae73b03aad91683e0d0f88f7667457796a64ab3ec78aa1fd4",
+          "source_uri": "https://github.com/OpenMDAO/dymos/blob/3efd1035c3bf62890034eb9e07de543f3d117867/dymos/transcriptions/common/control_comp.py#L120",
+          "source_commit_sha": "3efd1035c3bf62890034eb9e07de543f3d117867",
+          "source_path": "dymos/transcriptions/common/control_comp.py"
+        },
+        {
+          "evidence_id": "DYMOS_BASE_PHASE_STORES_CONTROL_VALUE",
+          "content_sha256": "bc263738775dcb898909430afd85cdb6a4dd3989863d37d6c1f5d04245ab27e9",
+          "source_snapshot_sha256": "bc263738775dcb898909430afd85cdb6a4dd3989863d37d6c1f5d04245ab27e9",
+          "source_uri": "https://github.com/OpenMDAO/dymos/blob/3efd1035c3bf62890034eb9e07de543f3d117867/dymos/phase/phase.py#L785-L786",
+          "source_commit_sha": "3efd1035c3bf62890034eb9e07de543f3d117867",
+          "source_path": "dymos/phase/phase.py"
+        },
+        {
+          "evidence_id": "DYMOS_BASE_TRANSCRIPTION_PASSES_CONTROL_OPTIONS",
+          "content_sha256": "c1ff713481f44148bdefe4a9c493e692d8d2a3b9457038358134c6469da7137a",
+          "source_snapshot_sha256": "c1ff713481f44148bdefe4a9c493e692d8d2a3b9457038358134c6469da7137a",
+          "source_uri": "https://github.com/OpenMDAO/dymos/blob/3efd1035c3bf62890034eb9e07de543f3d117867/dymos/transcriptions/transcription_base.py#L145-L147",
+          "source_commit_sha": "3efd1035c3bf62890034eb9e07de543f3d117867",
+          "source_path": "dymos/transcriptions/transcription_base.py"
+        },
+        {
+          "evidence_id": "DYMOS_BASE_ADD_CONTROL_FORWARDS_VALUE",
+          "content_sha256": "a2ff7cfe0b5cc90987599357d983735ffcfd2ad42973fd35e2bbcfd26c13cb1a",
+          "source_snapshot_sha256": "a2ff7cfe0b5cc90987599357d983735ffcfd2ad42973fd35e2bbcfd26c13cb1a",
+          "source_uri": "https://github.com/OpenMDAO/dymos/blob/3efd1035c3bf62890034eb9e07de543f3d117867/dymos/phase/phase.py#L638-L640",
+          "source_commit_sha": "3efd1035c3bf62890034eb9e07de543f3d117867",
+          "source_path": "dymos/phase/phase.py"
+        }
+      ]
+    },
+    "E2": {
+      "packet": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json#packets/E2",
+        "sha256": "7c16c6c61dadb5217493946b42b2b02a9dbdc63a0500b2e51b66982f4439385b"
+      },
+      "surviving_mechanism_ids": [
+        "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+        "A1_POLYNOMIAL_VALUE_SHAPE_NORMALIZATION"
+      ],
+      "semantic_rationale": "ABSTAIN: the fresh public-API observation establishes that the supplied default is not reflected in the promoted controls input; it reduces the fixture-override and downstream ODE explanations, but without the active implementation path a shape-normalization or component-default mechanism remains possible.",
+      "evidence_items": [
+        {
+          "evidence_id": "DYMOS_ISSUE_NARRATIVE",
+          "content_sha256": "116de1caf121bf3542eb506148bb892898eaee0c8e06a7876fb429dcc25c7ab9",
+          "source_snapshot_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
+          "source_uri": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commit/fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_path": "data/train-00000-of-00001.parquet#instance_id=openmdao__dymos-1165:problem_statement"
+        },
+        {
+          "evidence_id": "DYMOS_INDEPENDENT_API_REPRODUCER",
+          "content_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
+          "source_snapshot_sha256": "70f5c522c7617d392238d1107fe3eb4472a53850db581d91e4f8901138b8eaf9",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/5308d4b25a31acee1e3753818a1d67b972a640f2/research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py",
+          "source_commit_sha": "5308d4b25a31acee1e3753818a1d67b972a640f2",
+          "source_path": "research_candidates/evidence_abstention/reproduction/dymos_issue_1166/test_issue_1166.py"
+        },
+        {
+          "evidence_id": "DYMOS_BASE_REPRODUCER_OUTPUT",
+          "content_sha256": "698710d0e08d43a66371a3c973a8628875be300d2a0ea0991e7dbf7bca532a82",
+          "source_snapshot_sha256": "749a895e597e522889d4f8fad6f31345b38c84d864f0aa1e4dea9f7caca6135f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44739419824/artifacts/14629598269",
+          "source_commit_sha": "5308d4b25a31acee1e3753818a1d67b972a640f2",
+          "source_path": "independent-reproducer-artifact/base-reproducer-output"
+        }
+      ]
+    },
+    "E3": {
+      "packet": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json#packets/E3",
+        "sha256": "3aa2320ac5fc464108e3a4e79a6a062c80708caec0bc9e332fe6cd742a6bfb53"
+      },
+      "surviving_mechanism_ids": [
+        "G1_POLYNOMIAL_CONTROL_INPUT_DEFAULT_DISCARDED",
+        "A1_POLYNOMIAL_VALUE_SHAPE_NORMALIZATION",
+        "A2_STALE_TEST_SETUP_VALUE_OVERRIDE",
+        "A3_ODE_TARGET_UNITS_OR_STATE_CONFIGURATION"
+      ],
+      "semantic_rationale": "ABSTAIN: the issue narrative describes the symptom but does not distinguish the competing mechanisms.",
+      "evidence_items": [
+        {
+          "evidence_id": "DYMOS_ISSUE_NARRATIVE",
+          "content_sha256": "116de1caf121bf3542eb506148bb892898eaee0c8e06a7876fb429dcc25c7ab9",
+          "source_snapshot_sha256": "236f9cd1bb8cbacad27fd771e3878802e7dbf6f36a64eff35a60be7a32f6efb5",
+          "source_uri": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commit/fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_path": "data/train-00000-of-00001.parquet#instance_id=openmdao__dymos-1165:problem_statement"
+        }
+      ]
+    }
+  },
+  "human_decision": {
+    "decision_maker_role": "student_project_lead",
+    "decision_timestamp_utc": "2026-11-20T17:22:14.626Z",
+    "rationale": "This record transcribes the project lead's separately recorded approval of the technical gold and E1/E2/E3 outcomes, and the separately recorded bounded-scope acknowledgement and exposure declaration. It remains a proposed case record; no final case-acceptance decision has been made.",
+    "ai_critique_used": true,
+    "ai_critique_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_AI_ADVISORY_STRUCTURAL_CASE_REVIEW_2026-11-20.md",
+      "sha256": "beca7e7b4a9098c99b96742455876cd8467250ba7c1d3c4ef78cb8d1ba06464c"
+    }
+  },
+  "final_acceptance": {
+    "status": "pending",
+    "decision_maker_role": "student_project_lead",
+    "decision_timestamp_utc": null,
+    "rationale": "Awaiting the separate project-lead final YES/NO after structural case validation and fail-closed registry validation; this proposal is not an accepted case.",
+    "decision_record": null
+  }
+}

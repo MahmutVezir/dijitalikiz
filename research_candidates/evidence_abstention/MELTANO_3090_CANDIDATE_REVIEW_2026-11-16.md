@@ -54,3 +54,131 @@ Minimal dependency/license inventory: pending workflow evidence and human review
 Gold mechanism and E1/E2/E3 packet: pending human adjudication.  
 Final case acceptance: not accepted.  
 Model loading/inference authorization: false.
+
+## Superseding Stage 2 addendum — 20 November 2026
+
+The Meltano #3090 reproduction job completed successfully in two recorded candidate-matrix runs. The latest branch repeat is:
+- Workflow run: 44331092872; job: 134895968235 — success.
+- Artifact: 14440520435; GitHub-reported SHA-256: b1336169d7b6d8e4e47edbcd920d842ad525c7a4e2df841b998182099bed1bd3.
+- The independent source reproducer executed against the exact buggy base and failed on the second sibling reference as expected; the same reproducer passed on the exact fixed revision.
+- The exact frozen dataset selector was authenticated and failed on the test-only patched buggy base, then passed on the fixed revision.
+- The row timestamp was authenticated against the linked PR resource.
+
+The issue and reproducer agree on one mechanism: a mutable visited_refs set is shared between sibling schema-property branches. After resolving the first property's $ref, the second identical $ref is incorrectly treated as a cycle and left as an empty object. PR #3091 changes this to recursion-path state, preserving cycle protection without treating sibling reuse as recursion.
+
+PR #3091 identifies #3009 as the introduction history. Record that relationship in the issue-family/lineage review; it does not create a second sample case. Meltano contributes at most one upstream-project case.
+
+**Current disposition:** Stage 2 technical reproduction PASS; candidate remains not accepted. Project-lead source-aware gold/E1-E2-E3 decision, candidate-specific prior pipeline/debug exposure declaration, bounded source/dependency/dataset license-scope acknowledgement, related-issue/lineage review, complete proposed case record and fail-closed registry validation remain open. The earlier sections saying the exact row/selectors/reproducer were pending are historical and superseded by this addendum.
+
+## Project-lead selection decision
+
+## Project-lead first-batch selection — 20 November 2026
+
+The student project lead explicitly accepted Meltano SDK #3090 as one of the strong first-batch candidates to continue through v0.2 Stage 3 case evaluation, applying the unchanged Dishka-equivalent criteria.
+
+This is candidate-selection approval only. It does **not** approve the proposed Meltano gold mechanism or E1/E2/E3 tier membership; those remain for a separate source-aware project-lead decision. The bounded source/dependency/dataset scope acknowledgement, candidate-specific prior pipeline/debug exposure declaration, related issue/lineage review, complete case record, fail-closed registry validation and separate final case YES/NO remain pending.
+
+PR #3091's link to #3009 remains introduction history for the same Meltano repository and does not create another independent case. This candidate remains not accepted as a final case. No model load, inference, fine-tuning or training is authorized.
+
+
+## Stage 3 advisory and integrity addendum — 21 November 2026
+
+The Stage 2 artifact was independently downloaded and locally rechecked:
+- Run 44331092872; artifact 14440520435.
+- Recomputed ZIP SHA-256: b1336169d7b6d8e4e47edbcd920d842ad525c7a4e2df841b998182099bed1bd3, matching GitHub's digest.
+- ZIP CRC test passed.
+- Internal SHA256SUMS manifest verified 14/14 files.
+
+Prepared the following Stage 3 documents. They are proposals/reviews, not project-lead approvals or case acceptance:
+- Gold and tier proposal: research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_2026-11-21.md
+- Issue-family/repository independence review: research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json
+- Bounded license-scope review: research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-21.json
+- Local artifact integrity record: research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_STAGE2_ARTIFACT_INTEGRITY_REVIEW_2026-11-21.md
+
+The source-aware gold proposal is G1: one mutable visited_refs set is shared across sibling property branches. After the first sibling resolves a component reference, the second sibling is incorrectly treated as a recursive cycle and returns after its $ref is removed. The proposed tiers are E3 ABSTAIN, E2 ABSTAIN, E1 ANSWER. E3 and E2 intentionally retain the same causal hypotheses: reproduction confirms the symptom but does not expose internal state ownership. Only the exact base/fixed source snapshots in E1 distinguish G1 from the alternatives.
+
+The issue-family review treats PR #3009 as the prior introduction of circular-reference tracking in the same resolver path, not as another independent case. The one-case-per-upstream-project rule is preserved.
+
+The license-scope review is deliberately not closed:
+- The exact-base root repository license is recorded as Apache-2.0.
+- The dataset row's upstream repository license field is Apache-2.0, while the current dataset card identifies its distribution license as CC-BY-4.0. These are distinct layers.
+- Hugging Face's README history shows the data upload at fb9aa22 and a separate README/card upload at 6fe2932 on the same date. The full immutable README commit SHA and exact card bytes have not yet been captured in the case evidence bundle; exact pinned-card review remains pending.
+- The installed package inventory has 32 distribution entries; eight have a null raw license field, two lack license classifiers, and some entries have multiple license classifiers. Canonical license text/notices and full transitive dependency scope remain human-review items.
+
+The candidate review already records that the researcher reviewed the issue and PR during screening. The source-aware analysis has now also been discussed in this workflow; do not claim blinding. Candidate-specific prior pipeline/debug exposure is still awaiting the project lead's explicit declaration. No “none” value is inferred.
+
+**Current disposition remains:** Stage 2 technical pass; Stage 3 technical gold/tier proposal prepared but not approved; license scope not acknowledged; exposure declaration pending; no final proposed case record; not in the registry; no model execution authorization.
+
+
+## Project-lead technical gold and evidence-tier decision — 21 November 2026
+
+The project lead explicitly approved the source-aware technical gold and evidence tiers for Meltano SDK #3090:
+- **G1:** shared mutable `visited_refs` state leaks across sibling JSON Schema property branches; after the first sibling resolves a reference, the second sibling is incorrectly stopped by the visited-reference guard and returns without resolving the target.
+- **E3 — ABSTAIN:** the issue narrative contains the tentative “presumably already visited” clue, but this is a hypothesis rather than proof of sibling-shared traversal state.
+- **E2 — ABSTAIN:** the frozen dataset selector and independent public-API reproducer confirm exact buggy-base failure and fixed-revision success, but do not expose the internal causal mechanism.
+- **E1 — ANSWER:** the pinned buggy/fixed source snapshots show the mutable set, sibling propagation, early guard, and immutable recursion-path tuple fix.
+
+The decision is source-aware and single-adjudicator; the researcher had already reviewed the issue and PR, so no blinding or independent second-rater claim is made. The reporter's tentative clue remains visible in E3 rather than being erased or overstated.
+
+This closes only Stage 3 technical gold/tier adjudication. Candidate-specific prior pipeline/debug exposure remains pending; the bounded source/dependency/dataset license scope remains open; no final case record or separate final YES/NO acceptance has been made. Meltano remains outside the v0.2 registry, accepted counts remain 2 cases from 2 projects, and model loading/inference/fine-tuning/training remain unauthorized. PR #3009 remains repository lineage, not a second case.
+
+Decision record: `research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIER_DECISION_MELTANO_3090_2026-11-21.md`.
+
+
+## Post-approval validation addendum — 21 November 2026
+
+The decision-record assertion was aligned with the exact wording in the project-lead decision file. The corrected branch head `864896d4cfb12cbe68c76eab2abd3edf0929f21c` passed:
+- Evidence Abstention Preflight run 44899668556: success; v0.2 acceptance/readiness tests 27 passed; design/scoring tests 10 passed. The readiness report retains 13 blockers, 2 accepted cases from 2 projects, `ready_for_inference=false`, and `inference_authorized=false`.
+- Research Validation run 44899668507: 479 passed, 6 skipped, 56 subtests passed.
+- Uncertainty unit tests run 44899668509: 171 tests passed.
+- Qwen adapter CPU tests run 44899668410: success.
+- Dymos repeat run 44899668525: success.
+
+The Meltano approval and fail-closed status regression test is included in the 27-test v0.2 acceptance/readiness suite. This is validation of repository records and no-inference gates only; no model weights were loaded and no inference, fine-tuning or training was performed. The candidate remains outside the registry and its prior exposure and bounded license-scope acknowledgements remain open.
+
+
+## Dataset-card history recheck — 21 November 2026
+
+The connected Hugging Face repository metadata was rechecked and still displays dataset-card license `CC-BY-4.0` (Hub metadata updated 2 October 2026). The public README history page shows two separate entries at the displayed 20 July timestamp: dataset upload `fb9aa22` and README upload `6fe2932`. This confirms that the data file and license card were uploaded as distinct revisions; it does not yet authenticate the card bytes corresponding to the data revision. The full immutable README commit SHA and raw README bytes/SHA-256 remain uncaptured, so the exact pinned-card license gate remains open.
+
+Sources:
+- https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified
+- https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commits/main/README.md
+
+No license permission or legal-clearance conclusion is drawn from this recheck.
+
+
+## Project-lead prior pipeline/debug exposure declaration — 21 November 2026
+
+The project lead explicitly declared `prior_pipeline_debug_exposure = none` in response to the candidate-specific question. The declaration means Meltano #3090 / PR #3091, its source, dataset selector, and reproducer had not been used to develop/debug the shared research pipeline or tune prompts/tests before prospective case validation. This is a direct self-report, not an independently witnessed audit.
+
+**Separate source exposure remains `full`.** The project lead reviewed the issue and PR during candidate screening and later reviewed the source-aware case analysis. No source-blinding, blinded adjudication, or inter-rater reliability claim is made. This declaration closes only the prior pipeline/debug exposure gate.
+
+Decision record: `research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_EXPOSURE_DECISION_MELTANO_3090_2026-11-21.md`.
+
+The remaining Meltano gates are the bounded documentary-use scope acknowledgement after immutable dataset-card and dependency-license review, proposed case-record validation, and a separate final YES/NO acceptance decision. Meltano remains outside the accepted registry (2 accepted cases from 2 projects); model loading, inference, fine-tuning, and training remain unauthorized.
+
+
+## Post-exposure-declaration validation — 21 November 2026
+
+The project-lead exposure declaration (`none`; researcher source exposure remains `full`) is pinned in the independence review and its own decision record. On tested code/test head `367788cdcfe2b433699bae214ab33b562659d08b`:
+- Evidence Abstention Preflight run 44900328629: success; v0.2 acceptance/readiness tests 27 passed; design/scoring tests 10 passed. Readiness remains at 13 blockers, 2 accepted cases from 2 projects, `ready_for_inference=false`, and `inference_authorized=false`.
+- Research Validation run 44900328572: 479 passed, 6 skipped, 56 subtests passed.
+- Uncertainty tests run 44900328647: 171 passed.
+- Qwen adapter CPU tests run 44900328459: success.
+- Dymos repeat run 44900328623: success.
+
+This validates the declaration record and unchanged no-inference safeguards. No model weights or inference were used. The bounded license-scope acknowledgement, complete proposed case record, and separate final YES/NO case-acceptance decision remain open.
+
+
+## Project-lead bounded research-scope acknowledgement — 21 November 2026
+
+The project lead explicitly acknowledged the proposed bounded research-use scope **in principle**, subject to the stated restrictions and open verification items. The decision record is:
+
+`research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md`
+
+The accepted-in-principle boundary is limited to minimal issue/test/source excerpts needed to explain or reproduce this single defect, immutable upstream commit and artifact references with attribution, and small factual test outputs/hashes needed to audit the reproduction. Complete repository or dataset redistribution, dependency wheels/native libraries/binaries/environment images, unnecessary third-party source/notice republication, and blanket commercial permission remain excluded.
+
+This is a project-lead scope acknowledgement only. It is not a license grant from any rights holder, legal advice or legal clearance. The exact immutable README/card commit SHA and raw card bytes/SHA-256 remain uncaptured. Dependency canonical license texts/notices and exact relevant transitive dependency scope remain open. Notice and provenance reconciliation remains open. No full-source, dataset, dependency, binary, or environment redistribution is authorized by this acknowledgement.
+
+The scope decision does not alter gold/tier decisions or scientific results. Meltano remains outside the accepted registry; final case acceptance remains pending; inference, fine-tuning, and training remain unauthorized. The ledger records the unchanged accepted count of 2 cases from 2 distinct upstream projects.

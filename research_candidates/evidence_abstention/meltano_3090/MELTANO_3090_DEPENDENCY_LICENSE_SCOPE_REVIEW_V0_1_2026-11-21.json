@@ -1,0 +1,162 @@
+{
+  "schema_version": "0.1-v02-bounded-license-scope-review",
+  "review_date": "2026-11-21",
+  "candidate": {
+    "case_id": "SRV2E-MELTANO_3090",
+    "repository_full_name": "meltano/sdk",
+    "issue_url": "https://github.com/meltano/sdk/issues/3090",
+    "fix_pr_url": "https://github.com/meltano/sdk/pull/3091",
+    "dataset_instance_id": "meltano__sdk-3091"
+  },
+  "review_status": "bounded_scope_acknowledged_in_principle; dependency_notice_and_dataset_card_provenance_items_remain_open",
+  "root_source_license": {
+    "expression": "Apache-2.0",
+    "license_path": "LICENSE",
+    "base_commit": "ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2",
+    "git_blob_sha1": "564273905d22b60a0deb1155ece4281c0b855cbc",
+    "artifact_snapshot_path": "upstream-LICENSE.txt",
+    "artifact_snapshot_sha256": "046b03106bbadbc6529527c9cebdd1b21174fca4d6f84d59fbe5e7aa38a86168",
+    "review_note": "Exact-base Stage 2 package snapshot records Apache-2.0. PR changes only two upstream files within the same public Apache-2.0 repository; preliminary documentary screen only, not a legal opinion."
+  },
+  "changed_upstream_files": [
+    {
+      "path": "singer_sdk/singerlib/schema.py",
+      "base_commit": "ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2",
+      "fixed_commit": "9505ff1989b9be4d53b5bc9664b3fe3885879cb1",
+      "base_content_sha256": "2c741e465d44fee12519b708b5d31a09ec0cd0d631149251afb43179f379f61a",
+      "fixed_content_sha256": "0f9bab22193cefda9c845c4ca5a612a40869372e29bb66ced39d78f5b319aad1",
+      "license_scope": "upstream Apache-2.0 source"
+    },
+    {
+      "path": "tests/singerlib/test_schema.py",
+      "base_commit": "ae326fe394ec15d528ec2f1e396b8bb3dd5e99a2",
+      "fixed_commit": "9505ff1989b9be4d53b5bc9664b3fe3885879cb1",
+      "base_content_sha256": "6b6b8eeffa4e50bfbbe08b0b9128bf95da547e8d7ed6b0d9be5bb8a84facb4c6",
+      "fixed_content_sha256": "4cfd7999aad861498e3dfa478cffef5c88c6e037eb1a9a74eacdfdcc3bda9050",
+      "license_scope": "upstream Apache-2.0 test source"
+    }
+  ],
+  "patch_provenance": {
+    "pr_patch_sha256": "1396da1bbd0408532925757c9cebdd1b21174fca4d6f84d59fbe5e7aa38a86168",
+    "dataset_selector_patch_sha256": "2477c14b21eb7c63022dc02f05c787d324e92a99a60b9970b2e62ba988318e11",
+    "upstream_pyproject_snapshot_sha256": "5dab19c5d782d4198157cc138319288a0ea6347aab66acf0840bf1a6281f6d30"
+  },
+  "dataset_scope": {
+    "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "data_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "dataset_file_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "row_sha256": "318893b8546a4a6b2d8bc75d986a079c818951658fc1293ac59ba05d84682266",
+    "row_license_field": "Apache-2.0",
+    "current_hub_dataset_card_license": "CC-BY-4.0",
+    "current_card_url": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "card_history_url": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commits/main/README.md",
+    "card_history_observation": "The data upload is shown at revision fb9aa22; the README/card upload is shown as a separate 6fe2932 commit on the same date. The currently displayed card states CC-BY-4.0. The full immutable README commit SHA and exact card bytes have not yet been captured in the case evidence bundle.",
+    "exact_pinned_card_review": "pending; current Hub metadata rechecked 2026-11-21 confirms CC-BY-4.0, and README history shows a separate README upload at abbreviated revision 6fe2932; exact full commit SHA and raw README bytes remain uncaptured.",
+    "note": "The per-row upstream repository license and the dataset distribution/card license are separate layers and must not be conflated.",
+    "card_history_recheck_2026_11_21": {
+      "observed_date": "2026-11-21",
+      "hub_repo_details_current_metadata": {
+        "license": "CC-BY-4.0",
+        "last_updated_displayed": "2026-10-02",
+        "source_url": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified"
+      },
+      "readme_history_page": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commits/main/README.md",
+      "observed_history_entries": [
+        {
+          "short_revision": "fb9aa22",
+          "entry": "Upload dataset"
+        },
+        {
+          "short_revision": "6fe2932",
+          "entry": "Upload README.md with huggingface_hub"
+        }
+      ],
+      "relationship": "The README history page displays a separate README upload entry from the data upload entry on the same displayed date/time.",
+      "exact_readme_commit_sha": "not_retrieved",
+      "exact_readme_bytes_sha256": "not_retrieved",
+      "review_disposition": "Open. Current Hub metadata and abbreviated history entries are not a substitute for pinning and hashing the exact immutable README card bytes at the dataset data revision."
+    }
+  },
+  "dependency_inventory": {
+    "source_artifact_id": 14440520435,
+    "source_artifact_sha256": "b1336169d7b6d8e4e47edbcd920d842ad525c7a4e2df841b998182099bed1bd3",
+    "installed_distribution_entries": 32,
+    "entries_with_license_field_null": 8,
+    "license_field_null_packages": [
+      "jsonschema-specifications==2024.10.1",
+      "packaging==24.2",
+      "referencing==0.35.1",
+      "typing-extensions==4.12.2",
+      "urllib3==2.2.3",
+      "idna==3.10",
+      "importlib-metadata==8.5.0",
+      "zipp==3.21.0"
+    ],
+    "entries_without_license_classifiers": [
+      "ply==3.11 (license metadata says BSD)",
+      "universal-pathlib==0.2.6 (license metadata says MIT License)"
+    ],
+    "additional_metadata_review_flags": [
+      "packaging==24.2 has Apache/BSD classifiers with null license field",
+      "simplejson==3.19.3 has MIT and Academic Free License classifiers",
+      "published package metadata is not verified canonical license text for every distribution"
+    ],
+    "dataset_extraction_dependency_inventory": {
+      "count": 1,
+      "package": "pyarrow==19.0.1",
+      "metadata_license": "Apache Software License",
+      "note": "Dataset extraction/runtime tooling inventory; not itself an upstream dependency shipped by Meltano."
+    },
+    "review_disposition": "not fully cleared; canonical license texts/notices for flagged packages and exact transitive dependency scope still require human review before any no-obvious-prohibition finding"
+  },
+  "proposed_bounded_scope": {
+    "proposal_only": false,
+    "allowed_for_project_lead_to_consider": [
+      "minimal issue/test/source excerpts necessary to explain and reproduce this single defect",
+      "pinned commit and artifact references with attribution",
+      "small factual test outputs and hashes needed to audit the reproduction"
+    ],
+    "excluded": [
+      "redistribution of the complete Meltano repository or complete dataset",
+      "redistribution of dependency wheels, native libraries, binaries, or a complete environment image",
+      "republication of third-party dependency source trees or notices beyond what is necessary and lawfully included",
+      "blanket commercial permission or an assumption that one root license resolves every dependency license"
+    ],
+    "preservation_conditions": [
+      "retain attribution and upstream license notices for any copied excerpt",
+      "link to immutable upstream commits rather than copying full source files where possible",
+      "keep the data row and evidence excerpts minimal",
+      "record exact third-party components and notices actually used"
+    ],
+    "condition": "The project lead should acknowledge that a successful root-repository screen is not legal clearance and that scientific adjudication remains independent of permission conclusions.",
+    "project_lead_acknowledgement": "acknowledged_in_principle_with_explicit_conditions"
+  },
+  "human_review": {
+    "reviewer_role": "student_project_lead",
+    "project_lead_scope_acknowledgement": "acknowledged_in_principle_with_explicit_conditions",
+    "accepted_research_scope": false,
+    "exact_base_review": "preliminary_repository_license_documented; bounded research scope acknowledged in principle; not legal clearance",
+    "changed_file_review": "two changed upstream paths identified; acknowledgement is limited to the bounded documentary scope and remains subject to applicable notices and verification",
+    "nested_dependency_review": "open",
+    "notice_and_provenance_review": "open",
+    "research_use_decision": "bounded_scope_acknowledged_in_principle; operational use of excerpts remains subject to open dependency, notice, and pinned dataset-card provenance checks",
+    "accepted_as_legal_clearance": false,
+    "external_legal_review": "not_performed",
+    "project_lead_scope_decision_date": "2026-11-21",
+    "project_lead_scope_decision_record": "research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_BOUNDED_RESEARCH_SCOPE_ACKNOWLEDGEMENT_MELTANO_3090_2026-11-21.md",
+    "bounded_research_scope_acknowledged_in_principle": true,
+    "project_lead_scope_decision_commit": "e5d4f434121eb95b3a50117ed63196641a19c73a"
+  },
+  "boundaries": {
+    "legal_advice": false,
+    "legal_clearance": false,
+    "SPDX_certification": false,
+    "blanket_redistribution_permission": false,
+    "final_case_acceptance": false,
+    "registry_inclusion": false,
+    "inference_authorized": false,
+    "bounded_research_scope_acknowledged_in_principle": true,
+    "operational_research_use_authorized": false,
+    "redistribution_authorized": false
+  }
+}

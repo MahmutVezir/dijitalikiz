@@ -1,0 +1,12 @@
+﻿job,failed_steps,evidence_category,classification_status,declared_artifact_count,resolved_artifact_count,unresolved_artifact_count,candidate_scoped_archive_file_count,readable_log_text_files,log_excerpt_count
+nox-issue-919-reproduction,"[""Clone exact upstream source and prepare pinned patch""]",dependency_or_environment,evidence_supported_triage,14,0,14,28,22,11
+numpyro-issue-1916-reproduction,"[""Run dataset FAIL_TO_PASS selectors on buggy base (failure required)""]",patch_or_source_mismatch,evidence_supported_triage,12,0,12,24,23,7
+werkzeug-issue-2955-reproduction,"[""Run dataset FAIL_TO_PASS selectors on buggy base (failure required)""]",test_step_failure_cause_unresolved,unresolved_no_specific_log_signature,10,0,10,22,21,5
+robocop-issue-1371-reproduction,"[""Clone exact upstream source and prepare pinned patch""]",source_checkout_failure_cause_unresolved,unresolved_no_specific_log_signature,7,0,7,19,18,3
+pyfar-issue-721-reproduction,"[""Run dataset FAIL_TO_PASS selectors on buggy base (failure required)""]",dependency_or_environment,evidence_supported_triage,10,0,10,22,21,11
+eodag-issue-1530-reproduction,"[""Clone and authenticate exact upstream source snapshots""]",source_checkout_failure_cause_unresolved,unresolved_no_specific_log_signature,5,0,5,16,15,3
+moto-issue-8269-reproduction,"[""Clone exact Moto source and prepare patch""]",source_checkout_failure_cause_unresolved,unresolved_no_specific_log_signature,2,0,2,13,12,2
+meltano-issue-3090-reproduction,"[""Clone exact Singer SDK source and authenticate license""]",source_checkout_failure_cause_unresolved,unresolved_no_specific_log_signature,5,0,5,17,15,3
+python-control-issue-1144-reproduction,"[""Run exact dataset selectors on patched buggy base (failure required)""]",patch_or_source_mismatch,evidence_supported_triage,11,0,11,23,21,19
+qutip-issue-2646-reproduction,"[""Apply exact PR patch and run dataset selectors on buggy base (failure required)""]",patch_or_source_mismatch,evidence_supported_triage,11,0,11,24,22,18
+amaranth-issue-1518-reproduction,"[""Clone exact Amaranth source and prepare patch""]",source_checkout_failure_cause_unresolved,unresolved_no_specific_log_signature,5,0,5,17,15,3

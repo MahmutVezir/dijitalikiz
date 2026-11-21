@@ -1,0 +1,23 @@
+{
+  "packet_id": "GEOFILEOPS_649_E2_V0_1",
+  "case_id": "SRV2E-GEOFILEOPS_649",
+  "diagnostic_granularity": "implementation_mechanism_root_cause",
+  "evidence_boundary": "E3 packet plus independent reproducer, explicit-layer positive control, exact-base/fixed issue logs and all 10 frozen selector logs.",
+  "evidence_ids": [
+    "ISSUE_REPORT",
+    "DATASET_ROW",
+    "ISSUE_REPRODUCER",
+    "BASE_ISSUE_FAILURE_LOG",
+    "BASE_POSITIVE_CONTROL_LOG",
+    "FIXED_ISSUE_PASS_LOG",
+    "DATASET_BASE_FAIL_LOG",
+    "DATASET_FIXED_PASS_LOG"
+  ],
+  "surviving_mechanism_ids": [
+    "G1_MISSING_NONE_TO_DESTINATION_STEM_FALLBACK",
+    "A3_GET_DEFAULT_LAYER_HELPER_WRONG",
+    "A4_DRIVER_OR_FORMAT_SPECIFIC_BEHAVIOR"
+  ],
+  "tier_decision": "ABSTAIN",
+  "rationale": "The independent copy_layer reproducer fails with the source layer name rather than the destination stem; the explicit-layer positive control passes on base; both reproducer tests pass on fixed; 10 frozen selectors fail on base and pass fixed. E2 eliminates copy-only and append-only explanations and narrows the format-specific alternative, but does not disclose the exact source call chain."
+}

@@ -1,0 +1,20 @@
+# Exact runtime lock captured from exploratory Modin run 44136621019.
+# Platform: ubuntu-22.04 / CPython 3.11.9.
+# The editable Modin source checkout is installed separately from exact base/fix
+# commits with --no-deps; it is therefore not listed here.
+fsspec==2025.3.2
+iniconfig==2.3.1
+numpy==1.26.4
+packaging==26.3
+pandas==2.2.3
+pip==24.3.1
+pluggy==1.7.0
+psutil==7.0.0
+pyarrow==18.1.0
+pytest==8.3.5
+python-dateutil==4.0.0
+pytz==2026.6
+setuptools==65.5.0
+typing_extensions==4.16.0
+tzdata==2026.6
+wheel==0.45.1

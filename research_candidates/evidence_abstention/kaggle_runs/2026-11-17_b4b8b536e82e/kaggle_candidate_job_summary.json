@@ -1,0 +1,1218 @@
+{
+  "schema_version": "2.0",
+  "project": "TUBITAK 2204-A v0.2 evidence-abstention exploratory validation",
+  "execution_environment": "Kaggle notebook; workflow actions emulated locally",
+  "repository": "https://github.com/MahmutVezir/dijitalikiz.git",
+  "branch_at_preparation": "research/2026-11-16-followup-evidence-validation",
+  "pinned_commit": "5a87487785175a2ef36b3920560d9cb590df7e9e",
+  "resolved_commit": "5a87487785175a2ef36b3920560d9cb590df7e9e",
+  "workflow_path": ".github/workflows/evidence-abstention-preflight.yml",
+  "workflow_sha256": "a7b19e105a2524d99c7a5e207422c8ad6e7a0aeefe9aa2a34a33b29dce3def57",
+  "runner_tool_versions": {
+    "uv": "uv 0.13.6 (x86_64-unknown-linux-gnu)",
+    "PyYAML": "6.0.3"
+  },
+  "expected_job_count": 13,
+  "completed_job_count": 13,
+  "job_counts": {
+    "success": 2,
+    "failure": 11,
+    "runner_setup_failure": 0
+  },
+  "model_loaded": false,
+  "model_inference_performed": false,
+  "training_performed": false,
+  "interpretation_rule": "A failing job does not by itself exclude a candidate. Inspect the exact failed step and logs; setup, network, dependency, or runner failures are infrastructure/environment blockers unless the defect-specific oracle actually ran and produced a contradictory result.",
+  "runner_equivalence_limit": "This is a Kaggle adaptation, not an exact GitHub-hosted runner reproduction. Checkout, setup-python, and upload-artifact are locally emulated; OS image, cache state, networking, CPU resources, and runner behavior may differ.",
+  "jobs": [
+    {
+      "job": "no-inference-preflight",
+      "outcome": "success",
+      "duration_seconds": 9.35,
+      "failed_steps": [],
+      "steps": [
+        {
+          "name": "Checkout repository",
+          "status": "success",
+          "action": "actions/checkout@v4",
+          "emulation": "isolated worktree"
+        },
+        {
+          "name": "Set up Python",
+          "status": "success",
+          "action": "actions/setup-python@v5",
+          "python": {
+            "requested_version": "3.11",
+            "python_version_output": "Python 3.11.18 (main, Oct 26 2026, 14:05:07) [Clang 23.1.3 ]",
+            "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/no-inference-preflight-3_11/lib/python3.11/site-packages/pip (python 3.11)",
+            "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/no-inference-preflight-3_11"
+          }
+        },
+        {
+          "name": "Install pinned v0.2 exploratory validation dependencies",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Unit-test evidence packet and citation integrity auditor",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Unit-test operational and nested evidence packet contracts",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Unit-test v0.2 exploratory acceptance and readiness contracts",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Report SWE-rebench V2 readiness blockers without model execution",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Upload no-inference preflight logs",
+          "status": "success",
+          "action": "actions/upload-artifact@v4",
+          "emulation": "local artifact collection"
+        }
+      ],
+      "python_setup": [
+        {
+          "requested_version": "3.11",
+          "python_version_output": "Python 3.11.18 (main, Oct 26 2026, 14:05:07) [Clang 23.1.3 ]",
+          "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/no-inference-preflight-3_11/lib/python3.11/site-packages/pip (python 3.11)",
+          "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/no-inference-preflight-3_11"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "evidence-abstention-preflight-logs-kaggle-local-1",
+          "files": [
+            "collected_artifacts/no-inference-preflight/evidence-abstention-preflight-logs-kaggle-local-1/operational-packet-tests.log",
+            "collected_artifacts/no-inference-preflight/evidence-abstention-preflight-logs-kaggle-local-1/packet-audit-tests.log",
+            "collected_artifacts/no-inference-preflight/evidence-abstention-preflight-logs-kaggle-local-1/swe-rebench-v2-readiness-report.json",
+            "collected_artifacts/no-inference-preflight/evidence-abstention-preflight-logs-kaggle-local-1/v0.2-exploratory-tests.log"
+          ],
+          "file_count": 4
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "job": "dishka-issue-435-reproduction",
+      "outcome": "success",
+      "duration_seconds": 29.22,
+      "failed_steps": [],
+      "steps": [
+        {
+          "name": "Checkout research repository",
+          "status": "success",
+          "action": "actions/checkout@v4",
+          "emulation": "isolated worktree"
+        },
+        {
+          "name": "Set up exact Python version",
+          "status": "success",
+          "action": "actions/setup-python@v5",
+          "python": {
+            "requested_version": "3.11.9",
+            "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+            "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/dishka-issue-435-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+            "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/dishka-issue-435-reproduction-3_11_9"
+          }
+        },
+        {
+          "name": "Record runtime and clone exact upstream source",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Run identical issue reproducer on buggy base (failure required)",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Run the same issue reproducer on fixed revision (pass required)",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Hash and summarize reproduction evidence",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Upload raw reproduction evidence",
+          "status": "success",
+          "action": "actions/upload-artifact@v4",
+          "emulation": "local artifact collection"
+        }
+      ],
+      "python_setup": [
+        {
+          "requested_version": "3.11.9",
+          "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+          "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/dishka-issue-435-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+          "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/dishka-issue-435-reproduction-3_11_9"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "dishka-issue-435-reproduction-kaggle-local-1",
+          "files": [
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/base-commit.txt",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/base-container.py",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/issue-pr-snapshot-sha256.txt",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/test_provide.py",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/base-source-sha256.txt",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/fixed-test.log",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/fixed-commit.txt",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/dataset-row-sha256.txt",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/registry_builder.diff",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/packet-draft-sha256.txt",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/SHA256SUMS.txt",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/fixed-registry_builder.py",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/fixed-source-sha256.txt",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/test_context_var.py",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/base-registry.py",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/dataset-provenance-sha256.txt",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/base-registry_builder.py",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/base-test.log",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/fixed-dataset-test.log",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/license-and-environment-lock-sha256.txt",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/test-environment-package-metadata.json",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/runtime.txt",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/base-dataset-test.log",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/test_alias.py",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/fixed-container.py",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/full-pr.diff",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/dataset-row-canonical.json",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/dataset-test.patch",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/test-sha256.txt",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/fixed-registry.py",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/test_context_vars.py",
+            "collected_artifacts/dishka-issue-435-reproduction/dishka-issue-435-reproduction-kaggle-local-1/reproduction-evidence/train-00000-of-00001.parquet"
+          ],
+          "file_count": 33
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "job": "nox-issue-919-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 27.0,
+      "failed_steps": [
+        "Clone exact upstream source and prepare pinned patch"
+      ],
+      "steps": [
+        {
+          "name": "Checkout research repository",
+          "status": "success",
+          "action": "actions/checkout@v4",
+          "emulation": "isolated worktree"
+        },
+        {
+          "name": "Set up exact Python version",
+          "status": "success",
+          "action": "actions/setup-python@v5",
+          "python": {
+            "requested_version": "3.11.9",
+            "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+            "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/nox-issue-919-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+            "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/nox-issue-919-reproduction-3_11_9"
+          }
+        },
+        {
+          "name": "Create deterministic broken pyenv uv shim",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Install pinned runtime and test dependencies",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Record dependency license metadata before source execution",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Extract and authenticate exact SWE-rebench row",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Clone exact upstream source and prepare pinned patch",
+          "status": "failed",
+          "exit_code": 128
+        },
+        {
+          "name": "Run independent issue reproducer on buggy base (failure required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Run independent issue reproducer and dataset selectors on fixed revision (pass required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Prepare raw reproduction artifact",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Upload raw reproduction evidence",
+          "status": "success",
+          "action": "actions/upload-artifact@v4",
+          "emulation": "local artifact collection"
+        }
+      ],
+      "python_setup": [
+        {
+          "requested_version": "3.11.9",
+          "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+          "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/nox-issue-919-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+          "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/nox-issue-919-reproduction-3_11_9"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "nox-issue-919-reproduction",
+          "files": [
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-groups-pyproject.toml",
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/attrs-pyproject.toml",
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/attrs-LICENSE",
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/SHA256SUMS.txt",
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-license-inventory.json",
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/DEPENDENCY_GROUPS_1_3_0_LICENSE_REVIEW_2026-11-16.md",
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-groups-LICENSE.txt",
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/attrs-source-commit.txt",
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-row-canonical.json",
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dataset-test.patch",
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/dependency-groups-source-commit.txt",
+            "collected_artifacts/nox-issue-919-reproduction/nox-issue-919-reproduction/reproduction-evidence/ATTRS_24_3_0_LICENSE_REVIEW_2026-11-16.md"
+          ],
+          "file_count": 14
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "job": "numpyro-issue-1916-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 76.14,
+      "failed_steps": [
+        "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)"
+      ],
+      "steps": [
+        {
+          "name": "Checkout research repository",
+          "status": "success",
+          "action": "actions/checkout@v4",
+          "emulation": "isolated worktree"
+        },
+        {
+          "name": "Set up exact Python version",
+          "status": "success",
+          "action": "actions/setup-python@v5",
+          "python": {
+            "requested_version": "3.11.9",
+            "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+            "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/numpyro-issue-1916-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+            "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/numpyro-issue-1916-reproduction-3_11_9"
+          }
+        },
+        {
+          "name": "Install pinned CPU runtime and test dependencies",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Record dependency license metadata before source execution",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Extract and authenticate exact SWE-rebench row",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Clone exact upstream source and prepare pinned patch",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)",
+          "status": "failed",
+          "exit_code": 1
+        },
+        {
+          "name": "Run identical dataset selectors on fixed revision (pass required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Prepare and upload raw reproduction evidence",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Upload raw reproduction evidence",
+          "status": "success",
+          "action": "actions/upload-artifact@v4",
+          "emulation": "local artifact collection"
+        }
+      ],
+      "python_setup": [
+        {
+          "requested_version": "3.11.9",
+          "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+          "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/numpyro-issue-1916-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+          "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/numpyro-issue-1916-reproduction-3_11_9"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "numpyro-issue-1916-reproduction",
+          "files": [
+            "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/base-commit.txt",
+            "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/fixed-commit.txt",
+            "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+            "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/SHA256SUMS.txt",
+            "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/environment-lock-sha256.txt",
+            "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dependency-license-inventory.json",
+            "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/test-environment-freeze.txt",
+            "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+            "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/base-dataset-test.log",
+            "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/source-and-dataset-sha256.txt",
+            "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-row-canonical.json",
+            "collected_artifacts/numpyro-issue-1916-reproduction/numpyro-issue-1916-reproduction/reproduction-evidence/dataset-test.patch"
+          ],
+          "file_count": 12
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "job": "werkzeug-issue-2955-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 23.26,
+      "failed_steps": [
+        "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)"
+      ],
+      "steps": [
+        {
+          "name": "Checkout research repository",
+          "status": "success",
+          "action": "actions/checkout@v4",
+          "emulation": "isolated worktree"
+        },
+        {
+          "name": "Set up issue-matched Python version",
+          "status": "success",
+          "action": "actions/setup-python@v5",
+          "python": {
+            "requested_version": "3.12.7",
+            "python_version_output": "Python 3.12.7 (main, Oct 16 2024, 04:37:19) [Clang 18.1.8 ]",
+            "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/werkzeug-issue-2955-reproduction-3_12_7/lib/python3.12/site-packages/pip (python 3.12)",
+            "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/werkzeug-issue-2955-reproduction-3_12_7"
+          }
+        },
+        {
+          "name": "Install pinned runtime and test dependencies",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Record dependency license metadata before source execution",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Extract and authenticate exact SWE-rebench row",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Clone exact upstream source and prepare pinned patch",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)",
+          "status": "failed",
+          "exit_code": 1
+        },
+        {
+          "name": "Run identical dataset selectors on fixed revision (pass required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Prepare and upload raw reproduction evidence",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Upload raw reproduction evidence",
+          "status": "success",
+          "action": "actions/upload-artifact@v4",
+          "emulation": "local artifact collection"
+        }
+      ],
+      "python_setup": [
+        {
+          "requested_version": "3.12.7",
+          "python_version_output": "Python 3.12.7 (main, Oct 16 2024, 04:37:19) [Clang 18.1.8 ]",
+          "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/werkzeug-issue-2955-reproduction-3_12_7/lib/python3.12/site-packages/pip (python 3.12)",
+          "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/werkzeug-issue-2955-reproduction-3_12_7"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "werkzeug-issue-2955-reproduction",
+          "files": [
+            "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+            "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/SHA256SUMS.txt",
+            "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/environment-lock-sha256.txt",
+            "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dependency-license-inventory.json",
+            "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/test-environment-freeze.txt",
+            "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+            "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/base-dataset-test.log",
+            "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/source-and-dataset-sha256.txt",
+            "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-row-canonical.json",
+            "collected_artifacts/werkzeug-issue-2955-reproduction/werkzeug-issue-2955-reproduction/reproduction-evidence/dataset-test.patch"
+          ],
+          "file_count": 10
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "job": "robocop-issue-1371-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 27.06,
+      "failed_steps": [
+        "Clone exact upstream source and prepare pinned patch"
+      ],
+      "steps": [
+        {
+          "name": "Checkout research repository",
+          "status": "success",
+          "action": "actions/checkout@v4",
+          "emulation": "isolated worktree"
+        },
+        {
+          "name": "Set up exact Python version",
+          "status": "success",
+          "action": "actions/setup-python@v5",
+          "python": {
+            "requested_version": "3.11.9",
+            "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+            "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/robocop-issue-1371-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+            "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/robocop-issue-1371-reproduction-3_11_9"
+          }
+        },
+        {
+          "name": "Install pinned runtime and test dependencies",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Record dependency license metadata before source execution",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Extract and authenticate exact SWE-rebench row",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Clone exact upstream source and prepare pinned patch",
+          "status": "failed",
+          "exit_code": 128
+        },
+        {
+          "name": "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Run identical dataset selectors on fixed revision (pass required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Prepare and upload raw reproduction evidence",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Upload raw reproduction evidence",
+          "status": "success",
+          "action": "actions/upload-artifact@v4",
+          "emulation": "local artifact collection"
+        }
+      ],
+      "python_setup": [
+        {
+          "requested_version": "3.11.9",
+          "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+          "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/robocop-issue-1371-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+          "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/robocop-issue-1371-reproduction-3_11_9"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "robocop-issue-1371-reproduction",
+          "files": [
+            "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+            "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/SHA256SUMS.txt",
+            "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dependency-license-inventory.json",
+            "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/test-environment-freeze.txt",
+            "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+            "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-row-canonical.json",
+            "collected_artifacts/robocop-issue-1371-reproduction/robocop-issue-1371-reproduction/reproduction-evidence/dataset-test.patch"
+          ],
+          "file_count": 7
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "job": "pyfar-issue-721-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 48.82,
+      "failed_steps": [
+        "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)"
+      ],
+      "steps": [
+        {
+          "name": "Checkout research repository",
+          "status": "success",
+          "action": "actions/checkout@v4",
+          "emulation": "isolated worktree"
+        },
+        {
+          "name": "Set up issue-matched Python version",
+          "status": "success",
+          "action": "actions/setup-python@v5",
+          "python": {
+            "requested_version": "3.12.4",
+            "python_version_output": "Python 3.12.4 (main, Jul 25 2024, 22:42:01) [Clang 18.1.8 ]",
+            "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/pyfar-issue-721-reproduction-3_12_4/lib/python3.12/site-packages/pip (python 3.12)",
+            "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/pyfar-issue-721-reproduction-3_12_4"
+          }
+        },
+        {
+          "name": "Install pinned pyfar runtime and test dependencies",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Record dependency license metadata before source execution",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Extract and authenticate exact SWE-rebench row",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Clone exact upstream source and prepare pinned patch",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Run dataset FAIL_TO_PASS selectors on buggy base (failure required)",
+          "status": "failed",
+          "exit_code": 1
+        },
+        {
+          "name": "Run identical dataset selectors on fixed revision (pass required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Prepare and upload raw reproduction evidence",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Upload raw reproduction evidence",
+          "status": "success",
+          "action": "actions/upload-artifact@v4",
+          "emulation": "local artifact collection"
+        }
+      ],
+      "python_setup": [
+        {
+          "requested_version": "3.12.4",
+          "python_version_output": "Python 3.12.4 (main, Jul 25 2024, 22:42:01) [Clang 18.1.8 ]",
+          "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/pyfar-issue-721-reproduction-3_12_4/lib/python3.12/site-packages/pip (python 3.12)",
+          "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/pyfar-issue-721-reproduction-3_12_4"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "pyfar-issue-721-reproduction",
+          "files": [
+            "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+            "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/SHA256SUMS.txt",
+            "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/environment-lock-sha256.txt",
+            "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dependency-license-inventory.json",
+            "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/test-environment-freeze.txt",
+            "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+            "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/base-dataset-test.log",
+            "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/source-and-dataset-sha256.txt",
+            "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-row-canonical.json",
+            "collected_artifacts/pyfar-issue-721-reproduction/pyfar-issue-721-reproduction/reproduction-evidence/dataset-test.patch"
+          ],
+          "file_count": 10
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "job": "eodag-issue-1530-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 22.0,
+      "failed_steps": [
+        "Clone and authenticate exact upstream source snapshots"
+      ],
+      "steps": [
+        {
+          "name": "Checkout research repository",
+          "status": "success",
+          "action": "actions/checkout@v4",
+          "emulation": "isolated worktree"
+        },
+        {
+          "name": "Set up exact Python version",
+          "status": "success",
+          "action": "actions/setup-python@v5",
+          "python": {
+            "requested_version": "3.11.9",
+            "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+            "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/eodag-issue-1530-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+            "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/eodag-issue-1530-reproduction-3_11_9"
+          }
+        },
+        {
+          "name": "Install minimal pinned YAML reproducer dependency",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Clone and authenticate exact upstream source snapshots",
+          "status": "failed",
+          "exit_code": 128
+        },
+        {
+          "name": "Run identical issue reproducer on buggy base (failure required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Run identical issue reproducer on fixed revision (pass required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Extract exact dataset row and record FAIL_TO_PASS selectors without executing upstream tests",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Prepare and upload raw EODAG reproduction evidence",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Upload raw EODAG reproduction evidence",
+          "status": "success",
+          "action": "actions/upload-artifact@v4",
+          "emulation": "local artifact collection"
+        }
+      ],
+      "python_setup": [
+        {
+          "requested_version": "3.11.9",
+          "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+          "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/eodag-issue-1530-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+          "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/eodag-issue-1530-reproduction-3_11_9"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "eodag-issue-1530-reproduction",
+          "files": [
+            "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/base-user_conf_template.yml",
+            "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/SHA256SUMS.txt",
+            "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/issue-1530-source.patch",
+            "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/upstream-NOTICE.txt",
+            "collected_artifacts/eodag-issue-1530-reproduction/eodag-issue-1530-reproduction/reproduction-evidence/upstream-LICENSE.txt"
+          ],
+          "file_count": 5
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "job": "moto-issue-8269-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 35.4,
+      "failed_steps": [
+        "Clone exact Moto source and prepare patch"
+      ],
+      "steps": [
+        {
+          "name": "Checkout research repository",
+          "status": "success",
+          "action": "actions/checkout@v4",
+          "emulation": "isolated worktree"
+        },
+        {
+          "name": "Set up exact Python version",
+          "status": "success",
+          "action": "actions/setup-python@v5",
+          "python": {
+            "requested_version": "3.11.9",
+            "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+            "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/moto-issue-8269-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+            "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/moto-issue-8269-reproduction-3_11_9"
+          }
+        },
+        {
+          "name": "Install pinned Moto ECR reproduction environment",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Clone exact Moto source and prepare patch",
+          "status": "failed",
+          "exit_code": 1
+        },
+        {
+          "name": "Run independent issue reproducer on buggy base (failure required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Run exact dataset FAIL_TO_PASS selectors on patched buggy base (failure required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Run same issue reproducer and dataset selectors on fixed revision (pass required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Prepare and upload raw Moto reproduction evidence",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Upload raw Moto reproduction evidence",
+          "status": "success",
+          "action": "actions/upload-artifact@v4",
+          "emulation": "local artifact collection"
+        }
+      ],
+      "python_setup": [
+        {
+          "requested_version": "3.11.9",
+          "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+          "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/moto-issue-8269-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+          "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/moto-issue-8269-reproduction-3_11_9"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "moto-issue-8269-reproduction",
+          "files": [
+            "collected_artifacts/moto-issue-8269-reproduction/moto-issue-8269-reproduction/reproduction-evidence/SHA256SUMS.txt",
+            "collected_artifacts/moto-issue-8269-reproduction/moto-issue-8269-reproduction/reproduction-evidence/dependency-license-inventory.json"
+          ],
+          "file_count": 2
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "job": "meltano-issue-3090-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 20.42,
+      "failed_steps": [
+        "Clone exact Singer SDK source and authenticate license"
+      ],
+      "steps": [
+        {
+          "name": "Checkout research repository",
+          "status": "success",
+          "action": "actions/checkout@v4",
+          "emulation": "isolated worktree"
+        },
+        {
+          "name": "Set up exact Python version",
+          "status": "success",
+          "action": "actions/setup-python@v5",
+          "python": {
+            "requested_version": "3.11.9",
+            "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+            "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/meltano-issue-3090-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+            "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/meltano-issue-3090-reproduction-3_11_9"
+          }
+        },
+        {
+          "name": "Install pinned Singer SDK schema-test environment and audit licenses",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Clone exact Singer SDK source and authenticate license",
+          "status": "failed",
+          "exit_code": 128
+        },
+        {
+          "name": "Run independent source reproducer on buggy base (failure required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Extract exact dataset row and authenticate timestamp",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Run exact dataset selectors on patched buggy base (failure required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Run same source and dataset selectors on fixed revision (pass required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Prepare and upload raw Meltano reproduction evidence",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Upload raw Meltano reproduction evidence",
+          "status": "success",
+          "action": "actions/upload-artifact@v4",
+          "emulation": "local artifact collection"
+        }
+      ],
+      "python_setup": [
+        {
+          "requested_version": "3.11.9",
+          "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+          "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/meltano-issue-3090-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+          "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/meltano-issue-3090-reproduction-3_11_9"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "meltano-issue-3090-reproduction",
+          "files": [
+            "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/SHA256SUMS.txt",
+            "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/dependency-license-inventory.json",
+            "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/pr-3091.patch",
+            "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/upstream-pyproject.toml",
+            "collected_artifacts/meltano-issue-3090-reproduction/meltano-issue-3090-reproduction/reproduction-evidence/upstream-LICENSE.txt"
+          ],
+          "file_count": 5
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "job": "python-control-issue-1144-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 39.88,
+      "failed_steps": [
+        "Run exact dataset selectors on patched buggy base (failure required)"
+      ],
+      "steps": [
+        {
+          "name": "Checkout research repository",
+          "status": "success",
+          "action": "actions/checkout@v4",
+          "emulation": "isolated worktree"
+        },
+        {
+          "name": "Set up exact Python version",
+          "status": "success",
+          "action": "actions/setup-python@v5",
+          "python": {
+            "requested_version": "3.11.9",
+            "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+            "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/python-control-issue-1144-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+            "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/python-control-issue-1144-reproduction-3_11_9"
+          }
+        },
+        {
+          "name": "Install pinned plotting environment and audit licenses",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Clone exact python-control source and prepare patch",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Run independent Nyquist axes reproducer on buggy base (failure required)",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Extract and authenticate exact dataset row",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Run exact dataset selectors on patched buggy base (failure required)",
+          "status": "failed",
+          "exit_code": 1
+        },
+        {
+          "name": "Run same reproducer and dataset selectors on fixed revision (pass required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Prepare and upload raw python-control reproduction evidence",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Upload raw python-control reproduction evidence",
+          "status": "success",
+          "action": "actions/upload-artifact@v4",
+          "emulation": "local artifact collection"
+        }
+      ],
+      "python_setup": [
+        {
+          "requested_version": "3.11.9",
+          "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+          "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/python-control-issue-1144-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+          "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/python-control-issue-1144-reproduction-3_11_9"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "python-control-issue-1144-reproduction",
+          "files": [
+            "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+            "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/SHA256SUMS.txt",
+            "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dependency-license-inventory.json",
+            "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/source-provenance-sha256.txt",
+            "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-extraction-license-inventory.json",
+            "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+            "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/upstream-pyproject.toml",
+            "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/dataset-row-canonical.json",
+            "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/upstream-LICENSE.txt",
+            "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/base-issue-test.log",
+            "collected_artifacts/python-control-issue-1144-reproduction/python-control-issue-1144-reproduction/reproduction-evidence/pr-1145.patch"
+          ],
+          "file_count": 11
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "job": "qutip-issue-2646-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 437.62,
+      "failed_steps": [
+        "Apply exact PR patch and run dataset selectors on buggy base (failure required)"
+      ],
+      "steps": [
+        {
+          "name": "Checkout research repository",
+          "status": "success",
+          "action": "actions/checkout@v4",
+          "emulation": "isolated worktree"
+        },
+        {
+          "name": "Set up exact Python version",
+          "status": "success",
+          "action": "actions/setup-python@v5",
+          "python": {
+            "requested_version": "3.11.9",
+            "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+            "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/qutip-issue-2646-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+            "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/qutip-issue-2646-reproduction-3_11_9"
+          }
+        },
+        {
+          "name": "Install pinned QuTiP build/test environment and audit licenses",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Clone exact QuTiP source and authenticate license",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Build exact buggy-base QuTiP source in editable mode",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Run independent coefficient reproducer on buggy base (failure required)",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Extract exact dataset row and authenticate timestamp",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Apply exact PR patch and run dataset selectors on buggy base (failure required)",
+          "status": "failed",
+          "exit_code": 1
+        },
+        {
+          "name": "Run same reproducer and selectors on fixed revision (pass required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Prepare and upload raw QuTiP reproduction evidence",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Upload raw QuTiP reproduction evidence",
+          "status": "success",
+          "action": "actions/upload-artifact@v4",
+          "emulation": "local artifact collection"
+        }
+      ],
+      "python_setup": [
+        {
+          "requested_version": "3.11.9",
+          "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+          "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/qutip-issue-2646-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+          "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/qutip-issue-2646-reproduction-3_11_9"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "qutip-issue-2646-reproduction",
+          "files": [
+            "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-row-sha256.txt",
+            "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/pr-2694.patch",
+            "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/SHA256SUMS.txt",
+            "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dependency-license-inventory.json",
+            "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/source-provenance-sha256.txt",
+            "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-extraction-license-inventory.json",
+            "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-fail-to-pass-selectors.txt",
+            "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/upstream-pyproject.toml",
+            "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/dataset-row-canonical.json",
+            "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/upstream-LICENSE.txt",
+            "collected_artifacts/qutip-issue-2646-reproduction/qutip-issue-2646-reproduction/reproduction-evidence/base-issue-test.log"
+          ],
+          "file_count": 11
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "job": "amaranth-issue-1518-reproduction",
+      "outcome": "failure",
+      "duration_seconds": 10.51,
+      "failed_steps": [
+        "Clone exact Amaranth source and prepare patch"
+      ],
+      "steps": [
+        {
+          "name": "Checkout research repository",
+          "status": "success",
+          "action": "actions/checkout@v4",
+          "emulation": "isolated worktree"
+        },
+        {
+          "name": "Set up exact Python version",
+          "status": "success",
+          "action": "actions/setup-python@v5",
+          "python": {
+            "requested_version": "3.11.9",
+            "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+            "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/amaranth-issue-1518-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+            "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/amaranth-issue-1518-reproduction-3_11_9"
+          }
+        },
+        {
+          "name": "Install pinned Amaranth RTLIL environment and audit licenses",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Clone exact Amaranth source and prepare patch",
+          "status": "failed",
+          "exit_code": 128
+        },
+        {
+          "name": "Run independent RTLIL reproducer on buggy base (failure required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Extract and authenticate exact dataset row",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Apply exact PR patch and run dataset selectors on buggy base (failure required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Run same reproducer and selectors on fixed revision (pass required)",
+          "status": "skipped_after_previous_failure"
+        },
+        {
+          "name": "Prepare and upload raw Amaranth reproduction evidence",
+          "status": "success",
+          "exit_code": 0
+        },
+        {
+          "name": "Upload raw Amaranth reproduction evidence",
+          "status": "success",
+          "action": "actions/upload-artifact@v4",
+          "emulation": "local artifact collection"
+        }
+      ],
+      "python_setup": [
+        {
+          "requested_version": "3.11.9",
+          "python_version_output": "Python 3.11.9 (main, Aug 14 2024, 05:07:28) [Clang 18.1.8 ]",
+          "pip_version_output": "pip 26.3 from /kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/amaranth-issue-1518-reproduction-3_11_9/lib/python3.11/site-packages/pip (python 3.11)",
+          "venv": "/kaggle/working/tubitak_v02_kaggle_runner_v4/setup_python_envs/amaranth-issue-1518-reproduction-3_11_9"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "amaranth-issue-1518-reproduction",
+          "files": [
+            "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/SHA256SUMS.txt",
+            "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/pr-1519.patch",
+            "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/dependency-license-inventory.json",
+            "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/upstream-pyproject.toml",
+            "collected_artifacts/amaranth-issue-1518-reproduction/amaranth-issue-1518-reproduction/reproduction-evidence/upstream-LICENSE.txt"
+          ],
+          "file_count": 5
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "evidence_archive": "kaggle_no_inference_candidate_evidence.zip",
+  "evidence_archive_sha256": "b4b8b536e82e7ac93e94bbb51d63f71185a2b7ab2515178480189f8cf783b777",
+  "evidence_archive_size_bytes": 54582171
+}

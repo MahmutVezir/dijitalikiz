@@ -1,0 +1,125 @@
+name: "PyThaiNLP #1046 Dataset Selector Discovery (No Inference)"
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/pythainlp-1046-stage2-discovery.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  extract-frozen-row:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.9"
+
+      - name: Create temporary dataset reader
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv "$RUNNER_TEMP/pythainlp-data-venv"
+          "$RUNNER_TEMP/pythainlp-data-venv/bin/python" -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" \
+            --output "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  $RUNNER_TEMP/train-00000-of-00001.parquet" | sha256sum --check
+
+      - name: Authenticate the exact PyThaiNLP dataset row
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p pythainlp-discovery-evidence
+          "$RUNNER_TEMP/pythainlp-data-venv/bin/python" - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import pyarrow.parquet as pq
+
+          parquet = Path(os.environ["RUNNER_TEMP"]) / "train-00000-of-00001.parquet"
+          instance_id = "pythainlp__pythainlp-1046"
+          columns = [
+              "instance_id", "repo", "base_commit", "created_at",
+              "language", "license", "FAIL_TO_PASS", "problem_statement",
+          ]
+          rows = pq.read_table(parquet, columns=columns, filters=[("instance_id", "=", instance_id)]).to_pylist()
+          if len(rows) != 1:
+              raise SystemExit(f"Expected exactly one frozen row; observed {len(rows)}")
+          row = rows[0]
+          expected = {
+              "repo": "PyThaiNLP/pythainlp",
+              "base_commit": "188904f22c4c80fd7406706850c798f611690a4a",
+              "language": "python",
+              "license": "Apache-2.0",
+          }
+          for key, value in expected.items():
+              if str(row[key]) != value:
+                  raise SystemExit(f"Dataset row mismatch for {key}: expected={value!r} observed={row[key]!r}")
+          selectors = row["FAIL_TO_PASS"]
+          if not isinstance(selectors, list) or not selectors:
+              raise SystemExit("Frozen row contains no FAIL_TO_PASS selectors")
+          problem = row.get("problem_statement") or ""
+          alignment = {
+              "mentions_issue_1004": "#1004" in problem,
+              "mentions_tone_detector": "tone_detector" in problem,
+              "mentions_krub": "ครับ" in problem,
+              "mentions_kha": "ค่ะ" in problem,
+          }
+          if not alignment["mentions_tone_detector"] or not alignment["mentions_krub"] or not alignment["mentions_kha"]:
+              raise SystemExit(f"Dataset problem statement does not describe both issue-specific tone_detector examples: {alignment}")
+          canonical = json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+          row_sha256 = hashlib.sha256(canonical).hexdigest()
+          summary = {
+              "instance_id": instance_id,
+              "row_sha256": row_sha256,
+              "repo": row["repo"],
+              "base_commit": row["base_commit"],
+              "created_at": str(row["created_at"]),
+              "language": row["language"],
+              "license": row["license"],
+              "selector_count": len(selectors),
+              "selectors": selectors,
+              "problem_statement_alignment_checks": alignment,
+              "problem_statement_saved": False,
+              "canonical_row_saved": False,
+              "parquet_saved_to_artifact": False,
+          }
+          evidence = Path("pythainlp-discovery-evidence")
+          (evidence / "dataset-row-summary.json").write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+          )
+          (evidence / "dataset-fail-to-pass-selectors.txt").write_text(
+              "\n".join(selectors) + "\n", encoding="utf-8"
+          )
+          (evidence / "dataset-row-sha256.txt").write_text(
+              row_sha256 + "  canonical-row-not-stored\n", encoding="utf-8"
+          )
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          PY
+          rm -f "$RUNNER_TEMP/train-00000-of-00001.parquet"
+          rm -rf "$RUNNER_TEMP/pythainlp-data-venv"
+          test ! -e "$RUNNER_TEMP/train-00000-of-00001.parquet"
+
+      - name: Hash sanitized discovery evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd pythainlp-discovery-evidence && find . -maxdepth 1 -type f ! -name "SHA256SUMS.txt" -print0 | xargs -0 sha256sum | LC_ALL=C sort -k2 > SHA256SUMS.txt)
+
+      - name: Upload selector-only discovery evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pythainlp-1046-dataset-selector-discovery
+          path: pythainlp-discovery-evidence/
+          if-no-files-found: error
+          retention-days: 90

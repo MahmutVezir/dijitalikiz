@@ -21,9 +21,10 @@ The issue and PR have a coherent defect-specific contract: later provider overri
 - Buggy base: `8718d5af93f9e48bc2506c64827663fdccc5ad89`
 - Fixed revision: `b1eae11734e64551d7b101195f27cb6870e1c364`
 - Dataset row timestamp: `2025-04-15T22:52:26Z`
-- GitHub PR #436 `created_at`: `2025-04-15T22:52:26Z`
-- GitHub issue #435 `created_at`: `2025-04-15T22:52:26Z`
-- Timestamp reconciliation register: exact match.
+- GitHub issue #435 `created_at`: `2025-04-14T17:22:16Z` (defect report)
+- GitHub PR #436 `created_at`: `2025-04-15T22:52:26Z` (dataset-linked fix task)
+- Dataset row `created_at`: `2025-04-15 22:52:26` (exact match to PR #436, not to issue #435)
+- The timestamp register's `is_pull_request=false` field conflicts with its `/pull/436` URL; this is a known metadata classification error. See `DISHKA_435_POST_RUN_PROVENANCE_CORRECTION_V0_1_2026-11-16.md`.
 
 PR #436 changes five files:
 1. `src/dishka/registry_builder.py` (31 additions, 37 deletions)
