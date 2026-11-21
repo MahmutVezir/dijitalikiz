@@ -1,0 +1,415 @@
+{
+  "schema_version": "0.1-v02-exploratory",
+  "case_id": "SRV2E-GEOFILEOPS_649",
+  "acceptance_decision": "proposed",
+  "dataset": {
+    "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "file_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "file_sha256": "7416e352008b35480c82610cf4f5edf160dd269edbf382a22bd4c17daed24b9",
+    "row_locator": {
+      "field": "instance_id",
+      "value": "geofileops__geofileops-649"
+    },
+    "row_sha256": "2a85246a15d97ca6e73eb9a02f36022a05f80b8322c24a6522fbfee31fc7d1eb",
+    "cohort_role": "primary",
+    "created_at_dataset_utc": "2025-03-06T15:39:28Z",
+    "created_at_upstream_utc": "2025-03-06T15:39:28Z",
+    "timestamp_reconciliation_status": "exact_match",
+    "timestamp_review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_TIMESTAMP_RECONCILIATION_REVIEW_2026-11-21.md",
+      "sha256": "ab01ab9601e2c6bebce95ccf8b54869bfecbfd012005a2a7a3eeb631f2608326"
+    }
+  },
+  "source": {
+    "repository_full_name": "geofileops/geofileops",
+    "issue_or_pr_url": "https://github.com/geofileops/geofileops/pull/649",
+    "base_commit_sha": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+    "fixed_commit_sha": "ec1438fbf8527269cd1193647d05c8d7fdb83802",
+    "changed_paths": [
+      "CHANGELOG.md",
+      "geofileops/fileops.py",
+      "geofileops/util/_geoops_gpd.py",
+      "geofileops/util/_geoops_sql.py",
+      "tests/test_geofile.py"
+    ],
+    "patch": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=pr-649-full.patch",
+      "sha256": "401892d800a76b6e1dbbd04d6c956e6d3aab5084789a3bcddb6d56c1342bca10"
+    },
+    "base_source_snapshot": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_BASE_SOURCE_SNAPSHOT_MANIFEST_V0_1.json",
+      "sha256": "16b4960683cb5acb9f0a9968253d462b7025088038f96f46bafb5fe24dc1f75e"
+    },
+    "fixed_source_snapshot": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_FIXED_SOURCE_SNAPSHOT_MANIFEST_V0_1.json",
+      "sha256": "880cffb986c9a8e6c638698450eb3726f5abb25345b68048ff7ab363d9bc9a2c"
+    },
+    "resource_type": "pull_request"
+  },
+  "independence": {
+    "status": "passed",
+    "upstream_project_id": "geofileops/geofileops",
+    "defect_cluster_id": "geofileops-geofileops-default-destination-layer-fallback-issue-648",
+    "is_fork_or_mirror": false,
+    "related_case_ids": [],
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_INDEPENDENCE_AND_EXPOSURE_REVIEW_2026-11-21.md",
+      "sha256": "dc520bc750d5dbe8f383a844973ff63596bd3b77591b4faf9c7fc3ac2c015f19"
+    }
+  },
+  "exposure": {
+    "prior_pipeline_debug_exposure": "none",
+    "researcher_source_exposure": "full",
+    "exposure_notes": "Project-lead prior pipeline/debug exposure declaration is none. Researcher source exposure is full for the issue, PR diff, exact base/fixed source, selectors, independent reproducer and Stage 2 artifact; no blinded researcher adjudication or inter-rater reliability claim is made. The project lead acknowledged that issue/PR-specific exposure is chronologically unlikely for the pinned September 2024 model revision, while the exact model training-data cutoff and exposure to pre-existing GeoFileOps source code remain unresolved. The candidate is not described as contamination-free.",
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_INDEPENDENCE_AND_EXPOSURE_REVIEW_2026-11-21.md",
+      "sha256": "dc520bc750d5dbe8f383a844973ff63596bd3b77591b4faf9c7fc3ac2c015f19"
+    }
+  },
+  "license_review": {
+    "root_license_expression": "BSD-3-Clause",
+    "exact_base_review": "passed",
+    "changed_file_review": "passed",
+    "nested_dependency_review": "passed",
+    "notice_and_provenance_review": "passed",
+    "reviewer_role": "student_project_lead",
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44927884852/artifacts/14716462835",
+      "sha256": "ff397b7a2afbed6ac524f570019f7e5211dfb49304d1f111a817233536a8ca49"
+    },
+    "changed_file_license_manifest": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_CHANGED_FILE_LICENSE_MANIFEST_V0_1.json",
+      "sha256": "6a6f5c8840305386408378463269ce12fb97057a99be57fb344115f9ed2928aa"
+    },
+    "research_use_decision": "no_obvious_prohibition_identified",
+    "scope_limitation": "documentary_screening_only_not_legal_advice",
+    "root_license_file": {
+      "path": "LICENSE.txt",
+      "commit_sha": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+      "blob_sha": "ecf40d7a30bd534ebd781bca089abd3168bc13a1",
+      "content_sha256": "c05e8bdd9716d5d3ca08da7e5dd8c805603ccf9668372270600f5854197223f2",
+      "license_expression": "BSD-3-Clause"
+    }
+  },
+  "technical_reproduction": {
+    "status": "passed",
+    "environment_lock_sha256": "348678b8947ea677e184ed90fc20a92bc3b3fc353ec3f18b8220c8a5d6bccc79",
+    "test_selector": "tests/test_geofile.py::test_copy_layer_layer[None]",
+    "buggy_baseline": {
+      "commit_sha": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+      "exit_code": 1,
+      "failure_signature": "AssertionError: assert 'parcels' == 'output'; on the exact buggy base, the test's expected destination filename stem is 'output' but GDAL returns the source layer 'parcels'.",
+      "run_record": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=base-dataset-tests.log",
+        "sha256": "bc7e9e1e33d3cf1d727784d216d952af5556136e01b307e5d4104159713471c8"
+      },
+      "test_selector": "tests/test_geofile.py::test_copy_layer_layer[None]"
+    },
+    "fixed_revision": {
+      "commit_sha": "ec1438fbf8527269cd1193647d05c8d7fdb83802",
+      "exit_code": 0,
+      "same_test_passed": true,
+      "run_record": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=fixed-dataset-tests.log",
+        "sha256": "e83408041a0c2359644be9d9b0d8f69c74a3bac81326d8bfd0ef1e19b052451d"
+      },
+      "test_selector": "tests/test_geofile.py::test_copy_layer_layer[None]"
+    },
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949",
+      "sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f"
+    }
+  },
+  "gold_standard": {
+    "status": "human_recorded",
+    "gold_mechanism_id": "G1_MISSING_NONE_TO_DESTINATION_STEM_FALLBACK",
+    "candidate_mechanisms": [
+      {
+        "mechanism_id": "G1_MISSING_NONE_TO_DESTINATION_STEM_FALLBACK",
+        "description": "When dst_layer is None, the buggy copy/append call paths do not call the existing get_default_layer(dst) helper, so the missing default is delegated to GDAL/source-layer behavior instead of the destination filename stem.",
+        "testable_prediction": "At the buggy base, default copy/append operations will not consistently use Path(dst).stem; at the fixed PR head, the same operations will use Path(dst).stem when dst_layer is None."
+      },
+      {
+        "mechanism_id": "A1_COPY_LAYER_ONLY",
+        "description": "Only copy_layer fails to apply the default destination-layer name; append_to already applies the correct fallback.",
+        "testable_prediction": "A frozen append_to selector with dst_layer omitted should pass on the buggy base if this is the sole cause."
+      },
+      {
+        "mechanism_id": "A2_APPEND_TO_ONLY",
+        "description": "Only append_to fails to apply the default destination-layer name; copy_layer already applies the correct fallback.",
+        "testable_prediction": "Frozen copy_layer selectors with dst_layer omitted should pass on the buggy base if this is the sole cause."
+      },
+      {
+        "mechanism_id": "A3_GET_DEFAULT_LAYER_HELPER_WRONG",
+        "description": "The shared get_default_layer helper computes an incorrect destination stem or mishandles file extensions.",
+        "testable_prediction": "Direct inspection/execution of get_default_layer on ordinary and compressed destination paths should reveal a wrong stem if this is causal."
+      },
+      {
+        "mechanism_id": "A4_DRIVER_OR_FORMAT_SPECIFIC_BEHAVIOR",
+        "description": "A single GDAL driver or source-format interaction causes the layer-name mismatch rather than a common missing default-argument fallback.",
+        "testable_prediction": "The defect should be limited to one driver/input-format combination; cross-format frozen selectors and the separate GeoPackage reproducer should not all show the same contract failure."
+      }
+    ],
+    "technical_rationale": "The exact buggy base has a correct get_default_layer(path) helper returning Path(path).stem but does not apply it in copy_layer, append_to or _append_to_nolock when dst_layer is None. The fixed PR adds the fallback at all three relevant boundaries. Stage 2 independently reproduces the default-layer mismatch, confirms an explicit-layer positive control on base, and finds all 10 frozen selectors base-fail/fixed-pass.",
+    "evidence_refs": [
+      "ISSUE_REPORT",
+      "DATASET_ROW",
+      "ISSUE_REPRODUCER",
+      "BASE_ISSUE_FAILURE_LOG",
+      "BASE_POSITIVE_CONTROL_LOG",
+      "FIXED_ISSUE_PASS_LOG",
+      "DATASET_BASE_FAIL_LOG",
+      "DATASET_FIXED_PASS_LOG",
+      "BASE_SOURCE_SNAPSHOT",
+      "FIXED_SOURCE_SNAPSHOT",
+      "PR_PATCH",
+      "ROOT_LICENSE"
+    ],
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_PROJECT_LEAD_DECISION_ATTESTATION_2026-11-21.md",
+      "sha256": "12c8ce5b4f6578b607609b7d3b83485cee8389772e9cefc0ebdd42fb16c7dd97"
+    }
+  },
+  "evidence_tiers": {
+    "status": "human_recorded",
+    "tier_decision_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_PROJECT_LEAD_DECISION_ATTESTATION_2026-11-21.md",
+      "sha256": "12c8ce5b4f6578b607609b7d3b83485cee8389772e9cefc0ebdd42fb16c7dd97"
+    },
+    "E3": {
+      "packet": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_E3_PACKET_MANIFEST_V0_1.json",
+        "sha256": "e068fc33f6b730b536c5c77366178d0e53d147d87fbc9cc391febc60a61cac73"
+      },
+      "surviving_mechanism_ids": [
+        "G1_MISSING_NONE_TO_DESTINATION_STEM_FALLBACK",
+        "A1_COPY_LAYER_ONLY",
+        "A2_APPEND_TO_ONLY",
+        "A3_GET_DEFAULT_LAYER_HELPER_WRONG",
+        "A4_DRIVER_OR_FORMAT_SPECIFIC_BEHAVIOR"
+      ],
+      "semantic_rationale": "The frozen E3 statement names both public APIs, dst_layer and the filename-stem contract, but does not reveal the missing get_default_layer(dst) call in the implementation chain. Under the project-lead-approved implementation-mechanism target, all five predeclared mechanisms remain live; therefore E3 is ABSTAIN.",
+      "evidence_items": [
+        {
+          "evidence_id": "ISSUE_REPORT",
+          "content_sha256": "3d27155b4c7fc9b7a450fc80f623a4f8638d0a0f1776a0b536e19de926e563a1",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=dataset-problem-statement.txt",
+          "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_path": "dataset-problem-statement.txt"
+        },
+        {
+          "evidence_id": "DATASET_ROW",
+          "content_sha256": "2a85246a15d97ca6e73eb9a02f36022a05f80b8322c24a6522fbfee31fc7d1eb",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=dataset-row-canonical.json",
+          "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_path": "data/train-00000-of-00001.parquet#instance_id=geofileops__geofileops-649"
+        }
+      ]
+    },
+    "E2": {
+      "packet": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_E2_PACKET_MANIFEST_V0_1.json",
+        "sha256": "2ebab57ecfd166dacd718495ac92861996c4c99509118dee4efde9a2061f82fe"
+      },
+      "surviving_mechanism_ids": [
+        "G1_MISSING_NONE_TO_DESTINATION_STEM_FALLBACK",
+        "A3_GET_DEFAULT_LAYER_HELPER_WRONG",
+        "A4_DRIVER_OR_FORMAT_SPECIFIC_BEHAVIOR"
+      ],
+      "semantic_rationale": "The independent copy_layer reproducer fails with the source layer name rather than the destination stem; the explicit-layer positive control passes on base; both reproducer tests pass on fixed; and all 10 frozen selectors fail on base and pass on fixed. E2 eliminates copy-only and append-only explanations and narrows the format-specific alternative, but does not disclose the exact source call chain; multiple mechanisms remain, so ABSTAIN.",
+      "evidence_items": [
+        {
+          "evidence_id": "ISSUE_REPORT",
+          "content_sha256": "3d27155b4c7fc9b7a450fc80f623a4f8638d0a0f1776a0b536e19de926e563a1",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=dataset-problem-statement.txt",
+          "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_path": "dataset-problem-statement.txt"
+        },
+        {
+          "evidence_id": "DATASET_ROW",
+          "content_sha256": "2a85246a15d97ca6e73eb9a02f36022a05f80b8322c24a6522fbfee31fc7d1eb",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=dataset-row-canonical.json",
+          "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_path": "data/train-00000-of-00001.parquet#instance_id=geofileops__geofileops-649"
+        },
+        {
+          "evidence_id": "ISSUE_REPRODUCER",
+          "content_sha256": "5f428b5da243eebb63d5d7c397cbc9cb3dae29a008fc453ce45c2dbd7ff68afc",
+          "source_snapshot_sha256": "5f428b5da243eebb63d5d7c397cbc9cb3dae29a008fc453ce45c2dbd7ff68afc",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/b121b65a2c5db8775ca7c5aa16e03d62d46a77c3/research_candidates/evidence_abstention/reproduction/geofileops_issue_648/test_issue_648.py",
+          "source_commit_sha": "b121b65a2c5db8775ca7c5aa16e03d62d46a77c3",
+          "source_path": "research_candidates/evidence_abstention/reproduction/geofileops_issue_648/test_issue_648.py"
+        },
+        {
+          "evidence_id": "BASE_ISSUE_FAILURE_LOG",
+          "content_sha256": "262ef70ad257827ca72a0d45042c894d4fb17c883855cd0987e893fa4004aa8e",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=base-issue-test.log",
+          "source_commit_sha": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+          "source_path": "artifact:14711502949/base-issue-test.log"
+        },
+        {
+          "evidence_id": "BASE_POSITIVE_CONTROL_LOG",
+          "content_sha256": "7ab0f6aa9e2c475a3cb2a92d4f22291baaa01b59afe245d88a46a7c233e08c02",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=base-positive-control.log",
+          "source_commit_sha": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+          "source_path": "artifact:14711502949/base-positive-control.log"
+        },
+        {
+          "evidence_id": "FIXED_ISSUE_PASS_LOG",
+          "content_sha256": "6ae60db2592ba5cbc3b7d38bd4c72e9df3688404ab51d9d4eb9b30c39d053fdd",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=fixed-issue-test.log",
+          "source_commit_sha": "ec1438fbf8527269cd1193647d05c8d7fdb83802",
+          "source_path": "artifact:14711502949/fixed-issue-test.log"
+        },
+        {
+          "evidence_id": "DATASET_BASE_FAIL_LOG",
+          "content_sha256": "bc7e9e1e33d3cf1d727784d216d952af5556136e01b307e5d4104159713471c8",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=base-dataset-tests.log",
+          "source_commit_sha": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+          "source_path": "artifact:14711502949/base-dataset-tests.log"
+        },
+        {
+          "evidence_id": "DATASET_FIXED_PASS_LOG",
+          "content_sha256": "e83408041a0c2359644be9d9b0d8f69c74a3bac81326d8bfd0ef1e19b052451d",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=fixed-dataset-tests.log",
+          "source_commit_sha": "ec1438fbf8527269cd1193647d05c8d7fdb83802",
+          "source_path": "artifact:14711502949/fixed-dataset-tests.log"
+        }
+      ]
+    },
+    "E1": {
+      "packet": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_E1_PACKET_MANIFEST_V0_1.json",
+        "sha256": "a0a5330fa168c235b5233e4dda55509db46dedc8988cc52904d5d2aab9b8f25e"
+      },
+      "surviving_mechanism_ids": [
+        "G1_MISSING_NONE_TO_DESTINATION_STEM_FALLBACK"
+      ],
+      "semantic_rationale": "The exact buggy base has a correct get_default_layer(path) helper returning Path(path).stem, but copy_layer, append_to and _append_to_nolock do not apply it when dst_layer is None. The fixed PR adds guards at all three relevant boundaries. Only the missing None-to-destination-stem fallback survives; E1 is ANSWER.",
+      "evidence_items": [
+        {
+          "evidence_id": "ISSUE_REPORT",
+          "content_sha256": "3d27155b4c7fc9b7a450fc80f623a4f8638d0a0f1776a0b536e19de926e563a1",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=dataset-problem-statement.txt",
+          "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_path": "dataset-problem-statement.txt"
+        },
+        {
+          "evidence_id": "DATASET_ROW",
+          "content_sha256": "2a85246a15d97ca6e73eb9a02f36022a05f80b8322c24a6522fbfee31fc7d1eb",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=dataset-row-canonical.json",
+          "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_path": "data/train-00000-of-00001.parquet#instance_id=geofileops__geofileops-649"
+        },
+        {
+          "evidence_id": "ISSUE_REPRODUCER",
+          "content_sha256": "5f428b5da243eebb63d5d7c397cbc9cb3dae29a008fc453ce45c2dbd7ff68afc",
+          "source_snapshot_sha256": "5f428b5da243eebb63d5d7c397cbc9cb3dae29a008fc453ce45c2dbd7ff68afc",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/b121b65a2c5db8775ca7c5aa16e03d62d46a77c3/research_candidates/evidence_abstention/reproduction/geofileops_issue_648/test_issue_648.py",
+          "source_commit_sha": "b121b65a2c5db8775ca7c5aa16e03d62d46a77c3",
+          "source_path": "research_candidates/evidence_abstention/reproduction/geofileops_issue_648/test_issue_648.py"
+        },
+        {
+          "evidence_id": "BASE_ISSUE_FAILURE_LOG",
+          "content_sha256": "262ef70ad257827ca72a0d45042c894d4fb17c883855cd0987e893fa4004aa8e",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=base-issue-test.log",
+          "source_commit_sha": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+          "source_path": "artifact:14711502949/base-issue-test.log"
+        },
+        {
+          "evidence_id": "BASE_POSITIVE_CONTROL_LOG",
+          "content_sha256": "7ab0f6aa9e2c475a3cb2a92d4f22291baaa01b59afe245d88a46a7c233e08c02",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=base-positive-control.log",
+          "source_commit_sha": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+          "source_path": "artifact:14711502949/base-positive-control.log"
+        },
+        {
+          "evidence_id": "FIXED_ISSUE_PASS_LOG",
+          "content_sha256": "6ae60db2592ba5cbc3b7d38bd4c72e9df3688404ab51d9d4eb9b30c39d053fdd",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=fixed-issue-test.log",
+          "source_commit_sha": "ec1438fbf8527269cd1193647d05c8d7fdb83802",
+          "source_path": "artifact:14711502949/fixed-issue-test.log"
+        },
+        {
+          "evidence_id": "DATASET_BASE_FAIL_LOG",
+          "content_sha256": "bc7e9e1e33d3cf1d727784d216d952af5556136e01b307e5d4104159713471c8",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=base-dataset-tests.log",
+          "source_commit_sha": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+          "source_path": "artifact:14711502949/base-dataset-tests.log"
+        },
+        {
+          "evidence_id": "DATASET_FIXED_PASS_LOG",
+          "content_sha256": "e83408041a0c2359644be9d9b0d8f69c74a3bac81326d8bfd0ef1e19b052451d",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=fixed-dataset-tests.log",
+          "source_commit_sha": "ec1438fbf8527269cd1193647d05c8d7fdb83802",
+          "source_path": "artifact:14711502949/fixed-dataset-tests.log"
+        },
+        {
+          "evidence_id": "BASE_SOURCE_SNAPSHOT",
+          "content_sha256": "16b4960683cb5acb9f0a9968253d462b7025088038f96f46bafb5fe24dc1f75e",
+          "source_snapshot_sha256": "16b4960683cb5acb9f0a9968253d462b7025088038f96f46bafb5fe24dc1f75e",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_BASE_SOURCE_SNAPSHOT_MANIFEST_V0_1.json",
+          "source_commit_sha": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+          "source_path": "research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_BASE_SOURCE_SNAPSHOT_MANIFEST_V0_1.json"
+        },
+        {
+          "evidence_id": "FIXED_SOURCE_SNAPSHOT",
+          "content_sha256": "880cffb986c9a8e6c638698450eb3726f5abb25345b68048ff7ab363d9bc9a2c",
+          "source_snapshot_sha256": "880cffb986c9a8e6c638698450eb3726f5abb25345b68048ff7ab363d9bc9a2c",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_FIXED_SOURCE_SNAPSHOT_MANIFEST_V0_1.json",
+          "source_commit_sha": "ec1438fbf8527269cd1193647d05c8d7fdb83802",
+          "source_path": "research_candidates/evidence_abstention/geofileops_649/GEOFILEOPS_649_FIXED_SOURCE_SNAPSHOT_MANIFEST_V0_1.json"
+        },
+        {
+          "evidence_id": "PR_PATCH",
+          "content_sha256": "401892d800a76b6e1dbbd04d6c956e6d3aab5084789a3bcddb6d56c1342bca10",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=pr-649-full.patch",
+          "source_commit_sha": "ec1438fbf8527269cd1193647d05c8d7fdb83802",
+          "source_path": "artifact:14711502949/pr-649-full.patch"
+        },
+        {
+          "evidence_id": "ROOT_LICENSE",
+          "content_sha256": "c05e8bdd9716d5d3ca08da7e5dd8c805603ccf9668372270600f5854197223f2",
+          "source_snapshot_sha256": "b4b408170b3fcae7c305d060f0cc283fcf912e964403a9eb1015b1209e60553f",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44916663456/artifacts/14711502949#path=upstream-LICENSE.txt",
+          "source_commit_sha": "f7f8a4cf49b1278f3e9e5f4157718de441a21b57",
+          "source_path": "artifact:14711502949/upstream-LICENSE.txt"
+        }
+      ]
+    }
+  },
+  "human_decision": {
+    "decision_maker_role": "student_project_lead",
+    "decision_timestamp_utc": "2026-11-21T17:28:10.427Z",
+    "rationale": "This timestamp records assembly of the case record. The project's formal gold/tier, prior-exposure, temporal-exposure and bounded-scope approvals were explicitly made by the project lead on 21 November 2026; the exact original message times were not captured, so this is not represented as the precise delivery time of those approvals. The project lead remains the sole human decision-maker; ChatGPT acted as adviser only.",
+    "ai_critique_used": true,
+    "ai_critique_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/geofileops_649/AI_ADVISORY_NOTE_GEOFILEOPS_649_CASE_RECORD_2026-11-21.md",
+      "sha256": "a5097a6d6d2f47365aa97d629fa97a69661fc37b8f1f65c52fcb9ac26c15742a"
+    }
+  },
+  "final_acceptance": {
+    "status": "pending",
+    "decision_maker_role": "student_project_lead",
+    "decision_timestamp_utc": null,
+    "rationale": "Separate final project-lead YES/NO acceptance is pending. Structural validation of this proposed record will not authorize registry inclusion, legal clearance, model loading or inference.",
+    "decision_record": null
+  }
+}
