@@ -3530,9 +3530,8 @@ jobs:
       - name: Extract exact SWE-rebench row and authenticate provenance
         run: |
           set -euo pipefail
-          python -m venv .venv-dataset
-          .venv-dataset/bin/python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
-          .venv-dataset/bin/python - <<'PY'
+          python -m pip install --disable-pip-version-check --no-deps pyarrow==19.0.1
+          python - <<'PY'
           import importlib.metadata as md
           import json
           dist = md.metadata("pyarrow")
@@ -3546,7 +3545,7 @@ jobs:
           PY
           curl --fail --location --retry 3 --retry-delay 2 "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/resolve/fb9aa226b2ce37c708ea7732e7b980abacdadb67/data/train-00000-of-00001.parquet" --output reproduction-evidence/train-00000-of-00001.parquet
           echo "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9  reproduction-evidence/train-00000-of-00001.parquet" | sha256sum --check
-          .venv-dataset/bin/python - <<'PY'
+          python - <<'PY'
           import hashlib
           import json
           import pyarrow.parquet as pq
@@ -3580,14 +3579,13 @@ jobs:
           set -euo pipefail
           git -C upstream-geofileops checkout --detach f7f8a4cf49b1278f3e9e5f4157718de441a21b57
           git -C upstream-geofileops apply "$GITHUB_WORKSPACE/reproduction-evidence/dataset-test.patch"
-          .venv-dataset/bin/python - <<'PY'
+          python - <<'PY'
           import os
           import pyarrow.parquet as pq
           import subprocess
           row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "geofileops__geofileops-649")]).to_pylist()[0]
-          python = os.path.join(os.environ["GITHUB_WORKSPACE"], "micromamba/envs/geofileops-stage2/bin/python")
-          if not os.path.exists(python):
-              python = os.path.join(os.environ["MAMBA_ROOT_PREFIX"], "envs/geofileops-stage2/bin/python")
+          import sys
+          python = sys.executable
           env = dict(os.environ)
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-geofileops")
           logs = []
@@ -3613,14 +3611,13 @@ jobs:
           test "$(git -C upstream-geofileops rev-parse HEAD:tests/test_geofile.py)" = "64cd2ab90f37c9f53672388ce0b0ee4112a2104f"
           PYTHONPATH="$GITHUB_WORKSPACE/upstream-geofileops" python -m pytest -q "$GITHUB_WORKSPACE/research_candidates/evidence_abstention/reproduction/geofileops_issue_648/test_issue_648.py" > reproduction-evidence/fixed-issue-test.log 2>&1
           cat reproduction-evidence/fixed-issue-test.log
-          .venv-dataset/bin/python - <<'PY'
+          python - <<'PY'
           import os
           import pyarrow.parquet as pq
           import subprocess
           row = pq.read_table("reproduction-evidence/train-00000-of-00001.parquet", columns=["FAIL_TO_PASS"], filters=[("instance_id", "=", "geofileops__geofileops-649")]).to_pylist()[0]
-          python = os.path.join(os.environ["GITHUB_WORKSPACE"], "micromamba/envs/geofileops-stage2/bin/python")
-          if not os.path.exists(python):
-              python = os.path.join(os.environ["MAMBA_ROOT_PREFIX"], "envs/geofileops-stage2/bin/python")
+          import sys
+          python = sys.executable
           env = dict(os.environ)
           env["PYTHONPATH"] = os.path.join(os.environ["GITHUB_WORKSPACE"], "upstream-geofileops")
           logs = []
