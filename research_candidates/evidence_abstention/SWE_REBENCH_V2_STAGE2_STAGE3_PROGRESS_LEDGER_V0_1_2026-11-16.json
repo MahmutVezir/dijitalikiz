@@ -2706,7 +2706,7 @@
         "e2_e1": "not_determined_by_E3_decision; adjudicate independently if protocol proceeds",
         "prior_pipeline_debug_exposure": "none",
         "decision_record_path": "research_candidates/evidence_abstention/geopandas_3591/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_GEOPANDAS_3591_2026-11-21.md",
-        "decision_record_git_blob_sha": "2010c4d70c72d5f7c54ef546469d73162d2ea07d",
+        "decision_record_git_blob_sha": "9f35439fc77d732c337cd5723fac1fa2ac391ea2",
         "gold_mechanism_id": "G1_NONEMPTY_ALL_NULL_FLOAT_GEOMETRY_SKIPS_AUTO_COERCION",
         "approved_alternatives": [
           "A1_SINGLE_ROW_DATA_SHAPE_OR_ALIGNMENT",
@@ -6403,6 +6403,26 @@
     },
     "recorded_at_local": "2026-11-21T21:05:24+03:00",
     "no_stage2": true,
-    "inference_authorized": false
+    "inference_authorized": false,
+    "packet_manifest_hash_verification": {
+      "status": "verified_against_exact_committed_file_contents",
+      "sha256_helper_validation": "matches SHA-256 test vectors for short and multi-block input",
+      "E3": true,
+      "E2": true,
+      "E1": true,
+      "snapshot_links": {
+        "E3": "9b158320d70a98945b4d4f1029bf8a10ddf45110a5c0eeffd8413373c041eba6",
+        "E2": "55a3906110b5ce203f5a160acaa721fb88d541f8010e54400bd6dd3cc48e8765",
+        "E1": "a091261ecd983a67714b9dd8056f4a9762b5b595a0fd24f4a635382dc2184adb"
+      },
+      "no_e1_specific_sources_in_e2": true,
+      "source_hierarchies_nested": true,
+      "item_counts": {
+        "E3": 2,
+        "E2": 6,
+        "E1": 10
+      }
+    },
+    "decision_record_blob_sha1": "9f35439fc77d732c337cd5723fac1fa2ac391ea2"
   }
 }
