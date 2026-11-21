@@ -16,7 +16,7 @@
     "created_at_upstream_utc": "2025-04-04T20:23:44Z",
     "timestamp_reconciliation_status": "exact_match",
     "timestamp_review_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
       "sha256": "52eef423fd219849325bb7c32fb94853b22e366850a0f9871536f57fdc6a3597"
     }
   },
@@ -54,7 +54,7 @@
     "is_fork_or_mirror": false,
     "related_case_ids": [],
     "review_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
       "sha256": "52eef423fd219849325bb7c32fb94853b22e366850a0f9871536f57fdc6a3597"
     }
   },
@@ -63,7 +63,7 @@
     "researcher_source_exposure": "full",
     "exposure_notes": "The project lead directly self-reported prior_pipeline_debug_exposure=none for prospective shared pipeline, runner, selector and oracle debugging; this is not independently witnessed. Researcher source and reproduction exposure is full. No blinding is claimed.",
     "review_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_EXPOSURE_DECISION_DYMOS_1166_2026-11-20.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_EXPOSURE_DECISION_DYMOS_1166_2026-11-20.md",
       "sha256": "3d38e3b45f2d27cc6531ede3d73d8f2439deee0b6970c6d4618d4e02e55733ea"
     }
   },
@@ -75,11 +75,11 @@
     "notice_and_provenance_review": "passed",
     "reviewer_role": "student_project_lead",
     "review_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json",
       "sha256": "eb658fc2cf2277797dd301daa5903cba297f182cacfd077ace0678d6eaa24630"
     },
     "changed_file_license_manifest": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_CHANGED_FILE_LICENSE_MANIFEST_V0_1_2026-11-20.json",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_CHANGED_FILE_LICENSE_MANIFEST_V0_1_2026-11-20.json",
       "sha256": "d3599b70036555e44cf929300f5b0adb6903b5ef5fdc2c6f7af423634d7f194d"
     },
     "research_use_decision": "no_obvious_prohibition_identified",
@@ -117,7 +117,7 @@
       "test_selector": "dymos/examples/balanced_field/test/test_balanced_field_length.py::TestBalancedFieldLengthDefaultValues::test_default_vals_stick"
     },
     "review_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/dymos_1166/EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_1_2026-11-20.json",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/EVIDENCE_PACKET_PROVENANCE_PROPOSED_V0_1_2026-11-20.json",
       "sha256": "3f1be6b34b7b7e6fce8108f5228940d4fe280b60715210d9a520141e6443164c"
     }
   },
@@ -157,19 +157,19 @@
       "DYMOS_BASE_ADD_CONTROL_FORWARDS_VALUE"
     ],
     "review_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
       "sha256": "9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392"
     }
   },
   "evidence_tiers": {
     "status": "human_recorded",
     "tier_decision_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_DYMOS_1166_2026-11-20.md",
       "sha256": "9ae99f74020479bdfc7d7b686b7dd7d7b3ca5afa24c827b08e4cc5108ccfd392"
     },
     "E1": {
       "packet": {
-        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json#packets/E1",
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json#packets/E1",
         "sha256": "8d78d4ac4828276485b73bb01f5411be42feec328418cd575aa828ddae0faaa5"
       },
       "surviving_mechanism_ids": [
@@ -237,7 +237,7 @@
     },
     "E2": {
       "packet": {
-        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json#packets/E2",
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json#packets/E2",
         "sha256": "7c16c6c61dadb5217493946b42b2b02a9dbdc63a0500b2e51b66982f4439385b"
       },
       "surviving_mechanism_ids": [
@@ -274,7 +274,7 @@
     },
     "E3": {
       "packet": {
-        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json#packets/E3",
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json#packets/E3",
         "sha256": "3aa2320ac5fc464108e3a4e79a6a062c80708caec0bc9e332fe6cd742a6bfb53"
       },
       "surviving_mechanism_ids": [
@@ -302,7 +302,7 @@
     "rationale": "This record transcribes the project lead's separately recorded approval of the technical gold and E1/E2/E3 outcomes, and the separately recorded bounded-scope acknowledgement and exposure declaration. It remains a proposed case record; no final case-acceptance decision has been made.",
     "ai_critique_used": true,
     "ai_critique_record": {
-      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_AI_ADVISORY_STRUCTURAL_CASE_REVIEW_2026-11-20.md",
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/9b2036cf455e50ac5668c72870b3ed1822ad397a/research_candidates/evidence_abstention/dymos_1166/DYMOS_1166_AI_ADVISORY_STRUCTURAL_CASE_REVIEW_2026-11-20.md",
       "sha256": "864c15cade3b6036fc0d4c9e51d4dbe5b47268f561907eb9101301a6bca42141"
     }
   },
