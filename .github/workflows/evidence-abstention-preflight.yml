@@ -383,7 +383,7 @@ jobs:
               pretty_name = instance_id + ".json"
               (row_dir / canonical_name).write_bytes(canonical)
               (row_dir / pretty_name).write_text(
-                  json.dumps(row, sort_keys=True, indent=2, ensure_ascii=False) + "\\n",
+                  json.dumps(row, sort_keys=True, indent=2, ensure_ascii=False) + "\n",
                   encoding="utf-8",
               )
               item = {
