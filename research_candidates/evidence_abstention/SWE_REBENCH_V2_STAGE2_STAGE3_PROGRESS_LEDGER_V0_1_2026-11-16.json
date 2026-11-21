@@ -1214,12 +1214,33 @@
       "stage2_status": "passed_exact_dataset_selector_buggy_base_fail_fixed_revision_pass_pinned_environment",
       "stage2_workflow_job_id": 134172933160,
       "stage2_evidence_note": "Latest pinned repeat run 44121262451 (job 134172933160) reran the exact Parquet selector against the pinned buggy base and fixed PR revision using the 85-package requirements.lock. Base: 1/1 exact selector executed and failed on the real SSH context assertion; fixed: 1/1 same selector passed. Lock versions all matched; pip check passed; all 86 installed distribution records had license metadata; dataset row and all artifact JSON files parsed; selector-file newline serialization was asserted; test-only patch touched only tests/unit_tests/test_sky/clouds/test_ssh.py; all 19 inner SHA256SUMS entries and ZIP CRC independently verified. Artifact 14344534041 SHA-256 10f5505f390426e003a833ffa60cd026a9513c33da9b5a0d288844374057f34c. Stage 3 and final acceptance remain pending.",
-      "stage3_status": "not_started_stage2_passed_license_scope_and_human_adjudication_pending",
+      "stage3_status": "stage2_passed_and_archive_integrity_rechecked; same_root_cause_family_related_issue_7662_identified; frozen_E3_problem_statement_discloses_lstrip_character_set_cause; not_recommended_for_primary_three_tier_sample_pending_project_lead_review; issue_family_review_prepared_not_approved; dependency_native_notice_and_dataset_card_provenance_review_open; prior_pipeline_debug_exposure_pending_project_lead_declaration; final_acceptance_not_granted",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44121262451,
       "stage2_artifact_id": 14344534041,
-      "stage2_artifact_sha256": "10f5505f390426e003a833ffa60cd026a9513c33da9b5a0d288844374057f34c"
+      "stage2_artifact_sha256": "10f5505f390426e003a833ffa60cd026a9513c33da9b5a0d288844374057f34c",
+      "stage3_documents": {
+        "stage3_screen": "research_candidates/evidence_abstention/SKYPILOT_5981_STAGE3_SCREEN_2026-11-21.md",
+        "issue_family_review": "research_candidates/evidence_abstention/SKYPILOT_5981_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json",
+        "license_scope_review": "research_candidates/evidence_abstention/SKYPILOT_5981_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-21.json"
+      },
+      "stage2_latest_integrity_recheck": {
+        "review_date": "2026-11-21",
+        "artifact_id": 14344534041,
+        "artifact_sha256": "10f5505f390426e003a833ffa60cd026a9513c33da9b5a0d288844374057f34c",
+        "outer_zip_sha256_recomputed_and_matches_recorded_digest": true,
+        "zip_crc": "passed",
+        "internal_sha256_entries": 19,
+        "internal_sha256_matches": 19
+      },
+      "stage3_e3_suitability": {
+        "status": "not_recommended_for_primary_three_tier_sample_pending_project_lead_review",
+        "reason": "The frozen dataset problem statement itself identifies lstrip('ssh-') as the cause and describes the character-set stripping semantics, so the E3 packet already reveals the central defect mechanism. Do not rewrite or hide the frozen row to manufacture uncertainty.",
+        "possible_non_sample_use": "technical_feasibility_or_easy-answer_control_only",
+        "inference_authorized": false
+      },
+      "next_required_gate": "Project-lead review of the E3 causal-disclosure finding and whether to exclude SkyPilot #5981 from the primary three-tier sample. Separately obtain a direct candidate-specific prior pipeline/debug exposure declaration. Keep issue #7662 as same-repository related-family context; complete exact dataset-card and dependency/native notice review before any bounded-scope acknowledgement. Do not accept or count SkyPilot absent all gates."
     },
     {
       "cohort_rank": 18,
@@ -1285,9 +1306,34 @@
       "stage2_status": "passed_exact_dataset_selector_buggy_base_fail_fixed_revision_pass_pinned_environment",
       "stage2_workflow_job_id": 134216923258,
       "stage2_evidence_note": "Canonical pinned exact-selector run 44133576730 (job 134216923258) authenticated frozen row pythainlp__pythainlp-1046 (row SHA-256 80b244dd8b406d095f7ec727f968dacbb6b2f620dc8b10c21d44e726ba3e5803), exact base/fix commits and exact FAIL_TO_PASS selector tests/core/test_util.py::UtilTestCase::test_tone_detector. Exact selector: real pytest assertion failure on buggy base ('f' vs expected 'h' for ครับ), same selector passed on fixed commit. Two independent one-word reproducers also separately failed on base and passed on fixed for ครับ and ค่ะ; these are support tests, not additional cases. Test-only patch altered only tests/core/test_util.py (2 insertions, 0 deletions); base production syllable.py blob unchanged. Pinned CPython 3.10.15 / pip 24.3.1 / pytest 8.3.5 / PyThaiNLP 5.0.6.dev0 / PyICU 2.17 / ICU 70.1 toolchain; Ubuntu 22.04.5, libicu-dev/libicu70 70.1-2, compiler 11.4.0. 19 runtime pins matched pip freeze exactly; pip check passed; all 20 installed distribution metadata records had license metadata. Artifact 14351751109 SHA-256 ce2ab3bbefd3148510992a7503d8c07b17fb87fe2c2a76173c1971d21e12dcb8; 17/17 internal hashes independently verified; no Parquet, raw outputs, issue test fixture, patch contents or temporary reproducers. Stage 3 remains pending full dependency/license scope, project independence/related-defect, exposure assessment and human adjudication; final acceptance not granted.",
-      "stage3_status": "not_started_stage2_passed_license_scope_and_human_adjudication_pending",
+      "stage3_status": "stage2_passed_and_archive_integrity_rechecked; combined_source_aware_gold_and_E1_E2_E3_advisory_proposal_prepared_not_approved; related_issue_family_review_prepared_not_approved; dependency_native_notice_and_dataset_card_provenance_review_open; model_training_data_cutoff_assessment_open; prior_pipeline_debug_exposure_pending_project_lead_declaration; final_acceptance_not_granted",
       "final_case_acceptance": "not_accepted",
-      "model_inference_authorized": false
+      "model_inference_authorized": false,
+      "stage3_documents": {
+        "stage3_addendum": "research_candidates/evidence_abstention/PYTHAINLP_1046_STAGE3_CANDIDATE_REVIEW_ADDENDUM_2026-11-21.md",
+        "gold_tier_proposal": "research_candidates/evidence_abstention/PYTHAINLP_1046_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_2026-11-21.md",
+        "issue_family_review": "research_candidates/evidence_abstention/PYTHAINLP_1046_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json",
+        "license_scope_review": "research_candidates/evidence_abstention/PYTHAINLP_1046_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-21.json"
+      },
+      "stage2_latest_integrity_recheck": {
+        "review_date": "2026-11-21",
+        "artifact_id": 14351751109,
+        "artifact_sha256": "ce2ab3bbefd3148510992a7503d8c07b17fb87fe2c2a76173c1971d21e12dcb8",
+        "outer_zip_sha256_recomputed_and_matches_recorded_digest": true,
+        "zip_crc": "passed",
+        "internal_sha256_entries": 17,
+        "internal_sha256_matches": 17
+      },
+      "stage3_proposed_gold": "TONE_DETECTOR_THREE_CONSONANT_LENGTH_BOUNDARY_AND_TONE_MARK_PRECEDENCE",
+      "stage3_proposed_tiers": {
+        "E3": "ABSTAIN",
+        "E2": "ABSTAIN",
+        "E1": "ANSWER",
+        "tier_decision_status": "advisory_proposal_only_not_project_lead_approved",
+        "rationale": "E3 contains issue symptoms and the reporter's partial possible-solution hint; E2 adds the exact-base three-consonant syllable_length boundary but leaves the second tone-mark precedence mechanism unresolved; E1 adds exact-base tone_detector branch order. The project lead must verify the E2 elimination matrix and at least two surviving mechanisms before approval.",
+        "selector_independence_limit": "The one frozen selector plus two single-word supporting reproducers all concern the same issue/case; they are not independent cases."
+      },
+      "next_required_gate": "Project lead must directly declare candidate-specific prior pipeline/debug exposure; review/approve or revise the combined gold and E3/E2/E1 proposal, including the E2 alternative-elimination matrix; review the prepared related issue-family disposition; complete exact dataset-card, NumPy bundled-component and PyICU/ICU native license/notice provenance; assess model training-data exposure without claiming an unknown cutoff; obtain bounded research-scope acknowledgement only after those checks; complete a schema-conformant case record and fail-closed validation; then obtain a separate final YES/NO acceptance. No inference, fine-tuning or training."
     },
     {
       "cohort_rank": 22,
@@ -4079,5 +4125,54 @@
     "final_case_acceptance": "not_accepted",
     "registry_inclusion": false,
     "inference_authorized": false
+  },
+  "parallel_second_evaluation_batch_2026_11_21": {
+    "portfolio_order": [
+      "skypilot-org/skypilot issue #5981 / PR #5985",
+      "PyThaiNLP/pythainlp issue #1004 / PR #1046"
+    ],
+    "review_scope": "Parallel Stage 3 technical, issue-family, E3 suitability, dependency/license, exposure and gold/tier proposal screening; not final case acceptance.",
+    "skypilot_5981": {
+      "stage2": "passed",
+      "archive_integrity": "outer digest matched; CRC passed; 19/19 internal SHA256SUMS entries verified",
+      "issue_family": "later related same-repository report #7662; one SkyPilot sampling unit maximum",
+      "key_finding": "Frozen E3 task prompt itself names lstrip('ssh-') and character-set stripping; primary three-tier sample suitability is doubtful because central mechanism is disclosed at E3.",
+      "proposed_disposition": "Do not advance to gold/tier approval for primary sample unless project lead accepts a defensible E3 ambiguity without modifying the frozen prompt. Technical/easy-answer control use only otherwise.",
+      "exposure": "pending_direct_project_lead_declaration",
+      "final_acceptance": "not_accepted",
+      "registry_inclusion": false,
+      "inference_authorized": false
+    },
+    "pythainlp_1046": {
+      "stage2": "passed",
+      "archive_integrity": "outer digest matched; CRC passed; 17/17 internal SHA256SUMS entries verified",
+      "issue_family": "related same-repository reports #1055, #918 and #1120; one PyThaiNLP sampling unit maximum",
+      "proposed_gold": "TONE_DETECTOR_THREE_CONSONANT_LENGTH_BOUNDARY_AND_TONE_MARK_PRECEDENCE",
+      "proposed_tiers": {
+        "E3": "ABSTAIN",
+        "E2": "ABSTAIN",
+        "E1": "ANSWER"
+      },
+      "status": "advisory_only_not_project_lead_approved; E2 alternative-elimination matrix requires explicit review",
+      "exposure": "pending_direct_project_lead_declaration",
+      "final_acceptance": "not_accepted",
+      "registry_inclusion": false,
+      "inference_authorized": false
+    },
+    "accepted_registry_unchanged": {
+      "accepted_cases": 2,
+      "accepted_projects": 2,
+      "accepted_case_ids": [
+        "Dishka #435",
+        "EODAG #1530"
+      ]
+    },
+    "global_inference_boundary": {
+      "model_weights_loaded": false,
+      "inference_performed": false,
+      "fine_tuning_performed": false,
+      "training_performed": false,
+      "inference_authorized": false
+    }
   }
 }
