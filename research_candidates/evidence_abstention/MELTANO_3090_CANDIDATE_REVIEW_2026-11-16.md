@@ -79,3 +79,32 @@ The student project lead explicitly accepted Meltano SDK #3090 as one of the str
 This is candidate-selection approval only. It does **not** approve the proposed Meltano gold mechanism or E1/E2/E3 tier membership; those remain for a separate source-aware project-lead decision. The bounded source/dependency/dataset scope acknowledgement, candidate-specific prior pipeline/debug exposure declaration, related issue/lineage review, complete case record, fail-closed registry validation and separate final case YES/NO remain pending.
 
 PR #3091's link to #3009 remains introduction history for the same Meltano repository and does not create another independent case. This candidate remains not accepted as a final case. No model load, inference, fine-tuning or training is authorized.
+
+
+## Stage 3 advisory and integrity addendum — 21 November 2026
+
+The Stage 2 artifact was independently downloaded and locally rechecked:
+- Run 44331092872; artifact 14440520435.
+- Recomputed ZIP SHA-256: b1336169d7b6d8e4e47edbcd920d842ad525c7a4e2df841b998182099bed1bd3, matching GitHub's digest.
+- ZIP CRC test passed.
+- Internal SHA256SUMS manifest verified 14/14 files.
+
+Prepared the following Stage 3 documents. They are proposals/reviews, not project-lead approvals or case acceptance:
+- Gold and tier proposal: research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_SOURCE_AWARE_GOLD_AND_EVIDENCE_TIERS_PROPOSAL_2026-11-21.md
+- Issue-family/repository independence review: research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-21.json
+- Bounded license-scope review: research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-21.json
+- Local artifact integrity record: research_candidates/evidence_abstention/meltano_3090/MELTANO_3090_STAGE2_ARTIFACT_INTEGRITY_REVIEW_2026-11-21.md
+
+The source-aware gold proposal is G1: one mutable visited_refs set is shared across sibling property branches. After the first sibling resolves a component reference, the second sibling is incorrectly treated as a recursive cycle and returns after its $ref is removed. The proposed tiers are E3 ABSTAIN, E2 ABSTAIN, E1 ANSWER. E3 and E2 intentionally retain the same causal hypotheses: reproduction confirms the symptom but does not expose internal state ownership. Only the exact base/fixed source snapshots in E1 distinguish G1 from the alternatives.
+
+The issue-family review treats PR #3009 as the prior introduction of circular-reference tracking in the same resolver path, not as another independent case. The one-case-per-upstream-project rule is preserved.
+
+The license-scope review is deliberately not closed:
+- The exact-base root repository license is recorded as Apache-2.0.
+- The dataset row's upstream repository license field is Apache-2.0, while the current dataset card identifies its distribution license as CC-BY-4.0. These are distinct layers.
+- Hugging Face's README history shows the data upload at fb9aa22 and a separate README/card upload at 6fe2932 on the same date. The full immutable README commit SHA and exact card bytes have not yet been captured in the case evidence bundle; exact pinned-card review remains pending.
+- The installed package inventory has 32 distribution entries; eight have a null raw license field, two lack license classifiers, and some entries have multiple license classifiers. Canonical license text/notices and full transitive dependency scope remain human-review items.
+
+The candidate review already records that the researcher reviewed the issue and PR during screening. The source-aware analysis has now also been discussed in this workflow; do not claim blinding. Candidate-specific prior pipeline/debug exposure is still awaiting the project lead's explicit declaration. No “none” value is inferred.
+
+**Current disposition remains:** Stage 2 technical pass; Stage 3 technical gold/tier proposal prepared but not approved; license scope not acknowledged; exposure declaration pending; no final proposed case record; not in the registry; no model execution authorization.
