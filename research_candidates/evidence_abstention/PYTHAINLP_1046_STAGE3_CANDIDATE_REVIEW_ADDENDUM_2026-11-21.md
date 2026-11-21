@@ -58,7 +58,7 @@ These are proposals, not project-lead decisions. Before approval, the project le
 - #918 is a documentation issue about the detector's output labels.
 - #1120 is a separate later `tone_detector` error report involving another input. It is family context, not a duplicate of the two #1004 outputs.
 - The single-project sampling rule permits at most one accepted PyThaiNLP case.
-- Project-lead prior pipeline/debug exposure declaration for #1004 remains pending. Do not infer `none`.
+- Project-lead prior pipeline/debug exposure declaration for #1004: **`none` by direct project-lead self-report**. Decision record: `pythainlp_1046/PROJECT_LEAD_EXPOSURE_DECISION_PYTHAINLP_1046_2026-11-21.md`. This was not independently witnessed or audited.
 - Researcher source exposure is `full` after issue, PR, source, selector and artifact review. No blind adjudication or inter-rater claim is made.
 
 ## 5. License and model-exposure gates
@@ -75,7 +75,7 @@ These are proposals, not project-lead decisions. Before approval, the project le
 - Stage 2 technical gate: passed; evidence archive SHA/CRC/internal hashes rechecked.
 - Gold/tier: advisory proposal only; project-lead decision pending.
 - Related issue-family review: prepared; project-lead review pending.
-- Prior pipeline/debug exposure: pending direct project-lead declaration.
+- Prior pipeline/debug exposure: declared `none` by project-lead self-report; researcher source exposure remains `full`.
 - Bounded documentary scope: pending source/data/dependency/native notice review and explicit acknowledgement.
 - Final case acceptance: not accepted.
 - Registry inclusion: false.
