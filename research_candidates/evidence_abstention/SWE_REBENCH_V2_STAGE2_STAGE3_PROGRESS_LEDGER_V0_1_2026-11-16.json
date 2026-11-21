@@ -38,7 +38,7 @@
     "remaining_broad_shortlist": 65,
     "stage2_passed": 15,
     "stage3_technical_passed": 1,
-    "final_accepted_cases": 1,
+    "final_accepted_cases": 2,
     "runner_blocked_candidates": 0,
     "separately_blocked_external_fixture": 1,
     "stage2_not_started": 42,
@@ -47,8 +47,8 @@
     "study_evaluation_excluded_prior_pipeline_debug_exposure": 1,
     "dishka_proposed_case_count": 0,
     "dishka_final_acceptance_pending": false,
-    "accepted_exploratory_cases": 1,
-    "accepted_exploratory_projects": 1
+    "accepted_exploratory_cases": 2,
+    "accepted_exploratory_projects": 2
   },
   "records": [
     {
@@ -1055,8 +1055,8 @@
       "stage2_status": "passed_issue_specific_independent_reproducer_and_2_dataset_selectors_base_fail_fixed_pass",
       "stage2_workflow_job_id": 134161227052,
       "stage2_evidence_note": "Independent YAML reproducer: duplicate geodes key removes geodes_s3 on buggy base, passes on fixed. Exact Parquet row cs-si__eodag-1536 authenticated (created_at 2025-02-21 10:04:30; row SHA-256 35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47). Both exact issue-specific selectors executed: 2/2 failed on buggy base and 2/2 passed on fixed. Test-only patch changed tests/units/test_core.py only. Focused Python 3.11.9 environment: 52 resolved distributions with license metadata, pip check passed; full license scope signoff remains pending. Artifact 14344421574 SHA-256 0d9b4cf38b22cf094d080d6f8a87b1ff6373c9ab3a7d8ece68cc003b35964b33; internal SHA256SUMS 22/22 verified.",
-      "stage3_status": "gold_tiers_exposure_and_bounded_license_scope_approved; proposed_case_record_structurally_complete; final_acceptance_pending",
-      "final_case_acceptance": "not_accepted",
+      "stage3_status": "accepted_v0_2_exploratory_feasibility_only",
+      "final_case_acceptance": "accepted_v0_2_exploratory_feasibility_only",
       "model_inference_authorized": false,
       "stage2_latest_run_id": 44117944004,
       "stage2_artifact_id": 14344421574,
@@ -1129,23 +1129,26 @@
       "exposure_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
       "exposure_decision_record_sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38",
       "exposure_decision_date": "2026-11-21",
-      "study_evaluation_status_note": "The project lead approved source-aware gold/tier decisions, self-declared no prior pipeline/debug use, and acknowledged the bounded documentary license scope. The proposed case record passed schema/cross-field validation in the branch-head no-inference preflight (EODAG tests 5/5); the existing accepted registry also passed fail-closed validation and remains unchanged with Dishka as the sole case. EODAG remains proposed pending a separate final project-lead YES/NO. Thirteen global readiness blockers remain; no inference is authorized.",
+      "study_evaluation_status_note": "The project lead's separate final YES to accept SRV2E-EODAG_1530 into the v0.2 exploratory/feasibility registry was recorded on 2026-11-21 at 13:36:50+03:00. The accepted record and registry entry have been updated; post-acceptance latest-head structural/registry validation remains pending CI. Full researcher source exposure and single-project-lead source-aware adjudication remain disclosed; bounded license acknowledgement is not legal clearance. The registry now contains two independent upstream projects. Thirteen study-wide readiness blockers remain; no model inference is authorized.",
       "bounded_license_scope_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_BOUNDED_LICENSE_SCOPE_ACKNOWLEDGEMENT_EODAG_1530_2026-11-21.md",
       "bounded_license_scope_decision_record_sha256": "6513f066df7130173deb8ba9316ab24ed4cded73b25487e88c9013bff01a8af6",
       "bounded_license_scope_decision_date": "2026-11-21",
       "proposed_case_acceptance_record_path": "research_candidates/evidence_abstention/eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
       "case_record_structural_validation": {
-        "status": "structurally_complete_candidate",
+        "status": "accepted_record_post_decision_validation_pending_latest_head_ci",
         "validator": "research_candidates/evidence_abstention/implementation/swe_rebench_v2_exploratory_case_acceptance.py",
-        "workflow_run_id": 44894847180,
-        "job_id": 136818188559,
-        "eodag_review_contract_tests": "5 passed",
-        "preflight_artifact_id": 14703537258,
-        "preflight_artifact_sha256": "fb89b0dbdd4835ee44ddb8f7f8c3a712094fb71caa3bdff150709936f1655bfa",
-        "accepted_registry_validation": "structurally_valid_candidate_registry",
-        "eligible_for_registry": false,
-        "model_inference_authorized": false
-      }
+        "pre_acceptance_validation_workflow_run_id": 44894847180,
+        "pre_acceptance_validation_job_id": 136818188559,
+        "pre_acceptance_result": "structurally_complete_candidate",
+        "post_acceptance_validation": "pending_latest_head_ci",
+        "eligible_for_registry": true,
+        "inference_authorized": false
+      },
+      "final_acceptance_decision_timestamp_utc": "2026-11-21T13:36:50+03:00",
+      "final_acceptance_decision_record": "research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_FINAL_ACCEPTANCE_DECISION_EODAG_1530_2026-11-21.md",
+      "final_acceptance_decision_record_sha256": "5f363c0b4e20752e5591704f1fd540f238bd9af8ab961aa8ce0380b074d6e76d",
+      "accepted_case_record_path": "research_candidates/evidence_abstention/eodag_1530/SWE_REBENCH_V2_EODAG_1530_CASE_ACCEPTANCE_PROPOSED_V0_2.json",
+      "accepted_case_record_blob_sha1": "23abaea3e7a1bac5c26bd48d91a59da9d12ea738"
     },
     {
       "cohort_rank": 17,
