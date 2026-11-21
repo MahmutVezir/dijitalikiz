@@ -146,3 +146,14 @@ Sources:
 - https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/commits/main/README.md
 
 No license permission or legal-clearance conclusion is drawn from this recheck.
+
+
+## Project-lead prior pipeline/debug exposure declaration — 21 November 2026
+
+The project lead explicitly declared `prior_pipeline_debug_exposure = none` in response to the candidate-specific question. The declaration means Meltano #3090 / PR #3091, its source, dataset selector, and reproducer had not been used to develop/debug the shared research pipeline or tune prompts/tests before prospective case validation. This is a direct self-report, not an independently witnessed audit.
+
+**Separate source exposure remains `full`.** The project lead reviewed the issue and PR during candidate screening and later reviewed the source-aware case analysis. No source-blinding, blinded adjudication, or inter-rater reliability claim is made. This declaration closes only the prior pipeline/debug exposure gate.
+
+Decision record: `research_candidates/evidence_abstention/meltano_3090/PROJECT_LEAD_EXPOSURE_DECISION_MELTANO_3090_2026-11-21.md`.
+
+The remaining Meltano gates are the bounded documentary-use scope acknowledgement after immutable dataset-card and dependency-license review, proposed case-record validation, and a separate final YES/NO acceptance decision. Meltano remains outside the accepted registry (2 accepted cases from 2 projects); model loading, inference, fine-tuning, and training remain unauthorized.
