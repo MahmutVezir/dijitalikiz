@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1-v02-candidate-progress",
-  "generated_at_utc": "2026-11-21T15:17:00Z",
+  "generated_at_utc": "2026-11-21T15:50:45.950Z",
   "cohort_source": {
     "path": "research_candidates/evidence_abstention/SWE_REBENCH_V2_COHORT_96_STATIC_TRIAGE_LEDGER_V0_1_2026-11-16.json",
     "dataset": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
@@ -2235,11 +2235,20 @@
       "stage2_status": "held_pending_project_lead_E3_sample_suitability_review_no_stage2_execution",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": "Static issue/PR/source review only. Issue #769 explicitly identifies that types.UnionType.__parameters__ is a getset_descriptor, not an iterable tuple, and provides a workaround that excludes UnionType. PR #772 changes _apply_params to materialize __parameters__ in a try/except and return the object unchanged on invalid values. E3 likely already exposes the core diagnosis; do not count as a primary abstention case without a separately justified stricter scoring rubric. No dataset row authentication, independent reproducer, selector run, build, or Stage 2 artifact.",
-      "stage3_status": "static_source_audit_complete; E3_answerability_and_easy_answer_control_disposition_pending_project_lead",
+      "stage3_status": "excluded_from_primary_abstention_sample_by_project_lead",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage3_static_review_path": "research_candidates/evidence_abstention/msgspec_772/MSGSpec_772_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "next_required_gate": "Project lead decides whether msgspec #769 is excluded from the primary abstention sample or retained only as a separately labelled easy-answer/evidence-sufficient control. Do not run primary Stage 2 unless sample-suitability gate is approved."
+      "next_required_gate": "No further Stage 2/Stage 3 work for current primary-sample eligibility. Retain as a screening exclusion. Reopen only under a prospective versioned protocol amendment; no control-group assignment is authorized.",
+      "primary_sample_eligibility": false,
+      "primary_sample_disposition": "excluded_by_project_lead_decision_2026_11_21",
+      "primary_sample_exclusion_reason": "Issue-visible E3 identifies getset_descriptor, non-iterability, TypeError and a workaround.",
+      "control_group_assignment": "none_not_defined_in_current_v0_2_protocol",
+      "project_lead_decision_date": "2026-11-21",
+      "project_lead_decision_record": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+      "project_lead_decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+      "project_lead_decision_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+      "registry_inclusion": false
     },
     {
       "cohort_rank": 45,
@@ -2254,11 +2263,20 @@
       "stage2_status": "held_pending_project_lead_E3_answerability_and_easy_answer_control_decision_no_stage2",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": "Static issue/PR/source review only. Issue #2032 explicitly says MutableSequence lacks clear and pop coverage even though MutableMapping and MutableSet already guard them, and shows [].pop() returning 1 instead of raising SecurityError. PR #2033 adds clear/pop to the MutableSequence unsafe method set and tests both SecurityError cases. E3 therefore already strongly discloses the diagnosis/repair. No dataset-row authentication, independent reproducer, frozen selector execution, build, or Stage 2 artifact has been performed.",
-      "stage3_status": "static_source_audit_complete; primary_E3_answerability_risk; easy_answer_security_control_decision_pending_project_lead",
+      "stage3_status": "excluded_from_primary_abstention_sample_by_project_lead",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage3_static_review_path": "research_candidates/evidence_abstention/jinja_2033/JINJA_2033_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "next_required_gate": "Project lead decides whether Jinja #2032 is excluded from primary abstention sample or retained only as a separately-labelled easy-answer/security-regression control. No primary-sample Stage 2 unless E3-suitability gate approves; control use requires separate design authorization."
+      "next_required_gate": "No further Stage 2/Stage 3 work for current primary-sample eligibility. Retain as a screening exclusion. Reopen only under a prospective versioned protocol amendment; no control-group assignment is authorized.",
+      "primary_sample_eligibility": false,
+      "primary_sample_disposition": "excluded_by_project_lead_decision_2026_11_21",
+      "primary_sample_exclusion_reason": "Issue-visible E3 names missing MutableSequence clear/pop guards and shows the pop bypass.",
+      "control_group_assignment": "none_not_defined_in_current_v0_2_protocol",
+      "project_lead_decision_date": "2026-11-21",
+      "project_lead_decision_record": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+      "project_lead_decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+      "project_lead_decision_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+      "registry_inclusion": false
     },
     {
       "cohort_rank": 46,
@@ -2290,11 +2308,20 @@
       "stage2_status": "held_pending_project_lead_E3_answerability_and_easy_answer_control_decision_no_stage2_execution",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": "Static issue/PR/source review only. Issue #564 provides a minimal Exception subclass with __init__(self,a,*,b), the exact serialized py/reduce payload (positional args contain only 'a'; state carries 'a' and 'b'), and traceback at jsonpickle.unpickler._restore_reduce stage1=f(*args) with missing required keyword-only argument b. PR #565 catches TypeError around constructor invocation, falls back to f.__new__(f,*args), then existing state restoration assigns fields. The E3 prompt already exposes the central constructor-binding failure and likely repair direction; not suitable as a primary abstention case unless a stricter preregistered rubric is justified. No dataset row authentication, independent reproducer, frozen selector execution, build, or Stage 2 artifact.",
-      "stage3_status": "static_source_audit_complete; primary_E3_answerability_risk; easy_answer_control_decision_pending_project_lead",
+      "stage3_status": "excluded_from_primary_abstention_sample_by_project_lead",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage3_static_review_path": "research_candidates/evidence_abstention/jsonpickle_565/JSONPICKLE_565_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "next_required_gate": "Project lead decides whether jsonpickle #564 is excluded from the primary abstention sample or retained only as a separately labelled easy-answer/evidence-sufficient control. Do not run primary Stage 2 unless E3-suitability gate approves; any control use requires separate design authorization."
+      "next_required_gate": "No further Stage 2/Stage 3 work for current primary-sample eligibility. Retain as a screening exclusion. Reopen only under a prospective versioned protocol amendment; no control-group assignment is authorized.",
+      "primary_sample_eligibility": false,
+      "primary_sample_disposition": "excluded_by_project_lead_decision_2026_11_21",
+      "primary_sample_exclusion_reason": "Issue-visible E3 includes the minimal keyword-only constructor, py/reduce state and constructor traceback.",
+      "control_group_assignment": "none_not_defined_in_current_v0_2_protocol",
+      "project_lead_decision_date": "2026-11-21",
+      "project_lead_decision_record": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+      "project_lead_decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+      "project_lead_decision_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+      "registry_inclusion": false
     },
     {
       "cohort_rank": 48,
@@ -2309,11 +2336,20 @@
       "stage2_status": "held_pending_project_lead_E3_answerability_and_easy_answer_control_decision_no_stage2_execution",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": "Static issue/PR/source review only. Issue #503 explicitly states that TypiClust/ProbCover strategy-level random_state is not propagated to cluster_algo and that users must manually pass it in cluster_algo_dict; it gives examples showing nondeterminism without that setting. PR #504 adds the strategy random_state to clustering kwargs when supported and when not already explicitly supplied. E3 therefore already exposes the root cause and likely fix direction. No exact dataset-row authentication, independent reproducer, frozen selector execution, build, or Stage 2 artifact has been performed.",
-      "stage3_status": "static_source_audit_complete; primary_E3_answerability_risk; easy_answer_control_decision_pending_project_lead",
+      "stage3_status": "excluded_from_primary_abstention_sample_by_project_lead",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
       "stage3_static_review_path": "research_candidates/evidence_abstention/scikit_activeml_504/SCIKIT_ACTIVEML_504_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "next_required_gate": "Project lead decides whether scikit-activeml #503 is excluded from the primary abstention sample or retained only as a separately labelled easy-answer/evidence-sufficient control. Do not run primary Stage 2 unless E3-suitability gate approves; any control use requires separate study-design authorization."
+      "next_required_gate": "No further Stage 2/Stage 3 work for current primary-sample eligibility. Retain as a screening exclusion. Reopen only under a prospective versioned protocol amendment; no control-group assignment is authorized.",
+      "primary_sample_eligibility": false,
+      "primary_sample_disposition": "excluded_by_project_lead_decision_2026_11_21",
+      "primary_sample_exclusion_reason": "Issue-visible E3 states missing random_state propagation and gives the workaround and nondeterminism contrast.",
+      "control_group_assignment": "none_not_defined_in_current_v0_2_protocol",
+      "project_lead_decision_date": "2026-11-21",
+      "project_lead_decision_record": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+      "project_lead_decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+      "project_lead_decision_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+      "registry_inclusion": false
     },
     {
       "cohort_rank": 49,
@@ -2495,10 +2531,19 @@
       "stage2_status": "held_pending_project_lead_E3_sample_suitability_decision_no_stage2",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": "research_candidates/evidence_abstention/python_babel_1141/PYTHON_BABEL_1141_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "stage3_status": "static_issue_pr_source_audit_complete; explicit_E3_fix_clue; primary_sample_exclusion_advisory",
+      "stage3_status": "excluded_from_primary_abstention_sample_by_project_lead",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "next_required_gate": "Project lead decides whether to exclude from primary abstention sample or authorize as a separately labelled evidence-sufficient control under a formally amended protocol. No Stage 2 for primary eligibility under current v0.2 design."
+      "next_required_gate": "No further Stage 2/Stage 3 work for current primary-sample eligibility. Retain as a screening exclusion. Reopen only under a prospective versioned protocol amendment; no control-group assignment is authorized.",
+      "primary_sample_eligibility": false,
+      "primary_sample_disposition": "excluded_by_project_lead_decision_2026_11_21",
+      "primary_sample_exclusion_reason": "Issue-visible E3 explicitly proposes optional seconds defaulting to zero for H:mm.",
+      "control_group_assignment": "none_not_defined_in_current_v0_2_protocol",
+      "project_lead_decision_date": "2026-11-21",
+      "project_lead_decision_record": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+      "project_lead_decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+      "project_lead_decision_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+      "registry_inclusion": false
     },
     {
       "cohort_rank": 54,
@@ -2513,10 +2558,19 @@
       "stage2_status": "held_pending_frozen_row_and_project_lead_E3_scope_review_no_stage2",
       "stage2_workflow_job_id": null,
       "stage2_evidence_note": "research_candidates/evidence_abstention/gammapy_5525/GAMMAPY_5525_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
-      "stage3_status": "static_issue_pr_source_audit_complete; explicit_normalization_defect; secondary_integral_scope_and_E3_decision_pending",
+      "stage3_status": "excluded_from_primary_abstention_sample_by_project_lead",
       "final_case_acceptance": "not_accepted",
       "model_inference_authorized": false,
-      "next_required_gate": "Authenticate exact gammapy__gammapy-5525 row and selectors; confirm whether frozen prompt includes only normalization or also partial-phase integration; project lead decides E3/sample suitability and prior pipeline exposure. No Stage 2 until approved."
+      "next_required_gate": "No further Stage 2/Stage 3 work for current primary-sample eligibility. Retain as a screening exclusion. Reopen only under a prospective versioned protocol amendment; no control-group assignment is authorized.",
+      "primary_sample_eligibility": false,
+      "primary_sample_disposition": "excluded_by_project_lead_decision_2026_11_21",
+      "primary_sample_exclusion_reason": "Issue-visible E3 states missing template normalization; PR also changes a distinct sub-phase integral behavior absent from the issue.",
+      "control_group_assignment": "none_not_defined_in_current_v0_2_protocol",
+      "project_lead_decision_date": "2026-11-21",
+      "project_lead_decision_record": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+      "project_lead_decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+      "project_lead_decision_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+      "registry_inclusion": false
     },
     {
       "cohort_rank": 55,
@@ -3598,6 +3652,66 @@
       "model_inference": false,
       "fine_tuning": false,
       "training": false
+    },
+    {
+      "date": "2026-11-21",
+      "decision_scope": "primary_abstention_sample_exclusion_for_six_E3_revealing_candidates",
+      "decision_source": "explicit_project_lead_approval_in_ChatGPT_conversation_2026-11-21",
+      "decision": "APPROVED — exclude six candidates from the current primary abstention sample; do not assign them to an easy-answer/control group.",
+      "candidates": [
+        {
+          "repository": "msgspec/msgspec",
+          "issue": "#769",
+          "pr": "#772",
+          "rank": 44,
+          "reason": "Issue-visible E3 identifies getset_descriptor, non-iterability, TypeError and a workaround."
+        },
+        {
+          "repository": "pallets/jinja",
+          "issue": "#2032",
+          "pr": "#2033",
+          "rank": 45,
+          "reason": "Issue-visible E3 names missing MutableSequence clear/pop guards and shows the pop bypass."
+        },
+        {
+          "repository": "jsonpickle/jsonpickle",
+          "issue": "#564",
+          "pr": "#565",
+          "rank": 47,
+          "reason": "Issue-visible E3 includes the minimal keyword-only constructor, py/reduce state and constructor traceback."
+        },
+        {
+          "repository": "scikit-activeml/scikit-activeml",
+          "issue": "#503",
+          "pr": "#504",
+          "rank": 48,
+          "reason": "Issue-visible E3 states missing random_state propagation and gives the workaround and nondeterminism contrast."
+        },
+        {
+          "repository": "python-babel/babel",
+          "issue": "#1129",
+          "pr": "#1141",
+          "rank": 53,
+          "reason": "Issue-visible E3 explicitly proposes optional seconds defaulting to zero for H:mm."
+        },
+        {
+          "repository": "gammapy/gammapy",
+          "issue": "#5524",
+          "pr": "#5525",
+          "rank": 54,
+          "reason": "Issue-visible E3 states missing template normalization; PR also changes a distinct sub-phase integral behavior absent from the issue."
+        }
+      ],
+      "disposition": "excluded_from_primary_sample",
+      "control_group_assignment": "none",
+      "control_group_rationale": "The active v0.2 protocol does not define a separate easy-answer/evidence-sufficient control group. Creating one requires prospective protocol amendment.",
+      "accepted_registry_effect": "No change; none of these candidates is accepted or added to the accepted registry.",
+      "frozen_cohort_effect": "No change; frozen 96-row cohort source and hashes remain immutable.",
+      "candidate_technical_history": "Preserve all prior Stage 2/Stage 3 work and evidence; do not rewrite technical outcomes.",
+      "inference_authorized": false,
+      "decision_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+      "decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+      "decision_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md"
     }
   ],
   "latest_candidate_matrix_recheck": {
@@ -4964,7 +5078,13 @@
     "artifact_id": null,
     "final_case_acceptance": "not_accepted",
     "inference_authorized": false,
-    "note_path": "research_candidates/evidence_abstention/msgspec_772/MSGSpec_772_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
+    "note_path": "research_candidates/evidence_abstention/msgspec_772/MSGSpec_772_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+    "project_lead_primary_sample_decision": "excluded",
+    "project_lead_decision_date": "2026-11-21",
+    "control_group_assignment": "none",
+    "project_lead_decision_record": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+    "project_lead_decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+    "project_lead_decision_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md"
   },
   "latest_asdf_1907_stage2_scope_disposition": {
     "date": "2026-11-21",
@@ -5034,7 +5154,13 @@
     "final_case_acceptance": "not_accepted",
     "registry_inclusion": false,
     "inference_authorized": false,
-    "review_path": "research_candidates/evidence_abstention/jinja_2033/JINJA_2033_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
+    "review_path": "research_candidates/evidence_abstention/jinja_2033/JINJA_2033_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+    "project_lead_primary_sample_decision": "excluded",
+    "project_lead_decision_date": "2026-11-21",
+    "control_group_assignment": "none",
+    "project_lead_decision_record": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+    "project_lead_decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+    "project_lead_decision_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md"
   },
   "latest_jsonpickle_565_static_review": {
     "date": "2026-11-21",
@@ -5063,7 +5189,13 @@
     "final_case_acceptance": "not_accepted",
     "registry_inclusion": false,
     "inference_authorized": false,
-    "review_path": "research_candidates/evidence_abstention/jsonpickle_565/JSONPICKLE_565_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
+    "review_path": "research_candidates/evidence_abstention/jsonpickle_565/JSONPICKLE_565_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+    "project_lead_primary_sample_decision": "excluded",
+    "project_lead_decision_date": "2026-11-21",
+    "control_group_assignment": "none",
+    "project_lead_decision_record": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+    "project_lead_decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+    "project_lead_decision_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md"
   },
   "latest_scikit_activeml_504_static_review": {
     "date": "2026-11-21",
@@ -5095,7 +5227,13 @@
     "final_case_acceptance": "not_accepted",
     "registry_inclusion": false,
     "inference_authorized": false,
-    "review_path": "research_candidates/evidence_abstention/scikit_activeml_504/SCIKIT_ACTIVEML_504_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
+    "review_path": "research_candidates/evidence_abstention/scikit_activeml_504/SCIKIT_ACTIVEML_504_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+    "project_lead_primary_sample_decision": "excluded",
+    "project_lead_decision_date": "2026-11-21",
+    "control_group_assignment": "none",
+    "project_lead_decision_record": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+    "project_lead_decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+    "project_lead_decision_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md"
   },
   "latest_geofileops_649_static_review": {
     "date": "2026-11-21",
@@ -5289,7 +5427,13 @@
     "selectors_run": false,
     "final_case_acceptance": "not_accepted",
     "inference_authorized": false,
-    "review_path": "research_candidates/evidence_abstention/python_babel_1141/PYTHON_BABEL_1141_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
+    "review_path": "research_candidates/evidence_abstention/python_babel_1141/PYTHON_BABEL_1141_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+    "project_lead_primary_sample_decision": "excluded",
+    "project_lead_decision_date": "2026-11-21",
+    "control_group_assignment": "none",
+    "project_lead_decision_record": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+    "project_lead_decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+    "project_lead_decision_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md"
   },
   "latest_gammapy_5525_static_review": {
     "date": "2026-11-21",
@@ -5311,6 +5455,106 @@
     "selectors_run": false,
     "final_case_acceptance": "not_accepted",
     "inference_authorized": false,
-    "review_path": "research_candidates/evidence_abstention/gammapy_5525/GAMMAPY_5525_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md"
+    "review_path": "research_candidates/evidence_abstention/gammapy_5525/GAMMAPY_5525_STATIC_SCOPE_AND_E3_SAMPLE_SUITABILITY_REVIEW_2026-11-21.md",
+    "project_lead_primary_sample_decision": "excluded",
+    "project_lead_decision_date": "2026-11-21",
+    "control_group_assignment": "none",
+    "project_lead_decision_record": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+    "project_lead_decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+    "project_lead_decision_record_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/research/2026-11-16-followup-evidence-validation/research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md"
+  },
+  "latest_primary_sample_exclusion_decision_2026_11_21": {
+    "decision": "six_candidates_excluded_from_primary_abstention_sample",
+    "decision_source": "explicit_project_lead_approval_in_ChatGPT_conversation_2026-11-21",
+    "decision_record_path": "research_candidates/evidence_abstention/PROJECT_LEAD_PRIMARY_SAMPLE_EXCLUSION_DECISION_2026-11-21.md",
+    "decision_record_sha256": "0aa42efd374e4140e7f6b2e73b36f6bac617145f",
+    "candidates": [
+      {
+        "repository": "msgspec/msgspec",
+        "issue": "#769",
+        "pr": "#772",
+        "rank": 44,
+        "reason": "Issue-visible E3 identifies getset_descriptor, non-iterability, TypeError and a workaround."
+      },
+      {
+        "repository": "pallets/jinja",
+        "issue": "#2032",
+        "pr": "#2033",
+        "rank": 45,
+        "reason": "Issue-visible E3 names missing MutableSequence clear/pop guards and shows the pop bypass."
+      },
+      {
+        "repository": "jsonpickle/jsonpickle",
+        "issue": "#564",
+        "pr": "#565",
+        "rank": 47,
+        "reason": "Issue-visible E3 includes the minimal keyword-only constructor, py/reduce state and constructor traceback."
+      },
+      {
+        "repository": "scikit-activeml/scikit-activeml",
+        "issue": "#503",
+        "pr": "#504",
+        "rank": 48,
+        "reason": "Issue-visible E3 states missing random_state propagation and gives the workaround and nondeterminism contrast."
+      },
+      {
+        "repository": "python-babel/babel",
+        "issue": "#1129",
+        "pr": "#1141",
+        "rank": 53,
+        "reason": "Issue-visible E3 explicitly proposes optional seconds defaulting to zero for H:mm."
+      },
+      {
+        "repository": "gammapy/gammapy",
+        "issue": "#5524",
+        "pr": "#5525",
+        "rank": 54,
+        "reason": "Issue-visible E3 states missing template normalization; PR also changes a distinct sub-phase integral behavior absent from the issue."
+      }
+    ],
+    "control_group_assignment": "none",
+    "accepted_registry_modified": false,
+    "frozen_96_row_cohort_modified": false,
+    "model_loading": false,
+    "model_inference": false,
+    "fine_tuning": false,
+    "training": false
+  },
+  "sequential_candidate_intake_2026_11_21": {
+    "policy": "Continue in frozen cohort rank order; preserve all unchanged acceptance criteria; do not skip unresolved earlier-ranked candidates without a recorded gate decision.",
+    "next_open_work_order": [
+      {
+        "rank": 49,
+        "repository": "geofileops/geofileops",
+        "pull_request": "#649",
+        "next_gate": "Complete Stage 3 sample suitability and remaining project-lead evidence/exposure/license decisions."
+      },
+      {
+        "rank": 50,
+        "repository": "lektor/lektor",
+        "pull_request": "#1214",
+        "next_gate": "Retain completed Stage 2 dataset-selector-integrity exclusion; no rerun or selector trimming."
+      },
+      {
+        "rank": 51,
+        "repository": "cuthbertLab/music21",
+        "pull_request": "#1736",
+        "next_gate": "Authenticate exact frozen row; resolve E3 suitability and mixed patch-scope questions."
+      },
+      {
+        "rank": 52,
+        "repository": "geopandas/geopandas",
+        "pull_request": "#3591",
+        "next_gate": "Authenticate exact frozen row; project-lead E3 and prior pipeline/debug exposure decisions."
+      },
+      {
+        "rank": 55,
+        "repository": "joshuadavidthomas/django-bird",
+        "pull_request": "#219",
+        "next_gate": "Do not start until earlier-rank open gates have been resolved or formally excluded."
+      }
+    ],
+    "accepted_cases_remain": "Dishka and EODAG only",
+    "inference_authorized": false
   }
 }
