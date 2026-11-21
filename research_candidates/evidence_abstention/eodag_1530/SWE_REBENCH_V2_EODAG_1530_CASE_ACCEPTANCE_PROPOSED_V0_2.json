@@ -1,0 +1,318 @@
+{
+  "schema_version": "0.1-v02-exploratory",
+  "case_id": "SRV2E-EODAG_1530",
+  "acceptance_decision": "proposed",
+  "dataset": {
+    "dataset_id": "PrimeIntellect/SWE-rebench-V2-Filtered-Verified",
+    "file_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+    "file_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
+    "row_locator": {
+      "field": "instance_id",
+      "value": "cs-si__eodag-1536"
+    },
+    "row_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47",
+    "cohort_role": "primary",
+    "created_at_dataset_utc": "2025-02-21T10:04:30Z",
+    "created_at_upstream_utc": "2025-02-21T10:04:30Z",
+    "timestamp_reconciliation_status": "exact_match",
+    "timestamp_review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/eodag_1530/EODAG_1530_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
+      "sha256": "e580cf546a7f70a4cb5da4b36744e1f7714f1f2590b0e02b51db2ff3f854e810"
+    }
+  },
+  "source": {
+    "repository_full_name": "CS-SI/eodag",
+    "issue_or_pr_url": "https://github.com/CS-SI/eodag/pull/1536",
+    "base_commit_sha": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+    "fixed_commit_sha": "312966a46513a082333d46cd7212bdce36aaf769",
+    "changed_paths": [
+      "eodag/config.py",
+      "eodag/resources/user_conf_template.yml",
+      "tests/units/test_core.py"
+    ],
+    "patch": {
+      "uri": "https://github.com/CS-SI/eodag/pull/1536.patch",
+      "sha256": "b3054fb289090b2650b4ede1a97f3dac707da4a034807762c65f01552606414b"
+    },
+    "base_source_snapshot": {
+      "uri": "https://github.com/CS-SI/eodag/blob/b7cc06e19025e5bbf14e28a0975f1749e21e9be3/eodag/resources/user_conf_template.yml",
+      "sha256": "1bf1b945d09ae7805450dc9777175e35625ede2d6bf899c5d586bc6f08c297ff"
+    },
+    "fixed_source_snapshot": {
+      "uri": "https://github.com/CS-SI/eodag/blob/312966a46513a082333d46cd7212bdce36aaf769/eodag/resources/user_conf_template.yml",
+      "sha256": "b833e96223fa19dfcd71a5b12c7586a3af2035959b105e8cf07bc5d457b0fe5b"
+    },
+    "resource_type": "pull_request"
+  },
+  "independence": {
+    "status": "passed",
+    "upstream_project_id": "CS-SI/eodag",
+    "defect_cluster_id": "cs-si-eodag-duplicate-top-level-geodes-key-issue-1530",
+    "is_fork_or_mirror": false,
+    "related_case_ids": [],
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/eodag_1530/EODAG_1530_ISSUE_FAMILY_INDEPENDENCE_REVIEW_V0_1_2026-11-20.json",
+      "sha256": "e580cf546a7f70a4cb5da4b36744e1f7714f1f2590b0e02b51db2ff3f854e810"
+    }
+  },
+  "exposure": {
+    "prior_pipeline_debug_exposure": "none",
+    "researcher_source_exposure": "full",
+    "exposure_notes": "The project lead self-declared no prior pipeline/debug use of this candidate before prospective validation. Full issue, PR and source exposure during screening and source-aware gold/tier adjudication remains disclosed; researcher blinding and independent blinded Panel A/Panel B adjudication are not claimed.",
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_PRIOR_PIPELINE_DEBUG_EXPOSURE_DECLARATION_EODAG_1530_2026-11-21.md",
+      "sha256": "5a51adf26ae3597e398d5aad5494a55e5a553fe4a787a79de4bc8d3afb89ae38"
+    }
+  },
+  "license_review": {
+    "root_license_expression": "Apache-2.0",
+    "exact_base_review": "passed",
+    "changed_file_review": "passed",
+    "nested_dependency_review": "passed",
+    "notice_and_provenance_review": "passed",
+    "reviewer_role": "student_project_lead",
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/eodag_1530/EODAG_1530_DEPENDENCY_LICENSE_SCOPE_REVIEW_V0_1_2026-11-20.json",
+      "sha256": "77571ef15f5a4a051fc630c9309c5aafda108586320ecca267cc870b7ce983bb"
+    },
+    "changed_file_license_manifest": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/eodag_1530/EODAG_1530_CHANGED_FILE_LICENSE_MANIFEST_V0_1_2026-11-20.json",
+      "sha256": "2917ae2336c63eacdeebc053fea1aec7f1356ae93abf60ea03ecf87f7745c043"
+    },
+    "research_use_decision": "no_obvious_prohibition_identified",
+    "scope_limitation": "documentary_screening_only_not_legal_advice",
+    "root_license_file": {
+      "path": "LICENSE",
+      "commit_sha": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+      "blob_sha": "1a9893b43e8e6d46ff5cda60ab6562850b7f78ff",
+      "content_sha256": "e0c01e71eb67453430e43947b628a40d2cca58ed7154bc33339fc3b0f3189671",
+      "license_expression": "Apache-2.0"
+    }
+  },
+  "technical_reproduction": {
+    "status": "passed",
+    "environment_lock_sha256": "a64b5196505f7a222976b61c0f0bf6a03344f2ea34a2f39935997a2f9b35f7b4",
+    "test_selector": "EodagIssue1530Regression.test_geodes_and_geodes_s3_have_distinct_configuration_keys",
+    "buggy_baseline": {
+      "commit_sha": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+      "exit_code": 1,
+      "failure_signature": "AssertionError: 'geodes_s3' not found in the mapping parsed from eodag/resources/user_conf_template.yml; the surviving geodes credentials are AWS fields.",
+      "run_record": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44331092872/artifacts/14440370494",
+        "sha256": "6a732364873d12d78d407f41aa671cc56851f67b58492c4762ff33e36a59a437"
+      },
+      "test_selector": "EodagIssue1530Regression.test_geodes_and_geodes_s3_have_distinct_configuration_keys"
+    },
+    "fixed_revision": {
+      "commit_sha": "312966a46513a082333d46cd7212bdce36aaf769",
+      "exit_code": 0,
+      "same_test_passed": true,
+      "run_record": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44331092872/artifacts/14440370494",
+        "sha256": "6a732364873d12d78d407f41aa671cc56851f67b58492c4762ff33e36a59a437"
+      },
+      "test_selector": "EodagIssue1530Regression.test_geodes_and_geodes_s3_have_distinct_configuration_keys"
+    },
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/EODAG_1530_CANDIDATE_REVIEW_2026-11-16.md",
+      "sha256": "5f70c3222164bec5fad688e0aaff4e16278c7610284bd04491f3266398ac3bd2"
+    }
+  },
+  "gold_standard": {
+    "status": "human_recorded",
+    "gold_mechanism_id": "G1",
+    "candidate_mechanisms": [
+      {
+        "mechanism_id": "G1",
+        "description": "The packaged YAML template contains two top-level mappings named geodes; ordinary YAML mapping parsing retains the later AWS-credential mapping, overwriting the earlier public API-key mapping and producing no distinct geodes_s3 mapping.",
+        "testable_prediction": "On the exact buggy base, yaml.safe_load of the packaged template yields no geodes_s3 key and the surviving geodes credentials are AWS fields; renaming the second key to geodes_s3 preserves both mappings on the fixed revision."
+      },
+      {
+        "mechanism_id": "A1",
+        "description": "A wrong template or installed-source revision is loaded, rather than the pinned packaged user_conf_template.yml under review.",
+        "testable_prediction": "Inspecting and loading the exact pinned packaged template may not reproduce the observed configuration if the test/runtime actually resolves a different template or installed source revision."
+      },
+      {
+        "mechanism_id": "A2",
+        "description": "A separate provider-registration or plugin-discovery failure causes the missing geodes_s3 provider independently of the duplicate YAML mapping.",
+        "testable_prediction": "Even with distinct geodes and geodes_s3 mappings, provider registration/plugin discovery would still omit geodes_s3 from the application's supported provider mapping."
+      },
+      {
+        "mechanism_id": "A3",
+        "description": "A generated or user-specific configuration override independently changes provider credentials and causes the public Geodes credential mismatch.",
+        "testable_prediction": "The same credential mismatch would persist when the packaged template parses into two distinct provider mappings but an overriding generated/user-specific configuration is applied."
+      }
+    ],
+    "technical_rationale": "The exact buggy template has two top-level geodes mappings. yaml.safe_load retains the later AWS credential mapping, overwriting the public API-key mapping and leaving no separate geodes_s3 mapping. The exact base fixture helper loads this packaged template with yaml.safe_load and iterates the provider mapping. PR #1536 renames the second mapping to geodes_s3. The independent YAML reproducer and both frozen issue-aligned dataset selectors fail on the exact buggy base and pass on the exact fixed revision. The separate StacListAssets change and related issue #1517 are excluded from this case's gold.",
+    "evidence_refs": [
+      "EODAG_BASE_TEMPLATE_DUPLICATE_KEYS",
+      "EODAG_BASE_YAML_PARSE_FAILURE",
+      "EODAG_TEST_FIXTURE_SAFE_LOAD_PATH"
+    ],
+    "review_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_EODAG_1530_2026-11-21.md",
+      "sha256": "b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e"
+    }
+  },
+  "evidence_tiers": {
+    "status": "human_recorded",
+    "tier_decision_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/eodag_1530/PROJECT_LEAD_GOLD_AND_EVIDENCE_TIERS_DECISION_EODAG_1530_2026-11-21.md",
+      "sha256": "b48db64273f6d552c12ef82e5b9d75992f85e266e987491feb9cf7db23e8e52e"
+    },
+    "E3": {
+      "packet": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/eodag_1530/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json#E3",
+        "sha256": "ccb8447a384b9da92ccfe27cbc99a8c1649318a2b68d02bb7792183a43b43d41"
+      },
+      "surviving_mechanism_ids": [
+        "G1",
+        "A1",
+        "A2",
+        "A3"
+      ],
+      "semantic_rationale": "Issue narrative alone does not establish the exact pinned parser output or the application's packaged-template fixture/loading path; all four predeclared explanations remain viable.",
+      "evidence_items": [
+        {
+          "evidence_id": "EODAG_ISSUE_NARRATIVE",
+          "content_sha256": "73d6b57f813432c75e29767922e7a9f54b06ea05cb1de04cd510aa9e50c8b988",
+          "source_snapshot_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47",
+          "source_uri": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/tree/fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_path": "data/train-00000-of-00001.parquet#instance_id=cs-si__eodag-1536"
+        }
+      ]
+    },
+    "E2": {
+      "packet": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/eodag_1530/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json#E2",
+        "sha256": "e0fa9ae7b92d736d7f53ecf15b93d95d0bc9564f1549068f2e41eaf558bad421"
+      },
+      "surviving_mechanism_ids": [
+        "G1",
+        "A2",
+        "A3"
+      ],
+      "semantic_rationale": "The exact pinned YAML parse result shows duplicate-key collapse, removing the wrong-template/source-revision alternative A1. The E2 packet still does not establish the in-repository packaged-template fixture/loading path, so provider-registration/plugin-discovery A2 and generated/user-specific configuration override A3 remain plausible.",
+      "evidence_items": [
+        {
+          "evidence_id": "EODAG_ISSUE_NARRATIVE",
+          "content_sha256": "73d6b57f813432c75e29767922e7a9f54b06ea05cb1de04cd510aa9e50c8b988",
+          "source_snapshot_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47",
+          "source_uri": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/tree/fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_path": "data/train-00000-of-00001.parquet#instance_id=cs-si__eodag-1536"
+        },
+        {
+          "evidence_id": "EODAG_BASE_TEMPLATE_DUPLICATE_KEYS",
+          "content_sha256": "c2f48ed5612ec3f21e0a8f8cb14810323603b0994a60167752f31fd419225b3c",
+          "source_snapshot_sha256": "1bf1b945d09ae7805450dc9777175e35625ede2d6bf899c5d586bc6f08c297ff",
+          "source_uri": "https://github.com/CS-SI/eodag/blob/b7cc06e19025e5bbf14e28a0975f1749e21e9be3/eodag/resources/user_conf_template.yml",
+          "source_commit_sha": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+          "source_path": "eodag/resources/user_conf_template.yml"
+        },
+        {
+          "evidence_id": "EODAG_INDEPENDENT_YAML_REPRODUCER",
+          "content_sha256": "ff45e54e3fb1a202aa75543fd9db9f98745a5722feada6158f702431d05163ac",
+          "source_snapshot_sha256": "ff45e54e3fb1a202aa75543fd9db9f98745a5722feada6158f702431d05163ac",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/reproduction/eodag_issue_1530/test_issue_1530.py",
+          "source_commit_sha": "debb7b650da500dcea3d0007c59bc73ba597873f",
+          "source_path": "research_candidates/evidence_abstention/reproduction/eodag_issue_1530/test_issue_1530.py"
+        },
+        {
+          "evidence_id": "EODAG_BASE_YAML_PARSE_FAILURE",
+          "content_sha256": "291825b349815e03adcf1c24c9d58c31474360ec0cd50e3f148a39b9725819ba",
+          "source_snapshot_sha256": "6a732364873d12d78d407f41aa671cc56851f67b58492c4762ff33e36a59a437",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44331092872/artifacts/14440370494#path=base-issue-reproducer.log",
+          "source_commit_sha": "97e40a09c8105f6bb3d3d801fd83c70476beab39",
+          "source_path": "artifact:14440370494/base-issue-reproducer.log"
+        }
+      ]
+    },
+    "E1": {
+      "packet": {
+        "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/eodag_1530/OPERATIONAL_EVIDENCE_PACKET_SET_PROPOSED_V0_1_2026-11-20.json#E1",
+        "sha256": "9c818bcc3521274dcb67b0132656003bd27f0a97d723b63b1f281ff5e38abb6b"
+      },
+      "surviving_mechanism_ids": [
+        "G1"
+      ],
+      "semantic_rationale": "The added fixture source shows the test helper loading the packaged user_conf_template.yml with yaml.safe_load and iterating the parsed provider mapping to generate test configuration. Under the project lead's source-aware adjudication, this removes A2 and A3; only the duplicate top-level geodes key mechanism G1 remains.",
+      "evidence_items": [
+        {
+          "evidence_id": "EODAG_ISSUE_NARRATIVE",
+          "content_sha256": "73d6b57f813432c75e29767922e7a9f54b06ea05cb1de04cd510aa9e50c8b988",
+          "source_snapshot_sha256": "35f612f1b6524f37cca6766f25a0637bc5d5740da9695427dba556354ce61a47",
+          "source_uri": "https://huggingface.co/datasets/PrimeIntellect/SWE-rebench-V2-Filtered-Verified/tree/fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_commit_sha": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
+          "source_path": "data/train-00000-of-00001.parquet#instance_id=cs-si__eodag-1536"
+        },
+        {
+          "evidence_id": "EODAG_BASE_TEMPLATE_DUPLICATE_KEYS",
+          "content_sha256": "c2f48ed5612ec3f21e0a8f8cb14810323603b0994a60167752f31fd419225b3c",
+          "source_snapshot_sha256": "1bf1b945d09ae7805450dc9777175e35625ede2d6bf899c5d586bc6f08c297ff",
+          "source_uri": "https://github.com/CS-SI/eodag/blob/b7cc06e19025e5bbf14e28a0975f1749e21e9be3/eodag/resources/user_conf_template.yml",
+          "source_commit_sha": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+          "source_path": "eodag/resources/user_conf_template.yml"
+        },
+        {
+          "evidence_id": "EODAG_INDEPENDENT_YAML_REPRODUCER",
+          "content_sha256": "ff45e54e3fb1a202aa75543fd9db9f98745a5722feada6158f702431d05163ac",
+          "source_snapshot_sha256": "ff45e54e3fb1a202aa75543fd9db9f98745a5722feada6158f702431d05163ac",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/reproduction/eodag_issue_1530/test_issue_1530.py",
+          "source_commit_sha": "debb7b650da500dcea3d0007c59bc73ba597873f",
+          "source_path": "research_candidates/evidence_abstention/reproduction/eodag_issue_1530/test_issue_1530.py"
+        },
+        {
+          "evidence_id": "EODAG_BASE_YAML_PARSE_FAILURE",
+          "content_sha256": "291825b349815e03adcf1c24c9d58c31474360ec0cd50e3f148a39b9725819ba",
+          "source_snapshot_sha256": "6a732364873d12d78d407f41aa671cc56851f67b58492c4762ff33e36a59a437",
+          "source_uri": "https://github.com/MahmutVezir/dijitalikiz/actions/runs/44331092872/artifacts/14440370494#path=base-issue-reproducer.log",
+          "source_commit_sha": "97e40a09c8105f6bb3d3d801fd83c70476beab39",
+          "source_path": "artifact:14440370494/base-issue-reproducer.log"
+        },
+        {
+          "evidence_id": "EODAG_TEST_FIXTURE_SAFE_LOAD_PATH",
+          "content_sha256": "e3040adac1dbb538e3981a074dfb6f0f4ab461927f78c1fe8ddf2034ebb0c473",
+          "source_snapshot_sha256": "2859d5efb695434511575735e9a85ef3d2701db08f1284eacf3d50cc5613718b",
+          "source_uri": "https://github.com/CS-SI/eodag/blob/b7cc06e19025e5bbf14e28a0975f1749e21e9be3/tests/utils.py",
+          "source_commit_sha": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+          "source_path": "tests/utils.py"
+        },
+        {
+          "evidence_id": "EODAG_TEST_SELECTOR_CALL_PATH",
+          "content_sha256": "a62c2599494f25845f12903c7a5ef353db8389a98facd8d1ae2d5b95ecc21742",
+          "source_snapshot_sha256": "3bcd1300603a131db22d2008a798803f124f685a6a2122e58beca21d704710ef",
+          "source_uri": "https://github.com/CS-SI/eodag/blob/b7cc06e19025e5bbf14e28a0975f1749e21e9be3/tests/units/test_core.py",
+          "source_commit_sha": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+          "source_path": "tests/units/test_core.py"
+        },
+        {
+          "evidence_id": "EODAG_BASE_SUPPORTED_PROVIDER_LIST",
+          "content_sha256": "b1eca9436ca0a7947c0a0c0dc22e08a9291980846b8cfd86ef5b454337b86f7e",
+          "source_snapshot_sha256": "3bcd1300603a131db22d2008a798803f124f685a6a2122e58beca21d704710ef",
+          "source_uri": "https://github.com/CS-SI/eodag/blob/b7cc06e19025e5bbf14e28a0975f1749e21e9be3/tests/units/test_core.py",
+          "source_commit_sha": "b7cc06e19025e5bbf14e28a0975f1749e21e9be3",
+          "source_path": "tests/units/test_core.py"
+        }
+      ]
+    }
+  },
+  "human_decision": {
+    "decision_maker_role": "student_project_lead",
+    "decision_timestamp_utc": "2026-11-21T10:07:34Z",
+    "rationale": "The source-aware gold and E1/E2/E3 decisions were approved by the student project lead on 2026-11-21. The exact interaction time is not captured in the conversation export; this UTC timestamp is the creation time of the hashed project-lead decision record commit, not a separately verified click-time. The adjudication is single-project-lead and source-aware; full researcher source exposure is disclosed. ChatGPT served as technical adviser only.",
+    "ai_critique_used": true,
+    "ai_critique_record": {
+      "uri": "https://github.com/MahmutVezir/dijitalikiz/blob/debb7b650da500dcea3d0007c59bc73ba597873f/research_candidates/evidence_abstention/eodag_1530/EODAG_1530_STAGE3_AI_ADVISORY_REVIEW_2026-11-20.md",
+      "sha256": "0d48a2817ea38b7af126f158c92a63566a3915aa1f33eca1b589d7da1b704619"
+    }
+  },
+  "final_acceptance": {
+    "status": "pending",
+    "decision_maker_role": "student_project_lead",
+    "decision_timestamp_utc": null,
+    "rationale": "No separate final case-acceptance YES/NO has been given. This proposed record documents technical reproduction, source-aware gold/tier adjudication, no prior pipeline/debug-use self-declaration, and bounded documentary license-scope acknowledgement only. It is not final acceptance and does not authorize model execution.",
+    "decision_record": null
+  }
+}
