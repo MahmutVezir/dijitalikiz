@@ -5673,7 +5673,21 @@
       "rank_52": "not_completed",
       "pinned_dataset_revision": "fb9aa226b2ce37c708ea7732e7b980abacdadb67",
       "parquet_sha256": "7416e352008b35480c82610cf4f5edf160dd269ed6bf382a22bd4c17daed24b9",
-      "reason": "Available GitHub Actions controls did not execute the newly drafted no-inference row audit; no row hash or E3 packet was fabricated."
+      "reason": "Available GitHub Actions controls did not execute the newly drafted no-inference row audit; no row hash or E3 packet was fabricated.",
+      "first_attempt": {
+        "workflow_run_id": 44924342085,
+        "job_id": 136907155888,
+        "outcome": "failed_at_row_lookup_after_successful_dataset_download_and_whole_file_sha256_verification",
+        "exact_error": "cuthbertLab__music21-1736: expected exactly one row, found 0",
+        "interpretation": "The assumed instance_id was incorrect; no row was accepted, no row hash was emitted, and no artifact was uploaded."
+      },
+      "corrected_attempt": {
+        "workflow_run_id": 44924570231,
+        "job_id": 136907718949,
+        "status": "queued_or_in_progress_at_last_check",
+        "method": "Discover actual instance_id from exact base_commit + PR-number suffix + repository slug in safe metadata columns, then extract and hash full rows.",
+        "exact_row_authenticated": false
+      }
     },
     "frozen_cohort_changed": false,
     "accepted_registry_changed": false,
